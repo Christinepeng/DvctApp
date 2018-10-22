@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@id/homeFragment"
+        android:icon="@drawable/selector_tab_home"
+        android:title="@string/home" />
+    <item
+        android:id="@id/communitiesFragment"
+        android:icon="@drawable/selector_tab_communities"
+        android:title="@string/groups" />
+    <item
+        android:id="@id/jobsFragment"
+        android:icon="@drawable/selector_tab_jobs"
+        android:title="@string/job_board" />
+    <item
+        android:id="@id/notificationsFragment"
+        android:icon="@drawable/selector_tab_activity"
+        android:title="@string/activity" />
+    <item
+        android:id="@id/profileFragment"
+        android:icon="@drawable/selector_tab_profile"
+        android:title="@string/profile" />
+
+</menu>

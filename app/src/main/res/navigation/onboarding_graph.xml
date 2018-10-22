@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_graph"
+    app:startDestination="@id/onboardingFragment">
+
+    <fragment
+        android:id="@+id/onboardingFragment"
+        android:name="com.divercity.app.features.onboarding.OnboardingFragment"
+        android:label="fragment_onboarding"
+        tools:layout="@layout/fragment_onboarding">
+
+        <action
+            android:id="@+id/action_onboardingFragment_to_signUpFragment"
+            app:destination="@id/signUpFragment" />
+        <action
+            android:id="@+id/action_onboardingFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.divercity.app.features.login.LoginFragment"
+        android:label="activity_login"
+        tools:layout="@layout/fragment_login">
+
+        <argument android:name="email" />
+
+        <action
+            android:id="@+id/action_loginFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/signUpFragment"
+        android:name="com.divercity.app.features.signup.SignUpFragment"
+        android:label="activity_login"
+        tools:layout="@layout/fragment_sign_up">
+
+        <argument android:name="email" />
+
+        <action
+            android:id="@+id/action_signUpFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.divercity.app.features.home.HomeActivity"
+        android:label="HomeActivity"
+        tools:layout="@layout/activity_home" />
+
+</navigation>

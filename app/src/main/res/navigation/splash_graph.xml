@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/onboarding_graph"
+    app:startDestination="@id/splashFragment">
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.divercity.app.features.splash.SplashFragment"
+        android:label="SplashFragment"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_onboardingActivity"
+            app:destination="@id/onboardingActivity"/>
+        <action
+            android:id="@+id/action_splashFragment_to_homeActivity"
+            app:destination="@id/homeActivity" />
+    </fragment>
+
+    <activity
+        android:id="@+id/onboardingActivity"
+        android:name="com.divercity.app.features.onboarding.OnboardingActivity"
+        android:label="OnboardingActivity"
+        tools:layout="@layout/activity_onboarding" />
+
+    <activity
+        android:id="@+id/homeActivity"
+        android:name="com.divercity.app.features.home.HomeActivity"
+        android:label="HomeActivity"
+        tools:layout="@layout/activity_home" />
+
+</navigation>

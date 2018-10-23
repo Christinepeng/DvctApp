@@ -20,5 +20,4 @@ public class ProfilePromptActivity extends BaseFragmentActivity {
     protected BaseFragment fragment() {
         return ProfilePromptFragment.newInstance();
     }
-
 }

@@ -12,13 +12,14 @@ import com.divercity.app.core.base.BaseFragmentActivity;
 
 public class SelectGenderActivity extends BaseFragmentActivity {
 
+
     public static Intent getCallingIntent(Context context){
-        return new Intent(context, SelectGenderActivity.class);
+        Intent intent = new Intent(context, SelectGenderActivity.class);
+        return intent;
     }
 
     @Override
     protected BaseFragment fragment() {
         return SelectGenderFragment.newInstance();
     }
-
 }

@@ -1,25 +1,23 @@
-package com.divercity.app.features.profile.selectmajor;
+package com.divercity.app.features.profile.selectgroups;
 
 import android.content.Context;
 import android.content.Intent;
 
 import com.divercity.app.core.base.BaseFragment;
 import com.divercity.app.core.base.BaseFragmentActivity;
-import com.divercity.app.features.profile.selectusertype.SelectUserTypeFragment;
 
 /**
  * Created by lucas on 17/10/2018.
  */
 
-public class SelectCompanyActivity extends BaseFragmentActivity {
+public class SelectGroupActivity extends BaseFragmentActivity {
 
     public static Intent getCallingIntent(Context context){
-        return new Intent(context, SelectCompanyActivity.class);
+        return new Intent(context, SelectGroupActivity.class);
     }
 
     @Override
     protected BaseFragment fragment() {
-        return SelectUserTypeFragment.newInstance();
+        return SelectGroupFragment.newInstance();
     }
-
 }

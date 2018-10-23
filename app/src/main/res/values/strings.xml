@@ -11,6 +11,13 @@
     <!-- Profile onboarding-->
     <string name="select_your_company">Select your Company</string>
     <string name="select_your_indsutry">Select your Industry</string>
+    <string name="select_your_major">Select your Major</string>
+    <string name="select_your_country">Select your Country</string>
+    <string name="select_your_ethnicity">Select your Ethnicity</string>
+    <string name="select_your_occupation">Select your Occupation</string>
+    <string name="select_your_gender">Select your Gender</string>
+    <string name="select_your_birthday">Select your Birthday</string>
+    <string name="select_group">Choose some communities you would like to join</string>
 
     <!-- What describes you best?-->
     <string name="job_seeker">Job Seeker</string>
@@ -19,6 +26,22 @@
     <string name="professional">Professional</string>
     <string name="hiring_manager">Hiring Manager</string>
     <string name="recruiter">Recruiter</string>
+
+    <string name="job_seeker_id">job_seeker</string>
+    <string name="student_id">student</string>
+    <string name="entrepreneur_id">entrepreneur</string>
+    <string name="professional_id">professional</string>
+    <string name="hiring_manager_id">hiring_manager</string>
+    <string name="recruiter_id">recruiter</string>
+
+    <!-- Gender-->
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="non_binary">Non-Binary</string>
+
+    <string name="male_id">male</string>
+    <string name="female_id">female</string>
+    <string name="non_binary_id">non_binary</string>
 
     <!-- Errors-->
     <string name="error_timeout">Timeout error</string>

@@ -12,13 +12,16 @@ import com.divercity.app.core.base.BaseFragment;
 
 public class SelectUserTypeActivity extends BaseFragmentActivity {
 
-    public static Intent getCallingIntent(Context context){
-        return new Intent(context,SelectUserTypeActivity.class);
+    public static final String COMPLETE_PROFILE = "completeProfile";
+
+    public static Intent getCallingIntent(Context context, boolean completeProfile){
+        Intent intent = new Intent(context,SelectUserTypeActivity.class);
+        intent.putExtra(COMPLETE_PROFILE, completeProfile);
+        return intent;
     }
 
     @Override
     protected BaseFragment fragment() {
-        return SelectUserTypeFragment.newInstance();
+        return SelectUserTypeFragment.newInstance(getIntent().getBooleanExtra(COMPLETE_PROFILE,false));
     }
-
 }

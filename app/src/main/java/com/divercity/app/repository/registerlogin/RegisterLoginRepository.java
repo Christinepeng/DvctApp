@@ -13,7 +13,7 @@ import retrofit2.Response;
 
 public interface RegisterLoginRepository {
 
-    Observable<Response<LoginResponse>> login(String email, String password);
+    Observable<LoginResponse> login(String email, String password);
 
     Observable<CheckEmailResponse> isEmailRegistered(String email);
 

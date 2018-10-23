@@ -6,10 +6,10 @@ package com.divercity.app.features.profile.selectusertype;
 
 public class UserType {
     int drawable;
-    int id;
+    String id;
     int textId;
 
-    public UserType( int id, int drawable,int textId) {
+    public UserType(String id, int drawable,int textId) {
         this.drawable = drawable;
         this.id = id;
         this.textId = textId;

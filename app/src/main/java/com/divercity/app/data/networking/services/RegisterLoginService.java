@@ -1,5 +1,6 @@
 package com.divercity.app.data.networking.services;
 
+import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.emailcheck.CheckEmailBody;
 import com.divercity.app.data.entity.emailcheck.CheckEmailResponse;
 import com.divercity.app.data.entity.login.body.LoginBody;
@@ -19,7 +20,7 @@ import retrofit2.http.POST;
 public interface RegisterLoginService {
 
     @POST("auth/sign_in")
-    Observable<Response<LoginResponse>> login(@Body LoginBody loginBody);
+    Observable<Response<DataObject<LoginResponse>>> login(@Body LoginBody loginBody);
 
     @POST("users/check_email")
     Observable<CheckEmailResponse> checkEmail(@Body CheckEmailBody loginBody);

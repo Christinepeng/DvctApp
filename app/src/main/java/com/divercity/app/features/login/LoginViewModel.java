@@ -14,8 +14,6 @@ import com.divercity.app.features.login.usecase.LoginUseCase;
 
 import javax.inject.Inject;
 
-import retrofit2.Response;
-
 /**
  * Created by lucas on 25/09/2018.
  */
@@ -44,21 +42,9 @@ public class LoginViewModel extends BaseViewModel {
                 }
 
                 @Override
-                protected void onSuccess(Response<LoginResponse> response) {
-                    login.setValue(Resource.success(response.body()));
+                protected void onSuccess(LoginResponse response) {
+                    login.setValue(Resource.success(response));
                 }
-
-
-//                @Override
-//                protected void onFail(String msg) {
-//                    login.setValue(Resource.error(msg, null));
-//                }
-//
-//                @Override
-//                protected void onSuccess(LoginResponse loginResponse) {
-//                    login.setValue(Resource.success(loginResponse));
-//                }
-
             };
             getCompositeDisposable().add(callback);
             loginUseCase.execute(callback, LoginUseCase.Params.forLogin(userEmail, password));

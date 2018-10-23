@@ -1,8 +1,8 @@
-package com.divercity.app.data.entity.login.response;
+package com.divercity.app.data.entity.group;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Data{
+public class GroupResponse{
 
 	@SerializedName("attributes")
 	private Attributes attributes;
@@ -40,7 +40,7 @@ public class Data{
 	@Override
  	public String toString(){
 		return 
-			"Data{" + 
+			"GroupResponse{" + 
 			"attributes = '" + attributes + '\'' + 
 			",id = '" + id + '\'' + 
 			",type = '" + type + '\'' + 

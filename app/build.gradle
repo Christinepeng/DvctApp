@@ -41,7 +41,7 @@ android {
 
         debug {
 //            buildConfigField "String", "BASE_URL", '"https://api.divercity.io/api/"'
-            buildConfigField "String", "BASE_URL", '"http://sandbox-api.divercity.io/api/"'
+            buildConfigField "String", "BASE_URL", '"https://sandbox-api.divercity.io/api/"'
         }
     }
     dataBinding {

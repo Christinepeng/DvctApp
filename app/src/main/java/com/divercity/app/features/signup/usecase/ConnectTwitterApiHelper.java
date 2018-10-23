@@ -71,5 +71,4 @@ public class ConnectTwitterApiHelper {
     public void setListener(OnTwitterDataListener mListener) {
         this.mListener = mListener;
     }
-
 }

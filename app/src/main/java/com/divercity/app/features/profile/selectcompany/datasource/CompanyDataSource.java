@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.base.Data;
+import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.company.CompanyResponse;
 import com.divercity.app.features.profile.selectcompany.usecase.FetchCompaniesUseCase;
 
@@ -59,9 +59,9 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<Data<CompanyResponse>> disposableObserver = new DisposableObserver<Data<CompanyResponse>>() {
+        DisposableObserver<DataArray<CompanyResponse>> disposableObserver = new DisposableObserver<DataArray<CompanyResponse>>() {
             @Override
-            public void onNext(Data<CompanyResponse> data) {
+            public void onNext(DataArray<CompanyResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
@@ -100,9 +100,9 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
     public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, CompanyResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<Data<CompanyResponse>> disposableObserver = new DisposableObserver<Data<CompanyResponse>>() {
+        DisposableObserver<DataArray<CompanyResponse>> disposableObserver = new DisposableObserver<DataArray<CompanyResponse>>() {
             @Override
-            public void onNext(Data<CompanyResponse> data) {
+            public void onNext(DataArray<CompanyResponse> data) {
                 if (data != null) {
                     setRetry(null);
                     callback.onResult(data.getData(), params.key + 1);

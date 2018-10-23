@@ -12,6 +12,7 @@ import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.utils.Listing;
 import com.divercity.app.data.entity.company.CompanyResponse;
 import com.divercity.app.features.profile.selectcompany.company.CompanyPaginatedRepository;
+import com.divercity.app.repository.user.UserRepository;
 
 import javax.inject.Inject;
 
@@ -24,12 +25,15 @@ public class SelectCompanyViewModel extends BaseViewModel {
     public LiveData<PagedList<CompanyResponse>> companyList;
     private Listing<CompanyResponse> companyListListing;
     CompanyPaginatedRepository repository;
+    UserRepository userRepository;
 
     @Inject
     public SelectCompanyViewModel(@NonNull Application application,
-                                  CompanyPaginatedRepository repository) {
+                                  CompanyPaginatedRepository repository,
+                                  UserRepository userRepository) {
         super(application);
         this.repository = repository;
+        this.userRepository = userRepository;
     }
 
     public void retry() {
@@ -56,6 +60,10 @@ public class SelectCompanyViewModel extends BaseViewModel {
         }
         companyListListing = repository.fetchCompanies(query);
         companyList = companyListListing.getPagedList();
+    }
+
+    public String getAccountType(){
+        return userRepository.getCurrentUserAccountType();
     }
 
 }

@@ -7,11 +7,15 @@ import com.divercity.app.features.home.jobs.JobsModule;
 import com.divercity.app.features.login.LoginFragment;
 import com.divercity.app.features.onboarding.OnboardingFragment;
 import com.divercity.app.features.onboarding.OnboardingModule;
+import com.divercity.app.features.profile.profileprompt.ProfilePromptFragment;
+import com.divercity.app.features.profile.selectbirthdate.SelectBirthdayFragment;
 import com.divercity.app.features.profile.selectcompany.SelectCompanyFragment;
 import com.divercity.app.features.profile.selectcompany.module.CompanyModule;
 import com.divercity.app.features.profile.selectcountry.SelectCountryFragment;
 import com.divercity.app.features.profile.selectethnicity.SelectEthnicityFragment;
 import com.divercity.app.features.profile.selectgender.SelectGenderFragment;
+import com.divercity.app.features.profile.selectgroups.SelectGroupFragment;
+import com.divercity.app.features.profile.selectgroups.module.GroupModule;
 import com.divercity.app.features.profile.selectindustry.SelectIndustryFragment;
 import com.divercity.app.features.profile.selectindustry.module.IndustryModule;
 import com.divercity.app.features.profile.selectusertype.SelectUserTypeFragment;
@@ -63,4 +67,13 @@ public abstract class FragmentBuildersModule {
 
     @ContributesAndroidInjector()
     abstract SelectGenderFragment contributeSelectGenderFragment();
+
+    @ContributesAndroidInjector()
+    abstract ProfilePromptFragment contributeProfilePromptFragment();
+
+    @ContributesAndroidInjector(modules = GroupModule.class)
+    abstract SelectGroupFragment contributeSelectGroupFragment();
+
+    @ContributesAndroidInjector()
+    abstract SelectBirthdayFragment contributeSelectBirthdayFragment();
 }

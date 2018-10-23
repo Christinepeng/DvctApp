@@ -8,11 +8,14 @@ import com.divercity.app.features.home.home.module.HomeViewModelModule;
 import com.divercity.app.features.home.jobs.JobsViewModel;
 import com.divercity.app.features.login.LoginViewModel;
 import com.divercity.app.features.onboarding.OnboardingViewModel;
+import com.divercity.app.features.profile.selectbirthdate.SelectBirthdayViewModel;
 import com.divercity.app.features.profile.selectcompany.SelectCompanyViewModel;
 import com.divercity.app.features.profile.selectcompany.module.CompanyViewModelModule;
 import com.divercity.app.features.profile.selectcountry.SelectCountryViewModel;
 import com.divercity.app.features.profile.selectethnicity.SelectEthnicityViewModel;
 import com.divercity.app.features.profile.selectgender.SelectGenderViewModel;
+import com.divercity.app.features.profile.selectgroups.SelectGroupViewModel;
+import com.divercity.app.features.profile.selectgroups.module.GroupViewModelModule;
 import com.divercity.app.features.profile.selectindustry.SelectIndustryViewModel;
 import com.divercity.app.features.profile.selectindustry.module.IndustryViewModelModule;
 import com.divercity.app.features.profile.selectusertype.SelectUserTypeViewModel;
@@ -29,7 +32,9 @@ import dagger.multibindings.IntoMap;
 @Module(includes = {
         HomeViewModelModule.class,
         CompanyViewModelModule.class,
-        IndustryViewModelModule.class})
+        IndustryViewModelModule.class,
+        GroupViewModelModule.class
+})
 public abstract class ViewModelModule {
 
     @Binds
@@ -91,6 +96,16 @@ public abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectGenderViewModel.class)
     abstract ViewModel bindsSelectGenderViewModel(SelectGenderViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectGroupViewModel.class)
+    abstract ViewModel bindsSelectGroupViewModel(SelectGroupViewModel viewModel);
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectBirthdayViewModel.class)
+    abstract ViewModel bindsSelectBirthdayViewModel(SelectBirthdayViewModel viewModel);
 
     @Binds
     public abstract ViewModelProvider.Factory bindsViewModelFactory(DivercityViewModelFactory divercityViewModelFactory);

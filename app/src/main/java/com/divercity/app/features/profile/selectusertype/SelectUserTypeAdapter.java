@@ -1,5 +1,6 @@
 package com.divercity.app.features.profile.selectusertype;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,7 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
     private LayoutInflater layoutInflater;
     private UserTypeAdapterListener listener;
 
-    private void fillList(){
+    private void fillList(Context context) {
         int drawables[] = {
                 R.drawable.img_jobseeker,
                 R.drawable.img_student,
@@ -41,8 +42,17 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
                 R.string.recruiter
         };
 
-        for(int i = 0; i < drawables.length; i++)
-            list.add(new UserType(0,drawables[i],strings[i]));
+        String ids[] = {
+                context.getString(R.string.job_seeker_id),
+                context.getString(R.string.student_id),
+                context.getString(R.string.entrepreneur_id),
+                context.getString(R.string.professional_id),
+                context.getString(R.string.hiring_manager_id),
+                context.getString(R.string.recruiter_id)
+        };
+
+        for (int i = 0; i < drawables.length; i++)
+            list.add(new UserType(ids[i], drawables[i], strings[i]));
     }
 
     static class Holder extends RecyclerView.ViewHolder {
@@ -55,9 +65,9 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
         }
     }
 
-    public SelectUserTypeAdapter(UserTypeAdapterListener listener) {
+    public SelectUserTypeAdapter(Context context, UserTypeAdapterListener listener) {
         this.listener = listener;
-        fillList();
+        fillList(context);
     }
 
     @NonNull
@@ -75,6 +85,9 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
         UserType item = list.get(position);
         holder.binding.imgType.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.drawable));
         holder.binding.txtType.setText(item.textId);
+        holder.itemView.setOnClickListener(view -> {
+            listener.onUserTypeClick(item);
+        });
     }
 
     @Override
@@ -85,5 +98,4 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
     public interface UserTypeAdapterListener {
         void onUserTypeClick(UserType userType);
     }
-
 }

@@ -55,9 +55,13 @@ public class SplashFragment extends BaseFragment {
         new Handler().postDelayed(() -> {
             if (userSharedPreferencesRepository.isUserLogged()) {
                 subscribeToLiveData();
+                navigator.navigateToSelectBirthday(getActivity());
+//                navigator.navigateToPromptProfile(getActivity());
+//                navigator.navigateToSelectGroups(getActivity());
+//                navigator.navigateToSelectUserType(getActivity());
 //                viewModel.fetchCurrentUserData();
 //                navigator.navigateToSelectCompany(getActivity());
-                navigator.navigateToSelectIndustry(getActivity());
+//                navigator.navigateToSelectIndustry(getActivity());
             } else {
                 NavHostFragment.findNavController(SplashFragment.this).navigate(R.id.action_splashFragment_to_onboardingActivity);
                 getActivity().finish();
@@ -84,7 +88,7 @@ public class SplashFragment extends BaseFragment {
 
         viewModel.navigateToSelectUserType.observe(this, data -> {
             if (data) {
-                getActivity().startActivity(SelectUserTypeActivity.getCallingIntent(getContext()));
+                getActivity().startActivity(SelectUserTypeActivity.getCallingIntent(getContext(), false));
                 getActivity().finish();
             }
         });
@@ -98,5 +102,4 @@ public class SplashFragment extends BaseFragment {
         );
         customOneBtnDialogFragment.show(getChildFragmentManager(), null);
     }
-
 }

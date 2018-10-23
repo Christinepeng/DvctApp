@@ -1,7 +1,7 @@
 package com.divercity.app.features.profile.selectindustry.usecase;
 
 import com.divercity.app.core.base.UseCase;
-import com.divercity.app.data.entity.base.Data;
+import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.repository.user.UserRepository;
 
@@ -15,7 +15,7 @@ import io.reactivex.Scheduler;
  * Created by lucas on 18/10/2018.
  */
 
-public class FetchIndustriesUseCase extends UseCase<Data<IndustryResponse>, FetchIndustriesUseCase.Params> {
+public class FetchIndustriesUseCase extends UseCase<DataArray<IndustryResponse>, FetchIndustriesUseCase.Params> {
 
     private UserRepository userRepository;
 
@@ -28,7 +28,7 @@ public class FetchIndustriesUseCase extends UseCase<Data<IndustryResponse>, Fetc
     }
 
     @Override
-    protected Observable<Data<IndustryResponse>> createObservableUseCase(FetchIndustriesUseCase.Params params) {
+    protected Observable<DataArray<IndustryResponse>> createObservableUseCase(FetchIndustriesUseCase.Params params) {
         return userRepository.fetchIndustries(params.page, params.size, params.query);
     }
 

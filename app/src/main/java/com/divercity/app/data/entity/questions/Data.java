@@ -29,7 +29,7 @@ public class Data{
 	@Override
  	public String toString(){
 		return 
-			"Data{" + 
+			"LoginResponse{" +
 			"id = '" + id + '\'' + 
 			",type = '" + type + '\'' + 
 			"}";

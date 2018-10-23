@@ -2,7 +2,13 @@ package com.divercity.app.di.module;
 
 import com.divercity.app.features.home.HomeActivity;
 import com.divercity.app.features.onboarding.OnboardingActivity;
+import com.divercity.app.features.profile.profileprompt.ProfilePromptActivity;
+import com.divercity.app.features.profile.selectbirthdate.SelectBirthdayActivity;
 import com.divercity.app.features.profile.selectcompany.SelectCompanyActivity;
+import com.divercity.app.features.profile.selectcountry.SelectCountryActivity;
+import com.divercity.app.features.profile.selectethnicity.SelectEthnicityActivity;
+import com.divercity.app.features.profile.selectgender.SelectGenderActivity;
+import com.divercity.app.features.profile.selectgroups.SelectGroupActivity;
 import com.divercity.app.features.profile.selectindustry.SelectIndustryActivity;
 import com.divercity.app.features.profile.selectusertype.SelectUserTypeActivity;
 import com.divercity.app.features.splash.SplashActivity;
@@ -37,4 +43,22 @@ public abstract class ActivityBindingModule {
 
     @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
     abstract SelectIndustryActivity selectIndustryActivity();
+
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    abstract ProfilePromptActivity profilePromptActivity();
+
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    abstract SelectGroupActivity selectGroupActivity();
+
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    abstract SelectCountryActivity selectCountryActivity();
+
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    abstract SelectGenderActivity selectGenderActivity();
+
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    abstract SelectEthnicityActivity selectEthnicityActivity();
+
+    @ContributesAndroidInjector(modules = FragmentBuildersModule.class)
+    abstract SelectBirthdayActivity selectBirthdayActivity();
 }

@@ -14,6 +14,8 @@ import com.divercity.app.databinding.FragmentSelectEthnicityBinding;
 
 public class SelectEthnicityFragment extends BaseFragment {
 
+    private static final int PROGRESS = 0;
+
     SelectEthnicityViewModel viewModel;
     FragmentSelectEthnicityBinding binding;
 
@@ -45,5 +47,25 @@ public class SelectEthnicityFragment extends BaseFragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentSelectEthnicityBinding) getViewDataBinding();
+        setupHeader();
+        binding.btnNext.setOnClickListener(view1 -> {
+            navigator.navigateToNextProfile(getActivity(), viewModel.getAccountType());
+        });
+    }
+
+    private void setupHeader(){
+        binding.includeHeader.progressBar.setMax(100);
+        binding.includeHeader.progressBar.setProgress(0);
+        binding.includeHeader.progressBar.setProgressWithAnim(PROGRESS);
+        binding.includeHeader.txtProgress.setText(PROGRESS + "%");
+        binding.includeHeader.txtTitle.setText(R.string.select_your_ethnicity);
+
+        binding.includeHeader.btnClose.setOnClickListener(view1 -> {
+
+        });
+
+        binding.includeHeader.btnSkip.setOnClickListener(view1 -> {
+
+        });
     }
 }

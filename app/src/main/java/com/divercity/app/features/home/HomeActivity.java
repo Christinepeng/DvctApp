@@ -1,5 +1,7 @@
 package com.divercity.app.features.home;
 
+import android.content.Context;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.graphics.Typeface;
 import android.net.Uri;
@@ -30,6 +32,10 @@ public class HomeActivity extends AppCompatActivity implements HasSupportFragmen
 
     ActivityHomeBinding binding;
     NavController navController;
+
+    public static Intent getCallingIntent(Context context){
+        return new Intent(context, HomeActivity.class);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

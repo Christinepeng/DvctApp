@@ -42,7 +42,7 @@ public class SplashViewModel extends BaseViewModel {
             @Override
             protected void onSuccess(LoginResponse response) {
                 userData.setValue(Resource.success(response));
-                if (response.getData().getAttributes().getAccountType() == null)
+                if (response.getAttributes().getAccountType() == null)
                     navigateToSelectUserType.setValue(true);
                 else
                     navigateToHome.setValue(true);

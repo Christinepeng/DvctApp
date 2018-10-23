@@ -11,9 +11,8 @@ import javax.inject.Named;
 
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
-import retrofit2.Response;
 
-public class LoginUseCase extends UseCase<Response<LoginResponse>, LoginUseCase.Params> {
+public class LoginUseCase extends UseCase<LoginResponse, LoginUseCase.Params> {
 
     private RegisterLoginRepository registerLoginRepository;
 
@@ -26,7 +25,7 @@ public class LoginUseCase extends UseCase<Response<LoginResponse>, LoginUseCase.
     }
 
     @Override
-    protected Observable<Response<LoginResponse>> createObservableUseCase(Params params) {
+    protected Observable<LoginResponse> createObservableUseCase(Params params) {
         return registerLoginRepository.login(params.email, params.password);
     }
 
@@ -45,11 +44,10 @@ public class LoginUseCase extends UseCase<Response<LoginResponse>, LoginUseCase.
         }
     }
 
-    public static abstract class Callback extends DisposableObserverWrapper<Response<LoginResponse>> {
+    public static abstract class Callback extends DisposableObserverWrapper<LoginResponse> {
 
         @Override
         protected void onHttpException(JsonElement error) {
-            String he = "hello";
             onFail(error.getAsJsonObject().getAsJsonArray("errors").get(0).getAsString());
         }
     }

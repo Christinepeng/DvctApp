@@ -5,6 +5,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.divercity.app.features.profile.selectusertype.SelectUserTypeViewModel" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -36,6 +39,11 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
+        <include
+            android:id="@+id/includeLoading"
+            layout="@layout/view_loading"
+            tools:visibility="gone" />
 
     </android.support.constraint.ConstraintLayout>
 

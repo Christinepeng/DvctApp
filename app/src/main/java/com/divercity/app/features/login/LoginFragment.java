@@ -86,5 +86,4 @@ public class LoginFragment extends BaseFragment {
     private void showToast(){
         Toast.makeText(getActivity(),"Coming soon", Toast.LENGTH_SHORT).show();
     }
-
 }

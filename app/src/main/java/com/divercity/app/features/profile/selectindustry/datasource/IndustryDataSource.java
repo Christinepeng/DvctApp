@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.base.Data;
+import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.features.profile.selectindustry.usecase.FetchIndustriesUseCase;
 
@@ -59,9 +59,9 @@ public class IndustryDataSource extends PageKeyedDataSource<Long, IndustryRespon
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<Data<IndustryResponse>> disposableObserver = new DisposableObserver<Data<IndustryResponse>>() {
+        DisposableObserver<DataArray<IndustryResponse>> disposableObserver = new DisposableObserver<DataArray<IndustryResponse>>() {
             @Override
-            public void onNext(Data<IndustryResponse> data) {
+            public void onNext(DataArray<IndustryResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
@@ -100,9 +100,9 @@ public class IndustryDataSource extends PageKeyedDataSource<Long, IndustryRespon
     public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, IndustryResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<Data<IndustryResponse>> disposableObserver = new DisposableObserver<Data<IndustryResponse>>() {
+        DisposableObserver<DataArray<IndustryResponse>> disposableObserver = new DisposableObserver<DataArray<IndustryResponse>>() {
             @Override
-            public void onNext(Data<IndustryResponse> data) {
+            public void onNext(DataArray<IndustryResponse> data) {
                 if (data != null) {
                     setRetry(null);
                     callback.onResult(data.getData(), params.key + 1);

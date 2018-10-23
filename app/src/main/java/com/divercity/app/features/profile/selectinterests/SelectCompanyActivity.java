@@ -19,7 +19,7 @@ public class SelectCompanyActivity extends BaseFragmentActivity {
 
     @Override
     protected BaseFragment fragment() {
-        return SelectUserTypeFragment.newInstance();
+        return SelectUserTypeFragment.newInstance(false);
     }
 
 }

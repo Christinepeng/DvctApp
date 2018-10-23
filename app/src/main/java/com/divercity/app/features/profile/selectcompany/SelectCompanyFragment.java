@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.divercity.app.R;
 import com.divercity.app.core.base.BaseFragment;
@@ -29,7 +28,7 @@ import timber.log.Timber;
 
 public class SelectCompanyFragment extends BaseFragment implements RetryCallback {
 
-    private static final int PROGRESS = 30;
+    private static final int PROGRESS = 0;
 
     SelectCompanyViewModel viewModel;
     FragmentSelectCompanyBinding binding;
@@ -88,7 +87,11 @@ public class SelectCompanyFragment extends BaseFragment implements RetryCallback
             }
             return false;
         });
+        setupHeader();
 
+    }
+
+    private void setupHeader(){
         binding.includeHeader.progressBar.setMax(100);
         binding.includeHeader.progressBar.setProgress(0);
         binding.includeHeader.progressBar.setProgressWithAnim(PROGRESS);
@@ -161,10 +164,7 @@ public class SelectCompanyFragment extends BaseFragment implements RetryCallback
         viewModel.retry();
     }
 
-    private CompanyViewHolder.Listener listener = new CompanyViewHolder.Listener() {
-        @Override
-        public void onCompanyClick(CompanyResponse company) {
-            Toast.makeText(getContext(), company.getAttributes().getName(), Toast.LENGTH_SHORT).show();
-        }
+    private CompanyViewHolder.Listener listener = company ->{
+            navigator.navigateToNextProfile(getActivity(), viewModel.getAccountType());
     };
 }

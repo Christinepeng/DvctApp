@@ -32,17 +32,19 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     }
 
     @Override
-    public Observable<Response<LoginResponse>> login(String email, String password) {
-        return registerLoginService.login(new LoginBody(email, password)).doOnNext(response -> {
-            if (response.isSuccessful()) {
-                userSharedPreferencesRepository.setClient(response.headers().get("client"));
-                userSharedPreferencesRepository.setUid(response.headers().get("uid"));
-                userSharedPreferencesRepository.setAccessToken(response.headers().get("access-token"));
-                userSharedPreferencesRepository.setAvatarUrl(response.body().getData().getAttributes().getAvatarThumb());
-                userSharedPreferencesRepository.setUserId(response.body().getData().getId());
-                userSharedPreferencesRepository.setAccountType(response.body().getData().getAttributes().getAccountType());
-            }
-        });
+    public Observable<LoginResponse> login(String email, String password) {
+        return registerLoginService.login(new LoginBody(email, password))
+                .map(response -> {
+                    if(response.isSuccessful()){
+                        userSharedPreferencesRepository.setClient(response.headers().get("client"));
+                        userSharedPreferencesRepository.setUid(response.headers().get("uid"));
+                        userSharedPreferencesRepository.setAccessToken(response.headers().get("access-token"));
+                        userSharedPreferencesRepository.setAvatarUrl(response.body().getData().getAttributes().getAvatarThumb());
+                        userSharedPreferencesRepository.setUserId(response.body().getData().getId());
+                        userSharedPreferencesRepository.setAccountType(response.body().getData().getAttributes().getAccountType());
+                    }
+                    return response.body().getData();
+                });
     }
 
     @Override

@@ -30,7 +30,7 @@ public abstract class DisposableObserverWrapper<T> extends DisposableObserver<T>
                 JsonElement jsonElement = gson.fromJson(responseBodyJson, JsonElement.class);
                 onHttpException(jsonElement);
             } catch (Exception e) {
-                onFail(e.getMessage());
+                onFail(((HttpException) t).response().code() + ": " + e.getMessage());
             }
         } else
             onFail(t.getMessage());

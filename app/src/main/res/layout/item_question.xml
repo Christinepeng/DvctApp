@@ -26,7 +26,7 @@
             app:cardElevation="0dp">
 
             <ImageView
-                android:id="@+id/item_quest_img_author"
+                android:id="@+id/item_group_img"
                 android:layout_width="38dp"
                 android:layout_height="38dp"
                 android:contentDescription="TODO"

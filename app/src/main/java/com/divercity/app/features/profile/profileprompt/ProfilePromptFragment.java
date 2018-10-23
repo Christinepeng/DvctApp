@@ -2,7 +2,6 @@ package com.divercity.app.features.profile.profileprompt;
 
 
 import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProviders;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -28,13 +27,12 @@ public class ProfilePromptFragment extends BaseFragment {
 
     @Override
     public ViewModel getViewModel() {
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ProfilePromptViewModel.class);
-        return viewModel;
+        return null;
     }
 
     @Override
     public int getBindingVariable() {
-        return 0;
+        return -1;
     }
 
     public static ProfilePromptFragment newInstance() {
@@ -46,5 +44,12 @@ public class ProfilePromptFragment extends BaseFragment {
         super.onViewCreated(view, savedInstanceState);
         binding = (FragmentProfilePromptBinding) getViewDataBinding();
 
+        binding.btnNext.setOnClickListener(view1 ->
+                navigator.navigateToSelectUserType(getActivity(), true)
+        );
+
+        binding.btnNotNow.setOnClickListener(view1 ->
+                navigator.navigateToSelectUserType(getActivity(), false)
+        );
     }
 }

@@ -40,7 +40,7 @@ public class Data{
 	@Override
  	public String toString(){
 		return 
-			"Data{" + 
+			"LoginResponse{" +
 			"attributes = '" + attributes + '\'' + 
 			",id = '" + id + '\'' + 
 			",type = '" + type + '\'' + 

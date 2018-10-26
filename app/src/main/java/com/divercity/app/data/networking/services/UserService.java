@@ -1,0 +1,29 @@
+package com.divercity.app.data.networking.services;
+
+import com.divercity.app.data.entity.base.DataObject;
+import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.profile.UserProfileBody;
+
+import io.reactivex.Observable;
+import retrofit2.Response;
+import retrofit2.http.Body;
+import retrofit2.http.GET;
+import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Path;
+
+/**
+ * Created by lucas on 17/10/2018.
+ */
+
+public interface UserService {
+
+    @GET("users/{id}")
+    Observable<DataObject<LoginResponse>> fetchUserData(@Path("id") String userId);
+
+    @PUT("users/{id}")
+    Observable<DataObject<LoginResponse>> updateUserProfile(@Path("id") String userId, @Body UserProfileBody body);
+
+    @POST("group_of_interests/{id}/follow")
+    Observable<Response<Void>> joinGroup(@Path("id") String idGroup);
+}

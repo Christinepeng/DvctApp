@@ -12,7 +12,7 @@ import javax.inject.Inject;
 public class SplashViewModel extends BaseViewModel {
 
     private SingleLiveEvent<Resource<LoginResponse>> userData = new SingleLiveEvent<>();
-    private SingleLiveEvent<Boolean> navigateToEnterEmail = new SingleLiveEvent<>();
+    private SingleLiveEvent<Boolean> navigateToSelectUserType = new SingleLiveEvent<>();
     private SingleLiveEvent<Boolean> navigateToHome = new SingleLiveEvent<>();
     private FetchCurrentUserDataUseCase fetchCurrentUserDataUseCase;
     private LoggedUserRepositoryImpl loggedUserRepository;
@@ -25,18 +25,18 @@ public class SplashViewModel extends BaseViewModel {
     }
 
     public void fetchCurrentUserData() {
-        userData.setValue(Resource.loading(null));
+        userData.setValue(Resource.Companion.loading(null));
         FetchCurrentUserDataUseCase.Callback callback = new FetchCurrentUserDataUseCase.Callback() {
             @Override
             protected void onFail(String error) {
-                userData.setValue(Resource.error(error, null));
+                userData.setValue(Resource.Companion.error(error, null));
             }
 
             @Override
             protected void onSuccess(LoginResponse response) {
-                userData.setValue(Resource.success(response));
+                userData.setValue(Resource.Companion.success(response));
                 if (response.getAttributes().getAccountType() == null)
-                    navigateToEnterEmail.setValue(true);
+                    navigateToSelectUserType.setValue(true);
                 else
                     navigateToHome.setValue(true);
             }
@@ -53,8 +53,8 @@ public class SplashViewModel extends BaseViewModel {
         return userData;
     }
 
-    public SingleLiveEvent<Boolean> getNavigateToEnterEmail() {
-        return navigateToEnterEmail;
+    public SingleLiveEvent<Boolean> getNavigateToSelectUserType() {
+        return navigateToSelectUserType;
     }
 
     public SingleLiveEvent<Boolean> getNavigateToHome() {

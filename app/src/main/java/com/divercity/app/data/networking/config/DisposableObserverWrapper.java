@@ -2,6 +2,9 @@ package com.divercity.app.data.networking.config;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
+
+import org.jetbrains.annotations.NotNull;
+
 import io.reactivex.observers.DisposableObserver;
 import okhttp3.ResponseBody;
 import retrofit2.HttpException;
@@ -13,11 +16,11 @@ import retrofit2.Response;
 
 public abstract class DisposableObserverWrapper<T> extends DisposableObserver<T> {
 
-    protected abstract void onFail(String error);
+    protected abstract void onFail(@NotNull String error);
 
     protected abstract void onHttpException(JsonElement error);
 
-    protected abstract void onSuccess(T t);
+    protected abstract void onSuccess(@NotNull T t);
 
     @Override
     public void onError(Throwable t) {

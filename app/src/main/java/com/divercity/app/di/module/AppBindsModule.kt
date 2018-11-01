@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import com.divercity.app.repository.feed.FeedRepository
 import com.divercity.app.repository.feed.FeedRepositoryImpl
+import com.divercity.app.repository.job.JobRepository
+import com.divercity.app.repository.job.JobRepositoryImpl
 import com.divercity.app.repository.onboarding.OnboardingRepository
 import com.divercity.app.repository.onboarding.OnboardingRepositoryImpl
 import com.divercity.app.repository.registerlogin.RegisterLoginRepository
@@ -31,6 +33,9 @@ abstract class AppBindsModule {
 
     @Binds
     abstract fun bindOnboardingRepository(repository: OnboardingRepositoryImpl): OnboardingRepository
+
+    @Binds
+    abstract fun bindJobRepository(repository: JobRepositoryImpl): JobRepository
 
     @Binds
     abstract fun bindContext(application: Application): Context

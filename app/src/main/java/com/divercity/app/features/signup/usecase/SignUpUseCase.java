@@ -1,9 +1,10 @@
 package com.divercity.app.features.signup.usecase;
 
 import com.divercity.app.core.base.UseCase;
-import com.divercity.app.data.entity.signup.response.SignUpResponse;
+import com.divercity.app.data.entity.login.response.LoginResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.repository.registerlogin.RegisterLoginRepository;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import javax.inject.Inject;
@@ -16,7 +17,7 @@ import io.reactivex.Scheduler;
  * Created by lucas on 02/10/2018.
  */
 
-public class SignUpUseCase extends UseCase<SignUpResponse, SignUpUseCase.Params> {
+public class SignUpUseCase extends UseCase<LoginResponse, SignUpUseCase.Params> {
 
     private RegisterLoginRepository registerLoginRepository;
 
@@ -29,7 +30,7 @@ public class SignUpUseCase extends UseCase<SignUpResponse, SignUpUseCase.Params>
     }
 
     @Override
-    protected Observable<SignUpResponse> createObservableUseCase(Params params) {
+    protected Observable<LoginResponse> createObservableUseCase(Params params) {
         return registerLoginRepository.signUp(params.nickname, params.name, params.email, params.password, params.confirmPassword);
     }
 
@@ -54,13 +55,20 @@ public class SignUpUseCase extends UseCase<SignUpResponse, SignUpUseCase.Params>
         }
     }
 
-    public static abstract class Callback extends DisposableObserverWrapper<SignUpResponse> {
+    public static abstract class Callback extends DisposableObserverWrapper<LoginResponse> {
 
         @Override
         protected void onHttpException(JsonElement error) {
-            onFail(error.getAsJsonObject().getAsJsonObject("errors")
-                    .getAsJsonArray("full_messages")
-                    .get(0).getAsString());
+            String strError = "";
+            JsonArray array = error.getAsJsonObject().getAsJsonObject("errors")
+                    .getAsJsonArray("full_messages");
+            for(JsonElement element : array){
+                if(strError.equals(""))
+                    strError += element.toString();
+                else
+                    strError += "\n" + element.toString();
+            }
+            onFail(strError);
         }
     }
 }

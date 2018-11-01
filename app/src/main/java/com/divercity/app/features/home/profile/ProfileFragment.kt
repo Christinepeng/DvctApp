@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.features.home.HomeActivity
 
 /**
  * Created by lucas on 24/10/2018.
@@ -26,9 +27,19 @@ class ProfileFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setupToolbar()
 //        AndroidSupportInjection.inject(this)
 //        viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
 //        subscribeToLiveData()
+    }
+
+    private fun setupToolbar() {
+        (activity as HomeActivity).apply {
+            supportActionBar?.let {
+                it.setTitle(R.string.profile)
+                it.setDisplayHomeAsUpEnabled(false)
+            }
+        }
     }
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

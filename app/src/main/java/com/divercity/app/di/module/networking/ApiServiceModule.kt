@@ -1,9 +1,6 @@
 package com.divercity.app.di.module.networking
 
-import com.divercity.app.data.networking.services.FeedService
-import com.divercity.app.data.networking.services.OnboardingService
-import com.divercity.app.data.networking.services.RegisterLoginService
-import com.divercity.app.data.networking.services.UserService
+import com.divercity.app.data.networking.services.*
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -39,5 +36,11 @@ class ApiServiceModule {
     @Singleton
     fun provideOnboardingService(@Named("auth") retrofit: Retrofit): OnboardingService {
         return retrofit.create(OnboardingService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideJobService(@Named("auth") retrofit: Retrofit): JobService {
+        return retrofit.create(JobService::class.java)
     }
 }

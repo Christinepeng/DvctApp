@@ -3,10 +3,13 @@ package com.divercity.app.di.module
 import com.divercity.app.features.home.groups.GroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.jobs.JobsFragment
+import com.divercity.app.features.home.jobs.jobs.JobsListFragment
 import com.divercity.app.features.home.jobs.module.JobsModule
+import com.divercity.app.features.home.jobs.mypostings.MyPostingsFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
 import com.divercity.app.features.home.settings.SettingsFragment
+import com.divercity.app.features.linkedin.LinkedinFragment
 import com.divercity.app.features.login.step1.EnterEmailFragment
 import com.divercity.app.features.login.step2.LoginFragment
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
@@ -94,4 +97,13 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindSelectGroupFragment (): SelectGroupFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobsListFragment (): JobsListFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindMyPostingsFragment (): MyPostingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindLinkedinFragment (): LinkedinFragment
 }

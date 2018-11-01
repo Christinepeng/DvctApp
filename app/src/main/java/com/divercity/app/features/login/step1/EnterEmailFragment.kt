@@ -2,6 +2,7 @@ package com.divercity.app.features.login.step1
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -15,6 +16,7 @@ import com.divercity.app.data.Status
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_enter_email.*
 import javax.inject.Inject
+
 
 /**
  * Created by lucas on 24/10/2018.
@@ -70,23 +72,26 @@ class EnterEmailFragment : BaseFragment() {
         })
 
         viewModel.navigateToSignUp.observe(this, Observer {
-            navigator.navigateSignUpActivity(activity!!, user_email.text.toString())
+            navigator.navigateToSignUpActivity(activity!!, user_email.text.toString())
         })
     }
 
     fun showSnackbar(message: String?) {
         activity?.run {
             Snackbar.make(
-                    findViewById(android.R.id.content),
-                    message ?: "Error",
-                    Snackbar.LENGTH_LONG
+                findViewById(android.R.id.content),
+                message ?: "Error",
+                Snackbar.LENGTH_LONG
             ).show()
         }
     }
 
     private fun setupEvents() {
         btnFacebook.setOnClickListener { showToast() }
-        btnTwitter.setOnClickListener { showToast() }
+        btn_linkedin.setOnClickListener {
+            navigator.navigateToLinkedinActivity(activity!!)
+        }
+
         btn_send.setOnClickListener {
             viewModel.checkIfEmailRegistered(user_email.text.toString())
         }
@@ -98,9 +103,11 @@ class EnterEmailFragment : BaseFragment() {
 
     fun setupViewPager() {
         viewPager.adapter = viewPagerEnterEmailAdapter
-        val viewPagerDotsPanel = ViewPagerDotsPanel(context,
-                viewPagerEnterEmailAdapter.getCount(),
-                sliderDots)
+        val viewPagerDotsPanel = ViewPagerDotsPanel(
+            context,
+            viewPagerEnterEmailAdapter.count,
+            sliderDots
+        )
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
@@ -117,4 +124,12 @@ class EnterEmailFragment : BaseFragment() {
         }, AppConstants.ONBOARDING_PAGES_DELAY)
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        viewModel.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onDestroyView() {
+        handlerViewPager.removeCallbacksAndMessages(null)
+        super.onDestroyView()
+    }
 }

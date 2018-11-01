@@ -1,8 +1,8 @@
 package com.divercity.app.repository.user;
 
 import com.divercity.app.data.entity.login.response.LoginResponse;
-import com.divercity.app.data.entity.profile.User;
-
+import com.divercity.app.data.entity.profile.picture.ProfilePictureBody;
+import com.divercity.app.data.entity.profile.profile.User;
 import io.reactivex.Observable;
 
 /**
@@ -16,4 +16,7 @@ public interface UserRepository extends LoggedUserRepository{
     Observable<LoginResponse> updateUserProfile(User user);
 
     Observable<Boolean> joinGroup(String idGroup);
+
+    Observable<LoginResponse> uploadUserPhoto(ProfilePictureBody body);
+
 }

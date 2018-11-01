@@ -1,17 +1,15 @@
 package com.divercity.app.di.module;
 
 import android.content.Context;
-
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
 
 /**
  * Created by lucas on 8/31/17.
@@ -40,5 +38,4 @@ public abstract class AppProvidesModule {
     static LoggedUserRepositoryImpl provideUserLocalDataStore(Context context) {
         return new LoggedUserRepositoryImpl(context);
     }
-
 }

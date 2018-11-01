@@ -18,7 +18,7 @@ class SharedPreferencesManager<T : Enum<*>>(context: Context, prefName: String) 
 
     //    PUTS
 
-    fun put(key: T, value: String) = editor.putString(key.name, value).commit()
+    fun put(key: T, value: String?) = editor.putString(key.name, value).commit()
 
     fun put(key: T, value: Int) = editor.putInt(key.name, value).commit()
 

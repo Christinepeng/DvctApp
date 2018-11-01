@@ -61,7 +61,7 @@
                 android:textSize="13sp" />
 
             <Button
-                android:id="@+id/btn_login"
+                android:id="@+id/btn_create_account"
                 style="@style/AppText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

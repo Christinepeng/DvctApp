@@ -2,8 +2,12 @@ package com.divercity.app.di.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.divercity.app.features.home.HomeActivityViewModel
 import com.divercity.app.features.home.home.HomeViewModel
 import com.divercity.app.features.home.jobs.JobsViewModel
+import com.divercity.app.features.home.jobs.jobs.JobsListViewModel
+import com.divercity.app.features.home.jobs.mypostings.MyPostingsViewModel
+import com.divercity.app.features.linkedin.LinkedinViewModel
 import com.divercity.app.features.login.step1.EnterEmailViewModel
 import com.divercity.app.features.login.step2.LoginViewModel
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewModel
@@ -113,4 +117,24 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectMajorViewModel::class)
     abstract fun bindsSelectMajorViewModel(viewModel: SelectMajorViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobsListViewModel::class)
+    abstract fun bindsJobsListViewModel(viewModel: JobsListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MyPostingsViewModel::class)
+    abstract fun bindsMyPostingsViewModel(viewModel: MyPostingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeActivityViewModel::class)
+    abstract fun bindsHomeActivityViewModel(viewModel: HomeActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(LinkedinViewModel::class)
+    abstract fun bindsLinkedinViewModel(viewModel: LinkedinViewModel): ViewModel
 }

@@ -2,6 +2,9 @@ package com.divercity.app.repository.user
 
 import android.content.Context
 import com.divercity.app.core.sharedpref.SharedPreferencesManager
+import com.divercity.app.data.entity.base.DataObject
+import com.divercity.app.data.entity.login.response.LoginResponse
+import retrofit2.Response
 
 /**
  * Created by lucas on 24/10/2018.
@@ -22,7 +25,7 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
 
     private val sharedPreferencesManager: SharedPreferencesManager<Key> = SharedPreferencesManager(context, USER_PREF_NAME)
 
-    override fun setAccessToken(token: String) {
+    override fun setAccessToken(token: String?) {
         sharedPreferencesManager.put(Key.ACCESS_TOKEN, token)
     }
 
@@ -30,7 +33,7 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         return sharedPreferencesManager.getString(Key.ACCESS_TOKEN)
     }
 
-    override fun setClient(client: String) {
+    override fun setClient(client: String?) {
         sharedPreferencesManager.put(Key.CLIENT, client)
     }
 
@@ -38,7 +41,7 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         return sharedPreferencesManager.getString(Key.CLIENT)
     }
 
-    override fun setUid(uid: String) {
+    override fun setUid(uid: String?) {
         sharedPreferencesManager.put(Key.UID, uid)
     }
 
@@ -46,7 +49,7 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         return sharedPreferencesManager.getString(Key.UID)
     }
 
-    override fun setAvatarUrl(url: String) {
+    override fun setAvatarUrl(url: String?) {
         sharedPreferencesManager.put(Key.AVATAR_URL, url)
     }
 
@@ -54,7 +57,7 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         return sharedPreferencesManager.getString(Key.AVATAR_URL)
     }
 
-    override fun setUserId(userId: String) {
+    override fun setUserId(userId: String?) {
         sharedPreferencesManager.put(Key.USER_ID, userId)
     }
 
@@ -62,7 +65,7 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         return sharedPreferencesManager.getString(Key.USER_ID)
     }
 
-    override fun setAccountType(accountType: String) {
+    override fun setAccountType(accountType: String?) {
         sharedPreferencesManager.put(Key.ACCOUNT_TYPE, accountType)
     }
 
@@ -76,5 +79,18 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
 
     override fun clearUserData() {
         sharedPreferencesManager.clearAllData()
+    }
+
+    override fun saveUserHeaderData(response: Response<DataObject<LoginResponse>>) {
+        setClient(response.headers().get("client"))
+        setUid(response.headers().get("uid"))
+        setAccessToken(response.headers().get("access-token"))
+        saveUserData(response.body())
+    }
+
+    override fun saveUserData(data: DataObject<LoginResponse>?) {
+        setAvatarUrl(data?.data?.attributes?.avatarThumb)
+        setUserId(data?.data?.id)
+        setAccountType(data?.data?.attributes?.accountType)
     }
 }

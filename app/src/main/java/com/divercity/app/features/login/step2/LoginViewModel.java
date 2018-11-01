@@ -31,22 +31,22 @@ public class LoginViewModel extends BaseViewModel {
 
     public void login(String password) {
         if (password != null && !password.equals("")) {
-            login.setValue(Resource.loading(null));
+            login.setValue(Resource.Companion.loading(null));
             LoginUseCase.Callback callback = new LoginUseCase.Callback() {
                 @Override
                 protected void onFail(String error) {
-                    login.setValue(Resource.error(error, null));
+                    login.setValue(Resource.Companion.error(error, null));
                 }
 
                 @Override
                 protected void onSuccess(LoginResponse response) {
-                    login.setValue(Resource.success(response));
+                    login.setValue(Resource.Companion.success(response));
                 }
             };
             getCompositeDisposable().add(callback);
             loginUseCase.execute(callback, LoginUseCase.Params.forLogin(userEmail, password));
         } else {
-            login.setValue(Resource.error(application.getResources().getString(R.string.insert_valid_password), null));
+            login.setValue(Resource.Companion.error(application.getResources().getString(R.string.insert_valid_password), null));
         }
     }
 

@@ -2,14 +2,13 @@ package com.divercity.app.features.onboarding.usecase;
 
 import com.divercity.app.core.base.UseCase;
 import com.divercity.app.data.entity.login.response.LoginResponse;
-import com.divercity.app.data.entity.profile.User;
+import com.divercity.app.data.entity.profile.profile.User;
 import com.divercity.app.repository.user.UserRepository;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 
 /**
  * Created by lucas on 18/10/2018.

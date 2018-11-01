@@ -22,8 +22,7 @@ class SplashFragment : BaseFragment() {
     companion object {
 
         fun newInstance(): SplashFragment {
-            val splashFragment = SplashFragment()
-            return splashFragment
+            return SplashFragment()
         }
     }
 
@@ -42,11 +41,14 @@ class SplashFragment : BaseFragment() {
 
     fun startTimer() {
         Handler().postDelayed({
+//            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
+            //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
             if (viewModel.isUserLogged)
-//                viewModel.fetchCurrentUserData()
-                navigator.navigateToHomeActivity(activity!!)
+                viewModel.fetchCurrentUserData()
+//                navigator.navigateToHomeActivity(activity!!)
             else
                 navigator.navigateToEnterEmailActivity(activity!!)
+            activity!!.finish()
         }, AppConstants.SPLASH_SCREEN_DELAY)
     }
 
@@ -70,16 +72,16 @@ class SplashFragment : BaseFragment() {
             navigator.navigateToHomeActivity(activity!!)
         })
 
-        viewModel.navigateToEnterEmail.observe(this, Observer {
-            navigator.navigateToEnterEmailActivity(activity!!)
+        viewModel.navigateToSelectUserType.observe(this, Observer {
+            navigator.navigateToSelectUserTypeActivity(activity!!)
         })
     }
 
     internal fun showErrorDialog() {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
-            "Ups!",
-            getString(R.string.error_connection),
-            getString(R.string.retry)
+                "Ups!",
+                getString(R.string.error_connection),
+                getString(R.string.retry)
         )
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserData() }
         customOneBtnDialogFragment.show(childFragmentManager, null)

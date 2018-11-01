@@ -8,7 +8,6 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.features.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_jobs.*
-import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
 /**
@@ -32,23 +31,25 @@ class JobsFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_jobs
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
-
-        viewpager.setAdapter(adapter)
+        viewpager.adapter = adapter
         tab_layout.setupWithViewPager(viewpager)
     }
 
     private fun setupToolbar() {
         (activity as HomeActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
-                it.setDisplayShowTitleEnabled(false)
+                it.setTitle(R.string.job_board)
+                it.setDisplayHomeAsUpEnabled(false)
             }
         }
-        include_toolbar.title.text = resources.getString(R.string.divercity)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

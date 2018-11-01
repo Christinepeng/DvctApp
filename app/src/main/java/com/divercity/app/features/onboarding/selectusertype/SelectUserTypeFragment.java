@@ -49,17 +49,18 @@ public class SelectUserTypeFragment extends BaseFragment {
 
     private void subscribeToLiveData() {
         viewModel.dataUpdateUser.observe(this, response -> {
-            switch (response.status) {
+            switch (response.getStatus()) {
                 case LOADING:
                     showProgress();
                     break;
                 case ERROR:
                     hideProgress();
-                    Toast.makeText(getActivity(), response.message, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
                     break;
                 case SUCCESS:
                     hideProgress();
-                    navigator.navigateProfilePromptActivity(getActivity());
+//                    navigator.navigateProfilePromptActivity(getActivity());
+                    navigator.navigateToHomeActivity(getActivity());
                     break;
             }
         });

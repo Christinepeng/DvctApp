@@ -7,9 +7,13 @@
 
     <include
         android:id="@+id/include_toolbar"
-        layout="@layout/view_toolbar" />
+        layout="@layout/view_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ScrollView
+        android:id="@+id/lay_root"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -17,45 +21,66 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <FrameLayout
+            <RelativeLayout
                 android:id="@+id/photo"
-                android:layout_width="85dp"
-                android:layout_height="85dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="25dp"
-                android:layout_marginEnd="8dp"
-                android:background="@drawable/circle_blue"
-                android:backgroundTint="@android:color/white">
+                android:layout_width="82dp"
+                android:layout_height="82dp"
+                android:layout_marginTop="24dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-                <TextView
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="85dp"
+                    android:layout_height="85dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/circle_blue"
+                    app:backgroundTint="@android:color/white"
+                    app:cardCornerRadius="42.5dp"
+                    app:cardElevation="0dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:fontFamily="@font/avenir_roman"
+                        android:text="Photo" />
+
+                </android.support.v7.widget.CardView>
+
+                <ImageView
+                    android:id="@+id/img_profile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:fontFamily="@font/avenir_roman"
-                    android:text="Photo" />
+                    android:scaleType="centerCrop" />
 
-                <ImageButton
+                <android.support.v7.widget.AppCompatImageButton
                     android:layout_width="29dp"
                     android:layout_height="29dp"
-                    android:layout_gravity="right|bottom"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentBottom="true"
                     android:background="@drawable/circle_blue"
-                    android:backgroundTint="#333241"
-                    android:src="@drawable/ic_add_24dp" />
+                    android:src="@drawable/ic_add_24dp"
+                    app:backgroundTint="#333241" />
 
-            </FrameLayout>
+            </RelativeLayout>
 
             <FrameLayout
                 android:id="@+id/lay_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="25dp"
-                android:background="@android:color/white">
+                android:background="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/photo">
 
                 <EditText
                     android:id="@+id/et_name"
@@ -71,16 +96,22 @@
 
             </FrameLayout>
 
-            <FrameLayout
+            <LinearLayout
                 android:id="@+id/lay_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white">
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lay_name">
 
                 <EditText
                     android:id="@+id/et_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/avenir_roman"
                     android:hint="@string/username"
@@ -89,13 +120,27 @@
                     android:textColor="#333241"
                     android:textSize="15sp" />
 
-            </FrameLayout>
+                <ImageView
+                    android:id="@+id/img_username_status"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="16dp"
+                    android:visibility="gone"
+                    tools:src="@drawable/icon_checkmark" />
+
+            </LinearLayout>
 
             <FrameLayout
                 android:id="@+id/lay_email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white">
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lay_username">
 
                 <EditText
                     android:id="@+id/et_email"
@@ -106,7 +151,6 @@
                     android:hint="@string/email"
                     android:inputType="textEmailAddress"
                     android:padding="24dp"
-                    android:text="@={viewModel.email}"
                     android:textColor="#333241"
                     android:textSize="15sp" />
 
@@ -116,7 +160,12 @@
                 android:id="@+id/lay_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white">
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lay_email">
 
                 <EditText
                     android:id="@+id/et_password"
@@ -133,13 +182,18 @@
             </FrameLayout>
 
             <FrameLayout
-                android:id="@+id/lay_confirmPassword"
+                android:id="@+id/lay_confirm_pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/white">
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:visibility="visible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lay_password">
 
                 <EditText
-                    android:id="@+id/et_confirmPassword"
+                    android:id="@+id/et_confirm_pass"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -153,30 +207,59 @@
             </FrameLayout>
 
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btn_create_account"
                 style="@style/AppText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="32dp"
-                android:layout_marginBottom="30dp"
+                android:layout_marginStart="30dp"
+                android:layout_marginTop="25dp"
+                android:layout_marginEnd="30dp"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/shape_backgrd_round_blue1"
                 android:fontFamily="@font/avenir_medium"
                 android:padding="18dp"
                 android:text="@string/create_account"
                 android:textAllCaps="false"
                 android:textColor="@android:color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lay_confirm_pass" />
 
-        </LinearLayout>
+            <FrameLayout
+                android:id="@+id/lay_warning_username"
+                android:layout_width="wrap_content"
+                android:layout_height="80dp"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="0dp"
+                android:background="@drawable/back_dialog"
+                android:maxWidth="270dp"
+                android:translationY="-13dp"
+                android:visibility="gone"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/lay_email"
+                tools:visibility="visible">
+
+                <TextView
+                    android:id="@+id/txt_username_warning"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="35dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_marginBottom="16dp"
+                    android:fontFamily="@font/avenir_roman"
+                    android:text="Unfortunately that username is taken :("
+                    android:textColor="#333241"
+                    android:textSize="13sp" />
+
+            </FrameLayout>
+
+        </android.support.constraint.ConstraintLayout>
 
     </ScrollView>
-
-    <include
-        android:id="@+id/include_loading"
-        layout="@layout/view_loading"
-        tools:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>

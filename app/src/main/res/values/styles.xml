@@ -36,4 +36,10 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="ToolbarTitleTextAppearance">
+        <item name="android:fontFamily">@font/avenir_medium</item>
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
 </resources>

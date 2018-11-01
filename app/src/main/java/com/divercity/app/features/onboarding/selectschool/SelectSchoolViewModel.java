@@ -11,7 +11,7 @@ import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.utils.Listing;
 import com.divercity.app.data.Resource;
 import com.divercity.app.data.entity.login.response.LoginResponse;
-import com.divercity.app.data.entity.profile.User;
+import com.divercity.app.data.entity.profile.profile.User;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.onboarding.selectschool.school.SchoolPaginatedRepositoryImpl;
@@ -61,31 +61,31 @@ public class SelectSchoolViewModel extends BaseViewModel {
     }
 
     public void fetchSchools(LifecycleOwner lifecycleOwner,  @Nullable String query){
-        if(pagedSchoolList != null) {
-            listingPaginatedSchool.getNetworkState().removeObservers(lifecycleOwner);
-            listingPaginatedSchool.getRefreshState().removeObservers(lifecycleOwner);
-            pagedSchoolList.removeObservers(lifecycleOwner);
-        }
+//        if(pagedSchoolList != null) {
+//            listingPaginatedSchool.getNetworkState().removeObservers(lifecycleOwner);
+//            listingPaginatedSchool.getRefreshState().removeObservers(lifecycleOwner);
+//            pagedSchoolList.removeObservers(lifecycleOwner);
+//        }
         listingPaginatedSchool = repository.fetchData(query);
         pagedSchoolList = listingPaginatedSchool.getPagedList();
     }
 
     public void updateUserProfile(SchoolResponse schoolResponse){
-        updateUserProfileResponse.postValue(Resource.loading(null));
+        updateUserProfileResponse.postValue(Resource.Companion.loading(null));
         DisposableObserverWrapper callback = new DisposableObserverWrapper<LoginResponse>() {
             @Override
             protected void onFail(String error) {
-                updateUserProfileResponse.postValue(Resource.error(error,null));
+                updateUserProfileResponse.postValue(Resource.Companion.error(error,null));
             }
 
             @Override
             protected void onHttpException(JsonElement error) {
-                updateUserProfileResponse.postValue(Resource.error(error.toString(),null));
+                updateUserProfileResponse.postValue(Resource.Companion.error(error.toString(),null));
             }
 
             @Override
             protected void onSuccess(LoginResponse o) {
-                updateUserProfileResponse.postValue(Resource.success(o));
+                updateUserProfileResponse.postValue(Resource.Companion.success(o));
             }
         };
         getCompositeDisposable().add(callback);

@@ -71,11 +71,11 @@
             </RelativeLayout>
 
             <ImageButton
-                android:id="@+id/btnTwitter"
+                android:id="@+id/btn_linkedin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@null"
-                android:src="@drawable/btn_twitter"
+                android:src="@drawable/btn_linkedin"
                 app:layout_constraintBottom_toBottomOf="@+id/btnFacebook"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -89,7 +89,7 @@
                 android:layout_marginEnd="15dp"
                 android:background="@null"
                 android:src="@drawable/btn_facebook"
-                app:layout_constraintEnd_toStartOf="@+id/btnTwitter"
+                app:layout_constraintEnd_toStartOf="@+id/btn_linkedin"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintHorizontal_chainStyle="packed"
                 app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +103,7 @@
                 android:layout_marginBottom="24dp"
                 android:background="@android:color/white"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/btnTwitter">
+                app:layout_constraintTop_toBottomOf="@+id/btn_linkedin">
 
                 <EditText
                     android:id="@+id/user_email"

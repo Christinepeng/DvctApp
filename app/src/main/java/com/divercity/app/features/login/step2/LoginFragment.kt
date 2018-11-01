@@ -24,7 +24,7 @@ class LoginFragment : BaseFragment() {
     companion object {
         private const val PARAM_EMAIL = "paramEmail"
 
-        fun newInstance(email : String): LoginFragment {
+        fun newInstance(email: String): LoginFragment {
             val fragment = LoginFragment()
             val arguments = Bundle()
             arguments.putString(PARAM_EMAIL, email)
@@ -55,11 +55,10 @@ class LoginFragment : BaseFragment() {
         (activity as LoginActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
-                it.setDisplayShowTitleEnabled(false)
-                it.setDisplayHomeAsUpEnabled(true)
+                it.setTitle(R.string.login)
+                it.setDisplayHomeAsUpEnabled (true)
             }
         }
-        include_toolbar.title.text = resources.getString(R.string.login)
     }
 
     fun subscribeToLiveData() {
@@ -81,7 +80,7 @@ class LoginFragment : BaseFragment() {
     }
 
     fun showSnackbar(message: String?) {
-        activity?.run{
+        activity?.run {
             Snackbar.make(
                     findViewById(android.R.id.content),
                     message ?: "Error",
@@ -92,7 +91,7 @@ class LoginFragment : BaseFragment() {
 
     private fun setupEvents() {
         txt_forgot_password.setOnClickListener { showToast() }
-        btn_login.setOnClickListener {
+        btn_create_account.setOnClickListener {
             viewModel.login(et_password.text.toString())
         }
     }

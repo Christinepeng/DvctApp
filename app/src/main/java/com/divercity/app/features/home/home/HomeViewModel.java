@@ -61,7 +61,7 @@ public class HomeViewModel extends BaseViewModel {
         DisposableObserver<List<StoriesFeaturedResponse>> disposable = new DisposableObserver<List<StoriesFeaturedResponse>>() {
             @Override
             public void onNext(List<StoriesFeaturedResponse> storiesFeaturedResponses) {
-                featuredList.postValue(Resource.success(storiesFeaturedResponses));
+                featuredList.postValue(Resource.Companion.success(storiesFeaturedResponses));
             }
 
             @Override

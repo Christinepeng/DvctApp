@@ -5,6 +5,7 @@ import android.support.v4.app.FragmentActivity
 import com.divercity.app.R
 import com.divercity.app.core.utils.OnboardingProgression
 import com.divercity.app.features.home.HomeActivity
+import com.divercity.app.features.linkedin.LinkedinActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
@@ -38,7 +39,9 @@ class Navigator @Inject constructor() {
     fun navigateToHomeActivity(activity: FragmentActivity, boolean: Boolean) {
         val intent = HomeActivity.getCallingIntent(activity, boolean)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+//        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         activity.startActivity(intent)
+//        activity.overridePendingTransition(0,0)
     }
 
     fun navigateToEnterEmailActivity(activity: FragmentActivity) {
@@ -47,7 +50,7 @@ class Navigator @Inject constructor() {
         activity.startActivity(intent)
     }
 
-    fun navigateSignUpActivity(activity: FragmentActivity, email: String) {
+    fun navigateToSignUpActivity(activity: FragmentActivity, email: String) {
         activity.startActivity(SignUpActivity.getCallingIntent(activity, email))
     }
 
@@ -113,6 +116,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToSelectMajorActivity(activity: FragmentActivity, progress: Int) {
         activity.startActivity(SelectMajorActivity.getCallingIntent(activity, progress))
+    }
+
+    fun navigateToLinkedinActivity(activity: FragmentActivity) {
+        activity.startActivity(LinkedinActivity.getCallingIntent(activity))
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,

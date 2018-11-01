@@ -25,4 +25,8 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
 
     protected abstract fun fragment(): BaseFragment
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return super.onSupportNavigateUp()
+    }
 }

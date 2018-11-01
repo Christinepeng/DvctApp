@@ -1,8 +1,10 @@
 package com.divercity.app.repository.user;
 
+import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.login.response.LoginResponse;
-import com.divercity.app.data.entity.profile.User;
-import com.divercity.app.data.entity.profile.UserProfileBody;
+import com.divercity.app.data.entity.profile.picture.ProfilePictureBody;
+import com.divercity.app.data.entity.profile.profile.User;
+import com.divercity.app.data.entity.profile.profile.UserProfileBody;
 import com.divercity.app.data.networking.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
@@ -32,13 +34,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<LoginResponse> fetchRemoteUserData(String userId) {
         return userService.fetchUserData(userId)
-                .map(loginResponseDataObject -> loginResponseDataObject.getData())
-                .doOnNext(response -> {
-                    if (response != null) {
-                        loggedUserRepository.setAvatarUrl(response.getAttributes().getAvatarThumb());
-                        loggedUserRepository.setUserId(response.getId());
-                        loggedUserRepository.setAccountType(response.getAttributes().getAccountType());
-                    }
+                .map(loginResponseDataObject -> {
+                    if (loginResponseDataObject != null)
+                        loggedUserRepository.saveUserData(loginResponseDataObject);
+                    return loginResponseDataObject.getData();
                 });
     }
 
@@ -48,23 +47,31 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<LoginResponse> updateUserProfile(User user) {
-        UserProfileBody userProfileBody = new UserProfileBody();
-        userProfileBody.setUser(user);
-        return userService.updateUserProfile(loggedUserRepository.getUserId(), userProfileBody)
-                .map(response -> {
-                    if (response != null) {
-                        loggedUserRepository.setAvatarUrl(response.getData().getAttributes().getAvatarThumb());
-                        loggedUserRepository.setUserId(response.getData().getId());
-                        loggedUserRepository.setAccountType(response.getData().getAttributes().getAccountType());
-                    }
-                    return response.getData();
+    public Observable<LoginResponse> uploadUserPhoto(ProfilePictureBody body) {
+        return userService.uploadUserPhoto(body).map(loginResponseDataObject -> {
+                    if (loginResponseDataObject != null)
+                        loggedUserRepository.saveUserData(loginResponseDataObject);
+                    return loginResponseDataObject.getData();
                 }
         );
     }
 
     @Override
-    public void setAccessToken(@NotNull String token) {
+    public Observable<LoginResponse> updateUserProfile(User user) {
+        UserProfileBody userProfileBody = new UserProfileBody();
+        userProfileBody.setUser(user);
+        return userService.updateUserProfile(loggedUserRepository.getUserId(), userProfileBody)
+                .map(response -> {
+                            if (response != null) {
+                                loggedUserRepository.saveUserData(response);
+                            }
+                            return response.getData();
+                        }
+                );
+    }
+
+    @Override
+    public void setAccessToken(@Nullable String token) {
         loggedUserRepository.setAccessToken(token);
     }
 
@@ -75,7 +82,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setClient(@NotNull String client) {
+    public void setClient(@Nullable String client) {
         loggedUserRepository.setClient(client);
     }
 
@@ -86,7 +93,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setUid(@NotNull String uid) {
+    public void setUid(@Nullable String uid) {
         loggedUserRepository.setUid(uid);
     }
 
@@ -97,7 +104,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setAvatarUrl(@NotNull String url) {
+    public void setAvatarUrl(@Nullable String url) {
         loggedUserRepository.setAvatarUrl(url);
     }
 
@@ -108,7 +115,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setUserId(@NotNull String userId) {
+    public void setUserId(@Nullable String userId) {
         loggedUserRepository.setUserId(userId);
     }
 
@@ -119,7 +126,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setAccountType(@NotNull String accountType) {
+    public void setAccountType(@Nullable String accountType) {
         loggedUserRepository.setAccountType(accountType);
     }
 
@@ -137,5 +144,15 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void clearUserData() {
         loggedUserRepository.clearUserData();
+    }
+
+    @Override
+    public void saveUserHeaderData(@NotNull Response<DataObject<LoginResponse>> response) {
+        loggedUserRepository.saveUserHeaderData(response);
+    }
+
+    @Override
+    public void saveUserData(@Nullable DataObject<LoginResponse> data) {
+        loggedUserRepository.saveUserData(data);
     }
 }

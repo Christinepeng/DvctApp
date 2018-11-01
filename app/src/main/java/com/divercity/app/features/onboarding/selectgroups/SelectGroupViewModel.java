@@ -73,21 +73,21 @@ public class SelectGroupViewModel extends BaseViewModel {
     }
 
     public void joinGroup(GroupResponse group){
-        joinGroupResponse.postValue(Resource.loading(null));
+        joinGroupResponse.postValue(Resource.Companion.loading(null));
         DisposableObserverWrapper callback = new DisposableObserverWrapper<GroupResponse>() {
             @Override
             protected void onFail(String error) {
-                joinGroupResponse.postValue(Resource.error(error,null));
+                joinGroupResponse.postValue(Resource.Companion.error(error,null));
             }
 
             @Override
             protected void onHttpException(JsonElement error) {
-                joinGroupResponse.postValue(Resource.error(error.toString(),null));
+                joinGroupResponse.postValue(Resource.Companion.error(error.toString(),null));
             }
 
             @Override
             protected void onSuccess(GroupResponse o) {
-                joinGroupResponse.postValue(Resource.success(o));
+                joinGroupResponse.postValue(Resource.Companion.success(o));
             }
         };
         getCompositeDisposable().add(callback);

@@ -18,7 +18,6 @@ import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.home.home.featured.FeaturedAdapter
 import com.divercity.app.features.home.home.feed.adapter.FeedAdapter
 import kotlinx.android.synthetic.main.fragment_home.*
-import kotlinx.android.synthetic.main.view_toolbar.view.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -53,6 +52,7 @@ class HomeFragment : BaseFragment(), RetryCallback {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,23 +65,19 @@ class HomeFragment : BaseFragment(), RetryCallback {
     }
 
     private fun setupToolbar() {
-        include_toolbar.title.text = resources.getString(R.string.divercity)
-        include_toolbar.icon.visibility = View.VISIBLE
-
         (activity as HomeActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
-                it.setDisplayShowTitleEnabled(false)
+                it.setTitle(R.string.divercity)
+                it.setDisplayHomeAsUpEnabled(true)
+                it.setHomeAsUpIndicator(R.drawable.icon_inbox)
             }
         }
-
-        setHasOptionsMenu(true)
     }
 
     private fun initAdapters() {
         feedAdapter.setRetryCallback(this)
-        list_main.setAdapter(feedAdapter)
-        list_featured.setAdapter(featuredAdapter)
+        list_main.adapter = feedAdapter
+        list_featured.adapter = featuredAdapter
     }
 
     private fun subscribeToLiveData() {
@@ -160,9 +156,11 @@ class HomeFragment : BaseFragment(), RetryCallback {
                 viewModel.refresh()
             }
 
-            setColorSchemeColors(ContextCompat.getColor(context, R.color.colorPrimaryDark),
+            setColorSchemeColors(
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
                     ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark))
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
         }
     }
 
@@ -172,22 +170,21 @@ class HomeFragment : BaseFragment(), RetryCallback {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
+        return when (item.itemId) {
             R.id.logout -> {
                 viewModel.clearUserData()
                 navigator.navigateToEnterEmailActivity(activity!!)
-                return true
+                true
             }
             R.id.action_search -> {
                 showToast()
-                return true
+                true
             }
-            else -> return super.onOptionsItemSelected(item)
+            else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun setupEvents() {
-        include_toolbar.icon.setOnClickListener { showToast() }
         btn_fab.setOnClickListener { showToast() }
         btn_create_group.setOnClickListener { showToast() }
         btn_explore_groups.setOnClickListener { showToast() }

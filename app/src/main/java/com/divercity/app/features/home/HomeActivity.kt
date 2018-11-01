@@ -1,11 +1,19 @@
 package com.divercity.app.features.home
 
+import android.arch.lifecycle.ViewModelProvider
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
 import android.support.design.widget.BottomNavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.content.res.ResourcesCompat
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 import com.divercity.app.R
 import com.divercity.app.features.dialogs.CompletedProfileDialogFragment
 import com.divercity.app.features.home.groups.GroupsFragment
@@ -15,8 +23,15 @@ import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_home.*
+import kotlinx.android.synthetic.main.view_toolbar.view.*
+import javax.inject.Inject
 
 class HomeActivity : DaggerAppCompatActivity() {
+
+    @Inject
+    lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    lateinit var viewModel : HomeActivityViewModel
 
     companion object {
         private const val INTENT_EXTRA_PARAM_SHOW_DIALOG_PROFILE = "showDialogProfile"
@@ -30,10 +45,12 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(HomeActivityViewModel::class.java)
         setContentView(R.layout.activity_home)
         showDialogProfileComplete(intent.getBooleanExtra(INTENT_EXTRA_PARAM_SHOW_DIALOG_PROFILE, false))
         setupBottomNavigationView()
         savedInstanceState ?: selectItem(0)
+        setSupportActionBar(include_toolbar.toolbar)
     }
 
     /**
@@ -54,16 +71,16 @@ class HomeActivity : DaggerAppCompatActivity() {
     }
 
     private val myOnNavigationItemSelectedListener =
-            BottomNavigationView.OnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.menu_item_home -> selectItem(0)
-                    R.id.menu_item_groups -> selectItem(1)
-                    R.id.menu_item_jobs -> selectItem(2)
-                    R.id.menu_item_activity -> selectItem(3)
-                    R.id.menu_item_profile -> selectItem(4)
-                }
-                return@OnNavigationItemSelectedListener true
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_item_home -> selectItem(0)
+                R.id.menu_item_groups -> selectItem(1)
+                R.id.menu_item_jobs -> selectItem(2)
+                R.id.menu_item_activity -> selectItem(3)
+                R.id.menu_item_profile -> selectItem(4)
             }
+            return@OnNavigationItemSelectedListener true
+        }
 
     fun showDialogProfileComplete(boolean: Boolean) {
         if (boolean) {
@@ -89,24 +106,24 @@ class HomeActivity : DaggerAppCompatActivity() {
             onNavigationItemSelectedListener = myOnNavigationItemSelectedListener
         }
 
-//        Glide
-//                .with(this)
-//                .load("https://apinew.pincapp.com/images/default_avatar.png")
-//                .into(object : SimpleTarget<Drawable>() {
-//                    fun onResourceReady(@NonNull resource: Drawable, @Nullable transition: Transition<in Drawable>) {
-//                        val states = StateListDrawable()
-//                        states.addState(intArrayOf(android.R.attr.state_pressed), resource)
-//                        states.addState(intArrayOf(android.R.attr.state_checked), resource)
-//                        states.addState(intArrayOf(), resource)
-//                        val menu = binding.bottomNavigationView.getMenu()
-//                        val te = menu.findItem(R.id.notificationsFragment)
-//                        te.setIcon(states)
-//                        binding.imgTest.setImageDrawable(resource)
-//                    }
-//                })
-
+        Glide
+            .with(this)
+            .load(viewModel.getProfilePictureUrl())
+            .apply(RequestOptions().circleCrop())
+            .into(object : SimpleTarget<Drawable>() {
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
+                    val states = StateListDrawable()
+                    states.addState(intArrayOf(android.R.attr.state_pressed), resource)
+                    states.addState(intArrayOf(android.R.attr.state_checked), resource)
+                    states.addState(intArrayOf(), resource)
+                    val menu = bottom_nav_view.menu
+                    val te = menu.findItem(R.id.menu_item_profile)
+                    te.icon = states
+                }
+            })
     }
-
-
 
 }

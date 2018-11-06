@@ -3,10 +3,17 @@ package com.divercity.app.features.home.jobs.jobs
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
+import android.support.v7.widget.SearchView
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
+import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.JobResponse
 import com.divercity.app.features.home.jobs.jobs.adapter.JobsAdapter
 import com.divercity.app.features.home.jobs.jobs.adapter.JobsViewHolder
@@ -24,6 +31,9 @@ class JobsListFragment : BaseFragment(), RetryCallback {
     @Inject
     lateinit var adapter: JobsAdapter
 
+    private var isListRefreshing = false
+    private var positionSaveUnsavedClicked: Int = 0
+
     companion object {
 
         fun newInstance(): JobsListFragment {
@@ -38,37 +48,42 @@ class JobsListFragment : BaseFragment(), RetryCallback {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(JobsListViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initSwipeToRefresh()
+        initAdapter()
+        subscribeToPaginatedLiveData()
+        subscribeJobLiveData()
+    }
+
+    private fun initAdapter() {
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
-        subscribeToPaginatedLiveData()
-//        subscribeToSchoolLiveData()
-//        setupHeader()
     }
 
-    private fun subscribeToSchoolLiveData() {
-//        viewModel.updateUserProfileResponse.observe(this, Observer { school ->
-//            when (school?.status) {
-//                Status.LOADING -> showProgress()
-//
-//                Status.ERROR -> {
-//                    hideProgress()
-//                    Toast.makeText(activity, school.message, Toast.LENGTH_SHORT).show()
-//                }
-//                Status.SUCCESS -> {
-//                    hideProgress()
-//                    navigator.navigateToNextOnboarding(activity!!,
-//                            viewModel.accountType,
-//                            currentProgress,
-//                            true
-//                    )
-//                }
-//            }
-//        })
+    private fun subscribeJobLiveData() {
+        viewModel.jobResponse.observe(this, Observer { job ->
+            when (job?.status) {
+                Status.LOADING -> {
+//                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    adapter.currentList?.get(positionSaveUnsavedClicked)?.attributes?.isBookmarkedByCurrent =
+                            job.data?.attributes?.isBookmarkedByCurrent
+                    adapter.notifyItemChanged(positionSaveUnsavedClicked)
+                }
+            }
+        })
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -77,18 +92,106 @@ class JobsListFragment : BaseFragment(), RetryCallback {
         })
 
         viewModel.networkState().observe(this, Observer {
-            adapter.setNetworkState(it!!)
+            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+                adapter.setNetworkState(it)
         })
+
+        viewModel.refreshState().observe(this, Observer { networkState ->
+
+            adapter.currentList?.let { pagedList ->
+                if (networkState?.status != Status.LOADING)
+                    isListRefreshing = false
+
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
+                    txt_no_results.visibility = View.VISIBLE
+                else
+                    txt_no_results.visibility = View.GONE
+
+                swipe_list_main.isRefreshing = isListRefreshing
+            }
+
+            if (!isListRefreshing)
+                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
+        })
+    }
+
+    private fun initSwipeToRefresh() {
+
+        swipe_list_main.apply {
+            setOnRefreshListener {
+                isListRefreshing = true
+                viewModel.refresh()
+            }
+            isEnabled = false
+            setColorSchemeColors(
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                    ContextCompat.getColor(context, R.color.colorPrimary),
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
+        }
     }
 
     override fun retry() {
         viewModel.retry()
     }
 
-    private val listener : JobsViewHolder.Listener = object: JobsViewHolder.Listener {
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_jobs, menu)
+        val searchItem: MenuItem = menu.findItem(R.id.action_search)
+        val searchView: SearchView = searchItem.actionView as SearchView
+        searchView.queryHint = getString(R.string.search)
 
-        override fun onSaveClick(position: Int, job: JobResponse) {
+        viewModel.strSearchQuery?.let {
+            if (it != "") {
+                searchItem.expandActionView()
+                searchView.setQuery(it, true)
+                searchView.clearFocus()
+            }
+        }
 
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                viewModel.strSearchQuery = query ?: ""
+                viewModel.fetchJobs(query)
+                subscribeToPaginatedLiveData()
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+                if (viewModel.strSearchQuery != "") {
+                    viewModel.fetchJobs(null)
+                    viewModel.strSearchQuery = ""
+                    subscribeToPaginatedLiveData()
+                }
+                return true
+            }
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    private val listener: JobsViewHolder.Listener = object : JobsViewHolder.Listener {
+
+        override fun onSaveUnsavedClick(position: Int, job: JobResponse) {
+            positionSaveUnsavedClicked = position
+            job.attributes?.isBookmarkedByCurrent?.let {
+                if (it)
+                    viewModel.removeSavedJob(job)
+                else
+                    viewModel.saveJob(job)
+            }
         }
 
         override fun onJobClick(job: JobResponse) {

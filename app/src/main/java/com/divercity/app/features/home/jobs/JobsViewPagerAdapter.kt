@@ -9,7 +9,7 @@ import com.divercity.app.R
 import com.divercity.app.features.home.jobs.applications.JobsApplicationsFragment
 import com.divercity.app.features.home.jobs.jobs.JobsListFragment
 import com.divercity.app.features.home.jobs.mypostings.MyPostingsFragment
-import com.divercity.app.features.home.jobs.saved.JobsSavedFragment
+import com.divercity.app.features.home.jobs.saved.SavedJobsFragment
 import com.divercity.app.repository.user.UserRepository
 
 import javax.inject.Inject
@@ -19,9 +19,11 @@ import javax.inject.Inject
  */
 
 class JobsViewPagerAdapter
-@Inject constructor(val context: Context,
-                    fm: FragmentManager,
-                    val userRepository: UserRepository) : FragmentStatePagerAdapter(fm) {
+@Inject constructor(
+        val context: Context,
+        fm: FragmentManager,
+        val userRepository: UserRepository
+) : FragmentStatePagerAdapter(fm) {
 
     private val PAGE_COUNT = 3
 
@@ -29,29 +31,32 @@ class JobsViewPagerAdapter
     private val tabTitlesRecruiter: Array<String> = arrayOf(
             context.getString(R.string.applications),
             context.getString(R.string.my_postings),
-            context.getString(R.string.jobs))
+            context.getString(R.string.jobs)
+    )
 
 
     // Tab titles
     private val tabTitlesJobSeeker: Array<String> = arrayOf(
             context.getString(R.string.jobs),
             context.getString(R.string.applications),
-            context.getString(R.string.saved))
+            context.getString(R.string.saved)
+    )
 
     override fun getItem(position: Int): Fragment {
-        if (userRepository.getAccountType() != null &&
+        return if (userRepository.getAccountType() != null &&
                 (userRepository.getAccountType().equals(context.getString(R.string.job_seeker_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.student_id))))
-            return getFragmentsSeeker(position)
+                        userRepository.getAccountType().equals(context.getString(R.string.student_id)))
+        )
+            getFragmentsSeeker(position)
         else
-            return getFragmentsRecruiter(position)
+            getFragmentsRecruiter(position)
     }
 
     private fun getFragmentsSeeker(position: Int): Fragment {
         return when (position) {
             0 -> JobsListFragment.newInstance()
             1 -> JobsApplicationsFragment.newInstance()
-            else -> JobsSavedFragment.newInstance()
+            else -> SavedJobsFragment.newInstance()
         }
     }
 
@@ -67,11 +72,13 @@ class JobsViewPagerAdapter
 
 
     override fun getPageTitle(position: Int): CharSequence? {
-        if (userRepository.getAccountType() != null &&
+        return if (userRepository.getAccountType() != null &&
                 (userRepository.getAccountType().equals(context.getString(R.string.job_seeker_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.student_id))))
-            return tabTitlesJobSeeker[position]
+                        userRepository.getAccountType().equals(context.getString(R.string.student_id))) ||
+                userRepository.getAccountType().equals(context.getString(R.string.professional_id))
+        )
+            tabTitlesJobSeeker[position]
         else
-            return tabTitlesRecruiter[position]
+            tabTitlesRecruiter[position]
     }
 }

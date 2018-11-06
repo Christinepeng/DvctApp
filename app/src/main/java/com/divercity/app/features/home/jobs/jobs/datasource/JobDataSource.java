@@ -3,6 +3,7 @@ package com.divercity.app.features.home.jobs.jobs.datasource;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
@@ -26,15 +27,19 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
 
     private FetchJobsUseCase fetchJobsUseCase;
     private CompositeDisposable compositeDisposable;
+    private String query;
+
     /**
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
 
     public JobDataSource(CompositeDisposable compositeDisposable,
-                         FetchJobsUseCase fetchJobsUseCase) {
+                         FetchJobsUseCase fetchJobsUseCase,
+                         @Nullable String query) {
         this.compositeDisposable = compositeDisposable;
         this.fetchJobsUseCase = fetchJobsUseCase;
+        this.query = query;
     }
 
     public void retry() {
@@ -87,7 +92,7 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
             }
         };
         compositeDisposable.add(disposableObserver);
-        fetchJobsUseCase.execute(disposableObserver, FetchJobsUseCase.Params.forJobs(0, params.requestedLoadSize));
+        fetchJobsUseCase.execute(disposableObserver, FetchJobsUseCase.Params.Companion.forJobs(0, params.requestedLoadSize, query));
     }
 
     @Override
@@ -125,7 +130,7 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
         };
 
         compositeDisposable.add(disposableObserver);
-        fetchJobsUseCase.execute(disposableObserver, FetchJobsUseCase.Params.forJobs(params.key.intValue(), params.requestedLoadSize));
+        fetchJobsUseCase.execute(disposableObserver, FetchJobsUseCase.Params.Companion.forJobs(params.key.intValue(), params.requestedLoadSize, query));
     }
 
     @NonNull

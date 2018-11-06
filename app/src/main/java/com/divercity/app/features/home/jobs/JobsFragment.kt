@@ -1,8 +1,6 @@
 package com.divercity.app.features.home.jobs
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
@@ -33,14 +31,15 @@ class JobsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
-        viewpager.adapter = adapter
-        tab_layout.setupWithViewPager(viewpager)
+        setupAdapterViewPager()
+        btn_add.setOnClickListener {
+            navigator.navigateToJobPostingActivity(activity!!)
+        }
     }
 
     private fun setupToolbar() {
@@ -52,8 +51,8 @@ class JobsFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_jobs, menu)
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun setupAdapterViewPager(){
+        viewpager.adapter = adapter
+        tab_layout.setupWithViewPager(viewpager)
     }
 }

@@ -1,5 +1,6 @@
 package com.divercity.app.core.base;
 
+import android.support.annotation.Nullable;
 import com.divercity.app.core.utils.Listing;
 
 /**
@@ -8,7 +9,7 @@ import com.divercity.app.core.utils.Listing;
 
 public interface PaginatedQueryRepository<T> {
 
-    Listing<T> fetchData(String query);
+    Listing<T> fetchData(@Nullable String query);
 
     void retry();
 

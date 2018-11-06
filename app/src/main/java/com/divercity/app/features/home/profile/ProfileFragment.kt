@@ -2,6 +2,8 @@ package com.divercity.app.features.home.profile
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuInflater
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.features.home.HomeActivity
@@ -27,6 +29,7 @@ class ProfileFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
         setupToolbar()
 //        AndroidSupportInjection.inject(this)
 //        viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
@@ -40,6 +43,11 @@ class ProfileFragment : BaseFragment() {
                 it.setDisplayHomeAsUpEnabled(false)
             }
         }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+        menu?.clear()
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

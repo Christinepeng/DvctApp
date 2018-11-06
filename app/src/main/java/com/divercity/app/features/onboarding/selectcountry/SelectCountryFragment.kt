@@ -56,7 +56,7 @@ class SelectCountryFragment : BaseFragment() {
 //                if (toSearch == "")
 //                    toSearch = null
 //
-//                viewModel.fetchIndustries(this@SelectSchoolFragment, toSearch)
+//                viewModel.fetchIndustries(this@SelectLocationFragment, toSearch)
 //                subscribeToPaginatedLiveData()
 //                true
 //            } else

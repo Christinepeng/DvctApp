@@ -3,7 +3,7 @@ package com.divercity.app.features.onboarding.selectgroups.usecase;
 import com.divercity.app.core.base.UseCase;
 import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.repository.onboarding.OnboardingRepository;
+import com.divercity.app.repository.data.DataRepository;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -17,12 +17,12 @@ import io.reactivex.Scheduler;
 
 public class FetchGroupsUseCase extends UseCase<DataArray<GroupResponse>, FetchGroupsUseCase.Params> {
 
-    private OnboardingRepository repository;
+    private DataRepository repository;
 
     @Inject
     public FetchGroupsUseCase(@Named("executor_thread") Scheduler executorThread,
                               @Named("ui_thread") Scheduler uiThread,
-                              OnboardingRepository repository) {
+                              DataRepository repository) {
         super(executorThread, uiThread);
         this.repository = repository;
     }

@@ -27,6 +27,7 @@ public class LoginViewModel extends BaseViewModel {
     LoginViewModel(Application application,
                    LoginUseCase loginUseCase) {
         this.loginUseCase = loginUseCase;
+        this.application = application;
     }
 
     public void login(String password) {

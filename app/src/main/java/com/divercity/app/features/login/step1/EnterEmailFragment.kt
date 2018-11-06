@@ -32,7 +32,7 @@ class EnterEmailFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): EnterEmailFragment = EnterEmailFragment()
+        fun newInstance() = EnterEmailFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_enter_email

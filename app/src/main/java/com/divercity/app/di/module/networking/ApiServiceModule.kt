@@ -34,8 +34,8 @@ class ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideOnboardingService(@Named("auth") retrofit: Retrofit): OnboardingService {
-        return retrofit.create(OnboardingService::class.java)
+    fun provideOnboardingService(@Named("auth") retrofit: Retrofit): DataService {
+        return retrofit.create(DataService::class.java)
     }
 
     @Provides

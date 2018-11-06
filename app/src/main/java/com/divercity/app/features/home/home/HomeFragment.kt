@@ -165,8 +165,9 @@ class HomeFragment : BaseFragment(), RetryCallback {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
+        menu.clear()
         inflater.inflate(R.menu.menu_home_fragment_toolbar, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -191,6 +192,6 @@ class HomeFragment : BaseFragment(), RetryCallback {
     }
 
     private fun showToast() {
-        Toast.makeText(getActivity(), "Coming soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(activity!!, "Coming soon", Toast.LENGTH_SHORT).show()
     }
 }

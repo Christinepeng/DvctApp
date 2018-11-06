@@ -6,8 +6,8 @@ import com.divercity.app.repository.feed.FeedRepository
 import com.divercity.app.repository.feed.FeedRepositoryImpl
 import com.divercity.app.repository.job.JobRepository
 import com.divercity.app.repository.job.JobRepositoryImpl
-import com.divercity.app.repository.onboarding.OnboardingRepository
-import com.divercity.app.repository.onboarding.OnboardingRepositoryImpl
+import com.divercity.app.repository.data.DataRepository
+import com.divercity.app.repository.data.DataRepositoryImpl
 import com.divercity.app.repository.registerlogin.RegisterLoginRepository
 import com.divercity.app.repository.registerlogin.RegisterLoginRepositoryImpl
 import com.divercity.app.repository.user.UserRepository
@@ -32,7 +32,7 @@ abstract class AppBindsModule {
     abstract fun bindFeedRepository(repository: FeedRepositoryImpl): FeedRepository
 
     @Binds
-    abstract fun bindOnboardingRepository(repository: OnboardingRepositoryImpl): OnboardingRepository
+    abstract fun bindOnboardingRepository(repository: DataRepositoryImpl): DataRepository
 
     @Binds
     abstract fun bindJobRepository(repository: JobRepositoryImpl): JobRepository

@@ -1,6 +1,7 @@
 package com.divercity.app.repository.job
 
 import com.divercity.app.data.entity.base.DataArray
+import com.divercity.app.data.entity.base.IncludedArray
 import com.divercity.app.data.entity.job.JobResponse
 import com.divercity.app.data.networking.services.JobService
 import io.reactivex.Observable
@@ -13,7 +14,23 @@ import javax.inject.Inject
 class JobRepositoryImpl
 @Inject constructor(private val jobService: JobService) : JobRepository {
 
-    override fun fetchJobs(page: Int, size: Int): Observable<DataArray<JobResponse>> {
-        return jobService.fetchJobs(page, size)
+    override fun fetchSavedJobs(page: Int, size: Int, query: String?): Observable<IncludedArray<JobResponse>> {
+        return jobService.fetchSavedJobs(page, size, query)
+    }
+
+    override fun saveJob(jobId: String): Observable<JobResponse> {
+        return jobService.saveJob(jobId).map {
+            it.data
+        }
+    }
+
+    override fun removeSavedJob(jobId: String): Observable<JobResponse> {
+        return jobService.removeSavedJob(jobId).map {
+            it.data
+        }
+    }
+
+    override fun fetchJobs(page: Int, size: Int, query : String?): Observable<DataArray<JobResponse>> {
+        return jobService.fetchJobs(page, size, query)
     }
 }

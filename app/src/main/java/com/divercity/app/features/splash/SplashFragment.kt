@@ -41,14 +41,15 @@ class SplashFragment : BaseFragment() {
 
     fun startTimer() {
         Handler().postDelayed({
-//            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
+            //            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
             //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
             if (viewModel.isUserLogged)
                 viewModel.fetchCurrentUserData()
 //                navigator.navigateToHomeActivity(activity!!)
-            else
+            else {
                 navigator.navigateToEnterEmailActivity(activity!!)
-            activity!!.finish()
+                activity!!.finish()
+            }
         }, AppConstants.SPLASH_SCREEN_DELAY)
     }
 
@@ -70,14 +71,16 @@ class SplashFragment : BaseFragment() {
 
         viewModel.navigateToHome.observe(this, Observer {
             navigator.navigateToHomeActivity(activity!!)
+            activity!!.finish()
         })
 
         viewModel.navigateToSelectUserType.observe(this, Observer {
             navigator.navigateToSelectUserTypeActivity(activity!!)
+            activity!!.finish()
         })
     }
 
-    internal fun showErrorDialog() {
+    private fun showErrorDialog() {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
                 "Ups!",
                 getString(R.string.error_connection),

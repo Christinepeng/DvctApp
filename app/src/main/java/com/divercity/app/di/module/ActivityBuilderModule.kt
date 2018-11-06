@@ -1,7 +1,9 @@
 package com.divercity.app.di.module
 
 import com.divercity.app.features.home.HomeActivity
+import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
+import com.divercity.app.features.location.SelectLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
@@ -85,4 +87,10 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindLinkedinActivity(): LinkedinActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindJobPostingActivity(): JobPostingActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindSelectLocationActivity(): SelectLocationActivity
 }

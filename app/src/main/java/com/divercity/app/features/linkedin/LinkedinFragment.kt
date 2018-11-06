@@ -103,6 +103,7 @@ class LinkedinFragment : BaseFragment() {
                 val authorizationToken = uri.getQueryParameter(RESPONSE_TYPE_VALUE)
                 if (authorizationToken == null) {
                     Timber.i("The user doesn't allow authorization.")
+                    activity!!.finish()
                     return true
                 }
                 Timber.i("Auth token received: $authorizationToken")

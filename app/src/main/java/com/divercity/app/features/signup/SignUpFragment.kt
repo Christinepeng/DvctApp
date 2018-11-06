@@ -150,9 +150,9 @@ class SignUpFragment : BaseFragment() {
     fun showSnackbar(message: String?) {
         activity?.run {
             Snackbar.make(
-                findViewById(android.R.id.content),
-                message ?: "Error",
-                Snackbar.LENGTH_LONG
+                    findViewById(android.R.id.content),
+                    message ?: "Error",
+                    Snackbar.LENGTH_LONG
             ).show()
         }
     }
@@ -196,11 +196,11 @@ class SignUpFragment : BaseFragment() {
 
         btn_create_account.setOnClickListener {
             viewModel.signUp(
-                getTextEditText(et_name),
-                getTextEditText(et_username).substring(1),
-                getTextEditText(et_email),
-                getTextEditText(et_password),
-                getTextEditText(et_confirm_pass)
+                    getTextEditText(et_name),
+                    getTextEditText(et_username).substring(1),
+                    getTextEditText(et_email),
+                    getTextEditText(et_password),
+                    getTextEditText(et_confirm_pass)
             )
         }
     }
@@ -238,10 +238,10 @@ class SignUpFragment : BaseFragment() {
 
     private fun showDialogErrorProfilePictureUpload() {
         var dialog = CustomTwoBtnDialogFragment.newInstance(
-            getString(R.string.ups),
-            getString(R.string.error_picture_upload),
-            getString(R.string.ok),
-            getString(R.string.retry)
+                getString(R.string.ups),
+                getString(R.string.error_picture_upload),
+                getString(R.string.ok),
+                getString(R.string.retry)
         )
 
         dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
@@ -271,9 +271,9 @@ class SignUpFragment : BaseFragment() {
     private fun setPicture(path: String?) {
         path?.let {
             GlideApp.with(this)
-                .load(it)
-                .apply(RequestOptions().circleCrop())
-                .into(img_profile)
+                    .load(it)
+                    .apply(RequestOptions().circleCrop())
+                    .into(img_profile)
         }
 
     }

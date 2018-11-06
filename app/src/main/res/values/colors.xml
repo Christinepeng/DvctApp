@@ -19,4 +19,8 @@
     <color name="green">#48cc7c</color>
     <color name="red">#ff7272</color>
 
+    <!-- Greys-->
+    <color name="grey1">#80333241</color>
+    <color name="grey2">#333241</color>
+
 </resources>

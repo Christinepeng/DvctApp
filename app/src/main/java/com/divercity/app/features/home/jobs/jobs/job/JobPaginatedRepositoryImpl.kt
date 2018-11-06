@@ -3,7 +3,7 @@ package com.divercity.app.features.home.jobs.jobs.job
 import android.arch.lifecycle.Transformations
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
-import com.divercity.app.core.base.PaginatedRepository
+import com.divercity.app.core.base.PaginatedQueryRepository
 import com.divercity.app.core.utils.Listing
 import com.divercity.app.data.entity.job.JobResponse
 import com.divercity.app.features.home.jobs.jobs.datasource.JobDataSourceFactory
@@ -17,7 +17,7 @@ import javax.inject.Inject
  */
 
 class JobPaginatedRepositoryImpl @Inject
-internal constructor(private val fetchJobsUseCase: FetchJobsUseCase) : PaginatedRepository<JobResponse> {
+internal constructor(private val fetchJobsUseCase: FetchJobsUseCase) : PaginatedQueryRepository<JobResponse> {
 
     private lateinit var jobDataSourceFactory: JobDataSourceFactory
     private val compositeDisposable = CompositeDisposable()
@@ -27,11 +27,11 @@ internal constructor(private val fetchJobsUseCase: FetchJobsUseCase) : Paginated
         const val pageSize = 20
     }
 
-    override fun fetchData(): Listing<JobResponse> {
+    override fun fetchData(query : String?): Listing<JobResponse> {
 
         val executor = Executors.newFixedThreadPool(5)
 
-        jobDataSourceFactory = JobDataSourceFactory(compositeDisposable, fetchJobsUseCase)
+        jobDataSourceFactory = JobDataSourceFactory(compositeDisposable, fetchJobsUseCase, query)
 
         val config = PagedList.Config.Builder()
                 .setPageSize(pageSize)

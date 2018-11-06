@@ -1,10 +1,11 @@
 package com.divercity.app.data.networking.services
 
 import com.divercity.app.data.entity.base.DataArray
+import com.divercity.app.data.entity.base.DataObject
+import com.divercity.app.data.entity.base.IncludedArray
 import com.divercity.app.data.entity.job.JobResponse
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by lucas on 29/10/2018.
@@ -14,5 +15,17 @@ interface JobService {
 
     @GET("jobs")
     fun fetchJobs(@Query("page[number]") pageNumber: Int,
-                  @Query("page[size]") size: Int): Observable<DataArray<JobResponse>>
+                  @Query("page[size]") size: Int,
+                  @Query("search_query") query: String?): Observable<DataArray<JobResponse>>
+
+    @POST("jobs/{jobId}/bookmark")
+    fun saveJob(@Path("jobId") jobId: String): Observable<DataObject<JobResponse>>
+
+    @DELETE("jobs/{jobId}/remove_bookmark")
+    fun removeSavedJob(@Path("jobId") jobId: String): Observable<DataObject<JobResponse>>
+
+    @GET("bookmarks?type=Job")
+    fun fetchSavedJobs(@Query("page[number]") pageNumber: Int,
+                     @Query("page[size]") size: Int,
+                     @Query("search_query") query: String?): Observable<IncludedArray<JobResponse>>
 }

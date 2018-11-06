@@ -61,9 +61,10 @@
                     android:scaleType="centerCrop" />
 
                 <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/img_icon_add_edit"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
-                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
                     android:background="@drawable/circle_blue"
                     android:src="@drawable/ic_add_24dp"

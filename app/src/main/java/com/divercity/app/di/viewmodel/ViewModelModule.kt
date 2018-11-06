@@ -7,7 +7,10 @@ import com.divercity.app.features.home.home.HomeViewModel
 import com.divercity.app.features.home.jobs.JobsViewModel
 import com.divercity.app.features.home.jobs.jobs.JobsListViewModel
 import com.divercity.app.features.home.jobs.mypostings.MyPostingsViewModel
+import com.divercity.app.features.home.jobs.saved.SavedJobsViewModel
+import com.divercity.app.features.jobposting.JobPostingViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
+import com.divercity.app.features.location.SelectLocationViewModel
 import com.divercity.app.features.login.step1.EnterEmailViewModel
 import com.divercity.app.features.login.step2.LoginViewModel
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewModel
@@ -137,4 +140,19 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(LinkedinViewModel::class)
     abstract fun bindsLinkedinViewModel(viewModel: LinkedinViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SavedJobsViewModel::class)
+    abstract fun bindsJobsSavedViewModel(jobsViewModel: SavedJobsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobPostingViewModel::class)
+    abstract fun bindsJobPostingViewModel(viewModel: JobPostingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectLocationViewModel::class)
+    abstract fun bindsSelectLocationViewModel(viewModel: SelectLocationViewModel): ViewModel
 }

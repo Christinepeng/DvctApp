@@ -5,7 +5,9 @@ import android.support.v4.app.FragmentActivity
 import com.divercity.app.R
 import com.divercity.app.core.utils.OnboardingProgression
 import com.divercity.app.features.home.HomeActivity
+import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
+import com.divercity.app.features.location.SelectLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
@@ -120,6 +122,14 @@ class Navigator @Inject constructor() {
 
     fun navigateToLinkedinActivity(activity: FragmentActivity) {
         activity.startActivity(LinkedinActivity.getCallingIntent(activity))
+    }
+
+    fun navigateToJobPostingActivity(activity: FragmentActivity) {
+        activity.startActivity(JobPostingActivity.getCallingIntent(activity))
+    }
+
+    fun navigateToSelectLocationActivity(activity: FragmentActivity, calledFrom : String) {
+        activity.startActivity(SelectLocationActivity.getCallingIntent(activity, calledFrom))
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,

@@ -8,10 +8,11 @@ import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Listing
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.job.JobResponse
-import com.divercity.app.data.entity.login.response.LoginResponse
-import com.divercity.app.data.entity.school.SchoolResponse
+import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.home.jobs.jobs.job.JobPaginatedRepositoryImpl
-import com.divercity.app.features.onboarding.usecase.UpdateUserProfileUseCase
+import com.divercity.app.features.home.jobs.jobs.usecase.RemoveSavedJobUseCase
+import com.divercity.app.features.home.jobs.jobs.usecase.SaveJobUseCase
+import com.google.gson.JsonElement
 import javax.inject.Inject
 
 /**
@@ -20,16 +21,16 @@ import javax.inject.Inject
 
 class JobsListViewModel @Inject
 constructor(private val repository: JobPaginatedRepositoryImpl,
-            private val updateUserProfileUseCase: UpdateUserProfileUseCase) : BaseViewModel() {
+            private val removeSavedJobUseCase: RemoveSavedJobUseCase,
+            private val saveJobUseCase: SaveJobUseCase) : BaseViewModel() {
 
+    var jobResponse = MutableLiveData<Resource<JobResponse>>()
     var pagedJobsList: LiveData<PagedList<JobResponse>>? = null
-
     var listingPaginatedJob: Listing<JobResponse>? = null
-
-    val updateUserProfileResponse = MutableLiveData<Resource<LoginResponse>>()
+    var strSearchQuery : String = ""
 
     init {
-        fetchJobs()
+        fetchJobs(null)
     }
 
     fun networkState(): LiveData<NetworkState> = listingPaginatedJob!!.networkState
@@ -40,29 +41,46 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
 
     fun refresh() = repository.refresh()
 
-    fun fetchJobs() {
-        listingPaginatedJob = repository.fetchData()
+    fun fetchJobs(searchQuery : String?) {
+        listingPaginatedJob = repository.fetchData(searchQuery)
         pagedJobsList = listingPaginatedJob?.pagedList
     }
 
-    fun updateUserProfile(schoolResponse: SchoolResponse) {
-//        updateUserProfileResponse.postValue(Resource.loading(null))
-//        val callback = object : DisposableObserverWrapper<LoginResponse>() {
-//            override fun onFail(error: String) {
-//                updateUserProfileResponse.postValue(Resource.error(error, null))
-//            }
-//
-//            override fun onHttpException(error: JsonElement) {
-//                updateUserProfileResponse.postValue(Resource.error(error.toString(), null))
-//            }
-//
-//            override fun onSuccess(o: LoginResponse) {
-//                updateUserProfileResponse.postValue(Resource.success(o))
-//            }
-//        }
-//        compositeDisposable.add(callback)
-//        val user = User()
-//        user.schoolId = Integer.parseInt(schoolResponse.id)
-//        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+    fun saveJob(jobData: JobResponse) {
+        jobResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<JobResponse>() {
+            override fun onFail(error: String) {
+                jobResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                jobResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: JobResponse) {
+                jobResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+        saveJobUseCase.execute(callback, SaveJobUseCase.Params.forJobs(jobData.id!!))
+    }
+
+    fun removeSavedJob(jobData: JobResponse) {
+        jobResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<JobResponse>() {
+            override fun onFail(error: String) {
+                jobResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                jobResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: JobResponse) {
+                jobResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+        removeSavedJobUseCase.execute(callback, RemoveSavedJobUseCase.Params.forJobs(jobData.id!!))
     }
 }

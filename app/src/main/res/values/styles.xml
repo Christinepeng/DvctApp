@@ -9,6 +9,11 @@
         <!--<item name="android:itemBackground">@color/colorPrimaryDark</item>-->
         <item name="cardViewStyle">@style/CardView</item>
         <item name="colorControlNormal">@android:color/white</item>
+        <item name="searchViewStyle">@style/MySearchViewStyle</item>
+    </style>
+
+    <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">
+        <item name="searchHintIcon">@null</item>
     </style>
 
     <style name="ProgressBar" parent="ThemeOverlay.AppCompat.Light">
@@ -30,6 +35,12 @@
     <style name="AppText1" parent="TextAppearance.AppCompat">
         <item name="android:textSize">16sp</item>
         <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="AppText2" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avenir_roman</item>
+        <item name="android:textColor">@color/grey2</item>
+        <item name="android:textSize">15sp</item>
     </style>
 
     <style name="AppText.White" parent="AppText">

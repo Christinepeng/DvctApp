@@ -1,5 +1,6 @@
 package com.divercity.app.features.onboarding.profileprompt
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
@@ -22,17 +23,28 @@ class ProfilePromptFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_profile_prompt
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[ProfilePromptViewModel::class.java]
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[ProfilePromptViewModel::class.java]
+        subscribeToLiveData()
+        setupView()
+    }
 
+    private fun subscribeToLiveData() {
+        viewModel.showRecruiterText.observe(this, Observer {
+            it?.let { data ->
+                if (data)
+                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_recruiter)
+                else
+                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_nonrecruiter)
+            }
+        })
+    }
+
+    private fun setupView() {
         btn_next.setOnClickListener {
             navigator.navigateToNextOnboarding(activity!!,
-                    viewModel.accountType,
+                    viewModel.accountType!!,
                     0,
                     false
             )
@@ -42,5 +54,6 @@ class ProfilePromptFragment : BaseFragment() {
             navigator.navigateToHomeActivity(activity!!)
         }
     }
+
 
 }

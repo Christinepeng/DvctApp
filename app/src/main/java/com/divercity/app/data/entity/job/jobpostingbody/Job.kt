@@ -8,7 +8,7 @@ data class Job(
 	val lng: String? = null,
 
 	@field:SerializedName("job_employer_id")
-	val jobEmployerId: Int? = null,
+	val jobEmployerId: String? = null,
 
 	@field:SerializedName("description")
 	val description: String? = null,
@@ -20,7 +20,7 @@ data class Job(
 	val deadline: String? = null,
 
 	@field:SerializedName("job_type_id")
-	val jobTypeId: Int? = null,
+	val jobTypeId: String? = null,
 
 	@field:SerializedName("lat")
 	val lat: String? = null,

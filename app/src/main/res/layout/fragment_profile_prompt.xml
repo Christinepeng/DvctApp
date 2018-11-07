@@ -23,7 +23,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/txt_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -31,7 +31,7 @@
             android:layout_marginEnd="8dp"
             android:fontFamily="@font/avenir_heavy"
             android:gravity="center_horizontal"
-            android:text="Your User Profile"
+            android:text="@string/profile_prompt_title"
             android:textColor="#3198e5"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,7 +39,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/txt_subtitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
@@ -48,12 +48,12 @@
             android:fontFamily="@font/avenir_book"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="4sp"
-            android:text="For the best experience, tell us a little about you so we can customize your group feed &amp; connect you with the right folks."
             android:textColor="#333241"
             android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_title"
+            tools:text="@string/profile_prompt_subtitle_recruiter" />
 
         <Button
             android:id="@+id/btn_next"
@@ -73,7 +73,7 @@
             android:textSize="18sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/txt_subtitle" />
 
         <TextView
             android:id="@+id/btn_not_now"

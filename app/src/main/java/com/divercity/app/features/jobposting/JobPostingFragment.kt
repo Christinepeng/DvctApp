@@ -1,14 +1,18 @@
 package com.divercity.app.features.jobposting
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
+import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.data.Status
 import com.divercity.app.data.entity.company.CompanyResponse
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.location.LocationResponse
@@ -24,6 +28,8 @@ import kotlinx.android.synthetic.main.view_toolbar.view.*
 
 class JobPostingFragment : BaseFragment() {
 
+    lateinit var viewModel: JobPostingViewModel
+
     companion object {
 
         const val REQUEST_CODE_LOCATION = 150
@@ -35,10 +41,36 @@ class JobPostingFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_job_posting
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[JobPostingViewModel::class.java]
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupView()
+        subscribeToLiveData()
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.postJobResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(response.message)
+                }
+
+                Status.SUCCESS -> {
+                    hideProgress()
+                    activity!!.finish()
+                }
+            }
+        })
     }
 
     private fun setupToolbar() {
@@ -51,6 +83,11 @@ class JobPostingFragment : BaseFragment() {
             }
         }
     }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+    }
+
 
     private fun setupView() {
         enableCreateButton(false)
@@ -67,7 +104,7 @@ class JobPostingFragment : BaseFragment() {
             navigator.navigateToJobTypeActivityForResult(this, REQUEST_CODE_JOBTYPE)
         }
 
-        et_job_title.addTextChangedListener(object : TextWatcher{
+        et_job_title.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -80,7 +117,7 @@ class JobPostingFragment : BaseFragment() {
 
         })
 
-        et_job_description.addTextChangedListener(object : TextWatcher{
+        et_job_description.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
 
@@ -116,12 +153,14 @@ class JobPostingFragment : BaseFragment() {
     }
 
     private fun setCompany(company: CompanyResponse?) {
+        viewModel.company = company
         company?.attributes?.let {
             txt_employeer.text = it.name
         }
     }
 
     private fun setJobType(jobType: JobTypeResponse?) {
+        viewModel.jobType = jobType
         jobType?.attributes?.let {
             txt_job_type.text = it.name
         }
@@ -129,9 +168,16 @@ class JobPostingFragment : BaseFragment() {
 
     private fun enableCreateButton(boolean: Boolean) {
         btn_create_job.isEnabled = boolean
-        if (boolean)
+        if (boolean) {
             btn_create_job.setTextColor(ContextCompat.getColor(activity!!, R.color.white))
-        else
+            btn_create_job.setOnClickListener {
+                viewModel.postJob(et_job_title.text.toString(),
+                        et_job_description.text.toString(),
+                        viewModel.company!!.id!!,
+                        viewModel.jobType!!.id!!,
+                        txt_location.text.toString())
+            }
+        } else
             btn_create_job.setTextColor(ContextCompat.getColor(activity!!, R.color.whiteDisable))
     }
 

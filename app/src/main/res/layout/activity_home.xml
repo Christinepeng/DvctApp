@@ -41,12 +41,13 @@
         app:itemTextColor="@color/blueFavBtn"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:elevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bottom_navigation" />
 
     <include
         android:id="@+id/include_loading"
         layout="@layout/view_loading"
-        android:visibility="gone" />
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>

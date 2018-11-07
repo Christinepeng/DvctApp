@@ -2,6 +2,7 @@ package com.divercity.app.features.jobposting.usecase
 
 import com.divercity.app.core.base.UseCase
 import com.divercity.app.data.entity.base.DataObject
+import com.divercity.app.data.entity.job.jobpostingbody.Job
 import com.divercity.app.data.entity.job.jobpostingbody.JobBody
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.repository.job.JobRepository
@@ -21,15 +22,28 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
 ) : UseCase<DataObject<JobResponse>, PostJobUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<DataObject<JobResponse>> {
-        return repository.postJob(JobBody())
+        val job = Job(title = params.title,
+                description = params.desc,
+                jobEmployerId = params.companyId,
+                jobTypeId = params.typeId,
+                locationDisplayName = params.location)
+        return repository.postJob(JobBody(job))
     }
 
-    class Params private constructor(val jobId: String) {
+    class Params private constructor(val title: String,
+                                     val desc: String,
+                                     val companyId: String,
+                                     val typeId: String,
+                                     val location: String) {
 
         companion object {
 
-            fun forJob(jobId: String): Params {
-                return Params(jobId)
+            fun forJob(title: String,
+                       desc: String,
+                       companyId: String,
+                       typeId: String,
+                       location: String): Params {
+                return Params(title, desc, companyId, typeId, location)
             }
         }
     }

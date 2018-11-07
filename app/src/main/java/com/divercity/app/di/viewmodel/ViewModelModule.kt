@@ -2,6 +2,7 @@ package com.divercity.app.di.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.home.HomeActivityViewModel
 import com.divercity.app.features.home.home.HomeViewModel
 import com.divercity.app.features.home.jobs.JobsViewModel
@@ -9,13 +10,13 @@ import com.divercity.app.features.home.jobs.jobs.JobsListViewModel
 import com.divercity.app.features.home.jobs.mypostings.MyPostingsViewModel
 import com.divercity.app.features.home.jobs.saved.SavedJobsViewModel
 import com.divercity.app.features.jobposting.JobPostingViewModel
+import com.divercity.app.features.jobposting.jobtype.JobTypeViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
-import com.divercity.app.features.location.SelectLocationViewModel
+import com.divercity.app.features.location.base.SelectLocationViewModel
 import com.divercity.app.features.login.step1.EnterEmailViewModel
 import com.divercity.app.features.login.step2.LoginViewModel
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewModel
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayViewModel
-import com.divercity.app.features.onboarding.selectcompany.SelectCompanyViewModel
 import com.divercity.app.features.onboarding.selectcountry.SelectCountryViewModel
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityViewModel
 import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
@@ -155,4 +156,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectLocationViewModel::class)
     abstract fun bindsSelectLocationViewModel(viewModel: SelectLocationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobTypeViewModel::class)
+    abstract fun bindsJobTypeViewModel(viewModel: JobTypeViewModel): ViewModel
 }

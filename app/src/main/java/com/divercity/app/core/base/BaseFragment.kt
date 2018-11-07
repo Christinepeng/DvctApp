@@ -43,6 +43,13 @@ abstract class BaseFragment : Fragment() {
     private fun progressStatus(viewStatus: Int) =
             with(activity) { if (this is BaseActivity || this is HomeActivity) this.include_loading.visibility = viewStatus }
 
+    protected fun showProgressNoBk() = progressStatusNoBk(View.VISIBLE)
+
+    protected fun hideProgressNoBk() = progressStatusNoBk(View.GONE)
+
+    private fun progressStatusNoBk(viewStatus: Int) =
+            with(activity) { if (this is BaseActivity || this is HomeActivity) this.include_loading_nobk.visibility = viewStatus }
+
     fun hideKeyboard() {
         view?.run {
             val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

@@ -5,7 +5,7 @@ import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.divercity.app.core.base.PaginatedQueryRepository
 import com.divercity.app.core.utils.Listing
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.home.jobs.jobs.datasource.JobDataSourceFactory
 import com.divercity.app.features.home.jobs.jobs.usecase.FetchJobsUseCase
 import io.reactivex.disposables.CompositeDisposable

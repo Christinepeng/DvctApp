@@ -77,7 +77,7 @@
                     android:src="@drawable/icon_user" />
 
                 <TextView
-                    android:id="@+id/et_employeer"
+                    android:id="@+id/txt_employeer"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                     android:src="@drawable/icon_map_pin" />
 
                 <TextView
-                    android:id="@+id/et_location"
+                    android:id="@+id/txt_location"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -127,7 +127,7 @@
                     android:src="@drawable/icon_clock" />
 
                 <TextView
-                    android:id="@+id/et_job_type"
+                    android:id="@+id/txt_job_type"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

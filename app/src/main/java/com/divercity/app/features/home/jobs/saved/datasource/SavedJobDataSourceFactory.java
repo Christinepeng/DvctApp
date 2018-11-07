@@ -5,7 +5,7 @@ import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
 
 import android.support.annotation.Nullable;
-import com.divercity.app.data.entity.job.JobResponse;
+import com.divercity.app.data.entity.job.response.JobResponse;
 import com.divercity.app.features.home.jobs.saved.usecase.FetchSavedJobsUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;

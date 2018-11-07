@@ -1,7 +1,7 @@
 package com.divercity.app.features.home.jobs.jobs.usecase
 
 import com.divercity.app.core.base.UseCase
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.repository.job.JobRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler

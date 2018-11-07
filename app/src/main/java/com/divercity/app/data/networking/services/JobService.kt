@@ -3,7 +3,9 @@ package com.divercity.app.data.networking.services
 import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.base.IncludedArray
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.jobpostingbody.JobBody
+import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import io.reactivex.Observable
 import retrofit2.http.*
 
@@ -26,6 +28,12 @@ interface JobService {
 
     @GET("bookmarks?type=Job")
     fun fetchSavedJobs(@Query("page[number]") pageNumber: Int,
-                     @Query("page[size]") size: Int,
-                     @Query("search_query") query: String?): Observable<IncludedArray<JobResponse>>
+                       @Query("page[size]") size: Int,
+                       @Query("search_query") query: String?): Observable<IncludedArray<JobResponse>>
+
+    @GET("jobs/job_types")
+    fun fetchJobTypes(): Observable<DataArray<JobTypeResponse>>
+
+    @POST("jobs")
+    fun postJob(@Body() body : JobBody): Observable<DataObject<JobResponse>>
 }

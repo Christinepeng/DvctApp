@@ -45,7 +45,6 @@ public class CustomOneBtnDialogFragment extends DialogFragment {
             mMessage = getArguments().getString(ARG_MESSAGE);
             mBtnText = getArguments().getString(ARG_BTN_TEXT);
         }
-        setCancelable(true);
     }
 
     public void setListener(OnBtnListener listener) {

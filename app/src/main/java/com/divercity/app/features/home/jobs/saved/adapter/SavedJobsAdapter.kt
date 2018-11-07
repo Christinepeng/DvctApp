@@ -8,7 +8,7 @@ import com.divercity.app.R
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.NetworkStateViewHolder
 import com.divercity.app.core.ui.RetryCallback
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import javax.inject.Inject
 
 class SavedJobsAdapter @Inject

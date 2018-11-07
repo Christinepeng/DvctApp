@@ -1,14 +1,16 @@
 package com.divercity.app.di.module
 
+import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
+import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
+import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
-import com.divercity.app.features.location.SelectLocationActivity
+import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayActivity
-import com.divercity.app.features.onboarding.selectcompany.SelectCompanyActivity
 import com.divercity.app.features.onboarding.selectcountry.SelectCountryActivity
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
@@ -62,7 +64,7 @@ abstract class ActivityBuilderModule {
     abstract fun bindSelectBirthdayActivity(): SelectBirthdayActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectCompanyActivity(): SelectCompanyActivity
+    abstract fun bindSelectCompanyActivity(): OnboardingCompanyActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectCountryActivity(): SelectCountryActivity
@@ -92,5 +94,11 @@ abstract class ActivityBuilderModule {
     abstract fun bindJobPostingActivity(): JobPostingActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectLocationActivity(): SelectLocationActivity
+    abstract fun bindSelectLocationActivity(): ToolbarLocationActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindToolbarCompanyActivity(): ToolbarCompanyActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindJobTypeActivity(): JobTypeActivity
 }

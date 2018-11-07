@@ -1,18 +1,21 @@
 package com.divercity.app.core.navigation
 
 import android.content.Intent
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import com.divercity.app.R
 import com.divercity.app.core.utils.OnboardingProgression
+import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
+import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
+import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
-import com.divercity.app.features.location.SelectLocationActivity
+import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayActivity
-import com.divercity.app.features.onboarding.selectcompany.SelectCompanyActivity
 import com.divercity.app.features.onboarding.selectcountry.SelectCountryActivity
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
@@ -85,7 +88,7 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToSelectCompanyActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectCompanyActivity.getCallingIntent(activity, progress))
+        activity.startActivity(OnboardingCompanyActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectCountryActivity(activity: FragmentActivity, progress: Int) {
@@ -128,8 +131,16 @@ class Navigator @Inject constructor() {
         activity.startActivity(JobPostingActivity.getCallingIntent(activity))
     }
 
-    fun navigateToSelectLocationActivity(activity: FragmentActivity, calledFrom : String) {
-        activity.startActivity(SelectLocationActivity.getCallingIntent(activity, calledFrom))
+    fun navigateToToolbarLocationActivityForResult(fragment: Fragment, code : Int, calledFrom : String) {
+        fragment.startActivityForResult(ToolbarLocationActivity.getCallingIntent(fragment.context, calledFrom), code)
+    }
+
+    fun navigateToToolbarCompanyActivityForResult(fragment: Fragment, code : Int) {
+        fragment.startActivityForResult(ToolbarCompanyActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToJobTypeActivityForResult(fragment: Fragment, code : Int) {
+        fragment.startActivityForResult(JobTypeActivity.getCallingIntent(fragment.context), code)
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,
@@ -147,7 +158,7 @@ class Navigator @Inject constructor() {
                 navigateToSelectSchoolActivity(activity, progress)
             else
                 navigateToSelectCompanyActivity(activity, progress)
-        } else if (activity is SelectCompanyActivity) {
+        } else if (activity is OnboardingCompanyActivity) {
 
             if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
                 navigateToSelectCountryActivity(activity, progress)

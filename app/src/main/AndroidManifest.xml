@@ -93,7 +93,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectcompany.SelectCompanyActivity"
+            android:name=".features.company.onboarding.OnboardingCompanyActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -143,7 +143,17 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.location.SelectLocationActivity"
+            android:name=".features.location.withtoolbar.ToolbarLocationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.withtoolbar.ToolbarCompanyActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.jobposting.jobtype.JobTypeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

@@ -13,4 +13,9 @@
         layout="@layout/view_loading"
         android:visibility="gone" />
 
+    <include
+        android:id="@+id/include_loading_nobk"
+        layout="@layout/view_loading_nobk"
+        android:visibility="gone" />
+
 </android.support.design.widget.CoordinatorLayout>

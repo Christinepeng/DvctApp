@@ -1,5 +1,8 @@
 package com.divercity.app.di.module
 
+import com.divercity.app.features.company.base.SelectCompanyFragment
+import com.divercity.app.features.company.onboarding.OnboardingCompanyFragment
+import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
 import com.divercity.app.features.home.groups.GroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.jobs.JobsFragment
@@ -11,14 +14,14 @@ import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
 import com.divercity.app.features.home.settings.SettingsFragment
 import com.divercity.app.features.jobposting.JobPostingFragment
+import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
 import com.divercity.app.features.linkedin.LinkedinFragment
-import com.divercity.app.features.location.SelectLocationFragment
-import com.divercity.app.features.location.ToolbarLocationFragment
+import com.divercity.app.features.location.base.SelectLocationFragment
+import com.divercity.app.features.location.withtoolbar.ToolbarLocationFragment
 import com.divercity.app.features.login.step1.EnterEmailFragment
 import com.divercity.app.features.login.step2.LoginFragment
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayFragment
-import com.divercity.app.features.onboarding.selectcompany.SelectCompanyFragment
 import com.divercity.app.features.onboarding.selectcountry.SelectCountryFragment
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityFragment
 import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
@@ -122,4 +125,13 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindToolbarLocationFragment (): ToolbarLocationFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindToolbarCompanyFragment (): ToolbarCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindOnboardingCompanyFragment (): OnboardingCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobTypeFragment (): JobTypeFragment
 }

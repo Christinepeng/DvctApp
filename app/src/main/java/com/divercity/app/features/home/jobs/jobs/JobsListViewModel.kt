@@ -7,7 +7,7 @@ import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Listing
 import com.divercity.app.data.Resource
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.home.jobs.jobs.job.JobPaginatedRepositoryImpl
 import com.divercity.app.features.home.jobs.jobs.usecase.RemoveSavedJobUseCase

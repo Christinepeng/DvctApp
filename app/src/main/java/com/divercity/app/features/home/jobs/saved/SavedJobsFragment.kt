@@ -14,7 +14,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.home.jobs.saved.adapter.SavedJobsAdapter
 import com.divercity.app.features.home.jobs.saved.adapter.SavedJobsViewHolder
 import kotlinx.android.synthetic.main.fragment_list.*

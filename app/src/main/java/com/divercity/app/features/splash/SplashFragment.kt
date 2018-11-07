@@ -87,6 +87,7 @@ class SplashFragment : BaseFragment() {
                 getString(R.string.retry)
         )
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserData() }
+        customOneBtnDialogFragment.isCancelable = false
         customOneBtnDialogFragment.show(childFragmentManager, null)
     }
 }

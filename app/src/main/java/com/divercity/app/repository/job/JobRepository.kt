@@ -1,8 +1,11 @@
 package com.divercity.app.repository.job
 
 import com.divercity.app.data.entity.base.DataArray
+import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.base.IncludedArray
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.jobpostingbody.JobBody
+import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import io.reactivex.Observable
 
 /**
@@ -18,4 +21,8 @@ interface JobRepository {
     fun removeSavedJob(jobId : String) : Observable<JobResponse>
 
     fun fetchSavedJobs(page: Int, size: Int, query : String?): Observable<IncludedArray<JobResponse>>
+
+    fun fetchJobTypes(): Observable<List<JobTypeResponse>>
+
+    fun postJob(body : JobBody): Observable<DataObject<JobResponse>>
 }

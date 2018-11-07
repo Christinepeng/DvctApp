@@ -8,7 +8,7 @@ import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.data.entity.base.DataArray;
-import com.divercity.app.data.entity.job.JobResponse;
+import com.divercity.app.data.entity.job.response.JobResponse;
 import com.divercity.app.features.home.jobs.jobs.usecase.FetchJobsUseCase;
 
 import io.reactivex.Completable;

@@ -15,11 +15,14 @@
     <color name="divider">#cccccc</color>
     <color name="blueFavBtn">#3198e5</color>
     <color name="textTitle">#333241</color>
-    <color name="grey">#d8d8d8</color>
     <color name="green">#48cc7c</color>
     <color name="red">#ff7272</color>
 
+    <color name="white">#ffffff</color>
+    <color name="whiteDisable">#80ffffff</color>
+
     <!-- Greys-->
+    <color name="grey">#d8d8d8</color>
     <color name="grey1">#80333241</color>
     <color name="grey2">#333241</color>
 

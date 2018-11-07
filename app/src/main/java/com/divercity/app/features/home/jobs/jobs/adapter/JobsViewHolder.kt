@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.divercity.app.R
 import com.divercity.app.core.utils.GlideApp
-import com.divercity.app.data.entity.job.JobResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import kotlinx.android.synthetic.main.item_jobs.view.*
 
 class JobsViewHolder

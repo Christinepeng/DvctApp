@@ -43,6 +43,11 @@ public interface DataService {
                                                      @Query("page[size]") int size,
                                                      @Query("search_query") String query);
 
+    @GET("group_of_interests/following")
+    Observable<DataArray<GroupResponse>> fetchFollowedGroups(@Query("page[number]") int pageNumber,
+                                                     @Query("page[size]") int size,
+                                                     @Query("search_query") String query);
+
     @GET("data/cities")
     Observable<DataArray<LocationResponse>> fetchLocations(@Query("page[number]") int pageNumber,
                                                            @Query("page[size]") int size,

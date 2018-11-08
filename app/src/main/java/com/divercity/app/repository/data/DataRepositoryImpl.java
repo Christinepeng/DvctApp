@@ -52,6 +52,11 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
+    public Observable<DataArray<GroupResponse>> fetchFollowedGroups(int page, int size, String query) {
+        return service.fetchFollowedGroups(page, size, query);
+    }
+
+    @Override
     public Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query) {
         return service.fetchLocations(page, size, query);
     }

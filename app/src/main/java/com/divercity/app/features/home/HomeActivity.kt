@@ -26,12 +26,12 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
-class HomeActivity : DaggerAppCompatActivity() {
+class HomeActivity : DaggerAppCompatActivity(){
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
-    lateinit var viewModel : HomeActivityViewModel
+    lateinit var viewModel: HomeActivityViewModel
 
     companion object {
         private const val INTENT_EXTRA_PARAM_SHOW_DIALOG_PROFILE = "showDialogProfile"
@@ -71,16 +71,16 @@ class HomeActivity : DaggerAppCompatActivity() {
     }
 
     private val myOnNavigationItemSelectedListener =
-        BottomNavigationView.OnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.menu_item_home -> selectItem(0)
-                R.id.menu_item_groups -> selectItem(1)
-                R.id.menu_item_jobs -> selectItem(2)
-                R.id.menu_item_activity -> selectItem(3)
-                R.id.menu_item_profile -> selectItem(4)
+            BottomNavigationView.OnNavigationItemSelectedListener { item ->
+                when (item.itemId) {
+                    R.id.menu_item_home -> selectItem(0)
+                    R.id.menu_item_groups -> selectItem(1)
+                    R.id.menu_item_jobs -> selectItem(2)
+                    R.id.menu_item_activity -> selectItem(3)
+                    R.id.menu_item_profile -> selectItem(4)
+                }
+                return@OnNavigationItemSelectedListener true
             }
-            return@OnNavigationItemSelectedListener true
-        }
 
     fun showDialogProfileComplete(boolean: Boolean) {
         if (boolean) {
@@ -107,23 +107,23 @@ class HomeActivity : DaggerAppCompatActivity() {
         }
 
         Glide
-            .with(this)
-            .load(viewModel.getProfilePictureUrl())
-            .apply(RequestOptions().circleCrop())
-            .into(object : SimpleTarget<Drawable>() {
-                override fun onResourceReady(
-                    resource: Drawable,
-                    transition: Transition<in Drawable>?
-                ) {
-                    val states = StateListDrawable()
-                    states.addState(intArrayOf(android.R.attr.state_pressed), resource)
-                    states.addState(intArrayOf(android.R.attr.state_checked), resource)
-                    states.addState(intArrayOf(), resource)
-                    val menu = bottom_nav_view.menu
-                    val te = menu.findItem(R.id.menu_item_profile)
-                    te.icon = states
-                }
-            })
+                .with(this)
+                .load(viewModel.getProfilePictureUrl())
+                .apply(RequestOptions().circleCrop())
+                .into(object : SimpleTarget<Drawable>() {
+                    override fun onResourceReady(
+                            resource: Drawable,
+                            transition: Transition<in Drawable>?
+                    ) {
+                        val states = StateListDrawable()
+                        states.addState(intArrayOf(android.R.attr.state_pressed), resource)
+                        states.addState(intArrayOf(android.R.attr.state_checked), resource)
+                        states.addState(intArrayOf(), resource)
+                        val menu = bottom_nav_view.menu
+                        val te = menu.findItem(R.id.menu_item_profile)
+                        te.icon = states
+                    }
+                })
     }
 
 }

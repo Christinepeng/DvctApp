@@ -26,5 +26,7 @@ public interface DataRepository {
 
     Observable<DataArray<GroupResponse>> fetchGroups(int page, int size, String query);
 
+    Observable<DataArray<GroupResponse>> fetchFollowedGroups(int page, int size, String query);
+
     Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query);
 }

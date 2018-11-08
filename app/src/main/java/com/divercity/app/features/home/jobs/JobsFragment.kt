@@ -1,5 +1,7 @@
 package com.divercity.app.features.home.jobs
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.divercity.app.R
@@ -35,11 +37,25 @@ class JobsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(JobsViewModel::class.java)
+        } ?: throw Exception("Invalid Fragment")
+
         setupToolbar()
         setupAdapterViewPager()
-        btn_add.setOnClickListener {
-            navigator.navigateToJobPostingActivity(activity!!)
-        }
+        subscribeToLiveData()
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.showBtnAddJob.observe(this, Observer { data ->
+            data?.let {
+                (btn_add as View).visibility = data
+                btn_add.setOnClickListener {
+                    navigator.navigateToJobPostingActivity(activity!!)
+                }
+            }
+        })
     }
 
     private fun setupToolbar() {
@@ -51,7 +67,7 @@ class JobsFragment : BaseFragment() {
         }
     }
 
-    private fun setupAdapterViewPager(){
+    private fun setupAdapterViewPager() {
         viewpager.adapter = adapter
         tab_layout.setupWithViewPager(viewpager)
     }

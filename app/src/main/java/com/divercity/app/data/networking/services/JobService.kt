@@ -36,4 +36,7 @@ interface JobService {
 
     @POST("jobs")
     fun postJob(@Body() body : JobBody): Observable<DataObject<JobResponse>>
+
+    @POST("jobs/{jobId}/share")
+    fun shareJob(@Body() body : JobBody): Observable<DataObject<JobResponse>>
 }

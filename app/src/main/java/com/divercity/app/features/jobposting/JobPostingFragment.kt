@@ -17,6 +17,7 @@ import com.divercity.app.data.entity.company.CompanyResponse
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.location.LocationResponse
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
+import com.divercity.app.features.dialogs.JobPostedDialogFragment
 import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationFragment
 import kotlinx.android.synthetic.main.fragment_job_posting.*
@@ -190,5 +191,11 @@ class JobPostingFragment : BaseFragment() {
             enableCreateButton(true)
         else
             enableCreateButton(false)
+    }
+
+
+    fun showDialogJobPosted() {
+        val dialog = JobPostedDialogFragment.newInstance()
+        dialog.show(childFragmentManager, null)
     }
 }

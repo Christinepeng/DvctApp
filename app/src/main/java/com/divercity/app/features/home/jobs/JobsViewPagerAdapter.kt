@@ -44,12 +44,12 @@ class JobsViewPagerAdapter
 
     override fun getItem(position: Int): Fragment {
         return if (userRepository.getAccountType() != null &&
-                (userRepository.getAccountType().equals(context.getString(R.string.job_seeker_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.student_id)))
+                (userRepository.getAccountType().equals(context.getString(R.string.hiring_manager_id)) ||
+                        userRepository.getAccountType().equals(context.getString(R.string.recruiter_id)))
         )
-            getFragmentsSeeker(position)
-        else
             getFragmentsRecruiter(position)
+        else
+            getFragmentsSeeker(position)
     }
 
     private fun getFragmentsSeeker(position: Int): Fragment {

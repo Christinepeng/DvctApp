@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.request.RequestOptions;
 import com.divercity.app.R;
 import com.divercity.app.core.utils.GlideApp;
 import com.divercity.app.data.entity.questions.QuestionResponse;
@@ -42,12 +43,14 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindTo(QuestionResponse data) {
-        try{
+        try {
             cardViewImgMainContainer.setVisibility(View.VISIBLE);
             String urlMain = data.getAttributes().getPictureMain();
             GlideApp.with(itemView.getContext())
-                    .load(urlMain).into(imgMainPicture);
-        } catch (NullPointerException e){
+                    .load(urlMain)
+                    .apply(new RequestOptions().circleCrop())
+                    .into(imgMainPicture);
+        } catch (NullPointerException e) {
             cardViewImgMainContainer.setVisibility(View.GONE);
         }
 

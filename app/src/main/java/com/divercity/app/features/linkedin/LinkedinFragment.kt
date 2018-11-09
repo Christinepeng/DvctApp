@@ -7,15 +7,15 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.webkit.WebResourceRequest
-import android.webkit.WebView
-import android.webkit.WebViewClient
+import android.webkit.*
 import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
 import kotlinx.android.synthetic.main.fragment_linkedin.*
 import timber.log.Timber
+
+
 
 /**
  * Created by lucas on 01/11/2018.
@@ -58,6 +58,7 @@ class LinkedinFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[LinkedinViewModel::class.java]
+        clearData()
     }
 
     companion object {
@@ -116,6 +117,22 @@ class LinkedinFragment : BaseFragment() {
             }
         }
         return true
+    }
+
+    @Suppress("deprecation")
+    private fun clearData() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            CookieManager.getInstance().removeAllCookies(null)
+            CookieManager.getInstance().flush()
+        } else {
+            val cookieSyncMngr = CookieSyncManager.createInstance(context)
+            cookieSyncMngr.startSync()
+            val cookieManager = CookieManager.getInstance()
+            cookieManager.removeAllCookie()
+            cookieManager.removeSessionCookie()
+            cookieSyncMngr.stopSync()
+            cookieSyncMngr.sync()
+        }
     }
 
     /**

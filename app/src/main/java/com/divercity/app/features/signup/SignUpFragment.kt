@@ -40,6 +40,7 @@ class SignUpFragment : BaseFragment() {
     private lateinit var viewModel: SignUpViewModel
     private var username: String? = ""
     private var isUserRegistered: Int = 2
+    private var isPictureSet : Boolean = false
 
     companion object {
         private const val PARAM_EMAIL = "paramEmail"
@@ -107,7 +108,10 @@ class SignUpFragment : BaseFragment() {
                     showSnackbar(voidResource.message)
                 }
                 Status.SUCCESS -> {
-                    viewModel.uploadPicture(takePictureHelper.getStringBase64(400, 400))
+                    if(isPictureSet)
+                        viewModel.uploadPicture(takePictureHelper.getStringBase64(400, 400))
+                    else
+                        viewModel.navigateToSelectUserType.call()
                 }
             }
         })
@@ -274,6 +278,7 @@ class SignUpFragment : BaseFragment() {
                     .load(it)
                     .apply(RequestOptions().circleCrop())
                     .into(img_profile)
+            isPictureSet = true
         }
 
     }

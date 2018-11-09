@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.divercity.app.R;
 import com.divercity.app.core.utils.GlideApp;
 import com.divercity.app.data.entity.group.GroupResponse;
@@ -37,7 +39,9 @@ public class GroupsViewHolder extends RecyclerView.ViewHolder {
             imgMain.setVisibility(View.VISIBLE);
             String urlMain = data.getAttributes().getPictureMain();
             GlideApp.with(itemView.getContext())
-                    .load(urlMain).into(imgMain);
+                    .load(urlMain)
+                    .apply(new RequestOptions().transforms(new RoundedCorners(16)))
+                    .into(imgMain);
         } catch (NullPointerException e) {
             imgMain.setVisibility(View.GONE);
         }

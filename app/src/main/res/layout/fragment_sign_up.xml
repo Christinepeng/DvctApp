@@ -35,15 +35,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent">
 
-
-                <android.support.v7.widget.CardView
+                <FrameLayout
                     android:layout_width="85dp"
                     android:layout_height="85dp"
                     android:layout_gravity="center_horizontal"
-                    android:background="@drawable/circle_blue"
-                    app:backgroundTint="@android:color/white"
-                    app:cardCornerRadius="42.5dp"
-                    app:cardElevation="0dp">
+                    android:background="@drawable/circle_white"
+                    app:backgroundTint="@android:color/white">
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -52,7 +49,7 @@
                         android:fontFamily="@font/avenir_roman"
                         android:text="Photo" />
 
-                </android.support.v7.widget.CardView>
+                </FrameLayout>
 
                 <ImageView
                     android:id="@+id/img_profile"

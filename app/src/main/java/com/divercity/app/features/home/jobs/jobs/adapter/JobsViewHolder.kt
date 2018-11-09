@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
+import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.entity.job.response.JobResponse
@@ -18,6 +20,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
         data?.let {
             GlideApp.with(itemView.context)
                     .load(it.attributes?.employer?.photos?.thumb)
+                    .apply(RequestOptions().transforms(RoundedCorners(16)))
                     .into(itemView.item_jobs_img)
 
             itemView.item_jobs_txt_company.text = it.attributes?.employer?.name

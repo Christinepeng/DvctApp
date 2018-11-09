@@ -39,6 +39,11 @@ class JobPostedDialogFragment : DialogFragment() {
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        isCancelable = false
+    }
+
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!)
         val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_posted, null)
@@ -49,6 +54,11 @@ class JobPostedDialogFragment : DialogFragment() {
 
         dialogView.btn_share_to_groups.setOnClickListener {
             listener?.onShareToGroupsClick()
+        }
+
+        dialogView.btn_close.setOnClickListener {
+            dismiss()
+            listener?.onBtnCloseClick()
         }
 
         builder.setView(dialogView)
@@ -67,5 +77,7 @@ class JobPostedDialogFragment : DialogFragment() {
         fun onShareToGroupsClick()
 
         fun onShareToFriendsClick()
+
+        fun onBtnCloseClick()
     }
 }

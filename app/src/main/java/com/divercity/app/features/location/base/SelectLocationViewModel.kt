@@ -14,7 +14,7 @@ import javax.inject.Inject
  */
 
 class SelectLocationViewModel @Inject
-constructor(private val repository: com.divercity.app.features.location.base.school.LocationPaginatedRepositoryImpl) : BaseViewModel() {
+constructor(private val repository: LocationPaginatedRepositoryImpl) : BaseViewModel() {
 
     lateinit var pagedLocationList: LiveData<PagedList<LocationResponse>>
 

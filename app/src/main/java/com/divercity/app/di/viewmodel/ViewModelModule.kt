@@ -7,17 +7,18 @@ import com.divercity.app.features.home.HomeActivityViewModel
 import com.divercity.app.features.home.home.HomeViewModel
 import com.divercity.app.features.home.jobs.JobsViewModel
 import com.divercity.app.features.home.jobs.jobs.JobsListViewModel
-import com.divercity.app.features.home.jobs.mypostings.MyPostingsViewModel
+import com.divercity.app.features.home.jobs.mypostings.JobsMyPostingsViewModel
 import com.divercity.app.features.home.jobs.saved.SavedJobsViewModel
 import com.divercity.app.features.jobposting.JobPostingViewModel
 import com.divercity.app.features.jobposting.jobtype.JobTypeViewModel
+import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
 import com.divercity.app.features.location.base.SelectLocationViewModel
+import com.divercity.app.features.location.onboarding.OnboardingLocationViewModel
 import com.divercity.app.features.login.step1.EnterEmailViewModel
 import com.divercity.app.features.login.step2.LoginViewModel
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewModel
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayViewModel
-import com.divercity.app.features.onboarding.selectcountry.SelectCountryViewModel
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityViewModel
 import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
 import com.divercity.app.features.onboarding.selectgroups.SelectGroupViewModel
@@ -99,8 +100,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SelectCountryViewModel::class)
-    abstract fun bindsSelectCountryViewModel(viewModel: SelectCountryViewModel): ViewModel
+    @ViewModelKey(OnboardingLocationViewModel::class)
+    abstract fun bindsSelectCountryViewModel(viewModel: OnboardingLocationViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -129,8 +130,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(MyPostingsViewModel::class)
-    abstract fun bindsMyPostingsViewModel(viewModel: MyPostingsViewModel): ViewModel
+    @ViewModelKey(JobsMyPostingsViewModel::class)
+    abstract fun bindsMyPostingsViewModel(viewModelJobs: JobsMyPostingsViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -161,4 +162,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(JobTypeViewModel::class)
     abstract fun bindsJobTypeViewModel(viewModel: JobTypeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ShareJobGroupViewModel::class)
+    abstract fun bindsShareJobGroupViewModel(viewModel: ShareJobGroupViewModel): ViewModel
 }

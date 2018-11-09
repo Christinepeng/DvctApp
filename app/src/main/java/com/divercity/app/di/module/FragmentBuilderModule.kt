@@ -8,21 +8,22 @@ import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.jobs.JobsFragment
 import com.divercity.app.features.home.jobs.jobs.JobsListFragment
 import com.divercity.app.features.home.jobs.module.JobsModule
-import com.divercity.app.features.home.jobs.mypostings.MyPostingsFragment
+import com.divercity.app.features.home.jobs.mypostings.JobsMyPostingsFragment
 import com.divercity.app.features.home.jobs.saved.SavedJobsFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
 import com.divercity.app.features.home.settings.SettingsFragment
 import com.divercity.app.features.jobposting.JobPostingFragment
 import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
+import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupFragment
 import com.divercity.app.features.linkedin.LinkedinFragment
 import com.divercity.app.features.location.base.SelectLocationFragment
+import com.divercity.app.features.location.onboarding.OnboardingLocationFragment
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationFragment
 import com.divercity.app.features.login.step1.EnterEmailFragment
 import com.divercity.app.features.login.step2.LoginFragment
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayFragment
-import com.divercity.app.features.onboarding.selectcountry.SelectCountryFragment
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityFragment
 import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
 import com.divercity.app.features.onboarding.selectgroups.SelectGroupFragment
@@ -88,7 +89,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindSelectCompanyFragment (): SelectCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectCountryFragment (): SelectCountryFragment
+    abstract fun bindOnboardingLocationFragment (): OnboardingLocationFragment
 
     @ContributesAndroidInjector
     abstract fun bindSelectEthnicityFragment (): SelectEthnicityFragment
@@ -109,7 +110,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindJobsListFragment (): JobsListFragment
 
     @ContributesAndroidInjector
-    abstract fun bindMyPostingsFragment (): MyPostingsFragment
+    abstract fun bindMyPostingsFragment (): JobsMyPostingsFragment
 
     @ContributesAndroidInjector
     abstract fun bindLinkedinFragment (): LinkedinFragment
@@ -134,4 +135,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindJobTypeFragment (): JobTypeFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindShareJobGroupFragment (): ShareJobGroupFragment
 }

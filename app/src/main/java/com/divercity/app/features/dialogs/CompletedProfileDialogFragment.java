@@ -1,6 +1,8 @@
 package com.divercity.app.features.dialogs;
 
 import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
@@ -42,5 +44,13 @@ public class CompletedProfileDialogFragment extends DialogFragment {
         });
         builder.setView(dialogView);
         return builder.create();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        if (getDialog().getWindow() != null) {
+            getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        }
     }
 }

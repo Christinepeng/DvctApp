@@ -14,7 +14,7 @@ class SettingsFragment : BaseFragment() {
 //    @Inject
 //    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 //
-//    lateinit var viewModel: EnterEmailViewModel
+//    lateinit var viewModelJobs: EnterEmailViewModel
     lateinit var handlerViewPager: Handler
 
     companion object {
@@ -27,7 +27,7 @@ class SettingsFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 //        AndroidSupportInjection.inject(this)
-//        viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
+//        viewModelJobs = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
 //        subscribeToLiveData()
     }
 
@@ -40,7 +40,7 @@ class SettingsFragment : BaseFragment() {
 //    }
 //
 //    fun subscribeToLiveData() {
-//        viewModel.isEmailRegistered.observe(this, Observer { response ->
+//        viewModelJobs.isEmailRegistered.observe(this, Observer { response ->
 //            when (response?.status) {
 //                Status.LOADING -> {
 //                    showProgress()
@@ -55,7 +55,7 @@ class SettingsFragment : BaseFragment() {
 //            }
 //        })
 //
-//        viewModel.navigateToLogin.observe(this, Observer {
+//        viewModelJobs.navigateToLogin.observe(this, Observer {
 //
 //        })
 //    }

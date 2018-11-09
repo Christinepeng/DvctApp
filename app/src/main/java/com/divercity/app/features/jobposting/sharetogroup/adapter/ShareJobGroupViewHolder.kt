@@ -11,7 +11,7 @@ import kotlinx.android.synthetic.main.item_group_share.view.*
 
 class ShareJobGroupViewHolder private constructor(itemView: View, private val listener: Listener) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(data: GroupResponse, position: Int) {
+    fun bindTo(data: GroupResponse) {
         try {
             itemView.item_group_img.visibility = View.VISIBLE
             val urlMain = data.attributes.pictureMain
@@ -23,10 +23,16 @@ class ShareJobGroupViewHolder private constructor(itemView: View, private val li
 
         itemView.item_group_txt_title.text = data.attributes.title
         itemView.item_group_txt_members.text = data.attributes.followersCount.toString().plus(" Members")
+
+        itemView.btn_select_unselect.setOnClickListener {
+            itemView.btn_select_unselect.isSelected = !itemView.btn_select_unselect.isSelected
+            listener.onGroupShareClick(data, itemView.btn_select_unselect.isSelected)
+        }
+
     }
 
     interface Listener {
-        fun onGroupShareClick(group: GroupResponse)
+        fun onGroupShareClick(group: GroupResponse, isSelected : Boolean)
     }
 
     companion object {

@@ -42,7 +42,7 @@
 
         <meta-data
             android:name="io.fabric.ApiKey"
-            android:value="c89b5c30f080c86af49acf814d51cac090ea41f9" />
+            android:value="c89b5c70f080c86af29acf814d51cac090ea41f5" />
 
         <activity
             android:name=".features.home.HomeActivity"
@@ -98,7 +98,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectcountry.SelectCountryActivity"
+            android:name=".features.location.onboarding.OnboardingLocationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -154,6 +154,11 @@
 
         <activity
             android:name=".features.jobposting.jobtype.JobTypeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.jobposting.sharetogroup.ShareJobGroupActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

@@ -4,6 +4,7 @@ import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.base.IncludedArray
 import com.divercity.app.data.entity.job.jobpostingbody.JobBody
+import com.divercity.app.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
 import io.reactivex.Observable
@@ -35,8 +36,8 @@ interface JobService {
     fun fetchJobTypes(): Observable<DataArray<JobTypeResponse>>
 
     @POST("jobs")
-    fun postJob(@Body() body : JobBody): Observable<DataObject<JobResponse>>
+    fun postJob(@Body() body: JobBody): Observable<DataObject<JobResponse>>
 
     @POST("jobs/{jobId}/share")
-    fun shareJob(@Body() body : JobBody): Observable<DataObject<JobResponse>>
+    fun shareJob(@Path("jobId") jobId: String, @Body() body: JobShareGroupBody): Observable<DataObject<JobResponse>>
 }

@@ -16,6 +16,10 @@ class SelectBirthdayFragment : BaseFragment(), DatePickerDialogFragment.DatePick
 
     lateinit var viewModel: SelectBirthdayViewModel
 
+    private var currentProgress: Int = 50
+
+    private var isBirthdaySet: Boolean = false
+
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
 
@@ -41,6 +45,21 @@ class SelectBirthdayFragment : BaseFragment(), DatePickerDialogFragment.DatePick
         subscribeToLiveData()
 
         lay_date.setOnClickListener { showDatePickerDialog() }
+
+        btn_continue.setOnClickListener {
+            if (isBirthdaySet)
+                navigator.navigateToNextOnboarding(activity!!,
+                        viewModel.accountType,
+                        currentProgress,
+                        true
+                )
+            else
+                showToast("Set your birthday")
+        }
+    }
+
+    private fun showToast(msg : String) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     fun showDatePickerDialog() {
@@ -50,7 +69,7 @@ class SelectBirthdayFragment : BaseFragment(), DatePickerDialogFragment.DatePick
 
     private fun setupHeader() {
         include_header.apply {
-            var currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
+            currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
 
             progress_bar.apply {
                 max = 100
@@ -87,7 +106,7 @@ class SelectBirthdayFragment : BaseFragment(), DatePickerDialogFragment.DatePick
                 Status.SUCCESS -> {
                     hideProgress()
                     txt_date.text = school.data?.attributes?.birthdate ?: "Error"
-                    //TODO navigateToNextProfile
+                    isBirthdaySet = true
                 }
             }
         })

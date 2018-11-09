@@ -15,7 +15,7 @@ class GroupsFragment : BaseFragment() {
 //    @Inject
 //    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 //
-//    lateinit var viewModel: EnterEmailViewModel
+//    lateinit var viewModelJobs: EnterEmailViewModel
     lateinit var handlerViewPager: Handler
 
     companion object {
@@ -29,7 +29,7 @@ class GroupsFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         setupToolbar()
 //        AndroidSupportInjection.inject(this)
-//        viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
+//        viewModelJobs = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
 //        subscribeToLiveData()
     }
 
@@ -51,7 +51,7 @@ class GroupsFragment : BaseFragment() {
 //    }
 //
 //    fun subscribeToLiveData() {
-//        viewModel.isEmailRegistered.observe(this, Observer { response ->
+//        viewModelJobs.isEmailRegistered.observe(this, Observer { response ->
 //            when (response?.status) {
 //                Status.LOADING -> {
 //                    showProgress()
@@ -66,7 +66,7 @@ class GroupsFragment : BaseFragment() {
 //            }
 //        })
 //
-//        viewModel.navigateToLogin.observe(this, Observer {
+//        viewModelJobs.navigateToLogin.observe(this, Observer {
 //
 //        })
 //    }

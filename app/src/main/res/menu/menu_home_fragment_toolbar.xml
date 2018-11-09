@@ -12,6 +12,11 @@
         android:id="@+id/logout"
         android:icon="@drawable/icon_more_dots"
         android:title="@string/logout"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/about"
+        android:title="@string/about"
+        app:showAsAction="never" />
 
 </menu>

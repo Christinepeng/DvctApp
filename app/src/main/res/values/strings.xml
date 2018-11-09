@@ -10,6 +10,7 @@
     <string name="jobs">Jobs</string>
     <string name="ups">Ups!</string>
     <string name="no_results">No results</string>
+    <string name="about">About</string>
 
     <!-- Profile onboarding-->
     <string name="select_your_company">Select your Company</string>
@@ -59,7 +60,7 @@
     <string name="mixed_race">Mixed Race</string>
     <string name="native_american">Native American</string>
     <string name="south_east_asian">South East Asian</string>
-    <string name="white">Whie</string>
+    <string name="white">White</string>
 
     <string name="asian_id">Asian</string>
     <string name="black_id">Black</string>
@@ -69,7 +70,7 @@
     <string name="mixed_race_id">Mixed Race</string>
     <string name="native_american_id">Native American</string>
     <string name="south_east_asian_id">South East Asian</string>
-    <string name="white_id">Whie</string>
+    <string name="white_id">White</string>
 
     <!-- Errors-->
     <string name="error_timeout">Timeout error</string>
@@ -128,6 +129,7 @@
     <string name="job_posted_subtitle">How about letting some of your Friends or Groups know about the Job Posting you just created?</string>
     <string name="share_friends">Share to Friends</string>
     <string name="share_groups">Share to Groups</string>
+    <string name="share">Share</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

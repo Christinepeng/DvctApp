@@ -100,7 +100,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToUpdateUserLiveData() {
-//        viewModel.updateUserProfileResponse.observe(this, Observer { school ->
+//        viewModelJobs.updateUserProfileResponse.observe(this, Observer { school ->
 //            when (school?.status) {
 //                Status.LOADING -> showProgress()
 //
@@ -142,7 +142,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     }
 
     private val listener: MajorViewHolder.Listener = MajorViewHolder.Listener {
-        //        viewModel.updateUserProfile(it)
+        //        viewModelJobs.updateUserProfile(it)
         navigator.navigateToNextOnboarding(activity!!,
                 viewModel.accountType,
                 currentProgress,

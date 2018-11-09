@@ -103,7 +103,8 @@ public class SelectEthnicityAdapter extends RecyclerView.Adapter<SelectEthnicity
     @Override
     public void onBindViewHolder(Holder holder, final int position) {
         Ethnicity item = list.get(position);
-        holder.imgIcon.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.drawable));
+//        holder.imgIcon.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.drawable));
+        holder.imgIcon.setVisibility(View.GONE);
         holder.txtTitle.setText(item.textId);
         holder.itemView.setOnClickListener(view -> {
             listener.onEthnicityClick(item);

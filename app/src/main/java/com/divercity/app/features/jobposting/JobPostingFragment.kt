@@ -27,7 +27,7 @@ import kotlinx.android.synthetic.main.view_toolbar.view.*
  * Created by lucas on 05/11/2018.
  */
 
-class JobPostingFragment : BaseFragment() {
+class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
 
     lateinit var viewModel: JobPostingViewModel
 
@@ -68,7 +68,7 @@ class JobPostingFragment : BaseFragment() {
 
                 Status.SUCCESS -> {
                     hideProgress()
-                    activity!!.finish()
+                    showDialogJobPosted()
                 }
             }
         })
@@ -194,8 +194,20 @@ class JobPostingFragment : BaseFragment() {
     }
 
 
-    fun showDialogJobPosted() {
+    private fun showDialogJobPosted() {
         val dialog = JobPostedDialogFragment.newInstance()
         dialog.show(childFragmentManager, null)
+    }
+
+    override fun onShareToGroupsClick() {
+        navigator.navigateToShareJobGroupActivity(this, viewModel.postJobResponse.value?.data?.data?.id)
+    }
+
+    override fun onShareToFriendsClick() {
+        showToast("Coming soon")
+    }
+
+    override fun onBtnCloseClick() {
+        activity!!.finish()
     }
 }

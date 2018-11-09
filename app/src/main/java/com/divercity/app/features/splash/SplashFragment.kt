@@ -45,6 +45,8 @@ class SplashFragment : BaseFragment() {
             //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
             if (viewModel.isUserLogged)
                 viewModel.fetchCurrentUserData()
+//                navigator.navigateToShareJobGroupActivity(this,"31")
+//                navigator.navigateToSelectGroupActivity(activity!!,90)
 //                navigator.navigateToHomeActivity(activity!!)
             else {
                 navigator.navigateToEnterEmailActivity(activity!!)
@@ -82,9 +84,9 @@ class SplashFragment : BaseFragment() {
 
     private fun showErrorDialog() {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
-                "Ups!",
-                getString(R.string.error_connection),
-                getString(R.string.retry)
+            "Ups!",
+            getString(R.string.error_connection),
+            getString(R.string.retry)
         )
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserData() }
         customOneBtnDialogFragment.isCancelable = false

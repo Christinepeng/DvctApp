@@ -2,6 +2,7 @@ package com.divercity.app.data.entity.base;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -14,6 +15,9 @@ public class IncludedArray<T> {
     List<T> data;
 
     public List<T> getData() {
-        return data;
+        if(data != null)
+            return data;
+        else
+            return Collections.emptyList();
     }
 }

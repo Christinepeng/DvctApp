@@ -10,13 +10,14 @@ import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
+import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
+import com.divercity.app.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayActivity
-import com.divercity.app.features.onboarding.selectcountry.SelectCountryActivity
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectgroups.SelectGroupActivity
@@ -59,14 +60,6 @@ class Navigator @Inject constructor() {
         activity.startActivity(SignUpActivity.getCallingIntent(activity, email))
     }
 
-    fun navigateSelectUserTypeActivity(activity: FragmentActivity) {
-        activity.startActivity(SelectUserTypeActivity.getCallingIntent(activity))
-    }
-
-    fun navigateProfilePromptActivity(activity: FragmentActivity) {
-        activity.startActivity(ProfilePromptActivity.getCallingIntent(activity))
-    }
-
     fun navigateToLoginActivity(activity: FragmentActivity, email: String) {
         activity.startActivity(LoginActivity.getCallingIntent(activity, email))
     }
@@ -91,8 +84,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(OnboardingCompanyActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectCountryActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectCountryActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingLocationActivity(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(OnboardingLocationActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectOccupationActivity(activity: FragmentActivity, progress: Int) {
@@ -143,6 +136,10 @@ class Navigator @Inject constructor() {
         fragment.startActivityForResult(JobTypeActivity.getCallingIntent(fragment.context), code)
     }
 
+    fun navigateToShareJobGroupActivity(fragment: Fragment, jobId : String?) {
+        fragment.startActivity(ShareJobGroupActivity.getCallingIntent(fragment.context, jobId))
+    }
+
     fun navigateToNextOnboarding(activity: FragmentActivity,
                                  userTypeId: String,
                                  cprogress: Int,
@@ -161,13 +158,13 @@ class Navigator @Inject constructor() {
         } else if (activity is OnboardingCompanyActivity) {
 
             if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
-                navigateToSelectCountryActivity(activity, progress)
+                navigateToOnboardingLocationActivity(activity, progress)
             else if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(R.string.job_seeker_id))
                 navigateToSelectOccupationActivity(activity, progress)
             else if (userTypeId == activity.getString(R.string.entrepreneur_id)) {
                 navigateToSelectIndustryActivity(activity, progress)
             }
-        } else if (activity is SelectCountryActivity) {
+        } else if (activity is OnboardingLocationActivity) {
 
             if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
                 navigateToSelectGenderActivity(activity, progress)
@@ -189,11 +186,11 @@ class Navigator @Inject constructor() {
 
             navigateToSelectMajorActivity(activity, progress)
         } else if (activity is SelectMajorActivity) {
-            navigateToSelectCountryActivity(activity, progress)
+            navigateToOnboardingLocationActivity(activity, progress)
         } else if (activity is SelectOccupationActivity) {
 
             if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(R.string.job_seeker_id))
-                navigateToSelectCountryActivity(activity, progress)
+                navigateToOnboardingLocationActivity(activity, progress)
             else
                 navigateToSelectGenderActivity(activity, progress)
         } else if (activity is SelectInterestsActivity) {

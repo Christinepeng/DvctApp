@@ -4,6 +4,7 @@ import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.base.IncludedArray
 import com.divercity.app.data.entity.job.jobpostingbody.JobBody
+import com.divercity.app.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.networking.services.JobService
@@ -16,6 +17,12 @@ import javax.inject.Inject
 
 class JobRepositoryImpl
 @Inject constructor(private val jobService: JobService) : JobRepository {
+
+    override fun shareJob(jobId: String, body: JobShareGroupBody): Observable<JobResponse> {
+        return jobService.shareJob(jobId, body).map {
+            it.data
+        }
+    }
 
     override fun postJob(body: JobBody): Observable<DataObject<JobResponse>> {
         return jobService.postJob(body)

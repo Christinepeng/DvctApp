@@ -101,7 +101,7 @@ class SelectIndustryFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToIndustryLiveData() {
-//        viewModel.updateUserProfileResponse.observe(this, Observer { school ->
+//        viewModelJobs.updateUserProfileResponse.observe(this, Observer { school ->
 //            when (school?.status) {
 //                Status.LOADING -> showProgress()
 //
@@ -143,7 +143,7 @@ class SelectIndustryFragment : BaseFragment(), RetryCallback {
     }
 
     private val listener: IndustryViewHolder.Listener = IndustryViewHolder.Listener {
-//        viewModel.updateUserProfile(it)
+//        viewModelJobs.updateUserProfile(it)
         navigator.navigateToNextOnboarding(
                 activity!!,
                 viewModel.accountType,

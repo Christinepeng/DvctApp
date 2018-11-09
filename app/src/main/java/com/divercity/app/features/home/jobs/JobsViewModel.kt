@@ -1,10 +1,10 @@
 package com.divercity.app.features.home.jobs
 
 import android.app.Application
+import android.arch.lifecycle.MutableLiveData
 import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseViewModel
-import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.repository.user.UserRepositoryImpl
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ class JobsViewModel @Inject
 constructor(val userRepository: UserRepositoryImpl,
             val application: Application) : BaseViewModel() {
 
-    val showBtnAddJob = SingleLiveEvent<Int>()
+    val showBtnAddJob = MutableLiveData<Int>()
 
     init {
 

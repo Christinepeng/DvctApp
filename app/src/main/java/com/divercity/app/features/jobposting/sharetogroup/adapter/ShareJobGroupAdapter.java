@@ -7,22 +7,33 @@ import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-
 import com.divercity.app.R;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.ui.NetworkStateViewHolder;
 import com.divercity.app.core.ui.RetryCallback;
 import com.divercity.app.data.entity.group.GroupResponse;
-
-import java.util.Objects;
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
+import java.util.ArrayList;
+import java.util.Objects;
 
 public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, RecyclerView.ViewHolder> {
 
     private NetworkState networkState;
     private RetryCallback retryCallback;
-    private ShareJobGroupViewHolder.Listener listener;
+
+    private ArrayList<String> jobsIds = new ArrayList<>();
+
+    private ShareJobGroupViewHolder.Listener listener = new ShareJobGroupViewHolder.Listener() {
+        @Override
+        public void onGroupShareClick(@NotNull GroupResponse group, boolean isSelected) {
+            if (isSelected)
+                jobsIds.add(group.getId());
+            else
+                jobsIds.remove(group.getId());
+        }
+    };
 
     @Inject
     public ShareJobGroupAdapter() {
@@ -31,10 +42,6 @@ public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, Recycl
 
     public void setRetryCallback(RetryCallback retryCallback) {
         this.retryCallback = retryCallback;
-    }
-
-    public void setListener(ShareJobGroupViewHolder.Listener listener) {
-        this.listener = listener;
     }
 
     @NonNull
@@ -54,7 +61,7 @@ public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, Recycl
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case R.layout.item_group_share:
-                ((ShareJobGroupViewHolder) holder).bindTo(getItem(position), position);
+                ((ShareJobGroupViewHolder) holder).bindTo(getItem(position));
                 break;
             case R.layout.view_network_state:
                 ((NetworkStateViewHolder) holder).bindTo(networkState);
@@ -119,4 +126,7 @@ public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, Recycl
         }
     };
 
+    public ArrayList<String> getJobsIds() {
+        return jobsIds;
+    }
 }

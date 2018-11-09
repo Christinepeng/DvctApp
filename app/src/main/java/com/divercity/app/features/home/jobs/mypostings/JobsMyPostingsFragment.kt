@@ -14,23 +14,23 @@ import com.divercity.app.core.base.BaseFragment
  */
 
 
-class MyPostingsFragment : BaseFragment() {
+class JobsMyPostingsFragment : BaseFragment() {
 
-    lateinit var viewModel: MyPostingsViewModel
+    lateinit var viewModelJobs: JobsMyPostingsViewModel
 
     companion object {
 
-        fun newInstance(): MyPostingsFragment {
-            return MyPostingsFragment()
+        fun newInstance(): JobsMyPostingsFragment {
+            return JobsMyPostingsFragment()
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_my_postings
+    override fun layoutId(): Int = R.layout.fragment_jobs_my_postings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(MyPostingsViewModel::class.java)
+        viewModelJobs = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(JobsMyPostingsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
         setHasOptionsMenu(true)
     }
@@ -42,7 +42,7 @@ class MyPostingsFragment : BaseFragment() {
         val searchView  = searchItem.actionView as SearchView
         searchView.queryHint = "Search"
 
-        viewModel.strSearchQuery?.let {
+        viewModelJobs.strSearchQuery?.let {
             if(it != ""){
                 searchItem.expandActionView()
                 searchView.setQuery(it, true)
@@ -53,7 +53,7 @@ class MyPostingsFragment : BaseFragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.strSearchQuery = query
+                viewModelJobs.strSearchQuery = query
                 return false
             }
 

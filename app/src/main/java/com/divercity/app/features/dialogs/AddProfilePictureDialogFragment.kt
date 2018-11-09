@@ -35,7 +35,7 @@ class AddProfilePictureDialogFragment : DialogFragment() {
         val progressText = dialogView.findViewById<TextView>(R.id.txt_progress)
         progressText.text = "100%"
 
-        dialogView.findViewById<View>(R.id.dlg_cmpl_prf_btn_thanks).setOnClickListener { view -> dismiss() }
+        dialogView.findViewById<View>(R.id.dlg_cmpl_prf_btn_thanks).setOnClickListener { _ -> dismiss() }
         builder.setView(dialogView)
         return builder.create()
     }

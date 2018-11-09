@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.KeyEvent
 import android.view.View
+import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
@@ -12,6 +13,7 @@ import com.divercity.app.data.Status
 import com.divercity.app.features.jobposting.sharetogroup.adapter.ShareJobGroupAdapter
 import kotlinx.android.synthetic.main.fragment_share_job_group.*
 import kotlinx.android.synthetic.main.view_search.view.*
+import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
 /**
@@ -26,17 +28,13 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
     @Inject
     lateinit var adapter: ShareJobGroupAdapter
 
-    private var positionJoinClicked: Int = 0
-    private var countJoin = 0
-    private var currentProgress: Int = 0
-
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
+        private const val PARAM_JOB_ID = "paramJobId"
 
-        fun newInstance(progress: Int): ShareJobGroupFragment {
+        fun newInstance(progress: String): ShareJobGroupFragment {
             val fragment = ShareJobGroupFragment()
             val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
+            arguments.putString(PARAM_JOB_ID, progress)
             fragment.arguments = arguments
             return fragment
         }
@@ -47,18 +45,42 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[ShareJobGroupViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
+        viewModel.jobId = arguments?.getString(PARAM_JOB_ID)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchCompanies(this, null)
-        adapter.setRetryCallback(this)
-//        adapter.setListener(listener)
-        list.adapter = adapter
+        setupView()
         subscribeToPaginatedLiveData()
-        subscribeToJoinLiveData()
+        subscribeToShareJobGroupsLiveData()
         setupHeader()
+        setupToolbar()
+    }
+
+    private fun setupView() {
+        adapter.setRetryCallback(this)
+        list.adapter = adapter
+
+        btn_share.setOnClickListener {
+            if(adapter.jobsIds.size != 0)
+                viewModel.shareJobs(adapter.jobsIds)
+            else
+                showToast("Select at least one group")
+        }
+    }
+
+    private fun setupToolbar() {
+        (activity as ShareJobGroupActivity).apply {
+            setSupportActionBar(include_toolbar.toolbar)
+            supportActionBar?.let {
+                it.setTitle(R.string.share_groups)
+                it.setDisplayHomeAsUpEnabled(true)
+            }
+        }
+    }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupHeader() {
@@ -70,7 +92,7 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
                 if (toSearch == "")
                     toSearch = null
 
-                viewModel.fetchCompanies(this@ShareJobGroupFragment, toSearch)
+                viewModel.fetchFollowedGroups(toSearch)
                 subscribeToPaginatedLiveData()
                 true
             } else
@@ -78,33 +100,21 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
         }
     }
 
-    private fun subscribeToJoinLiveData() {
-//        viewModel.joinGroupResponse.observe(this, Observer { school ->
-//            when (school?.status) {
-//                Status.LOADING -> showProgress()
-//
-//                Status.ERROR -> {
-//                    hideProgress()
-//                    Toast.makeText(activity, school.message, Toast.LENGTH_SHORT).show()
-//                }
-//                Status.SUCCESS -> {
-//                    hideProgress()
-//                    // Updating join btn state
-//                    adapter.currentList?.get(positionJoinClicked)?.attributes?.isIsFollowedByCurrent = true
-//                    adapter.notifyItemChanged(positionJoinClicked)
-//
-//                    if (++countJoin == 3) {
-//                        btn_continue.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
-//                        btn_continue.setOnClickListener {
-//                            val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
-//                                    activity!!, viewModel.accountType, currentProgress
-//                            )
-//                            navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
-//                        }
-//                    }
-//                }
-//            }
-//        })
+    private fun subscribeToShareJobGroupsLiveData() {
+        viewModel.shareJobGroupsResponse.observe(this, Observer { school ->
+            when (school?.status) {
+                Status.LOADING -> showProgress()
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, school.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    activity!!.finish()
+                }
+            }
+        })
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -131,9 +141,4 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
     override fun retry() {
         viewModel.retry()
     }
-
-//    private val listener: ShareJobGroupViewHolder.Listener = ShareJobGroupViewHolder.Listener { position, group ->
-//        positionJoinClicked = position
-//        viewModel.joinGroup(group)
-//    }
 }

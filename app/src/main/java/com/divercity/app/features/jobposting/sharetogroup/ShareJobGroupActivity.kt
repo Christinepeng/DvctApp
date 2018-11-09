@@ -8,15 +8,15 @@ import com.divercity.app.core.base.BaseFragment
 class ShareJobGroupActivity : BaseActivity() {
 
     companion object {
-        private const val INTENT_EXTRA_PARAM_PROGRESS = "progress"
+        private const val INTENT_EXTRA_PARAM_JOB_ID = "extraParamJobId"
 
-        fun getCallingIntent(context: Context, progress : Int) : Intent {
+        fun getCallingIntent(context: Context?, jobId : String?) : Intent {
             val intent = Intent(context, ShareJobGroupActivity::class.java)
-            intent.putExtra(INTENT_EXTRA_PARAM_PROGRESS,progress)
+            intent.putExtra(INTENT_EXTRA_PARAM_JOB_ID,jobId)
             return intent
         }
     }
 
     override fun fragment(): BaseFragment = ShareJobGroupFragment.newInstance(
-            intent.getIntExtra(INTENT_EXTRA_PARAM_PROGRESS, 0))
+            intent.getStringExtra(INTENT_EXTRA_PARAM_JOB_ID))
 }

@@ -26,7 +26,7 @@ android {
         minSdkVersion 19
         targetSdkVersion 28
         versionCode 1
-        versionName "1.0"
+        versionName "D-1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -38,9 +38,16 @@ android {
 
         debug {
             minifyEnabled false
+            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "true"
 //            buildConfigField "String", "BASE_URL", '"https://api.divercity.io/api/"'
             buildConfigField "String", "BASE_URL", '"https://sandbox-api.divercity.io/api/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        applicationVariants.all { variant ->
+            variant.outputs.all { output ->
+                outputFileName = "Divercity" + "_" + "${variant.name}-${variant.versionName}.apk"
+            }
         }
     }
     compileOptions {

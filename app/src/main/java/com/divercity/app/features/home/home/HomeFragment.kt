@@ -9,11 +9,13 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import com.divercity.app.BuildConfig
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
+import com.divercity.app.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.home.home.featured.FeaturedAdapter
 import com.divercity.app.features.home.home.feed.adapter.FeedAdapter
@@ -181,6 +183,10 @@ class HomeFragment : BaseFragment(), RetryCallback {
                 showToast()
                 true
             }
+            R.id.about -> {
+                showAboutDialog()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }
@@ -193,5 +199,15 @@ class HomeFragment : BaseFragment(), RetryCallback {
 
     private fun showToast() {
         Toast.makeText(activity!!, "Coming soon", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showAboutDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+                getString(R.string.app_name),
+                "Version: ".plus(BuildConfig.VERSION_NAME),
+                getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { customOneBtnDialogFragment.dismiss() }
+        customOneBtnDialogFragment.show(childFragmentManager, null)
     }
 }

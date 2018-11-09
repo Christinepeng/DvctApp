@@ -17,7 +17,7 @@ class ProfileFragment : BaseFragment() {
 //    @Inject
 //    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 //
-//    lateinit var viewModel: EnterEmailViewModel
+//    lateinit var viewModelJobs: EnterEmailViewModel
     lateinit var handlerViewPager: Handler
 
     companion object {
@@ -32,7 +32,7 @@ class ProfileFragment : BaseFragment() {
         setHasOptionsMenu(true)
         setupToolbar()
 //        AndroidSupportInjection.inject(this)
-//        viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
+//        viewModelJobs = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
 //        subscribeToLiveData()
     }
 
@@ -59,7 +59,7 @@ class ProfileFragment : BaseFragment() {
 //    }
 //
 //    fun subscribeToLiveData() {
-//        viewModel.isEmailRegistered.observe(this, Observer { response ->
+//        viewModelJobs.isEmailRegistered.observe(this, Observer { response ->
 //            when (response?.status) {
 //                Status.LOADING -> {
 //                    showProgress()
@@ -74,7 +74,7 @@ class ProfileFragment : BaseFragment() {
 //            }
 //        })
 //
-//        viewModel.navigateToLogin.observe(this, Observer {
+//        viewModelJobs.navigateToLogin.observe(this, Observer {
 //
 //        })
 //    }

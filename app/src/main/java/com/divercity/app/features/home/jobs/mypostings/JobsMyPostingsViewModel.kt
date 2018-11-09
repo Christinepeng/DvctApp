@@ -7,7 +7,7 @@ import javax.inject.Inject
  * Created by lucas on 17/10/2018.
  */
 
-class MyPostingsViewModel @Inject
+class JobsMyPostingsViewModel @Inject
 constructor() : BaseViewModel(){
 
     var strSearchQuery : String? = null

@@ -250,7 +250,7 @@ class SignUpFragment : BaseFragment() {
             }
 
             override fun onPositiveBtnClick() {
-//                viewModel.uploadPicture()
+//                viewModelJobs.uploadPicture()
             }
         })
     }

@@ -4,10 +4,12 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
+import com.crashlytics.android.Crashlytics
 import com.divercity.app.di.DaggerAppComponent
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
+import io.fabric.sdk.android.Fabric
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -29,6 +31,9 @@ class DivercityApp : Application(), HasActivityInjector {
 
     override fun onCreate() {
         super.onCreate()
+
+        if(BuildConfig.ENABLE_CRASHLYTICS)
+            Fabric.with(this, Crashlytics())
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())

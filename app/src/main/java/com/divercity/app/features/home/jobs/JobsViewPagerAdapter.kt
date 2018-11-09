@@ -8,7 +8,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import com.divercity.app.R
 import com.divercity.app.features.home.jobs.applications.JobsApplicationsFragment
 import com.divercity.app.features.home.jobs.jobs.JobsListFragment
-import com.divercity.app.features.home.jobs.mypostings.MyPostingsFragment
+import com.divercity.app.features.home.jobs.mypostings.JobsMyPostingsFragment
 import com.divercity.app.features.home.jobs.saved.SavedJobsFragment
 import com.divercity.app.repository.user.UserRepository
 
@@ -63,7 +63,7 @@ class JobsViewPagerAdapter
     private fun getFragmentsRecruiter(position: Int): Fragment {
         return when (position) {
             0 -> JobsApplicationsFragment.newInstance()
-            1 -> MyPostingsFragment.newInstance()
+            1 -> JobsMyPostingsFragment.newInstance()
             else -> JobsListFragment.newInstance()
         }
     }

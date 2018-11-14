@@ -37,7 +37,7 @@ class JobsMyPostingsFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.menu_jobs, menu)
+        inflater.inflate(R.menu.menu_search, menu)
         val searchItem: MenuItem = menu.findItem(R.id.action_search)
         val searchView  = searchItem.actionView as SearchView
         searchView.queryHint = "Search"

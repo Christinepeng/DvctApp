@@ -41,6 +41,7 @@ class SplashFragment : BaseFragment() {
 
     fun startTimer() {
         Handler().postDelayed({
+//            navigator.navigateToProfilePromptActivity(activity!!)
             //            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
             //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
             if (viewModel.isUserLogged)

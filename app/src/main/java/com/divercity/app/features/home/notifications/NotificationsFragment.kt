@@ -91,8 +91,8 @@ class NotificationsFragment : BaseFragment() {
 //    }
 //
 //    fun setupViewPager() {
-//        viewPager.adapter = viewPagerEnterEmailAdapter
-//        val viewPagerDotsPanel = ViewPagerDotsPanel(context,
+//        viewPager.adapterTab = viewPagerEnterEmailAdapter
+//        val viewPagerDotsPanel = TabGroupsPanelDotsViewPager(context,
 //                viewPagerEnterEmailAdapter.getCount(),
 //                sliderDots)
 //

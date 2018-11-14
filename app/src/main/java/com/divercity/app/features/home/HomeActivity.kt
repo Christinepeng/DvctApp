@@ -16,7 +16,7 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.divercity.app.R
 import com.divercity.app.features.dialogs.CompletedProfileDialogFragment
-import com.divercity.app.features.home.groups.GroupsFragment
+import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.jobs.JobsFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
@@ -60,7 +60,7 @@ class HomeActivity : DaggerAppCompatActivity(){
         var selectedFragment: Fragment = HomeFragment.newInstance()
         when (position) {
             0 -> selectedFragment = HomeFragment.newInstance()
-            1 -> selectedFragment = GroupsFragment.newInstance()
+            1 -> selectedFragment = TabGroupsFragment.newInstance()
             2 -> selectedFragment = JobsFragment.newInstance()
             3 -> selectedFragment = NotificationsFragment.newInstance()
             4 -> selectedFragment = ProfileFragment.newInstance()

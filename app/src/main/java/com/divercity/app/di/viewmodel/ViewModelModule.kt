@@ -3,6 +3,10 @@ package com.divercity.app.di.viewmodel
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.company.base.SelectCompanyViewModel
+import com.divercity.app.features.groups.TabGroupsViewModel
+import com.divercity.app.features.groups.all.AllGroupsViewModel
+import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
+import com.divercity.app.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.app.features.home.HomeActivityViewModel
 import com.divercity.app.features.home.home.HomeViewModel
 import com.divercity.app.features.home.jobs.JobsViewModel
@@ -12,6 +16,7 @@ import com.divercity.app.features.home.jobs.saved.SavedJobsViewModel
 import com.divercity.app.features.jobposting.JobPostingViewModel
 import com.divercity.app.features.jobposting.jobtype.JobTypeViewModel
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupViewModel
+import com.divercity.app.features.jobposting.skills.JobSkillsViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
 import com.divercity.app.features.location.base.SelectLocationViewModel
 import com.divercity.app.features.location.onboarding.OnboardingLocationViewModel
@@ -167,4 +172,29 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ShareJobGroupViewModel::class)
     abstract fun bindsShareJobGroupViewModel(viewModel: ShareJobGroupViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobSkillsViewModel::class)
+    abstract fun bindsJobSkillsViewModel(viewModel: JobSkillsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TabGroupsViewModel::class)
+    abstract fun bindsGroupsViewModel(viewModelTab: TabGroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AllGroupsViewModel::class)
+    abstract fun bindsAllGroupsViewModel(viewModel: AllGroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TrendingGroupsViewModel::class)
+    abstract fun bindsTrendingGroupsViewModel(viewModel: TrendingGroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MyGroupsViewModel::class)
+    abstract fun bindsMyGroupsViewModel(viewModel: MyGroupsViewModel): ViewModel
 }

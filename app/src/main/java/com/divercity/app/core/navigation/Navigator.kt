@@ -5,12 +5,14 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import com.divercity.app.R
 import com.divercity.app.core.utils.OnboardingProgression
+import com.divercity.app.data.entity.skills.SkillResponse
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
+import com.divercity.app.features.jobposting.skills.JobSkillsActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
 import com.divercity.app.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
@@ -134,6 +136,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToJobTypeActivityForResult(fragment: Fragment, code : Int) {
         fragment.startActivityForResult(JobTypeActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToJobSkillsActivityForResult(fragment: Fragment, code : Int, skillList : ArrayList<SkillResponse>) {
+        fragment.startActivityForResult(JobSkillsActivity.getCallingIntent(fragment.context, skillList), code)
     }
 
     fun navigateToShareJobGroupActivity(fragment: Fragment, jobId : String?) {

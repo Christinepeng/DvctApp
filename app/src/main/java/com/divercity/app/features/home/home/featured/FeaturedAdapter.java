@@ -29,6 +29,7 @@ public class FeaturedAdapter extends RecyclerView.Adapter<FeaturedAdapter.Holder
 
         ImageView imageView;
         TextView textView;
+
         Holder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_main);
@@ -58,7 +59,8 @@ public class FeaturedAdapter extends RecyclerView.Adapter<FeaturedAdapter.Holder
         StoriesFeaturedResponse item = list.get(position);
         holder.textView.setText(item.getText());
         GlideApp.with(holder.itemView)
-                .load(item.getPictureMain()).into(holder.imageView);
+                .load(item.getPictureMain())
+                .into(holder.imageView);
     }
 
     @Override

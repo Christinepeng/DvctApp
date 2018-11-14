@@ -7,6 +7,7 @@ import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.company.CompanyResponse
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.skills.SkillResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.jobposting.usecase.PostJobUseCase
 import com.google.gson.JsonElement
@@ -22,6 +23,7 @@ constructor(private val postJobUseCase: PostJobUseCase) : BaseViewModel() {
     var postJobResponse = MutableLiveData<Resource<DataObject<JobResponse>>>()
     var company: CompanyResponse? = null
     var jobType: JobTypeResponse? = null
+    var skillList = ArrayList<SkillResponse>()
 
     fun postJob(title: String,
                 desc: String,

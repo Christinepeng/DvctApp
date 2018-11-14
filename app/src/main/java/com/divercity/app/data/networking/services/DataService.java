@@ -7,6 +7,7 @@ import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
+import com.divercity.app.data.entity.skills.SkillResponse;
 
 import io.reactivex.Observable;
 import retrofit2.http.GET;
@@ -43,6 +44,16 @@ public interface DataService {
                                                      @Query("page[size]") int size,
                                                      @Query("search_query") String query);
 
+    @GET("group_of_interests/trending")
+    Observable<DataArray<GroupResponse>> fetchTrendingGroups(@Query("page[number]") int pageNumber,
+                                                     @Query("page[size]") int size,
+                                                     @Query("search_query") String query);
+
+    @GET("group_of_interests/my_groups")
+    Observable<DataArray<GroupResponse>> fetchMyGroups(@Query("page[number]") int pageNumber,
+                                                             @Query("page[size]") int size,
+                                                             @Query("search_query") String query);
+
     @GET("group_of_interests/following")
     Observable<DataArray<GroupResponse>> fetchFollowedGroups(@Query("page[number]") int pageNumber,
                                                      @Query("page[size]") int size,
@@ -52,4 +63,9 @@ public interface DataService {
     Observable<DataArray<LocationResponse>> fetchLocations(@Query("page[number]") int pageNumber,
                                                            @Query("page[size]") int size,
                                                            @Query("search_query") String query);
+
+    @GET("data/job_skills")
+    Observable<DataArray<SkillResponse>> fetchSkills(@Query("page[number]") int pageNumber,
+                                                     @Query("page[size]") int size,
+                                                     @Query("search_query") String query);
 }

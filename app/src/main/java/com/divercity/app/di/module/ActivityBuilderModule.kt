@@ -6,6 +6,7 @@ import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
+import com.divercity.app.features.jobposting.skills.JobSkillsActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
 import com.divercity.app.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
@@ -105,4 +106,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindShareJobGroupActivity(): ShareJobGroupActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindJobSkillsActivity(): JobSkillsActivity
 }

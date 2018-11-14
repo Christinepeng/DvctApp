@@ -187,6 +187,10 @@ class HomeFragment : BaseFragment(), RetryCallback {
                 showAboutDialog()
                 true
             }
+            android.R.id.home -> {
+                showToast()
+                true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

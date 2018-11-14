@@ -14,7 +14,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
 import dagger.android.support.AndroidSupportInjection
-import kotlinx.android.synthetic.main.fragment_enter_email.*
+import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
 import javax.inject.Inject
 
 
@@ -35,7 +35,7 @@ class EnterEmailFragment : BaseFragment() {
         fun newInstance() = EnterEmailFragment()
     }
 
-    override fun layoutId(): Int = R.layout.fragment_enter_email
+    override fun layoutId(): Int = R.layout.fragment_enter_email_linear
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

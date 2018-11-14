@@ -17,7 +17,7 @@ import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.home.jobs.jobs.adapter.JobsAdapter
 import com.divercity.app.features.home.jobs.jobs.adapter.JobsViewHolder
-import kotlinx.android.synthetic.main.fragment_list.*
+import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
 /**
@@ -41,7 +41,7 @@ class JobsListFragment : BaseFragment(), RetryCallback {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_list
+    override fun layoutId(): Int = R.layout.fragment_list_refresh
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -66,7 +66,7 @@ class JobsListFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeJobLiveData() {
-        viewModel.jobResponse.observe(this, Observer { job ->
+        viewModel.jobSaveUnsaveResponse.observe(this, Observer { job ->
             when (job?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -137,12 +137,12 @@ class JobsListFragment : BaseFragment(), RetryCallback {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.menu_jobs, menu)
+        inflater.inflate(R.menu.menu_search, menu)
         val searchItem: MenuItem = menu.findItem(R.id.action_search)
         val searchView: SearchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.search)
 
-        viewModel.strSearchQuery?.let {
+        viewModel.strSearchQuery.let {
             if (it != "") {
                 searchItem.expandActionView()
                 searchView.setQuery(it, true)

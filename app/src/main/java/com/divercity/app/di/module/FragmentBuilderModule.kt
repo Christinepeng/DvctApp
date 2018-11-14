@@ -3,7 +3,11 @@ package com.divercity.app.di.module
 import com.divercity.app.features.company.base.SelectCompanyFragment
 import com.divercity.app.features.company.onboarding.OnboardingCompanyFragment
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
-import com.divercity.app.features.home.groups.GroupsFragment
+import com.divercity.app.features.groups.TabGroupsFragment
+import com.divercity.app.features.groups.all.AllGroupsFragment
+import com.divercity.app.features.groups.module.GroupsModule
+import com.divercity.app.features.groups.mygroups.MyGroupsFragment
+import com.divercity.app.features.groups.trending.TrendingGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.jobs.JobsFragment
 import com.divercity.app.features.home.jobs.jobs.JobsListFragment
@@ -16,6 +20,7 @@ import com.divercity.app.features.home.settings.SettingsFragment
 import com.divercity.app.features.jobposting.JobPostingFragment
 import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupFragment
+import com.divercity.app.features.jobposting.skills.JobSkillsFragment
 import com.divercity.app.features.linkedin.LinkedinFragment
 import com.divercity.app.features.location.base.SelectLocationFragment
 import com.divercity.app.features.location.onboarding.OnboardingLocationFragment
@@ -55,8 +60,8 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindEnterEmailFragment (): EnterEmailFragment
 
-    @ContributesAndroidInjector
-    abstract fun bindGroupsFragment (): GroupsFragment
+    @ContributesAndroidInjector(modules = [GroupsModule::class])
+    abstract fun bindGroupsFragment (): TabGroupsFragment
 
     @ContributesAndroidInjector
     abstract fun bindHomeFragment (): HomeFragment
@@ -138,4 +143,16 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindShareJobGroupFragment (): ShareJobGroupFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobSkillsFragment (): JobSkillsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindAllGroupsFragment (): AllGroupsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTrendingGroupsFragment (): TrendingGroupsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindMyGroupsFragment (): MyGroupsFragment
 }

@@ -23,7 +23,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:shape="ring"
-        app:cardCornerRadius="19dp"
+        app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/btn_select_unselect"

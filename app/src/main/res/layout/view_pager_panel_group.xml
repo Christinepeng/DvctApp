@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="160dp">
+
+    <ImageView
+        android:id="@+id/img_promo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/item_group_txt_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/avenir_medium"
+        android:textColor="#333241"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_group_txt_members"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Blacks in Tech" />
+
+    <TextView
+        android:id="@+id/item_group_txt_members"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="24dp"
+        android:fontFamily="@font/avenir_book"
+        android:lineSpacingExtra="-2sp"
+        android:textColor="#80333241"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="293 Members" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/item_group_btn_join_member"
+        style="@style/AppText"
+        android:layout_width="82dp"
+        android:layout_height="31dp"
+        android:layout_gravity="center"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/shape_backgrd_round_blue3"
+        android:fontFamily="@font/avenir_medium"
+        android:minHeight="30dip"
+        android:text="Join"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

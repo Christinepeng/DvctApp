@@ -1,11 +1,11 @@
 package com.divercity.app.features.home.jobs.jobs
 
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PagedList
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Listing
+import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
@@ -24,7 +24,7 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
             private val removeSavedJobUseCase: RemoveSavedJobUseCase,
             private val saveJobUseCase: SaveJobUseCase) : BaseViewModel() {
 
-    var jobResponse = MutableLiveData<Resource<JobResponse>>()
+    var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
     var pagedJobsList: LiveData<PagedList<JobResponse>>? = null
     var listingPaginatedJob: Listing<JobResponse>? = null
     var strSearchQuery : String = ""
@@ -47,18 +47,18 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
     }
 
     fun saveJob(jobData: JobResponse) {
-        jobResponse.postValue(Resource.loading(null))
+        jobSaveUnsaveResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<JobResponse>() {
             override fun onFail(error: String) {
-                jobResponse.postValue(Resource.error(error, null))
+                jobSaveUnsaveResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-                jobResponse.postValue(Resource.error(error.toString(), null))
+                jobSaveUnsaveResponse.postValue(Resource.error(error.toString(), null))
             }
 
             override fun onSuccess(o: JobResponse) {
-                jobResponse.postValue(Resource.success(o))
+                jobSaveUnsaveResponse.postValue(Resource.success(o))
             }
         }
         compositeDisposable.add(callback)
@@ -66,18 +66,18 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
     }
 
     fun removeSavedJob(jobData: JobResponse) {
-        jobResponse.postValue(Resource.loading(null))
+        jobSaveUnsaveResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<JobResponse>() {
             override fun onFail(error: String) {
-                jobResponse.postValue(Resource.error(error, null))
+                jobSaveUnsaveResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-                jobResponse.postValue(Resource.error(error.toString(), null))
+                jobSaveUnsaveResponse.postValue(Resource.error(error.toString(), null))
             }
 
             override fun onSuccess(o: JobResponse) {
-                jobResponse.postValue(Resource.success(o))
+                jobSaveUnsaveResponse.postValue(Resource.success(o))
             }
         }
         compositeDisposable.add(callback)

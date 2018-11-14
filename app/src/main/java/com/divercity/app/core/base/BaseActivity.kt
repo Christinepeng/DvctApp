@@ -2,6 +2,7 @@ package com.divercity.app.core.base
 
 import android.os.Bundle
 import com.divercity.app.R
+import com.divercity.app.core.ui.IOnBackPressed
 import dagger.android.support.DaggerAppCompatActivity
 
 /**
@@ -19,8 +20,8 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
     internal fun firstTimeCreated(savedInstanceState: Bundle?) = savedInstanceState == null
 
     private fun addFragment(savedInstanceState: Bundle?) {
-        savedInstanceState ?:
-            supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment()).commit()
+        savedInstanceState
+                ?: supportFragmentManager.beginTransaction().add(R.id.fragment_container, fragment()).commit()
     }
 
     protected abstract fun fragment(): BaseFragment
@@ -28,5 +29,11 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()
         return super.onSupportNavigateUp()
+    }
+
+    override fun onBackPressed() {
+        val fragment = this.supportFragmentManager.findFragmentById(R.id.fragment_container)
+        (fragment as? IOnBackPressed)?.onBackPressed()
+        super.onBackPressed()
     }
 }

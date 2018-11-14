@@ -16,9 +16,11 @@ import com.divercity.app.data.Status
 import com.divercity.app.data.entity.company.CompanyResponse
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.location.LocationResponse
+import com.divercity.app.data.entity.skills.SkillResponse
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
 import com.divercity.app.features.dialogs.JobPostedDialogFragment
 import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
+import com.divercity.app.features.jobposting.skills.JobSkillsFragment
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationFragment
 import kotlinx.android.synthetic.main.fragment_job_posting.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -36,6 +38,7 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
         const val REQUEST_CODE_LOCATION = 150
         const val REQUEST_CODE_COMPANY = 180
         const val REQUEST_CODE_JOBTYPE = 200
+        const val REQUEST_CODE_SKILLS = 220
 
         fun newInstance() = JobPostingFragment()
     }
@@ -105,6 +108,10 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
             navigator.navigateToJobTypeActivityForResult(this, REQUEST_CODE_JOBTYPE)
         }
 
+        lay_skills.setOnClickListener {
+            navigator.navigateToJobSkillsActivityForResult(this, REQUEST_CODE_SKILLS, viewModel.skillList)
+        }
+
         et_job_title.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
@@ -143,6 +150,11 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
         } else if (requestCode == REQUEST_CODE_JOBTYPE && resultCode == Activity.RESULT_OK) {
             val jobType = data?.extras?.getParcelable<JobTypeResponse>(JobTypeFragment.JOBTYPE_PICKED)
             setJobType(jobType)
+        } else if (requestCode == REQUEST_CODE_SKILLS && resultCode == Activity.RESULT_OK) {
+            val skillList = data?.extras?.getParcelableArrayList<SkillResponse>(JobSkillsFragment.SKILLS_TITLE)
+            skillList?.let {
+                setSkills(skillList)
+            }
         }
         checkFormIsCompleted()
     }
@@ -167,6 +179,11 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
         }
     }
 
+    private fun setSkills(skillsList: ArrayList<SkillResponse>) {
+        viewModel.skillList = skillsList
+        txt_skills.text = skillsList.toString().substring(1, skillsList.toString().length - 1)
+    }
+
     private fun enableCreateButton(boolean: Boolean) {
         btn_create_job.isEnabled = boolean
         if (boolean) {
@@ -187,7 +204,8 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
                 txt_employeer.text != "" &&
                 txt_location.text != "" &&
                 et_job_description.text.toString() != "" &&
-                txt_job_type.text != "")
+                txt_job_type.text != "" &&
+                txt_skills.text != "")
             enableCreateButton(true)
         else
             enableCreateButton(false)

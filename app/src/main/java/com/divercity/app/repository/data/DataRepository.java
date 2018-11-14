@@ -7,6 +7,7 @@ import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
+import com.divercity.app.data.entity.skills.SkillResponse;
 
 import io.reactivex.Observable;
 
@@ -29,4 +30,10 @@ public interface DataRepository {
     Observable<DataArray<GroupResponse>> fetchFollowedGroups(int page, int size, String query);
 
     Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query);
+
+    Observable<DataArray<SkillResponse>> fetchSkills(int page, int size, String query);
+
+    Observable<DataArray<GroupResponse>> fetchTrendingGroups(int page, int size, String query);
+
+    Observable<DataArray<GroupResponse>> fetchMyGroups(int page, int size, String query);
 }

@@ -17,6 +17,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
+import com.divercity.app.core.utils.Util
 import com.divercity.app.data.Status
 import com.divercity.app.features.dialogs.CustomTwoBtnDialogFragment
 import com.divercity.app.helpers.TakePictureHelper
@@ -199,14 +200,27 @@ class SignUpFragment : BaseFragment() {
         }
 
         btn_create_account.setOnClickListener {
-            viewModel.signUp(
-                    getTextEditText(et_name),
-                    getTextEditText(et_username).substring(1),
-                    getTextEditText(et_email),
-                    getTextEditText(et_password),
-                    getTextEditText(et_confirm_pass)
-            )
+            if(checkFormIsCompleted())
+                viewModel.signUp(
+                        getTextEditText(et_name),
+                        getTextEditText(et_username).substring(1),
+                        getTextEditText(et_email),
+                        getTextEditText(et_password),
+                        getTextEditText(et_confirm_pass)
+                )
+            else
+                showToast(getString(R.string.check_fields))
         }
+    }
+
+    private fun checkFormIsCompleted() : Boolean{
+        return et_name.text.toString() != "" &&
+                et_username.text.toString() != "" &&
+                et_username.text.toString().length != 1 &&
+                et_email.text.toString() != "" &&
+                Util.isValidEmail(et_email.text.toString()) &&
+                et_password.text.toString() != "" &&
+                et_confirm_pass.text.toString() != ""
     }
 
     private fun getTextEditText(editText: EditText): String {
@@ -280,7 +294,6 @@ class SignUpFragment : BaseFragment() {
                     .into(img_profile)
             isPictureSet = true
         }
-
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

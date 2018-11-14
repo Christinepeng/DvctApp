@@ -7,6 +7,7 @@ import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
+import com.divercity.app.data.entity.skills.SkillResponse;
 import com.divercity.app.data.networking.services.DataService;
 
 import javax.inject.Inject;
@@ -59,5 +60,20 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query) {
         return service.fetchLocations(page, size, query);
+    }
+
+    @Override
+    public Observable<DataArray<SkillResponse>> fetchSkills(int page, int size, String query) {
+        return service.fetchSkills(page, size, query);
+    }
+
+    @Override
+    public Observable<DataArray<GroupResponse>> fetchTrendingGroups(int page, int size, String query) {
+        return service.fetchTrendingGroups(page, size, query);
+    }
+
+    @Override
+    public Observable<DataArray<GroupResponse>> fetchMyGroups(int page, int size, String query) {
+        return service.fetchMyGroups(page, size, query);
     }
 }

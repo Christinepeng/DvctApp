@@ -193,7 +193,8 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
                         et_job_description.text.toString(),
                         viewModel.company!!.id!!,
                         viewModel.jobType!!.id!!,
-                        txt_location.text.toString())
+                        txt_location.text.toString(),
+                        viewModel.getStringSkillList())
             }
         } else
             btn_create_job.setTextColor(ContextCompat.getColor(activity!!, R.color.whiteDisable))

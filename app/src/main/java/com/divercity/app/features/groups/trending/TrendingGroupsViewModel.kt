@@ -19,15 +19,18 @@ import javax.inject.Inject
  */
 
 class TrendingGroupsViewModel @Inject
-constructor(private val repository: TrendingGroupsPaginatedRepositoryImpl,
-            private val joinGroupUseCase: JoinGroupUseCase) : BaseViewModel() {
+constructor(
+    private val repository: TrendingGroupsPaginatedRepositoryImpl,
+    private val joinGroupUseCase: JoinGroupUseCase
+) : BaseViewModel() {
 
     var joinGroupResponse = SingleLiveEvent<Resource<GroupResponse>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
+    private var lastSearch: String? = null
 
     init {
-        fetchGroups(null)
+        fetchGroups("")
     }
 
     fun networkState(): LiveData<NetworkState> = listingPaginatedGroup.networkState
@@ -39,9 +42,14 @@ constructor(private val repository: TrendingGroupsPaginatedRepositoryImpl,
     fun refresh() = repository.refresh()
 
     fun fetchGroups(searchQuery: String?) {
-        repository.compositeDisposable.clear()
-        listingPaginatedGroup = repository.fetchData(searchQuery)
-        pagedGroupList = listingPaginatedGroup.pagedList
+        searchQuery?.let {
+            if (it != lastSearch) {
+                lastSearch = it
+                repository.compositeDisposable.clear()
+                listingPaginatedGroup = repository.fetchData(searchQuery)
+                pagedGroupList = listingPaginatedGroup.pagedList
+            }
+        }
     }
 
     fun joinGroup(group: GroupResponse) {

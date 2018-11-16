@@ -50,8 +50,8 @@ public class GroupsViewHolder extends RecyclerView.ViewHolder {
 
         if(data.getAttributes().isIsFollowedByCurrent()){
             btnJoin.setOnClickListener(null);
-            btnJoin.setBackgroundResource(R.drawable.shape_backgrd_round);
-            btnJoin.setTextColor(itemView.getContext().getResources().getColor(R.color.blueFavBtn));
+            btnJoin.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded);
+            btnJoin.setTextColor(itemView.getContext().getResources().getColor(R.color.appBlue));
             btnJoin.setText("Member");
         } else {
             btnJoin.setOnClickListener(view -> {

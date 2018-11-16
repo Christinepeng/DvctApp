@@ -6,5 +6,5 @@ package com.divercity.app.features.groups
  
 interface ITabsGroups {
 
-    fun fetchGroups(searchQuery : String)
+    fun fetchGroups(searchQuery : String?)
 }

@@ -3,6 +3,7 @@ package com.divercity.app.features.groups.trending
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Toast
 import com.divercity.app.R
@@ -29,6 +30,7 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     lateinit var adapter: GroupsAdapter
 
     private var positionJoinClicked: Int = 0
+    private var isListRefreshing = false
 
     companion object {
 
@@ -51,6 +53,7 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
+        initSwipeToRefresh()
         subscribeToPaginatedLiveData()
         subscribeToJoinLiveData()
     }
@@ -80,19 +83,42 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         })
 
         viewModel.networkState().observe(this, Observer {
-            adapter.setNetworkState(it)
+            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+                adapter.setNetworkState(it)
         })
 
         viewModel.refreshState().observe(this, Observer { networkState ->
-            networkState?.let {
-                adapter.currentList?.let {
-                    if (networkState.status == Status.SUCCESS && it.size == 0)
-                        txt_no_results.visibility = View.VISIBLE
-                    else
-                        txt_no_results.visibility = View.GONE
-                }
+            adapter.currentList?.let { pagedList ->
+                if (networkState?.status != Status.LOADING)
+                    isListRefreshing = false
+
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
+                    txt_no_results.visibility = View.VISIBLE
+                else
+                    txt_no_results.visibility = View.GONE
+
+                swipe_list_main.isRefreshing = isListRefreshing
             }
+
+            if (!isListRefreshing)
+                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
+    }
+
+    private fun initSwipeToRefresh() {
+
+        swipe_list_main.apply {
+            setOnRefreshListener {
+                isListRefreshing = true
+                viewModel.refresh()
+            }
+            isEnabled = false
+            setColorSchemeColors(
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                    ContextCompat.getColor(context, R.color.colorPrimary),
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
+        }
     }
 
     override fun retry() {
@@ -107,7 +133,7 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         }
     }
 
-    override fun fetchGroups(searchQuery: String) {
+    override fun fetchGroups(searchQuery: String?) {
         viewModel.fetchGroups(searchQuery)
         subscribeToPaginatedLiveData()
     }

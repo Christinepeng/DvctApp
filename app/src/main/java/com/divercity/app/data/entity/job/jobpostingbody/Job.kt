@@ -26,5 +26,8 @@ data class Job(
 	val lat: String? = null,
 
 	@field:SerializedName("location_display_name")
-	val locationDisplayName: String? = null
+	val locationDisplayName: String? = null,
+
+	@field:SerializedName("skills_tag")
+	val skills: List<String?>? = null
 )

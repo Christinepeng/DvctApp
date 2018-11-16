@@ -9,11 +9,6 @@ import com.divercity.app.features.groups.module.GroupsModule
 import com.divercity.app.features.groups.mygroups.MyGroupsFragment
 import com.divercity.app.features.groups.trending.TrendingGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
-import com.divercity.app.features.home.jobs.JobsFragment
-import com.divercity.app.features.home.jobs.jobs.JobsListFragment
-import com.divercity.app.features.home.jobs.module.JobsModule
-import com.divercity.app.features.home.jobs.mypostings.JobsMyPostingsFragment
-import com.divercity.app.features.home.jobs.saved.SavedJobsFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
 import com.divercity.app.features.home.settings.SettingsFragment
@@ -21,6 +16,12 @@ import com.divercity.app.features.jobposting.JobPostingFragment
 import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupFragment
 import com.divercity.app.features.jobposting.skills.JobSkillsFragment
+import com.divercity.app.features.jobs.TabJobsFragment
+import com.divercity.app.features.jobs.descriptionseeker.JobDescriptionSeekerFragment
+import com.divercity.app.features.jobs.jobs.JobsListFragment
+import com.divercity.app.features.jobs.module.JobsModule
+import com.divercity.app.features.jobs.mypostings.JobsMyPostingsFragment
+import com.divercity.app.features.jobs.saved.SavedJobsFragment
 import com.divercity.app.features.linkedin.LinkedinFragment
 import com.divercity.app.features.location.base.SelectLocationFragment
 import com.divercity.app.features.location.onboarding.OnboardingLocationFragment
@@ -67,7 +68,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindHomeFragment (): HomeFragment
 
     @ContributesAndroidInjector(modules = [JobsModule::class])
-    abstract fun bindJobsFragment (): JobsFragment
+    abstract fun bindJobsFragment (): TabJobsFragment
 
     @ContributesAndroidInjector
     abstract fun bindNotificationsFragment (): NotificationsFragment
@@ -155,4 +156,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindMyGroupsFragment (): MyGroupsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobDescriptionSeekerFragment (): JobDescriptionSeekerFragment
 }

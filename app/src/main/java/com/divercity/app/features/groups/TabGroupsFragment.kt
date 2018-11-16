@@ -2,6 +2,7 @@ package com.divercity.app.features.groups
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.view.ViewPager
 import android.support.v7.widget.SearchView
 import android.view.Menu
@@ -26,6 +27,9 @@ class TabGroupsFragment : BaseFragment() {
 
     @Inject
     lateinit var adapterTab: TabGroupsViewPagerAdapter
+
+    private var handlerSearch = Handler()
+    private var lastSearchQuery: String? = ""
 
     companion object {
 
@@ -78,6 +82,8 @@ class TabGroupsFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
+                    ?.fetchGroups(lastSearchQuery)
             }
         })
     }
@@ -89,15 +95,7 @@ class TabGroupsFragment : BaseFragment() {
         val searchView: SearchView = searchItem.actionView as SearchView
         searchView.queryHint = getString(R.string.search)
 
-//        viewModelTab.strSearchQuery.let {
-//            if (it != "") {
-//                searchItem.expandActionView()
-//                searchView.setQuery(it, true)
-//                searchView.clearFocus()
-//            }
-//        }
-
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener{
+        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
                 lay_viewpager.visibility = View.GONE
                 return true
@@ -113,12 +111,20 @@ class TabGroupsFragment : BaseFragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                (adapterTab.getRegisteredFragment(viewpager.currentItem) as ITabsGroups)
-                        .fetchGroups(query ?: "")
+                handlerSearch.removeCallbacksAndMessages(null)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
+                        ?.fetchGroups(query)
+                lastSearchQuery = query
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
+                handlerSearch.removeCallbacksAndMessages(null)
+                handlerSearch.postDelayed({
+                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
+                            ?.fetchGroups(newText)
+                    lastSearchQuery = newText
+                }, 2000)
                 return true
             }
         })

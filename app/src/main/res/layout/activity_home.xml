@@ -16,9 +16,7 @@
     <!-- Gray line above tab-->
     <View
         android:id="@+id/viewDivider"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/divider"
+        style="@style/Divider"
         app:layout_constraintBottom_toTopOf="@+id/bottom_nav_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -38,16 +36,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@android:color/white"
-        app:itemTextColor="@color/blueFavBtn"
+        app:elevation="0dp"
+        app:itemTextColor="@color/appBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:elevation="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/menu_bottom_navigation" />
 
     <include
         android:id="@+id/include_loading"
         layout="@layout/view_loading"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 
 </android.support.constraint.ConstraintLayout>

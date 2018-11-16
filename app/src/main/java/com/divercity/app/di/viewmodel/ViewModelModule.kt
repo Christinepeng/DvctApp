@@ -9,14 +9,15 @@ import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
 import com.divercity.app.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.app.features.home.HomeActivityViewModel
 import com.divercity.app.features.home.home.HomeViewModel
-import com.divercity.app.features.home.jobs.JobsViewModel
-import com.divercity.app.features.home.jobs.jobs.JobsListViewModel
-import com.divercity.app.features.home.jobs.mypostings.JobsMyPostingsViewModel
-import com.divercity.app.features.home.jobs.saved.SavedJobsViewModel
 import com.divercity.app.features.jobposting.JobPostingViewModel
 import com.divercity.app.features.jobposting.jobtype.JobTypeViewModel
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupViewModel
 import com.divercity.app.features.jobposting.skills.JobSkillsViewModel
+import com.divercity.app.features.jobs.TabJobsViewModel
+import com.divercity.app.features.jobs.descriptionseeker.JobDescriptionSeekerViewModel
+import com.divercity.app.features.jobs.jobs.JobsListViewModel
+import com.divercity.app.features.jobs.mypostings.JobsMyPostingsViewModel
+import com.divercity.app.features.jobs.saved.SavedJobsViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
 import com.divercity.app.features.location.base.SelectLocationViewModel
 import com.divercity.app.features.location.onboarding.OnboardingLocationViewModel
@@ -70,8 +71,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(JobsViewModel::class)
-    abstract fun bindsJobsViewModel(viewModel: JobsViewModel): ViewModel
+    @ViewModelKey(TabJobsViewModel::class)
+    abstract fun bindsJobsViewModel(viewModelTab: TabJobsViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -197,4 +198,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(MyGroupsViewModel::class)
     abstract fun bindsMyGroupsViewModel(viewModel: MyGroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobDescriptionSeekerViewModel::class)
+    abstract fun bindsJobDescriptionSeekerViewModel(viewModel: JobDescriptionSeekerViewModel): ViewModel
 }

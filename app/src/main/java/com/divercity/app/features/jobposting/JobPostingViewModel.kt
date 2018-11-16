@@ -29,7 +29,8 @@ constructor(private val postJobUseCase: PostJobUseCase) : BaseViewModel() {
                 desc: String,
                 companyId: String,
                 typeId: String,
-                location: String) {
+                location: String,
+                skillList : List<String?>) {
         postJobResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<DataObject<JobResponse>>() {
             override fun onFail(error: String) {
@@ -45,6 +46,10 @@ constructor(private val postJobUseCase: PostJobUseCase) : BaseViewModel() {
             }
         }
         compositeDisposable.add(callback)
-        postJobUseCase.execute(callback, PostJobUseCase.Params.forJob(title, desc, companyId, typeId, location))
+        postJobUseCase.execute(callback, PostJobUseCase.Params.forJob(title, desc, companyId, typeId, location, skillList))
+    }
+
+    fun getStringSkillList(): List<String?> {
+        return skillList.map { it -> it.attributes?.name }
     }
 }

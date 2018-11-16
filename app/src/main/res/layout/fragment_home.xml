@@ -132,7 +132,7 @@
         android:layout_marginEnd="33dp"
         android:layout_marginBottom="33dp"
         android:src="@drawable/ic_add_24dp"
-        app:backgroundTint="@color/blueFavBtn"
+        app:backgroundTint="@color/appBlue"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/swipe_list_main" />
 

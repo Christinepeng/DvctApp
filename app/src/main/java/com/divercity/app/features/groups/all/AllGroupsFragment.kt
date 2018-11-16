@@ -3,6 +3,7 @@ package com.divercity.app.features.groups.all
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.Toast
 import com.divercity.app.R
@@ -11,6 +12,7 @@ import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.features.groups.ITabsGroups
+import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.adapter.GroupsAdapter
 import com.divercity.app.features.groups.adapter.GroupsViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
@@ -25,10 +27,13 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
     lateinit var viewModel: AllGroupsViewModel
 
+    lateinit var tabViewModel: TabGroupsViewModel
+
     @Inject
     lateinit var adapter: GroupsAdapter
 
     private var positionJoinClicked: Int = 0
+    private var isListRefreshing = false
 
     companion object {
 
@@ -42,7 +47,11 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)[AllGroupsViewModel::class.java]
+            ViewModelProviders.of(this, viewModelFactory).get(AllGroupsViewModel::class.java)
+        } ?: throw Exception("Invalid Fragment")
+
+        tabViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(TabGroupsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
@@ -51,48 +60,78 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
-        subscribeToPaginatedLiveData()
+        initSwipeToRefresh()
         subscribeToJoinLiveData()
+        subscribeToPaginatedLiveData()
     }
 
     private fun subscribeToJoinLiveData() {
-        viewModel.joinGroupResponse.observe(this, Observer { school ->
-            when (school?.status) {
-                Status.LOADING -> showProgress()
+        viewModel.onJoinGroupResponse.observe(viewLifecycleOwner, Observer {
+            it?.getContentIfNotHandled()?.let { group ->
+                when (group.status) {
+                    Status.LOADING -> showProgress()
 
-                Status.ERROR -> {
-                    hideProgress()
-                    Toast.makeText(activity, school.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.SUCCESS -> {
-                    hideProgress()
-                    // Updating join btn state
-                    adapter.currentList?.get(positionJoinClicked)?.attributes?.isIsFollowedByCurrent = true
-                    adapter.notifyItemChanged(positionJoinClicked)
+                    Status.ERROR -> {
+                        hideProgress()
+                        Toast.makeText(activity, group.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        hideProgress()
+                        // Updating join btn state
+                        adapter.currentList?.get(positionJoinClicked)?.attributes?.isIsFollowedByCurrent = true
+                        adapter.notifyItemChanged(positionJoinClicked)
+                    }
                 }
             }
         })
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedGroupList.observe(this, Observer {
+        viewModel.pagedGroupList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
-            adapter.setNetworkState(it)
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
+            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+                adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
-            networkState?.let {
-                adapter.currentList?.let {
-                    if (networkState.status == Status.SUCCESS && it.size == 0)
-                        txt_no_results.visibility = View.VISIBLE
-                    else
-                        txt_no_results.visibility = View.GONE
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
+            adapter.currentList?.let { pagedList ->
+                if (networkState?.status != Status.LOADING)
+                    isListRefreshing = false
+
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
+                    txt_no_results.visibility = View.VISIBLE
+                else {
+                    txt_no_results.visibility = View.GONE
                 }
+
+                if (networkState?.status == Status.SUCCESS && pagedList.size != 0)
+                    viewModel.selectFiveRandomGroups(pagedList)
+
+                swipe_list_main.isRefreshing = isListRefreshing
             }
+
+            if (!isListRefreshing)
+                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
+    }
+
+    private fun initSwipeToRefresh() {
+
+        swipe_list_main.apply {
+            setOnRefreshListener {
+                isListRefreshing = true
+                viewModel.refresh()
+            }
+            isEnabled = false
+            setColorSchemeColors(
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
+        }
     }
 
     override fun retry() {
@@ -107,8 +146,8 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         }
     }
 
-    override fun fetchGroups(searchQuery: String) {
-        viewModel.fetchGroups(searchQuery)
+    override fun fetchGroups(searchQuery: String?) {
+        viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
         subscribeToPaginatedLiveData()
     }
 }

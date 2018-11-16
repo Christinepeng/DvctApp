@@ -16,7 +16,7 @@ public abstract class GroupsModule {
 
     @Provides
     static FragmentManager provideFragmentManager(TabGroupsFragment tabGroupsFragment) {
-        return tabGroupsFragment.getActivity().getSupportFragmentManager();
+        return tabGroupsFragment.getChildFragmentManager();
     }
 
 }

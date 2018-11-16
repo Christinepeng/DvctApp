@@ -6,7 +6,7 @@ import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Listing
 import com.divercity.app.data.entity.skills.SkillResponse
-import com.divercity.app.features.jobposting.skills.job.SkillPaginatedRepositoryImpl
+import com.divercity.app.features.jobposting.skills.datasource.SkillPaginatedRepositoryImpl
 import javax.inject.Inject
 
 /**

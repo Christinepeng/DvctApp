@@ -16,34 +16,44 @@ import javax.inject.Named
  */
 
 class PostJobUseCase @Inject
-constructor(@Named("executor_thread") executorThread: Scheduler,
-            @Named("ui_thread") uiThread: Scheduler,
-            private val repository: JobRepository
+constructor(
+        @Named("executor_thread") executorThread: Scheduler,
+        @Named("ui_thread") uiThread: Scheduler,
+        private val repository: JobRepository
 ) : UseCase<DataObject<JobResponse>, PostJobUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<DataObject<JobResponse>> {
-        val job = Job(title = params.title,
+        val job = Job(
+                title = params.title,
                 description = params.desc,
                 jobEmployerId = params.companyId,
                 jobTypeId = params.typeId,
-                locationDisplayName = params.location)
+                locationDisplayName = params.location,
+                skills = params.skills
+        )
         return repository.postJob(JobBody(job))
     }
 
-    class Params private constructor(val title: String,
-                                     val desc: String,
-                                     val companyId: String,
-                                     val typeId: String,
-                                     val location: String) {
+    class Params private constructor(
+            val title: String,
+            val desc: String,
+            val companyId: String,
+            val typeId: String,
+            val location: String,
+            val skills: List<String?>
+    ) {
 
         companion object {
 
-            fun forJob(title: String,
-                       desc: String,
-                       companyId: String,
-                       typeId: String,
-                       location: String): Params {
-                return Params(title, desc, companyId, typeId, location)
+            fun forJob(
+                    title: String,
+                    desc: String,
+                    companyId: String,
+                    typeId: String,
+                    location: String,
+                    skills: List<String?>
+            ): Params {
+                return Params(title, desc, companyId, typeId, location, skills)
             }
         }
     }

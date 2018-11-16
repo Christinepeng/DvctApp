@@ -18,7 +18,7 @@ import com.divercity.app.R
 import com.divercity.app.features.dialogs.CompletedProfileDialogFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
-import com.divercity.app.features.home.jobs.JobsFragment
+import com.divercity.app.features.jobs.TabJobsFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
 import dagger.android.support.DaggerAppCompatActivity
@@ -61,7 +61,7 @@ class HomeActivity : DaggerAppCompatActivity(){
         when (position) {
             0 -> selectedFragment = HomeFragment.newInstance()
             1 -> selectedFragment = TabGroupsFragment.newInstance()
-            2 -> selectedFragment = JobsFragment.newInstance()
+            2 -> selectedFragment = TabJobsFragment.newInstance()
             3 -> selectedFragment = NotificationsFragment.newInstance()
             4 -> selectedFragment = ProfileFragment.newInstance()
         }

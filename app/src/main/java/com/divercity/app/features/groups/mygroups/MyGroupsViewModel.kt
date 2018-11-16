@@ -25,9 +25,10 @@ constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
     var joinGroupResponse = SingleLiveEvent<Resource<GroupResponse>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
+    var lastSearch: String? = null
 
     init {
-        fetchGroups(null)
+        fetchGroups("")
     }
 
     fun networkState(): LiveData<NetworkState> = listingPaginatedGroup.networkState
@@ -39,9 +40,14 @@ constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
     fun refresh() = repository.refresh()
 
     fun fetchGroups(searchQuery: String?) {
-        repository.compositeDisposable.clear()
-        listingPaginatedGroup = repository.fetchData(searchQuery)
-        pagedGroupList = listingPaginatedGroup.pagedList
+        searchQuery?.let {
+            if (it != lastSearch) {
+                lastSearch = it
+                repository.compositeDisposable.clear()
+                listingPaginatedGroup = repository.fetchData(searchQuery)
+                pagedGroupList = listingPaginatedGroup.pagedList
+            }
+        }
     }
 
     fun joinGroup(group: GroupResponse) {

@@ -33,8 +33,8 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
 
             if (data.attributes.isIsFollowedByCurrent) {
                 itemView.item_group_btn_join_member.setOnClickListener(null)
-                itemView.item_group_btn_join_member.setBackgroundResource(R.drawable.shape_backgrd_round)
-                itemView.item_group_btn_join_member.setTextColor(itemView.context.resources.getColor(R.color.blueFavBtn))
+                itemView.item_group_btn_join_member.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                itemView.item_group_btn_join_member.setTextColor(itemView.context.resources.getColor(R.color.appBlue))
                 itemView.item_group_btn_join_member.setText("Member")
             } else {
                 itemView.item_group_btn_join_member.setOnClickListener { listener?.onGroupJoinClick(position, data) }

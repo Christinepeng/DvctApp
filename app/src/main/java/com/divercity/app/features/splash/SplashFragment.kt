@@ -18,6 +18,7 @@ import com.divercity.app.features.dialogs.CustomOneBtnDialogFragment
 class SplashFragment : BaseFragment() {
 
     private lateinit var viewModel: SplashViewModel
+    private var handler = Handler()
 
     companion object {
 
@@ -40,7 +41,7 @@ class SplashFragment : BaseFragment() {
     }
 
     fun startTimer() {
-        Handler().postDelayed({
+        handler.postDelayed({
 //            navigator.navigateToProfilePromptActivity(activity!!)
             //            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
             //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
@@ -92,5 +93,10 @@ class SplashFragment : BaseFragment() {
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserData() }
         customOneBtnDialogFragment.isCancelable = false
         customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    override fun onDestroy() {
+        handler.removeCallbacksAndMessages(null)
+        super.onDestroy()
     }
 }

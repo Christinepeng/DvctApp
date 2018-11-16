@@ -131,11 +131,14 @@
     <string name="share_groups">Share to Groups</string>
     <string name="share">Share</string>
     <string name="select_skills">Select Skills</string>
+    <string name="apply">Apply</string>
 
     <!-- Groups-->
     <string name="all">All</string>
     <string name="trending">Trending</string>
     <string name="my_groups">My groups</string>
+    <string name="any_created_group">You haven\'t created any Groups yet</string>
+    <string name="join">Join</string>
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

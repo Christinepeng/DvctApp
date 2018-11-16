@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import com.divercity.app.R
 import com.divercity.app.core.utils.OnboardingProgression
+import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.entity.skills.SkillResponse
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
@@ -13,6 +14,7 @@ import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
 import com.divercity.app.features.jobposting.skills.JobSkillsActivity
+import com.divercity.app.features.jobs.descriptionseeker.JobDescriptionSeekerActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
 import com.divercity.app.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
@@ -56,6 +58,10 @@ class Navigator @Inject constructor() {
         val intent = EnterEmailActivity.getCallingIntent(activity)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         activity.startActivity(intent)
+    }
+
+    fun navigateToJobDescriptionSeekerActivity(activity: FragmentActivity, job: JobResponse) {
+        activity.startActivity(JobDescriptionSeekerActivity.getCallingIntent(activity, job))
     }
 
     fun navigateToSignUpActivity(activity: FragmentActivity, email: String) {

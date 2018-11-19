@@ -8,17 +8,22 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.features.dialogs.JobSeekerActionsDialogFragment
 import kotlinx.android.synthetic.main.fragment_job_description_seeker.*
 import kotlinx.android.synthetic.main.item_user.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
+import javax.inject.Inject
 
 /**
  * Created by lucas on 16/11/2018.
  */
 
-class JobDescriptionSeekerFragment : BaseFragment() {
+class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener {
 
     lateinit var viewModel: JobDescriptionSeekerViewModel
+
+    @Inject
+    lateinit var adapter: JobDescriptionViewPagerAdapter
 
     var job: JobResponse? = null
 
@@ -47,7 +52,28 @@ class JobDescriptionSeekerFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
+        setupTabs()
         setupView()
+        initView()
+    }
+
+    private fun setupTabs(){
+        job?.also {
+            adapter.job = it
+            viewpager.adapter = adapter
+            tab_layout.setupWithViewPager(viewpager)
+        }
+    }
+
+    private fun setupView(){
+        btn_toolbar_more.setOnClickListener {
+            showDialogMoreActions()
+        }
+    }
+
+    private fun showDialogMoreActions() {
+        val dialog = JobSeekerActionsDialogFragment.newInstance()
+        dialog.show(childFragmentManager, null)
     }
 
     private fun setupToolbar() {
@@ -60,7 +86,7 @@ class JobDescriptionSeekerFragment : BaseFragment() {
         }
     }
 
-    private fun setupView() {
+    private fun initView() {
         job?.also {
             GlideApp.with(this)
                     .load(it.attributes?.employer?.photos?.thumb)
@@ -82,5 +108,15 @@ class JobDescriptionSeekerFragment : BaseFragment() {
                 txt_type.text = "Tech Recruiter"
             }
         }
+    }
+
+    override fun onShareJobViaMessage() {
+    }
+
+    override fun onShareJobToGroups() {
+        navigator.navigateToShareJobGroupActivity(this, job?.id)
+    }
+
+    override fun onReportJobPosting() {
     }
 }

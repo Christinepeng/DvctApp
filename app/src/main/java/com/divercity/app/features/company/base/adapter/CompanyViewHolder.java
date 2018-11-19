@@ -6,9 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
 import com.divercity.app.R;
-import com.divercity.app.core.utils.GlideApp;
 import com.divercity.app.data.entity.company.CompanyResponse;
 
 public class CompanyViewHolder extends RecyclerView.ViewHolder {
@@ -25,14 +23,15 @@ public class CompanyViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindTo(CompanyResponse data) {
-        try {
-            img.setVisibility(View.VISIBLE);
-            String urlMain = data.getAttributes().getPhotos().getThumb();
-            GlideApp.with(itemView.getContext())
-                    .load(urlMain).into(img);
-        } catch (NullPointerException e) {
-            img.setVisibility(View.GONE);
-        }
+//        try {
+//            img.setVisibility(View.VISIBLE);
+//            String urlMain = data.getAttributes().getPhotos().getThumb();
+//            GlideApp.with(itemView.getContext())
+//                    .load(urlMain).into(img);
+//        } catch (NullPointerException e) {
+//            img.setVisibility(View.GONE);
+//        }
+        img.setVisibility(View.GONE);
         text.setText(data.getAttributes().getName());
 
         itemView.setOnClickListener(view -> {

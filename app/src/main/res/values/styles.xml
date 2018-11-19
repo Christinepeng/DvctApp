@@ -43,6 +43,12 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="AppText3" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avenir_medium</item>
+        <item name="android:textColor">@color/appBlue</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
     <style name="AppText.White" parent="AppText">
         <item name="android:textColor">@android:color/white</item>
     </style>

@@ -39,8 +39,8 @@ android {
         debug {
             minifyEnabled false
             buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
-            buildConfigField "String", "BASE_URL", '"https://api.divercity.io/api/"'
-//            buildConfigField "String", "BASE_URL", '"https://sandbox-api.divercity.io/api/"'
+//            buildConfigField "String", "BASE_URL", '"https://api.divercity.io/api/"'
+            buildConfigField "String", "BASE_URL", '"https://sandbox-api.divercity.io/api/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 

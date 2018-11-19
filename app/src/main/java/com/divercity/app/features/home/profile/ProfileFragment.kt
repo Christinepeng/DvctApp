@@ -2,11 +2,11 @@ package com.divercity.app.features.home.profile
 
 import android.os.Bundle
 import android.os.Handler
+import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuInflater
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
-import com.divercity.app.features.home.HomeActivity
 
 /**
  * Created by lucas on 24/10/2018.
@@ -37,7 +37,7 @@ class ProfileFragment : BaseFragment() {
     }
 
     private fun setupToolbar() {
-        (activity as HomeActivity).apply {
+        (activity as AppCompatActivity).apply {
             supportActionBar?.let {
                 it.setTitle(R.string.profile)
                 it.setDisplayHomeAsUpEnabled(false)

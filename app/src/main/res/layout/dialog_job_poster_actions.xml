@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_backgrd_round1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/btn_edit_job"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/edit_job_posting" />
+
+    <TextView
+        android:id="@+id/btn_unpublish_job"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/unpublish_job" />
+
+    <TextView
+        android:id="@+id/btn_delete_job_posting"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/delete_job_posting" />
+
+</LinearLayout>

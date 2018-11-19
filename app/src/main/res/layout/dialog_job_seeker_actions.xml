@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/shape_backgrd_round1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/btn_share_via_message"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/share_via_message" />
+
+    <TextView
+        android:id="@+id/btn_share_to_groups"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/share_groups" />
+
+    <TextView
+        android:id="@+id/btn_report_job_posting"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/report_job_posting" />
+
+</LinearLayout>

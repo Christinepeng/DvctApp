@@ -17,7 +17,11 @@ import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupFragment
 import com.divercity.app.features.jobposting.skills.JobSkillsFragment
 import com.divercity.app.features.jobs.TabJobsFragment
+import com.divercity.app.features.jobs.description.TabJobDescriptionFragment
 import com.divercity.app.features.jobs.descriptionseeker.JobDescriptionSeekerFragment
+import com.divercity.app.features.jobs.descriptionseeker.aboutcompany.TabAboutCompanyFragment
+import com.divercity.app.features.jobs.descriptionseeker.module.JobDescriptionSeekerModule
+import com.divercity.app.features.jobs.descriptionseeker.similarjobs.SimilarJobsFragment
 import com.divercity.app.features.jobs.jobs.JobsListFragment
 import com.divercity.app.features.jobs.module.JobsModule
 import com.divercity.app.features.jobs.mypostings.JobsMyPostingsFragment
@@ -157,6 +161,15 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindMyGroupsFragment (): MyGroupsFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [JobDescriptionSeekerModule::class])
     abstract fun bindJobDescriptionSeekerFragment (): JobDescriptionSeekerFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTabJobDescriptionFragment (): TabJobDescriptionFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTabAboutCompanyFragment (): TabAboutCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSimilarJobsFragment (): SimilarJobsFragment
 }

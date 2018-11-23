@@ -4,11 +4,13 @@ import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.util.SparseArray
+import android.view.ViewGroup
 
 import com.divercity.app.R
 import com.divercity.app.features.jobs.applications.JobsApplicationsFragment
 import com.divercity.app.features.jobs.jobs.JobsListFragment
-import com.divercity.app.features.jobs.mypostings.JobsMyPostingsFragment
+import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
 import com.divercity.app.features.jobs.saved.SavedJobsFragment
 import com.divercity.app.repository.user.UserRepository
 
@@ -27,11 +29,13 @@ class TabJobsViewPagerAdapter
 
     private val PAGE_COUNT = 3
 
+    private var registeredFragments = SparseArray<Fragment>()
+
     // Tab titles
     private val tabTitlesRecruiter: Array<String> = arrayOf(
-            context.getString(R.string.applications),
             context.getString(R.string.my_postings),
-            context.getString(R.string.jobs)
+            context.getString(R.string.jobs),
+            context.getString(R.string.saved)
     )
 
 
@@ -62,9 +66,9 @@ class TabJobsViewPagerAdapter
 
     private fun getFragmentsRecruiter(position: Int): Fragment {
         return when (position) {
-            0 -> JobsApplicationsFragment.newInstance()
-            1 -> JobsMyPostingsFragment.newInstance()
-            else -> JobsListFragment.newInstance()
+            0 -> MyJobsPostingsFragment.newInstance()
+            1 -> JobsListFragment.newInstance()
+            else -> SavedJobsFragment.newInstance()
         }
     }
 
@@ -80,5 +84,21 @@ class TabJobsViewPagerAdapter
             tabTitlesJobSeeker[position]
         else
             tabTitlesRecruiter[position]
+    }
+
+
+    override fun instantiateItem(container: ViewGroup, position: Int): Any {
+        val fragment = super.instantiateItem(container, position) as Fragment
+        registeredFragments.put(position, fragment)
+        return fragment
+    }
+
+    override fun destroyItem(container: ViewGroup, position: Int, `object`: Any) {
+        registeredFragments.remove(position)
+        super.destroyItem(container, position, `object`)
+    }
+
+    fun getRegisteredFragment(position: Int): Fragment {
+        return registeredFragments.get(position)
     }
 }

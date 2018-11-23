@@ -14,7 +14,8 @@ import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
 import com.divercity.app.features.jobposting.skills.JobSkillsActivity
-import com.divercity.app.features.jobs.descriptionseeker.JobDescriptionSeekerActivity
+import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterActivity
+import com.divercity.app.features.jobs.description.seeker.JobDescriptionSeekerActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
 import com.divercity.app.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
@@ -150,6 +151,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToShareJobGroupActivity(fragment: Fragment, jobId : String?) {
         fragment.startActivity(ShareJobGroupActivity.getCallingIntent(fragment.context, jobId))
+    }
+
+    fun navigateToJobDescriptionPosterActivity(fragment: Fragment, job : JobResponse) {
+        fragment.startActivity(JobDescriptionPosterActivity.getCallingIntent(fragment.context, job))
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,

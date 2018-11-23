@@ -49,6 +49,24 @@
         <item name="android:textSize">15sp</item>
     </style>
 
+    <style name="AppText4" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avenir_heavy</item>
+        <item name="android:textColor">@color/grey2</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="AppText5" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avenir_book</item>
+        <item name="android:textColor">@color/grey3</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="AppText6" parent="TextAppearance.AppCompat">
+        <item name="android:fontFamily">@font/avenir_book</item>
+        <item name="android:textColor">@color/grey2</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
     <style name="AppText.White" parent="AppText">
         <item name="android:textColor">@android:color/white</item>
     </style>

@@ -9,10 +9,11 @@ import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.NetworkStateViewHolder
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.repository.user.UserRepository
 import javax.inject.Inject
 
 class JobsAdapter @Inject
-constructor() : PagedListAdapter<JobResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+constructor(val userRepository: UserRepository) : PagedListAdapter<JobResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -28,7 +29,7 @@ constructor() : PagedListAdapter<JobResponse, RecyclerView.ViewHolder>(userDiffC
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_img_text -> JobsViewHolder.create(parent, listener)
+            R.layout.item_job -> JobsViewHolder.create(parent, listener, userRepository.isLoggedUserJobSeeker())
             R.layout.view_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type")
         }
@@ -36,7 +37,7 @@ constructor() : PagedListAdapter<JobResponse, RecyclerView.ViewHolder>(userDiffC
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_img_text -> (holder as JobsViewHolder).bindTo(position, getItem(position))
+            R.layout.item_job -> (holder as JobsViewHolder).bindTo(position, getItem(position))
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
     }
@@ -49,7 +50,7 @@ constructor() : PagedListAdapter<JobResponse, RecyclerView.ViewHolder>(userDiffC
         return if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
         } else {
-            R.layout.item_img_text
+            R.layout.item_job
         }
     }
 

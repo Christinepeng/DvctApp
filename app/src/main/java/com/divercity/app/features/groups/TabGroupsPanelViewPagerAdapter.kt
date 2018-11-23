@@ -1,13 +1,16 @@
 package com.divercity.app.features.groups
 
-import android.content.Context
+import android.support.v4.content.ContextCompat
 import android.support.v4.view.PagerAdapter
 import android.support.v4.view.ViewPager
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.divercity.app.R
-import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.core.utils.GlideApp
+import com.divercity.app.data.entity.group.recommendedgroups.RecommendationItem
+import kotlinx.android.synthetic.main.view_pager_panel_group.view.*
 import javax.inject.Inject
 
 /**
@@ -15,15 +18,17 @@ import javax.inject.Inject
  */
 
 class TabGroupsPanelViewPagerAdapter @Inject
-constructor(private val context: Context) : PagerAdapter() {
+constructor() : PagerAdapter() {
     private var layoutInflater: LayoutInflater? = null
-    private var list: List<JobResponse>? = null
+    private var list: List<RecommendationItem>? = null
+    var listener: Listener? = null
+    lateinit var viewGroup : ViewGroup
 
     override fun getCount(): Int {
         return list?.size ?: 0
     }
 
-    fun setList(list: List<JobResponse>) {
+    fun setList(list: List<RecommendationItem>?) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -33,50 +38,63 @@ constructor(private val context: Context) : PagerAdapter() {
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
-       val item = list?.let {
-           it[position]
-       }
-        layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        viewGroup = container
+        val item = list?.let {
+            it[position]
+        }
+        layoutInflater = LayoutInflater.from(container.context)
         val view = layoutInflater!!.inflate(R.layout.view_pager_panel_group, null)
 
-//        item?.also {
-//            try {
-//                view.img.visibility = View.VISIBLE
-//                val urlMain = data.attributes.pictureMain
-//                GlideApp.with(itemView.context)
-//                    .load(urlMain)
-//                    .apply(RequestOptions().transforms(RoundedCorners(16)))
-//                    .into(itemView.item_group_img)
-//            } catch (e: NullPointerException) {
-//                itemView.item_group_img.visibility = View.GONE
-//            }
-//
-//            itemView.item_group_txt_title.setText(data.attributes.title)
-//            itemView.item_group_txt_members.setText(data.attributes.followersCount.toString() + " Members")
-//
-//            if (data.attributes.isIsFollowedByCurrent) {
-//                itemView.item_group_btn_join_member.setOnClickListener(null)
-//                itemView.item_group_btn_join_member.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-//                itemView.item_group_btn_join_member.setTextColor(itemView.context.resources.getColor(R.color.appBlue))
-//                itemView.item_group_btn_join_member.setText("Member")
-//            } else {
-//                itemView.item_group_btn_join_member.setOnClickListener { listener?.onGroupJoinClick(position, data) }
-//                itemView.item_group_btn_join_member.setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-//                itemView.item_group_btn_join_member.setTextColor(itemView.context.resources.getColor(android.R.color.white))
-//                itemView.item_group_btn_join_member.setText("Join")
-//            }
-//            itemView.item_group_btn_join_member.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-//        }
+        item?.also { item ->
+            GlideApp.with(container)
+                    .load(item.pictureMain)
+                    .into(view.img_group)
+
+            view.txt_title.text = item.title
+            view.txt_members.text = item.followersCount.toString().plus(" Members")
+
+            if (item.isIsFollowedByCurrent) {
+                view.btn_join.setOnClickListener(null)
+                view.btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                view.btn_join.setTextColor(ContextCompat.getColor(container.context, R.color.appBlue))
+                view.btn_join.text = "Member"
+            } else {
+                view.btn_join.setOnClickListener {
+                    listener?.onBtnJoinClicked(item?.id, position)
+                }
+                view.btn_join.setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
+                view.btn_join.setTextColor(ContextCompat.getColor(container.context, android.R.color.white))
+                view.btn_join.text = "Join"
+            }
+            view.btn_join.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+        }
 
         val vp = container as ViewPager
         vp.addView(view, 0)
+        view.tag = position
         return view
-
     }
+
+    fun updateView(position: Int){
+        val view : View = viewGroup.findViewWithTag(position)
+        list?.get(position)?.isIsFollowedByCurrent = true
+
+        view?.apply {
+            btn_join.setOnClickListener(null)
+            btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+            btn_join.setTextColor(ContextCompat.getColor(view.context, R.color.appBlue))
+            btn_join.text = "Member"
+        }
+    }
+
 
     override fun destroyItem(container: ViewGroup, position: Int, any: Any) {
         val vp = container as ViewPager
         val view = any as View
         vp.removeView(view)
+    }
+
+    interface Listener {
+        fun onBtnJoinClicked(jobId: Int?, position: Int)
     }
 }

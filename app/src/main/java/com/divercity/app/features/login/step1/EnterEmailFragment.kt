@@ -2,7 +2,6 @@ package com.divercity.app.features.login.step1
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -12,6 +11,7 @@ import android.widget.Toast
 import com.divercity.app.AppConstants
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.core.ui.ViewPagerDotsPanel
 import com.divercity.app.data.Status
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
@@ -121,11 +121,7 @@ class EnterEmailFragment : BaseFragment() {
 
         handlerViewPager.postDelayed({
             viewPager.currentItem = if (viewPager.currentItem == 0) 1 else 0
-        }, AppConstants.ONBOARDING_PAGES_DELAY)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        viewModel.onActivityResult(requestCode, resultCode, data)
+        }, AppConstants.CAROUSEL_PAGES_DELAY)
     }
 
     override fun onDestroyView() {

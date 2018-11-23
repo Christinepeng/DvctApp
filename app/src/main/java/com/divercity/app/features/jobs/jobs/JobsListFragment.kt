@@ -4,10 +4,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
-import android.support.v7.widget.SearchView
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import com.divercity.app.R
@@ -15,6 +11,8 @@ import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.app.features.jobs.ITabJobs
 import com.divercity.app.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.app.features.jobs.jobs.adapter.JobsViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
@@ -24,7 +22,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class JobsListFragment : BaseFragment(), RetryCallback {
+class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: JobsListViewModel
 
@@ -32,7 +30,7 @@ class JobsListFragment : BaseFragment(), RetryCallback {
     lateinit var adapter: JobsAdapter
 
     private var isListRefreshing = false
-    private var positionSaveUnsavedClicked: Int = 0
+    private var positionApplyClicked: Int = 0
 
     companion object {
 
@@ -48,7 +46,6 @@ class JobsListFragment : BaseFragment(), RetryCallback {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(JobsListViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -78,9 +75,9 @@ class JobsListFragment : BaseFragment(), RetryCallback {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    adapter.currentList?.get(positionSaveUnsavedClicked)?.attributes?.isBookmarkedByCurrent =
+                    adapter.currentList?.get(positionApplyClicked)?.attributes?.isBookmarkedByCurrent =
                             job.data?.attributes?.isBookmarkedByCurrent
-                    adapter.notifyItemChanged(positionSaveUnsavedClicked)
+                    adapter.notifyItemChanged(positionApplyClicked)
                 }
             }
         })
@@ -93,6 +90,10 @@ class JobsListFragment : BaseFragment(), RetryCallback {
             it?.let { job ->
                 navigator.navigateToJobDescriptionSeekerActivity(activity!!, job)
             }
+        })
+
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+            subscribeToPaginatedLiveData()
         })
     }
 
@@ -145,67 +146,24 @@ class JobsListFragment : BaseFragment(), RetryCallback {
         viewModel.retry()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu_search, menu)
-        val searchItem: MenuItem = menu.findItem(R.id.action_search)
-        val searchView: SearchView = searchItem.actionView as SearchView
-        searchView.queryHint = getString(R.string.search)
-
-        viewModel.strSearchQuery.let {
-            if (it != "") {
-                searchItem.expandActionView()
-                searchView.setQuery(it, true)
-                searchView.clearFocus()
-            }
-        }
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                viewModel.strSearchQuery = query ?: ""
-                viewModel.fetchJobs(query)
-                subscribeToPaginatedLiveData()
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
-
-        searchItem.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                if (viewModel.strSearchQuery != "") {
-                    viewModel.fetchJobs(null)
-                    viewModel.strSearchQuery = ""
-                    subscribeToPaginatedLiveData()
-                }
-                return true
-            }
-        })
-
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
     private val listener: JobsViewHolder.Listener = object : JobsViewHolder.Listener {
 
-        override fun onSaveUnsavedClick(position: Int, job: JobResponse) {
-            positionSaveUnsavedClicked = position
-            job.attributes?.isBookmarkedByCurrent?.let {
-                if (it)
-                    viewModel.removeSavedJob(job)
-                else
-                    viewModel.saveJob(job)
-            }
+        override fun onApplyClick(position: Int, job: JobResponse) {
+            positionApplyClicked = position
+            showJobApplyDialog()
         }
 
         override fun onJobClick(job: JobResponse) {
             viewModel.onJobClickNavigateToNext(job)
         }
+    }
+
+    private fun showJobApplyDialog() {
+        val dialog = JobApplyDialogFragment.newInstance()
+        dialog.show(childFragmentManager, null)
+    }
+
+    override fun fetchJobs(searchQuery: String?) {
+        viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
     }
 }

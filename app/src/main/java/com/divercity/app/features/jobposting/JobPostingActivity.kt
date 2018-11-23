@@ -19,8 +19,4 @@ class JobPostingActivity : BaseActivity(){
     }
 
     override fun fragment(): BaseFragment = JobPostingFragment.newInstance()
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-    }
 }

@@ -22,6 +22,10 @@ interface LoggedUserRepository {
 
     fun getUid(): String?
 
+    fun setAvatarThumbUrl(url: String?)
+
+    fun getAvatarThumbUrl(): String?
+
     fun setAvatarUrl(url: String?)
 
     fun getAvatarUrl(): String?
@@ -29,6 +33,10 @@ interface LoggedUserRepository {
     fun setUserId(userId: String?)
 
     fun getUserId(): String?
+
+    fun setFullName(userName: String?)
+
+    fun getFullName(): String?
 
     fun setAccountType(accountType: String?)
 
@@ -41,4 +49,6 @@ interface LoggedUserRepository {
     fun saveUserHeaderData(response : Response<DataObject<LoginResponse>>)
 
     fun saveUserData(data : DataObject<LoginResponse>?)
+
+    fun isLoggedUserJobSeeker() : Boolean
 }

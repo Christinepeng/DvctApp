@@ -43,4 +43,10 @@ class ApiServiceModule {
     fun provideJobService(@Named("auth") retrofit: Retrofit): JobService {
         return retrofit.create(JobService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideDocumentsService(@Named("auth") retrofit: Retrofit): DocumentService {
+        return retrofit.create(DocumentService::class.java)
+    }
 }

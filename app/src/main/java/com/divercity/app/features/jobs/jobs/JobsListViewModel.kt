@@ -1,6 +1,7 @@
 package com.divercity.app.features.jobs.jobs
 
 import android.app.Application
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
 import com.divercity.app.R
@@ -29,28 +30,45 @@ constructor(private val context: Application,
             private val removeSavedJobUseCase: RemoveSavedJobUseCase,
             private val saveJobUseCase: SaveJobUseCase) : BaseViewModel() {
 
+    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
     var navigateToJobSeekerDescription = SingleLiveEvent<JobResponse>()
     var navigateToJobRecruiterDescription = SingleLiveEvent<JobResponse>()
-    var pagedJobsList: LiveData<PagedList<JobResponse>>? = null
-    var listingPaginatedJob: Listing<JobResponse>? = null
-    var strSearchQuery: String = ""
+    lateinit var pagedJobsList: LiveData<PagedList<JobResponse>>
+    private lateinit var listingPaginatedJob: Listing<JobResponse>
+    private var lastSearch: String? = null
 
     init {
-        fetchJobs(null)
+        fetchJobs(null, "")
     }
 
-    fun networkState(): LiveData<NetworkState> = listingPaginatedJob!!.networkState
+    fun networkState(): LiveData<NetworkState> = listingPaginatedJob.networkState
 
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedJob!!.refreshState
+    fun refreshState(): LiveData<NetworkState> = listingPaginatedJob.refreshState
 
     fun retry() = repository.retry()
 
     fun refresh() = repository.refresh()
 
-    fun fetchJobs(searchQuery: String?) {
-        listingPaginatedJob = repository.fetchData(searchQuery)
-        pagedJobsList = listingPaginatedJob?.pagedList
+    fun fetchJobs(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
+        searchQuery?.let {
+            if (it != lastSearch) {
+                lastSearch = it
+                listingPaginatedJob = repository.fetchData(searchQuery)
+                pagedJobsList = listingPaginatedJob.pagedList
+
+                lifecycleOwner?.let { lifecycleOwner ->
+                    removeObservers(lifecycleOwner)
+                    subscribeToPaginatedLiveData.call()
+                }
+            }
+        }
+    }
+
+    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
+        networkState().removeObservers(lifecycleOwner)
+        refreshState().removeObservers(lifecycleOwner)
+        pagedJobsList.removeObservers(lifecycleOwner)
     }
 
     fun saveJob(jobData: JobResponse) {

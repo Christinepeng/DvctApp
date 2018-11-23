@@ -1,8 +1,10 @@
 package com.divercity.app.data.networking.services;
 
 import com.divercity.app.data.entity.base.DataArray;
+import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.company.CompanyResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
+import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
@@ -38,6 +40,9 @@ public interface DataService {
     Observable<DataArray<MajorResponse>> fetchStudentMajors(@Query("page[number]") int pageNumber,
                                                             @Query("page[size]") int size,
                                                             @Query("search_query") String query);
+
+    @GET("stories/recommended_groups")
+    Observable<DataObject<RecommendedGroupsResponse>> fetchRecommendedGroups();
 
     @GET("group_of_interests/onboarding")
     Observable<DataArray<GroupResponse>> fetchGroups(@Query("page[number]") int pageNumber,

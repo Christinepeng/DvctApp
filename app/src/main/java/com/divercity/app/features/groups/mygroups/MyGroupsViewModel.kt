@@ -1,5 +1,6 @@
 package com.divercity.app.features.groups.mygroups
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
 import com.divercity.app.core.base.BaseViewModel
@@ -22,13 +23,14 @@ class MyGroupsViewModel @Inject
 constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
             private val joinGroupUseCase: JoinGroupUseCase) : BaseViewModel() {
 
+    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var joinGroupResponse = SingleLiveEvent<Resource<GroupResponse>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
     var lastSearch: String? = null
 
     init {
-        fetchGroups("")
+        fetchGroups(null,"")
     }
 
     fun networkState(): LiveData<NetworkState> = listingPaginatedGroup.networkState
@@ -39,15 +41,26 @@ constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
 
     fun refresh() = repository.refresh()
 
-    fun fetchGroups(searchQuery: String?) {
+    fun fetchGroups(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
         searchQuery?.let {
             if (it != lastSearch) {
                 lastSearch = it
                 repository.compositeDisposable.clear()
                 listingPaginatedGroup = repository.fetchData(searchQuery)
                 pagedGroupList = listingPaginatedGroup.pagedList
+
+                lifecycleOwner?.let { lifecycleOwner ->
+                    removeObservers(lifecycleOwner)
+                    subscribeToPaginatedLiveData.call()
+                }
             }
         }
+    }
+
+    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
+        networkState().removeObservers(lifecycleOwner)
+        refreshState().removeObservers(lifecycleOwner)
+        pagedGroupList.removeObservers(lifecycleOwner)
     }
 
     fun joinGroup(group: GroupResponse) {

@@ -16,6 +16,7 @@ import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
 import com.divercity.app.features.dialogs.CustomOneBtnDialogFragment
+import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.home.home.featured.FeaturedAdapter
 import com.divercity.app.features.home.home.feed.adapter.FeedAdapter
@@ -28,7 +29,7 @@ import javax.inject.Inject
  */
 
 
-class HomeFragment : BaseFragment(), RetryCallback {
+class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: HomeViewModel
 

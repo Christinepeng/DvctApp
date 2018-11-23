@@ -32,6 +32,8 @@ class DivercityApp : Application(), HasActivityInjector {
     override fun onCreate() {
         super.onCreate()
 
+//        LeakCanary.install(this)
+
         if(BuildConfig.ENABLE_CRASHLYTICS)
             Fabric.with(this, Crashlytics())
 

@@ -46,7 +46,7 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
         try {
             cardViewImgMainContainer.setVisibility(View.VISIBLE);
             String urlMain = data.getAttributes().getPictureMain();
-            GlideApp.with(itemView.getContext())
+            GlideApp.with(itemView)
                     .load(urlMain)
                     .into(imgMainPicture);
         } catch (NullPointerException e) {
@@ -56,13 +56,13 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
 
         String urlImgAuthor = data.getAttributes().getAuthorInfo().getAvatarMedium();
         if (urlImgAuthor != null)
-            GlideApp.with(itemView.getContext())
+            GlideApp.with(itemView)
                     .load(data.getAttributes().getAuthorInfo().getAvatarMedium())
                     .apply(new RequestOptions().circleCrop())
                     .into(mImgAuthor);
         try {
             String urlImgAnswerAuthor = data.getAttributes().getLastActivityInfo().getAuthorInfo().getAvatarThumb();
-            GlideApp.with(itemView.getContext())
+            GlideApp.with(itemView)
                     .load(urlImgAnswerAuthor).into(mImgAnswerAuthor);
         } catch (NullPointerException e) {
             mImgAnswerAuthor.setImageResource(R.drawable.tab_profile_inactive);

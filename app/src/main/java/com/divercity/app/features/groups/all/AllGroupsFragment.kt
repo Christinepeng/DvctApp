@@ -12,7 +12,6 @@ import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.features.groups.ITabsGroups
-import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.adapter.GroupsAdapter
 import com.divercity.app.features.groups.adapter.GroupsViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
@@ -26,8 +25,6 @@ import javax.inject.Inject
 class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
     lateinit var viewModel: AllGroupsViewModel
-
-    lateinit var tabViewModel: TabGroupsViewModel
 
     @Inject
     lateinit var adapter: GroupsAdapter
@@ -49,10 +46,6 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(AllGroupsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-
-        tabViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(TabGroupsViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,11 +54,11 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         adapter.setListener(listener)
         list.adapter = adapter
         initSwipeToRefresh()
-        subscribeToJoinLiveData()
+        subscribeToLiveData()
         subscribeToPaginatedLiveData()
     }
 
-    private fun subscribeToJoinLiveData() {
+    private fun subscribeToLiveData() {
         viewModel.onJoinGroupResponse.observe(viewLifecycleOwner, Observer {
             it?.getContentIfNotHandled()?.let { group ->
                 when (group.status) {
@@ -83,6 +76,10 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                     }
                 }
             }
+        })
+
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+            subscribeToPaginatedLiveData()
         })
     }
 
@@ -106,9 +103,6 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                 else {
                     txt_no_results.visibility = View.GONE
                 }
-
-                if (networkState?.status == Status.SUCCESS && pagedList.size != 0)
-                    viewModel.selectFiveRandomGroups(pagedList)
 
                 swipe_list_main.isRefreshing = isListRefreshing
             }
@@ -148,6 +142,5 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
     override fun fetchGroups(searchQuery: String?) {
         viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
-        subscribeToPaginatedLiveData()
     }
 }

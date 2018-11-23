@@ -15,7 +15,7 @@ class ShareJobGroupViewHolder private constructor(itemView: View, private val li
         try {
             itemView.item_group_img.visibility = View.VISIBLE
             val urlMain = data.attributes.pictureMain
-            GlideApp.with(itemView.context)
+            GlideApp.with(itemView)
                     .load(urlMain).into(itemView.item_group_img)
         } catch (e: NullPointerException) {
             itemView.item_group_img.visibility = View.GONE

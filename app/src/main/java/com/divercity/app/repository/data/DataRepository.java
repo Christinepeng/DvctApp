@@ -1,8 +1,10 @@
 package com.divercity.app.repository.data;
 
 import com.divercity.app.data.entity.base.DataArray;
+import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.company.CompanyResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
+import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
@@ -26,6 +28,8 @@ public interface DataRepository {
     Observable<DataArray<MajorResponse>> fetchMajors(int page, int size, String query);
 
     Observable<DataArray<GroupResponse>> fetchGroups(int page, int size, String query);
+
+    Observable<DataObject<RecommendedGroupsResponse>>fetchRecommendedGroups();
 
     Observable<DataArray<GroupResponse>> fetchFollowedGroups(int page, int size, String query);
 

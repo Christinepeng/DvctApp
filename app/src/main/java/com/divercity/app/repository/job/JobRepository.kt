@@ -23,9 +23,13 @@ interface JobRepository {
 
     fun fetchSavedJobs(page: Int, size: Int, query : String?): Observable<IncludedArray<JobResponse>>
 
+    fun fetchMyJobApplications(page: Int, size: Int, query : String?): Observable<IncludedArray<JobResponse>>
+
     fun fetchJobTypes(): Observable<List<JobTypeResponse>>
 
     fun postJob(body : JobBody): Observable<DataObject<JobResponse>>
 
     fun shareJob(jobId: String, body : JobShareGroupBody): Observable<JobResponse>
+
+    fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<DataArray<JobResponse>>
 }

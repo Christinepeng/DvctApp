@@ -55,10 +55,10 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         list.adapter = adapter
         initSwipeToRefresh()
         subscribeToPaginatedLiveData()
-        subscribeToJoinLiveData()
+        subscribeToLiveData()
     }
 
-    private fun subscribeToJoinLiveData() {
+    private fun subscribeToLiveData() {
         viewModel.joinGroupResponse.observe(this, Observer { school ->
             when (school?.status) {
                 Status.LOADING -> showProgress()
@@ -74,6 +74,10 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                     adapter.notifyItemChanged(positionJoinClicked)
                 }
             }
+        })
+
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+            subscribeToPaginatedLiveData()
         })
     }
 
@@ -142,7 +146,6 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     }
 
     override fun fetchGroups(searchQuery: String?) {
-        viewModel.fetchGroups(searchQuery)
-        subscribeToPaginatedLiveData()
+        viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
     }
 }

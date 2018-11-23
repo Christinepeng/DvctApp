@@ -3,6 +3,7 @@ package com.divercity.app.di.viewmodel
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.company.base.SelectCompanyViewModel
+import com.divercity.app.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.all.AllGroupsViewModel
 import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
@@ -14,9 +15,12 @@ import com.divercity.app.features.jobposting.jobtype.JobTypeViewModel
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupViewModel
 import com.divercity.app.features.jobposting.skills.JobSkillsViewModel
 import com.divercity.app.features.jobs.TabJobsViewModel
-import com.divercity.app.features.jobs.descriptionseeker.JobDescriptionSeekerViewModel
+import com.divercity.app.features.jobs.applicants.JobApplicantsViewModel
+import com.divercity.app.features.jobs.applications.JobsApplicationsViewModel
+import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterViewModel
+import com.divercity.app.features.jobs.description.seeker.JobDescriptionSeekerViewModel
 import com.divercity.app.features.jobs.jobs.JobsListViewModel
-import com.divercity.app.features.jobs.mypostings.JobsMyPostingsViewModel
+import com.divercity.app.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.app.features.jobs.saved.SavedJobsViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
 import com.divercity.app.features.location.base.SelectLocationViewModel
@@ -136,8 +140,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(JobsMyPostingsViewModel::class)
-    abstract fun bindsMyPostingsViewModel(viewModelJobs: JobsMyPostingsViewModel): ViewModel
+    @ViewModelKey(MyJobsPostingsViewModel::class)
+    abstract fun bindsMyPostingsViewModel(viewModelJobs: MyJobsPostingsViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -203,4 +207,25 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(JobDescriptionSeekerViewModel::class)
     abstract fun bindsJobDescriptionSeekerViewModel(viewModel: JobDescriptionSeekerViewModel): ViewModel
+
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobDescriptionPosterViewModel::class)
+    abstract fun bindsJobDescriptionPosterViewModel(viewModel: JobDescriptionPosterViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobsApplicationsViewModel::class)
+    abstract fun bindsJobsApplicationsViewModel(viewModel: JobsApplicationsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobApplicantsViewModel::class)
+    abstract fun bindsJobApplicantsViewModel(viewModel: JobApplicantsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobApplyDialogViewModel::class)
+    abstract fun bindsJobApplyDialogViewModel(viewModel: JobApplyDialogViewModel): ViewModel
 }

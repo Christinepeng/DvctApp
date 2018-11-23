@@ -1,18 +1,17 @@
 package com.divercity.app.features.jobs.saved
 
+import android.app.Application
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PagedList
+import com.divercity.app.R
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Listing
-import com.divercity.app.data.Resource
+import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.entity.job.response.JobResponse
-import com.divercity.app.data.networking.config.DisposableObserverWrapper
-import com.divercity.app.features.jobs.jobs.usecase.RemoveSavedJobUseCase
-import com.divercity.app.features.jobs.jobs.usecase.SaveJobUseCase
 import com.divercity.app.features.jobs.saved.job.SavedJobPaginatedRepositoryImpl
-import com.google.gson.JsonElement
+import com.divercity.app.repository.user.UserRepository
 import javax.inject.Inject
 
 /**
@@ -20,67 +19,57 @@ import javax.inject.Inject
  */
 
 class SavedJobsViewModel @Inject
-constructor(private val repository: SavedJobPaginatedRepositoryImpl,
-            private val removeSavedJobUseCase: RemoveSavedJobUseCase,
-            private val saveJobUseCase: SaveJobUseCase) : BaseViewModel() {
+constructor(private val context: Application,
+            private val repository: SavedJobPaginatedRepositoryImpl,
+            private val userRepository: UserRepository) : BaseViewModel() {
 
-    var jobResponse = MutableLiveData<Resource<JobResponse>>()
-    var pagedJobsList: LiveData<PagedList<JobResponse>>? = null
-    var listingPaginatedJob: Listing<JobResponse>? = null
-    var strSearchQuery : String? = null
+    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
+    var navigateToJobSeekerDescription = SingleLiveEvent<JobResponse>()
+    var navigateToJobRecruiterDescription = SingleLiveEvent<JobResponse>()
+    lateinit var pagedJobsList: LiveData<PagedList<JobResponse>>
+    private lateinit var listingPaginatedJob: Listing<JobResponse>
+    private var lastSearch: String? = null
 
     init {
-        fetchJobs(null)
+        fetchJobs(null, "")
     }
 
-    fun networkState(): LiveData<NetworkState> = listingPaginatedJob!!.networkState
+    fun networkState(): LiveData<NetworkState> = listingPaginatedJob.networkState
 
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedJob!!.refreshState
+    fun refreshState(): LiveData<NetworkState> = listingPaginatedJob.refreshState
 
     fun retry() = repository.retry()
 
     fun refresh() = repository.refresh()
 
-    fun fetchJobs(searchQuery : String?) {
-        listingPaginatedJob = repository.fetchData(searchQuery)
-        pagedJobsList = listingPaginatedJob?.pagedList
-    }
+    fun fetchJobs(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
+        searchQuery?.let {
+            if (it != lastSearch) {
+                lastSearch = it
+                listingPaginatedJob = repository.fetchData(searchQuery)
+                pagedJobsList = listingPaginatedJob.pagedList
 
-    fun saveJob(jobData: JobResponse) {
-        jobResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<JobResponse>() {
-            override fun onFail(error: String) {
-                jobResponse.postValue(Resource.error(error, null))
-            }
-
-            override fun onHttpException(error: JsonElement) {
-                jobResponse.postValue(Resource.error(error.toString(), null))
-            }
-
-            override fun onSuccess(o: JobResponse) {
-                jobResponse.postValue(Resource.success(o))
+                lifecycleOwner?.let { lifecycleOwner ->
+                    removeObservers(lifecycleOwner)
+                    subscribeToPaginatedLiveData.call()
+                }
             }
         }
-        compositeDisposable.add(callback)
-        saveJobUseCase.execute(callback, SaveJobUseCase.Params.forJobs(jobData.id!!))
     }
 
-    fun removeSavedJob(jobData: JobResponse) {
-        jobResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<JobResponse>() {
-            override fun onFail(error: String) {
-                jobResponse.postValue(Resource.error(error, null))
-            }
+    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
+        networkState().removeObservers(lifecycleOwner)
+        refreshState().removeObservers(lifecycleOwner)
+        pagedJobsList.removeObservers(lifecycleOwner)
+    }
 
-            override fun onHttpException(error: JsonElement) {
-                jobResponse.postValue(Resource.error(error.toString(), null))
-            }
-
-            override fun onSuccess(o: JobResponse) {
-                jobResponse.postValue(Resource.success(o))
-            }
-        }
-        compositeDisposable.add(callback)
-        removeSavedJobUseCase.execute(callback, RemoveSavedJobUseCase.Params.forJobs(jobData.id!!))
+    fun onJobClickNavigateToNext(job : JobResponse) {
+        if (userRepository.getAccountType() != null &&
+                (userRepository.getAccountType().equals(context.getString(R.string.hiring_manager_id)) ||
+                        userRepository.getAccountType().equals(context.getString(R.string.recruiter_id)))
+        )
+            navigateToJobRecruiterDescription.value = job
+        else
+            navigateToJobSeekerDescription.value = job
     }
 }

@@ -38,7 +38,7 @@ public class GroupsViewHolder extends RecyclerView.ViewHolder {
         try {
             imgMain.setVisibility(View.VISIBLE);
             String urlMain = data.getAttributes().getPictureMain();
-            GlideApp.with(itemView.getContext())
+            GlideApp.with(itemView)
                     .load(urlMain)
                     .apply(new RequestOptions().transforms(new RoundedCorners(16)))
                     .into(imgMain);

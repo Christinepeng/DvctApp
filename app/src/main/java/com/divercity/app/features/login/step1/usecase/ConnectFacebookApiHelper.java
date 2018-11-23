@@ -53,7 +53,7 @@ public class ConnectFacebookApiHelper {
                                 new GraphRequest.GraphJSONObjectCallback() {
                                     @Override
                                     public void onCompleted(JSONObject object, GraphResponse response) {
-                                        Log.v("JobDescriptionSeekerActivity", response.toString());
+                                        Log.v("JobDescriptionPosterActivity", response.toString());
                                         SocialLoginEntity socialLoginEntity = new SocialLoginEntity();
                                         try {
                                             socialLoginEntity.setProvider("facebook");

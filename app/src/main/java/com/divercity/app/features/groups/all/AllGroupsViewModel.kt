@@ -8,6 +8,7 @@ import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Event
 import com.divercity.app.core.utils.Listing
+import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
@@ -22,15 +23,15 @@ import javax.inject.Inject
 
 class AllGroupsViewModel @Inject
 constructor(
-    private val repository: AllGroupsPaginatedRepositoryImpl,
-    private val joinGroupUseCase: JoinGroupUseCase
+        private val repository: AllGroupsPaginatedRepositoryImpl,
+        private val joinGroupUseCase: JoinGroupUseCase
 ) : BaseViewModel() {
 
+    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     private var joinGroupResponse = MutableLiveData<Event<Resource<GroupResponse>>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
     private var lastSearch: String? = null
-    var listSlidingGroups = MutableLiveData<List<GroupResponse>>()
 
     val onJoinGroupResponse: LiveData<Event<Resource<GroupResponse>>>
         get() = joinGroupResponse
@@ -50,19 +51,20 @@ constructor(
     fun fetchGroups(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
         searchQuery?.let {
             if (it != lastSearch) {
-                lifecycleOwner?.let { lifecycleOwner ->
-                    removeObservers(lifecycleOwner)
-                }
-
                 lastSearch = it
                 repository.compositeDisposable.clear()
                 listingPaginatedGroup = repository.fetchData(if (it == "") null else it)
                 pagedGroupList = listingPaginatedGroup.pagedList
+
+                lifecycleOwner?.let { lifecycleOwner ->
+                    removeObservers(lifecycleOwner)
+                    subscribeToPaginatedLiveData.call()
+                }
             }
         }
     }
 
-    fun removeObservers(lifecycleOwner: LifecycleOwner) {
+    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
         networkState().removeObservers(lifecycleOwner)
         refreshState().removeObservers(lifecycleOwner)
         pagedGroupList.removeObservers(lifecycleOwner)
@@ -85,15 +87,5 @@ constructor(
         }
         compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
-    }
-
-    fun selectFiveRandomGroups(groups : PagedList<GroupResponse>){
-//        if(listSlidingGroups.value == null || listSlidingGroups.value?.size == 0){
-//            var listSelected = ArrayList<GroupResponse>()
-//
-//            while(listSelected.size != 4){
-//                groups.get()
-//            }
-//        }
     }
 }

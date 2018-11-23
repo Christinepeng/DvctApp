@@ -1,6 +1,7 @@
 package com.divercity.app.repository.user
 
 import android.content.Context
+import com.divercity.app.R
 import com.divercity.app.core.sharedpref.SharedPreferencesManager
 import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.login.response.LoginResponse
@@ -10,7 +11,7 @@ import retrofit2.Response
  * Created by lucas on 24/10/2018.
  */
 
-class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
+class LoggedUserRepositoryImpl(val context: Context) : LoggedUserRepository {
 
     private val USER_PREF_NAME = "USER_PREF_NAME"
 
@@ -18,12 +19,17 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         ACCESS_TOKEN,
         CLIENT,
         UID,
-        AVATAR_URL,
+        AVATAR_THUMB_URL,
+        AVATAR_MED_URL,
+        OCCUPATION,
+        LOCATION,
+        FULL_NAME,
         USER_ID,
         ACCOUNT_TYPE
     }
 
-    private val sharedPreferencesManager: SharedPreferencesManager<Key> = SharedPreferencesManager(context, USER_PREF_NAME)
+    private val sharedPreferencesManager: SharedPreferencesManager<Key> =
+            SharedPreferencesManager(context, USER_PREF_NAME)
 
     override fun setAccessToken(token: String?) {
         sharedPreferencesManager.put(Key.ACCESS_TOKEN, token)
@@ -49,12 +55,12 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         return sharedPreferencesManager.getString(Key.UID)
     }
 
-    override fun setAvatarUrl(url: String?) {
-        sharedPreferencesManager.put(Key.AVATAR_URL, url)
+    override fun setAvatarThumbUrl(url: String?) {
+        sharedPreferencesManager.put(Key.AVATAR_THUMB_URL, url)
     }
 
-    override fun getAvatarUrl(): String? {
-        return sharedPreferencesManager.getString(Key.AVATAR_URL)
+    override fun getAvatarThumbUrl(): String? {
+        return sharedPreferencesManager.getString(Key.AVATAR_THUMB_URL)
     }
 
     override fun setUserId(userId: String?) {
@@ -81,6 +87,22 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
         sharedPreferencesManager.clearAllData()
     }
 
+    override fun setAvatarUrl(url: String?) {
+        sharedPreferencesManager.put(Key.AVATAR_MED_URL, url)
+    }
+
+    override fun getAvatarUrl(): String? {
+        return sharedPreferencesManager.getString(Key.AVATAR_MED_URL)
+    }
+
+    override fun getFullName(): String? {
+        return sharedPreferencesManager.getString(Key.FULL_NAME)
+    }
+
+    override fun setFullName(userName: String?) {
+        sharedPreferencesManager.put(Key.FULL_NAME, userName)
+    }
+
     override fun saveUserHeaderData(response: Response<DataObject<LoginResponse>>) {
         setClient(response.headers().get("client"))
         setUid(response.headers().get("uid"))
@@ -89,8 +111,17 @@ class LoggedUserRepositoryImpl(context: Context) : LoggedUserRepository {
     }
 
     override fun saveUserData(data: DataObject<LoginResponse>?) {
-        setAvatarUrl(data?.data?.attributes?.avatarThumb)
+        setAvatarThumbUrl(data?.data?.attributes?.avatarThumb)
+        setAvatarUrl(data?.data?.attributes?.avatarMedium)
         setUserId(data?.data?.id)
         setAccountType(data?.data?.attributes?.accountType)
+        setFullName(data?.data?.attributes?.name)
+    }
+
+    override fun isLoggedUserJobSeeker(): Boolean {
+        return getAccountType() != null &&
+                (getAccountType().equals(context.getString(R.string.job_seeker_id)) ||
+                        getAccountType().equals(context.getString(R.string.student_id))) ||
+                getAccountType().equals(context.getString(R.string.professional_id))
     }
 }

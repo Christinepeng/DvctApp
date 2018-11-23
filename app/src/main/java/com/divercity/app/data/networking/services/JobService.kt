@@ -32,8 +32,19 @@ interface JobService {
                        @Query("page[size]") size: Int,
                        @Query("search_query") query: String?): Observable<IncludedArray<JobResponse>>
 
+    @GET("jobs/applications")
+    fun fetchMyJobApplications(@Query("page[number]") pageNumber: Int,
+                       @Query("page[size]") size: Int,
+                       @Query("search_query") query: String?): Observable<IncludedArray<JobResponse>>
+
     @GET("jobs/job_types")
     fun fetchJobTypes(): Observable<DataArray<JobTypeResponse>>
+
+    @GET("jobs")
+    fun fetchJobPostingsByUser(@Query("user") userId: String,
+                               @Query("page[number]") pageNumber: Int,
+                               @Query("page[size]") size: Int,
+                               @Query("search_query") query: String?): Observable<DataArray<JobResponse>>
 
     @POST("jobs")
     fun postJob(@Body() body: JobBody): Observable<DataObject<JobResponse>>

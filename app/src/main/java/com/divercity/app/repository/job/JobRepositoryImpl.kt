@@ -15,8 +15,16 @@ import javax.inject.Inject
  * Created by lucas on 29/10/2018.
  */
 
-class JobRepositoryImpl
-@Inject constructor(private val jobService: JobService) : JobRepository {
+class JobRepositoryImpl @Inject
+constructor(private val jobService: JobService) : JobRepository {
+
+    override fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<DataArray<JobResponse>> {
+        return jobService.fetchJobPostingsByUser(userId, page, size, query)
+    }
+
+    override fun fetchMyJobApplications(page: Int, size: Int, query: String?): Observable<IncludedArray<JobResponse>> {
+        return jobService.fetchMyJobApplications(page, size, query)
+    }
 
     override fun shareJob(jobId: String, body: JobShareGroupBody): Observable<JobResponse> {
         return jobService.shareJob(jobId, body).map {

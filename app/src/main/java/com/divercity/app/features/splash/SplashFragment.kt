@@ -46,6 +46,7 @@ class SplashFragment : BaseFragment() {
             //            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
             //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
             if (viewModel.isUserLogged)
+//                navigator.navigateToSelectUserTypeActivity(activity!!)
                 viewModel.fetchCurrentUserData()
 //                navigator.navigateToShareJobGroupActivity(this,"31")
 //                navigator.navigateToSelectGroupActivity(activity!!,90)

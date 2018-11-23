@@ -18,9 +18,9 @@ import com.divercity.app.R
 import com.divercity.app.features.dialogs.CompletedProfileDialogFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
-import com.divercity.app.features.jobs.TabJobsFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
+import com.divercity.app.features.jobs.TabJobsFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*

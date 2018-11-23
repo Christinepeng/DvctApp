@@ -11,6 +11,6 @@ import javax.inject.Inject
 class HomeActivityViewModel @Inject
 constructor(var userRepositoryImpl: UserRepositoryImpl) : BaseViewModel() {
 
-    fun getProfilePictureUrl(): String? = userRepositoryImpl.getAvatarUrl()
+    fun getProfilePictureUrl(): String? = userRepositoryImpl.getAvatarThumbUrl()
 
 }

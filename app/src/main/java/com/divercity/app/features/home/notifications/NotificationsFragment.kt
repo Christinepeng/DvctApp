@@ -108,7 +108,7 @@ class NotificationsFragment : BaseFragment() {
 //
 //        handlerViewPager.postDelayed({
 //            viewPager.currentItem = if(viewPager.currentItem == 0) 1 else 0
-//        }, AppConstants.ONBOARDING_PAGES_DELAY)
+//        }, AppConstants.CAROUSEL_PAGES_DELAY)
 //    }
 
 }

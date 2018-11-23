@@ -13,6 +13,10 @@ public class GroupResponse{
 	@SerializedName("type")
 	private String type;
 
+	public GroupResponse(String id) {
+		this.id = id;
+	}
+
 	public void setAttributes(Attributes attributes){
 		this.attributes = attributes;
 	}

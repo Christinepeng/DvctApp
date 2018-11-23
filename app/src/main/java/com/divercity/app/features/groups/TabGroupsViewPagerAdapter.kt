@@ -22,7 +22,7 @@ class TabGroupsViewPagerAdapter
         fm: FragmentManager
 ) : FragmentStatePagerAdapter(fm) {
 
-    var registeredFragments = SparseArray<Fragment>()
+    private var registeredFragments = SparseArray<Fragment>()
 
     companion object {
 

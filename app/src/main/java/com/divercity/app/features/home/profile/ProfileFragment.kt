@@ -5,6 +5,7 @@ import android.os.Handler
 import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 
@@ -34,6 +35,10 @@ class ProfileFragment : BaseFragment() {
 //        AndroidSupportInjection.inject(this)
 //        viewModelJobs = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
 //        subscribeToLiveData()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
     }
 
     private fun setupToolbar() {
@@ -116,7 +121,7 @@ class ProfileFragment : BaseFragment() {
 //
 //        handlerViewPager.postDelayed({
 //            viewPager.currentItem = if(viewPager.currentItem == 0) 1 else 0
-//        }, AppConstants.ONBOARDING_PAGES_DELAY)
+//        }, AppConstants.CAROUSEL_PAGES_DELAY)
 //    }
 
 }

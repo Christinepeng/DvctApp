@@ -2,8 +2,6 @@ package com.divercity.app.features.login.step1;
 
 import android.app.Application;
 import android.arch.lifecycle.MutableLiveData;
-import android.content.Intent;
-import android.support.v4.app.FragmentActivity;
 
 import com.divercity.app.R;
 import com.divercity.app.core.base.BaseViewModel;
@@ -81,21 +79,21 @@ public class EnterEmailViewModel extends BaseViewModel {
         return navigateToLogin;
     }
 
-    public void getLinkedInToken(FragmentActivity activity){
-//        linkedInApiHelper.getLinkedInToken(activity, new ConnectLinkedInApiHelper.Listener() {
-//            @Override
-//            public void onAuthSucces(@Nullable AccessToken token) {
-//                String hola = token.getValue();
-//            }
+//    public void getLinkedInToken(FragmentActivity activity){
+////        linkedInApiHelper.getLinkedInToken(activity, new ConnectLinkedInApiHelper.Listener() {
+////            @Override
+////            public void onAuthSucces(@Nullable AccessToken token) {
+////                String hola = token.getValue();
+////            }
+////
+////            @Override
+////            public void onAuthError(@NotNull String msg) {
+////                String errror = msg;
+////            }
+////        });
+//    }
 //
-//            @Override
-//            public void onAuthError(@NotNull String msg) {
-//                String errror = msg;
-//            }
-//        });
-    }
-
-    public void onActivityResult(int requestCode, int resultCode, Intent data){
-//        linkedInApiHelper.onActivityResult(requestCode, resultCode, data);
-    }
+//    public void onActivityResult(int requestCode, int resultCode, Intent data){
+////        linkedInApiHelper.onActivityResult(requestCode, resultCode, data);
+//    }
 }

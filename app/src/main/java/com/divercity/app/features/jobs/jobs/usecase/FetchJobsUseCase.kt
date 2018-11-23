@@ -21,7 +21,10 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
 ) : UseCase<DataArray<JobResponse>, FetchJobsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<DataArray<JobResponse>> {
-        return repository.fetchJobs(params.page, params.size, params.query)
+        return repository.fetchJobs(
+                params.page,
+                params.size,
+                if (params.query != null && params.query == "") null else params.query)
     }
 
     class Params private constructor(val page: Int, val size: Int, val query: String?) {

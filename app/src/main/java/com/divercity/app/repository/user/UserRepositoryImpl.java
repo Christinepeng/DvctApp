@@ -104,14 +104,14 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void setAvatarUrl(@Nullable String url) {
-        loggedUserRepository.setAvatarUrl(url);
+    public void setAvatarThumbUrl(@Nullable String url) {
+        loggedUserRepository.setAvatarThumbUrl(url);
     }
 
     @Nullable
     @Override
-    public String getAvatarUrl() {
-        return loggedUserRepository.getAvatarUrl();
+    public String getAvatarThumbUrl() {
+        return loggedUserRepository.getAvatarThumbUrl();
     }
 
     @Override
@@ -154,5 +154,32 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void saveUserData(@Nullable DataObject<LoginResponse> data) {
         loggedUserRepository.saveUserData(data);
+    }
+
+    @Override
+    public void setAvatarUrl(@Nullable String url) {
+        loggedUserRepository.setAvatarUrl(url);
+    }
+
+    @Nullable
+    @Override
+    public String getAvatarUrl() {
+        return loggedUserRepository.getAvatarUrl();
+    }
+
+    @Override
+    public void setFullName(@Nullable String userName) {
+        loggedUserRepository.setFullName(userName);
+    }
+
+    @Nullable
+    @Override
+    public String getFullName() {
+        return loggedUserRepository.getFullName();
+    }
+
+    @Override
+    public boolean isLoggedUserJobSeeker() {
+        return loggedUserRepository.isLoggedUserJobSeeker();
     }
 }

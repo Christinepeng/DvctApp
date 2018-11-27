@@ -87,7 +87,7 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
 
         viewModel.navigateToJobSeekerDescription.observe(viewLifecycleOwner, Observer {
             it?.let { job ->
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job)
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
             }
         })
 

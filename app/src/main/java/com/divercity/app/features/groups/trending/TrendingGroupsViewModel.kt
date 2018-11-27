@@ -26,7 +26,7 @@ constructor(
 ) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var joinGroupResponse = SingleLiveEvent<Resource<GroupResponse>>()
+    var joinGroupResponse = SingleLiveEvent<Resource<Any>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
     private var lastSearch: String? = null
@@ -66,8 +66,8 @@ constructor(
     }
 
     fun joinGroup(group: GroupResponse) {
-        joinGroupResponse.postValue(Resource.loading<GroupResponse>(null))
-        val callback = object : DisposableObserverWrapper<GroupResponse>() {
+        joinGroupResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<Boolean>() {
             override fun onFail(error: String) {
                 joinGroupResponse.postValue(Resource.error(error, null))
             }
@@ -76,7 +76,7 @@ constructor(
                 joinGroupResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: GroupResponse) {
+            override fun onSuccess(o: Boolean) {
                 joinGroupResponse.postValue(Resource.success(o))
             }
         }

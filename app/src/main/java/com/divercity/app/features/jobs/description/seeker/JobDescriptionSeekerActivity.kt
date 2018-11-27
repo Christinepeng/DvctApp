@@ -4,20 +4,19 @@ import android.content.Context
 import android.content.Intent
 import com.divercity.app.core.base.BaseActivity
 import com.divercity.app.core.base.BaseFragment
-import com.divercity.app.data.entity.job.response.JobResponse
 
 class JobDescriptionSeekerActivity : BaseActivity() {
 
     companion object {
-        private const val INTENT_EXTRA_PARAM_JOB = "intentExtraParamJob"
+        private const val INTENT_EXTRA_PARAM_JOB_ID = "intentExtraParamJob"
 
-        fun getCallingIntent(context: Context, job : JobResponse) : Intent {
+        fun getCallingIntent(context: Context, jobId : String?) : Intent {
             val intent = Intent(context, JobDescriptionSeekerActivity::class.java)
-            intent.putExtra(INTENT_EXTRA_PARAM_JOB,job)
+            intent.putExtra(INTENT_EXTRA_PARAM_JOB_ID,jobId)
             return intent
         }
     }
 
     override fun fragment(): BaseFragment = JobDescriptionSeekerFragment
-            .newInstance(intent.getParcelableExtra(INTENT_EXTRA_PARAM_JOB))
+            .newInstance(intent.getStringExtra(INTENT_EXTRA_PARAM_JOB_ID))
 }

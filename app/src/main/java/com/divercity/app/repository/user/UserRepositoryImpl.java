@@ -13,6 +13,7 @@ import org.jetbrains.annotations.Nullable;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import retrofit2.HttpException;
 import retrofit2.Response;
 
 /**
@@ -34,24 +35,27 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<LoginResponse> fetchRemoteUserData(String userId) {
         return userService.fetchUserData(userId)
-                .map(loginResponseDataObject -> {
-                    if (loginResponseDataObject != null)
-                        loggedUserRepository.saveUserData(loginResponseDataObject);
-                    return loginResponseDataObject.getData();
+                .map(response -> {
+                    checkResponse(response);
+                    loggedUserRepository.saveUserData(response.body());
+                    return response.body().getData();
                 });
     }
 
     @Override
     public Observable<Boolean> joinGroup(String idGroup) {
-        return userService.joinGroup(idGroup).map(Response::isSuccessful);
+        return userService.joinGroup(idGroup).map(response -> {
+            checkResponse(response);
+            return true;
+        });
     }
 
     @Override
     public Observable<LoginResponse> uploadUserPhoto(ProfilePictureBody body) {
-        return userService.uploadUserPhoto(body).map(loginResponseDataObject -> {
-                    if (loginResponseDataObject != null)
-                        loggedUserRepository.saveUserData(loginResponseDataObject);
-                    return loginResponseDataObject.getData();
+        return userService.uploadUserPhoto(body).map(response -> {
+                    checkResponse(response);
+                    loggedUserRepository.saveUserData(response.body());
+                    return response.body().getData();
                 }
         );
     }
@@ -62,10 +66,9 @@ public class UserRepositoryImpl implements UserRepository {
         userProfileBody.setUser(user);
         return userService.updateUserProfile(loggedUserRepository.getUserId(), userProfileBody)
                 .map(response -> {
-                            if (response != null) {
-                                loggedUserRepository.saveUserData(response);
-                            }
-                            return response.getData();
+                            checkResponse(response);
+                            loggedUserRepository.saveUserData(response.body());
+                            return response.body().getData();
                         }
                 );
     }
@@ -181,5 +184,10 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public boolean isLoggedUserJobSeeker() {
         return loggedUserRepository.isLoggedUserJobSeeker();
+    }
+
+    private void checkResponse(Response response) {
+        if (!response.isSuccessful())
+            throw new HttpException(response);
     }
 }

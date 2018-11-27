@@ -3,6 +3,7 @@ package com.divercity.app.repository.user;
 import com.divercity.app.data.entity.login.response.LoginResponse;
 import com.divercity.app.data.entity.profile.picture.ProfilePictureBody;
 import com.divercity.app.data.entity.profile.profile.User;
+
 import io.reactivex.Observable;
 
 /**

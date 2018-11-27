@@ -61,8 +61,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(intent)
     }
 
-    fun navigateToJobDescriptionSeekerActivity(activity: FragmentActivity, job: JobResponse) {
-        activity.startActivity(JobDescriptionSeekerActivity.getCallingIntent(activity, job))
+    fun navigateToJobDescriptionSeekerActivity(activity: FragmentActivity, jobId: String?) {
+        activity.startActivity(JobDescriptionSeekerActivity.getCallingIntent(activity, jobId))
     }
 
     fun navigateToSignUpActivity(activity: FragmentActivity, email: String) {

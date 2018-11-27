@@ -1,8 +1,6 @@
 package com.divercity.app.repository.document
 
 import android.content.Context
-import android.net.Uri
-import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.document.DocumentResponse
 import com.divercity.app.data.networking.services.DocumentService
 import io.reactivex.Observable
@@ -19,34 +17,22 @@ import javax.inject.Inject
 
 class DocumentRepositoryImpl @Inject
 constructor(
-    private val context: Context,
-    private val service: DocumentService
+        private val context: Context,
+        private val service: DocumentService
 ) : DocumentRepository {
 
-    override fun uploadDocument(docName: String, uri: Uri): Observable<DataObject<DocumentResponse>> {
-        val file = File(uri.path)
+    override fun fetchRecentDocs(): Observable<List<DocumentResponse>> {
+        return service.fetchRecentDocs().map { it.data }
+    }
 
-//        val doc = RequestBody.create(
-//            MediaType.parse(context.contentResolver.getType(uri)!!),
-//            file
-//        )
-        //Funca file android
+    override fun uploadDocument(file: File): Observable<DocumentResponse> {
+
         val requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), file.absoluteFile)
         val multi = MultipartBody.Part.createFormData("document[document]", file.name, requestFile)
-        val name = RequestBody.create(MediaType.parse("text/plain"), docName)
+        val name = RequestBody.create(MediaType.parse("text/plain"), file.name)
 
-//        val mime = MimeTypeMap.getSingleton()
-//        val type = mime.getExtensionFromMimeType(context.contentResolver?.getType(uri))
-//        val cursor = context.contentResolver?.query(uri, null, null, null, null)
-//
-//        var name =  RequestBody.create(MediaType.parse("text/plain"), "")
-//        cursor?.use {
-//            val nameIndex = it.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-//            it.moveToFirst()
-//            name = RequestBody.create(MediaType.parse("text/plain"), it.getString(nameIndex))
-//            it.close()
-//        }
-
-        return service.uploadDocument(name, multi)
+        return service.uploadDocument(name, multi).map {
+            it.data
+        }
     }
 }

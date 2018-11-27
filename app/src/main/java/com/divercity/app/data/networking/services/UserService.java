@@ -15,14 +15,14 @@ import retrofit2.http.*;
 public interface UserService {
 
     @GET("users/{id}")
-    Observable<DataObject<LoginResponse>> fetchUserData(@Path("id") String userId);
+    Observable<Response<DataObject<LoginResponse>>> fetchUserData(@Path("id") String userId);
 
     @PUT("users/{id}")
-    Observable<DataObject<LoginResponse>> updateUserProfile(@Path("id") String userId, @Body UserProfileBody body);
+    Observable<Response<DataObject<LoginResponse>>> updateUserProfile(@Path("id") String userId, @Body UserProfileBody body);
 
     @POST("group_of_interests/{id}/follow")
     Observable<Response<Void>> joinGroup(@Path("id") String idGroup);
 
     @POST("users/avatar_upload")
-    Observable<DataObject<LoginResponse>> uploadUserPhoto(@Body ProfilePictureBody body);
+    Observable<Response<DataObject<LoginResponse>>> uploadUserPhoto(@Body ProfilePictureBody body);
 }

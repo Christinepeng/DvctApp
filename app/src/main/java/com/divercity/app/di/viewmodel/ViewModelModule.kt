@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogViewModel
+import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.all.AllGroupsViewModel
 import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
@@ -228,4 +229,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(JobApplyDialogViewModel::class)
     abstract fun bindsJobApplyDialogViewModel(viewModel: JobApplyDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RecentDocsDialogViewModel::class)
+    abstract fun bindsRecentDocsDialogViewModel(viewModel: RecentDocsDialogViewModel): ViewModel
 }

@@ -4,6 +4,7 @@ import com.divercity.app.features.company.base.SelectCompanyFragment
 import com.divercity.app.features.company.onboarding.OnboardingCompanyFragment
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
 import com.divercity.app.features.groups.module.GroupsModule
@@ -189,4 +190,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindJobApplicantsFragment (): JobApplicantsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindRecentDocsDialogFragment (): RecentDocsDialogFragment
 }

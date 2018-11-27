@@ -7,9 +7,10 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.job.response.JobResponse;
 import com.divercity.app.features.jobs.jobs.usecase.FetchJobsUseCase;
+
+import java.util.List;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -60,16 +61,16 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<DataArray<JobResponse>> disposableObserver = new DisposableObserver<DataArray<JobResponse>>() {
+        DisposableObserver<List<JobResponse>> disposableObserver = new DisposableObserver<List<JobResponse>>() {
             @Override
-            public void onNext(DataArray<JobResponse> data) {
+            public void onNext(List<JobResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
-                    if(data.getData().size() < params.requestedLoadSize)
-                        callback.onResult(data.getData(), null, null);
+                    if(data.size() < params.requestedLoadSize)
+                        callback.onResult(data, null, null);
                     else
-                        callback.onResult(data.getData(), null, 2l);
+                        callback.onResult(data, null, 2L);
                     initialLoading.postValue(NetworkState.LOADED);
                 } else {
                     NetworkState error = NetworkState.error("Error");
@@ -104,12 +105,12 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
     public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, JobResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<DataArray<JobResponse>> disposableObserver = new DisposableObserver<DataArray<JobResponse>>() {
+        DisposableObserver<List<JobResponse>> disposableObserver = new DisposableObserver<List<JobResponse>>() {
             @Override
-            public void onNext(DataArray<JobResponse> data) {
+            public void onNext(List<JobResponse> data) {
                 if (data != null) {
                     setRetry(null);
-                    callback.onResult(data.getData(), params.key + 1);
+                    callback.onResult(data, params.key + 1);
                     networkState.postValue(NetworkState.LOADED);
                 } else {
                     setRetry(() -> loadAfter(params, callback));                // publish the error

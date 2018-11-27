@@ -2,19 +2,13 @@ package com.divercity.app.features.dialogs.jobapply
 
 import android.app.Activity
 import android.app.Dialog
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.ContentUris
 import android.content.Context
 import android.content.Intent
-import android.database.Cursor
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.DocumentsContract
-import android.provider.MediaStore
 import android.support.v7.app.AlertDialog
 import android.view.View
 import android.widget.Toast
@@ -22,10 +16,11 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseDialogFragment
 import com.divercity.app.core.utils.GlideApp
-import com.divercity.app.features.dialogs.JobSeekerActionsDialogFragment
+import com.divercity.app.data.Resource
+import com.divercity.app.data.Status
+import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.app.repository.user.UserRepository
 import kotlinx.android.synthetic.main.dialog_job_apply.view.*
-import java.io.File
 import javax.inject.Inject
 
 
@@ -33,33 +28,29 @@ import javax.inject.Inject
  * Created by lucas on 18/03/2018.
  */
 
-class JobApplyDialogFragment : BaseDialogFragment(), JobSeekerActionsDialogFragment.Listener {
-    override fun onShareJobToGroups() {
-    }
-
-    override fun onReportJobPosting() {
-    }
-
-    override fun onShareJobViaMessage() {
-    }
+class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Listener {
 
     var listener: Listener? = null
 
     @Inject
     lateinit var userRepository: UserRepository
-    lateinit var viewModel : JobApplyDialogViewModel
+    lateinit var viewModel: JobApplyDialogViewModel
 
-    private var fileName: String? = null
-    lateinit var dialogView: View
+    private lateinit var dialogView: View
 
     var docId: String? = "-1"
 
     companion object {
+        private const val JOB_ID = "jobId"
         const val REQUEST_CODE_DOC = 150
         const val DOC_ID = "docId"
 
-        fun newInstance(): JobApplyDialogFragment {
-            return JobApplyDialogFragment()
+        fun newInstance(jobId : String): JobApplyDialogFragment {
+            val fragment = JobApplyDialogFragment()
+            val arguments = Bundle()
+            arguments.putString(JOB_ID, jobId)
+            fragment.arguments = arguments
+            return fragment
         }
     }
 
@@ -69,6 +60,7 @@ class JobApplyDialogFragment : BaseDialogFragment(), JobSeekerActionsDialogFragm
             docId = it.getString(DOC_ID)
         }
         viewModel = ViewModelProviders.of(this, viewModelFactory)[JobApplyDialogViewModel::class.java]
+        subscribeToLiveData()
     }
 
     override fun onAttach(context: Context?) {
@@ -107,10 +99,12 @@ class JobApplyDialogFragment : BaseDialogFragment(), JobSeekerActionsDialogFragm
             openDocSelector()
         }
 
+        dialogView.btn_choose_recent_file.setOnClickListener {
+            showRecentDocsDialog()
+        }
+
         dialogView.btn_submit_application.setOnClickListener {
-            Toast.makeText(context, "Test", Toast.LENGTH_SHORT).show()
-            showProgress()
-            showDialogMoreActions()
+            viewModel.uploadDocumentResponse.postValue(Resource.error(context!!.getString(R.string.select_valid_file), null))
         }
 
         dialogView.btn_close.setOnClickListener { dismiss() }
@@ -133,10 +127,36 @@ class JobApplyDialogFragment : BaseDialogFragment(), JobSeekerActionsDialogFragm
         }
     }
 
+    private fun subscribeToLiveData() {
+        viewModel.uploadDocumentResponse.observe(this, Observer { document ->
+            when (document?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(document.message ?: "Error")
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    showToast(R.string.file_upload_success)
+                    dialogView.also {
+                        it.btn_upload_new.visibility = View.GONE
+                        it.btn_choose_recent_file.visibility = View.GONE
+                        it.txt_filename.visibility = View.VISIBLE
+                        it.txt_filename.text = document.data?.attributes?.name
+                    }
+                }
+            }
+        })
+    }
+
     private fun openDocSelector() {
         val mimeTypes = arrayOf(
 //                "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-                "application/pdf")
+                "application/pdf"
+        )
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
         intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
@@ -146,47 +166,18 @@ class JobApplyDialogFragment : BaseDialogFragment(), JobSeekerActionsDialogFragm
 
     private fun handleDocSelectorActivityResult(data: Intent?) {
         val fileUri = data?.data
-        val file = File(fileUri?.path)
-
-        dialogView.also {
-            it.btn_upload_new.visibility = View.GONE
-            it.btn_choose_recent_file.visibility = View.GONE
-            it.txt_filename.visibility = View.VISIBLE
-            it.txt_filename.text = file.name
-        }
-
-        var iss = context?.contentResolver?.openInputStream(fileUri)
-
-//        viewModel.uploadDocument(file.name, fileUri!!)
-
-
-//        data?.data?.let { returnUri ->
-//            val mime = MimeTypeMap.getSingleton()
-//            val type = mime.getExtensionFromMimeType(context?.contentResolver?.getType(returnUri))
-//            context?.contentResolver?.query(returnUri, null, null, null, null)
-//        }?.use { cursor ->
-//            /*
-//             * Get the column indexes of the data in the Cursor,
-//             * move to the first row in the Cursor, get the data,
-//             * and display it.
-//             */
-//            val nameIndex = cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME)
-//            cursor.moveToFirst()
-//            fileName = cursor.getString(nameIndex)
-//            cursor.close()
-//
-//            dialogView.also {
-//                it.btn_upload_new.visibility = View.GONE
-//                it.btn_choose_recent_file.visibility = View.GONE
-//                it.txt_filename.visibility = View.VISIBLE
-//                it.txt_filename.text = fileName
-//            }
-//        }
+        if (fileUri != null) {
+            viewModel.checkDocumentAndUploadIt(fileUri)
+        } else
+            showToast(R.string.select_valid_file)
     }
 
-    private fun showDialogMoreActions() {
-        val dialog = JobSeekerActionsDialogFragment.newInstance()
-        dialog.show(childFragmentManager, null)
+    private fun showToast(msg: String) {
+        Toast.makeText(context!!, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showToast(resId: Int) {
+        Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -194,108 +185,23 @@ class JobApplyDialogFragment : BaseDialogFragment(), JobSeekerActionsDialogFragm
         super.onSaveInstanceState(outState)
     }
 
-    interface Listener
+    private fun showRecentDocsDialog() {
+        val dialog = RecentDocsDialogFragment.newInstance()
+        dialog.show(childFragmentManager, null)
+    }
 
     private fun showProgress() = progressStatus(View.VISIBLE)
 
     private fun hideProgress() = progressStatus(View.GONE)
 
-    private fun progressStatus(viewStatus: Int){
+    private fun progressStatus(viewStatus: Int) {
         dialogView.include_loading.visibility = viewStatus
     }
 
+    override fun onDocumentClick(docId: String) {
 
-    fun getPath(context: Context, uri: Uri): String? {
-        val isKitKat = Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT
-
-        // DocumentProvider
-        if (isKitKat && DocumentsContract.isDocumentUri(context, uri)) {
-            // ExternalStorageProvider
-            if (isExternalStorageDocument(uri)) {
-                val docId = DocumentsContract.getDocumentId(uri)
-                val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                val type = split[0]
-
-                if ("primary".equals(type, ignoreCase = true)) {
-                    return Environment.getExternalStorageDirectory().toString() + "/" + split[1]
-                }
-                // TODO handle non-primary volumes
-            } else if (isDownloadsDocument(uri)) {
-                val id = DocumentsContract.getDocumentId(uri)
-                val contentUri = ContentUris.withAppendedId(
-                    Uri.parse("content://downloads/public_downloads"),
-                    java.lang.Long.valueOf(id)
-                )
-                return getDataColumn(context, contentUri, null, null)
-            } else if (isMediaDocument(uri)) {
-                val docId = DocumentsContract.getDocumentId(uri)
-                val split = docId.split(":".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-                val type = split[0]
-                var contentUri: Uri? = null
-                if ("image" == type) {
-                    contentUri = MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-                } else if ("video" == type) {
-                    contentUri = MediaStore.Video.Media.EXTERNAL_CONTENT_URI
-                } else if ("audio" == type) {
-                    contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
-                }
-                val selection = "_id=?"
-                val selectionArgs = arrayOf(split[1])
-                return getDataColumn(context, contentUri, selection, selectionArgs)
-            }// MediaProvider
-            // DownloadsProvider
-        } else if ("content".equals(uri.getScheme(), ignoreCase = true)) {
-            // Return the remote address
-            return if (isGooglePhotosUri(uri)) uri.getLastPathSegment() else getDataColumn(context, uri, null, null)
-        } else if ("file".equals(uri.getScheme(), ignoreCase = true)) {
-            return uri.getPath()
-        }// File
-        // MediaStore (and general)
-        return null
     }
 
-    fun getDataColumn(context: Context, uri: Uri?, selection: String?, selectionArgs: Array<String>?): String? {
-        var cursor: Cursor? = null
-        val column = "_data"
-        val projection = arrayOf(column)
-        try {
-            cursor = context.contentResolver.query(uri!!, projection, selection, selectionArgs, null)
-            if (cursor != null && cursor!!.moveToFirst()) {
-                val index = cursor!!.getColumnIndexOrThrow(column)
-                return cursor!!.getString(index)
-            }
-        } finally {
-            if (cursor != null)
-                cursor!!.close()
-        }
-        return null
-    }
+    interface Listener
 
-    fun isExternalStorageDocument(uri: Uri): Boolean {
-        return "com.android.externalstorage.documents" == uri.getAuthority()
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is DownloadsProvider.
-     */
-    fun isDownloadsDocument(uri: Uri): Boolean {
-        return "com.android.providers.downloads.documents" == uri.getAuthority()
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is MediaProvider.
-     */
-    fun isMediaDocument(uri: Uri): Boolean {
-        return "com.android.providers.media.documents" == uri.getAuthority()
-    }
-
-    /**
-     * @param uri The Uri to check.
-     * @return Whether the Uri authority is Google Photos.
-     */
-    fun isGooglePhotosUri(uri: Uri): Boolean {
-        return "com.google.android.apps.photos.content" == uri.getAuthority()
-    }
 }

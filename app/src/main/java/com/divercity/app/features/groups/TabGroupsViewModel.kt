@@ -21,7 +21,7 @@ class TabGroupsViewModel @Inject
 constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUseCase,
             private val joinGroupUseCase: JoinGroupUseCase) : BaseViewModel() {
 
-    var joinGroupResponse = MutableLiveData<Event<Resource<GroupResponse>>>()
+    var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     var fetchRecommendedGroupsResponse = MutableLiveData<Resource<DataObject<RecommendedGroupsResponse>>>()
 
     init {
@@ -47,8 +47,8 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
     }
 
     fun joinGroup(jobId : Int) {
-        joinGroupResponse.postValue(Event(Resource.loading<GroupResponse>(null)))
-        val callback = object : DisposableObserverWrapper<GroupResponse>() {
+        joinGroupResponse.postValue(Event(Resource.loading(null)))
+        val callback = object : DisposableObserverWrapper<Boolean>() {
             override fun onFail(error: String) {
                 joinGroupResponse.postValue(Event(Resource.error(error, null)))
             }
@@ -57,7 +57,7 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
                 joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
             }
 
-            override fun onSuccess(o: GroupResponse) {
+            override fun onSuccess(o: Boolean) {
                 joinGroupResponse.postValue(Event(Resource.success(o)))
             }
         }

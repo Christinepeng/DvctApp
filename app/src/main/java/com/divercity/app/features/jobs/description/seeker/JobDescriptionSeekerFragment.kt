@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
 import com.bumptech.glide.request.RequestOptions
@@ -12,8 +13,9 @@ import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
-import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.app.features.dialogs.CustomTwoBtnDialogFragment
 import com.divercity.app.features.dialogs.JobSeekerActionsDialogFragment
+import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import kotlinx.android.synthetic.main.fragment_job_description_seeker.*
 import kotlinx.android.synthetic.main.item_user.view.*
 import kotlinx.android.synthetic.main.view_job_desc.view.*
@@ -34,12 +36,12 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
     var job: JobResponse? = null
 
     companion object {
-        private const val PARAM_JOB = "paramJob"
+        private const val PARAM_JOB_ID = "paramJobId"
 
-        fun newInstance(job: JobResponse?): JobDescriptionSeekerFragment {
+        fun newInstance(jobId: String): JobDescriptionSeekerFragment {
             val fragment = JobDescriptionSeekerFragment()
             val arguments = Bundle()
-            arguments.putParcelable(PARAM_JOB, job)
+            arguments.putString(PARAM_JOB_ID, jobId)
             fragment.arguments = arguments
             return fragment
         }
@@ -52,29 +54,27 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(JobDescriptionSeekerViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-        job = arguments?.getParcelable(PARAM_JOB)
+
+        val job = arguments?.getString(PARAM_JOB_ID)
+        if (job != null)
+            viewModel.fetchJobById(job)
+        else {
+            showToast(R.string.error)
+            activity!!.finish()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
-        setupTabs()
-        setupView()
         subscribeToLiveData()
-        initView()
+        setupToolbar()
     }
 
-    private fun setupTabs() {
+    private fun setupTabs(job: JobResponse?) {
         job?.also {
             adapter.job = it
             viewpager.adapter = adapter
             tab_layout.setupWithViewPager(viewpager)
-        }
-    }
-
-    private fun setupView() {
-        btn_toolbar_more.setOnClickListener {
-            showDialogMoreActions()
         }
     }
 
@@ -84,16 +84,20 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
     }
 
     private fun setupToolbar() {
-        (activity as JobDescriptionSeekerActivity).apply {
+        (activity as AppCompatActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
                 it.setTitle(R.string.jobs)
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
+
+        btn_toolbar_more.setOnClickListener {
+            showDialogMoreActions()
+        }
     }
 
-    private fun initView() {
+    private fun initView(job: JobResponse?) {
         job?.also {
             GlideApp.with(this)
                     .load(it.attributes?.employer?.photos?.thumb)
@@ -110,6 +114,7 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
                         .apply(RequestOptions().circleCrop())
                         .into(img)
 
+                //TODO : Remove hardcoded
                 txt_name.text = it.attributes?.recruiter?.name
                 txt_school.text = "Hardvard University"
                 txt_type.text = "Tech Recruiter"
@@ -123,25 +128,36 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
     }
 
     private fun showJobApplyDialog() {
-        val dialog = JobApplyDialogFragment.newInstance()
+        val dialog = JobApplyDialogFragment.newInstance(job?.id!!)
         dialog.show(childFragmentManager, null)
     }
 
     private fun subscribeToLiveData() {
         viewModel.jobSaveUnsaveResponse.observe(viewLifecycleOwner, Observer { job ->
-            when (job?.status) {
-                Status.LOADING -> {
-                    showProgress()
-                }
+            if (job?.status == Status.LOADING)
+                showProgress()
+            else if (job?.status == Status.ERROR) {
+                hideProgress()
+                Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
+            }
+        })
 
-                Status.ERROR -> {
-                    hideProgress()
-                    Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.SUCCESS -> {
-                    hideProgress()
-                    setupSaveButton(job.data)
-                }
+        viewModel.fetchJobByIdResponse.observe(viewLifecycleOwner, Observer { job ->
+            if (job?.status == Status.LOADING)
+                showProgress()
+            else if (job?.status == Status.ERROR) {
+                hideProgress()
+                showDialogConnectionError(job.data?.id!!)
+            }
+        })
+
+        viewModel.showJobData.observe(viewLifecycleOwner, Observer { job ->
+            if (job?.status == Status.SUCCESS) {
+                hideProgress()
+                this.job = job.data
+                setupTabs(job.data)
+                initView(job.data)
+                root_layout.visibility = View.VISIBLE
             }
         })
     }
@@ -160,6 +176,32 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
                 btn_save.setOnClickListener { viewModel.saveJob(job) }
             }
         }
+    }
+
+    private fun showDialogConnectionError(jobId: String) {
+        val dialog = CustomTwoBtnDialogFragment.newInstance(
+                getString(R.string.ups),
+                getString(R.string.error_connection),
+                getString(R.string.cancel),
+                getString(R.string.retry)
+        )
+
+        dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
+
+            override fun onNegativeBtnClick() {
+                viewModel.fetchJobById(jobId)
+            }
+
+            override fun onPositiveBtnClick() {
+                activity!!.finish()
+            }
+        })
+        dialog.isCancelable = false
+        dialog.show(childFragmentManager,null)
+    }
+
+    private fun showToast(resId: Int) {
+        Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
     }
 
     override fun onShareJobViaMessage() {

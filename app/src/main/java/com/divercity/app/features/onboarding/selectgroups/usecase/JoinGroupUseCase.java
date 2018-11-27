@@ -14,7 +14,7 @@ import io.reactivex.Scheduler;
  * Created by lucas on 18/10/2018.
  */
 
-public class JoinGroupUseCase extends UseCase<GroupResponse, JoinGroupUseCase.Params> {
+public class JoinGroupUseCase extends UseCase<Boolean, JoinGroupUseCase.Params> {
 
     private UserRepository userRepository;
 
@@ -27,8 +27,8 @@ public class JoinGroupUseCase extends UseCase<GroupResponse, JoinGroupUseCase.Pa
     }
 
     @Override
-    protected Observable<GroupResponse> createObservableUseCase(JoinGroupUseCase.Params params) {
-        return userRepository.joinGroup(params.group.getId()).map(aBoolean -> params.group);
+    protected Observable<Boolean> createObservableUseCase(JoinGroupUseCase.Params params) {
+        return userRepository.joinGroup(params.group.getId());
     }
 
     public static final class Params {

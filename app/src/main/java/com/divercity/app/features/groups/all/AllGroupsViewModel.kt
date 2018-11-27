@@ -28,12 +28,12 @@ constructor(
 ) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    private var joinGroupResponse = MutableLiveData<Event<Resource<GroupResponse>>>()
+    private var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
     private var lastSearch: String? = null
 
-    val onJoinGroupResponse: LiveData<Event<Resource<GroupResponse>>>
+    val onJoinGroupResponse: LiveData<Event<Resource<Any>>>
         get() = joinGroupResponse
 
     init {
@@ -71,8 +71,13 @@ constructor(
     }
 
     fun joinGroup(group: GroupResponse) {
-        joinGroupResponse.postValue(Event(Resource.loading<GroupResponse>(null)))
-        val callback = object : DisposableObserverWrapper<GroupResponse>() {
+        joinGroupResponse.postValue(Event(Resource.loading(null)))
+
+        val callback = object : DisposableObserverWrapper<Boolean>() {
+            override fun onSuccess(t: Boolean) {
+                joinGroupResponse.postValue(Event(Resource.success(t)))
+            }
+
             override fun onFail(error: String) {
                 joinGroupResponse.postValue(Event(Resource.error(error, null)))
             }
@@ -80,11 +85,8 @@ constructor(
             override fun onHttpException(error: JsonElement) {
                 joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
             }
-
-            override fun onSuccess(o: GroupResponse) {
-                joinGroupResponse.postValue(Event(Resource.success(o)))
-            }
         }
+
         compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
     }

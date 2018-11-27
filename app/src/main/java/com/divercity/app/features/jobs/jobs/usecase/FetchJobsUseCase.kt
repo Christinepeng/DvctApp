@@ -1,12 +1,10 @@
 package com.divercity.app.features.jobs.jobs.usecase
 
 import com.divercity.app.core.base.UseCase
-import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.repository.job.JobRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -18,9 +16,9 @@ class FetchJobsUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: JobRepository
-) : UseCase<DataArray<JobResponse>, FetchJobsUseCase.Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<JobResponse>, FetchJobsUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<DataArray<JobResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<JobResponse>> {
         return repository.fetchJobs(
                 params.page,
                 params.size,

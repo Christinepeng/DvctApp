@@ -125,6 +125,8 @@ class TabGroupsFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 viewPagerDotsPanel.onPageSelected(position)
+                handlerViewPager.removeCallbacksAndMessages(null)
+                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
@@ -140,7 +142,6 @@ class TabGroupsFragment : BaseFragment() {
                         0
                     else
                         slider_viewpager.currentItem + 1
-            handlerViewPager.postDelayed(this, AppConstants.CAROUSEL_PAGES_DELAY)
         }
     }
 

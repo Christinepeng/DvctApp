@@ -5,10 +5,13 @@ import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.company.CompanyResponse;
 import com.divercity.app.features.company.base.usecase.FetchCompaniesUseCase;
+
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -57,13 +60,13 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<DataArray<CompanyResponse>> disposableObserver = new DisposableObserver<DataArray<CompanyResponse>>() {
+        DisposableObserver<List<CompanyResponse>> disposableObserver = new DisposableObserver<List<CompanyResponse>>() {
             @Override
-            public void onNext(DataArray<CompanyResponse> data) {
+            public void onNext(List<CompanyResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
-                    callback.onResult(data.getData(), null, 2l);
+                    callback.onResult(data, null, 2l);
                     initialLoading.postValue(NetworkState.LOADED);
                 } else {
                     NetworkState error = NetworkState.error("Error");
@@ -98,12 +101,12 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
     public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, CompanyResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<DataArray<CompanyResponse>> disposableObserver = new DisposableObserver<DataArray<CompanyResponse>>() {
+        DisposableObserver<List<CompanyResponse>> disposableObserver = new DisposableObserver<List<CompanyResponse>>() {
             @Override
-            public void onNext(DataArray<CompanyResponse> data) {
+            public void onNext(List<CompanyResponse> data) {
                 if (data != null) {
                     setRetry(null);
-                    callback.onResult(data.getData(), params.key + 1);
+                    callback.onResult(data, params.key + 1);
                     networkState.postValue(NetworkState.LOADED);
                 } else {
                     setRetry(() -> loadAfter(params, callback));                // publish the error

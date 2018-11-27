@@ -13,12 +13,12 @@ import javax.inject.Named
  * Created by lucas on 18/10/2018.
  */
 
-class UploadDocumentUseCase @Inject
+class ApplyToJobUseCase @Inject
 constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: DocumentRepository
-) : UseCase<DocumentResponse, UploadDocumentUseCase.Params>(executorThread, uiThread) {
+) : UseCase<DocumentResponse, ApplyToJobUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<DocumentResponse> {
         return repository.uploadDocument(params.file)

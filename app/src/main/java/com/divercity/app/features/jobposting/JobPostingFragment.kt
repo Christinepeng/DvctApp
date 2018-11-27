@@ -219,7 +219,7 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
     }
 
     override fun onShareToGroupsClick() {
-        navigator.navigateToShareJobGroupActivity(this, viewModel.postJobResponse.value?.data?.data?.id)
+        navigator.navigateToShareJobGroupActivity(this, viewModel.postJobResponse.value?.data?.id)
     }
 
     override fun onShareToFriendsClick() {

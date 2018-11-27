@@ -88,4 +88,12 @@ public final class Util {
             cookieSyncMngr.sync();
         }
     }
+
+//    public static <T extends DataBase<T>> T checkResponse(Response<T> response){
+//        if (response.isSuccessful()) {
+//            return response.body().getData();
+//        } else {
+//            throw new HttpException(response);
+//        }
+//    }
 }

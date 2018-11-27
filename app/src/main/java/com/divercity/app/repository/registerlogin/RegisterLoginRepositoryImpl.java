@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import retrofit2.HttpException;
+import retrofit2.Response;
 
 /**
  * Created by lucas on 09/09/2018.
@@ -35,11 +36,9 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     public Observable<LoginResponse> login(String email, String password) {
         return registerLoginService.login(new LoginBody(email, password))
                 .map(response -> {
-                    if (response.isSuccessful()) {
-                        loggedUserRepository.saveUserHeaderData(response);
-                        return response.body().getData();
-                    } else
-                        throw new HttpException(response);
+                    checkResponse(response);
+                    loggedUserRepository.saveUserHeaderData(response);
+                    return response.body().getData();
                 });
     }
 
@@ -47,24 +46,18 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     public Observable<LoginResponse> signUp(String nickname, String name, String email, String password, String confirmPassword) {
         return registerLoginService.signUp(new SignUpBody(password, confirmPassword, nickname, name, email))
                 .map(response -> {
-                    if (response.isSuccessful()) {
-                        loggedUserRepository.saveUserHeaderData(response);
-                        return response.body().getData();
-                    } else {
-                        throw new HttpException(response);
-                    }
+                    checkResponse(response);
+                    loggedUserRepository.saveUserHeaderData(response);
+                    return response.body().getData();
                 });
     }
 
     @Override
     public Observable<LoginResponse> loginLinkedin(String code, String state) {
         return registerLoginService.loginLinkedin(code, state).map(response -> {
-            if (response.isSuccessful()) {
-                loggedUserRepository.saveUserHeaderData(response);
-                return response.body().getData();
-            } else {
-                throw new HttpException(response);
-            }
+            checkResponse(response);
+            loggedUserRepository.saveUserHeaderData(response);
+            return response.body().getData();
         });
     }
 
@@ -76,5 +69,10 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     @Override
     public Observable<CheckUsernameEmailResponse> isUsernameRegistered(String username) {
         return registerLoginService.checkUsername(new CheckUsernameBody(username));
+    }
+
+    private void checkResponse(Response response){
+        if(!response.isSuccessful())
+            throw new HttpException(response);
     }
 }

@@ -51,7 +51,6 @@ public class CustomTwoBtnDialogFragment extends DialogFragment {
             mBtnPosText = getArguments().getString(ARG_BTN_POS_TEXT);
             mBtnNegText = getArguments().getString(ARG_BTN_NEG_TEXT);
         }
-        setCancelable(true);
     }
 
     public void setListener(OnBtnListener listener) {

@@ -31,7 +31,7 @@ public class SelectGroupViewModel extends BaseViewModel {
     private UserRepository userRepository;
 
     private JoinGroupUseCase joinGroupUseCase;
-    private MutableLiveData<Resource<GroupResponse>> joinGroupResponse = new MutableLiveData<>();
+    private MutableLiveData<Resource<Boolean>> joinGroupResponse = new MutableLiveData<>();
 
     @Inject
     public SelectGroupViewModel(GroupPaginatedRepositoryImpl repository,
@@ -74,7 +74,7 @@ public class SelectGroupViewModel extends BaseViewModel {
 
     public void joinGroup(GroupResponse group){
         joinGroupResponse.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<GroupResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<Boolean>() {
             @Override
             protected void onFail(String error) {
                 joinGroupResponse.postValue(Resource.Companion.error(error,null));
@@ -86,7 +86,7 @@ public class SelectGroupViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(GroupResponse o) {
+            protected void onSuccess(Boolean o) {
                 joinGroupResponse.postValue(Resource.Companion.success(o));
             }
         };
@@ -94,7 +94,7 @@ public class SelectGroupViewModel extends BaseViewModel {
         joinGroupUseCase.execute(callback,JoinGroupUseCase.Params.forJoin(group));
     }
 
-    public MutableLiveData<Resource<GroupResponse>> getJoinGroupResponse() {
+    public MutableLiveData<Resource<Boolean>> getJoinGroupResponse() {
         return joinGroupResponse;
     }
 

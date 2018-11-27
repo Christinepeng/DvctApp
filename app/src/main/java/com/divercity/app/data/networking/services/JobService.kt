@@ -8,6 +8,7 @@ import com.divercity.app.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
 import io.reactivex.Observable
+import retrofit2.Response
 import retrofit2.http.*
 
 /**
@@ -19,13 +20,13 @@ interface JobService {
     @GET("jobs")
     fun fetchJobs(@Query("page[number]") pageNumber: Int,
                   @Query("page[size]") size: Int,
-                  @Query("search_query") query: String?): Observable<DataArray<JobResponse>>
+                  @Query("search_query") query: String?): Observable<Response<DataArray<JobResponse>>>
 
     @POST("jobs/{jobId}/bookmark")
-    fun saveJob(@Path("jobId") jobId: String): Observable<DataObject<JobResponse>>
+    fun saveJob(@Path("jobId") jobId: String): Observable<Response<DataObject<JobResponse>>>
 
     @DELETE("jobs/{jobId}/remove_bookmark")
-    fun removeSavedJob(@Path("jobId") jobId: String): Observable<DataObject<JobResponse>>
+    fun removeSavedJob(@Path("jobId") jobId: String): Observable<Response<DataObject<JobResponse>>>
 
     @GET("bookmarks?type=Job")
     fun fetchSavedJobs(@Query("page[number]") pageNumber: Int,
@@ -35,20 +36,23 @@ interface JobService {
     @GET("jobs/applications")
     fun fetchMyJobApplications(@Query("page[number]") pageNumber: Int,
                        @Query("page[size]") size: Int,
-                       @Query("search_query") query: String?): Observable<IncludedArray<JobResponse>>
+                       @Query("search_query") query: String?): Observable<Response<DataArray<JobResponse>>>
 
     @GET("jobs/job_types")
-    fun fetchJobTypes(): Observable<DataArray<JobTypeResponse>>
+    fun fetchJobTypes(): Observable<Response<DataArray<JobTypeResponse>>>
+
+    @GET("jobs/{id}")
+    fun fetchJobById(@Path("id") jobId: String): Observable<Response<DataObject<JobResponse>>>
 
     @GET("jobs")
     fun fetchJobPostingsByUser(@Query("user") userId: String,
                                @Query("page[number]") pageNumber: Int,
                                @Query("page[size]") size: Int,
-                               @Query("search_query") query: String?): Observable<DataArray<JobResponse>>
+                               @Query("search_query") query: String?): Observable<Response<DataArray<JobResponse>>>
 
     @POST("jobs")
-    fun postJob(@Body() body: JobBody): Observable<DataObject<JobResponse>>
+    fun postJob(@Body() body: JobBody): Observable<Response<DataObject<JobResponse>>>
 
     @POST("jobs/{jobId}/share")
-    fun shareJob(@Path("jobId") jobId: String, @Body() body: JobShareGroupBody): Observable<DataObject<JobResponse>>
+    fun shareJob(@Path("jobId") jobId: String, @Body() body: JobShareGroupBody): Observable<Response<DataObject<JobResponse>>>
 }

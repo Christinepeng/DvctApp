@@ -1,7 +1,5 @@
 package com.divercity.app.repository.job
 
-import com.divercity.app.data.entity.base.DataArray
-import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.base.IncludedArray
 import com.divercity.app.data.entity.job.jobpostingbody.JobBody
 import com.divercity.app.data.entity.job.jobsharedgroupbody.JobShareGroupBody
@@ -15,21 +13,23 @@ import io.reactivex.Observable
 
 interface JobRepository {
 
-    fun fetchJobs(page: Int, size: Int, query : String?): Observable<DataArray<JobResponse>>
+    fun fetchJobs(page: Int, size: Int, query : String?): Observable<List<JobResponse>>
 
     fun saveJob(jobId : String) : Observable<JobResponse>
 
     fun removeSavedJob(jobId : String) : Observable<JobResponse>
 
+    fun fetchJobById(jobId : String) : Observable<JobResponse>
+
     fun fetchSavedJobs(page: Int, size: Int, query : String?): Observable<IncludedArray<JobResponse>>
 
-    fun fetchMyJobApplications(page: Int, size: Int, query : String?): Observable<IncludedArray<JobResponse>>
+    fun fetchMyJobApplications(page: Int, size: Int, query : String?): Observable<List<JobResponse>>
 
     fun fetchJobTypes(): Observable<List<JobTypeResponse>>
 
-    fun postJob(body : JobBody): Observable<DataObject<JobResponse>>
+    fun postJob(body : JobBody): Observable<JobResponse>
 
     fun shareJob(jobId: String, body : JobShareGroupBody): Observable<JobResponse>
 
-    fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<DataArray<JobResponse>>
+    fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 }

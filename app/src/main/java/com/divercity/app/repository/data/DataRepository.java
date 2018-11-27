@@ -11,6 +11,8 @@ import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 
+import java.util.List;
+
 import io.reactivex.Observable;
 
 /**
@@ -19,7 +21,7 @@ import io.reactivex.Observable;
 
 public interface DataRepository {
 
-    Observable<DataArray<CompanyResponse>> fetchCompanies(int page, int size, String query);
+    Observable<List<CompanyResponse>> fetchCompanies(int page, int size, String query);
 
     Observable<DataArray<IndustryResponse>> fetchIndustries(int page, int size, String query);
 

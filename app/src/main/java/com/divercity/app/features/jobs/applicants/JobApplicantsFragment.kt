@@ -91,7 +91,7 @@ class JobApplicantsFragment : BaseFragment(), JobSeekerActionsDialogFragment.Lis
     }
 
     private fun showJobApplyDialog() {
-        val dialog = JobApplyDialogFragment.newInstance()
+        val dialog = JobApplyDialogFragment.newInstance(job?.id!!)
         dialog.show(childFragmentManager, null)
     }
 

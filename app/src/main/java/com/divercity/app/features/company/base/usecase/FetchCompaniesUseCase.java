@@ -1,9 +1,10 @@
 package com.divercity.app.features.company.base.usecase;
 
 import com.divercity.app.core.base.UseCase;
-import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.company.CompanyResponse;
 import com.divercity.app.repository.data.DataRepository;
+
+import java.util.List;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -15,7 +16,7 @@ import io.reactivex.Scheduler;
  * Created by lucas on 18/10/2018.
  */
 
-public class FetchCompaniesUseCase extends UseCase<DataArray<CompanyResponse>, FetchCompaniesUseCase.Params> {
+public class FetchCompaniesUseCase extends UseCase<List<CompanyResponse>, FetchCompaniesUseCase.Params> {
 
     private DataRepository repository;
 
@@ -28,7 +29,7 @@ public class FetchCompaniesUseCase extends UseCase<DataArray<CompanyResponse>, F
     }
 
     @Override
-    protected Observable<DataArray<CompanyResponse>> createObservableUseCase(FetchCompaniesUseCase.Params params) {
+    protected Observable<List<CompanyResponse>> createObservableUseCase(FetchCompaniesUseCase.Params params) {
         return repository.fetchCompanies(params.page, params.size, params.query);
     }
 

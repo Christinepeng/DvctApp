@@ -12,6 +12,7 @@ import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 
 import io.reactivex.Observable;
+import retrofit2.Response;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
@@ -22,55 +23,55 @@ import retrofit2.http.Query;
 public interface DataService {
 
     @GET("jobs/job_employers")
-    Observable<DataArray<CompanyResponse>> fetchCompanies(@Query("page[number]") int pageNumber,
-                                                          @Query("page[size]") int size,
-                                                          @Query("search_query") String query);
+    Observable<Response<DataArray<CompanyResponse>>> fetchCompanies(@Query("page[number]") int pageNumber,
+                                                                    @Query("page[size]") int size,
+                                                                    @Query("search_query") String query);
 
     @GET("data/industries")
-    Observable<DataArray<IndustryResponse>> fetchIndustries(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<IndustryResponse>>> fetchIndustries(@Query("page[number]") int pageNumber,
                                                             @Query("page[size]") int size,
                                                             @Query("search_query") String query);
 
     @GET("schools")
-    Observable<DataArray<SchoolResponse>> fetchSchools(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<SchoolResponse>>> fetchSchools(@Query("page[number]") int pageNumber,
                                                        @Query("page[size]") int size,
                                                        @Query("search_query") String query);
 
     @GET("data/student_majors")
-    Observable<DataArray<MajorResponse>> fetchStudentMajors(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<MajorResponse>>> fetchStudentMajors(@Query("page[number]") int pageNumber,
                                                             @Query("page[size]") int size,
                                                             @Query("search_query") String query);
 
     @GET("stories/recommended_groups")
-    Observable<DataObject<RecommendedGroupsResponse>> fetchRecommendedGroups();
+    Observable<Response<DataObject<RecommendedGroupsResponse>>> fetchRecommendedGroups();
 
     @GET("group_of_interests/onboarding")
-    Observable<DataArray<GroupResponse>> fetchGroups(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<GroupResponse>>> fetchGroups(@Query("page[number]") int pageNumber,
                                                      @Query("page[size]") int size,
                                                      @Query("search_query") String query);
 
     @GET("group_of_interests/trending")
-    Observable<DataArray<GroupResponse>> fetchTrendingGroups(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<GroupResponse>>> fetchTrendingGroups(@Query("page[number]") int pageNumber,
                                                      @Query("page[size]") int size,
                                                      @Query("search_query") String query);
 
     @GET("group_of_interests/my_groups")
-    Observable<DataArray<GroupResponse>> fetchMyGroups(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<GroupResponse>>> fetchMyGroups(@Query("page[number]") int pageNumber,
                                                              @Query("page[size]") int size,
                                                              @Query("search_query") String query);
 
     @GET("group_of_interests/following")
-    Observable<DataArray<GroupResponse>> fetchFollowedGroups(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<GroupResponse>>> fetchFollowedGroups(@Query("page[number]") int pageNumber,
                                                      @Query("page[size]") int size,
                                                      @Query("search_query") String query);
 
     @GET("data/cities")
-    Observable<DataArray<LocationResponse>> fetchLocations(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<LocationResponse>>> fetchLocations(@Query("page[number]") int pageNumber,
                                                            @Query("page[size]") int size,
                                                            @Query("search_query") String query);
 
     @GET("data/job_skills")
-    Observable<DataArray<SkillResponse>> fetchSkills(@Query("page[number]") int pageNumber,
+    Observable<Response<DataArray<SkillResponse>>> fetchSkills(@Query("page[number]") int pageNumber,
                                                      @Query("page[size]") int size,
                                                      @Query("search_query") String query);
 }

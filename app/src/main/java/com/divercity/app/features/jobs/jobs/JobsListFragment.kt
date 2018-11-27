@@ -88,7 +88,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
 
         viewModel.navigateToJobSeekerDescription.observe(viewLifecycleOwner, Observer {
             it?.let { job ->
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job)
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
             }
         })
 
@@ -150,7 +150,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
 
         override fun onApplyClick(position: Int, job: JobResponse) {
             positionApplyClicked = position
-            showJobApplyDialog()
+            showJobApplyDialog(job.id)
         }
 
         override fun onJobClick(job: JobResponse) {
@@ -158,8 +158,8 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
         }
     }
 
-    private fun showJobApplyDialog() {
-        val dialog = JobApplyDialogFragment.newInstance()
+    private fun showJobApplyDialog(jobId : String?) {
+        val dialog = JobApplyDialogFragment.newInstance(jobId!!)
         dialog.show(childFragmentManager, null)
     }
 

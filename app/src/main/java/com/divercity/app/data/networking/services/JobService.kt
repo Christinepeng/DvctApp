@@ -7,7 +7,9 @@ import com.divercity.app.data.entity.job.jobpostingbody.JobBody
 import com.divercity.app.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
 import io.reactivex.Observable
+import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -36,7 +38,7 @@ interface JobService {
     @GET("jobs/applications")
     fun fetchMyJobApplications(@Query("page[number]") pageNumber: Int,
                        @Query("page[size]") size: Int,
-                       @Query("search_query") query: String?): Observable<Response<DataArray<JobResponse>>>
+                       @Query("search_query") query: String?): Observable<Response<DataArray<JobApplicationResponse>>>
 
     @GET("jobs/job_types")
     fun fetchJobTypes(): Observable<Response<DataArray<JobTypeResponse>>>
@@ -55,4 +57,10 @@ interface JobService {
 
     @POST("jobs/{jobId}/share")
     fun shareJob(@Path("jobId") jobId: String, @Body() body: JobShareGroupBody): Observable<Response<DataObject<JobResponse>>>
+
+    @Multipart
+    @POST("jobs/apply")
+    fun applyJob(@Part("application[job_id]") jobId: RequestBody,
+                 @Part("application[user_document_id]") userDocId: RequestBody,
+                 @Part("application[cover_letter]") coverLetter: RequestBody): Observable<Response<DataObject<JobApplicationResponse>>>
 }

@@ -121,13 +121,13 @@ class RecentDocsDialogFragment : BaseDialogFragment() {
     }
 
     interface Listener {
-        fun onDocumentClick(docId: String)
+        fun onDocumentClick(doc: DocumentResponse)
     }
 
-    var listenerAdapter = object : RecentDocsDialogsAdapter.Listener{
+    private val listenerAdapter = object : RecentDocsDialogsAdapter.Listener{
 
         override fun onDocClick(doc: DocumentResponse) {
-            listener?.onDocumentClick(doc.id!!)
+            listener?.onDocumentClick(doc)
             dismiss()
         }
     }

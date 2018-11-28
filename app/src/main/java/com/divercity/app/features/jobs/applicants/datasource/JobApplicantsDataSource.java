@@ -7,7 +7,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.job.response.JobResponse;
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse;
+import com.divercity.app.features.jobs.applications.datasource.JobApplicationsDataSource;
 import com.divercity.app.features.jobs.applications.usecase.FetchJobsApplicationsUseCase;
 
 import java.util.List;
@@ -19,9 +20,9 @@ import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobResponse> {
+public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobApplicationResponse> {
 
-    private static final String TAG = JobApplicantsDataSource.class.getSimpleName();
+    private static final String TAG = JobApplicationsDataSource.class.getSimpleName();
 
     private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
@@ -36,8 +37,8 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobRespon
     private Completable retryCompletable;
 
     public JobApplicantsDataSource(CompositeDisposable compositeDisposable,
-                                   FetchJobsApplicationsUseCase fetchJobsApplicationsUseCase,
-                                   @Nullable String query) {
+                                     FetchJobsApplicationsUseCase fetchJobsApplicationsUseCase,
+                                     @Nullable String query) {
         this.compositeDisposable = compositeDisposable;
         this.fetchJobsApplicationsUseCase = fetchJobsApplicationsUseCase;
         this.query = query;
@@ -54,16 +55,16 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobRespon
     }
 
     @Override
-    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, JobResponse> callback) {
+    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, JobApplicationResponse> callback) {
         // update network states.
         // we also provide an initial load state to the listeners so that the UI can know when the
         // very first list is loaded.
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<JobResponse>> disposableObserver = new DisposableObserver<List<JobResponse>>() {
+        DisposableObserver<List<JobApplicationResponse>> disposableObserver = new DisposableObserver<List<JobApplicationResponse>>() {
             @Override
-            public void onNext(List<JobResponse> data) {
+            public void onNext(List<JobApplicationResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
@@ -97,17 +98,17 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobRespon
     }
 
     @Override
-    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, JobResponse> callback) {
+    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, JobApplicationResponse> callback) {
 
     }
 
     @Override
-    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, JobResponse> callback) {
+    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, JobApplicationResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<JobResponse>> disposableObserver = new DisposableObserver<List<JobResponse>>() {
+        DisposableObserver<List<JobApplicationResponse>> disposableObserver = new DisposableObserver<List<JobApplicationResponse>>() {
             @Override
-            public void onNext(List<JobResponse> data) {
+            public void onNext(List<JobApplicationResponse> data) {
                 if (data != null) {
                     setRetry(null);
                     callback.onResult(data, params.key + 1);
@@ -153,3 +154,4 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobRespon
     }
 
 }
+

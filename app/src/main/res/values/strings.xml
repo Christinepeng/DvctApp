@@ -13,9 +13,16 @@
     <string name="about">About</string>
     <string name="cancel">Cancel</string>
 
+    <!-- Company-->
+    <string name="create_new_company">Create New Company</string>
+
+    <!-- Location-->
+    <string name="use_my_location">Use My Location</string>
+    
     <!-- Files-->
     <string name="select_valid_file">Select valid file</string>
     <string name="file_upload_success">File uploaded successfully</string>
+    <string name="created_at">Created at %1$s</string>
 
     <!-- Profile onboarding-->
     <string name="select_your_company">Select your Company</string>
@@ -151,6 +158,7 @@
     <string name="view_applicants">View Applicants</string>
     <string name="recommended_applicants">Recommended applicants</string>
     <string name="applicants">Applicants</string>
+    <string name="application_succes">Successful application</string>
 
     <!-- Groups-->
     <string name="all">All</string>

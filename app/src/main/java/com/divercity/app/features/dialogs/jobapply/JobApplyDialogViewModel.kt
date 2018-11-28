@@ -8,7 +8,9 @@ import com.divercity.app.core.utils.FileUtils
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.document.DocumentResponse
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
+import com.divercity.app.features.dialogs.jobapply.usecase.ApplyToJobUseCase
 import com.divercity.app.features.dialogs.jobapply.usecase.UploadDocumentUseCase
 import com.google.gson.JsonElement
 import java.io.File
@@ -20,9 +22,11 @@ import javax.inject.Inject
 
 class JobApplyDialogViewModel @Inject
 constructor(private val context: Application,
-            private val uploadDocumentUseCase: UploadDocumentUseCase) : BaseViewModel() {
+            private val uploadDocumentUseCase: UploadDocumentUseCase,
+            private val applyToJobUseCase: ApplyToJobUseCase) : BaseViewModel() {
 
     var uploadDocumentResponse = SingleLiveEvent<Resource<DocumentResponse>>()
+    var applyToJobResponse = SingleLiveEvent<Resource<JobApplicationResponse>>()
 
     fun checkDocumentAndUploadIt(uri: Uri) {
         val mimeType = FileUtils.getMimeType(context, uri)
@@ -62,5 +66,23 @@ constructor(private val context: Application,
             }
         }
         uploadDocumentUseCase.execute(callback, UploadDocumentUseCase.Params.forDoc(file))
+    }
+
+    fun applyToJob(jobId: String, userDocId: String, coverLetter: String) {
+        applyToJobResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<JobApplicationResponse>() {
+            override fun onFail(error: String) {
+                applyToJobResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                applyToJobResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: JobApplicationResponse) {
+                applyToJobResponse.postValue(Resource.success(o))
+            }
+        }
+        applyToJobUseCase.execute(callback, ApplyToJobUseCase.Params.forJob(jobId, userDocId, coverLetter))
     }
 }

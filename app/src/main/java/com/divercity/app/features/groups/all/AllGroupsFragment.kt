@@ -71,6 +71,8 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                     Status.SUCCESS -> {
                         hideProgress()
                         // Updating join btn state
+//                        TODO: update with response group data
+                        adapter.currentList?.get(positionJoinClicked)?.attributes?.followersCount = +1
                         adapter.currentList?.get(positionJoinClicked)?.attributes?.isIsFollowedByCurrent = true
                         adapter.notifyItemChanged(positionJoinClicked)
                     }

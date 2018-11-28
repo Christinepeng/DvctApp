@@ -1,6 +1,5 @@
 package com.divercity.app.features.signup
 
-import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -17,13 +16,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
+import com.divercity.app.core.utils.ImageUtils
 import com.divercity.app.core.utils.Util
 import com.divercity.app.data.Status
 import com.divercity.app.features.dialogs.CustomTwoBtnDialogFragment
-import com.divercity.app.helpers.TakePictureHelper
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
-import javax.inject.Inject
+import pl.aprilapps.easyphotopicker.DefaultCallback
+import pl.aprilapps.easyphotopicker.EasyImage
+import java.io.File
 
 /**
  * Created by lucas on 24/10/2018.
@@ -35,13 +36,12 @@ class SignUpFragment : BaseFragment() {
     val SAVE_PARAM_USERNAME = "username"
     val SAVE_PARAM_ISUSERREGISTERED = "isUserRegistered"
 
-    @Inject
-    lateinit var takePictureHelper: TakePictureHelper
+    private var photoFile: File? = null
 
     private lateinit var viewModel: SignUpViewModel
     private var username: String? = ""
     private var isUserRegistered: Int = 2
-    private var isPictureSet : Boolean = false
+    private var isPictureSet: Boolean = false
 
     companion object {
         private const val PARAM_EMAIL = "paramEmail"
@@ -60,16 +60,17 @@ class SignUpFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SignUpViewModel::class.java]
-        takePictureHelper.activity = activity!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         savedInstanceState?.let {
-            var path = savedInstanceState.getString(SAVE_PARAM_FILEPATH)
-            setPicture(path)
-            takePictureHelper.currentPhotoPath = path
+            val data = savedInstanceState.getSerializable(SAVE_PARAM_FILEPATH)
+            if(data != null){
+                photoFile = data as File
+                onPhotosReturned(photoFile)
+            }
 
             username = savedInstanceState.getString(SAVE_PARAM_USERNAME)
 
@@ -109,8 +110,8 @@ class SignUpFragment : BaseFragment() {
                     showSnackbar(voidResource.message)
                 }
                 Status.SUCCESS -> {
-                    if(isPictureSet)
-                        viewModel.uploadPicture(takePictureHelper.getStringBase64(400, 400))
+                    if (isPictureSet)
+                        viewModel.uploadPicture(ImageUtils.getStringBase64(photoFile!!, 400, 400))
                     else
                         viewModel.navigateToSelectUserType.call()
                 }
@@ -155,16 +156,16 @@ class SignUpFragment : BaseFragment() {
     fun showSnackbar(message: String?) {
         activity?.run {
             Snackbar.make(
-                    findViewById(android.R.id.content),
-                    message ?: "Error",
-                    Snackbar.LENGTH_LONG
+                findViewById(android.R.id.content),
+                message ?: "Error",
+                Snackbar.LENGTH_LONG
             ).show()
         }
     }
 
     private fun setupEvents() {
-        photo.setOnClickListener {
-            takePictureHelper.checkCameraPermissionAndTakePicture()
+        btn_photo.setOnClickListener {
+            EasyImage.openChooserWithGallery(this, "Pick source", 0)
         }
 
         et_username.addTextChangedListener(object : TextWatcher {
@@ -200,20 +201,20 @@ class SignUpFragment : BaseFragment() {
         }
 
         btn_create_account.setOnClickListener {
-            if(checkFormIsCompleted())
+            if (checkFormIsCompleted())
                 viewModel.signUp(
-                        getTextEditText(et_name),
-                        getTextEditText(et_username).substring(1),
-                        getTextEditText(et_email),
-                        getTextEditText(et_password),
-                        getTextEditText(et_confirm_pass)
+                    getTextEditText(et_name),
+                    getTextEditText(et_username).substring(1),
+                    getTextEditText(et_email),
+                    getTextEditText(et_password),
+                    getTextEditText(et_confirm_pass)
                 )
             else
                 showToast(getString(R.string.check_fields))
         }
     }
 
-    private fun checkFormIsCompleted() : Boolean{
+    private fun checkFormIsCompleted(): Boolean {
         return et_name.text.toString() != "" &&
                 et_username.text.toString() != "" &&
                 et_username.text.toString().length != 1 &&
@@ -256,10 +257,10 @@ class SignUpFragment : BaseFragment() {
 
     private fun showDialogErrorProfilePictureUpload() {
         var dialog = CustomTwoBtnDialogFragment.newInstance(
-                getString(R.string.ups),
-                getString(R.string.error_picture_upload),
-                getString(R.string.ok),
-                getString(R.string.retry)
+            getString(R.string.ups),
+            getString(R.string.error_picture_upload),
+            getString(R.string.ok),
+            getString(R.string.retry)
         )
 
         dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
@@ -275,31 +276,55 @@ class SignUpFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        when (requestCode) {
-            TakePictureHelper.REQUEST_TAKE_PHOTO -> {
-                when (resultCode) {
-                    Activity.RESULT_OK -> {
-                        setPicture(takePictureHelper.currentPhotoPath)
-                    }
+//        when (requestCode) {
+//            TakePictureHelper.REQUEST_TAKE_PHOTO -> {
+//                when (resultCode) {
+//                    Activity.RESULT_OK -> {
+//                        onPhotosReturned(takePictureHelper.currentPhotoPath)
+//                    }
+//                }
+//            }
+//        }
+
+        EasyImage.handleActivityResult(requestCode, resultCode, data, activity, object : DefaultCallback() {
+            override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
+                //Some error handling
+                e!!.printStackTrace()
+                showToast(e.message)
+            }
+
+            override fun onImagesPicked(imageFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
+                onPhotosReturned(imageFiles[0])
+            }
+
+            override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
+                //Cancel handling, you might wanna remove taken photoFile if it was canceled
+                if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
+                    val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                    photoFile?.delete()
                 }
             }
-        }
+        })
     }
 
-    private fun setPicture(path: String?) {
-        path?.let {
-            GlideApp.with(this)
-                    .load(it)
-                    .apply(RequestOptions().circleCrop())
-                    .into(img_profile)
-            isPictureSet = true
-        }
+    private fun onPhotosReturned(file: File?) {
+        photoFile = file
+        GlideApp.with(this)
+            .load(file)
+            .apply(RequestOptions().circleCrop())
+            .into(img_profile)
+        isPictureSet = true
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putString(SAVE_PARAM_FILEPATH, takePictureHelper.currentPhotoPath)
+        outState.putSerializable(SAVE_PARAM_FILEPATH, photoFile)
         outState.putString(SAVE_PARAM_USERNAME, username)
         outState.putInt(SAVE_PARAM_ISUSERREGISTERED, isUserRegistered)
+    }
+
+    override fun onDestroy() {
+        EasyImage.clearConfiguration(activity!!)
+        super.onDestroy()
     }
 }

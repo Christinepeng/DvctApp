@@ -1,12 +1,13 @@
 package com.divercity.app.repository.document
 
-import android.content.Context
 import com.divercity.app.data.entity.document.DocumentResponse
 import com.divercity.app.data.networking.services.DocumentService
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.HttpException
+import retrofit2.Response
 import java.io.File
 import javax.inject.Inject
 
@@ -17,12 +18,14 @@ import javax.inject.Inject
 
 class DocumentRepositoryImpl @Inject
 constructor(
-        private val context: Context,
-        private val service: DocumentService
+    private val service: DocumentService
 ) : DocumentRepository {
 
     override fun fetchRecentDocs(): Observable<List<DocumentResponse>> {
-        return service.fetchRecentDocs().map { it.data }
+        return service.fetchRecentDocs().map {
+            checkResponse(it)
+            it.body()?.data
+        }
     }
 
     override fun uploadDocument(file: File): Observable<DocumentResponse> {
@@ -32,7 +35,13 @@ constructor(
         val name = RequestBody.create(MediaType.parse("text/plain"), file.name)
 
         return service.uploadDocument(name, multi).map {
-            it.data
+            checkResponse(it)
+            it.body()?.data
         }
+    }
+
+    private fun checkResponse(response: Response<*>) {
+        if (!response.isSuccessful)
+            throw HttpException(response)
     }
 }

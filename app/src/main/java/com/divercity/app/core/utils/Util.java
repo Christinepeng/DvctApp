@@ -33,6 +33,26 @@ public final class Util {
         }
     }
 
+    public static String getStringDateTimeWithServerDate(String date){
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                    Locale.getDefault());
+            try {
+                Date myDate = dateFormat.parse(date);
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy K:mm a", Locale.getDefault());
+                String res = df.format(myDate);
+                if (res != null && !res.equals(""))
+                    return res.replace("AM", "am").replace("PM", "pm");
+                else
+                    return "";
+            } catch (ParseException e) {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
+
     public static String getStringAppTimeWithDate(Date date) {
         DateFormat dateFormat = new SimpleDateFormat("K:mm a",
                 Locale.getDefault());

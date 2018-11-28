@@ -1,10 +1,10 @@
 package com.divercity.app.features.company.base
 
-
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 import android.view.View
 import com.divercity.app.R
@@ -14,7 +14,7 @@ import com.divercity.app.data.Status
 import com.divercity.app.data.entity.company.CompanyResponse
 import com.divercity.app.features.company.base.adapter.CompanyAdapter
 import com.divercity.app.features.company.base.adapter.CompanyViewHolder
-import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
+import kotlinx.android.synthetic.main.fragment_list_search.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import javax.inject.Inject
 
@@ -45,11 +45,18 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchCompanies(this, null)
+        setupView()
+        subscribeToPaginatedLiveData()
+        setupHeader()
+    }
+
+    private fun setupView(){
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
-        subscribeToPaginatedLiveData()
-        setupHeader()
+
+        img_action.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.btn_create_company))
+        txt_action_title.setText(R.string.create_new_company)
     }
 
 

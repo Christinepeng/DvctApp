@@ -1,11 +1,10 @@
 package com.divercity.app.features.dialogs.jobapply.usecase
 
 import com.divercity.app.core.base.UseCase
-import com.divercity.app.data.entity.document.DocumentResponse
-import com.divercity.app.repository.document.DocumentRepository
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
+import com.divercity.app.repository.job.JobRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import java.io.File
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -15,25 +14,22 @@ import javax.inject.Named
 
 class ApplyToJobUseCase @Inject
 constructor(
-    @Named("executor_thread") executorThread: Scheduler,
-    @Named("ui_thread") uiThread: Scheduler,
-    private val repository: DocumentRepository
-) : UseCase<DocumentResponse, ApplyToJobUseCase.Params>(executorThread, uiThread) {
+        @Named("executor_thread") executorThread: Scheduler,
+        @Named("ui_thread") uiThread: Scheduler,
+        private val repository: JobRepository
+) : UseCase<JobApplicationResponse, ApplyToJobUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<DocumentResponse> {
-        return repository.uploadDocument(params.file)
+    override fun createObservableUseCase(params: Params): Observable<JobApplicationResponse> {
+        return repository.applyJob(params.jobId, params.userDocId, params.coverLetter)
     }
 
-    class Params private constructor(
-            val file: File
-            ) {
+    class Params private
+    constructor(val jobId: String, val userDocId: String, val coverLetter: String) {
 
         companion object {
 
-            fun forDoc(
-                file: File
-            ): Params {
-                return Params(file)
+            fun forJob(jobId: String, userDocId: String, coverLetter: String): Params {
+                return Params(jobId, userDocId, coverLetter)
             }
         }
     }

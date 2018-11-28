@@ -136,6 +136,8 @@ dependencies {
     // Timber
     implementation "com.jakewharton.timber:timber:$timber_version"
 
+    implementation 'com.github.jkwiecien:EasyImage:2.1.0'
+
     // LeakCanary
     debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakCanary_version"
     releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakCanary_version"

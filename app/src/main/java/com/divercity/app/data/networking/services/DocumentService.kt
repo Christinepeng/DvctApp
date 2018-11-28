@@ -6,6 +6,7 @@ import com.divercity.app.data.entity.document.DocumentResponse
 import io.reactivex.Observable
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Multipart
 import retrofit2.http.POST
@@ -20,8 +21,8 @@ interface DocumentService {
     @Multipart
     @POST("user_documents")
     fun uploadDocument(@Part("document[name]") docName: RequestBody,
-                @Part() doc: MultipartBody.Part): Observable<DataObject<DocumentResponse>>
+                @Part() doc: MultipartBody.Part): Observable<Response<DataObject<DocumentResponse>>>
 
     @GET("user_documents")
-    fun fetchRecentDocs(): Observable<DataArray<DocumentResponse>>
+    fun fetchRecentDocs(): Observable<Response<DataArray<DocumentResponse>>>
 }

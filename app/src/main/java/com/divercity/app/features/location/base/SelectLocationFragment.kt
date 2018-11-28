@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.view.KeyEvent
 import android.view.View
 import com.divercity.app.R
@@ -52,15 +53,19 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupList()
+        setupView()
         setupSearch()
         subscribeToPaginatedLiveData()
     }
 
-    private fun setupList() {
+    private fun setupView() {
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
+
+        img_action.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.icon_location))
+        txt_action_title.setText(R.string.use_my_location)
+        lay_action.visibility = View.GONE
     }
 
     private fun setupSearch() {

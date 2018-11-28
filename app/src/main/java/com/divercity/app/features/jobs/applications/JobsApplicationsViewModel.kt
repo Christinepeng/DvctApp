@@ -11,6 +11,7 @@ import com.divercity.app.core.utils.Listing
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.jobs.applications.datasource.JobApplicationsPaginatedRepositoryImpl
 import com.divercity.app.features.jobs.jobs.usecase.RemoveSavedJobUseCase
@@ -34,8 +35,8 @@ constructor(private val context: Application,
     var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
     var navigateToJobSeekerDescription = SingleLiveEvent<JobResponse>()
     var navigateToJobRecruiterDescription = SingleLiveEvent<JobResponse>()
-    lateinit var pagedJobsList: LiveData<PagedList<JobResponse>>
-    private lateinit var listingPaginatedJob: Listing<JobResponse>
+    lateinit var pagedJobsList: LiveData<PagedList<JobApplicationResponse>>
+    private lateinit var listingPaginatedJob: Listing<JobApplicationResponse>
     private var lastSearch: String? = null
 
     init {

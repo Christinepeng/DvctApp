@@ -3,14 +3,14 @@ package com.divercity.app.features.jobs.applications.datasource;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
-
 import android.support.annotation.Nullable;
-import com.divercity.app.data.entity.job.response.JobResponse;
+
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse;
 import com.divercity.app.features.jobs.applications.usecase.FetchJobsApplicationsUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class JobApplicationsDataSourceFactory extends DataSource.Factory<Long, JobResponse> {
+public class JobApplicationsDataSourceFactory extends DataSource.Factory<Long, JobApplicationResponse> {
 
     private CompositeDisposable compositeDisposable;
     private FetchJobsApplicationsUseCase fetchJobsApplicationsUseCase;
@@ -27,7 +27,7 @@ public class JobApplicationsDataSourceFactory extends DataSource.Factory<Long, J
     }
 
     @Override
-    public DataSource<Long, JobResponse> create() {
+    public DataSource<Long, JobApplicationResponse> create() {
         JobApplicationsDataSource jobApplicationsDataSource = new JobApplicationsDataSource(
                 compositeDisposable,
                 fetchJobsApplicationsUseCase,

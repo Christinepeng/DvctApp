@@ -5,6 +5,7 @@ import com.divercity.app.data.entity.job.jobpostingbody.JobBody
 import com.divercity.app.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
 import io.reactivex.Observable
 
 /**
@@ -23,7 +24,7 @@ interface JobRepository {
 
     fun fetchSavedJobs(page: Int, size: Int, query : String?): Observable<IncludedArray<JobResponse>>
 
-    fun fetchMyJobApplications(page: Int, size: Int, query : String?): Observable<List<JobResponse>>
+    fun fetchMyJobApplications(page: Int, size: Int, query : String?): Observable<List<JobApplicationResponse>>
 
     fun fetchJobTypes(): Observable<List<JobTypeResponse>>
 
@@ -32,4 +33,8 @@ interface JobRepository {
     fun shareJob(jobId: String, body : JobShareGroupBody): Observable<JobResponse>
 
     fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<List<JobResponse>>
+
+    fun applyJob(jobId: String,
+                 userDocId: String,
+                 coverLetter: String): Observable<JobApplicationResponse>
 }

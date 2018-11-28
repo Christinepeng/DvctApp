@@ -16,8 +16,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseDialogFragment
 import com.divercity.app.core.utils.GlideApp
-import com.divercity.app.data.Resource
+import com.divercity.app.core.utils.Util
 import com.divercity.app.data.Status
+import com.divercity.app.data.entity.document.DocumentResponse
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.app.repository.user.UserRepository
 import kotlinx.android.synthetic.main.dialog_job_apply.view.*
@@ -38,14 +39,15 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
 
     private lateinit var dialogView: View
 
-    var docId: String? = "-1"
+    private var docId: String? = null
+    private var jobId: String? = null
 
     companion object {
         private const val JOB_ID = "jobId"
         const val REQUEST_CODE_DOC = 150
         const val DOC_ID = "docId"
 
-        fun newInstance(jobId : String): JobApplyDialogFragment {
+        fun newInstance(jobId: String): JobApplyDialogFragment {
             val fragment = JobApplyDialogFragment()
             val arguments = Bundle()
             arguments.putString(JOB_ID, jobId)
@@ -56,8 +58,10 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        jobId = arguments?.getString(JOB_ID)
         savedInstanceState?.also {
             docId = it.getString(DOC_ID)
+            jobId = it.getString(JOB_ID)
         }
         viewModel = ViewModelProviders.of(this, viewModelFactory)[JobApplyDialogViewModel::class.java]
         subscribeToLiveData()
@@ -86,30 +90,37 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
                 .apply(RequestOptions().circleCrop())
                 .into(dialogView.img_profile)
 
-        dialogView.txt_fullname.text = userRepository.getFullName()
+        dialogView.apply {
+            txt_fullname.text = userRepository.getFullName()
 
-        dialogView.txt_usr_occupation.visibility = View.GONE
-        dialogView.txt_usr_location.visibility = View.GONE
+            txt_usr_occupation.visibility = View.GONE
+            txt_usr_location.visibility = View.GONE
 
-        dialogView.txt_filename.setOnClickListener {
-            openDocSelector()
+            btn_upload_new.setOnClickListener {
+                openDocSelector()
+            }
+
+            btn_choose_recent_file.setOnClickListener {
+                showRecentDocsDialog()
+            }
+
+            btn_submit_application.setOnClickListener {
+                if (docId != null && jobId != null) {
+                    viewModel.applyToJob(jobId!!, docId!!, et_cover_letter.text.toString())
+                } else
+                    showToast(R.string.select_valid_file)
+            }
+
+            btn_deselect_doc.setOnClickListener {
+                docId = null
+                lay_doc_detail.visibility = View.GONE
+                btn_choose_recent_file.visibility = View.VISIBLE
+            }
+
+            btn_close.setOnClickListener { dismiss() }
+
+            builder.setView(this)
         }
-
-        dialogView.btn_upload_new.setOnClickListener {
-            openDocSelector()
-        }
-
-        dialogView.btn_choose_recent_file.setOnClickListener {
-            showRecentDocsDialog()
-        }
-
-        dialogView.btn_submit_application.setOnClickListener {
-            viewModel.uploadDocumentResponse.postValue(Resource.error(context!!.getString(R.string.select_valid_file), null))
-        }
-
-        dialogView.btn_close.setOnClickListener { dismiss() }
-
-        builder.setView(dialogView)
         return builder.create()
     }
 
@@ -141,15 +152,38 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
                 Status.SUCCESS -> {
                     hideProgress()
                     showToast(R.string.file_upload_success)
-                    dialogView.also {
-                        it.btn_upload_new.visibility = View.GONE
-                        it.btn_choose_recent_file.visibility = View.GONE
-                        it.txt_filename.visibility = View.VISIBLE
-                        it.txt_filename.text = document.data?.attributes?.name
-                    }
+                    showDocData(document.data)
                 }
             }
         })
+
+        viewModel.applyToJobResponse.observe(this, Observer { document ->
+            when (document?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(document.message ?: "Error")
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    showToast(R.string.application_succes)
+                    dismiss()
+                }
+            }
+        })
+    }
+
+    private fun showDocData(doc: DocumentResponse?) {
+        docId = doc?.id
+        dialogView.also {
+            it.btn_choose_recent_file.visibility = View.GONE
+            it.lay_doc_detail.visibility = View.VISIBLE
+            it.txt_filename.text = doc?.attributes?.name
+            it.txt_created_at.text = context?.getString(R.string.created_at, Util.getStringDateTimeWithServerDate(doc?.attributes?.createdAt))
+        }
     }
 
     private fun openDocSelector() {
@@ -182,6 +216,7 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
 
     override fun onSaveInstanceState(outState: Bundle) {
         outState.putString(DOC_ID, docId)
+        outState.putString(JOB_ID, jobId)
         super.onSaveInstanceState(outState)
     }
 
@@ -198,8 +233,8 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
         dialogView.include_loading.visibility = viewStatus
     }
 
-    override fun onDocumentClick(docId: String) {
-
+    override fun onDocumentClick(doc: DocumentResponse) {
+        showDocData(doc)
     }
 
     interface Listener

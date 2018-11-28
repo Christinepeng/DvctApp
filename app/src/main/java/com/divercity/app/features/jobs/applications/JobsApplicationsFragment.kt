@@ -5,15 +5,13 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
-import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.jobs.ITabJobs
-import com.divercity.app.features.jobs.jobs.adapter.JobsAdapter
-import com.divercity.app.features.jobs.jobs.adapter.JobsViewHolder
+import com.divercity.app.features.jobs.applications.adapter.JobApplicationAdapter
+import com.divercity.app.features.jobs.applications.adapter.JobApplicationViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -26,7 +24,7 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
     lateinit var viewModel: JobsApplicationsViewModel
 
     @Inject
-    lateinit var adapter: JobsAdapter
+    lateinit var adapter: JobApplicationAdapter
 
     private var isListRefreshing = false
     private var positionSaveUnsavedClicked: Int = 0
@@ -62,24 +60,24 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
     }
 
     private fun subscribeToLiveData() {
-        viewModel.jobSaveUnsaveResponse.observe(this, Observer { job ->
-            when (job?.status) {
-                Status.LOADING -> {
-                    showProgress()
-                }
-
-                Status.ERROR -> {
-                    hideProgress()
-                    Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.SUCCESS -> {
-                    hideProgress()
-                    adapter.currentList?.get(positionSaveUnsavedClicked)?.attributes?.isBookmarkedByCurrent =
-                            job.data?.attributes?.isBookmarkedByCurrent
-                    adapter.notifyItemChanged(positionSaveUnsavedClicked)
-                }
-            }
-        })
+//        viewModel.jobSaveUnsaveResponse.observe(this, Observer { job ->
+//            when (job?.status) {
+//                Status.LOADING -> {
+//                    showProgress()
+//                }
+//
+//                Status.ERROR -> {
+//                    hideProgress()
+//                    Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
+//                }
+//                Status.SUCCESS -> {
+//                    hideProgress()
+//                    adapter.currentList?.get(positionSaveUnsavedClicked)?.attributes?.isBookmarkedByCurrent =
+//                            job.data?.attributes?.isBookmarkedByCurrent
+//                    adapter.notifyItemChanged(positionSaveUnsavedClicked)
+//                }
+//            }
+//        })
 
         viewModel.navigateToJobRecruiterDescription.observe(viewLifecycleOwner, Observer {
 
@@ -145,21 +143,8 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
         viewModel.retry()
     }
 
-    private val listener: JobsViewHolder.Listener = object : JobsViewHolder.Listener {
+    private val listener: JobApplicationViewHolder.Listener = object : JobApplicationViewHolder.Listener {
 
-        override fun onApplyClick(position: Int, job: JobResponse) {
-            positionSaveUnsavedClicked = position
-            job.attributes?.isBookmarkedByCurrent?.let {
-                if (it)
-                    viewModel.removeSavedJob(job)
-                else
-                    viewModel.saveJob(job)
-            }
-        }
-
-        override fun onJobClick(job: JobResponse) {
-            viewModel.onJobClickNavigateToNext(job)
-        }
     }
 
     override fun fetchJobs(searchQuery: String?) {

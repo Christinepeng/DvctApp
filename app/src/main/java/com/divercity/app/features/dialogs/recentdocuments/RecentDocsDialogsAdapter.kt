@@ -5,8 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.divercity.app.R
+import com.divercity.app.core.utils.Util
 import com.divercity.app.data.entity.document.DocumentResponse
-import kotlinx.android.synthetic.main.item_text.view.*
+import kotlinx.android.synthetic.main.item_text_subtext.view.*
 import javax.inject.Inject
 
 /**
@@ -27,7 +28,7 @@ constructor() : RecyclerView.Adapter<RecentDocsDialogsAdapter.Holder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): Holder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_text, parent, false)
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.item_text_subtext, parent, false)
         return Holder(v)
     }
 
@@ -49,6 +50,7 @@ constructor() : RecyclerView.Adapter<RecentDocsDialogsAdapter.Holder>() {
 
         fun bindTo(doc: DocumentResponse, listener: Listener?) {
             itemView.item_text.text = doc.attributes?.name
+            itemView.txt_created_at.text = itemView.context.getString(R.string.created_at, Util.getStringDateTimeWithServerDate(doc.attributes?.createdAt))
             itemView.setOnClickListener {
                 listener?.onDocClick(doc)
             }

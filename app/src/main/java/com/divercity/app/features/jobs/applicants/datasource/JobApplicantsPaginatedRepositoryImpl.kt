@@ -5,7 +5,8 @@ import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.divercity.app.core.base.PaginatedQueryRepository
 import com.divercity.app.core.utils.Listing
-import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
+import com.divercity.app.features.jobs.applications.datasource.JobApplicationsDataSourceFactory
 import com.divercity.app.features.jobs.applications.usecase.FetchJobsApplicationsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
@@ -16,9 +17,9 @@ import javax.inject.Inject
  */
 
 class JobApplicantsPaginatedRepositoryImpl @Inject
-internal constructor(private val fetchJobsApplicationsUseCase: FetchJobsApplicationsUseCase) : PaginatedQueryRepository<JobResponse> {
+internal constructor(private val fetchJobsApplicationsUseCase: FetchJobsApplicationsUseCase) : PaginatedQueryRepository<JobApplicationResponse> {
 
-    private lateinit var jobApplicantsDataSourceFactory: JobApplicantsDataSourceFactory
+    private lateinit var jobApplicationsDataSourceFactory: JobApplicationsDataSourceFactory
     private val compositeDisposable = CompositeDisposable()
 
     companion object {
@@ -26,11 +27,11 @@ internal constructor(private val fetchJobsApplicationsUseCase: FetchJobsApplicat
         const val pageSize = 20
     }
 
-    override fun fetchData(query : String?): Listing<JobResponse> {
+    override fun fetchData(query : String?): Listing<JobApplicationResponse> {
 
         val executor = Executors.newFixedThreadPool(5)
 
-        jobApplicantsDataSourceFactory = JobApplicantsDataSourceFactory(compositeDisposable, fetchJobsApplicationsUseCase, query)
+        jobApplicationsDataSourceFactory = JobApplicationsDataSourceFactory(compositeDisposable, fetchJobsApplicationsUseCase, query)
 
         val config = PagedList.Config.Builder()
                 .setPageSize(pageSize)
@@ -39,21 +40,21 @@ internal constructor(private val fetchJobsApplicationsUseCase: FetchJobsApplicat
                 .setEnablePlaceholders(false)
                 .build()
 
-        val pagedList = LivePagedListBuilder(jobApplicantsDataSourceFactory, config)
+        val pagedList = LivePagedListBuilder(jobApplicationsDataSourceFactory, config)
                 .setFetchExecutor(executor)
                 .build()
 
         return Listing(
                 pagedList,
-                Transformations.switchMap(jobApplicantsDataSourceFactory.groupsInterestsDataSource) { input -> input.networkState },
-                Transformations.switchMap(jobApplicantsDataSourceFactory.groupsInterestsDataSource) { input -> input.initialLoad }
+                Transformations.switchMap(jobApplicationsDataSourceFactory.groupsInterestsDataSource) { input -> input.networkState },
+                Transformations.switchMap(jobApplicationsDataSourceFactory.groupsInterestsDataSource) { input -> input.initialLoad }
         )
     }
 
-    override fun retry() = jobApplicantsDataSourceFactory.groupsInterestsDataSource.value!!.retry()
+    override fun retry() = jobApplicationsDataSourceFactory.groupsInterestsDataSource.value!!.retry()
 
 
-    override fun refresh() = jobApplicantsDataSourceFactory.groupsInterestsDataSource.value!!.invalidate()
+    override fun refresh() = jobApplicationsDataSourceFactory.groupsInterestsDataSource.value!!.invalidate()
 
 
     override fun clear() = compositeDisposable.dispose()

@@ -4,6 +4,7 @@ import android.annotation.TargetApi
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.net.Uri
+import android.net.http.SslError
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -12,6 +13,7 @@ import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
+import com.divercity.app.features.dialogs.CustomTwoBtnDialogFragment
 import kotlinx.android.synthetic.main.fragment_linkedin.*
 import timber.log.Timber
 
@@ -70,6 +72,12 @@ class LinkedinFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        loadWeb()
+        subscribeToLiveData()
+    }
+
+    private fun loadWeb(){
+        showProgress()
         web_view_linkedin.webViewClient = object : WebViewClient() {
 
             @SuppressWarnings("deprecation")
@@ -81,10 +89,60 @@ class LinkedinFragment : BaseFragment() {
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 return handleUri(request?.url)
             }
+
+            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                super.onReceivedError(view, request, error)
+                hideProgress()
+                showDialogConnectionError()
+            }
+
+            override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
+                super.onReceivedError(view, errorCode, description, failingUrl)
+                hideProgress()
+                showDialogConnectionError()
+            }
+
+            override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+                super.onReceivedSslError(view, handler, error)
+                hideProgress()
+                showDialogConnectionError()
+            }
+
+            override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
+                super.onReceivedHttpError(view, request, errorResponse)
+                hideProgress()
+                showDialogConnectionError()
+            }
+
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                hideProgress()
+            }
         }
         Timber.e("Authorize URL: ".plus(getAuthorizationUrl()))
         web_view_linkedin.loadUrl(getAuthorizationUrl())
-        subscribeToLiveData()
+    }
+
+    private fun showDialogConnectionError() {
+        val dialog = CustomTwoBtnDialogFragment.newInstance(
+                getString(R.string.ups),
+                getString(R.string.error_connection),
+                getString(R.string.cancel),
+                getString(R.string.retry)
+        )
+
+        dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
+
+            override fun onNegativeBtnClick() {
+                loadWeb()
+            }
+
+            override fun onPositiveBtnClick() {
+                activity!!.finish()
+            }
+        })
+        dialog.isCancelable = false
+        dialog.show(childFragmentManager,null)
     }
 
     private fun handleUri(uri: Uri?): Boolean {

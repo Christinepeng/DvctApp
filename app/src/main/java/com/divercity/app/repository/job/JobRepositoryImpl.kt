@@ -5,8 +5,11 @@ import com.divercity.app.data.entity.job.jobpostingbody.JobBody
 import com.divercity.app.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
 import com.divercity.app.data.networking.services.JobService
 import io.reactivex.Observable
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject
@@ -17,6 +20,17 @@ import javax.inject.Inject
 
 class JobRepositoryImpl @Inject
 constructor(private val jobService: JobService) : JobRepository {
+
+    override fun applyJob(jobId: String, userDocId: String, coverLetter: String): Observable<JobApplicationResponse> {
+        val partJobId = RequestBody.create(MediaType.parse("text/plain"), jobId)
+        val partDocId = RequestBody.create(MediaType.parse("text/plain"), userDocId)
+        val partCL = RequestBody.create(MediaType.parse("text/plain"), coverLetter)
+
+        return jobService.applyJob(partJobId, partDocId, partCL).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
 
     override fun fetchJobById(jobId: String): Observable<JobResponse> {
         return jobService.fetchJobById(jobId).map {
@@ -32,7 +46,7 @@ constructor(private val jobService: JobService) : JobRepository {
         }
     }
 
-    override fun fetchMyJobApplications(page: Int, size: Int, query: String?): Observable<List<JobResponse>> {
+    override fun fetchMyJobApplications(page: Int, size: Int, query: String?): Observable<List<JobApplicationResponse>> {
         return jobService.fetchMyJobApplications(page, size, query).map {
             checkResponse(it)
             it.body()?.data

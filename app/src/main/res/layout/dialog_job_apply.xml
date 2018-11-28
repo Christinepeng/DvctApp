@@ -101,17 +101,52 @@
                 android:textColor="@color/appBlue"
                 android:textSize="14sp" />
 
-            <TextView
-                android:id="@+id/txt_filename"
-                style="@style/AppText4"
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/lay_doc_detail"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@drawable/bk_outline_grey_round_corner">
 
-                android:background="@drawable/bk_outline_grey_round_corner"
-                android:padding="12dp"
-                android:text="Resume.docx"
-                android:visibility="gone" />
+                <TextView
+                    android:id="@+id/txt_filename"
+                    style="@style/AppText4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="Resume.docx"
+                    app:layout_constraintBottom_toTopOf="@+id/txt_created_at"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:visibility="visible" />
+
+                <TextView
+                    android:id="@+id/txt_created_at"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:fontFamily="@font/avenir_book"
+                    android:textColor="#99333241"
+                    android:textSize="12sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/txt_filename"
+                    tools:text="Created at 09/23/2018" />
+
+                <android.support.v7.widget.AppCompatImageButton
+                    android:id="@+id/btn_deselect_doc"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:padding="16dp"
+                    android:src="@drawable/icon_x"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </android.support.constraint.ConstraintLayout>
 
             <android.support.v7.widget.AppCompatButton
                 android:id="@+id/btn_upload_new"
@@ -134,7 +169,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:fontFamily="@font/avenir_book"
-                android:text="Microsoft Word or PDF"
+                android:text="PDF"
                 android:textColor="@color/grey3" />
 
             <TextView
@@ -152,7 +187,7 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/et_job_description"
+                    android:id="@+id/et_cover_letter"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

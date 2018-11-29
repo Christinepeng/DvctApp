@@ -13,7 +13,7 @@ import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.company.CompanyResponse
+import com.divercity.app.data.entity.company.response.CompanyResponse
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.location.LocationResponse
 import com.divercity.app.data.entity.skills.SkillResponse
@@ -97,7 +97,7 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
         enableCreateButton(false)
 
         lay_location.setOnClickListener {
-            navigator.navigateToToolbarLocationActivityForResult(this, REQUEST_CODE_LOCATION, "")
+            navigator.navigateToToolbarLocationActivityForResult(this, REQUEST_CODE_LOCATION)
         }
 
         lay_employeer.setOnClickListener {

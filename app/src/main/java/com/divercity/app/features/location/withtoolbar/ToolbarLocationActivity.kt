@@ -10,15 +10,11 @@ class ToolbarLocationActivity : BaseActivity() {
     companion object {
         private const val INTENT_EXTRA_PARAM_CALLED_FROM = "calledFrom"
 
-        fun getCallingIntent(context: Context?, calledFrom : String) : Intent {
-            val intent = Intent(context, ToolbarLocationActivity::class.java)
-            intent.putExtra(INTENT_EXTRA_PARAM_CALLED_FROM,calledFrom)
-            return intent
+        fun getCallingIntent(context: Context?) : Intent {
+            return Intent(context, ToolbarLocationActivity::class.java)
         }
     }
 
     override fun fragment(): BaseFragment =
-        ToolbarLocationFragment.newInstance(
-            intent.getStringExtra(INTENT_EXTRA_PARAM_CALLED_FROM)
-        )
+        ToolbarLocationFragment.newInstance()
 }

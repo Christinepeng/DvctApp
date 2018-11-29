@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.features.onboarding.selectgroups.usecase.FetchGroupsUseCase;
+import com.divercity.app.features.groups.onboarding.usecase.FetchGroupsUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;
 

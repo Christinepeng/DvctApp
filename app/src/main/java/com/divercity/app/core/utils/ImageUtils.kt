@@ -34,7 +34,7 @@ object ImageUtils {
         val baos = ByteArrayOutputStream()
         getBitmap(file, reqWidth, reqHeight)?.compress(Bitmap.CompressFormat.JPEG, 50, baos)
         val b = baos.toByteArray()
-        return Base64.encodeToString(b, Base64.DEFAULT)
+        return "data:image/jpeg;base64,".plus(Base64.encodeToString(b, Base64.DEFAULT))
     }
 
     fun getBitmap(file: File, reqWidth: Int, reqHeight: Int): Bitmap? {

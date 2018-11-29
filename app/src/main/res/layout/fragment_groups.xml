@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <RelativeLayout
-        android:id="@+id/lay_viewpager"
+        android:id="@+id/lay_carousel_viewpager"
         android:layout_width="wrap_content"
         android:layout_height="160dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,7 +43,7 @@
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lay_viewpager"
+        app:layout_constraintTop_toBottomOf="@+id/lay_carousel_viewpager"
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimary"

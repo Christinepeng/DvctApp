@@ -7,9 +7,14 @@ import com.divercity.app.R
 import com.divercity.app.core.utils.OnboardingProgression
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.entity.skills.SkillResponse
+import com.divercity.app.features.company.companysize.CompanySizesActivity
+import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
+import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
+import com.divercity.app.features.industry.onboarding.OnboardingIndustryActivity
+import com.divercity.app.features.industry.withtoolbar.ToolbarIndustryActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
@@ -25,8 +30,6 @@ import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayActivity
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
-import com.divercity.app.features.onboarding.selectgroups.SelectGroupActivity
-import com.divercity.app.features.onboarding.selectindustry.SelectIndustryActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationActivity
@@ -101,8 +104,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(SelectOccupationActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectIndustryActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectIndustryActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingIndustryActivity(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(OnboardingIndustryActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectGenderActivity(activity: FragmentActivity, progress: Int) {
@@ -133,12 +136,24 @@ class Navigator @Inject constructor() {
         activity.startActivity(JobPostingActivity.getCallingIntent(activity))
     }
 
-    fun navigateToToolbarLocationActivityForResult(fragment: Fragment, code : Int, calledFrom : String) {
-        fragment.startActivityForResult(ToolbarLocationActivity.getCallingIntent(fragment.context, calledFrom), code)
+    fun navigateToCreateCompanyActivityForResult(fragment: Fragment, code : Int) {
+        fragment.startActivityForResult(CreateCompanyActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToToolbarLocationActivityForResult(fragment: Fragment, code : Int) {
+        fragment.startActivityForResult(ToolbarLocationActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToToolbarIndustryActivityForResult(fragment: Fragment, code : Int) {
+        fragment.startActivityForResult(ToolbarIndustryActivity.getCallingIntent(fragment.context), code)
     }
 
     fun navigateToToolbarCompanyActivityForResult(fragment: Fragment, code : Int) {
         fragment.startActivityForResult(ToolbarCompanyActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToCompanySizesActivity(fragment: Fragment, code : Int) {
+        fragment.startActivityForResult(CompanySizesActivity.getCallingIntent(fragment.context), code)
     }
 
     fun navigateToJobTypeActivityForResult(fragment: Fragment, code : Int) {
@@ -179,7 +194,7 @@ class Navigator @Inject constructor() {
             else if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(R.string.job_seeker_id))
                 navigateToSelectOccupationActivity(activity, progress)
             else if (userTypeId == activity.getString(R.string.entrepreneur_id)) {
-                navigateToSelectIndustryActivity(activity, progress)
+                navigateToOnboardingIndustryActivity(activity, progress)
             }
         } else if (activity is OnboardingLocationActivity) {
 

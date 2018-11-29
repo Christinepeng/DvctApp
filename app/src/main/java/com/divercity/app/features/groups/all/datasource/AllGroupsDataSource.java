@@ -9,7 +9,7 @@ import android.util.Log;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.features.onboarding.selectgroups.usecase.FetchGroupsUseCase;
+import com.divercity.app.features.groups.onboarding.usecase.FetchGroupsUseCase;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;

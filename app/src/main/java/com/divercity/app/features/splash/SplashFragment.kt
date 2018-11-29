@@ -46,8 +46,9 @@ class SplashFragment : BaseFragment() {
             //            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
             //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
             if (viewModel.isUserLogged)
+//                       navigator.navigateToProfilePromptActivity(activity!!)
 //                navigator.navigateToSelectUserTypeActivity(activity!!)
-                viewModel.fetchCurrentUserData()
+                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
 //                navigator.navigateToShareJobGroupActivity(this,"31")
 //                navigator.navigateToSelectGroupActivity(activity!!,90)
 //                navigator.navigateToHomeActivity(activity!!)
@@ -91,7 +92,7 @@ class SplashFragment : BaseFragment() {
             getString(R.string.error_connection),
             getString(R.string.retry)
         )
-        customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserData() }
+        customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserDataToCheckUserTypeDefined() }
         customOneBtnDialogFragment.isCancelable = false
         customOneBtnDialogFragment.show(childFragmentManager, null)
     }

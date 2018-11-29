@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import com.divercity.app.R;
-import com.divercity.app.data.entity.company.CompanyResponse;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 
 public class CompanyViewHolder extends RecyclerView.ViewHolder {
 

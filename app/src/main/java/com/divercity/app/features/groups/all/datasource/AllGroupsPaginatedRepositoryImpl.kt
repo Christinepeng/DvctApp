@@ -6,7 +6,7 @@ import android.arch.paging.PagedList
 import com.divercity.app.core.base.PaginatedQueryRepository
 import com.divercity.app.core.utils.Listing
 import com.divercity.app.data.entity.group.GroupResponse
-import com.divercity.app.features.onboarding.selectgroups.usecase.FetchGroupsUseCase
+import com.divercity.app.features.groups.onboarding.usecase.FetchGroupsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
 import javax.inject.Inject

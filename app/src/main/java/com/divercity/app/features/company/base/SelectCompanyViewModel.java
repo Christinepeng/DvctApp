@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.utils.Listing;
-import com.divercity.app.data.entity.company.CompanyResponse;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.features.company.base.company.CompanyPaginatedRepositoryImpl;
 import com.divercity.app.repository.user.UserRepository;
 

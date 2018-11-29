@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
-import com.divercity.app.data.entity.company.CompanyResponse
+import com.divercity.app.data.entity.company.response.CompanyResponse
 import com.divercity.app.features.company.base.SelectCompanyFragment
 import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.base.adapter.CompanyAdapter

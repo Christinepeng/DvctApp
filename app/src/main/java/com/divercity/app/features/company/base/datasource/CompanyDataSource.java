@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.company.CompanyResponse;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.features.company.base.usecase.FetchCompaniesUseCase;
 
 import java.util.List;

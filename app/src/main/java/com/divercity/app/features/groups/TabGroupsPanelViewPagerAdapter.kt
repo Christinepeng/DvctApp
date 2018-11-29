@@ -22,7 +22,7 @@ constructor() : PagerAdapter() {
     private var layoutInflater: LayoutInflater? = null
     private var list: List<RecommendationItem>? = null
     var listener: Listener? = null
-    lateinit var viewGroup : ViewGroup
+    lateinit var viewGroup: ViewGroup
 
     override fun getCount(): Int {
         return list?.size ?: 0
@@ -60,7 +60,7 @@ constructor() : PagerAdapter() {
                 view.btn_join.text = "Member"
             } else {
                 view.btn_join.setOnClickListener {
-                    listener?.onBtnJoinClicked(item?.id, position)
+                    listener?.onBtnJoinClicked(item.id, position)
                 }
                 view.btn_join.setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
                 view.btn_join.setTextColor(ContextCompat.getColor(container.context, android.R.color.white))
@@ -75,11 +75,18 @@ constructor() : PagerAdapter() {
         return view
     }
 
-    fun updateView(position: Int){
-        val view : View = viewGroup.findViewWithTag(position)
-        list?.get(position)?.isIsFollowedByCurrent = true
+    //    TODO update with group response
+    fun updateView(position: Int) {
+        val view: View = viewGroup.findViewWithTag(position)
 
-        view?.apply {
+        list?.get(position)?.apply {
+            isIsFollowedByCurrent = true
+            followersCount = followersCount?.plus(1)
+
+            view.txt_members.text = followersCount.toString().plus(" Members")
+        }
+
+        view.apply {
             btn_join.setOnClickListener(null)
             btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
             btn_join.setTextColor(ContextCompat.getColor(view.context, R.color.appBlue))

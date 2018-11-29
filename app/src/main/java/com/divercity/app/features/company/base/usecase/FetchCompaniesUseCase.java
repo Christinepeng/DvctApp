@@ -1,7 +1,7 @@
 package com.divercity.app.features.company.base.usecase;
 
 import com.divercity.app.core.base.UseCase;
-import com.divercity.app.data.entity.company.CompanyResponse;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.repository.data.DataRepository;
 
 import java.util.List;

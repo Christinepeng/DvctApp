@@ -83,7 +83,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectgroups.SelectGroupActivity"
+            android:name=".features.groups.onboarding.SelectGroupActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -109,11 +109,6 @@
 
         <activity
             android:name=".features.onboarding.selectgender.SelectGenderActivity"
-            android:configChanges="orientation"
-            android:screenOrientation="portrait" />
-
-        <activity
-            android:name=".features.onboarding.selectindustry.SelectIndustryActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -174,6 +169,27 @@
 
         <activity
             android:name=".features.jobs.description.poster.JobDescriptionPosterActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.createcompany.CreateCompanyActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden"/>
+
+        <activity
+            android:name=".features.industry.withtoolbar.ToolbarIndustryActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.industry.onboarding.OnboardingIndustryActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.companysize.CompanySizesActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

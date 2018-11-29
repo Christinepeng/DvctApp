@@ -20,15 +20,10 @@ class ToolbarLocationFragment : BaseFragment(), SelectLocationFragment.Listener{
     override fun layoutId(): Int = R.layout.fragment_toolbar
 
     companion object {
-        private const val PARAM_CALLED_FROM = "paramCalledFrom"
         const val LOCATION_PICKED = "locationPicked"
 
-        fun newInstance(calledFrom: String): ToolbarLocationFragment {
-            val fragment = ToolbarLocationFragment()
-            val arguments = Bundle()
-            arguments.putString(PARAM_CALLED_FROM, calledFrom)
-            fragment.arguments = arguments
-            return fragment
+        fun newInstance(): ToolbarLocationFragment {
+            return ToolbarLocationFragment()
         }
     }
 

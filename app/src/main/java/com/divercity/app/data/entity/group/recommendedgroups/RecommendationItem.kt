@@ -8,7 +8,7 @@ data class RecommendationItem(
         val storyType: String? = null,
 
         @field:SerializedName("followers_count")
-        val followersCount: Int? = null,
+        var followersCount: Int? = null,
 
         @field:SerializedName("questions_count")
         val questionsCount: Int? = null,

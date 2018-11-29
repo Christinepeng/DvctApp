@@ -70,8 +70,7 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                 Status.SUCCESS -> {
                     hideProgress()
                     // Updating join btn state
-                    adapter.currentList?.get(positionJoinClicked)?.attributes?.isIsFollowedByCurrent = true
-                    adapter.notifyItemChanged(positionJoinClicked)
+                    adapter.updatePositionOnJoinGroup(positionJoinClicked)
                 }
             }
         })

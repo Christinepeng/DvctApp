@@ -43,6 +43,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectMajorViewModel::class.java]
+        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,9 +60,9 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
 
     private fun setupHeader() {
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
-            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-                var toSearch: String? = include_search.edtxt_search.getText().toString()
+                var toSearch: String? = include_search.edtxt_search.text.toString()
 
                 if (toSearch == "")
                     toSearch = null
@@ -80,7 +81,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
                 progress = 0
                 setProgressWithAnim(currentProgress)
             }
-            txt_title.setText(R.string.select_your_school)
+            txt_title.setText(R.string.select_your_major)
 
             txt_progress.text = currentProgress.toString().plus("%")
 

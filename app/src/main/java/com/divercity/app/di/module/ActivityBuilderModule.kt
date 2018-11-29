@@ -1,8 +1,13 @@
 package com.divercity.app.di.module
 
+import com.divercity.app.features.company.companysize.CompanySizesActivity
+import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
+import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
+import com.divercity.app.features.industry.onboarding.OnboardingIndustryActivity
+import com.divercity.app.features.industry.withtoolbar.ToolbarIndustryActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
@@ -19,8 +24,6 @@ import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayActivity
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
-import com.divercity.app.features.onboarding.selectgroups.SelectGroupActivity
-import com.divercity.app.features.onboarding.selectindustry.SelectIndustryActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationActivity
@@ -81,9 +84,6 @@ abstract class ActivityBuilderModule {
     abstract fun bindSelectGenderActivity(): SelectGenderActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectIndustryActivity(): SelectIndustryActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectInterestsActivity(): SelectInterestsActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
@@ -121,4 +121,16 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindJobApplicantsActivity(): JobApplicantsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCreateCompanyActivity(): CreateCompanyActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindOnboardingIndustryActivity(): OnboardingIndustryActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindToolbarIndustryActivity(): ToolbarIndustryActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCompanySizesActivity(): CompanySizesActivity
 }

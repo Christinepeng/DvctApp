@@ -255,6 +255,7 @@ class SignUpFragment : BaseFragment() {
         lay_warning_username.visibility = View.GONE
     }
 
+//    TODO hanlde if photo uploading fails
     private fun showDialogErrorProfilePictureUpload() {
         var dialog = CustomTwoBtnDialogFragment.newInstance(
             getString(R.string.ups),
@@ -276,15 +277,6 @@ class SignUpFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-//        when (requestCode) {
-//            TakePictureHelper.REQUEST_TAKE_PHOTO -> {
-//                when (resultCode) {
-//                    Activity.RESULT_OK -> {
-//                        onPhotosReturned(takePictureHelper.currentPhotoPath)
-//                    }
-//                }
-//            }
-//        }
 
         EasyImage.handleActivityResult(requestCode, resultCode, data, activity, object : DefaultCallback() {
             override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {

@@ -99,40 +99,46 @@ class TabGroupsFragment : BaseFragment() {
         })
     }
 
-    fun initAdapterRecommendedGroups(list: List<RecommendationItem>?) {
-        slider_viewpager.adapter = recommendedGroupsAdapter
+    private fun initAdapterRecommendedGroups(list: List<RecommendationItem>?) {
+        if(list?.size != 0) {
+            lay_carousel_viewpager.visibility = View.VISIBLE
 
-        recommendedGroupsAdapter.listener = object : TabGroupsPanelViewPagerAdapter.Listener {
+            slider_viewpager.adapter = recommendedGroupsAdapter
 
-            override fun onBtnJoinClicked(jobId: Int?, position: Int) {
-                jobId?.let {
-                    lastPositionJoinClick = position
-                    viewModelTab.joinGroup(jobId)
+            recommendedGroupsAdapter.listener = object : TabGroupsPanelViewPagerAdapter.Listener {
+
+                override fun onBtnJoinClicked(jobId: Int?, position: Int) {
+                    jobId?.let {
+                        lastPositionJoinClick = position
+                        viewModelTab.joinGroup(jobId)
+                    }
                 }
             }
+
+            recommendedGroupsAdapter.setList(list)
+
+            val viewPagerDotsPanel = ViewPagerDotsPanel(
+                    context,
+                    recommendedGroupsAdapter.count,
+                    sliderDots
+            )
+
+            slider_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+
+                override fun onPageSelected(position: Int) {
+                    viewPagerDotsPanel.onPageSelected(position)
+                    handlerViewPager.removeCallbacksAndMessages(null)
+                    handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
+                }
+
+                override fun onPageScrollStateChanged(state: Int) {}
+            })
+
+            handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
+        } else {
+            lay_carousel_viewpager.visibility = View.GONE
         }
-
-        recommendedGroupsAdapter.setList(list)
-
-        val viewPagerDotsPanel = ViewPagerDotsPanel(
-                context,
-                recommendedGroupsAdapter.count,
-                sliderDots
-        )
-
-        slider_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-            override fun onPageSelected(position: Int) {
-                viewPagerDotsPanel.onPageSelected(position)
-                handlerViewPager.removeCallbacksAndMessages(null)
-                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-        })
-
-        handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
     }
 
     private val runnable = object : Runnable {
@@ -186,12 +192,12 @@ class TabGroupsFragment : BaseFragment() {
 
         searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
-                lay_viewpager.visibility = View.GONE
+                lay_carousel_viewpager.visibility = View.GONE
                 return true
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                lay_viewpager.visibility = View.VISIBLE
+                lay_carousel_viewpager.visibility = View.VISIBLE
                 return true
             }
 

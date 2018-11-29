@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.divercity.app.data.entity.company.CompanyResponse;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.features.company.base.usecase.FetchCompaniesUseCase;
 import io.reactivex.disposables.CompositeDisposable;
 

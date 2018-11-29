@@ -120,8 +120,13 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
                 txt_type.text = "Tech Recruiter"
             }
 
-            btn_apply.setOnClickListener {
-                showJobApplyDialog()
+            if(viewModel.isLoggedUserJobSeeker()) {
+                btn_apply.visibility = View.VISIBLE
+                btn_apply.setOnClickListener {
+                    showJobApplyDialog()
+                }
+            } else {
+                btn_apply.visibility = View.GONE
             }
             setupSaveButton(it)
         }

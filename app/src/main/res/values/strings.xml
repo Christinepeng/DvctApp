@@ -15,6 +15,13 @@
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
+    <string name="company_name">Company Name</string>
+    <string name="company_size">Company Size</string>
+    <string name="industry">Industry</string>
+    <string name="company_description">Company Description</string>
+    <string name="company_successfully_created">Company successfully created</string>
+    <string name="select_industry">Select Industry</string>
+    <string name="select_company_size">Select Company Size</string>
 
     <!-- Location-->
     <string name="use_my_location">Use My Location</string>
@@ -26,7 +33,7 @@
 
     <!-- Profile onboarding-->
     <string name="select_your_company">Select your Company</string>
-    <string name="select_your_indsutry">Select your Industry</string>
+    <string name="select_your_industry">Select your Industry</string>
     <string name="select_your_major">Select your Major</string>
     <string name="select_your_country">Select your Country</string>
     <string name="select_your_ethnicity">Select your Ethnicity</string>

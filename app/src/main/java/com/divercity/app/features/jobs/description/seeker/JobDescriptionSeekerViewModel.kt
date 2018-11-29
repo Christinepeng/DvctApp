@@ -9,6 +9,7 @@ import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.jobs.description.usecase.FetchJobByIdUseCase
 import com.divercity.app.features.jobs.jobs.usecase.RemoveSavedJobUseCase
 import com.divercity.app.features.jobs.jobs.usecase.SaveJobUseCase
+import com.divercity.app.repository.user.UserRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -19,7 +20,8 @@ import javax.inject.Inject
 class JobDescriptionSeekerViewModel @Inject
 constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
             private val saveJobUseCase: SaveJobUseCase,
-            private val fetchJobByIdUseCase: FetchJobByIdUseCase) : BaseViewModel() {
+            private val fetchJobByIdUseCase: FetchJobByIdUseCase,
+            val userRepository: UserRepository) : BaseViewModel() {
 
     var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
     var fetchJobByIdResponse = MutableLiveData<Resource<JobResponse>>()
@@ -80,5 +82,9 @@ constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
         }
         compositeDisposable.add(callback)
         fetchJobByIdUseCase.execute(callback, FetchJobByIdUseCase.Params.forJob(jobId))
+    }
+
+    fun isLoggedUserJobSeeker() : Boolean{
+        return userRepository.isLoggedUserJobSeeker()
     }
 }

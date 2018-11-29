@@ -1,6 +1,8 @@
 package com.divercity.app.di.module
 
 import com.divercity.app.features.company.base.SelectCompanyFragment
+import com.divercity.app.features.company.companysize.CompanySizesFragment
+import com.divercity.app.features.company.createcompany.CreateCompanyFragment
 import com.divercity.app.features.company.onboarding.OnboardingCompanyFragment
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
@@ -9,11 +11,15 @@ import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
 import com.divercity.app.features.groups.module.GroupsModule
 import com.divercity.app.features.groups.mygroups.MyGroupsFragment
+import com.divercity.app.features.groups.onboarding.SelectGroupFragment
 import com.divercity.app.features.groups.trending.TrendingGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.home.profile.ProfileFragment
 import com.divercity.app.features.home.settings.SettingsFragment
+import com.divercity.app.features.industry.base.SelectIndustryFragment
+import com.divercity.app.features.industry.onboarding.OnboardingIndustryFragment
+import com.divercity.app.features.industry.withtoolbar.ToolbarIndustryFragment
 import com.divercity.app.features.jobposting.JobPostingFragment
 import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupFragment
@@ -42,8 +48,6 @@ import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayFragment
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityFragment
 import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
-import com.divercity.app.features.onboarding.selectgroups.SelectGroupFragment
-import com.divercity.app.features.onboarding.selectindustry.SelectIndustryFragment
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorFragment
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolFragment
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeFragment
@@ -193,4 +197,16 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindRecentDocsDialogFragment (): RecentDocsDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCreateCompanyFragment (): CreateCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindOnboardingIndustryFragment (): OnboardingIndustryFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindToolbarIndustryFragment (): ToolbarIndustryFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCompanySizesFragment (): CompanySizesFragment
 }

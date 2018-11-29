@@ -33,16 +33,16 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
             itemView.item_group_txt_members.text = data.attributes.followersCount.toString().plus(" Members")
 
             itemView.item_group_btn_join_member.apply {
-                if (data.attributes.isIsFollowedByCurrent) {
+                text = if (data.attributes.isIsFollowedByCurrent) {
                     setOnClickListener(null)
                     setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                     setTextColor(ContextCompat.getColor(itemView.context,R.color.appBlue))
-                    text = "Member"
+                    "Member"
                 } else {
                     setOnClickListener { listener?.onGroupJoinClick(position, data) }
                     setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-                    setTextColor(itemView.context.resources.getColor(android.R.color.white))
-                    text = "Join"
+                    setTextColor(ContextCompat.getColor(itemView.context,android.R.color.white))
+                    "Join"
                 }
                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             }

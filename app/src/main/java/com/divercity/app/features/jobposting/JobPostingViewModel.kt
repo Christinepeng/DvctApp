@@ -3,7 +3,7 @@ package com.divercity.app.features.jobposting
 import android.arch.lifecycle.MutableLiveData
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.data.Resource
-import com.divercity.app.data.entity.company.CompanyResponse
+import com.divercity.app.data.entity.company.response.CompanyResponse
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.entity.skills.SkillResponse

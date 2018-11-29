@@ -7,6 +7,7 @@ import android.os.Handler
 import android.support.design.widget.Snackbar
 import android.support.v4.view.ViewPager
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.divercity.app.AppConstants
 import com.divercity.app.R
@@ -59,7 +60,8 @@ class EnterEmailFragment : BaseFragment() {
                 }
                 Status.ERROR -> {
                     hideProgress()
-                    showSnackbar(response.message)
+//                    showSnackbar(response.message)
+                    showToast(response.message)
                 }
                 Status.SUCCESS -> {
                     hideProgress()
@@ -68,26 +70,26 @@ class EnterEmailFragment : BaseFragment() {
         })
 
         viewModel.navigateToLogin.observe(this, Observer {
-            navigator.navigateToLoginActivity(activity!!, user_email.text.toString())
+            navigator.navigateToLoginActivity(activity!!, user_email.text.toString().trim())
         })
 
         viewModel.navigateToSignUp.observe(this, Observer {
-            navigator.navigateToSignUpActivity(activity!!, user_email.text.toString())
+            navigator.navigateToSignUpActivity(activity!!, user_email.text.toString().trim())
         })
     }
 
     fun showSnackbar(message: String?) {
         activity?.run {
             Snackbar.make(
-                findViewById(android.R.id.content),
-                message ?: "Error",
-                Snackbar.LENGTH_LONG
+                    findViewById(android.R.id.content),
+                    message ?: "Error",
+                    Snackbar.LENGTH_LONG
             ).show()
         }
     }
 
     private fun setupEvents() {
-        btnFacebook.setOnClickListener { showToast() }
+        btnFacebook.setOnClickListener { showToast("Facebook") }
         btn_linkedin.setOnClickListener {
             navigator.navigateToLinkedinActivity(activity!!)
         }
@@ -95,18 +97,27 @@ class EnterEmailFragment : BaseFragment() {
         btn_send.setOnClickListener {
             viewModel.checkIfEmailRegistered(user_email.text.toString())
         }
+
+        user_email.setOnEditorActionListener { _, i, _ ->
+            var handled = false
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                viewModel.checkIfEmailRegistered(user_email.text.toString())
+                handled = true
+            }
+            handled
+        }
     }
 
-    private fun showToast() {
-        Toast.makeText(activity, "Coming soon", Toast.LENGTH_SHORT).show()
+    private fun showToast(msg: String?) {
+        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
     }
 
     fun setupViewPager() {
         viewPager.adapter = viewPagerEnterEmailAdapter
         val viewPagerDotsPanel = ViewPagerDotsPanel(
-            context,
-            viewPagerEnterEmailAdapter.count,
-            sliderDots
+                context,
+                viewPagerEnterEmailAdapter.count,
+                sliderDots
         )
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {

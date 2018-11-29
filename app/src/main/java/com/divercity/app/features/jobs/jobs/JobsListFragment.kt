@@ -82,23 +82,13 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
             }
         })
 
-        viewModel.navigateToJobRecruiterDescription.observe(viewLifecycleOwner, Observer {
-
-        })
-
-        viewModel.navigateToJobSeekerDescription.observe(viewLifecycleOwner, Observer {
-            it?.let { job ->
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
-            }
-        })
-
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
         })
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedJobsList?.observe(this, Observer {
+        viewModel.pagedJobsList.observe(this, Observer {
             adapter.submitList(it)
         })
 
@@ -154,11 +144,11 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
         }
 
         override fun onJobClick(job: JobResponse) {
-            viewModel.onJobClickNavigateToNext(job)
+            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
         }
     }
 
-    private fun showJobApplyDialog(jobId : String?) {
+    private fun showJobApplyDialog(jobId: String?) {
         val dialog = JobApplyDialogFragment.newInstance(jobId!!)
         dialog.show(childFragmentManager, null)
     }

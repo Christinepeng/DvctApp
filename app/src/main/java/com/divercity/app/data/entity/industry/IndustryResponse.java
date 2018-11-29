@@ -1,8 +1,11 @@
 package com.divercity.app.data.entity.industry;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class IndustryResponse{
+public class IndustryResponse implements Parcelable {
 
 	@SerializedName("attributes")
 	private Attributes attributes;
@@ -12,6 +15,36 @@ public class IndustryResponse{
 
 	@SerializedName("type")
 	private String type;
+
+	protected IndustryResponse(Parcel in) {
+		attributes = in.readParcelable(Attributes.class.getClassLoader());
+		id = in.readString();
+		type = in.readString();
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(attributes, flags);
+		dest.writeString(id);
+		dest.writeString(type);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<IndustryResponse> CREATOR = new Creator<IndustryResponse>() {
+		@Override
+		public IndustryResponse createFromParcel(Parcel in) {
+			return new IndustryResponse(in);
+		}
+
+		@Override
+		public IndustryResponse[] newArray(int size) {
+			return new IndustryResponse[size];
+		}
+	};
 
 	public void setAttributes(Attributes attributes){
 		this.attributes = attributes;

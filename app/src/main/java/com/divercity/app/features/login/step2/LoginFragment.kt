@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
@@ -56,7 +57,7 @@ class LoginFragment : BaseFragment() {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
                 it.setTitle(R.string.login)
-                it.setDisplayHomeAsUpEnabled (true)
+                it.setDisplayHomeAsUpEnabled(true)
             }
         }
     }
@@ -93,6 +94,15 @@ class LoginFragment : BaseFragment() {
         txt_forgot_password.setOnClickListener { showToast() }
         btn_create_account.setOnClickListener {
             viewModel.login(et_password.text.toString())
+        }
+
+        et_password.setOnEditorActionListener { _, i, _ ->
+            var handled = false
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                viewModel.login(et_password.text.toString())
+                handled = true
+            }
+            handled
         }
     }
 

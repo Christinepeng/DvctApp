@@ -12,7 +12,7 @@ import com.divercity.app.R;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.ui.NetworkStateViewHolder;
 import com.divercity.app.core.ui.RetryCallback;
-import com.divercity.app.data.entity.company.CompanyResponse;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 
 import java.util.Objects;
 

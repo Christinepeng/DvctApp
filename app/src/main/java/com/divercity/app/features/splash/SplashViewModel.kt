@@ -22,7 +22,7 @@ internal constructor(
     val isUserLogged: Boolean
         get() = loggedUserRepository.isUserLogged()
 
-    fun fetchCurrentUserData() {
+    fun fetchCurrentUserDataToCheckUserTypeDefined() {
 
         userData.value = Resource.loading(null)
         val callback = object : FetchUserDataUseCase.Callback() {

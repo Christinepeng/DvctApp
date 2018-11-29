@@ -7,7 +7,7 @@ import android.arch.paging.PagedList;
 import android.support.annotation.Nullable;
 import com.divercity.app.core.base.PaginatedQueryRepository;
 import com.divercity.app.core.utils.Listing;
-import com.divercity.app.data.entity.company.CompanyResponse;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.features.company.base.datasource.CompanyDataSource;
 import com.divercity.app.features.company.base.datasource.CompanyDataSourceFactory;
 import com.divercity.app.features.company.base.usecase.FetchCompaniesUseCase;

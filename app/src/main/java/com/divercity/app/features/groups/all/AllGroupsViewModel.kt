@@ -13,7 +13,7 @@ import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.groups.all.datasource.AllGroupsPaginatedRepositoryImpl
-import com.divercity.app.features.onboarding.selectgroups.usecase.JoinGroupUseCase
+import com.divercity.app.features.groups.onboarding.usecase.JoinGroupUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 

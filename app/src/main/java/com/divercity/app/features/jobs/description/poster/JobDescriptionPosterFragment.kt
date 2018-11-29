@@ -7,8 +7,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.entity.job.response.JobResponse
-import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
-import com.divercity.app.features.dialogs.JobSeekerActionsDialogFragment
+import com.divercity.app.features.dialogs.JobPosterActionsDialogFragment
 import kotlinx.android.synthetic.main.fragment_job_description_poster.*
 import kotlinx.android.synthetic.main.view_job_desc.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -18,7 +17,7 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class JobDescriptionPosterFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener, JobApplyDialogFragment.Listener {
+class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragment.Listener {
 
     lateinit var viewModel: JobDescriptionPosterViewModel
 
@@ -72,7 +71,7 @@ class JobDescriptionPosterFragment : BaseFragment(), JobSeekerActionsDialogFragm
     }
 
     private fun showDialogMoreActions() {
-        val dialog = JobSeekerActionsDialogFragment.newInstance()
+        val dialog = JobPosterActionsDialogFragment.newInstance()
         dialog.show(childFragmentManager, null)
     }
 
@@ -102,13 +101,12 @@ class JobDescriptionPosterFragment : BaseFragment(), JobSeekerActionsDialogFragm
         }
     }
 
-    override fun onShareJobViaMessage() {
+    override fun onEditJobPosting() {
     }
 
-    override fun onShareJobToGroups() {
-        navigator.navigateToShareJobGroupActivity(this, job?.id)
+    override fun onUnpublishJobPosting() {
     }
 
-    override fun onReportJobPosting() {
+    override fun onDeleteJobPosting() {
     }
 }

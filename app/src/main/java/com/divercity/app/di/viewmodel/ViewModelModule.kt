@@ -3,14 +3,18 @@ package com.divercity.app.di.viewmodel
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.company.base.SelectCompanyViewModel
+import com.divercity.app.features.company.companysize.CompanySizesViewModel
+import com.divercity.app.features.company.createcompany.CreateCompanyViewModel
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.all.AllGroupsViewModel
 import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
+import com.divercity.app.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.app.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.app.features.home.HomeActivityViewModel
 import com.divercity.app.features.home.home.HomeViewModel
+import com.divercity.app.features.industry.base.SelectIndustryViewModel
 import com.divercity.app.features.jobposting.JobPostingViewModel
 import com.divercity.app.features.jobposting.jobtype.JobTypeViewModel
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupViewModel
@@ -32,8 +36,6 @@ import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewMode
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayViewModel
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityViewModel
 import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
-import com.divercity.app.features.onboarding.selectgroups.SelectGroupViewModel
-import com.divercity.app.features.onboarding.selectindustry.SelectIndustryViewModel
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorViewModel
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeViewModel
@@ -234,4 +236,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RecentDocsDialogViewModel::class)
     abstract fun bindsRecentDocsDialogViewModel(viewModel: RecentDocsDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateCompanyViewModel::class)
+    abstract fun bindsCreateCompanyViewModel(viewModel: CreateCompanyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompanySizesViewModel::class)
+    abstract fun bindsCompanySizesViewModel(viewModel: CompanySizesViewModel): ViewModel
 }

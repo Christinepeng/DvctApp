@@ -90,6 +90,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/avenir_roman"
             android:hint="or Enter Email"
+            android:imeOptions="actionDone"
             android:inputType="textEmailAddress"
             android:padding="24dp"
             android:textColor="#333241"

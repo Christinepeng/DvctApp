@@ -73,6 +73,15 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         }
     }
 
+    fun updatePositionOnJoinGroup(position: Int){
+        // TODO: update with response group data
+        currentList?.get(position)?.attributes?.apply {
+            followersCount += 1
+            isIsFollowedByCurrent = true
+            notifyItemChanged(position)
+        }
+    }
+
     companion object {
 
         private val userDiffCallback = object : DiffUtil.ItemCallback<GroupResponse>() {

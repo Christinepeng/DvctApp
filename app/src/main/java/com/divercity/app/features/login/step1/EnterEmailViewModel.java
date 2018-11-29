@@ -39,7 +39,7 @@ public class EnterEmailViewModel extends BaseViewModel {
     }
 
     public void checkIfEmailRegistered(String email) {
-        if (Util.isValidEmail(email)) {
+        if (Util.isValidEmail(email.trim())) {
             isEmailRegistered.setValue(Resource.Companion.loading(null));
             DisposableObserver<Boolean> disposable = new DisposableObserver<Boolean>() {
                 @Override

@@ -21,8 +21,7 @@ constructor(@Named("executor_thread") executorThread : Scheduler,
 
     override fun createObservableUseCase(params: Params): Observable<LoginResponse> {
 
-        return userRepository.uploadUserPhoto(ProfilePictureBody(
-            "data:image/jpeg;base64,".plus(params.strFileBase64)))
+        return userRepository.uploadUserPhoto(ProfilePictureBody(params.strFileBase64))
     }
 
     class Params private constructor(val strFileBase64: String) {

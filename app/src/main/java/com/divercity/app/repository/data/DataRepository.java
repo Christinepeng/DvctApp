@@ -12,10 +12,9 @@ import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
+import io.reactivex.Observable;
 
 import java.util.List;
-
-import io.reactivex.Observable;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -45,7 +44,7 @@ public interface DataRepository {
 
     Observable<DataArray<GroupResponse>> fetchMyGroups(int page, int size, String query);
 
-    Observable<Boolean> createCompany(String userId, CreateCompanyBody body);
+    Observable<Boolean> createCompany(CreateCompanyBody body);
 
     Observable<List<CompanySizeResponse>> fetchCompanySizes();
 }

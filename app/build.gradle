@@ -26,7 +26,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "D-1.1"
+        versionName "D-1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -38,7 +38,7 @@ android {
 
         debug {
             minifyEnabled false
-            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
+            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "true"
 //            buildConfigField "String", "BASE_URL", '"https://api.divercity.io/api/"'
 //            buildConfigField "String", "BASE_URL", '"https://sandbox-api.divercity.io/api/"'
             buildConfigField "String", "BASE_URL", '"https://dev-api.divercity.io/api/"'

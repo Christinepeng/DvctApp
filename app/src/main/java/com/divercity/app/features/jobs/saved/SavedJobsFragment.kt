@@ -10,6 +10,7 @@ import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.app.features.jobs.ITabJobs
 import com.divercity.app.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.app.features.jobs.jobs.adapter.JobsViewHolder
@@ -20,7 +21,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs {
+class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialogFragment.Listener  {
 
     lateinit var viewModel: SavedJobsViewModel
 
@@ -28,7 +29,7 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs {
     lateinit var adapter: JobsAdapter
 
     private var isListRefreshing = false
-    private var positionSaveUnsavedClicked: Int = 0
+    private var positionApplyClicked: Int = 0
 
     companion object {
 
@@ -115,9 +116,9 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
@@ -126,23 +127,28 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs {
         viewModel.retry()
     }
 
-//    private val listener: SavedJobsViewHolder.Listener = object : SavedJobsViewHolder.Listener {
-//
-//        override fun onJobClick(job: JobResponse) {
-//            viewModel.onJobClickNavigateToNext(job)
-//        }
-//    }
+    private fun showJobApplyDialog(jobId: String?) {
+        val dialog = JobApplyDialogFragment.newInstance(jobId!!)
+        dialog.show(childFragmentManager, null)
+    }
 
     private val listener = object : JobsViewHolder.Listener {
-        
+
         override fun onApplyClick(position: Int, job: JobResponse) {
+            positionApplyClicked = position
+            showJobApplyDialog(job.id)
         }
 
         override fun onJobClick(job: JobResponse) {
+            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
         }
     }
 
     override fun fetchJobs(searchQuery: String?) {
         viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
+    }
+
+    override fun onSuccessJobApply() {
+        viewModel.fetchJobsForced(viewLifecycleOwner)
     }
 }

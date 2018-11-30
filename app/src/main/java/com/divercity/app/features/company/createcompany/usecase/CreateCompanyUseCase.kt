@@ -31,7 +31,7 @@ constructor(
                 industryId = params.industryId,
                 logo = params.logo
         )
-        return repository.createCompany(userRepository.getUserId(), CreateCompanyBody(company))
+        return repository.createCompany(CreateCompanyBody(company))
     }
 
     class Params private constructor(

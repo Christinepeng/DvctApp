@@ -156,4 +156,8 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
     override fun fetchJobs(searchQuery: String?) {
         viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
     }
+
+    override fun onSuccessJobApply() {
+        fetchJobs("")
+    }
 }

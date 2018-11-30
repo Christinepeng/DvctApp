@@ -29,7 +29,7 @@ class EnterEmailFragment : BaseFragment() {
     lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 
     lateinit var viewModel: EnterEmailViewModel
-    lateinit var handlerViewPager: Handler
+    private lateinit var handlerViewPager: Handler
 
     companion object {
 

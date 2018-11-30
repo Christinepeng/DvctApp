@@ -2,8 +2,8 @@ package com.divercity.app.repository.data;
 
 import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.base.DataObject;
-import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse;
@@ -13,14 +13,12 @@ import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 import com.divercity.app.data.networking.services.DataService;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import retrofit2.HttpException;
 import retrofit2.Response;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -124,8 +122,8 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Observable<Boolean> createCompany(String userId, CreateCompanyBody body) {
-        return service.createCompany(userId, body).map(response -> {
+    public Observable<Boolean> createCompany(CreateCompanyBody body) {
+        return service.createCompany(body).map(response -> {
             checkResponse(response);
             return true;
         });

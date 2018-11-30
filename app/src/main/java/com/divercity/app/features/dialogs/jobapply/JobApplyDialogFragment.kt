@@ -86,9 +86,9 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
         dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_apply, null)
 
         GlideApp.with(this)
-                .load(userRepository.getAvatarUrl())
-                .apply(RequestOptions().circleCrop())
-                .into(dialogView.img_profile)
+            .load(userRepository.getAvatarUrl())
+            .apply(RequestOptions().circleCrop())
+            .into(dialogView.img_profile)
 
         dialogView.apply {
             txt_fullname.text = userRepository.getFullName()
@@ -170,6 +170,7 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
                 Status.SUCCESS -> {
                     hideProgress()
                     showToast(R.string.application_succes)
+                    listener?.onSuccessJobApply()
                     dismiss()
                 }
             }
@@ -182,14 +183,17 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
             it.btn_choose_recent_file.visibility = View.GONE
             it.lay_doc_detail.visibility = View.VISIBLE
             it.txt_filename.text = doc?.attributes?.name
-            it.txt_created_at.text = context?.getString(R.string.created_at, Util.getStringDateTimeWithServerDate(doc?.attributes?.createdAt))
+            it.txt_created_at.text = context?.getString(
+                R.string.created_at,
+                Util.getStringDateTimeWithServerDate(doc?.attributes?.createdAt)
+            )
         }
     }
 
     private fun openDocSelector() {
         val mimeTypes = arrayOf(
 //                "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-                "application/pdf"
+            "application/pdf"
         )
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
@@ -237,6 +241,9 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
         showDocData(doc)
     }
 
-    interface Listener
+    interface Listener {
+
+        fun onSuccessJobApply()
+    }
 
 }

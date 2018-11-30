@@ -166,6 +166,7 @@
     <string name="recommended_applicants">Recommended applicants</string>
     <string name="applicants">Applicants</string>
     <string name="application_succes">Successful application</string>
+    <string name="applied">Applied</string>
 
     <!-- Groups-->
     <string name="all">All</string>

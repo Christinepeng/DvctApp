@@ -26,7 +26,8 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener, JobApplyDialogFragment.Listener {
+class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener,
+    JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: JobDescriptionSeekerViewModel
 
@@ -54,7 +55,10 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(JobDescriptionSeekerViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
+        fetchJobData()
+    }
 
+    private fun fetchJobData() {
         val job = arguments?.getString(PARAM_JOB_ID)
         if (job != null)
             viewModel.fetchJobById(job)
@@ -100,8 +104,8 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
     private fun initView(job: JobResponse?) {
         job?.also {
             GlideApp.with(this)
-                    .load(it.attributes?.employer?.photos?.thumb)
-                    .into(inc_job_desc.img_company)
+                .load(it.attributes?.employer?.photos?.thumb)
+                .into(inc_job_desc.img_company)
 
             inc_job_desc.txt_company.text = it.attributes?.employer?.name
             inc_job_desc.txt_place.text = it.attributes?.locationDisplayName
@@ -110,9 +114,9 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
             include_user.apply {
 
                 GlideApp.with(this)
-                        .load(it.attributes?.recruiter?.avatarThumb)
-                        .apply(RequestOptions().circleCrop())
-                        .into(img)
+                    .load(it.attributes?.recruiter?.avatarThumb)
+                    .apply(RequestOptions().circleCrop())
+                    .into(img)
 
                 //TODO : Remove hardcoded
                 txt_name.text = it.attributes?.recruiter?.name
@@ -120,11 +124,9 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
                 txt_type.text = "Tech Recruiter"
             }
 
-            if(viewModel.isLoggedUserJobSeeker()) {
+            if (viewModel.isLoggedUserJobSeeker()) {
                 btn_apply.visibility = View.VISIBLE
-                btn_apply.setOnClickListener {
-                    showJobApplyDialog()
-                }
+                setupApplyButton(it)
             } else {
                 btn_apply.visibility = View.GONE
             }
@@ -183,12 +185,29 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
         }
     }
 
+    private fun setupApplyButton(job: JobResponse?) {
+        job?.attributes?.isAppliedByCurrent?.let {
+            if (!it) {
+                btn_apply.background = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_round_blue3)
+                btn_apply.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                btn_apply.setText(R.string.apply)
+                btn_apply.setOnClickListener {
+                    showJobApplyDialog()
+                }
+            } else {
+                btn_apply.background = ContextCompat.getDrawable(context!!, R.drawable.bk_white_stroke_blue_rounded)
+                btn_apply.setTextColor(ContextCompat.getColor(context!!, R.color.appBlue))
+                btn_apply.setText(R.string.applied)
+            }
+        }
+    }
+
     private fun showDialogConnectionError(jobId: String) {
         val dialog = CustomTwoBtnDialogFragment.newInstance(
-                getString(R.string.ups),
-                getString(R.string.error_connection),
-                getString(R.string.cancel),
-                getString(R.string.retry)
+            getString(R.string.ups),
+            getString(R.string.error_connection),
+            getString(R.string.cancel),
+            getString(R.string.retry)
         )
 
         dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
@@ -202,7 +221,7 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
             }
         })
         dialog.isCancelable = false
-        dialog.show(childFragmentManager,null)
+        dialog.show(childFragmentManager, null)
     }
 
     private fun showToast(resId: Int) {
@@ -217,5 +236,9 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
     }
 
     override fun onReportJobPosting() {
+    }
+
+    override fun onSuccessJobApply() {
+        fetchJobData()
     }
 }

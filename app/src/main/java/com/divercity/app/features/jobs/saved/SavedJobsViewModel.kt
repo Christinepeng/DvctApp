@@ -57,6 +57,16 @@ constructor(private val context: Application,
         }
     }
 
+    fun fetchJobsForced(lifecycleOwner: LifecycleOwner?){
+        listingPaginatedJob = repository.fetchData("")
+        pagedJobsList = listingPaginatedJob.pagedList
+
+        lifecycleOwner?.let { lifecycleOwner ->
+            removeObservers(lifecycleOwner)
+            subscribeToPaginatedLiveData.call()
+        }
+    }
+
     private fun removeObservers(lifecycleOwner: LifecycleOwner) {
         networkState().removeObservers(lifecycleOwner)
         refreshState().removeObservers(lifecycleOwner)

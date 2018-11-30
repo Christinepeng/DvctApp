@@ -2,8 +2,8 @@ package com.divercity.app.data.networking.services;
 
 import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.base.DataObject;
-import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
+import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse;
@@ -12,13 +12,11 @@ import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
-
 import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
-import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 /**
@@ -93,8 +91,6 @@ public interface DataService {
             @Query("page[size]") int size,
             @Query("search_query") String query);
 
-    @POST("users/{userId}/companies")
-    Observable<Response<Void>> createCompany(
-            @Path("userId") String userId,
-            @Body CreateCompanyBody body);
+    @POST("job_employers")
+    Observable<Response<Void>> createCompany(@Body CreateCompanyBody body);
 }

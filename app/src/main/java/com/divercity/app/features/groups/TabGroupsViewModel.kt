@@ -8,8 +8,8 @@ import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
-import com.divercity.app.features.groups.onboarding.usecase.JoinGroupUseCase
 import com.divercity.app.features.groups.usecase.FetchRecommendedGroupsUseCase
+import com.divercity.app.features.groups.usecase.JoinGroupUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -19,7 +19,8 @@ import javax.inject.Inject
 
 class TabGroupsViewModel @Inject
 constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUseCase,
-            private val joinGroupUseCase: JoinGroupUseCase) : BaseViewModel() {
+            private val joinGroupUseCase: JoinGroupUseCase
+) : BaseViewModel() {
 
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     var fetchRecommendedGroupsResponse = MutableLiveData<Resource<DataObject<RecommendedGroupsResponse>>>()

@@ -11,7 +11,7 @@ import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.groups.mygroups.datasource.MyGroupsPaginatedRepositoryImpl
-import com.divercity.app.features.groups.onboarding.usecase.JoinGroupUseCase
+import com.divercity.app.features.groups.usecase.JoinGroupUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -21,7 +21,8 @@ import javax.inject.Inject
 
 class MyGroupsViewModel @Inject
 constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
-            private val joinGroupUseCase: JoinGroupUseCase) : BaseViewModel() {
+            private val joinGroupUseCase: JoinGroupUseCase
+) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var joinGroupResponse = SingleLiveEvent<Resource<Any>>()

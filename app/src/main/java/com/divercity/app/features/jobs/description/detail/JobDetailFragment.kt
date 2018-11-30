@@ -1,4 +1,4 @@
-package com.divercity.app.features.jobs.description.seeker
+package com.divercity.app.features.jobs.description.detail
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -26,21 +26,21 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener,
+class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener,
     JobApplyDialogFragment.Listener {
 
-    lateinit var viewModel: JobDescriptionSeekerViewModel
+    lateinit var viewModel: JobDetailViewModel
 
     @Inject
-    lateinit var adapter: JobDescriptionViewPagerAdapter
+    lateinit var adapter: JobDetailViewPagerAdapter
 
     var job: JobResponse? = null
 
     companion object {
         private const val PARAM_JOB_ID = "paramJobId"
 
-        fun newInstance(jobId: String): JobDescriptionSeekerFragment {
-            val fragment = JobDescriptionSeekerFragment()
+        fun newInstance(jobId: String): JobDetailFragment {
+            val fragment = JobDetailFragment()
             val arguments = Bundle()
             arguments.putString(PARAM_JOB_ID, jobId)
             fragment.arguments = arguments
@@ -53,7 +53,7 @@ class JobDescriptionSeekerFragment : BaseFragment(), JobSeekerActionsDialogFragm
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(JobDescriptionSeekerViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(JobDetailViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
         fetchJobData()
     }

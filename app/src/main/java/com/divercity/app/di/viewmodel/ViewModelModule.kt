@@ -23,7 +23,7 @@ import com.divercity.app.features.jobs.TabJobsViewModel
 import com.divercity.app.features.jobs.applicants.JobApplicantsViewModel
 import com.divercity.app.features.jobs.applications.JobsApplicationsViewModel
 import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterViewModel
-import com.divercity.app.features.jobs.description.seeker.JobDescriptionSeekerViewModel
+import com.divercity.app.features.jobs.description.detail.JobDetailViewModel
 import com.divercity.app.features.jobs.jobs.JobsListViewModel
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.app.features.jobs.saved.SavedJobsViewModel
@@ -208,8 +208,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(JobDescriptionSeekerViewModel::class)
-    abstract fun bindsJobDescriptionSeekerViewModel(viewModel: JobDescriptionSeekerViewModel): ViewModel
+    @ViewModelKey(JobDetailViewModel::class)
+    abstract fun bindsJobDescriptionSeekerViewModel(viewModel: JobDetailViewModel): ViewModel
 
 
     @Binds

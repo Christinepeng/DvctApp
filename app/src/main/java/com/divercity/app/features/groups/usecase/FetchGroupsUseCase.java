@@ -1,15 +1,14 @@
-package com.divercity.app.features.groups.onboarding.usecase;
+package com.divercity.app.features.groups.usecase;
 
 import com.divercity.app.core.base.UseCase;
 import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.repository.data.DataRepository;
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -29,14 +28,18 @@ public class FetchGroupsUseCase extends UseCase<DataArray<GroupResponse>, FetchG
 
     @Override
     protected Observable<DataArray<GroupResponse>> createObservableUseCase(FetchGroupsUseCase.Params params) {
-        return repository.fetchGroups(params.page, params.size, params.query);
+        params.query = params.query.equals("") ? null : params.query;
+        return repository.fetchGroups(
+                params.page,
+                params.size,
+                params.query);
     }
 
     public static final class Params {
 
         private final int page;
         private final int size;
-        private final String query;
+        private String query;
 
         private Params(int page, int size, String query) {
             this.page = page;

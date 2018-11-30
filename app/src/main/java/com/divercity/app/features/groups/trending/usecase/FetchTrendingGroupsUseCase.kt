@@ -14,13 +14,18 @@ import javax.inject.Named
  */
 
 class FetchTrendingGroupsUseCase @Inject
-constructor(@Named("executor_thread") executorThread: Scheduler,
-            @Named("ui_thread") uiThread: Scheduler,
-            private val repository: DataRepository
+constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
+    private val repository: DataRepository
 ) : UseCase<DataArray<GroupResponse>, FetchTrendingGroupsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: FetchTrendingGroupsUseCase.Params): Observable<DataArray<GroupResponse>> {
-        return repository.fetchTrendingGroups(params.page, params.size, params.query)
+        return repository.fetchTrendingGroups(
+            params.page,
+            params.size,
+            if (params.query == "") null else params.query
+        )
     }
 
     class Params private constructor(val page: Int, val size: Int, val query: String?) {

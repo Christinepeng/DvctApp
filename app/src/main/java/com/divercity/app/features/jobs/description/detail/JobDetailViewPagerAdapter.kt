@@ -1,4 +1,4 @@
-package com.divercity.app.features.jobs.description.seeker
+package com.divercity.app.features.jobs.description.detail
 
 import android.content.Context
 import android.support.v4.app.Fragment
@@ -10,7 +10,7 @@ import com.divercity.app.R
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.jobs.description.aboutcompany.TabAboutCompanyFragment
 import com.divercity.app.features.jobs.description.jobdescription.TabJobDescriptionFragment
-import com.divercity.app.features.jobs.description.seeker.similarjobs.SimilarJobsFragment
+import com.divercity.app.features.jobs.description.detail.similarjobs.SimilarJobsFragment
 import com.divercity.app.repository.user.UserRepository
 import javax.inject.Inject
 
@@ -18,7 +18,7 @@ import javax.inject.Inject
  * Created by lucas on 16/10/2018.
  */
 
-class JobDescriptionViewPagerAdapter
+class JobDetailViewPagerAdapter
 @Inject constructor(
         val context: Context,
         fm: FragmentManager,

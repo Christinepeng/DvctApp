@@ -10,7 +10,7 @@ import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
-import com.divercity.app.features.groups.onboarding.usecase.JoinGroupUseCase
+import com.divercity.app.features.groups.usecase.JoinGroupUseCase
 import com.divercity.app.features.groups.trending.datasource.TrendingGroupsPaginatedRepositoryImpl
 import com.google.gson.JsonElement
 import javax.inject.Inject

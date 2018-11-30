@@ -1,4 +1,4 @@
-package com.divercity.app.features.jobs.description.seeker
+package com.divercity.app.features.jobs.description.detail
 
 import android.arch.lifecycle.MutableLiveData
 import com.divercity.app.core.base.BaseViewModel
@@ -17,7 +17,7 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class JobDescriptionSeekerViewModel @Inject
+class JobDetailViewModel @Inject
 constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
             private val saveJobUseCase: SaveJobUseCase,
             private val fetchJobByIdUseCase: FetchJobByIdUseCase,

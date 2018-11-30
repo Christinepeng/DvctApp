@@ -11,7 +11,7 @@ import com.divercity.app.core.utils.Listing;
 import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.features.groups.onboarding.datasource.GroupDataSource;
 import com.divercity.app.features.groups.onboarding.datasource.GroupDataSourceFactory;
-import com.divercity.app.features.groups.onboarding.usecase.FetchGroupsUseCase;
+import com.divercity.app.features.groups.usecase.FetchGroupsUseCase;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;

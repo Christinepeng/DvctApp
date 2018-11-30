@@ -31,9 +31,9 @@ import com.divercity.app.features.jobs.description.aboutcompany.TabAboutCompanyF
 import com.divercity.app.features.jobs.description.jobdescription.TabJobDescriptionFragment
 import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterFragment
 import com.divercity.app.features.jobs.description.poster.module.JobDescriptionPosterModule
-import com.divercity.app.features.jobs.description.seeker.JobDescriptionSeekerFragment
-import com.divercity.app.features.jobs.description.seeker.module.JobDescriptionSeekerModule
-import com.divercity.app.features.jobs.description.seeker.similarjobs.SimilarJobsFragment
+import com.divercity.app.features.jobs.description.detail.JobDetailFragment
+import com.divercity.app.features.jobs.description.detail.module.JobDetailModule
+import com.divercity.app.features.jobs.description.detail.similarjobs.SimilarJobsFragment
 import com.divercity.app.features.jobs.jobs.JobsListFragment
 import com.divercity.app.features.jobs.module.JobsModule
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
@@ -171,8 +171,8 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindMyGroupsFragment (): MyGroupsFragment
 
-    @ContributesAndroidInjector(modules = [JobDescriptionSeekerModule::class])
-    abstract fun bindJobDescriptionSeekerFragment (): JobDescriptionSeekerFragment
+    @ContributesAndroidInjector(modules = [JobDetailModule::class])
+    abstract fun bindJobDescriptionSeekerFragment (): JobDetailFragment
 
     @ContributesAndroidInjector(modules = [JobDescriptionPosterModule::class])
     abstract fun bindJobDescriptionPosterFragment (): JobDescriptionPosterFragment

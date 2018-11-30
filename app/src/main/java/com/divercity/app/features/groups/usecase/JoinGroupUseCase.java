@@ -1,4 +1,4 @@
-package com.divercity.app.features.groups.onboarding.usecase;
+package com.divercity.app.features.groups.usecase;
 
 import com.divercity.app.core.base.UseCase;
 import com.divercity.app.data.entity.group.GroupResponse;

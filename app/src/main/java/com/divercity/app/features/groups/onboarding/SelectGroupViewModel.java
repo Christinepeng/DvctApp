@@ -13,7 +13,7 @@ import com.divercity.app.data.Resource;
 import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.groups.onboarding.group.GroupPaginatedRepositoryImpl;
-import com.divercity.app.features.groups.onboarding.usecase.JoinGroupUseCase;
+import com.divercity.app.features.groups.usecase.JoinGroupUseCase;
 import com.divercity.app.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 

@@ -1,4 +1,4 @@
-package com.divercity.app.features.jobs.description.seeker.similarjobs
+package com.divercity.app.features.jobs.description.detail.similarjobs
 
 import android.os.Bundle
 import android.view.View

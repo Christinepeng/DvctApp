@@ -13,7 +13,7 @@ import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.groups.all.datasource.AllGroupsPaginatedRepositoryImpl
-import com.divercity.app.features.groups.onboarding.usecase.JoinGroupUseCase
+import com.divercity.app.features.groups.usecase.JoinGroupUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -53,7 +53,7 @@ constructor(
             if (it != lastSearch) {
                 lastSearch = it
                 repository.compositeDisposable.clear()
-                listingPaginatedGroup = repository.fetchData(if (it == "") null else it)
+                listingPaginatedGroup = repository.fetchData(it)
                 pagedGroupList = listingPaginatedGroup.pagedList
 
                 lifecycleOwner?.let { lifecycleOwner ->

@@ -5,6 +5,7 @@ import com.divercity.app.DivercityApp
 import com.divercity.app.di.module.ActivityBuilderModule
 import com.divercity.app.di.module.AppBindsModule
 import com.divercity.app.di.module.networking.ApiModule
+import com.divercity.app.di.module.networking.apollo.ApiApolloModule
 import com.divercity.app.di.viewmodel.ViewModelModule
 import dagger.BindsInstance
 import dagger.Component
@@ -23,6 +24,7 @@ import javax.inject.Singleton
         AndroidSupportInjectionModule::class,
         AppBindsModule::class,
         ApiModule::class,
+        ApiApolloModule::class,
         ViewModelModule::class,
         ActivityBuilderModule::class]
 )

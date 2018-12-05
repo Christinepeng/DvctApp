@@ -29,5 +29,4 @@ class ResponseCheckInterceptor(var context: Context) : Interceptor {
         override val message: String?
             get() = context.resources.getString(R.string.error_connection)
     }
-
 }

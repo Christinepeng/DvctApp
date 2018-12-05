@@ -3,7 +3,6 @@ package com.divercity.app.features.home.home;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PagedList;
-
 import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.utils.Listing;
@@ -13,12 +12,10 @@ import com.divercity.app.data.entity.storiesfeatured.StoriesFeaturedResponse;
 import com.divercity.app.features.home.home.feed.questions.QuestionsPaginatedRepositoryImpl;
 import com.divercity.app.features.home.home.usecase.GetStoriesFeatured;
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl;
-
-import java.util.List;
+import io.reactivex.observers.DisposableObserver;
 
 import javax.inject.Inject;
-
-import io.reactivex.observers.DisposableObserver;
+import java.util.List;
 
 public class HomeViewModel extends BaseViewModel {
 

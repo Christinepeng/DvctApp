@@ -1,6 +1,8 @@
 package com.divercity.app.di.module;
 
 import android.content.Context;
+import com.apollographql.apollo.ApolloClient;
+import com.divercity.app.features.apollo.ApolloRepository;
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl;
 import dagger.Module;
 import dagger.Provides;
@@ -37,5 +39,11 @@ public abstract class AppProvidesModule {
     @Singleton
     static LoggedUserRepositoryImpl provideUserLocalDataStore(Context context) {
         return new LoggedUserRepositoryImpl(context);
+    }
+
+    @Provides
+    @Singleton
+    static ApolloRepository provideApolloRepository(ApolloClient client) {
+        return new ApolloRepository(client);
     }
 }

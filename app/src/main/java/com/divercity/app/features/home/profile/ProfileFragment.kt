@@ -8,12 +8,18 @@ import android.view.MenuInflater
 import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.features.apollo.ApolloRepository
+import kotlinx.android.synthetic.main.fragment_profile.*
+import javax.inject.Inject
 
 /**
  * Created by lucas on 24/10/2018.
  */
 
 class ProfileFragment : BaseFragment() {
+
+    @Inject
+    lateinit var apolloRepository: ApolloRepository
 
 //    @Inject
 //    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
@@ -39,6 +45,9 @@ class ProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        btn_connect.setOnClickListener {
+            apolloRepository.getRepositoryData("CleanNews-2017", "lucasgriotto")
+        }
     }
 
     private fun setupToolbar() {

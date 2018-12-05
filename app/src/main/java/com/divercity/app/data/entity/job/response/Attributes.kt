@@ -28,7 +28,7 @@ data class Attributes(
 	val createdAt: String? = null,
 
 	@field:SerializedName("publishable")
-	val publishable: Boolean? = null,
+	var publishable: Boolean? = null,
 
 	@field:SerializedName("unpublished_on")
 	val unpublishedOn: String? = null,

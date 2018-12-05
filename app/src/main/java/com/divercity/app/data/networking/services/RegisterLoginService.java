@@ -9,10 +9,13 @@ import com.divercity.app.data.entity.login.response.LoginResponse;
 import com.divercity.app.data.entity.signup.SignUpBody;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -37,4 +40,8 @@ public interface RegisterLoginService {
     Observable<Response<DataObject<LoginResponse>>> loginLinkedin(
             @Query("code") String code,
             @Query("state") String state);
+
+    @Multipart
+    @POST("auth/sso/facebook")
+    Observable<Response<DataObject<LoginResponse>>> loginFacebook( @Part("token") RequestBody token);
 }

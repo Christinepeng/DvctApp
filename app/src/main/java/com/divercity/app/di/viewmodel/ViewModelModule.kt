@@ -22,8 +22,8 @@ import com.divercity.app.features.jobposting.skills.JobSkillsViewModel
 import com.divercity.app.features.jobs.TabJobsViewModel
 import com.divercity.app.features.jobs.applicants.JobApplicantsViewModel
 import com.divercity.app.features.jobs.applications.JobsApplicationsViewModel
-import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterViewModel
 import com.divercity.app.features.jobs.description.detail.JobDetailViewModel
+import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterViewModel
 import com.divercity.app.features.jobs.jobs.JobsListViewModel
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.app.features.jobs.saved.SavedJobsViewModel

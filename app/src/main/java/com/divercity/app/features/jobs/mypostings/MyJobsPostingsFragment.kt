@@ -29,7 +29,7 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
     lateinit var adapter: JobsAdapter
 
     private var isListRefreshing = false
-    private var positionSaveUnsavedClicked: Int = 0
+    private var positionPublishClicked: Int = 0
 
     companion object {
 
@@ -62,7 +62,7 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
     }
 
     private fun subscribeToLiveData() {
-        viewModelJobs.jobSaveUnsaveResponse.observe(this, Observer { job ->
+        viewModelJobs.publishJobResponse.observe(this, Observer { job ->
             when (job?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -74,9 +74,9 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    adapter.currentList?.get(positionSaveUnsavedClicked)?.attributes?.isBookmarkedByCurrent =
-                            job.data?.attributes?.isBookmarkedByCurrent
-                    adapter.notifyItemChanged(positionSaveUnsavedClicked)
+                    adapter.currentList?.get(positionPublishClicked)?.attributes?.publishable =
+                            job.data?.attributes?.publishable
+                    adapter.notifyItemChanged(positionPublishClicked)
                 }
             }
         })
@@ -138,6 +138,8 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
     private val listener: JobsViewHolder.Listener = object : JobsViewHolder.Listener {
 
         override fun onPublishClick(position: Int, job: JobResponse) {
+            positionPublishClicked = position
+            viewModelJobs.publishJob(job)
         }
 
         override fun onJobClick(job: JobResponse) {

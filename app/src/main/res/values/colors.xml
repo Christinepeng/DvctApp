@@ -22,6 +22,8 @@
 
     <color name="appBlue">#3198e5</color>
 
+    <color name="grey_background">#f5f6f8</color>
+
 
     <!-- Greys-->
     <color name="grey">#d8d8d8</color>

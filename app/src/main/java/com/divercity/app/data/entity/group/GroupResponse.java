@@ -13,6 +13,9 @@ public class GroupResponse{
 	@SerializedName("type")
 	private String type;
 
+    //	For ViewHolder
+    private boolean isSelected = false;
+
 	public GroupResponse(String id) {
 		this.id = id;
 	}
@@ -39,6 +42,14 @@ public class GroupResponse{
 
 	public String getType(){
 		return type;
+	}
+
+	public boolean getSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean selected) {
+		isSelected = selected;
 	}
 
 	@Override

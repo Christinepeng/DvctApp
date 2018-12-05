@@ -2,6 +2,7 @@ package com.divercity.app.features.login.step1
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.design.widget.Snackbar
@@ -14,6 +15,8 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.ViewPagerDotsPanel
 import com.divercity.app.data.Status
+import com.divercity.app.features.login.step1.usecase.ConnectFacebookApiHelper
+import com.facebook.internal.CallbackManagerImpl
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
 import javax.inject.Inject
@@ -27,6 +30,8 @@ class EnterEmailFragment : BaseFragment() {
 
     @Inject
     lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
+
+    lateinit var connectFacebookApiHelper: ConnectFacebookApiHelper
 
     lateinit var viewModel: EnterEmailViewModel
     private lateinit var handlerViewPager: Handler
@@ -42,6 +47,8 @@ class EnterEmailFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         AndroidSupportInjection.inject(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
+        connectFacebookApiHelper = ConnectFacebookApiHelper(this)
+        connectFacebookApiHelper.setListener(facebookListener)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -69,6 +76,26 @@ class EnterEmailFragment : BaseFragment() {
             }
         })
 
+        viewModel.loginFacebookResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(response.message)
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    if (response.data?.attributes?.accountType == null)
+                        navigator.navigateToSelectUserTypeActivity(activity!!)
+                    else
+                        navigator.navigateToHomeActivity(activity!!)
+                    activity!!.finish()
+                }
+            }
+        })
+
         viewModel.navigateToLogin.observe(this, Observer {
             navigator.navigateToLoginActivity(activity!!, user_email.text.toString().trim())
         })
@@ -89,7 +116,10 @@ class EnterEmailFragment : BaseFragment() {
     }
 
     private fun setupEvents() {
-        btnFacebook.setOnClickListener { showToast("Facebook") }
+        btnFacebook.setOnClickListener {
+            connectFacebookApiHelper.connectToFacebook()
+        }
+
         btn_linkedin.setOnClickListener {
             navigator.navigateToLinkedinActivity(activity!!)
         }
@@ -138,5 +168,15 @@ class EnterEmailFragment : BaseFragment() {
     override fun onDestroyView() {
         handlerViewPager.removeCallbacksAndMessages(null)
         super.onDestroyView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode())
+            connectFacebookApiHelper.facebookCallbackManager.onActivityResult(requestCode, resultCode, data)
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private var facebookListener = ConnectFacebookApiHelper.OnFacebookDataListener {
+        viewModel.loginFacebook(it.accessToken)
     }
 }

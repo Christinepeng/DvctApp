@@ -49,6 +49,7 @@ class SplashFragment : BaseFragment() {
 //                       navigator.navigateToProfilePromptActivity(activity!!)
 //                navigator.navigateToSelectUserTypeActivity(activity!!)
                 viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+//                navigator.navigateToShareJobGroupActivity(this,"21")
 //                navigator.navigateToShareJobGroupActivity(this,"31")
 //                navigator.navigateToSelectGroupActivity(activity!!,90)
 //                navigator.navigateToHomeActivity(activity!!)

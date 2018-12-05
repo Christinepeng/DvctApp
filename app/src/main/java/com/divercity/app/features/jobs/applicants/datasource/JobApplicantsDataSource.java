@@ -3,13 +3,12 @@ package com.divercity.app.features.jobs.applicants.datasource;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.data.entity.jobapplication.JobApplicationResponse;
+import com.divercity.app.features.jobs.applicants.usecase.FetchJobsApplicantsUseCase;
 import com.divercity.app.features.jobs.applications.datasource.JobApplicationsDataSource;
-import com.divercity.app.features.jobs.applications.usecase.FetchJobsApplicationsUseCase;
 
 import java.util.List;
 
@@ -27,7 +26,7 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobApplic
     private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
-    private FetchJobsApplicationsUseCase fetchJobsApplicationsUseCase;
+    private FetchJobsApplicantsUseCase fetchJobsApplicantsUseCase;
     private CompositeDisposable compositeDisposable;
     private String query;
 
@@ -37,10 +36,9 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobApplic
     private Completable retryCompletable;
 
     public JobApplicantsDataSource(CompositeDisposable compositeDisposable,
-                                     FetchJobsApplicationsUseCase fetchJobsApplicationsUseCase,
-                                     @Nullable String query) {
+                                   FetchJobsApplicantsUseCase fetchJobsApplicantsUseCase) {
         this.compositeDisposable = compositeDisposable;
-        this.fetchJobsApplicationsUseCase = fetchJobsApplicationsUseCase;
+        this.fetchJobsApplicantsUseCase = fetchJobsApplicantsUseCase;
         this.query = query;
     }
 
@@ -94,7 +92,7 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobApplic
             }
         };
         compositeDisposable.add(disposableObserver);
-        fetchJobsApplicationsUseCase.execute(disposableObserver, FetchJobsApplicationsUseCase.Params.Companion.forJobs(0, params.requestedLoadSize, query));
+        fetchJobsApplicantsUseCase.execute(disposableObserver, FetchJobsApplicantsUseCase.Params.Companion.forApplicants(0, params.requestedLoadSize));
     }
 
     @Override
@@ -132,7 +130,7 @@ public class JobApplicantsDataSource extends PageKeyedDataSource<Long, JobApplic
         };
 
         compositeDisposable.add(disposableObserver);
-        fetchJobsApplicationsUseCase.execute(disposableObserver, FetchJobsApplicationsUseCase.Params.Companion.forJobs(params.key.intValue(), params.requestedLoadSize, query));
+        fetchJobsApplicantsUseCase.execute(disposableObserver, FetchJobsApplicantsUseCase.Params.Companion.forApplicants(params.key.intValue(), params.requestedLoadSize));
     }
 
     @NonNull

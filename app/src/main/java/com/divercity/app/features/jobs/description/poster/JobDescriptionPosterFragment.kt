@@ -1,11 +1,14 @@
 package com.divercity.app.features.jobs.description.poster
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
+import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.dialogs.JobPosterActionsDialogFragment
 import kotlinx.android.synthetic.main.fragment_job_description_poster.*
@@ -54,9 +57,36 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
         setupTabs()
         setupView()
         initView()
+        subscribeToLiveData()
     }
 
-    private fun setupTabs(){
+    private fun subscribeToLiveData() {
+
+        viewModel.publishUnpublishJobResponse.observe(viewLifecycleOwner, Observer { job ->
+            when (job?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    this.job = job.data
+                    hideProgress()
+                    job.data?.attributes?.publishable?.let {
+                        if(it)
+                            Toast.makeText(activity, R.string.publish_success, Toast.LENGTH_SHORT).show()
+                        else
+                            Toast.makeText(activity, R.string.unpublish_success, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            }
+        })
+    }
+
+    private fun setupTabs() {
         job?.also {
             adapter.job = it
             viewpager.adapter = adapter
@@ -64,14 +94,14 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
         }
     }
 
-    private fun setupView(){
+    private fun setupView() {
         btn_toolbar_more.setOnClickListener {
             showDialogMoreActions()
         }
     }
 
     private fun showDialogMoreActions() {
-        val dialog = JobPosterActionsDialogFragment.newInstance()
+        val dialog = JobPosterActionsDialogFragment.newInstance(job!!)
         dialog.show(childFragmentManager, null)
     }
 
@@ -96,7 +126,7 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
             inc_job_desc.txt_title.text = it.attributes?.title
 
             btn_view_applicants.setOnClickListener {
-
+                navigator.navigateToJobApplicantsActivity(this, job!!)
             }
         }
     }
@@ -104,7 +134,8 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
     override fun onEditJobPosting() {
     }
 
-    override fun onUnpublishJobPosting() {
+    override fun onPublishUnpublishJobPosting() {
+        viewModel.publishUnpublishJob(job!!)
     }
 
     override fun onDeleteJobPosting() {

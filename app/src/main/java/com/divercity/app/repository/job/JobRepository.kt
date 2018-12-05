@@ -14,27 +14,34 @@ import io.reactivex.Observable
 
 interface JobRepository {
 
-    fun fetchJobs(page: Int, size: Int, query : String?): Observable<List<JobResponse>>
+    fun fetchJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 
-    fun saveJob(jobId : String) : Observable<JobResponse>
+    fun saveJob(jobId: String): Observable<JobResponse>
 
-    fun removeSavedJob(jobId : String) : Observable<JobResponse>
+    fun removeSavedJob(jobId: String): Observable<JobResponse>
 
-    fun fetchJobById(jobId : String) : Observable<JobResponse>
+    fun fetchJobById(jobId: String): Observable<JobResponse>
 
-    fun fetchSavedJobs(page: Int, size: Int, query : String?): Observable<IncludedArray<JobResponse>>
+    fun fetchSavedJobs(page: Int, size: Int, query: String?): Observable<IncludedArray<JobResponse>>
 
-    fun fetchMyJobApplications(page: Int, size: Int, query : String?): Observable<List<JobApplicationResponse>>
+    fun fetchMyJobApplications(page: Int, size: Int, query: String?): Observable<List<JobApplicationResponse>>
 
     fun fetchJobTypes(): Observable<List<JobTypeResponse>>
 
-    fun postJob(body : JobBody): Observable<JobResponse>
+    fun postJob(body: JobBody): Observable<JobResponse>
 
-    fun shareJob(jobId: String, body : JobShareGroupBody): Observable<JobResponse>
+    fun shareJob(jobId: String, body: JobShareGroupBody): Observable<JobResponse>
 
     fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 
     fun applyJob(jobId: String,
                  userDocId: String,
                  coverLetter: String): Observable<JobApplicationResponse>
+
+    fun fetchApplicants(jobId: String,
+                        pageNumber: Int,
+                        size: Int): Observable<List<JobApplicationResponse>>
+
+    fun publishUnpublishJob(jobId: String,
+                            action: String): Observable<JobResponse>
 }

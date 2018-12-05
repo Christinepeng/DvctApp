@@ -11,7 +11,7 @@ class JobApplicantsActivity : BaseActivity() {
     companion object {
         private const val INTENT_EXTRA_PARAM_JOB = "intentExtraParamJob"
 
-        fun getCallingIntent(context: Context, job : JobResponse) : Intent {
+        fun getCallingIntent(context: Context?, job : JobResponse) : Intent {
             val intent = Intent(context, JobApplicantsActivity::class.java)
             intent.putExtra(INTENT_EXTRA_PARAM_JOB,job)
             return intent

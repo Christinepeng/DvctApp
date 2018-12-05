@@ -1,7 +1,7 @@
 package com.divercity.app.features.jobs.applicants.usecase
 
 import com.divercity.app.core.base.UseCase
-import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
 import com.divercity.app.repository.job.JobRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -16,18 +16,20 @@ class FetchJobsApplicantsUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: JobRepository
-) : UseCase<List<JobResponse>, FetchJobsApplicantsUseCase.Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<JobApplicationResponse>, FetchJobsApplicantsUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<List<JobResponse>> {
-        return repository.fetchJobs(params.page, params.size, params.query)
+    lateinit var jobId: String
+
+    override fun createObservableUseCase(params: Params): Observable<List<JobApplicationResponse>> {
+        return repository.fetchApplicants(jobId, params.page, params.size)
     }
 
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
+    class Params private constructor(val page: Int, val size: Int) {
 
         companion object {
 
-            fun forJobs(page: Int, size: Int, query: String?): Params {
-                return Params(page, size, query)
+            fun forApplicants(page: Int, size: Int): Params {
+                return Params(page, size)
             }
         }
     }

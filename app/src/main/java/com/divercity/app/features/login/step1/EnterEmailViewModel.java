@@ -8,8 +8,14 @@ import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.core.utils.SingleLiveEvent;
 import com.divercity.app.core.utils.Util;
 import com.divercity.app.data.Resource;
+import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.login.step1.usecase.ChecIskEmailRegisteredUseCase;
 import com.divercity.app.features.login.step1.usecase.ConnectLinkedInApiHelper;
+import com.divercity.app.features.login.step1.usecase.LoginFacebookUseCase;
+import com.google.gson.JsonElement;
+
+import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
@@ -22,18 +28,23 @@ import io.reactivex.observers.DisposableObserver;
 public class EnterEmailViewModel extends BaseViewModel {
 
     private ChecIskEmailRegisteredUseCase checIskEmailRegisteredUseCase;
+    private LoginFacebookUseCase loginFacebookUseCase;
     private Application application;
     private ConnectLinkedInApiHelper linkedInApiHelper;
 
     private SingleLiveEvent<Resource<Boolean>> isEmailRegistered = new SingleLiveEvent<>();
+    private SingleLiveEvent<Resource<LoginResponse>> loginFacebookResponse = new SingleLiveEvent<>();
+
     private SingleLiveEvent<Object> navigateToSignUp = new SingleLiveEvent<>();
     private SingleLiveEvent<Object> navigateToLogin = new SingleLiveEvent<>();
 
     @Inject
     public EnterEmailViewModel(Application application,
                                ChecIskEmailRegisteredUseCase checIskEmailRegisteredUseCase,
-                               ConnectLinkedInApiHelper linkedInApiHelper) {
+                               ConnectLinkedInApiHelper linkedInApiHelper,
+                               LoginFacebookUseCase loginFacebookUseCase) {
         this.application = application;
+        this.loginFacebookUseCase = loginFacebookUseCase;
         this.checIskEmailRegisteredUseCase = checIskEmailRegisteredUseCase;
         this.linkedInApiHelper = linkedInApiHelper;
     }
@@ -67,8 +78,36 @@ public class EnterEmailViewModel extends BaseViewModel {
             isEmailRegistered.setValue(Resource.Companion.error(application.getResources().getString(R.string.insert_valid_email), null));
     }
 
+    public void loginFacebook(String token){
+        loginFacebookResponse.setValue(Resource.Companion.loading(null));
+
+        DisposableObserverWrapper<LoginResponse> disposable = new DisposableObserverWrapper<LoginResponse>() {
+            @Override
+            protected void onFail(@NotNull String error) {
+                loginFacebookResponse.setValue(Resource.Companion.error(error,null));
+            }
+
+            @Override
+            protected void onHttpException(JsonElement error) {
+                loginFacebookResponse.setValue(Resource.Companion.error(error.toString(),null));
+            }
+
+            @Override
+            protected void onSuccess(@NotNull LoginResponse loginResponse) {
+                loginFacebookResponse.setValue(Resource.Companion.success(loginResponse));
+            }
+        };
+
+        getCompositeDisposable().add(disposable);
+        loginFacebookUseCase.execute(disposable, LoginFacebookUseCase.Params.forFacebook(token));
+    }
+
     public MutableLiveData<Resource<Boolean>> getIsEmailRegistered() {
         return isEmailRegistered;
+    }
+
+    public SingleLiveEvent<Resource<LoginResponse>> getLoginFacebookResponse() {
+        return loginFacebookResponse;
     }
 
     public SingleLiveEvent<Object> getNavigateToSignUp() {
@@ -78,22 +117,4 @@ public class EnterEmailViewModel extends BaseViewModel {
     public SingleLiveEvent<Object> getNavigateToLogin() {
         return navigateToLogin;
     }
-
-//    public void getLinkedInToken(FragmentActivity activity){
-////        linkedInApiHelper.getLinkedInToken(activity, new ConnectLinkedInApiHelper.Listener() {
-////            @Override
-////            public void onAuthSucces(@Nullable AccessToken token) {
-////                String hola = token.getValue();
-////            }
-////
-////            @Override
-////            public void onAuthError(@NotNull String msg) {
-////                String errror = msg;
-////            }
-////        });
-//    }
-//
-//    public void onActivityResult(int requestCode, int resultCode, Intent data){
-////        linkedInApiHelper.onActivityResult(requestCode, resultCode, data);
-//    }
 }

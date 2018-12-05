@@ -1,7 +1,7 @@
 package com.divercity.app.features.login.step1.usecase;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -23,13 +23,9 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 
-/**
- * Created by lucas on 28/02/2018.
- */
-
 public class ConnectFacebookApiHelper {
 
-    private Activity mActivity;
+    private Fragment fragment;
     private OnFacebookDataListener mListener;
     private CallbackManager mFacebookCallbackManager;
 
@@ -37,8 +33,8 @@ public class ConnectFacebookApiHelper {
         void onFacebookDataGet(SocialLoginEntity socialLoginEntity);
     }
 
-    public ConnectFacebookApiHelper(Activity activity) {
-        mActivity = activity;
+    public ConnectFacebookApiHelper(Fragment fragment) {
+        this.fragment = fragment;
         attachFacebookCallback();
     }
 
@@ -53,7 +49,7 @@ public class ConnectFacebookApiHelper {
                                 new GraphRequest.GraphJSONObjectCallback() {
                                     @Override
                                     public void onCompleted(JSONObject object, GraphResponse response) {
-                                        Log.v("JobDescriptionPosterActivity", response.toString());
+                                        Log.v("FacebookHelper", response.toString());
                                         SocialLoginEntity socialLoginEntity = new SocialLoginEntity();
                                         try {
                                             socialLoginEntity.setProvider("facebook");
@@ -82,12 +78,12 @@ public class ConnectFacebookApiHelper {
 
                     @Override
                     public void onError(FacebookException exception) {
-                        Toast.makeText(mActivity, exception.getMessage(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(fragment.getContext(), exception.getMessage(), Toast.LENGTH_SHORT).show();
                     }
                 });
     }
 
-    public void logOut(){
+    private void logOut(){
         if (AccessToken.getCurrentAccessToken() != null && com.facebook.Profile.getCurrentProfile() != null) {
             LoginManager.getInstance().logOut();
         }
@@ -98,7 +94,8 @@ public class ConnectFacebookApiHelper {
     }
 
     public void connectToFacebook() {
-        LoginManager.getInstance().logInWithReadPermissions(mActivity, Arrays.asList("public_profile", "email", "user_birthday"));
+        logOut();
+        LoginManager.getInstance().logInWithReadPermissions(fragment, Arrays.asList("public_profile", "email"));
     }
 
     public void setListener(OnFacebookDataListener listener) {

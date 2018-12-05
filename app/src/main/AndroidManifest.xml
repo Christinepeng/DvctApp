@@ -41,6 +41,10 @@
         </provider>
 
         <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <meta-data
             android:name="io.fabric.ApiKey"
             android:value="c89b5c70f080c86af29acf814d51cac090ea41f5" />
 
@@ -176,7 +180,7 @@
             android:name=".features.company.createcompany.CreateCompanyActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden"/>
+            android:windowSoftInputMode="stateHidden" />
 
         <activity
             android:name=".features.industry.withtoolbar.ToolbarIndustryActivity"
@@ -190,6 +194,11 @@
 
         <activity
             android:name=".features.company.companysize.CompanySizesActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.jobs.applicants.JobApplicantsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

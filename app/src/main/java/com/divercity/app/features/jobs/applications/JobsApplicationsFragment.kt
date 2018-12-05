@@ -60,7 +60,7 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
     }
 
     private fun subscribeToLiveData() {
-//        viewModel.jobSaveUnsaveResponse.observe(this, Observer { job ->
+//        viewModel.publishUnpublishJobResponse.observe(this, Observer { job ->
 //            when (job?.status) {
 //                Status.LOADING -> {
 //                    showProgress()

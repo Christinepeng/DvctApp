@@ -26,4 +26,6 @@ public interface RegisterLoginRepository {
     Observable<LoginResponse> loginLinkedin(
             String code,
             String state);
+
+    Observable<LoginResponse> loginFacebook(String token);
 }

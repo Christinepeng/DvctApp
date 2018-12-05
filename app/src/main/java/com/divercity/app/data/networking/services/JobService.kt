@@ -37,8 +37,8 @@ interface JobService {
 
     @GET("jobs/applications")
     fun fetchMyJobApplications(@Query("page[number]") pageNumber: Int,
-                       @Query("page[size]") size: Int,
-                       @Query("search_query") query: String?): Observable<Response<DataArray<JobApplicationResponse>>>
+                               @Query("page[size]") size: Int,
+                               @Query("search_query") query: String?): Observable<Response<DataArray<JobApplicationResponse>>>
 
     @GET("jobs/job_types")
     fun fetchJobTypes(): Observable<Response<DataArray<JobTypeResponse>>>
@@ -63,4 +63,14 @@ interface JobService {
     fun applyJob(@Part("application[job_id]") jobId: RequestBody,
                  @Part("application[user_document_id]") userDocId: RequestBody,
                  @Part("application[cover_letter]") coverLetter: RequestBody): Observable<Response<DataObject<JobApplicationResponse>>>
+
+    @GET("jobs/{jobId}/applicants")
+    fun fetchApplicants(@Path("jobId") jobId: String,
+                        @Query("page[number]") pageNumber: Int,
+                        @Query("page[size]") size: Int): Observable<Response<DataArray<JobApplicationResponse>>>
+
+    @Multipart
+    @POST("jobs/{jobId}/perform")
+    fun publishUnpublishJob(@Path("jobId") jobId: String,
+                            @Part("intent") action: RequestBody): Observable<Response<DataObject<JobResponse>>>
 }

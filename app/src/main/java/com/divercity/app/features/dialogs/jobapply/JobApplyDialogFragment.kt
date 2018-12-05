@@ -245,5 +245,4 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
 
         fun onSuccessJobApply()
     }
-
 }

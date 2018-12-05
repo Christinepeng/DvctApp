@@ -21,6 +21,22 @@ import javax.inject.Inject
 class JobRepositoryImpl @Inject
 constructor(private val jobService: JobService) : JobRepository {
 
+    override fun publishUnpublishJob(jobId: String, action: String): Observable<JobResponse> {
+        val partAction = RequestBody.create(MediaType.parse("text/plain"), action)
+
+        return jobService.publishUnpublishJob(jobId, partAction).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun fetchApplicants(jobId: String, pageNumber: Int, size: Int): Observable<List<JobApplicationResponse>> {
+        return jobService.fetchApplicants(jobId, pageNumber, size).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
     override fun applyJob(jobId: String, userDocId: String, coverLetter: String): Observable<JobApplicationResponse> {
         val partJobId = RequestBody.create(MediaType.parse("text/plain"), jobId)
         val partDocId = RequestBody.create(MediaType.parse("text/plain"), userDocId)

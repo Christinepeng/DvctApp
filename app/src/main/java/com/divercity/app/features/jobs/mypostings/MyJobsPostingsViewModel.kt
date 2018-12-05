@@ -9,7 +9,10 @@ import com.divercity.app.core.utils.Listing
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.jobs.mypostings.datasource.JobPaginatedRepositoryImpl
+import com.divercity.app.features.jobs.mypostings.usecase.PublishJobUseCase
+import com.google.gson.JsonElement
 import javax.inject.Inject
 
 /**
@@ -17,10 +20,11 @@ import javax.inject.Inject
  */
 
 class MyJobsPostingsViewModel @Inject
-constructor(private val repository: JobPaginatedRepositoryImpl) : BaseViewModel() {
+constructor(private val repository: JobPaginatedRepositoryImpl,
+            private val publishJobUseCase: PublishJobUseCase) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
+    var publishJobResponse = SingleLiveEvent<Resource<JobResponse>>()
     lateinit var pagedJobsList: LiveData<PagedList<JobResponse>>
     private lateinit var listingPaginatedJob: Listing<JobResponse>
     private var lastSearch: String? = null
@@ -50,6 +54,25 @@ constructor(private val repository: JobPaginatedRepositoryImpl) : BaseViewModel(
                 }
             }
         }
+    }
+
+    fun publishJob(jobData: JobResponse) {
+        publishJobResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<JobResponse>() {
+            override fun onFail(error: String) {
+                publishJobResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                publishJobResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: JobResponse) {
+                publishJobResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+        publishJobUseCase.execute(callback, PublishJobUseCase.Params.forPublish(jobData.id!!))
     }
 
     private fun removeObservers(lifecycleOwner: LifecycleOwner) {

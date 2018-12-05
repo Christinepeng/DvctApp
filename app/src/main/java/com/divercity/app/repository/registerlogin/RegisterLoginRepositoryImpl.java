@@ -12,6 +12,8 @@ import com.divercity.app.repository.user.LoggedUserRepositoryImpl;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
@@ -55,6 +57,15 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     @Override
     public Observable<LoginResponse> loginLinkedin(String code, String state) {
         return registerLoginService.loginLinkedin(code, state).map(response -> {
+            checkResponse(response);
+            loggedUserRepository.saveUserHeaderData(response);
+            return response.body().getData();
+        });
+    }
+
+    @Override
+    public Observable<LoginResponse> loginFacebook(String token) {
+        return registerLoginService.loginFacebook(RequestBody.create(MediaType.parse("text/plain"), token)).map(response -> {
             checkResponse(response);
             loggedUserRepository.saveUserHeaderData(response);
             return response.body().getData();

@@ -13,8 +13,8 @@ import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
 import com.divercity.app.features.jobposting.skills.JobSkillsActivity
 import com.divercity.app.features.jobs.applicants.JobApplicantsActivity
-import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterActivity
 import com.divercity.app.features.jobs.description.detail.JobDetailActivity
+import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterActivity
 import com.divercity.app.features.linkedin.LinkedinActivity
 import com.divercity.app.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity

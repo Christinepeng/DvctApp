@@ -3,10 +3,9 @@ buildscript {
 
     repositories {
         maven { url 'https://maven.fabric.io/public' }
-        google()
-
 
         // Apollo
+        google()
         jcenter()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
     }
@@ -48,7 +47,7 @@ android {
 
         debug {
             minifyEnabled false
-            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
+            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "true"
 //            buildConfigField "String", "BASE_URL", '"https://api.divercity.io/api/"'
             buildConfigField "String", "BASE_URL", '"https://dev-api.divercity.io/api/"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -89,6 +88,8 @@ dependencies {
     def timber_version = "4.7.1"
 
     def leakCanary_version = "1.6.2"
+
+    def kotlinCoroutines_version = "1.0.1"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.3'
@@ -155,8 +156,8 @@ dependencies {
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
 
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.0.1"
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.0.1'
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines_version"
     
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
@@ -167,10 +168,9 @@ dependencies {
 repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/public' }
-    google()
-
 
     // Apollo
+    google()
     jcenter()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }

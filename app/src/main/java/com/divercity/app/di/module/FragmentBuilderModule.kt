@@ -33,6 +33,7 @@ import com.divercity.app.features.jobs.description.detail.module.JobDetailModule
 import com.divercity.app.features.jobs.description.jobdescription.TabJobDescriptionFragment
 import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterFragment
 import com.divercity.app.features.jobs.description.poster.module.JobDescriptionPosterModule
+import com.divercity.app.features.jobs.description.poster.similarjobs.SimilarJobsFragment
 import com.divercity.app.features.jobs.jobs.JobsListFragment
 import com.divercity.app.features.jobs.module.JobsModule
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
@@ -209,4 +210,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindCompanySizesFragment (): CompanySizesFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSimilarJobsFragment (): SimilarJobsFragment
 }

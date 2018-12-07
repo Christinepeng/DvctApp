@@ -24,6 +24,11 @@ interface JobService {
                   @Query("page[size]") size: Int,
                   @Query("search_query") query: String?): Observable<Response<DataArray<JobResponse>>>
 
+    @GET("jobs")
+    fun fetchSimilarJobs(@Query("page[number]") pageNumber: Int,
+                  @Query("page[size]") size: Int,
+                  @Query("similar_to") jobId: String?): Observable<Response<DataArray<JobResponse>>>
+
     @POST("jobs/{jobId}/bookmark")
     fun saveJob(@Path("jobId") jobId: String): Observable<Response<DataObject<JobResponse>>>
 

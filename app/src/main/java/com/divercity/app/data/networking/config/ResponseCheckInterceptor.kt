@@ -1,8 +1,8 @@
 package com.divercity.app.data.networking.config
 
 import android.content.Context
-import android.net.ConnectivityManager
 import com.divercity.app.R
+import com.divercity.app.core.extension.networkInfo
 import okhttp3.Interceptor
 import okhttp3.Response
 import java.io.IOException
@@ -15,8 +15,7 @@ class ResponseCheckInterceptor(var context: Context) : Interceptor {
 
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
-        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
-        val netInfo = connectivityManager.activeNetworkInfo
+        val netInfo = context.networkInfo
         if (!(netInfo != null && netInfo.isConnected)) {
             throw NoConnectivityException()
         }

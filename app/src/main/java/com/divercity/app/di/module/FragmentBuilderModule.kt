@@ -28,16 +28,16 @@ import com.divercity.app.features.jobs.TabJobsFragment
 import com.divercity.app.features.jobs.applicants.JobApplicantsFragment
 import com.divercity.app.features.jobs.applications.JobsApplicationsFragment
 import com.divercity.app.features.jobs.description.aboutcompany.TabAboutCompanyFragment
+import com.divercity.app.features.jobs.description.detail.JobDetailFragment
+import com.divercity.app.features.jobs.description.detail.module.JobDetailModule
 import com.divercity.app.features.jobs.description.jobdescription.TabJobDescriptionFragment
 import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterFragment
 import com.divercity.app.features.jobs.description.poster.module.JobDescriptionPosterModule
-import com.divercity.app.features.jobs.description.detail.JobDetailFragment
-import com.divercity.app.features.jobs.description.detail.module.JobDetailModule
-import com.divercity.app.features.jobs.description.detail.similarjobs.SimilarJobsFragment
 import com.divercity.app.features.jobs.jobs.JobsListFragment
 import com.divercity.app.features.jobs.module.JobsModule
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
 import com.divercity.app.features.jobs.saved.SavedJobsFragment
+import com.divercity.app.features.jobs.similarjobs.SimilarJobListFragment
 import com.divercity.app.features.linkedin.LinkedinFragment
 import com.divercity.app.features.location.base.SelectLocationFragment
 import com.divercity.app.features.location.onboarding.OnboardingLocationFragment
@@ -184,7 +184,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindTabAboutCompanyFragment (): TabAboutCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSimilarJobsFragment (): SimilarJobsFragment
+    abstract fun bindSimilarJobListFragment (): SimilarJobListFragment
 
     @ContributesAndroidInjector
     abstract fun bindJobApplyDialogFragment (): JobApplyDialogFragment

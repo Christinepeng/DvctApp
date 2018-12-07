@@ -6,9 +6,11 @@ import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import android.widget.Toast
+import com.divercity.app.FindQuery
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
-import com.divercity.app.features.apollo.ApolloRepository
+import com.divercity.app.features.apollo.GetGitRepositoryDataUseCase
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -19,9 +21,9 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment() {
 
     @Inject
-    lateinit var apolloRepository: ApolloRepository
+    lateinit var useCase: GetGitRepositoryDataUseCase
 
-//    @Inject
+    //    @Inject
 //    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 //
 //    lateinit var viewModelJobs: EnterEmailViewModel
@@ -46,8 +48,37 @@ class ProfileFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btn_connect.setOnClickListener {
-            apolloRepository.getRepositoryData("CleanNews-2017", "lucasgriotto")
+
+            useCase(GetGitRepositoryDataUseCase.Params.forRepo("CleanNews-2017", "lucasgriotto")) {
+                it.either(::handleError, ::handleSuccess)
+            }
+
+//            val job = GlobalScope.launch(Dispatchers.Main) {
+//                try {
+//                    val result = useCase.call("CleanNews-2017", "lucasgriotto")
+//
+//                } catch (e : Throwable){
+//                    Toast.makeText(context,e.message,Toast.LENGTH_SHORT).show()
+//                }
+////                val test = result
+////                btn_connect.text = test.repository()?.description()
+//                //delay(3000)
+//            }
+//
+//            GlobalScope.launch(Dispatchers.Main){
+//                delay(2000)
+//                job.cancel()
+//            }
+
         }
+    }
+
+    private fun handleError(message: String) {
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun handleSuccess(query: FindQuery.Data) {
+        btn_connect.text = query.repository()?.description()
     }
 
     private fun setupToolbar() {

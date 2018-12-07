@@ -10,7 +10,7 @@ import com.divercity.app.R
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.jobs.description.aboutcompany.TabAboutCompanyFragment
 import com.divercity.app.features.jobs.description.jobdescription.TabJobDescriptionFragment
-import com.divercity.app.features.jobs.description.detail.similarjobs.SimilarJobsFragment
+import com.divercity.app.features.jobs.similarjobs.SimilarJobListFragment
 import com.divercity.app.repository.user.UserRepository
 import javax.inject.Inject
 
@@ -48,7 +48,7 @@ class JobDetailViewPagerAdapter
         return when (position) {
             0 -> TabJobDescriptionFragment.newInstance(job.attributes?.description)
             1 -> TabAboutCompanyFragment.newInstance(job.attributes?.employer)
-            else -> SimilarJobsFragment.newInstance()
+            else -> SimilarJobListFragment.newInstance(job.id!!)
         }
     }
 

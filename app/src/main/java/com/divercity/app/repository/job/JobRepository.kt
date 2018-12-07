@@ -16,6 +16,12 @@ interface JobRepository {
 
     fun fetchJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 
+    fun fetchSimilarJobs(
+            pageNumber: Int,
+            size: Int,
+            jobId: String?
+    ): Observable<List<JobResponse>>
+
     fun saveJob(jobId: String): Observable<JobResponse>
 
     fun removeSavedJob(jobId: String): Observable<JobResponse>
@@ -34,14 +40,20 @@ interface JobRepository {
 
     fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 
-    fun applyJob(jobId: String,
-                 userDocId: String,
-                 coverLetter: String): Observable<JobApplicationResponse>
+    fun applyJob(
+            jobId: String,
+            userDocId: String,
+            coverLetter: String
+    ): Observable<JobApplicationResponse>
 
-    fun fetchApplicants(jobId: String,
-                        pageNumber: Int,
-                        size: Int): Observable<List<JobApplicationResponse>>
+    fun fetchApplicants(
+            jobId: String,
+            pageNumber: Int,
+            size: Int
+    ): Observable<List<JobApplicationResponse>>
 
-    fun publishUnpublishJob(jobId: String,
-                            action: String): Observable<JobResponse>
+    fun publishUnpublishJob(
+            jobId: String,
+            action: String
+    ): Observable<JobResponse>
 }

@@ -3,6 +3,7 @@ package com.divercity.app.di.module.networking.apollo
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.response.CustomTypeAdapter
 import com.apollographql.apollo.response.CustomTypeValue
+import com.divercity.app.data.networking.config.ResponseCheckInterceptor
 import com.divercity.app.type.CustomType
 import dagger.Module
 import dagger.Provides
@@ -20,25 +21,27 @@ class ApiApolloModule {
     @Provides
     @Singleton
     fun providesApolloClient(
-        loggingInterceptor: HttpLoggingInterceptor
+            loggingInterceptor: HttpLoggingInterceptor,
+            responseCodeCheckInterceptor: ResponseCheckInterceptor
     ): ApolloClient {
 
         val okHttp = OkHttpClient
-            .Builder()
-            .addInterceptor { chain ->
-                val original = chain.request()
-                val builder = original.newBuilder().method(
-                    original.method(),
-                    original.body()
-                )
-                builder.addHeader(
-                    "Authorization"
-                    , "Bearer " + "9f1c0897e8996587d2c5264766b4cfd0d3178843"
-                )
-                chain.proceed(builder.build())
-            }
-            .addInterceptor(loggingInterceptor)
-            .build()
+                .Builder()
+                .addInterceptor { chain ->
+                    val original = chain.request()
+                    val builder = original.newBuilder().method(
+                            original.method(),
+                            original.body()
+                    )
+                    builder.addHeader(
+                            "Authorization"
+                            , "Bearer " + "9f1c0897e8996587d2c5264766b4cfd0d3178843"
+                    )
+                    chain.proceed(builder.build())
+                }
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(responseCodeCheckInterceptor)
+                .build()
 
         val customTypeAdapter = object : CustomTypeAdapter<String> {
 
@@ -52,9 +55,9 @@ class ApiApolloModule {
         }
 
         return ApolloClient.builder()
-            .serverUrl("https://api.github.com/graphql")
-            .okHttpClient(okHttp)
-            .addCustomTypeAdapter(CustomType.URI, customTypeAdapter)
-            .build()
+                .serverUrl("https://api.github.com/graphql")
+                .okHttpClient(okHttp)
+                .addCustomTypeAdapter(CustomType.URI, customTypeAdapter)
+                .build()
     }
 }

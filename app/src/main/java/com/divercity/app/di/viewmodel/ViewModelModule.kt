@@ -27,6 +27,7 @@ import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterVi
 import com.divercity.app.features.jobs.jobs.JobsListViewModel
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.app.features.jobs.saved.SavedJobsViewModel
+import com.divercity.app.features.jobs.similarjobs.SimilarJobListViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
 import com.divercity.app.features.location.base.SelectLocationViewModel
 import com.divercity.app.features.location.onboarding.OnboardingLocationViewModel
@@ -246,4 +247,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CompanySizesViewModel::class)
     abstract fun bindsCompanySizesViewModel(viewModel: CompanySizesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SimilarJobListViewModel::class)
+    abstract fun bindsSimilarJobListViewModel(viewModel: SimilarJobListViewModel): ViewModel
 }

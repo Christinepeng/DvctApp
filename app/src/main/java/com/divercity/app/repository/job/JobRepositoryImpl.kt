@@ -21,6 +21,13 @@ import javax.inject.Inject
 class JobRepositoryImpl @Inject
 constructor(private val jobService: JobService) : JobRepository {
 
+    override fun fetchSimilarJobs(pageNumber: Int, size: Int, jobId: String?): Observable<List<JobResponse>> {
+        return jobService.fetchSimilarJobs(pageNumber, size, jobId).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
     override fun publishUnpublishJob(jobId: String, action: String): Observable<JobResponse> {
         val partAction = RequestBody.create(MediaType.parse("text/plain"), action)
 

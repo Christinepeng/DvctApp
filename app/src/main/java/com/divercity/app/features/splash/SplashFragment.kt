@@ -42,17 +42,23 @@ class SplashFragment : BaseFragment() {
 
     fun startTimer() {
         handler.postDelayed({
-//            navigator.navigateToProfilePromptActivity(activity!!)
-            //            navigator.navigateToSignUpActivity(activity!!, "test@test.com")
-            //            navigator.navigateToSelectSchoolActivity(activity!!, 50)
-            if (viewModel.isUserLogged)
-//                       navigator.navigateToProfilePromptActivity(activity!!)
-//                navigator.navigateToSelectUserTypeActivity(activity!!)
-                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
-//                navigator.navigateToShareJobGroupActivity(this,"21")
+            //   navigator.navigateToProfilePromptActivity(activity!!)
+//                        navigator.navigateToSignUpActivity(activity!!, "test@test.com")
+//                        navigator.navigateToSelectSchoolActivity(activity!!, 50)
+//                            navigator.navigateToShareJobGroupActivity(this,"21")
 //                navigator.navigateToShareJobGroupActivity(this,"31")
-//                navigator.navigateToSelectGroupActivity(activity!!,90)
 //                navigator.navigateToHomeActivity(activity!!)
+            //                       navigator.navigateToProfilePromptActivity(activity!!)
+//                navigator.navigateToSelectUserTypeActivity(activity!!)
+//                navigator.navigateToSelectUserTypeActivity(activity!!)
+//                navigator.navigateToSelectGroupActivity(activity!!, 90)
+
+//            navigator.navigateToOnboardingLocationActivity(activity!!, 40)
+
+            if (viewModel.isUserLogged)
+//                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+//            navigator.navigateToSelectUserTypeActivity(activity!!)
+                navigator.navigateToSelectOccupationActivity(activity!!, 20)
             else {
                 navigator.navigateToEnterEmailActivity(activity!!)
                 activity!!.finish()
@@ -89,9 +95,9 @@ class SplashFragment : BaseFragment() {
 
     private fun showErrorDialog() {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
-            "Ups!",
-            getString(R.string.error_connection),
-            getString(R.string.retry)
+                "Ups!",
+                getString(R.string.error_connection),
+                getString(R.string.retry)
         )
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserDataToCheckUserTypeDefined() }
         customOneBtnDialogFragment.isCancelable = false

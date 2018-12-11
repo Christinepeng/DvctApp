@@ -10,6 +10,8 @@ import com.divercity.app.repository.feed.FeedRepository
 import com.divercity.app.repository.feed.FeedRepositoryImpl
 import com.divercity.app.repository.job.JobRepository
 import com.divercity.app.repository.job.JobRepositoryImpl
+import com.divercity.app.repository.recommender.RecommenderRepository
+import com.divercity.app.repository.recommender.RecommenderRepositoryImpl
 import com.divercity.app.repository.registerlogin.RegisterLoginRepository
 import com.divercity.app.repository.registerlogin.RegisterLoginRepositoryImpl
 import com.divercity.app.repository.user.UserRepository
@@ -44,4 +46,7 @@ abstract class AppBindsModule {
 
     @Binds
     abstract fun bindContext(application: Application): Context
+
+    @Binds
+    abstract fun bindRecommenderRepository(repository: RecommenderRepositoryImpl): RecommenderRepository
 }

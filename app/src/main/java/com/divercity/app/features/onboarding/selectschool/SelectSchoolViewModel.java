@@ -61,11 +61,11 @@ public class SelectSchoolViewModel extends BaseViewModel {
     }
 
     public void fetchSchools(LifecycleOwner lifecycleOwner,  @Nullable String query){
-//        if(pagedSchoolList != null) {
-//            listingPaginatedLocation.getNetworkState().removeObservers(lifecycleOwner);
-//            listingPaginatedLocation.getRefreshState().removeObservers(lifecycleOwner);
-//            pagedSchoolList.removeObservers(lifecycleOwner);
-//        }
+        if(pagedSchoolList != null) {
+            listingPaginatedSchool.getNetworkState().removeObservers(lifecycleOwner);
+            listingPaginatedSchool.getRefreshState().removeObservers(lifecycleOwner);
+            pagedSchoolList.removeObservers(lifecycleOwner);
+        }
         listingPaginatedSchool = repository.fetchData(query);
         pagedSchoolList = listingPaginatedSchool.getPagedList();
     }

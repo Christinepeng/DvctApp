@@ -19,6 +19,7 @@ import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.core.utils.Util
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.document.DocumentResponse
+import com.divercity.app.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.app.repository.user.UserRepository
 import kotlinx.android.synthetic.main.dialog_job_apply.view.*
@@ -171,10 +172,16 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
                     hideProgress()
                     showToast(R.string.application_succes)
                     listener?.onSuccessJobApply()
+                    showJobApplySuccessDialog()
                     dismiss()
                 }
             }
         })
+    }
+
+    private fun showJobApplySuccessDialog(){
+        val fragment = JobApplySuccessDialogFragment.newInstance(jobId!!)
+        fragment.show(activity!!.supportFragmentManager, null)
     }
 
     private fun showDocData(doc: DocumentResponse?) {

@@ -12,6 +12,8 @@
     <string name="no_results">No results</string>
     <string name="about">About</string>
     <string name="cancel">Cancel</string>
+    <string name="contact">Contact</string>
+    <string name="desc">desc</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -127,6 +129,7 @@
     <string name="no_conversation">Looks like you don’t have any Group Conversations yet :(</string>
     <string name="explore_groups">Explore Groups</string>
     <string name="create_group">Create a New Group</string>
+    <string name="recommended">Recommended</string>
 
     <!-- Jobs-->
     <string name="applications">Applications</string>
@@ -171,6 +174,8 @@
     <string name="application_succes">Successful application</string>
     <string name="applied">Applied</string>
     <string name="no_applicants">No applicants</string>
+    <string name="job_application_way">Your Application is on its Way!</string>
+    <string name="job_application_meantime">In the meantime, here are some jobs you might be interested in:</string>
 
     <!-- Groups-->
     <string name="all">All</string>

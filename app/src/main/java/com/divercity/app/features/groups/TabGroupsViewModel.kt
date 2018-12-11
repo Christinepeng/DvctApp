@@ -4,9 +4,8 @@ import android.arch.lifecycle.MutableLiveData
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.Event
 import com.divercity.app.data.Resource
-import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.group.GroupResponse
-import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse
+import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.groups.usecase.FetchRecommendedGroupsUseCase
 import com.divercity.app.features.groups.usecase.JoinGroupUseCase
@@ -23,14 +22,14 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
 ) : BaseViewModel() {
 
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
-    var fetchRecommendedGroupsResponse = MutableLiveData<Resource<DataObject<RecommendedGroupsResponse>>>()
+    var fetchRecommendedGroupsResponse = MutableLiveData<Resource<List<RecommendedGroupsResponse>>>()
 
     init {
         fetchRecommendedGroups()
     }
 
     private fun fetchRecommendedGroups() {
-        val callback = object : DisposableObserverWrapper<DataObject<RecommendedGroupsResponse>>() {
+        val callback = object : DisposableObserverWrapper<List<RecommendedGroupsResponse>>() {
             override fun onFail(error: String) {
                 fetchRecommendedGroupsResponse.postValue(Resource.error(error, null))
             }
@@ -39,15 +38,15 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
                 fetchRecommendedGroupsResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: DataObject<RecommendedGroupsResponse>) {
+            override fun onSuccess(o: List<RecommendedGroupsResponse>) {
                 fetchRecommendedGroupsResponse.postValue(Resource.success(o))
             }
         }
         compositeDisposable.add(callback)
-        fetchRecommendedGroupsUseCase.execute(callback, Any())
+        fetchRecommendedGroupsUseCase.execute(callback, FetchRecommendedGroupsUseCase.Params.forGroups(0,5))
     }
 
-    fun joinGroup(jobId : Int) {
+    fun joinGroup(jobId : String?) {
         joinGroupResponse.postValue(Event(Resource.loading(null)))
         val callback = object : DisposableObserverWrapper<Boolean>() {
             override fun onFail(error: String) {
@@ -63,6 +62,6 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
             }
         }
         compositeDisposable.add(callback)
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(GroupResponse(jobId.toString())))
+        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(GroupResponse(jobId)))
     }
 }

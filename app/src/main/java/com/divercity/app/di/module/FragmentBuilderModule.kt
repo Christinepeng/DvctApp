@@ -6,6 +6,7 @@ import com.divercity.app.features.company.createcompany.CreateCompanyFragment
 import com.divercity.app.features.company.onboarding.OnboardingCompanyFragment
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.app.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
@@ -50,6 +51,7 @@ import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayFragm
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityFragment
 import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorFragment
+import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationFragment
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolFragment
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.app.features.signup.SignUpFragment
@@ -213,4 +215,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindSimilarJobsFragment (): SimilarJobsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobApplySuccessDialogFragment (): JobApplySuccessDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSelectOccupationFragment (): SelectOccupationFragment
 }

@@ -1,24 +1,25 @@
 package com.divercity.app.repository.data;
 
 import com.divercity.app.data.entity.base.DataArray;
-import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
 import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
+import com.divercity.app.data.entity.occupationofinterests.OccupationOfInterestResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 import com.divercity.app.data.networking.services.DataService;
+
+import java.util.List;
+
+import javax.inject.Inject;
+
 import io.reactivex.Observable;
 import retrofit2.HttpException;
 import retrofit2.Response;
-
-import javax.inject.Inject;
-import java.util.List;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -68,14 +69,6 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public Observable<DataArray<GroupResponse>> fetchGroups(int page, int size, String query) {
         return service.fetchGroups(page, size, query).map(response -> {
-            checkResponse(response);
-            return response.body();
-        });
-    }
-
-    @Override
-    public Observable<DataObject<RecommendedGroupsResponse>> fetchRecommendedGroups() {
-        return service.fetchRecommendedGroups().map(response -> {
             checkResponse(response);
             return response.body();
         });
@@ -132,6 +125,14 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public Observable<List<CompanySizeResponse>> fetchCompanySizes() {
         return service.fetchCompanySizes().map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
+    @Override
+    public Observable<List<OccupationOfInterestResponse>> fetchOccupationOfInterests(int pageNumber, int size, String query) {
+        return service.fetchOccupationOfInterests(pageNumber, size, query).map(response -> {
             checkResponse(response);
             return response.body().getData();
         });

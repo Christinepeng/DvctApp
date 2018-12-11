@@ -3,10 +3,14 @@ package com.divercity.app.features.groups.onboarding
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.content.ContextCompat
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import com.divercity.app.AppConstants
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
@@ -36,6 +40,9 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     private var countJoin = 0
     private var currentProgress: Int = 0
 
+    private var handlerSearch = Handler()
+    private var lastSearch: String? = null
+
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
 
@@ -58,7 +65,6 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchCompanies(this, null)
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
@@ -68,20 +74,30 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     }
 
     private fun setupHeader() {
+
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
-            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+            if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-                var toSearch: String? = include_search.edtxt_search.getText().toString()
+                val toSearch: String? = include_search.edtxt_search.text.toString()
 
-                if (toSearch == "")
-                    toSearch = null
-
-                viewModel.fetchCompanies(this@SelectGroupFragment, toSearch)
-                subscribeToPaginatedLiveData()
+                search(toSearch)
                 true
             } else
                 false
         }
+
+        include_search.edtxt_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                search(p0.toString())
+            }
+        })
 
         include_header.apply {
 
@@ -104,6 +120,17 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
         }
     }
 
+    private fun search(query: String?) {
+        if (lastSearch != query) {
+            handlerSearch.removeCallbacksAndMessages(null)
+            handlerSearch.postDelayed({
+                viewModel.fetchGroups(this@SelectGroupFragment, query)
+                subscribeToPaginatedLiveData()
+                lastSearch = query
+            }, AppConstants.SEARCH_DELAY)
+        }
+    }
+
     private fun subscribeToJoinLiveData() {
         viewModel.joinGroupResponse.observe(this, Observer { school ->
             when (school?.status) {
@@ -119,10 +146,11 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                     adapter.updatePositionOnJoinGroup(positionJoinClicked)
 
                     if (++countJoin == 3) {
-                        btn_continue.background = ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
+                        btn_continue.background =
+                                ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
                         btn_continue.setOnClickListener {
                             val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
-                                    activity!!, viewModel.accountType, currentProgress
+                                activity!!, viewModel.accountType, currentProgress
                             )
                             navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
                         }
@@ -163,5 +191,10 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
             positionJoinClicked = position
             viewModel.joinGroup(group)
         }
+    }
+
+    override fun onDestroyView() {
+        handlerSearch.removeCallbacksAndMessages(null)
+        super.onDestroyView()
     }
 }

@@ -28,6 +28,7 @@ public class FetchLocationsUseCase extends UseCase<DataArray<LocationResponse>, 
 
     @Override
     protected Observable<DataArray<LocationResponse>> createObservableUseCase(Params params) {
+        params.query = params.query.equals("") ? null : params.query;
         return repository.fetchLocations(params.page, params.size, params.query);
     }
 
@@ -35,7 +36,7 @@ public class FetchLocationsUseCase extends UseCase<DataArray<LocationResponse>, 
 
         private final int page;
         private final int size;
-        private final String query;
+        private String query;
 
         private Params(int page, int size, String query) {
             this.page = page;

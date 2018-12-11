@@ -65,7 +65,10 @@ public class GroupDataSource extends PageKeyedDataSource<Long, GroupResponse> {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
-                    callback.onResult(data.getData(), null, 2l);
+                    if(data.getData().size() < params.requestedLoadSize)
+                        callback.onResult(data.getData(), null, null);
+                    else
+                        callback.onResult(data.getData(), null, 2L);
                     initialLoading.postValue(NetworkState.LOADED);
                 } else {
                     NetworkState error = NetworkState.error("Error");

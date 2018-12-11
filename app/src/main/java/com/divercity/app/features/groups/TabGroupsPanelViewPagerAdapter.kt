@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.divercity.app.R
 import com.divercity.app.core.utils.GlideApp
-import com.divercity.app.data.entity.group.recommendedgroups.RecommendationItem
+import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
 import kotlinx.android.synthetic.main.view_pager_panel_group.view.*
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class TabGroupsPanelViewPagerAdapter @Inject
 constructor() : PagerAdapter() {
     private var layoutInflater: LayoutInflater? = null
-    private var list: List<RecommendationItem>? = null
+    private var list: List<RecommendedGroupsResponse>? = null
     var listener: Listener? = null
     lateinit var viewGroup: ViewGroup
 
@@ -28,7 +28,7 @@ constructor() : PagerAdapter() {
         return list?.size ?: 0
     }
 
-    fun setList(list: List<RecommendationItem>?) {
+    fun setList(list: List<RecommendedGroupsResponse>?) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -46,27 +46,29 @@ constructor() : PagerAdapter() {
         val view = layoutInflater!!.inflate(R.layout.view_pager_panel_group, null)
 
         item?.also { item ->
-            GlideApp.with(container)
-                    .load(item.pictureMain)
+            item.attributes?.also {
+                GlideApp.with(container)
+                    .load(it.pictureMain)
                     .into(view.img_group)
 
-            view.txt_title.text = item.title
-            view.txt_members.text = item.followersCount.toString().plus(" Members")
+                view.txt_title.text = it.title
+                view.txt_members.text = it.followersCount.toString().plus(" Members")
 
-            if (item.isIsFollowedByCurrent) {
-                view.btn_join.setOnClickListener(null)
-                view.btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                view.btn_join.setTextColor(ContextCompat.getColor(container.context, R.color.appBlue))
-                view.btn_join.text = "Member"
-            } else {
-                view.btn_join.setOnClickListener {
-                    listener?.onBtnJoinClicked(item.id, position)
+                if (it.isFollowedByCurrent!!) {
+                    view.btn_join.setOnClickListener(null)
+                    view.btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                    view.btn_join.setTextColor(ContextCompat.getColor(container.context, R.color.appBlue))
+                    view.btn_join.text = "Member"
+                } else {
+                    view.btn_join.setOnClickListener {
+                        listener?.onBtnJoinClicked(item.id, position)
+                    }
+                    view.btn_join.setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
+                    view.btn_join.setTextColor(ContextCompat.getColor(container.context, android.R.color.white))
+                    view.btn_join.text = "Join"
                 }
-                view.btn_join.setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-                view.btn_join.setTextColor(ContextCompat.getColor(container.context, android.R.color.white))
-                view.btn_join.text = "Join"
+                view.btn_join.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             }
-            view.btn_join.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
         }
 
         val vp = container as ViewPager
@@ -80,10 +82,12 @@ constructor() : PagerAdapter() {
         val view: View = viewGroup.findViewWithTag(position)
 
         list?.get(position)?.apply {
-            isIsFollowedByCurrent = true
-            followersCount = followersCount?.plus(1)
+            attributes?.also {
+                it.isFollowedByCurrent = true
+                it.followersCount = it.followersCount?.plus(1)
 
-            view.txt_members.text = followersCount.toString().plus(" Members")
+                view.txt_members.text = it.followersCount.toString().plus(" Members")
+            }
         }
 
         view.apply {
@@ -102,6 +106,6 @@ constructor() : PagerAdapter() {
     }
 
     interface Listener {
-        fun onBtnJoinClicked(jobId: Int?, position: Int)
+        fun onBtnJoinClicked(jobId: String?, position: Int)
     }
 }

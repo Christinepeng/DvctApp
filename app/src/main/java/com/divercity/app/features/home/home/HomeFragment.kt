@@ -196,8 +196,12 @@ class HomeFragment : BaseFragment(), RetryCallback {
     }
 
     private fun setupEvents() {
-        btn_fab.setOnClickListener { showToast() }
-        btn_create_group.setOnClickListener { showToast() }
+        btn_fab.setOnClickListener {
+            showToast()
+        }
+        btn_create_group.setOnClickListener {
+            showToast()
+        }
         btn_explore_groups.setOnClickListener { showToast() }
     }
 

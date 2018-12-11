@@ -1,10 +1,12 @@
 package com.divercity.app.features.location.base
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Listing
+import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.entity.location.LocationResponse
 import com.divercity.app.features.location.base.school.LocationPaginatedRepositoryImpl
 import javax.inject.Inject
@@ -16,12 +18,15 @@ import javax.inject.Inject
 class SelectLocationViewModel @Inject
 constructor(private val repository: LocationPaginatedRepositoryImpl) : BaseViewModel() {
 
+    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     lateinit var pagedLocationList: LiveData<PagedList<LocationResponse>>
 
     lateinit var listingPaginatedLocation: Listing<LocationResponse>
 
+    var lastSearch: String? = null
+
     init {
-        fetchLocations(null)
+        fetchLocations(null, "")
     }
 
     val networkState: LiveData<NetworkState>
@@ -34,8 +39,22 @@ constructor(private val repository: LocationPaginatedRepositoryImpl) : BaseViewM
 
     fun refresh() = repository.refresh()
 
-    fun fetchLocations(query: String?) {
-        listingPaginatedLocation = repository.fetchData(query)
-        pagedLocationList = listingPaginatedLocation.pagedList
+    fun fetchLocations(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
+        searchQuery?.let {
+            lastSearch = it
+            listingPaginatedLocation = repository.fetchData(it)
+            pagedLocationList = listingPaginatedLocation.pagedList
+
+            lifecycleOwner?.let { lifecycleOwner ->
+                removeObservers(lifecycleOwner)
+                subscribeToPaginatedLiveData.call()
+            }
+        }
+    }
+
+    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
+        networkState.removeObservers(lifecycleOwner)
+        refreshState.removeObservers(lifecycleOwner)
+        pagedLocationList.removeObservers(lifecycleOwner)
     }
 }

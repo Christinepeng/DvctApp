@@ -49,4 +49,10 @@ class ApiServiceModule {
     fun provideDocumentsService(@Named("auth") retrofit: Retrofit): DocumentService {
         return retrofit.create(DocumentService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideRecommendersService(@Named("auth") retrofit: Retrofit): RecommendersService {
+        return retrofit.create(RecommendersService::class.java)
+    }
 }

@@ -1,9 +1,8 @@
 package com.divercity.app.features.groups.usecase
 
 import com.divercity.app.core.base.UseCase
-import com.divercity.app.data.entity.base.DataObject
-import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse
-import com.divercity.app.repository.data.DataRepository
+import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
+import com.divercity.app.repository.recommender.RecommenderRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import javax.inject.Inject
@@ -15,12 +14,27 @@ import javax.inject.Named
 
 class FetchRecommendedGroupsUseCase @Inject
 constructor(
-    @Named("executor_thread") executorThread: Scheduler,
-    @Named("ui_thread") uiThread: Scheduler,
-    private val repository: DataRepository
-) : UseCase<DataObject<RecommendedGroupsResponse>, Any>(executorThread, uiThread) {
+        @Named("executor_thread") executorThread: Scheduler,
+        @Named("ui_thread") uiThread: Scheduler,
+        private val repository: RecommenderRepository
+) : UseCase<List<RecommendedGroupsResponse>, FetchRecommendedGroupsUseCase.Params>(
+        executorThread,
+        uiThread) {
 
-    override fun createObservableUseCase(params: Any): Observable<DataObject<RecommendedGroupsResponse>> {
-        return repository.fetchRecommendedGroups()
+    override fun createObservableUseCase(params: Params): Observable<List<RecommendedGroupsResponse>> {
+        return repository.fetchRecommendedGroups(params.page, params.size)
+    }
+
+    class Params private constructor(
+            val page: Int,
+            val size: Int
+    ) {
+
+        companion object {
+
+            fun forGroups(page: Int, size: Int): Params {
+                return Params(page, size)
+            }
+        }
     }
 }

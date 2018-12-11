@@ -4,9 +4,13 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.content.ContextCompat
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
+import com.divercity.app.AppConstants
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
@@ -30,7 +34,9 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
     @Inject
     lateinit var adapter: LocationAdapter
 
-    var fragListener : Listener? = null
+    var fragListener: Listener? = null
+
+    private var handlerSearch = Handler()
 
     companion object {
 
@@ -56,6 +62,7 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
         setupView()
         setupSearch()
         subscribeToPaginatedLiveData()
+        subscribeToLiveData()
     }
 
     private fun setupView() {
@@ -63,25 +70,51 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
         adapter.setListener(listener)
         list.adapter = adapter
 
-        img_action.setImageDrawable(ContextCompat.getDrawable(context!!,R.drawable.icon_location))
+        img_action.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.icon_location))
         txt_action_title.setText(R.string.use_my_location)
         lay_action.visibility = View.GONE
     }
 
     private fun setupSearch() {
+
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-                var toSearch: String? = include_search.edtxt_search.text.toString()
+                val toSearch: String? = include_search.edtxt_search.text.toString()
 
-                if (toSearch == "")
-                    toSearch = null
-
-                viewModel.fetchLocations(toSearch)
-                subscribeToPaginatedLiveData()
+                search(toSearch)
                 true
             } else
                 false
+        }
+
+        include_search.edtxt_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                search(p0.toString())
+            }
+        })
+    }
+
+    private fun subscribeToLiveData() {
+
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+            subscribeToPaginatedLiveData()
+        })
+    }
+
+    private fun search(query: String?) {
+        if (viewModel.lastSearch != query) {
+            handlerSearch.removeCallbacksAndMessages(null)
+            handlerSearch.postDelayed({
+                viewModel.fetchLocations(viewLifecycleOwner, query)
+            }, AppConstants.SEARCH_DELAY)
         }
     }
 
@@ -120,5 +153,10 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
     interface Listener {
 
         fun onLocationChoosen(location: LocationResponse)
+    }
+
+    override fun onDestroyView() {
+        handlerSearch.removeCallbacksAndMessages(null)
+        super.onDestroyView()
     }
 }

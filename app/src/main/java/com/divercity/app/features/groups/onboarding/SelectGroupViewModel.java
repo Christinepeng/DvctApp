@@ -40,6 +40,8 @@ public class SelectGroupViewModel extends BaseViewModel {
         this.repository = repository;
         this.userRepository = userRepository;
         this.joinGroupUseCase = joinGroupUseCase;
+
+        fetchGroups(null, "");
     }
 
     public void retry() {
@@ -58,7 +60,7 @@ public class SelectGroupViewModel extends BaseViewModel {
         return listingPaginatedSchool.getRefreshState();
     }
 
-    public void fetchCompanies(LifecycleOwner lifecycleOwner,  @Nullable String query){
+    public void fetchGroups(LifecycleOwner lifecycleOwner, @Nullable String query){
         if(pagedGroupList != null) {
             listingPaginatedSchool.getNetworkState().removeObservers(lifecycleOwner);
             listingPaginatedSchool.getRefreshState().removeObservers(lifecycleOwner);

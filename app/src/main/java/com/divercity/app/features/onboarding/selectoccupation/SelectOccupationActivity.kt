@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.divercity.app.core.base.BaseActivity
 import com.divercity.app.core.base.BaseFragment
-import com.divercity.app.features.onboarding.selectschool.SelectSchoolFragment
 
 /**
  * Created by lucas on 17/10/2018.
@@ -23,7 +22,7 @@ class SelectOccupationActivity : BaseActivity() {
     }
 
 //    TODO Create fragment select occupation of interests
-    override fun fragment(): BaseFragment = SelectSchoolFragment.newInstance(
+    override fun fragment(): BaseFragment = SelectOccupationFragment.newInstance(
             intent.getIntExtra(INTENT_EXTRA_PARAM_PROGRESS, 0))
 }
 

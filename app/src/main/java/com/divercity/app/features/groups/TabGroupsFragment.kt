@@ -17,6 +17,7 @@ import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.ViewPagerDotsPanel
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.group.recommendedgroups.RecommendationItem
+import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
 import com.divercity.app.features.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_groups.*
 import javax.inject.Inject
@@ -76,7 +77,7 @@ class TabGroupsFragment : BaseFragment() {
             it?.let { group ->
                 if (group.status == Status.SUCCESS) {
                     img_default_group.visibility = View.GONE
-                    initAdapterRecommendedGroups(it.data?.data?.recommendation)
+                    initAdapterRecommendedGroups(it.data)
                 }
             }
         })
@@ -99,7 +100,7 @@ class TabGroupsFragment : BaseFragment() {
         })
     }
 
-    private fun initAdapterRecommendedGroups(list: List<RecommendationItem>?) {
+    private fun initAdapterRecommendedGroups(list: List<RecommendedGroupsResponse>?) {
         if(list?.size != 0) {
             lay_carousel_viewpager.visibility = View.VISIBLE
 
@@ -107,7 +108,7 @@ class TabGroupsFragment : BaseFragment() {
 
             recommendedGroupsAdapter.listener = object : TabGroupsPanelViewPagerAdapter.Listener {
 
-                override fun onBtnJoinClicked(jobId: Int?, position: Int) {
+                override fun onBtnJoinClicked(jobId: String?, position: Int) {
                     jobId?.let {
                         lastPositionJoinClick = position
                         viewModelTab.joinGroup(jobId)

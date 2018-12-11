@@ -4,8 +4,12 @@ package com.divercity.app.features.onboarding.selectmajor
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
+import com.divercity.app.AppConstants
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
@@ -25,6 +29,9 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     lateinit var adapter: MajorAdapter
 
     var currentProgress: Int = 0
+
+    private var handlerSearch = Handler()
+    private var lastSearch: String? = null
 
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
@@ -59,20 +66,30 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     }
 
     private fun setupHeader() {
+
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-                var toSearch: String? = include_search.edtxt_search.text.toString()
+                val toSearch: String? = include_search.edtxt_search.text.toString()
 
-                if (toSearch == "")
-                    toSearch = null
-
-                viewModel.fetchMajors(this@SelectMajorFragment, toSearch)
-                subscribeToPaginatedLiveData()
+                search(toSearch)
                 true
             } else
                 false
         }
+
+        include_search.edtxt_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                search(p0.toString())
+            }
+        })
 
         include_header.apply {
 
@@ -91,12 +108,23 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
-                        activity!!,
-                        viewModel.accountType,
-                        currentProgress,
-                        false
+                    activity!!,
+                    viewModel.accountType,
+                    currentProgress,
+                    false
                 )
             }
+        }
+    }
+
+    private fun search(query: String?) {
+        if (lastSearch != query) {
+            handlerSearch.removeCallbacksAndMessages(null)
+            handlerSearch.postDelayed({
+                viewModel.fetchMajors(this@SelectMajorFragment, if (query == "") null else query)
+                subscribeToPaginatedLiveData()
+                lastSearch = query
+            }, AppConstants.SEARCH_DELAY)
         }
     }
 
@@ -144,10 +172,16 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
 
     private val listener: MajorViewHolder.Listener = MajorViewHolder.Listener {
         //        viewModelJobs.updateUserProfile(it)
-        navigator.navigateToNextOnboarding(activity!!,
-                viewModel.accountType,
-                currentProgress,
-                true
+        navigator.navigateToNextOnboarding(
+            activity!!,
+            viewModel.accountType,
+            currentProgress,
+            true
         )
+    }
+
+    override fun onDestroyView() {
+        handlerSearch.removeCallbacksAndMessages(null)
+        super.onDestroyView()
     }
 }

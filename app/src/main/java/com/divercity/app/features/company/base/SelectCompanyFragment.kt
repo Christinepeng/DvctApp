@@ -32,7 +32,6 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
     var fragListener: Listener? = null
 
     private var handlerSearch = Handler()
-
     private var lastSearch: String? = null
 
     companion object {
@@ -89,6 +88,7 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
             } else
                 false
         }
+
         include_search.edtxt_search.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(p0: Editable?) {
@@ -141,7 +141,6 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
 
     override fun onDestroyView() {
         handlerSearch.removeCallbacksAndMessages(null)
-
         super.onDestroyView()
     }
 

@@ -38,6 +38,7 @@ import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayViewM
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityViewModel
 import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorViewModel
+import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationViewModel
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.app.features.signup.SignUpViewModel
@@ -252,4 +253,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SimilarJobListViewModel::class)
     abstract fun bindsSimilarJobListViewModel(viewModel: SimilarJobListViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectOccupationViewModel::class)
+    abstract fun bindsSelectOccupationViewModel(viewModel: SelectOccupationViewModel): ViewModel
 }

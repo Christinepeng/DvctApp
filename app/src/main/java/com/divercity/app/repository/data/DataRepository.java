@@ -6,15 +6,15 @@ import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
+import com.divercity.app.data.entity.interests.InterestsResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
-import com.divercity.app.data.entity.occupationofinterests.OccupationOfInterestResponse;
+import com.divercity.app.data.entity.occupationofinterests.OOIResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
+import io.reactivex.Observable;
 
 import java.util.List;
-
-import io.reactivex.Observable;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -46,7 +46,9 @@ public interface DataRepository {
 
     Observable<List<CompanySizeResponse>> fetchCompanySizes();
 
-    Observable<List<OccupationOfInterestResponse>> fetchOccupationOfInterests(
+    Observable<List<InterestsResponse>> fetchInterests();
+
+    Observable<List<OOIResponse>> fetchOccupationOfInterests(
             int pageNumber,
             int size,
             String query);

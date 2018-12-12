@@ -14,6 +14,8 @@
     <string name="cancel">Cancel</string>
     <string name="contact">Contact</string>
     <string name="desc">desc</string>
+    <string name="skip">Skip</string>
+    <string name="done">Done</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -37,10 +39,12 @@
     <string name="select_your_company">Select your Company</string>
     <string name="select_your_industry">Select your Industry</string>
     <string name="select_your_major">Select your Major</string>
+    <string name="select_your_ooi">Select your Occupation of Interests</string>
     <string name="select_your_country">Select your Country</string>
     <string name="select_your_ethnicity">Select your Ethnicity</string>
     <string name="select_your_occupation">Select your Occupation</string>
     <string name="select_your_gender">Select your Gender</string>
+    <string name="select_your_interests">Select 3 or more Areas of Interests</string>
     <string name="select_your_birthday">Select your Birthday</string>
     <string name="select_your_school">Select your School</string>
     <string name="select_group">Choose some communities you would like to join</string>

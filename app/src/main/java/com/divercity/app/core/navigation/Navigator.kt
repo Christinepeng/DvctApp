@@ -34,6 +34,7 @@ import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationActivity
+import com.divercity.app.features.onboarding.selectoccupationofinterests.SelectOOIActivity
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.app.features.signup.SignUpActivity
@@ -127,6 +128,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToSelectMajorActivity(activity: FragmentActivity, progress: Int) {
         activity.startActivity(SelectMajorActivity.getCallingIntent(activity, progress))
+    }
+
+    fun navigateToSelectOOIActivity(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(SelectOOIActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToLinkedinActivity(activity: FragmentActivity) {

@@ -56,9 +56,10 @@ class SplashFragment : BaseFragment() {
 //            navigator.navigateToOnboardingLocationActivity(activity!!, 40)
 
             if (viewModel.isUserLogged)
-//                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+                 viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+//                navigator.navigateToSelectInterestsActivity(activity!!, 20)
 //            navigator.navigateToSelectUserTypeActivity(activity!!)
-                navigator.navigateToSelectOccupationActivity(activity!!, 20)
+//                navigator.navigateToSelectOccupationActivity(activity!!, 20)
             else {
                 navigator.navigateToEnterEmailActivity(activity!!)
                 activity!!.finish()

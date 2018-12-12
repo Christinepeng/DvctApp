@@ -50,8 +50,10 @@ import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayFragment
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityFragment
 import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
+import com.divercity.app.features.onboarding.selectinterests.SelectInterestsFragment
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorFragment
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationFragment
+import com.divercity.app.features.onboarding.selectoccupationofinterests.SelectOOIFragment
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolFragment
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.app.features.signup.SignUpFragment
@@ -221,4 +223,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindSelectOccupationFragment (): SelectOccupationFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSelectOOIFragment (): SelectOOIFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSelectInterestsFragment (): SelectInterestsFragment
 }

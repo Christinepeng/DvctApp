@@ -37,8 +37,10 @@ import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewMode
 import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayViewModel
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityViewModel
 import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
+import com.divercity.app.features.onboarding.selectinterests.SelectInterestsViewModel
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorViewModel
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationViewModel
+import com.divercity.app.features.onboarding.selectoccupationofinterests.SelectOOIViewModel
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.app.features.signup.SignUpViewModel
@@ -258,4 +260,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectOccupationViewModel::class)
     abstract fun bindsSelectOccupationViewModel(viewModel: SelectOccupationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectOOIViewModel::class)
+    abstract fun bindsSelectOOIViewModel(viewModel: SelectOOIViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectInterestsViewModel::class)
+    abstract fun bindsSelectInterestsViewModel(viewModel: SelectInterestsViewModel): ViewModel
 }

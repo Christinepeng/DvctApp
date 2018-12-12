@@ -87,7 +87,7 @@
                     android:background="@android:color/transparent"
                     android:fontFamily="@font/avenir_roman"
                     android:hint="@string/your_name"
-                    android:inputType="text"
+                    android:inputType="textCapWords"
                     android:padding="24dp"
                     android:textColor="#333241"
                     android:textSize="15sp" />

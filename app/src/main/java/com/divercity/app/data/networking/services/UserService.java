@@ -1,7 +1,9 @@
 package com.divercity.app.data.networking.services;
 
 import com.divercity.app.data.entity.base.DataObject;
+import com.divercity.app.data.entity.interests.body.FollowInterestsBody;
 import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.occupationofinterests.body.FollowOOIBody;
 import com.divercity.app.data.entity.profile.picture.ProfilePictureBody;
 import com.divercity.app.data.entity.profile.profile.UserProfileBody;
 import io.reactivex.Observable;
@@ -25,4 +27,10 @@ public interface UserService {
 
     @POST("users/avatar_upload")
     Observable<Response<DataObject<LoginResponse>>> uploadUserPhoto(@Body ProfilePictureBody body);
+
+    @POST("data/follow_occupation_of_interest")
+    Observable<Response<DataObject<LoginResponse>>> followOccupationOfInterests(@Body FollowOOIBody body);
+
+    @POST("users/current/update_interests")
+    Observable<Response<DataObject<LoginResponse>>> followInterests(@Body FollowInterestsBody body);
 }

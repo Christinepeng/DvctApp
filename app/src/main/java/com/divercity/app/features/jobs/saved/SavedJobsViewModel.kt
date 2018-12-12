@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
-import com.divercity.app.R
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.utils.Listing
@@ -71,15 +70,5 @@ constructor(private val context: Application,
         networkState().removeObservers(lifecycleOwner)
         refreshState().removeObservers(lifecycleOwner)
         pagedJobsList.removeObservers(lifecycleOwner)
-    }
-
-    fun onJobClickNavigateToNext(job : JobResponse) {
-        if (userRepository.getAccountType() != null &&
-                (userRepository.getAccountType().equals(context.getString(R.string.hiring_manager_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.recruiter_id)))
-        )
-            navigateToJobRecruiterDescription.value = job
-        else
-            navigateToJobSeekerDescription.value = job
     }
 }

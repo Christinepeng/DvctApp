@@ -1,7 +1,9 @@
 package com.divercity.app.repository.user;
 
 import com.divercity.app.data.entity.base.DataObject;
+import com.divercity.app.data.entity.interests.body.FollowInterestsBody;
 import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.occupationofinterests.body.FollowOOIBody;
 import com.divercity.app.data.entity.profile.picture.ProfilePictureBody;
 import com.divercity.app.data.entity.profile.profile.User;
 import com.divercity.app.data.entity.profile.profile.UserProfileBody;
@@ -9,6 +11,8 @@ import com.divercity.app.data.networking.services.UserService;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -30,6 +34,11 @@ public class UserRepositoryImpl implements UserRepository {
                               LoggedUserRepositoryImpl loggedUserRepository) {
         this.userService = userService;
         this.loggedUserRepository = loggedUserRepository;
+    }
+
+    private void checkResponse(Response response) {
+        if (!response.isSuccessful())
+            throw new HttpException(response);
     }
 
     @Override
@@ -181,13 +190,27 @@ public class UserRepositoryImpl implements UserRepository {
         return loggedUserRepository.getFullName();
     }
 
+    @NotNull
+    @Override
+    public Observable<LoginResponse> followOccupationOfInterests(@NotNull List<String> occupationIds) {
+        return userService.followOccupationOfInterests(new FollowOOIBody(occupationIds)).map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
     @Override
     public boolean isLoggedUserJobSeeker() {
         return loggedUserRepository.isLoggedUserJobSeeker();
     }
 
-    private void checkResponse(Response response) {
-        if (!response.isSuccessful())
-            throw new HttpException(response);
+    @NotNull
+    @Override
+    public Observable<LoginResponse> followInterests(@NotNull List<String> interestsIds) {
+        return userService.followInterests(new FollowInterestsBody(interestsIds)).map(response -> {
+                    checkResponse(response);
+                    return response.body().getData();
+                }
+        );
     }
 }

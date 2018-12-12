@@ -6,20 +6,19 @@ import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
+import com.divercity.app.data.entity.interests.InterestsResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
-import com.divercity.app.data.entity.occupationofinterests.OccupationOfInterestResponse;
+import com.divercity.app.data.entity.occupationofinterests.OOIResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 import com.divercity.app.data.networking.services.DataService;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import retrofit2.HttpException;
 import retrofit2.Response;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -131,7 +130,15 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Observable<List<OccupationOfInterestResponse>> fetchOccupationOfInterests(int pageNumber, int size, String query) {
+    public Observable<List<InterestsResponse>> fetchInterests() {
+        return service.fetchInterests().map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
+    @Override
+    public Observable<List<OOIResponse>> fetchOccupationOfInterests(int pageNumber, int size, String query) {
         return service.fetchOccupationOfInterests(pageNumber, size, query).map(response -> {
             checkResponse(response);
             return response.body().getData();

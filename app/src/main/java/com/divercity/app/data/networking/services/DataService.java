@@ -1,18 +1,18 @@
 package com.divercity.app.data.networking.services;
 
 import com.divercity.app.data.entity.base.DataArray;
-import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
 import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.data.entity.group.recommendedgroups.RecommendedGroupsResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
+import com.divercity.app.data.entity.interests.InterestsResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
 import com.divercity.app.data.entity.major.MajorResponse;
-import com.divercity.app.data.entity.occupationofinterests.OccupationOfInterestResponse;
+import com.divercity.app.data.entity.occupationofinterests.OOIResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
+
 import io.reactivex.Observable;
 import retrofit2.Response;
 import retrofit2.http.Body;
@@ -49,9 +49,6 @@ public interface DataService {
             @Query("page[number]") int pageNumber,
             @Query("page[size]") int size,
             @Query("search_query") String query);
-
-    @GET("stories/recommended_groups")
-    Observable<Response<DataObject<RecommendedGroupsResponse>>> fetchRecommendedGroups();
 
     @GET("data/company_sizes")
     Observable<Response<DataArray<CompanySizeResponse>>> fetchCompanySizes();
@@ -93,10 +90,13 @@ public interface DataService {
             @Query("search_query") String query);
 
     @GET("data/occupation_of_interests")
-    Observable<Response<DataArray<OccupationOfInterestResponse>>> fetchOccupationOfInterests(
+    Observable<Response<DataArray<OOIResponse>>> fetchOccupationOfInterests(
             @Query("page[number]") int pageNumber,
             @Query("page[size]") int size,
             @Query("search_query") String query);
+
+    @GET("interests")
+    Observable<Response<DataArray<InterestsResponse>>> fetchInterests();
 
     @POST("job_employers")
     Observable<Response<Void>> createCompany(@Body CreateCompanyBody body);

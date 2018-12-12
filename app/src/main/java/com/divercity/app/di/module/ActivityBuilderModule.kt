@@ -27,6 +27,7 @@ import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationActivity
+import com.divercity.app.features.onboarding.selectoccupationofinterests.SelectOOIActivity
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.app.features.signup.SignUpActivity
@@ -133,4 +134,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindCompanySizesActivity(): CompanySizesActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindSelectOOIActivity(): SelectOOIActivity
 }

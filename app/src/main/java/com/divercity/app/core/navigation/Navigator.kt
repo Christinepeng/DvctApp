@@ -211,7 +211,7 @@ class Navigator @Inject constructor() {
             if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
                 navigateToSelectGenderActivity(activity, progress)
             else if (userTypeId == activity.getString(R.string.student_id)) {
-                navigateToSelectOccupationActivity(activity, progress)
+                navigateToSelectOOIActivity(activity, progress)
             } else {
                 navigateToSelectInterestsActivity(activity, progress)
             }
@@ -228,6 +228,7 @@ class Navigator @Inject constructor() {
 
             navigateToSelectMajorActivity(activity, progress)
         } else if (activity is SelectMajorActivity) {
+
             navigateToOnboardingLocationActivity(activity, progress)
         } else if (activity is SelectOccupationActivity) {
 
@@ -247,6 +248,10 @@ class Navigator @Inject constructor() {
                 navigateToSelectInterestsActivity(activity, progress)
             else
                 navigateToSelectGroupActivity(activity, progress)
+        } else if (activity is SelectOOIActivity){
+
+            if (userTypeId == activity.getString(R.string.student_id))
+                navigateToSelectGenderActivity(activity, progress)
         }
     }
 }

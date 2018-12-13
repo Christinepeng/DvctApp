@@ -56,9 +56,9 @@ class SplashFragment : BaseFragment() {
 //            navigator.navigateToOnboardingLocationActivity(activity!!, 40)
 
             if (viewModel.isUserLogged)
-                 viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+//                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
 //                navigator.navigateToSelectInterestsActivity(activity!!, 20)
-//            navigator.navigateToSelectUserTypeActivity(activity!!)
+            navigator.navigateToSelectUserTypeActivity(activity!!)
 //                navigator.navigateToSelectOccupationActivity(activity!!, 20)
             else {
                 navigator.navigateToEnterEmailActivity(activity!!)
@@ -75,7 +75,7 @@ class SplashFragment : BaseFragment() {
                 }
                 Status.ERROR -> {
                     hideProgress()
-                    showErrorDialog()
+                    showErrorDialog(listResource.message ?: "Error")
                 }
                 Status.SUCCESS -> {
                     hideProgress()
@@ -94,11 +94,11 @@ class SplashFragment : BaseFragment() {
         })
     }
 
-    private fun showErrorDialog() {
+    private fun showErrorDialog(msg : String) {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
-                "Ups!",
-                getString(R.string.error_connection),
-                getString(R.string.retry)
+            "Ups!",
+            msg,
+            getString(R.string.retry)
         )
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserDataToCheckUserTypeDefined() }
         customOneBtnDialogFragment.isCancelable = false

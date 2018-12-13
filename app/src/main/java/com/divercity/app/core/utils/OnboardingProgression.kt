@@ -9,14 +9,18 @@ import com.divercity.app.R
 
 object OnboardingProgression {
 
+    private const val COUNT_RECRUITER_HR = 100 / 5
+    private const val COUNT_STUDENT = (100 / 9) + 1
+    private const val COUNT_PROF_ENTREPNR_JOBSK = (100 / 8) + 1
+
     fun getNextNavigationProgressOnboarding(activity: Activity, userTypeId: String, progress: Int): Int {
-        var nextProgress = progress
-        if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
-            nextProgress += 20
+
+        return if (userTypeId == activity.getString(R.string.recruiter_id) ||
+                userTypeId == activity.getString(R.string.hiring_manager_id))
+            progress + COUNT_RECRUITER_HR
         else if (userTypeId == activity.getString(R.string.student_id))
-            nextProgress += 12
+            progress + COUNT_STUDENT
         else
-            nextProgress += 13
-        return nextProgress
+            progress + COUNT_PROF_ENTREPNR_JOBSK
     }
 }

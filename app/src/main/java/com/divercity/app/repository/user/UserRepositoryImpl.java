@@ -1,6 +1,7 @@
 package com.divercity.app.repository.user;
 
 import com.divercity.app.data.entity.base.DataObject;
+import com.divercity.app.data.entity.industry.body.FollowIndustryBody;
 import com.divercity.app.data.entity.interests.body.FollowInterestsBody;
 import com.divercity.app.data.entity.login.response.LoginResponse;
 import com.divercity.app.data.entity.occupationofinterests.body.FollowOOIBody;
@@ -208,9 +209,26 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<LoginResponse> followInterests(@NotNull List<String> interestsIds) {
         return userService.followInterests(new FollowInterestsBody(interestsIds)).map(response -> {
-                    checkResponse(response);
-                    return response.body().getData();
-                }
-        );
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
+    @NotNull
+    @Override
+    public Observable<LoginResponse> followIndustries(@NotNull List<String> industriesIds) {
+        return userService.followIndustries(new FollowIndustryBody(industriesIds)).map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
+    @NotNull
+    @Override
+    public Observable<List<LoginResponse>> fetchFollowersByUser(@NotNull String userId, int pageNumber, int size, @Nullable String query) {
+        return userService.fetchFollowersByUser(userId, pageNumber, size, query).map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
     }
 }

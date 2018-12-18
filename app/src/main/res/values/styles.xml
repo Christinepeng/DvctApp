@@ -24,6 +24,7 @@
         <item name="textAllCaps">true</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:fontFamily">@font/avenir_medium</item>
+        <item name="android:textColor">@color/appText1</item>
     </style>
 
     <style name="AppText" parent="TextAppearance.AppCompat">

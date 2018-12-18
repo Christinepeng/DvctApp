@@ -1,4 +1,4 @@
-package com.divercity.app.features.industry.base.adapter;
+package com.divercity.app.features.industry.selectsingleindustry.adapter;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,17 +10,17 @@ import android.widget.TextView;
 import com.divercity.app.R;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 
-public class IndustryViewHolder extends RecyclerView.ViewHolder {
+public class IndustrySingleViewHolder extends RecyclerView.ViewHolder {
 
     private ImageView img;
     private TextView text;
     private Listener listener;
 
-    private IndustryViewHolder(View itemView, Listener listener) {
+    private IndustrySingleViewHolder(View itemView, Listener listener) {
         super(itemView);
+        this.listener = listener;
         img = itemView.findViewById(R.id.item_img_txt_img);
         text = itemView.findViewById(R.id.item_img_txt_txt);
-        this.listener = listener;
     }
 
     public void bindTo(IndustryResponse data) {
@@ -31,13 +31,14 @@ public class IndustryViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public static IndustryViewHolder create(ViewGroup parent, Listener listener) {
+    public static IndustrySingleViewHolder create(ViewGroup parent, Listener listener) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.item_img_text, parent, false);
-        return new IndustryViewHolder(view, listener);
+        return new IndustrySingleViewHolder(view, listener);
     }
 
     public interface Listener {
+
         void onIndustryClick(IndustryResponse industry);
     }
 }

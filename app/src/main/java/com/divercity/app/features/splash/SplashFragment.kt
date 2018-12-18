@@ -56,10 +56,12 @@ class SplashFragment : BaseFragment() {
 //            navigator.navigateToOnboardingLocationActivity(activity!!, 40)
 
             if (viewModel.isUserLogged)
-//                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
 //                navigator.navigateToSelectInterestsActivity(activity!!, 20)
-            navigator.navigateToSelectUserTypeActivity(activity!!)
+//                navigator.navigateToSelectUserTypeActivity(activity!!)
 //                navigator.navigateToSelectOccupationActivity(activity!!, 20)
+//                navigator.navigateToOnboardingIndustryActivity(activity!!, 30)
+//            navigator.navigateToSelectSingleIndustryActivityForResult(this, 30)
             else {
                 navigator.navigateToEnterEmailActivity(activity!!)
                 activity!!.finish()
@@ -94,11 +96,11 @@ class SplashFragment : BaseFragment() {
         })
     }
 
-    private fun showErrorDialog(msg : String) {
+    private fun showErrorDialog(msg: String) {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
-            "Ups!",
-            msg,
-            getString(R.string.retry)
+                "Ups!",
+                msg,
+                getString(R.string.retry)
         )
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserDataToCheckUserTypeDefined() }
         customOneBtnDialogFragment.isCancelable = false

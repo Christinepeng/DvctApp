@@ -10,7 +10,7 @@ import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
 import kotlinx.android.synthetic.main.item_user.view.*
 
-class JobApplicantsViewHolder
+class JobApplicantViewHolder
 private constructor(itemView: View, private val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(position: Int, data: JobApplicationResponse?) {
@@ -31,10 +31,10 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
 
     companion object {
 
-        fun create(parent: ViewGroup, listener: Listener?): JobApplicantsViewHolder {
+        fun create(parent: ViewGroup, listener: Listener?): JobApplicantViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_user, parent, false)
-            return JobApplicantsViewHolder(view, listener)
+            return JobApplicantViewHolder(view, listener)
         }
     }
 }

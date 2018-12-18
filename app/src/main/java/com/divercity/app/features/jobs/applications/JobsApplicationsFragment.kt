@@ -72,9 +72,9 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
 //                }
 //                Status.SUCCESS -> {
 //                    hideProgress()
-//                    adapter.currentList?.get(positionSaveUnsavedClicked)?.attributes?.isBookmarkedByCurrent =
+//                    singleAdapter.currentList?.get(positionSaveUnsavedClicked)?.attributes?.isBookmarkedByCurrent =
 //                            job.data?.attributes?.isBookmarkedByCurrent
-//                    adapter.notifyItemChanged(positionSaveUnsavedClicked)
+//                    singleAdapter.notifyItemChanged(positionSaveUnsavedClicked)
 //                }
 //            }
 //        })

@@ -115,6 +115,7 @@
         app:layout_constraintTop_toBottomOf="@+id/view2"
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed"
+        app:tabTextColor="@color/grey3"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/MyCustomTextAppearance" />
 

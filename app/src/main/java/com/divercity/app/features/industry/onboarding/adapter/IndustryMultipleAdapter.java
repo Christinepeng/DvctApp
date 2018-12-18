@@ -1,4 +1,4 @@
-package com.divercity.app.features.industry.base.adapter;
+package com.divercity.app.features.industry.onboarding.adapter;
 
 import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
@@ -14,18 +14,27 @@ import com.divercity.app.core.ui.NetworkStateViewHolder;
 import com.divercity.app.core.ui.RetryCallback;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 import javax.inject.Inject;
 
-public class IndustryAdapter extends PagedListAdapter<IndustryResponse, RecyclerView.ViewHolder> {
+public class IndustryMultipleAdapter extends PagedListAdapter<IndustryResponse, RecyclerView.ViewHolder> {
 
     private NetworkState networkState;
     private RetryCallback retryCallback;
-    private IndustryViewHolder.Listener listener;
+    private List<String> idList = new ArrayList<>();
+
+    private IndustryMultipleViewHolder.Listener listener = industry -> {
+        if (industry.isSelected())
+            idList.add(industry.getId());
+        else
+            idList.remove(industry.getId());
+    };
 
     @Inject
-    public IndustryAdapter() {
+    public IndustryMultipleAdapter() {
         super(UserDiffCallback);
     }
 
@@ -33,16 +42,12 @@ public class IndustryAdapter extends PagedListAdapter<IndustryResponse, Recycler
         this.retryCallback = retryCallback;
     }
 
-    public void setListener(IndustryViewHolder.Listener listener) {
-        this.listener = listener;
-    }
-
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
-            case R.layout.item_img_text:
-                return IndustryViewHolder.create(parent, listener);
+            case R.layout.item_btn_text:
+                return IndustryMultipleViewHolder.create(parent, listener);
             case R.layout.view_network_state:
                 return NetworkStateViewHolder.create(parent, retryCallback);
             default:
@@ -53,8 +58,11 @@ public class IndustryAdapter extends PagedListAdapter<IndustryResponse, Recycler
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
-            case R.layout.item_img_text:
-                ((IndustryViewHolder) holder).bindTo(getItem(position));
+            case R.layout.item_btn_text:
+                if(idList.contains(getItem(position).getId())) {
+                    getItem(position).setSelected(true);
+                }
+                ((IndustryMultipleViewHolder) holder).bindTo(getItem(position));
                 break;
             case R.layout.view_network_state:
                 ((NetworkStateViewHolder) holder).bindTo(networkState);
@@ -71,7 +79,7 @@ public class IndustryAdapter extends PagedListAdapter<IndustryResponse, Recycler
         if (hasExtraRow() && position == getItemCount() - 1) {
             return R.layout.view_network_state;
         } else {
-            return R.layout.item_img_text;
+            return R.layout.item_btn_text;
         }
     }
 
@@ -119,4 +127,7 @@ public class IndustryAdapter extends PagedListAdapter<IndustryResponse, Recycler
         }
     };
 
+    public List<String> getIdList() {
+        return idList;
+    }
 }

@@ -1,14 +1,16 @@
 package com.divercity.app.features.company.onboarding
 
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.data.Status
 import com.divercity.app.data.entity.company.response.CompanyResponse
 import com.divercity.app.features.company.base.SelectCompanyFragment
-import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.base.adapter.CompanyAdapter
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
@@ -16,7 +18,7 @@ import javax.inject.Inject
 
 class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener {
 
-    lateinit var viewModel: SelectCompanyViewModel
+    lateinit var viewModel: OnboardingCompanyViewModel
 
     @Inject
     lateinit var adapter: CompanyAdapter
@@ -39,7 +41,7 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectCompanyViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingCompanyViewModel::class.java]
         currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
@@ -48,6 +50,7 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
         childFragmentManager.beginTransaction().add(
                 R.id.fragment_fragment_container, SelectCompanyFragment.newInstance()).commit()
         setupHeader()
+        subscribeToLiveData()
     }
 
     private fun setupHeader() {
@@ -68,7 +71,7 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(activity!!,
-                        viewModel.accountType,
+                        viewModel.getAccountType(),
                         currentProgress,
                         false
                 )
@@ -76,12 +79,29 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
         }
     }
 
+    private fun subscribeToLiveData() {
+        viewModel.updateUserProfileResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> showProgress()
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    navigator.navigateToNextOnboarding(
+                            activity!!,
+                            viewModel.getAccountType(),
+                            currentProgress,
+                            true
+                    )
+                }
+            }
+        })
+    }
+
     override fun onCompanyChosen(company: CompanyResponse) {
-        navigator.navigateToNextOnboarding(
-                activity!!,
-                viewModel.accountType,
-                currentProgress,
-                true
-        )
+        viewModel.updateUserProfile(company.id)
     }
 }

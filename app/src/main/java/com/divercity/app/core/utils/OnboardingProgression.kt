@@ -10,8 +10,8 @@ import com.divercity.app.R
 object OnboardingProgression {
 
     private const val COUNT_RECRUITER_HR = 100 / 5
-    private const val COUNT_STUDENT = (100 / 9) + 1
-    private const val COUNT_PROF_ENTREPNR_JOBSK = (100 / 8) + 1
+    private const val COUNT_STUDENT = (100 / 8) + 1
+    private const val COUNT_PROF_ENTREPNR_JOBSK = (100 / 7) + 1
 
     fun getNextNavigationProgressOnboarding(activity: Activity, userTypeId: String, progress: Int): Int {
 

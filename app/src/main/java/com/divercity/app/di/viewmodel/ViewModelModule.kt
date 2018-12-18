@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.companysize.CompanySizesViewModel
 import com.divercity.app.features.company.createcompany.CreateCompanyViewModel
+import com.divercity.app.features.company.onboarding.OnboardingCompanyViewModel
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
@@ -14,7 +15,8 @@ import com.divercity.app.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.app.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.app.features.home.HomeActivityViewModel
 import com.divercity.app.features.home.home.HomeViewModel
-import com.divercity.app.features.industry.base.SelectIndustryViewModel
+import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingViewModel
+import com.divercity.app.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
 import com.divercity.app.features.jobposting.JobPostingViewModel
 import com.divercity.app.features.jobposting.jobtype.JobTypeViewModel
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupViewModel
@@ -34,7 +36,7 @@ import com.divercity.app.features.location.onboarding.OnboardingLocationViewMode
 import com.divercity.app.features.login.step1.EnterEmailViewModel
 import com.divercity.app.features.login.step2.LoginViewModel
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewModel
-import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayViewModel
+import com.divercity.app.features.onboarding.selectage.SelectAgeViewModel
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityViewModel
 import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsViewModel
@@ -43,6 +45,8 @@ import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationVi
 import com.divercity.app.features.onboarding.selectoccupationofinterests.SelectOOIViewModel
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeViewModel
+import com.divercity.app.features.profile.ProfileViewModel
+import com.divercity.app.features.profile.tabfollower.FollowerViewModel
 import com.divercity.app.features.signup.SignUpViewModel
 import com.divercity.app.features.splash.SplashViewModel
 import dagger.Binds
@@ -107,8 +111,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SelectBirthdayViewModel::class)
-    abstract fun bindsSelectBirthdayViewModel(viewModel: SelectBirthdayViewModel): ViewModel
+    @ViewModelKey(SelectAgeViewModel::class)
+    abstract fun bindsSelectBirthdayViewModel(viewModel: SelectAgeViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -132,8 +136,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SelectIndustryViewModel::class)
-    abstract fun bindsSelectIndustryViewModel(viewModel: SelectIndustryViewModel): ViewModel
+    @ViewModelKey(SelectSingleIndustryViewModel::class)
+    abstract fun bindsSelectSingleIndustryViewModel(viewModel: SelectSingleIndustryViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -270,4 +274,24 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectInterestsViewModel::class)
     abstract fun bindsSelectInterestsViewModel(viewModel: SelectInterestsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OnboardingCompanyViewModel::class)
+    abstract fun bindsOnboardingCompanyViewModel(viewModel: OnboardingCompanyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectIndustryOnboardingViewModel::class)
+    abstract fun bindsSelectMultiIndustryViewModel(viewModel: SelectIndustryOnboardingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileViewModel::class)
+    abstract fun bindsProfileViewModel(viewModel: ProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FollowerViewModel::class)
+    abstract fun bindsFollowerViewModel(viewModel: FollowerViewModel): ViewModel
 }

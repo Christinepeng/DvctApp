@@ -13,8 +13,8 @@ import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
-import com.divercity.app.features.industry.onboarding.OnboardingIndustryActivity
-import com.divercity.app.features.industry.withtoolbar.ToolbarIndustryActivity
+import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingActivity
+import com.divercity.app.features.industry.selectsingleindustry.SelectSingleIndustryActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
@@ -28,7 +28,7 @@ import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
-import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayActivity
+import com.divercity.app.features.onboarding.selectage.SelectAgeActivity
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
@@ -107,7 +107,7 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToOnboardingIndustryActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingIndustryActivity.getCallingIntent(activity, progress))
+        activity.startActivity(SelectIndustryOnboardingActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectGenderActivity(activity: FragmentActivity, progress: Int) {
@@ -119,7 +119,7 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToSelectBirthdayActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectBirthdayActivity.getCallingIntent(activity, progress))
+        activity.startActivity(SelectAgeActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectEthnicityActivity(activity: FragmentActivity, progress: Int) {
@@ -142,43 +142,43 @@ class Navigator @Inject constructor() {
         activity.startActivity(JobPostingActivity.getCallingIntent(activity))
     }
 
-    fun navigateToCreateCompanyActivityForResult(fragment: Fragment, code : Int) {
+    fun navigateToCreateCompanyActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(CreateCompanyActivity.getCallingIntent(fragment.context), code)
     }
 
-    fun navigateToToolbarLocationActivityForResult(fragment: Fragment, code : Int) {
+    fun navigateToToolbarLocationActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(ToolbarLocationActivity.getCallingIntent(fragment.context), code)
     }
 
-    fun navigateToToolbarIndustryActivityForResult(fragment: Fragment, code : Int) {
-        fragment.startActivityForResult(ToolbarIndustryActivity.getCallingIntent(fragment.context), code)
+    fun navigateToSelectSingleIndustryActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(SelectSingleIndustryActivity.getCallingIntent(fragment.context), code)
     }
 
-    fun navigateToToolbarCompanyActivityForResult(fragment: Fragment, code : Int) {
+    fun navigateToToolbarCompanyActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(ToolbarCompanyActivity.getCallingIntent(fragment.context), code)
     }
 
-    fun navigateToCompanySizesActivity(fragment: Fragment, code : Int) {
+    fun navigateToCompanySizesActivity(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(CompanySizesActivity.getCallingIntent(fragment.context), code)
     }
 
-    fun navigateToJobTypeActivityForResult(fragment: Fragment, code : Int) {
+    fun navigateToJobTypeActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(JobTypeActivity.getCallingIntent(fragment.context), code)
     }
 
-    fun navigateToJobSkillsActivityForResult(fragment: Fragment, code : Int, skillList : ArrayList<SkillResponse>) {
+    fun navigateToJobSkillsActivityForResult(fragment: Fragment, code: Int, skillList: ArrayList<SkillResponse>) {
         fragment.startActivityForResult(JobSkillsActivity.getCallingIntent(fragment.context, skillList), code)
     }
 
-    fun navigateToShareJobGroupActivity(fragment: Fragment, jobId : String?) {
+    fun navigateToShareJobGroupActivity(fragment: Fragment, jobId: String?) {
         fragment.startActivity(ShareJobGroupActivity.getCallingIntent(fragment.context, jobId))
     }
 
-    fun navigateToJobDescriptionPosterActivity(fragment: Fragment, job : JobResponse) {
+    fun navigateToJobDescriptionPosterActivity(fragment: Fragment, job: JobResponse) {
         fragment.startActivity(JobDescriptionPosterActivity.getCallingIntent(fragment.context, job))
     }
 
-    fun navigateToJobApplicantsActivity(fragment: Fragment, job : JobResponse) {
+    fun navigateToJobApplicantsActivity(fragment: Fragment, job: JobResponse) {
         fragment.startActivity(JobApplicantsActivity.getCallingIntent(fragment.context, job))
     }
 
@@ -208,12 +208,10 @@ class Navigator @Inject constructor() {
             }
         } else if (activity is OnboardingLocationActivity) {
 
-            if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
-                navigateToSelectGenderActivity(activity, progress)
-            else if (userTypeId == activity.getString(R.string.student_id)) {
+            if (userTypeId == activity.getString(R.string.student_id)) {
                 navigateToSelectOOIActivity(activity, progress)
             } else {
-                navigateToSelectInterestsActivity(activity, progress)
+                navigateToSelectGenderActivity(activity, progress)
             }
         } else if (activity is SelectEthnicityActivity) {
 
@@ -242,16 +240,15 @@ class Navigator @Inject constructor() {
                 navigateToSelectGroupActivity(activity, progress)
             else
                 navigateToSelectGenderActivity(activity, progress)
-        } else if (activity is SelectBirthdayActivity) {
+        } else if (activity is SelectAgeActivity) {
 
-            if (userTypeId == activity.getString(R.string.student_id))
-                navigateToSelectInterestsActivity(activity, progress)
-            else
-                navigateToSelectGroupActivity(activity, progress)
-        } else if (activity is SelectOOIActivity){
+            navigateToSelectGroupActivity(activity, progress)
+        } else if (activity is SelectOOIActivity) {
 
             if (userTypeId == activity.getString(R.string.student_id))
                 navigateToSelectGenderActivity(activity, progress)
+        } else if (activity is SelectIndustryOnboardingActivity) {
+            navigateToOnboardingLocationActivity(activity, progress)
         }
     }
 }

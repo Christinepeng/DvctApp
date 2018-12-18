@@ -1,16 +1,19 @@
-package com.divercity.app.features.home.profile
+package com.divercity.app.features.profile
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.support.v7.app.AppCompatActivity
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
+import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.FindQuery
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
-import com.divercity.app.features.apollo.GetGitRepositoryDataUseCase
+import com.divercity.app.core.utils.GlideApp
+import com.divercity.app.data.Status
+import com.divercity.app.data.entity.login.response.LoginResponse
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -21,7 +24,9 @@ import javax.inject.Inject
 class ProfileFragment : BaseFragment() {
 
     @Inject
-    lateinit var useCase: GetGitRepositoryDataUseCase
+    lateinit var adapter: ProfileViewPagerAdapter
+
+    private lateinit var viewModel: ProfileViewModel
 
     //    @Inject
 //    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
@@ -40,18 +45,23 @@ class ProfileFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         setupToolbar()
-//        AndroidSupportInjection.inject(this)
-//        viewModelJobs = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
-//        subscribeToLiveData()
+
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(ProfileViewModel::class.java)
+        } ?: throw Exception("Invalid Fragment")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_connect.setOnClickListener {
+        setupView()
+        subscribeToLiveData()
 
-            useCase(GetGitRepositoryDataUseCase.Params.forRepo("CleanNews-2017", "lucasgriotto")) {
-                it.either(::handleError, ::handleSuccess)
-            }
+
+//        btn_connect.setOnClickListener {
+//
+//            useCase(GetGitRepositoryDataUseCase.Params.forRepo("CleanNews-2017", "lucasgriotto")) {
+//                it.either(::handleError, ::handleSuccess)
+//            }
 
 //            val job = GlobalScope.launch(Dispatchers.Main) {
 //                try {
@@ -70,15 +80,57 @@ class ProfileFragment : BaseFragment() {
 //                job.cancel()
 //            }
 
-        }
+//        }
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.fetchUserDataResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    showData(response.data!!)
+                }
+            }
+        })
+    }
+
+    private fun showData(loginResponse: LoginResponse) {
+        var attr = loginResponse.attributes
+        GlideApp.with(this)
+            .load(attr?.avatarMedium)
+            .apply(RequestOptions().circleCrop())
+            .into(img_profile)
+
+        txt_name.text = attr?.name
+        txt_user_track.text = attr?.followersCount.toString()
+            .plus(" Followers \u00B7 ")
+            .plus(attr?.followingCount)
+            .plus(" Following \u00B7 ")
+            .plus(attr?.groupOfInterestFollowingCount)
+            .plus(" Groups")
+    }
+
+    private fun setupView() {
+
+        viewPager.adapter = adapter
+
+        tab_layout.setupWithViewPager(viewPager)
+
+//        slidingTabLayout.setBackgroundColor(-0x545455)
+//        slidingTabLayout.setDividerColors(0x00FFFFFF)
     }
 
     private fun handleError(message: String) {
-        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 
     private fun handleSuccess(query: FindQuery.Data) {
-        btn_connect.text = query.repository()?.description()
+//        btn_connect.text = query.repository()?.description()
     }
 
     private fun setupToolbar() {
@@ -90,10 +142,10 @@ class ProfileFragment : BaseFragment() {
         }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
-        menu?.clear()
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
+//        menu?.clear()
+////        super.onCreateOptionsMenu(menu, inflater)
+//    }
 
 //    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 //        super.onViewCreated(view, savedInstanceState)

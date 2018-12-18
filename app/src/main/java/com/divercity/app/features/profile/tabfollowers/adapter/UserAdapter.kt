@@ -1,4 +1,4 @@
-package com.divercity.app.features.jobs.applicants.adapter
+package com.divercity.app.features.profile.tabfollowers.adapter
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil
@@ -8,27 +8,27 @@ import com.divercity.app.R
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.NetworkStateViewHolder
 import com.divercity.app.core.ui.RetryCallback
-import com.divercity.app.data.entity.jobapplication.JobApplicationResponse
+import com.divercity.app.data.entity.login.response.LoginResponse
 import javax.inject.Inject
 
-class JobApplicantsAdapter @Inject
-constructor() : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+class UserAdapter @Inject
+constructor() : PagedListAdapter<LoginResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
-    private var listener: JobApplicantsViewHolder.Listener? = null
+    private var listener: UserViewHolder.Listener? = null
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
     }
 
-    fun setListener(listener: JobApplicantsViewHolder.Listener) {
+    fun setListener(listener: UserViewHolder.Listener) {
         this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_user -> JobApplicantsViewHolder.create(parent, listener)
+            R.layout.item_user -> UserViewHolder.create(parent, listener)
             R.layout.view_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type")
         }
@@ -36,7 +36,7 @@ constructor() : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_user -> (holder as JobApplicantsViewHolder).bindTo(position, getItem(position))
+            R.layout.item_user -> (holder as UserViewHolder).bindTo(position, getItem(position))
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
     }
@@ -75,13 +75,13 @@ constructor() : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<JobApplicationResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<LoginResponse>() {
 
-            override fun areItemsTheSame(oldItem: JobApplicationResponse, newItem: JobApplicationResponse): Boolean {
+            override fun areItemsTheSame(oldItem: LoginResponse, newItem: LoginResponse): Boolean {
                 return oldItem.id === newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: JobApplicationResponse, newItem: JobApplicationResponse): Boolean {
+            override fun areContentsTheSame(oldItem: LoginResponse, newItem: LoginResponse): Boolean {
                 return oldItem == newItem
             }
         }

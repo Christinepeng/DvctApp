@@ -6,7 +6,6 @@ import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.entity.location.LocationResponse
-import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.base.adapter.CompanyAdapter
 import com.divercity.app.features.location.base.SelectLocationFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
@@ -15,7 +14,7 @@ import javax.inject.Inject
 
 class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listener {
 
-    lateinit var viewModel: SelectCompanyViewModel
+    lateinit var viewModel: OnboardingLocationViewModel
 
     @Inject
     lateinit var adapter: CompanyAdapter
@@ -38,7 +37,7 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectCompanyViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingLocationViewModel::class.java]
         currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
@@ -67,7 +66,7 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(activity!!,
-                        viewModel.accountType,
+                        viewModel.getAccountType(),
                         currentProgress,
                         false
                 )
@@ -78,7 +77,7 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
     override fun onLocationChoosen(location: LocationResponse) {
         navigator.navigateToNextOnboarding(
                 activity!!,
-                viewModel.accountType,
+                viewModel.getAccountType(),
                 currentProgress,
                 true
         )

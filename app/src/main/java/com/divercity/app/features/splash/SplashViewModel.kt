@@ -4,7 +4,7 @@ import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.login.response.LoginResponse
-import com.divercity.app.features.splash.usecase.FetchUserDataUseCase
+import com.divercity.app.features.profile.usecase.FetchUserDataUseCase
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl
 
 import javax.inject.Inject

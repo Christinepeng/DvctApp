@@ -1,4 +1,4 @@
-package com.divercity.app.features.onboarding.selectbirthdate;
+package com.divercity.app.features.onboarding.selectage;
 
 import android.arch.lifecycle.MutableLiveData;
 
@@ -17,20 +17,20 @@ import javax.inject.Inject;
  * Created by lucas on 17/10/2018.
  */
 
-public class SelectBirthdayViewModel extends BaseViewModel {
+public class SelectAgeViewModel extends BaseViewModel {
 
     private UserRepository userRepository;
     private MutableLiveData<Resource<LoginResponse>> updateUserProfileResponse = new MutableLiveData<>();
     private UpdateUserProfileUseCase updateUserProfileUseCase;
 
     @Inject
-    public SelectBirthdayViewModel(UpdateUserProfileUseCase updateUserProfileUseCase,
-                                   UserRepository userRepository) {
+    public SelectAgeViewModel(UpdateUserProfileUseCase updateUserProfileUseCase,
+                              UserRepository userRepository) {
         this.updateUserProfileUseCase = updateUserProfileUseCase;
         this.userRepository = userRepository;
     }
 
-    public void updateUserProfile(String year, String month, String day){
+    public void updateUserProfile(String ageRange){
         updateUserProfileResponse.postValue(Resource.Companion.loading(null));
         DisposableObserverWrapper callback = new DisposableObserverWrapper<LoginResponse>() {
             @Override
@@ -50,7 +50,7 @@ public class SelectBirthdayViewModel extends BaseViewModel {
         };
         getCompositeDisposable().add(callback);
         User user = new User();
-        user.setBirthdate(day + "/" + month + "/" + year);
+        user.setAgeRange(ageRange);
         updateUserProfileUseCase.execute(callback,UpdateUserProfileUseCase.Params.forUser(user));
     }
 

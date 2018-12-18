@@ -90,7 +90,7 @@ public class SelectSchoolViewModel extends BaseViewModel {
         };
         getCompositeDisposable().add(callback);
         User user = new User();
-        user.setSchoolId(Integer.parseInt(schoolResponse.getId()));
+        user.setSchoolId(schoolResponse.getId());
         updateUserProfileUseCase.execute(callback,UpdateUserProfileUseCase.Params.forUser(user));
     }
 

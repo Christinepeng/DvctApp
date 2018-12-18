@@ -21,7 +21,7 @@ import com.divercity.app.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.app.data.entity.industry.IndustryResponse
 import com.divercity.app.data.entity.location.LocationResponse
 import com.divercity.app.features.company.companysize.CompanySizesFragment
-import com.divercity.app.features.industry.withtoolbar.ToolbarIndustryFragment
+import com.divercity.app.features.industry.selectsingleindustry.SelectSingleIndustryFragment
 import com.divercity.app.features.location.withtoolbar.ToolbarLocationFragment
 import kotlinx.android.synthetic.main.fragment_create_company.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -118,7 +118,7 @@ class CreateCompanyFragment : BaseFragment() {
         }
 
         lay_company_industry.setOnClickListener {
-            navigator.navigateToToolbarIndustryActivityForResult(this, REQUEST_CODE_INDUSTRY)
+            navigator.navigateToSelectSingleIndustryActivityForResult(this, REQUEST_CODE_INDUSTRY)
         }
 
         lay_company_location.setOnClickListener {
@@ -164,7 +164,7 @@ class CreateCompanyFragment : BaseFragment() {
                 val location = data?.extras?.getParcelable<LocationResponse>(ToolbarLocationFragment.LOCATION_PICKED)
                 setLocation(location)
             } else if (requestCode == REQUEST_CODE_INDUSTRY) {
-                val industry = data?.extras?.getParcelable<IndustryResponse>(ToolbarIndustryFragment.INDUSTRY_PICKED)
+                val industry = data?.extras?.getParcelable<IndustryResponse>(SelectSingleIndustryFragment.INDUSTRY_PICKED)
                 setIndustry(industry)
             } else if (requestCode == REQUEST_CODE_SIZE) {
                 val size = data?.extras?.getParcelable<CompanySizeResponse>(CompanySizesFragment.COMPANY_SIZE_PICKED)

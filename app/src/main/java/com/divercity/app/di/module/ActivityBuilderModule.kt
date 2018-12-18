@@ -6,8 +6,8 @@ import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
-import com.divercity.app.features.industry.onboarding.OnboardingIndustryActivity
-import com.divercity.app.features.industry.withtoolbar.ToolbarIndustryActivity
+import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingActivity
+import com.divercity.app.features.industry.selectsingleindustry.SelectSingleIndustryActivity
 import com.divercity.app.features.jobposting.JobPostingActivity
 import com.divercity.app.features.jobposting.jobtype.JobTypeActivity
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupActivity
@@ -21,7 +21,7 @@ import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
-import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayActivity
+import com.divercity.app.features.onboarding.selectage.SelectAgeActivity
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
@@ -70,7 +70,7 @@ abstract class ActivityBuilderModule {
     abstract fun bindSelectGroupActivity(): SelectGroupActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectBirthdayActivity(): SelectBirthdayActivity
+    abstract fun bindSelectBirthdayActivity(): SelectAgeActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectCompanyActivity(): OnboardingCompanyActivity
@@ -127,10 +127,10 @@ abstract class ActivityBuilderModule {
     abstract fun bindCreateCompanyActivity(): CreateCompanyActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindOnboardingIndustryActivity(): OnboardingIndustryActivity
+    abstract fun bindOnboardingIndustryActivity(): SelectIndustryOnboardingActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindToolbarIndustryActivity(): ToolbarIndustryActivity
+    abstract fun bindToolbarIndustryActivity(): SelectSingleIndustryActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindCompanySizesActivity(): CompanySizesActivity

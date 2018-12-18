@@ -12,8 +12,8 @@ import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
-import com.divercity.app.features.jobs.applicants.adapter.JobApplicantsAdapter
-import com.divercity.app.features.jobs.applicants.adapter.JobApplicantsViewHolder
+import com.divercity.app.features.jobs.applicants.adapter.JobApplicantAdapter
+import com.divercity.app.features.jobs.applicants.adapter.JobApplicantViewHolder
 import kotlinx.android.synthetic.main.fragment_job_applicants.*
 import kotlinx.android.synthetic.main.view_job_desc.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -28,7 +28,7 @@ class JobApplicantsFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: JobApplicantsViewModel
 
     @Inject
-    lateinit var adapter: JobApplicantsAdapter
+    lateinit var adapter: JobApplicantAdapter
 
     var job: JobResponse? = null
     private var isListRefreshing = false
@@ -141,7 +141,7 @@ class JobApplicantsFragment : BaseFragment(), RetryCallback {
     }
 
     private
-    val listener: JobApplicantsViewHolder.Listener = object : JobApplicantsViewHolder.Listener {
+    val listener: JobApplicantViewHolder.Listener = object : JobApplicantViewHolder.Listener {
 
     }
 }

@@ -23,4 +23,13 @@ interface UserRepository : LoggedUserRepository {
     fun followOccupationOfInterests(occupationIds: List<String>): Observable<LoginResponse>
 
     fun followInterests(interestsIds: List<String>): Observable<LoginResponse>
+
+    fun followIndustries(industriesIds: List<String>): Observable<LoginResponse>
+
+    fun fetchFollowersByUser(
+            userId: String,
+            pageNumber: Int,
+            size: Int,
+            query: String?
+    ): Observable<List<LoginResponse>>
 }

@@ -1,4 +1,4 @@
-package com.divercity.app.features.industry.base;
+package com.divercity.app.features.industry.selectsingleindustry;
 
 import android.arch.lifecycle.LifecycleOwner;
 import android.arch.lifecycle.LiveData;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
  * Created by lucas on 17/10/2018.
  */
 
-public class SelectIndustryViewModel extends BaseViewModel {
+public class SelectSingleIndustryViewModel extends BaseViewModel {
 
     private LiveData<PagedList<IndustryResponse>> pagedIndustryList;
     private Listing<IndustryResponse> listingPaginatedIndustry;
@@ -26,10 +26,11 @@ public class SelectIndustryViewModel extends BaseViewModel {
     private UserRepository userRepository;
 
     @Inject
-    public SelectIndustryViewModel(IndustryPaginatedRepositoryImpl repository,
-                                   UserRepository userRepository) {
+    public SelectSingleIndustryViewModel(IndustryPaginatedRepositoryImpl repository,
+                                         UserRepository userRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
+        fetchIndustries(null, null);
     }
 
     public void retry() {
@@ -48,8 +49,8 @@ public class SelectIndustryViewModel extends BaseViewModel {
         return listingPaginatedIndustry.getRefreshState();
     }
 
-    public void fetchIndustries(LifecycleOwner lifecycleOwner, @Nullable String query){
-        if(pagedIndustryList != null) {
+    public void fetchIndustries(LifecycleOwner lifecycleOwner, @Nullable String query) {
+        if (pagedIndustryList != null && lifecycleOwner != null) {
             listingPaginatedIndustry.getNetworkState().removeObservers(lifecycleOwner);
             listingPaginatedIndustry.getRefreshState().removeObservers(lifecycleOwner);
             pagedIndustryList.removeObservers(lifecycleOwner);
@@ -62,7 +63,7 @@ public class SelectIndustryViewModel extends BaseViewModel {
         return pagedIndustryList;
     }
 
-    public String getAccountType(){
+    public String getAccountType() {
         return userRepository.getAccountType();
     }
 }

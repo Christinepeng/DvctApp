@@ -26,14 +26,11 @@ public class OOIAdapter extends PagedListAdapter<OOIResponse, RecyclerView.ViewH
     private RetryCallback retryCallback;
     private List<String> idList = new ArrayList<>();
 
-    private OOIViewHolder.Listener listener = new OOIViewHolder.Listener() {
-        @Override
-        public void onOOIClick(OOIResponse ooi) {
-            if (ooi.isSelected())
-                idList.add(ooi.getId());
-            else
-                idList.remove(ooi.getId());
-        }
+    private OOIViewHolder.Listener listener = ooi -> {
+        if (ooi.isSelected())
+            idList.add(ooi.getId());
+        else
+            idList.remove(ooi.getId());
     };
 
     @Inject

@@ -16,11 +16,9 @@ import com.divercity.app.features.groups.onboarding.SelectGroupFragment
 import com.divercity.app.features.groups.trending.TrendingGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
-import com.divercity.app.features.home.profile.ProfileFragment
 import com.divercity.app.features.home.settings.SettingsFragment
-import com.divercity.app.features.industry.base.SelectIndustryFragment
-import com.divercity.app.features.industry.onboarding.OnboardingIndustryFragment
-import com.divercity.app.features.industry.withtoolbar.ToolbarIndustryFragment
+import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingFragment
+import com.divercity.app.features.industry.selectsingleindustry.SelectSingleIndustryFragment
 import com.divercity.app.features.jobposting.JobPostingFragment
 import com.divercity.app.features.jobposting.jobtype.JobTypeFragment
 import com.divercity.app.features.jobposting.sharetogroup.ShareJobGroupFragment
@@ -47,7 +45,7 @@ import com.divercity.app.features.location.withtoolbar.ToolbarLocationFragment
 import com.divercity.app.features.login.step1.EnterEmailFragment
 import com.divercity.app.features.login.step2.LoginFragment
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
-import com.divercity.app.features.onboarding.selectbirthdate.SelectBirthdayFragment
+import com.divercity.app.features.onboarding.selectage.SelectAgeFragment
 import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityFragment
 import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsFragment
@@ -56,6 +54,10 @@ import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationFr
 import com.divercity.app.features.onboarding.selectoccupationofinterests.SelectOOIFragment
 import com.divercity.app.features.onboarding.selectschool.SelectSchoolFragment
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeFragment
+import com.divercity.app.features.profile.ProfileFragment
+import com.divercity.app.features.profile.module.ProfileModule
+import com.divercity.app.features.profile.tabfollowers.FollowerFragment
+import com.divercity.app.features.profile.tabprofile.TabProfileFragment
 import com.divercity.app.features.signup.SignUpFragment
 import com.divercity.app.features.splash.SplashFragment
 import dagger.Module
@@ -92,7 +94,7 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindNotificationsFragment (): NotificationsFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [ProfileModule::class])
     abstract fun bindProfileFragment (): ProfileFragment
 
     @ContributesAndroidInjector
@@ -108,7 +110,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindSelectSchoolFragment (): SelectSchoolFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectBirthdayFragment (): SelectBirthdayFragment
+    abstract fun bindSelectBirthdayFragment (): SelectAgeFragment
 
     @ContributesAndroidInjector
     abstract fun bindSelectCompanyFragment (): SelectCompanyFragment
@@ -123,7 +125,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindSelectGenderFragment (): SelectGenderFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectIndustryFragment (): SelectIndustryFragment
+    abstract fun bindSelectSingleIndustryFragment (): SelectSingleIndustryFragment
 
     @ContributesAndroidInjector
     abstract fun bindSelectMajorFragment (): SelectMajorFragment
@@ -207,10 +209,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindCreateCompanyFragment (): CreateCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindOnboardingIndustryFragment (): OnboardingIndustryFragment
-
-    @ContributesAndroidInjector
-    abstract fun bindToolbarIndustryFragment (): ToolbarIndustryFragment
+    abstract fun bindOnboardingIndustryFragment (): SelectIndustryOnboardingFragment
 
     @ContributesAndroidInjector
     abstract fun bindCompanySizesFragment (): CompanySizesFragment
@@ -229,4 +228,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindSelectInterestsFragment (): SelectInterestsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTabProfileFragment (): TabProfileFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindFollowerFragment (): FollowerFragment
 }

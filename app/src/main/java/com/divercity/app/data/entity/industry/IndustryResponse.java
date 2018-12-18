@@ -16,6 +16,8 @@ public class IndustryResponse implements Parcelable {
 	@SerializedName("type")
 	private String type;
 
+	private boolean isSelected = false;
+
 	protected IndustryResponse(Parcel in) {
 		attributes = in.readParcelable(Attributes.class.getClassLoader());
 		id = in.readString();
@@ -68,6 +70,14 @@ public class IndustryResponse implements Parcelable {
 
 	public String getType(){
 		return type;
+	}
+
+	public boolean isSelected() {
+		return isSelected;
+	}
+
+	public void setSelected(boolean selected) {
+		isSelected = selected;
 	}
 
 	@Override

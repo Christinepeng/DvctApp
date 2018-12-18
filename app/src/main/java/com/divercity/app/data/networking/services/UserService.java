@@ -1,6 +1,8 @@
 package com.divercity.app.data.networking.services;
 
+import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.base.DataObject;
+import com.divercity.app.data.entity.industry.body.FollowIndustryBody;
 import com.divercity.app.data.entity.interests.body.FollowInterestsBody;
 import com.divercity.app.data.entity.login.response.LoginResponse;
 import com.divercity.app.data.entity.occupationofinterests.body.FollowOOIBody;
@@ -33,4 +35,14 @@ public interface UserService {
 
     @POST("users/current/update_interests")
     Observable<Response<DataObject<LoginResponse>>> followInterests(@Body FollowInterestsBody body);
+
+    @POST("data/follow_industry")
+    Observable<Response<DataObject<LoginResponse>>> followIndustries(@Body FollowIndustryBody body);
+
+    @GET("users/{id}/followers")
+    Observable<Response<DataArray<LoginResponse>>> fetchFollowersByUser(
+            @Path("id") String userId,
+            @Query("page[number]") int pageNumber,
+            @Query("page[size]") int size,
+            @Query("search_query") String query);
 }

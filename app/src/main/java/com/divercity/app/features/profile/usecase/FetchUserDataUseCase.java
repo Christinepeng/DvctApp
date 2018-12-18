@@ -1,4 +1,4 @@
-package com.divercity.app.features.splash.usecase;
+package com.divercity.app.features.profile.usecase;
 
 import com.divercity.app.core.base.UseCase;
 import com.divercity.app.data.entity.login.response.LoginResponse;

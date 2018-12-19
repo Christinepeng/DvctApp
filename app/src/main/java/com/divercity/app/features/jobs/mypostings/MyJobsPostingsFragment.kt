@@ -1,7 +1,9 @@
 package com.divercity.app.features.jobs.mypostings
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.View
@@ -32,6 +34,8 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
     private var positionPublishClicked: Int = 0
 
     companion object {
+
+        const val REQUEST_CODE_UPDATE = 150
 
         fun newInstance(): MyJobsPostingsFragment {
             return MyJobsPostingsFragment()
@@ -143,11 +147,21 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
         }
 
         override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionPosterActivity(this@MyJobsPostingsFragment, job)
+            navigator.navigateToJobDescriptionPosterForResultActivity(this@MyJobsPostingsFragment, REQUEST_CODE_UPDATE, job)
         }
     }
 
     override fun fetchJobs(searchQuery: String?) {
         viewModelJobs.fetchJobs(viewLifecycleOwner, searchQuery)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_UPDATE){
+                isListRefreshing = true
+                viewModelJobs.refresh()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

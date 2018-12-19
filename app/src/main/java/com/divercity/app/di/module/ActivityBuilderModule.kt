@@ -4,6 +4,7 @@ import com.divercity.app.features.company.companysize.CompanySizesActivity
 import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
+import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingActivity
@@ -22,7 +23,6 @@ import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.app.features.onboarding.selectage.SelectAgeActivity
-import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorActivity
@@ -79,7 +79,7 @@ abstract class ActivityBuilderModule {
     abstract fun bindOnboardingLocationActivity(): OnboardingLocationActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectEthnicityActivity(): SelectEthnicityActivity
+    abstract fun bindOnboardingEthnicityActivity(): OnboardingEthnicityActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectGenderActivity(): SelectGenderActivity

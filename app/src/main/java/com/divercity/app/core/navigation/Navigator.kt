@@ -11,6 +11,7 @@ import com.divercity.app.features.company.companysize.CompanySizesActivity
 import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
+import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingActivity
@@ -29,7 +30,6 @@ import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.app.features.onboarding.selectage.SelectAgeActivity
-import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityActivity
 import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorActivity
@@ -123,7 +123,7 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToSelectEthnicityActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectEthnicityActivity.getCallingIntent(activity, progress))
+        activity.startActivity(OnboardingEthnicityActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectMajorActivity(activity: FragmentActivity, progress: Int) {
@@ -138,8 +138,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(LinkedinActivity.getCallingIntent(activity))
     }
 
-    fun navigateToJobPostingActivity(activity: FragmentActivity) {
-        activity.startActivity(JobPostingActivity.getCallingIntent(activity))
+    fun navigateToJobPostingForResultActivity(fragment: Fragment, code : Int, job: JobResponse?) {
+        fragment.startActivityForResult(JobPostingActivity.getCallingIntent(fragment.context, job), code)
     }
 
     fun navigateToCreateCompanyActivityForResult(fragment: Fragment, code: Int) {
@@ -174,8 +174,8 @@ class Navigator @Inject constructor() {
         fragment.startActivity(ShareJobGroupActivity.getCallingIntent(fragment.context, jobId))
     }
 
-    fun navigateToJobDescriptionPosterActivity(fragment: Fragment, job: JobResponse) {
-        fragment.startActivity(JobDescriptionPosterActivity.getCallingIntent(fragment.context, job))
+    fun navigateToJobDescriptionPosterForResultActivity(fragment: Fragment, code : Int, job: JobResponse) {
+        fragment.startActivityForResult(JobDescriptionPosterActivity.getCallingIntent(fragment.context, job), code)
     }
 
     fun navigateToJobApplicantsActivity(fragment: Fragment, job: JobResponse) {
@@ -213,7 +213,7 @@ class Navigator @Inject constructor() {
             } else {
                 navigateToSelectGenderActivity(activity, progress)
             }
-        } else if (activity is SelectEthnicityActivity) {
+        } else if (activity is OnboardingEthnicityActivity) {
 
             if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
                 navigateToSelectGroupActivity(activity, progress)

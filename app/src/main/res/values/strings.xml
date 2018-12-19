@@ -16,6 +16,12 @@
     <string name="desc">desc</string>
     <string name="skip">Skip</string>
     <string name="done">Done</string>
+    <string name="personal">Personal</string>
+    <string name="interests">Interests</string>
+    <string name="gender">Gender</string>
+    <string name="school">School</string>
+    <string name="ethnicity">Ethnicity</string>
+    <string name="age_range">Age Range</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>

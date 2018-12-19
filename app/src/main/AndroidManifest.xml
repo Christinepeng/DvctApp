@@ -108,7 +108,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectethnicity.SelectEthnicityActivity"
+            android:name=".features.ethnicity.onboarding.OnboardingEthnicityActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

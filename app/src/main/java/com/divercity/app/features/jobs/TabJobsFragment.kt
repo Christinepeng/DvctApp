@@ -66,7 +66,7 @@ class TabJobsFragment : BaseFragment() {
             data?.let {
                 (btn_add as View).visibility = data
                 btn_add.setOnClickListener {
-                    navigator.navigateToJobPostingActivity(activity!!)
+                    navigator.navigateToJobPostingForResultActivity(this, -1, null)
                 }
             }
         })

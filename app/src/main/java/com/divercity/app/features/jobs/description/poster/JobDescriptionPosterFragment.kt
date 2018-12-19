@@ -1,7 +1,9 @@
 package com.divercity.app.features.jobs.description.poster
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -11,6 +13,7 @@ import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.dialogs.JobPosterActionsDialogFragment
+import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
 import kotlinx.android.synthetic.main.fragment_job_description_poster.*
 import kotlinx.android.synthetic.main.view_job_desc.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -132,6 +135,7 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
     }
 
     override fun onEditJobPosting() {
+        navigator.navigateToJobPostingForResultActivity(this, MyJobsPostingsFragment.REQUEST_CODE_UPDATE, job)
     }
 
     override fun onPublishUnpublishJobPosting() {
@@ -139,5 +143,18 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
     }
 
     override fun onDeleteJobPosting() {
+
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK){
+            if(requestCode == MyJobsPostingsFragment.REQUEST_CODE_UPDATE){
+                activity?.apply {
+                    setResult(Activity.RESULT_OK, intent)
+                    finish()
+                }
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

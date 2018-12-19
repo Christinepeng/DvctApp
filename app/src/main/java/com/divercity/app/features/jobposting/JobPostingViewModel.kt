@@ -8,6 +8,7 @@ import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.entity.skills.SkillResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
+import com.divercity.app.features.jobposting.usecase.EditJobUseCase
 import com.divercity.app.features.jobposting.usecase.PostJobUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -17,9 +18,10 @@ import javax.inject.Inject
  */
 
 class JobPostingViewModel @Inject
-constructor(private val postJobUseCase: PostJobUseCase) : BaseViewModel() {
+constructor(private val postJobUseCase: PostJobUseCase,
+            private val editJobUseCase: EditJobUseCase) : BaseViewModel() {
 
-    var postJobResponse = MutableLiveData<Resource<JobResponse>>()
+    var jobResponse = MutableLiveData<Resource<JobResponse>>()
     var company: CompanyResponse? = null
     var jobType: JobTypeResponse? = null
     var skillList = ArrayList<SkillResponse>()
@@ -29,26 +31,56 @@ constructor(private val postJobUseCase: PostJobUseCase) : BaseViewModel() {
                 companyId: String,
                 typeId: String,
                 location: String,
-                skillList : List<String?>) {
-        postJobResponse.postValue(Resource.loading(null))
+                skillList: List<String?>) {
+        jobResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<JobResponse>() {
             override fun onFail(error: String) {
-                postJobResponse.postValue(Resource.error(error, null))
+                jobResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-                postJobResponse.postValue(Resource.error(error.toString(), null))
+                jobResponse.postValue(Resource.error(error.toString(), null))
             }
 
             override fun onSuccess(o: JobResponse) {
-                postJobResponse.postValue(Resource.success(o))
+                jobResponse.postValue(Resource.success(o))
             }
         }
         compositeDisposable.add(callback)
         postJobUseCase.execute(callback, PostJobUseCase.Params.forJob(title, desc, companyId, typeId, location, skillList))
     }
 
+    fun editJob(id: String,
+                title: String,
+                desc: String,
+                companyId: String,
+                typeId: String,
+                location: String,
+                skillList: List<String?>) {
+        jobResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<JobResponse>() {
+            override fun onFail(error: String) {
+                jobResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                jobResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: JobResponse) {
+                jobResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+        editJobUseCase.execute(callback, EditJobUseCase.Params.forJob(id, title, desc, companyId, typeId, location, skillList))
+    }
+
     fun getStringSkillList(): List<String?> {
         return skillList.map { it -> it.attributes?.name }
+    }
+
+    fun setJobData(jobResponse: JobResponse){
+        company = CompanyResponse(jobResponse.id)
+        jobType = JobTypeResponse(id = "1")
     }
 }

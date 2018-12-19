@@ -1,4 +1,5 @@
-package com.divercity.app.features.onboarding.selectethnicity
+package com.divercity.app.features.ethnicity.onboarding
+
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,30 +9,27 @@ import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
+import com.divercity.app.features.company.base.adapter.CompanyAdapter
+import com.divercity.app.features.ethnicity.base.Ethnicity
+import com.divercity.app.features.ethnicity.base.SelectEthnicityFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject
 
+class OnboardingEthnicityFragment : BaseFragment(), SelectEthnicityFragment.Listener {
 
-/**
- * Created by lucas on 25/10/2018.
- */
-
-
-class SelectEthnicityFragment : BaseFragment() {
-
-    lateinit var viewModel: SelectEthnicityViewModel
+    lateinit var viewModel: OnboardingEthnicityViewModel
 
     @Inject
-    lateinit var adapter: SelectEthnicityAdapter
+    lateinit var adapter: CompanyAdapter
 
     var currentProgress: Int = 0
 
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
 
-        fun newInstance(progress: Int): SelectEthnicityFragment {
-            val fragment = SelectEthnicityFragment()
+        fun newInstance(progress: Int): OnboardingEthnicityFragment {
+            val fragment = OnboardingEthnicityFragment()
             val arguments = Bundle()
             arguments.putInt(PARAM_PROGRESS, progress)
             fragment.arguments = arguments
@@ -39,20 +37,18 @@ class SelectEthnicityFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_onboarding_header_search_list
+    override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectEthnicityViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingEthnicityViewModel::class.java]
         currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_continue.visibility = View.GONE
-        include_search.visibility = View.GONE
-        adapter.setListener(listener)
-        list.adapter = adapter
+        childFragmentManager.beginTransaction().add(
+                R.id.fragment_fragment_container, SelectEthnicityFragment.newInstance()).commit()
         setupHeader()
         subscribeToLiveData()
     }
@@ -75,7 +71,7 @@ class SelectEthnicityFragment : BaseFragment() {
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(activity!!,
-                        viewModel.accountType,
+                        viewModel.getAccountType(),
                         currentProgress,
                         false
                 )
@@ -95,7 +91,7 @@ class SelectEthnicityFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     navigator.navigateToNextOnboarding(activity!!,
-                            viewModel.accountType,
+                            viewModel.getAccountType(),
                             currentProgress,
                             true
                     )
@@ -104,7 +100,7 @@ class SelectEthnicityFragment : BaseFragment() {
         })
     }
 
-    private val listener: SelectEthnicityAdapter.Listener = SelectEthnicityAdapter.Listener {
-        viewModel.updateUserProfile(getString(it.textId))
+    override fun onEthnicityChosen(ethnicity: Ethnicity) {
+        viewModel.updateUserProfile(getString(ethnicity.textId))
     }
 }

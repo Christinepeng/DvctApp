@@ -126,4 +126,11 @@ constructor(private val jobService: JobService) : JobRepository {
         if (!response.isSuccessful)
             throw HttpException(response)
     }
+
+    override fun editJob(jobId: String, body: JobBody): Observable<JobResponse> {
+        return jobService.editJob(jobId, body).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
 }

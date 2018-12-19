@@ -1,6 +1,194 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-</android.support.constraint.ConstraintLayout>
+    <android.support.v4.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txt_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/avenir_heavy"
+                android:gravity="center_horizontal"
+                android:text="@string/personal"
+                android:textColor="#333241"
+                android:textSize="17sp" />
+
+            <LinearLayout
+                android:id="@+id/lay_ethnicity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:paddingStart="14dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_globe" />
+
+                <TextView
+                    android:id="@+id/txt_ethnicity"
+                    style="@style/AppText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:layout_marginStart="20dp"
+                    android:hint="@string/ethnicity"
+                    android:paddingTop="17dp"
+                    android:paddingBottom="17dp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_company_industry"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:padding="14dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_user" />
+
+                <TextView
+                    android:id="@+id/txt_company_industry"
+                    style="@style/AppText2"
+                    android:layout_width="match_parent"
+                    android:layout_marginStart="20dp"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/gender" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_company_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_briefcase_grey" />
+
+                <TextView
+                    android:id="@+id/txt_company_location"
+                    style="@style/AppText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="@string/industry" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_company_size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_hat" />
+
+                <TextView
+                    android:id="@+id/txt_company_sizse"
+                    style="@style/AppText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="@string/school" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_company_sizde"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_map_pin" />
+
+                <TextView
+                    android:id="@+id/txt_company_size"
+                    style="@style/AppText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="@string/location" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lay_company_sizdes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="1dp"
+                android:background="@android:color/white"
+                android:orientation="horizontal"
+                android:padding="16dp">
+
+                <ImageView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:src="@drawable/icon_gift" />
+
+                <TextView
+                    android:id="@+id/txt_company_sisze"
+                    style="@style/AppText2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="@string/age_range" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_names"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:fontFamily="@font/avenir_heavy"
+                android:gravity="center_horizontal"
+                android:text="@string/interests"
+                android:textColor="#333241"
+                android:textSize="17sp" />
+
+        </LinearLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+</FrameLayout>

@@ -78,4 +78,7 @@ interface JobService {
     @POST("jobs/{jobId}/perform")
     fun publishUnpublishJob(@Path("jobId") jobId: String,
                             @Part("intent") action: RequestBody): Observable<Response<DataObject<JobResponse>>>
+
+    @PUT("jobs/{jobId}")
+    fun editJob(@Path("jobId") jobId: String, @Body() body: JobBody): Observable<Response<DataObject<JobResponse>>>
 }

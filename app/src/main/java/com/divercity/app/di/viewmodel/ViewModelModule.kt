@@ -37,7 +37,7 @@ import com.divercity.app.features.login.step1.EnterEmailViewModel
 import com.divercity.app.features.login.step2.LoginViewModel
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewModel
 import com.divercity.app.features.onboarding.selectage.SelectAgeViewModel
-import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityViewModel
+import com.divercity.app.features.ethnicity.base.SelectEthnicityViewModel
 import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsViewModel
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorViewModel

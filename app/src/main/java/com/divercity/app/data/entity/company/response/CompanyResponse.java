@@ -16,6 +16,10 @@ public class CompanyResponse implements Parcelable {
 	@SerializedName("type")
 	private String type;
 
+	public CompanyResponse(String id) {
+		this.id = id;
+	}
+
 	protected CompanyResponse(Parcel in) {
 		attributes = in.readParcelable(Attributes.class.getClassLoader());
 		id = in.readString();

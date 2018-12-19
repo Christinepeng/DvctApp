@@ -8,6 +8,8 @@ import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.app.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
+import com.divercity.app.features.ethnicity.base.SelectEthnicityFragment
+import com.divercity.app.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
 import com.divercity.app.features.groups.module.GroupsModule
@@ -46,7 +48,6 @@ import com.divercity.app.features.login.step1.EnterEmailFragment
 import com.divercity.app.features.login.step2.LoginFragment
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
 import com.divercity.app.features.onboarding.selectage.SelectAgeFragment
-import com.divercity.app.features.onboarding.selectethnicity.SelectEthnicityFragment
 import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsFragment
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorFragment
@@ -234,4 +235,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindFollowerFragment (): FollowerFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindToolbarEthnicityFragment (): ToolbarEthnicityFragment
 }

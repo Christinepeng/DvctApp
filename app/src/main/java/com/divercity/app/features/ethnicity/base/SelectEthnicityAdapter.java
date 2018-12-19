@@ -1,4 +1,4 @@
-package com.divercity.app.features.onboarding.selectethnicity;
+package com.divercity.app.features.ethnicity.base;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -105,7 +105,7 @@ public class SelectEthnicityAdapter extends RecyclerView.Adapter<SelectEthnicity
         Ethnicity item = list.get(position);
 //        holder.imgIcon.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.drawable));
         holder.imgIcon.setVisibility(View.GONE);
-        holder.txtTitle.setText(item.textId);
+        holder.txtTitle.setText(item.getTextId());
         holder.itemView.setOnClickListener(view -> {
             listener.onEthnicityClick(item);
         });

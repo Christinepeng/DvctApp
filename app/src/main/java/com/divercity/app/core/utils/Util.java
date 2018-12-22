@@ -11,6 +11,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 public final class Util {
@@ -91,6 +92,10 @@ public final class Util {
             return "";
         }
         return string;
+    }
+
+    public static String getStringFromArray(List<String> list) {
+        return list.toString().substring(1, list.toString().length() - 1);
     }
 
     @SuppressWarnings("deprecation")

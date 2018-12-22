@@ -62,6 +62,8 @@ class SplashFragment : BaseFragment() {
 //                navigator.navigateToSelectOccupationActivity(activity!!, 20)
 //                navigator.navigateToOnboardingIndustryActivity(activity!!, 30)
 //            navigator.navigateToSelectSingleIndustryActivityForResult(this, 30)
+//            navigator.navigateToOnboardingGenderActivity(activity!!, 30)
+//            navigator.navigateToOnboardingLocationActivity(activity!!, 76)
             else {
                 navigator.navigateToEnterEmailActivity(activity!!)
                 activity!!.finish()

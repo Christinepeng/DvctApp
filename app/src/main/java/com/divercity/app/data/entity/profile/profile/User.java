@@ -7,6 +7,9 @@ public class User {
     @SerializedName("country")
     private String country;
 
+    @SerializedName("city")
+    private String city;
+
     @SerializedName("account_type")
     private String accountType;
 
@@ -103,6 +106,14 @@ public class User {
         this.jobEmployerId = jobEmployerId;
     }
 
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
     @Override
     public String toString() {
         return
@@ -116,6 +127,7 @@ public class User {
                         ",school_id = '" + schoolId + '\'' +
                         ",age_range = '" + ageRange + '\'' +
                         ",job_employer_id = '" + jobEmployerId + '\'' +
+                        ",city = '" + city + '\'' +
                         "}";
     }
 }

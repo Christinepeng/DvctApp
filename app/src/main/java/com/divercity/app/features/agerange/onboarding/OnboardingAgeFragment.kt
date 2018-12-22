@@ -1,4 +1,4 @@
-package com.divercity.app.features.onboarding.selectage
+package com.divercity.app.features.agerange.onboarding
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,24 +8,25 @@ import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
+import com.divercity.app.features.agerange.base.SelectAgeFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject
 
-class SelectAgeFragment : BaseFragment() {
+class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
 
-    lateinit var viewModel: SelectAgeViewModel
+    lateinit var viewModel: OnboardingAgeViewModel
 
     @Inject
-    lateinit var adapter: SelectAgeAdapter
+    lateinit var adapter: OnboardingAgeViewModel
 
-    private var currentProgress: Int = 50
+    var currentProgress: Int = 0
 
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
 
-        fun newInstance(progress: Int): SelectAgeFragment {
-            val fragment = SelectAgeFragment()
+        fun newInstance(progress: Int): OnboardingAgeFragment {
+            val fragment = OnboardingAgeFragment()
             val arguments = Bundle()
             arguments.putInt(PARAM_PROGRESS, progress)
             fragment.arguments = arguments
@@ -33,35 +34,31 @@ class SelectAgeFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_onboarding_header_search_list
+    override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectAgeViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingAgeViewModel::class.java]
+        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupView()
+        childFragmentManager.beginTransaction().add(
+                R.id.fragment_fragment_container, SelectAgeFragment.newInstance()).commit()
         setupHeader()
+        setupView()
         subscribeToLiveData()
     }
 
     private fun setupView() {
-        include_search.visibility = View.GONE
-
-        list.adapter = adapter
 
         btn_continue.setOnClickListener {
-            if (adapter.ageRangeSelected != null) {
-                viewModel.updateUserProfile(adapter.ageRangeSelected)
+            if (viewModel.ageRangeSelected != null) {
+                viewModel.updateUserProfileWithSelectedAgeRange()
             } else
                 navigateToNext(false)
         }
-    }
-
-    private fun showToast(msg: String) {
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun setupHeader() {
@@ -89,10 +86,14 @@ class SelectAgeFragment : BaseFragment() {
 
     private fun navigateToNext(shouldIncrement: Boolean) {
         navigator.navigateToNextOnboarding(activity!!,
-                viewModel.accountType,
+                viewModel.getAccountType(),
                 currentProgress,
                 shouldIncrement
         )
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun subscribeToLiveData() {
@@ -110,5 +111,9 @@ class SelectAgeFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    override fun onAgeRangeChosen(ageRange: String) {
+        viewModel.ageRangeSelected = ageRange
     }
 }

@@ -1,5 +1,8 @@
 package com.divercity.app.di.module
 
+import com.divercity.app.features.agerange.base.SelectAgeFragment
+import com.divercity.app.features.agerange.onboarding.OnboardingAgeFragment
+import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.app.features.company.base.SelectCompanyFragment
 import com.divercity.app.features.company.companysize.CompanySizesFragment
 import com.divercity.app.features.company.createcompany.CreateCompanyFragment
@@ -9,7 +12,11 @@ import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.app.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.app.features.ethnicity.base.SelectEthnicityFragment
+import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityFragment
 import com.divercity.app.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
+import com.divercity.app.features.gender.base.SelectGenderFragment
+import com.divercity.app.features.gender.onboarding.OnboardingGenderFragment
+import com.divercity.app.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
 import com.divercity.app.features.groups.module.GroupsModule
@@ -47,8 +54,6 @@ import com.divercity.app.features.location.withtoolbar.ToolbarLocationFragment
 import com.divercity.app.features.login.step1.EnterEmailFragment
 import com.divercity.app.features.login.step2.LoginFragment
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptFragment
-import com.divercity.app.features.onboarding.selectage.SelectAgeFragment
-import com.divercity.app.features.onboarding.selectgender.SelectGenderFragment
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsFragment
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorFragment
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationFragment
@@ -58,6 +63,8 @@ import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeFragme
 import com.divercity.app.features.profile.ProfileFragment
 import com.divercity.app.features.profile.module.ProfileModule
 import com.divercity.app.features.profile.tabfollowers.FollowerFragment
+import com.divercity.app.features.profile.tabfollowing.FollowingFragment
+import com.divercity.app.features.profile.tabgroups.FollowingGroupsFragment
 import com.divercity.app.features.profile.tabprofile.TabProfileFragment
 import com.divercity.app.features.signup.SignUpFragment
 import com.divercity.app.features.splash.SplashFragment
@@ -238,4 +245,25 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindToolbarEthnicityFragment (): ToolbarEthnicityFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindToolbarGenderFragment (): ToolbarGenderFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindOnboardingEthnicityFragment (): OnboardingEthnicityFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindOnboardingGenderFragment (): OnboardingGenderFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindFollowingFragment (): FollowingFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindFollowingGroupsFragment (): FollowingGroupsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindOnboardingAgeFragment (): OnboardingAgeFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindToolbarAgeFragment (): ToolbarAgeFragment
 }

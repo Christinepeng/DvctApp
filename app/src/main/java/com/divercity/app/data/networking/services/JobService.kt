@@ -74,10 +74,11 @@ interface JobService {
                         @Query("page[number]") pageNumber: Int,
                         @Query("page[size]") size: Int): Observable<Response<DataArray<JobApplicationResponse>>>
 
+//    Actions: publis, unpublish, delete
     @Multipart
     @POST("jobs/{jobId}/perform")
-    fun publishUnpublishJob(@Path("jobId") jobId: String,
-                            @Part("intent") action: RequestBody): Observable<Response<DataObject<JobResponse>>>
+    fun performActionJob(@Path("jobId") jobId: String,
+                         @Part("intent") action: RequestBody): Observable<Response<DataObject<JobResponse>>>
 
     @PUT("jobs/{jobId}")
     fun editJob(@Path("jobId") jobId: String, @Body() body: JobBody): Observable<Response<DataObject<JobResponse>>>

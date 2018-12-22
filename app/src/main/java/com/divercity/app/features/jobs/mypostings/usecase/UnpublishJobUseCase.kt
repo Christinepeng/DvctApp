@@ -19,7 +19,7 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
 ) : UseCase<JobResponse, UnpublishJobUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<JobResponse> {
-        return repository.publishUnpublishJob(params.jobId, "unpublish")
+        return repository.performActionJob(params.jobId, "unpublish")
     }
 
     class Params private constructor(val jobId: String) {

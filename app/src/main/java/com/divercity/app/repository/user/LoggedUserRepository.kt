@@ -46,9 +46,29 @@ interface LoggedUserRepository {
 
     fun clearUserData()
 
-    fun saveUserHeaderData(response : Response<DataObject<LoginResponse>>)
+    fun saveUserHeaderData(response: Response<DataObject<LoginResponse>>)
 
-    fun saveUserData(data : DataObject<LoginResponse>?)
+    fun saveUserData(data: DataObject<LoginResponse>?)
 
-    fun isLoggedUserJobSeeker() : Boolean
+    fun isLoggedUserJobSeeker(): Boolean
+
+    fun getEthnicity(): String?
+
+    fun setEthnicity(ethnicity: String?)
+
+    fun getGender(): String?
+
+    fun setGender(gender: String?)
+
+    fun getIndustry(): String?
+
+    fun setIndustry(industry: String?)
+
+    fun getLocation(): String?
+
+    fun setLocation(location: String?)
+
+    fun getAgeRange(): String?
+
+    fun setAgeRange(ageRange: String?)
 }

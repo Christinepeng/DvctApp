@@ -7,8 +7,9 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.divercity.app.R
-import com.divercity.app.features.groups.trending.TrendingGroupsFragment
 import com.divercity.app.features.profile.tabfollowers.FollowerFragment
+import com.divercity.app.features.profile.tabfollowing.FollowingFragment
+import com.divercity.app.features.profile.tabgroups.FollowingGroupsFragment
 import com.divercity.app.features.profile.tabprofile.TabProfileFragment
 import javax.inject.Inject
 
@@ -45,8 +46,8 @@ class ProfileViewPagerAdapter
         return when (position) {
             0 -> TabProfileFragment.newInstance()
             1 -> FollowerFragment.newInstance()
-            2 -> TabProfileFragment.newInstance()
-            else -> TabProfileFragment.newInstance()
+            2 -> FollowingFragment.newInstance()
+            else -> FollowingGroupsFragment.newInstance()
         }
     }
 

@@ -32,4 +32,11 @@ interface UserRepository : LoggedUserRepository {
             size: Int,
             query: String?
     ): Observable<List<LoginResponse>>
+
+    fun fetchFollowingByUser(
+        userId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<LoginResponse>>
 }

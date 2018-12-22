@@ -47,13 +47,10 @@ class TabJobsViewPagerAdapter
     )
 
     override fun getItem(position: Int): Fragment {
-        return if (userRepository.getAccountType() != null &&
-                (userRepository.getAccountType().equals(context.getString(R.string.hiring_manager_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.recruiter_id)))
-        )
-            getFragmentsRecruiter(position)
-        else
+        return if (userRepository.isLoggedUserJobSeeker())
             getFragmentsSeeker(position)
+        else
+            getFragmentsRecruiter(position)
     }
 
     private fun getFragmentsSeeker(position: Int): Fragment {
@@ -76,11 +73,8 @@ class TabJobsViewPagerAdapter
 
 
     override fun getPageTitle(position: Int): CharSequence? {
-        return if (userRepository.getAccountType() != null &&
-                (userRepository.getAccountType().equals(context.getString(R.string.job_seeker_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.student_id))) ||
-                userRepository.getAccountType().equals(context.getString(R.string.professional_id))
-        )
+
+        return if (userRepository.isLoggedUserJobSeeker())
             tabTitlesJobSeeker[position]
         else
             tabTitlesRecruiter[position]

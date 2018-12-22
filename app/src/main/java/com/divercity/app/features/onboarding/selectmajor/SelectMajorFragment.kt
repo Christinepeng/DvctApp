@@ -171,7 +171,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     }
 
     private val listener: MajorViewHolder.Listener = MajorViewHolder.Listener {
-        //        viewModelJobs.updateUserProfile(it)
+        //        viewModelJobs.updateUserProfileWithSelectedAgeRange(it)
         navigator.navigateToNextOnboarding(
             activity!!,
             viewModel.accountType,

@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.divercity.app.core.base.BaseActivity
 import com.divercity.app.core.base.BaseFragment
-import com.divercity.app.features.ethnicity.base.SelectEthnicityFragment
 
 /**
  * Created by lucas on 17/10/2018.
@@ -22,6 +21,6 @@ class OnboardingEthnicityActivity : BaseActivity() {
         }
     }
 
-    override fun fragment(): BaseFragment = SelectEthnicityFragment.newInstance(
+    override fun fragment(): BaseFragment = OnboardingEthnicityFragment.newInstance(
             intent.getIntExtra(INTENT_EXTRA_PARAM_PROGRESS, 0))
 }

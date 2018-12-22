@@ -1,4 +1,4 @@
-package com.divercity.app.features.onboarding.selectgender;
+package com.divercity.app.features.gender.onboarding;
 
 import android.arch.lifecycle.MutableLiveData;
 
@@ -17,15 +17,15 @@ import javax.inject.Inject;
  * Created by lucas on 17/10/2018.
  */
 
-public class SelectGenderViewModel extends BaseViewModel {
+public class OnboardingGenderViewModel extends BaseViewModel {
 
     private UserRepository userRepository;
     private MutableLiveData<Resource<LoginResponse>> updateUserProfileResponse = new MutableLiveData<>();
     private UpdateUserProfileUseCase updateUserProfileUseCase;
 
     @Inject
-    public SelectGenderViewModel(UpdateUserProfileUseCase updateUserProfileUseCase,
-                                 UserRepository userRepository) {
+    public OnboardingGenderViewModel(UpdateUserProfileUseCase updateUserProfileUseCase,
+                                     UserRepository userRepository) {
         this.updateUserProfileUseCase = updateUserProfileUseCase;
         this.userRepository = userRepository;
     }

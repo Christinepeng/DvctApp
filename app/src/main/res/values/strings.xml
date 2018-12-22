@@ -16,12 +16,19 @@
     <string name="desc">desc</string>
     <string name="skip">Skip</string>
     <string name="done">Done</string>
+    <string name="_continue">Continue</string>
+
+    <!-- Profile-->
     <string name="personal">Personal</string>
     <string name="interests">Interests</string>
     <string name="gender">Gender</string>
     <string name="school">School</string>
     <string name="ethnicity">Ethnicity</string>
     <string name="age_range">Age Range</string>
+    <string name="occupation">Occupation</string>
+    <string name="no_followers">You don’t seem to have any Followers yet :(</string>
+    <string name="no_following">You don’t seem to be Following anyone yet :(</string>
+    <string name="no_groups_following">You haven’t joined any Group yet :(</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>

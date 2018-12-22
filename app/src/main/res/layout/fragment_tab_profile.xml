@@ -52,7 +52,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay_company_industry"
+                android:id="@+id/lay_gender"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -67,7 +67,7 @@
                     android:src="@drawable/icon_user" />
 
                 <TextView
-                    android:id="@+id/txt_company_industry"
+                    android:id="@+id/txt_gender"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_marginStart="20dp"
@@ -77,7 +77,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay_company_location"
+                android:id="@+id/lay_industry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -92,12 +92,12 @@
                     android:src="@drawable/icon_briefcase_grey" />
 
                 <TextView
-                    android:id="@+id/txt_company_location"
+                    android:id="@+id/txt_industry"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
-                    android:hint="@string/industry" />
+                    android:hint="@string/occupation" />
 
             </LinearLayout>
 
@@ -127,7 +127,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay_company_sizde"
+                android:id="@+id/lay_location"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -142,7 +142,7 @@
                     android:src="@drawable/icon_map_pin" />
 
                 <TextView
-                    android:id="@+id/txt_company_size"
+                    android:id="@+id/txt_location"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -152,7 +152,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/lay_company_sizdes"
+                android:id="@+id/lay_age_range"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="1dp"
@@ -167,7 +167,7 @@
                     android:src="@drawable/icon_gift" />
 
                 <TextView
-                    android:id="@+id/txt_company_sisze"
+                    android:id="@+id/txt_age_range"
                     style="@style/AppText2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -231,4 +231,68 @@ public class UserRepositoryImpl implements UserRepository {
             return response.body().getData();
         });
     }
+
+    @Nullable
+    @Override
+    public String getEthnicity() {
+        return loggedUserRepository.getEthnicity();
+    }
+
+    @Override
+    public void setEthnicity(@Nullable String ethnicity) {
+        loggedUserRepository.setEthnicity(ethnicity);
+    }
+
+    @Nullable
+    @Override
+    public String getGender() {
+        return loggedUserRepository.getGender();
+    }
+
+    @Override
+    public void setGender(@Nullable String gender) {
+        loggedUserRepository.setGender(gender);
+    }
+
+    @Nullable
+    @Override
+    public String getIndustry() {
+        return loggedUserRepository.getIndustry();
+    }
+
+    @Override
+    public void setIndustry(@Nullable String industry) {
+        loggedUserRepository.setIndustry(industry);
+    }
+
+    @NotNull
+    @Override
+    public Observable<List<LoginResponse>> fetchFollowingByUser(@NotNull String userId, int pageNumber, int size, @Nullable String query) {
+        return userService.fetchFollowingByUser(userId, pageNumber, size, query).map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
+    @Nullable
+    @Override
+    public String getLocation() {
+        return loggedUserRepository.getLocation();
+    }
+
+    @Override
+    public void setLocation(@Nullable String location) {
+        loggedUserRepository.setLocation(location);
+    }
+
+    @Nullable
+    @Override
+    public String getAgeRange() {
+        return loggedUserRepository.getAgeRange();
+    }
+
+    @Override
+    public void setAgeRange(@Nullable String ageRange) {
+        loggedUserRepository.setAgeRange(ageRange);
+    }
 }

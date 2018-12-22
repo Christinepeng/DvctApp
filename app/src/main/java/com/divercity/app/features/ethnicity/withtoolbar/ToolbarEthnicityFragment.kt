@@ -3,6 +3,7 @@ package com.divercity.app.features.ethnicity.withtoolbar
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
@@ -32,7 +33,7 @@ class ToolbarEthnicityFragment : BaseFragment(), SelectEthnicityFragment.Listene
         childFragmentManager.beginTransaction().add(
                 R.id.fragment_fragment_container, SelectEthnicityFragment.newInstance()).commit()
 
-        (activity as ToolbarEthnicityActivity).apply {
+        (activity as AppCompatActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
                 it.setTitle(R.string.select_your_ethnicity)

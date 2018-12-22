@@ -19,7 +19,11 @@ constructor(private val repository: FollowersPaginatedRepositoryImpl) : BaseView
     lateinit var pagedApplicantsList: LiveData<PagedList<LoginResponse>>
     private lateinit var listingPaginatedJob: Listing<LoginResponse>
 
-    fun fetchFollowers() {
+    init {
+        fetchFollowers()
+    }
+
+    private fun fetchFollowers() {
         listingPaginatedJob = repository.fetchData()
         pagedApplicantsList = listingPaginatedJob.pagedList
     }

@@ -1,4 +1,4 @@
-package com.divercity.app.features.onboarding.selectgender;
+package com.divercity.app.features.gender.base;
 
 /**
  * Created by lucas on 17/10/2018.

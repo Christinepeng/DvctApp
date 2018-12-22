@@ -3,7 +3,6 @@ package com.divercity.app.features.jobs
 import android.app.Application
 import android.arch.lifecycle.MutableLiveData
 import android.view.View
-import com.divercity.app.R
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.repository.user.UserRepositoryImpl
 import javax.inject.Inject
@@ -20,13 +19,10 @@ constructor(val userRepository: UserRepositoryImpl,
 
     init {
 
-        if (userRepository.getAccountType() != null &&
-                (userRepository.getAccountType().equals(application.getString(R.string.hiring_manager_id)) ||
-                        userRepository.getAccountType().equals(application.getString(R.string.recruiter_id)))
-        )
-            showBtnAddJob.value = View.VISIBLE
-        else
+        if (userRepository.isLoggedUserJobSeeker())
             showBtnAddJob.value = View.GONE
+        else
+            showBtnAddJob.value = View.VISIBLE
     }
 
     fun getAccountType(): String? {

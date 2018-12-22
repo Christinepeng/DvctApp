@@ -104,5 +104,8 @@ data class Attributes(
 	val studentMajors: List<String?>? = null,
 
 	@field:SerializedName("name")
-	val name: String? = null
+	val name: String? = null,
+
+	@field:SerializedName("age_range")
+	val ageRange: String? = null
 )

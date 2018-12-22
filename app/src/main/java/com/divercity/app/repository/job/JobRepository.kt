@@ -61,7 +61,7 @@ interface JobRepository {
             size: Int
     ): Observable<List<JobApplicationResponse>>
 
-    fun publishUnpublishJob(
+    fun performActionJob(
             jobId: String,
             action: String
     ): Observable<JobResponse>

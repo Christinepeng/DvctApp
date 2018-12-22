@@ -3,6 +3,7 @@ package com.divercity.app.repository.user
 import android.content.Context
 import com.divercity.app.R
 import com.divercity.app.core.sharedpref.SharedPreferencesManager
+import com.divercity.app.core.utils.Util
 import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.login.response.LoginResponse
 import retrofit2.Response
@@ -25,7 +26,11 @@ class LoggedUserRepositoryImpl(val context: Context) : LoggedUserRepository {
         LOCATION,
         FULL_NAME,
         USER_ID,
-        ACCOUNT_TYPE
+        ACCOUNT_TYPE,
+        ETHNICITY,
+        GENDER,
+        INDUSTRY,
+        AGE_RANGE
     }
 
     private val sharedPreferencesManager: SharedPreferencesManager<Key> =
@@ -103,6 +108,46 @@ class LoggedUserRepositoryImpl(val context: Context) : LoggedUserRepository {
         sharedPreferencesManager.put(Key.FULL_NAME, userName)
     }
 
+    override fun getEthnicity(): String? {
+        return sharedPreferencesManager.getString(Key.ETHNICITY)
+    }
+
+    override fun setEthnicity(ethnicity: String?) {
+        sharedPreferencesManager.put(Key.ETHNICITY, ethnicity)
+    }
+
+    override fun getGender(): String? {
+        return sharedPreferencesManager.getString(Key.GENDER)
+    }
+
+    override fun setGender(gender: String?) {
+        sharedPreferencesManager.put(Key.GENDER, gender)
+    }
+
+    override fun getIndustry(): String? {
+        return sharedPreferencesManager.getString(Key.INDUSTRY)
+    }
+
+    override fun setIndustry(industry: String?) {
+        sharedPreferencesManager.put(Key.INDUSTRY, industry)
+    }
+
+    override fun getLocation(): String? {
+        return sharedPreferencesManager.getString(Key.LOCATION)
+    }
+
+    override fun setLocation(location: String?) {
+        sharedPreferencesManager.put(Key.LOCATION, location)
+    }
+
+    override fun getAgeRange(): String? {
+        return sharedPreferencesManager.getString(Key.AGE_RANGE)
+    }
+
+    override fun setAgeRange(ageRange: String?) {
+        sharedPreferencesManager.put(Key.AGE_RANGE, ageRange)
+    }
+
     override fun saveUserHeaderData(response: Response<DataObject<LoginResponse>>) {
         setClient(response.headers().get("client"))
         setUid(response.headers().get("uid"))
@@ -111,11 +156,21 @@ class LoggedUserRepositoryImpl(val context: Context) : LoggedUserRepository {
     }
 
     override fun saveUserData(data: DataObject<LoginResponse>?) {
-        setAvatarThumbUrl(data?.data?.attributes?.avatarThumb)
-        setAvatarUrl(data?.data?.attributes?.avatarMedium)
         setUserId(data?.data?.id)
-        setAccountType(data?.data?.attributes?.accountType)
-        setFullName(data?.data?.attributes?.name)
+        data?.data?.attributes?.apply {
+            setAvatarThumbUrl(avatarThumb)
+            setAvatarUrl(avatarMedium)
+            setAccountType(accountType)
+            setFullName(name)
+            setEthnicity(ethnicity)
+            setGender(gender)
+            setIndustry(Util.getStringFromArray(industries))
+
+            if (city != null && country != null)
+                setLocation(city.plus(", ").plus(country))
+
+            setAgeRange(ageRange)
+        }
     }
 
     override fun isLoggedUserJobSeeker(): Boolean {

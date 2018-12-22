@@ -45,4 +45,11 @@ public interface UserService {
             @Query("page[number]") int pageNumber,
             @Query("page[size]") int size,
             @Query("search_query") String query);
+
+    @GET("users/{id}/following")
+    Observable<Response<DataArray<LoginResponse>>> fetchFollowingByUser(
+            @Path("id") String userId,
+            @Query("page[number]") int pageNumber,
+            @Query("page[size]") int size,
+            @Query("search_query") String query);
 }

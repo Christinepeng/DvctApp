@@ -93,7 +93,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".features.onboarding.selectage.SelectAgeActivity"
+            android:name=".features.agerange.onboarding.OnboartdingAgeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -113,7 +113,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectgender.SelectGenderActivity"
+            android:name="com.divercity.app.features.gender.onboarding.OnboardingGenderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -206,6 +206,21 @@
 
         <activity
             android:name=".features.onboarding.selectoccupationofinterests.SelectOOIActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.ethnicity.withtoolbar.ToolbarEthnicityActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.gender.withtoolbar.ToolbarGenderActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.agerange.withtoolbar.ToolbarAgeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

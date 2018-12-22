@@ -21,7 +21,6 @@ class SelectEthnicityFragment : BaseFragment() {
     var fragListener: Listener? = null
 
     companion object {
-        const val REQUEST_CODE_ETHNICITY = 1345
 
         fun newInstance(): SelectEthnicityFragment {
             return SelectEthnicityFragment()

@@ -7,11 +7,16 @@ import com.divercity.app.R
 import com.divercity.app.core.utils.OnboardingProgression
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.entity.skills.SkillResponse
+import com.divercity.app.features.agerange.onboarding.OnboartdingAgeActivity
+import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.app.features.company.companysize.CompanySizesActivity
 import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyActivity
 import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityActivity
+import com.divercity.app.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
+import com.divercity.app.features.gender.onboarding.OnboardingGenderActivity
+import com.divercity.app.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingActivity
@@ -29,8 +34,6 @@ import com.divercity.app.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.app.features.login.step1.EnterEmailActivity
 import com.divercity.app.features.login.step2.LoginActivity
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptActivity
-import com.divercity.app.features.onboarding.selectage.SelectAgeActivity
-import com.divercity.app.features.onboarding.selectgender.SelectGenderActivity
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationActivity
@@ -110,8 +113,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(SelectIndustryOnboardingActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectGenderActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectGenderActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingGenderActivity(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(OnboardingGenderActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectInterestsActivity(activity: FragmentActivity, progress: Int) {
@@ -119,10 +122,10 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToSelectBirthdayActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectAgeActivity.getCallingIntent(activity, progress))
+        activity.startActivity(OnboartdingAgeActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectEthnicityActivity(activity: FragmentActivity, progress: Int) {
+    fun navigateToOnboardingEthnicityActivity(activity: FragmentActivity, progress: Int) {
         activity.startActivity(OnboardingEthnicityActivity.getCallingIntent(activity, progress))
     }
 
@@ -170,6 +173,18 @@ class Navigator @Inject constructor() {
         fragment.startActivityForResult(JobSkillsActivity.getCallingIntent(fragment.context, skillList), code)
     }
 
+    fun navigateToToolbarEthnicityActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(ToolbarEthnicityActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToToolbarAgeActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(ToolbarAgeActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToToolbarGenderActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(ToolbarGenderActivity.getCallingIntent(fragment.context), code)
+    }
+
     fun navigateToShareJobGroupActivity(fragment: Fragment, jobId: String?) {
         fragment.startActivity(ShareJobGroupActivity.getCallingIntent(fragment.context, jobId))
     }
@@ -211,7 +226,7 @@ class Navigator @Inject constructor() {
             if (userTypeId == activity.getString(R.string.student_id)) {
                 navigateToSelectOOIActivity(activity, progress)
             } else {
-                navigateToSelectGenderActivity(activity, progress)
+                navigateToOnboardingGenderActivity(activity, progress)
             }
         } else if (activity is OnboardingEthnicityActivity) {
 
@@ -219,9 +234,9 @@ class Navigator @Inject constructor() {
                 navigateToSelectGroupActivity(activity, progress)
             else
                 navigateToSelectBirthdayActivity(activity, progress)
-        } else if (activity is SelectGenderActivity) {
+        } else if (activity is OnboardingGenderActivity) {
 
-            navigateToSelectEthnicityActivity(activity, progress)
+            navigateToOnboardingEthnicityActivity(activity, progress)
         } else if (activity is SelectSchoolActivity) {
 
             navigateToSelectMajorActivity(activity, progress)
@@ -233,20 +248,20 @@ class Navigator @Inject constructor() {
             if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(R.string.job_seeker_id))
                 navigateToOnboardingLocationActivity(activity, progress)
             else
-                navigateToSelectGenderActivity(activity, progress)
+                navigateToOnboardingGenderActivity(activity, progress)
         } else if (activity is SelectInterestsActivity) {
 
             if (userTypeId == activity.getString(R.string.student_id))
                 navigateToSelectGroupActivity(activity, progress)
             else
-                navigateToSelectGenderActivity(activity, progress)
-        } else if (activity is SelectAgeActivity) {
+                navigateToOnboardingGenderActivity(activity, progress)
+        } else if (activity is OnboartdingAgeActivity) {
 
             navigateToSelectGroupActivity(activity, progress)
         } else if (activity is SelectOOIActivity) {
 
             if (userTypeId == activity.getString(R.string.student_id))
-                navigateToSelectGenderActivity(activity, progress)
+                navigateToOnboardingGenderActivity(activity, progress)
         } else if (activity is SelectIndustryOnboardingActivity) {
             navigateToOnboardingLocationActivity(activity, progress)
         }

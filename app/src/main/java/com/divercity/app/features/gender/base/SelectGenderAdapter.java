@@ -1,4 +1,4 @@
-package com.divercity.app.features.onboarding.selectgender;
+package com.divercity.app.features.gender.base;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

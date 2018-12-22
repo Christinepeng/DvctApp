@@ -42,9 +42,6 @@ class FollowerFragment : BaseFragment(), RetryCallback {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(FollowerViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-
-        if (savedInstanceState == null)
-            viewModel.fetchFollowers()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -70,6 +67,8 @@ class FollowerFragment : BaseFragment(), RetryCallback {
                     ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
+
+        txt_empty_array.setText(R.string.no_followers)
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -89,9 +88,9 @@ class FollowerFragment : BaseFragment(), RetryCallback {
                     isListRefreshing = false
 
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
-                    txt_no_results.visibility = View.VISIBLE
+                    lay_no_followers.visibility = View.VISIBLE
                 else
-                    txt_no_results.visibility = View.GONE
+                    lay_no_followers.visibility = View.GONE
 
                 swipe_list_main.isRefreshing = isListRefreshing
             }

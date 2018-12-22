@@ -2,12 +2,15 @@ package com.divercity.app.di.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.divercity.app.features.agerange.onboarding.OnboardingAgeViewModel
 import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.companysize.CompanySizesViewModel
 import com.divercity.app.features.company.createcompany.CreateCompanyViewModel
 import com.divercity.app.features.company.onboarding.OnboardingCompanyViewModel
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogViewModel
+import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityViewModel
+import com.divercity.app.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.all.AllGroupsViewModel
 import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
@@ -36,9 +39,6 @@ import com.divercity.app.features.location.onboarding.OnboardingLocationViewMode
 import com.divercity.app.features.login.step1.EnterEmailViewModel
 import com.divercity.app.features.login.step2.LoginViewModel
 import com.divercity.app.features.onboarding.profileprompt.ProfilePromptViewModel
-import com.divercity.app.features.onboarding.selectage.SelectAgeViewModel
-import com.divercity.app.features.ethnicity.base.SelectEthnicityViewModel
-import com.divercity.app.features.onboarding.selectgender.SelectGenderViewModel
 import com.divercity.app.features.onboarding.selectinterests.SelectInterestsViewModel
 import com.divercity.app.features.onboarding.selectmajor.SelectMajorViewModel
 import com.divercity.app.features.onboarding.selectoccupation.SelectOccupationViewModel
@@ -47,6 +47,9 @@ import com.divercity.app.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.app.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.app.features.profile.ProfileViewModel
 import com.divercity.app.features.profile.tabfollower.FollowerViewModel
+import com.divercity.app.features.profile.tabfollowing.FollowingViewModel
+import com.divercity.app.features.profile.tabgroups.FollowingGroupsViewModel
+import com.divercity.app.features.profile.tabprofile.TabProfileViewModel
 import com.divercity.app.features.signup.SignUpViewModel
 import com.divercity.app.features.splash.SplashViewModel
 import dagger.Binds
@@ -111,8 +114,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SelectAgeViewModel::class)
-    abstract fun bindsSelectBirthdayViewModel(viewModel: SelectAgeViewModel): ViewModel
+    @ViewModelKey(OnboardingAgeViewModel::class)
+    abstract fun bindsSelectBirthdayViewModel(viewModel: OnboardingAgeViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -126,13 +129,13 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(SelectEthnicityViewModel::class)
-    abstract fun bindsSelectEthnicityViewModel(viewModel: SelectEthnicityViewModel): ViewModel
+    @ViewModelKey(OnboardingEthnicityViewModel::class)
+    abstract fun bindsOnboardingEthnicityViewModel(viewModel: OnboardingEthnicityViewModel): ViewModel
 
     @Binds
     @IntoMap
-    @ViewModelKey(SelectGenderViewModel::class)
-    abstract fun bindsSelectGenderViewModel(viewModel: SelectGenderViewModel): ViewModel
+    @ViewModelKey(OnboardingGenderViewModel::class)
+    abstract fun bindsOnboardingGenderViewModel(viewModel: OnboardingGenderViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -294,4 +297,19 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FollowerViewModel::class)
     abstract fun bindsFollowerViewModel(viewModel: FollowerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TabProfileViewModel::class)
+    abstract fun bindsTabProfileViewModel(viewModel: TabProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FollowingViewModel::class)
+    abstract fun bindsFollowingViewModel(viewModel: FollowingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FollowingGroupsViewModel::class)
+    abstract fun bindsFollowingGroupsViewModel(viewModel: FollowingGroupsViewModel): ViewModel
 }

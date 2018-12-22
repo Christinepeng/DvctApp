@@ -28,10 +28,10 @@ constructor(private val jobService: JobService) : JobRepository {
         }
     }
 
-    override fun publishUnpublishJob(jobId: String, action: String): Observable<JobResponse> {
+    override fun performActionJob(jobId: String, action: String): Observable<JobResponse> {
         val partAction = RequestBody.create(MediaType.parse("text/plain"), action)
 
-        return jobService.publishUnpublishJob(jobId, partAction).map {
+        return jobService.performActionJob(jobId, partAction).map {
             checkResponse(it)
             it.body()?.data
         }

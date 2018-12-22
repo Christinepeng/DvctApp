@@ -1,10 +1,13 @@
 package com.divercity.app.features.location.onboarding
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.data.Status
 import com.divercity.app.data.entity.location.LocationResponse
 import com.divercity.app.features.company.base.adapter.CompanyAdapter
 import com.divercity.app.features.location.base.SelectLocationFragment
@@ -46,6 +49,7 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
         childFragmentManager.beginTransaction().add(
                 R.id.fragment_fragment_container, SelectLocationFragment.newInstance()).commit()
         setupHeader()
+        subscribeToLiveData()
     }
 
     private fun setupHeader() {
@@ -74,12 +78,28 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
         }
     }
 
+    private fun subscribeToLiveData() {
+        viewModel.updateUserProfileResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> showProgress()
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    navigator.navigateToNextOnboarding(activity!!,
+                            viewModel.getAccountType(),
+                            currentProgress,
+                            true
+                    )
+                }
+            }
+        })
+    }
+
     override fun onLocationChoosen(location: LocationResponse) {
-        navigator.navigateToNextOnboarding(
-                activity!!,
-                viewModel.getAccountType(),
-                currentProgress,
-                true
-        )
+        viewModel.updateUserProfile(location)
     }
 }

@@ -1,4 +1,4 @@
-package com.divercity.app.features.onboarding.selectage;
+package com.divercity.app.features.agerange.base;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -87,6 +87,8 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
                 ageRangeSelected = item.title;
 
             prevPositionSelected = position;
+
+            listener.onAgeClick(ageRangeSelected);
         });
     }
 
@@ -97,10 +99,6 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
 
     public interface Listener {
         void onAgeClick(String ageRange);
-    }
-
-    public String getAgeRangeSelected() {
-        return ageRangeSelected;
     }
 
     static class AgeViewEntity {

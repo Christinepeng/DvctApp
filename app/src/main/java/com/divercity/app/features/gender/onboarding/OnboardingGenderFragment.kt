@@ -1,4 +1,5 @@
-package com.divercity.app.features.onboarding.selectgender
+package com.divercity.app.features.gender.onboarding
+
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -8,24 +9,26 @@ import android.widget.Toast
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
+import com.divercity.app.features.company.base.adapter.CompanyAdapter
+import com.divercity.app.features.gender.base.SelectGenderFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject
 
-class SelectGenderFragment : BaseFragment() {
+class OnboardingGenderFragment : BaseFragment(), SelectGenderFragment.Listener {
 
-    lateinit var viewModel: SelectGenderViewModel
+    lateinit var viewModel: OnboardingGenderViewModel
 
     @Inject
-    lateinit var adapter: SelectGenderAdapter
+    lateinit var adapter: CompanyAdapter
 
     var currentProgress: Int = 0
 
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
 
-        fun newInstance(progress: Int): SelectGenderFragment {
-            val fragment = SelectGenderFragment()
+        fun newInstance(progress: Int): OnboardingGenderFragment {
+            val fragment = OnboardingGenderFragment()
             val arguments = Bundle()
             arguments.putInt(PARAM_PROGRESS, progress)
             fragment.arguments = arguments
@@ -33,20 +36,18 @@ class SelectGenderFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_onboarding_header_search_list
+    override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectGenderViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingGenderViewModel::class.java]
         currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn_continue.visibility = View.GONE
-        include_search.visibility = View.GONE
-        adapter.setListener(listener)
-        list.adapter = adapter
+        childFragmentManager.beginTransaction().add(
+                R.id.fragment_fragment_container, SelectGenderFragment.newInstance()).commit()
         setupHeader()
         subscribeToLiveData()
     }
@@ -59,6 +60,7 @@ class SelectGenderFragment : BaseFragment() {
                 progress = 0
                 setProgressWithAnim(currentProgress)
             }
+
             txt_title.setText(R.string.select_your_gender)
 
             txt_progress.text = currentProgress.toString().plus("%")
@@ -98,7 +100,7 @@ class SelectGenderFragment : BaseFragment() {
         })
     }
 
-    private val listener: SelectGenderAdapter.Listener = SelectGenderAdapter.Listener {
-        viewModel.updateUserProfile(getString(it.textId))
+    override fun onGenderChosen(gender: String) {
+        viewModel.updateUserProfile(gender)
     }
 }

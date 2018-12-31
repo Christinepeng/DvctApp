@@ -9,6 +9,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
+import com.divercity.app.data.entity.login.response.LoginResponse
 import com.divercity.app.features.profile.tabfollower.FollowerViewModel
 import com.divercity.app.features.profile.tabfollowers.adapter.UserAdapter
 import com.divercity.app.features.profile.tabfollowers.adapter.UserViewHolder
@@ -107,5 +108,7 @@ class FollowerFragment : BaseFragment(), RetryCallback {
     private
     val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
 
+        override fun onUserClick(user: LoginResponse) {
+        }
     }
 }

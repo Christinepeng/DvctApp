@@ -29,7 +29,10 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
         }
     }
 
-    interface Listener
+    interface Listener {
+
+        fun onUserClick(user: LoginResponse)
+    }
 
     companion object {
 

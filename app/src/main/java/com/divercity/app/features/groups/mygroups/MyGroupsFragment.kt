@@ -139,6 +139,9 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
     private val listener = object : GroupsViewHolder.Listener {
 
+        override fun onGroupClick(group: GroupResponse) {
+        }
+
         override fun onGroupJoinClick(position: Int, group: GroupResponse) {
             positionJoinClicked = position
             viewModel.joinGroup(group)

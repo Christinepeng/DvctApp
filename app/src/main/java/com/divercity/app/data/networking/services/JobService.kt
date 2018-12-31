@@ -26,8 +26,8 @@ interface JobService {
 
     @GET("jobs")
     fun fetchSimilarJobs(@Query("page[number]") pageNumber: Int,
-                  @Query("page[size]") size: Int,
-                  @Query("similar_to") jobId: String?): Observable<Response<DataArray<JobResponse>>>
+                         @Query("page[size]") size: Int,
+                         @Query("similar_to") jobId: String?): Observable<Response<DataArray<JobResponse>>>
 
     @POST("jobs/{jobId}/bookmark")
     fun saveJob(@Path("jobId") jobId: String): Observable<Response<DataObject<JobResponse>>>
@@ -47,6 +47,10 @@ interface JobService {
 
     @GET("jobs/job_types")
     fun fetchJobTypes(): Observable<Response<DataArray<JobTypeResponse>>>
+
+    @GET("jobs/{jobId}/application")
+    fun fetchJobApplication(@Path("jobId") applicationId: String)
+            : Observable<Response<DataObject<JobApplicationResponse>>>
 
     @GET("jobs/{id}")
     fun fetchJobById(@Path("id") jobId: String): Observable<Response<DataObject<JobResponse>>>
@@ -74,7 +78,7 @@ interface JobService {
                         @Query("page[number]") pageNumber: Int,
                         @Query("page[size]") size: Int): Observable<Response<DataArray<JobApplicationResponse>>>
 
-//    Actions: publis, unpublish, delete
+    //    Actions: publis, unpublish, delete
     @Multipart
     @POST("jobs/{jobId}/perform")
     fun performActionJob(@Path("jobId") jobId: String,
@@ -82,4 +86,15 @@ interface JobService {
 
     @PUT("jobs/{jobId}")
     fun editJob(@Path("jobId") jobId: String, @Body() body: JobBody): Observable<Response<DataObject<JobResponse>>>
+
+    @Multipart
+    @PUT("jobs/{jobId}/apply_edit")
+    fun editJobApplication(@Path("jobId") jobId: String,
+                           @Part("application[user_document_id]") userDocId: RequestBody,
+                           @Part("application[cover_letter]") coverLetter: RequestBody): Observable<Response<DataObject<JobApplicationResponse>>>
+
+    @Multipart
+    @PUT("jobs/{jobId}/apply_edit")
+    fun cancelJobApplication(@Path("jobId") jobId: String,
+                           @Part("application[canceled]") canceled: RequestBody): Observable<Response<DataObject<JobApplicationResponse>>>
 }

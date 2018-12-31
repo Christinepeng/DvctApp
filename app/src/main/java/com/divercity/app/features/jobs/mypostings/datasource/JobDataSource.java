@@ -152,4 +152,8 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
         }
     }
 
+    @Override
+    public void invalidate() {
+        super.invalidate();
+    }
 }

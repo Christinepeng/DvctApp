@@ -188,7 +188,7 @@ class HomeFragment : BaseFragment(), RetryCallback {
                 true
             }
             android.R.id.home -> {
-                showToast()
+                navigator.navigateToChatsActivity(this)
                 true
             }
             else -> super.onOptionsItemSelected(item)

@@ -158,6 +158,6 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
     }
 
     override fun onSuccessJobApply() {
-        fetchJobs("")
+        fetchJobs(null)
     }
 }

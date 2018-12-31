@@ -58,6 +58,7 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
         // update network states.
         // we also provide an initial load state to the listeners so that the UI can know when the
         // very first list is loaded.
+
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 

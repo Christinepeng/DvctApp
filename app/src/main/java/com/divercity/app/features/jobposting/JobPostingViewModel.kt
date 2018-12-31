@@ -6,6 +6,7 @@ import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.company.response.CompanyResponse
 import com.divercity.app.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.data.entity.skills.Attributes
 import com.divercity.app.data.entity.skills.SkillResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.jobposting.usecase.EditJobUseCase
@@ -28,10 +29,7 @@ constructor(private val postJobUseCase: PostJobUseCase,
 
     fun postJob(title: String,
                 desc: String,
-                companyId: String,
-                typeId: String,
-                location: String,
-                skillList: List<String?>) {
+                location: String) {
         jobResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<JobResponse>() {
             override fun onFail(error: String) {
@@ -47,16 +45,14 @@ constructor(private val postJobUseCase: PostJobUseCase,
             }
         }
         compositeDisposable.add(callback)
-        postJobUseCase.execute(callback, PostJobUseCase.Params.forJob(title, desc, companyId, typeId, location, skillList))
+        postJobUseCase.execute(callback, PostJobUseCase.Params.forJob
+            (title, desc, company!!.id!!, jobType!!.id!!, location, getStringSkillList()))
     }
 
     fun editJob(id: String,
                 title: String,
                 desc: String,
-                companyId: String,
-                typeId: String,
-                location: String,
-                skillList: List<String?>) {
+                location: String) {
         jobResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<JobResponse>() {
             override fun onFail(error: String) {
@@ -72,15 +68,22 @@ constructor(private val postJobUseCase: PostJobUseCase,
             }
         }
         compositeDisposable.add(callback)
-        editJobUseCase.execute(callback, EditJobUseCase.Params.forJob(id, title, desc, companyId, typeId, location, skillList))
+        editJobUseCase.execute(callback, EditJobUseCase.Params.forJob
+            (id, title, desc, company!!.id!!, jobType!!.id!!, location, getStringSkillList()))
     }
 
-    fun getStringSkillList(): List<String?> {
+    private fun getStringSkillList(): List<String?> {
         return skillList.map { it -> it.attributes?.name }
     }
 
     fun setJobData(jobResponse: JobResponse){
         company = CompanyResponse(jobResponse.id)
         jobType = JobTypeResponse(id = "1")
+        jobResponse.attributes?.skillsTag?.let {
+
+            for(item in it){
+                skillList.add(SkillResponse(attributes = Attributes(item)))
+            }
+        }
     }
 }

@@ -13,12 +13,16 @@ import com.divercity.app.data.entity.occupationofinterests.OOIResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 import com.divercity.app.data.networking.services.DataService;
-import io.reactivex.Observable;
-import retrofit2.HttpException;
-import retrofit2.Response;
+
+import java.util.List;
 
 import javax.inject.Inject;
-import java.util.List;
+
+import io.reactivex.Observable;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
+import retrofit2.HttpException;
+import retrofit2.Response;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -140,6 +144,19 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public Observable<List<OOIResponse>> fetchOccupationOfInterests(int pageNumber, int size, String query) {
         return service.fetchOccupationOfInterests(pageNumber, size, query).map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
+    @Override
+    public Observable<GroupResponse> createGroup(String title, String description, String groupType, String picture) {
+        RequestBody partTitle = RequestBody.create(MediaType.parse("text/plain"), title);
+        RequestBody partDescription = RequestBody.create(MediaType.parse("text/plain"), description);
+        RequestBody partGroupType = RequestBody.create(MediaType.parse("text/plain"), groupType);
+        RequestBody partPicture = RequestBody.create(MediaType.parse("text/plain"), picture);
+
+        return service.createGroup(partTitle, partDescription, partGroupType, partPicture).map(response -> {
             checkResponse(response);
             return response.body().getData();
         });

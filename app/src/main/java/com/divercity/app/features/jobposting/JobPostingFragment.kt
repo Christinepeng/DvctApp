@@ -237,20 +237,14 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
                     viewModel.postJob(
                             et_job_title.text.toString(),
                             et_job_description.text.toString(),
-                            viewModel.company!!.id!!,
-                            viewModel.jobType!!.id!!,
-                            txt_location.text.toString(),
-                            txt_skills.text.split(",")
+                            txt_location.text.toString()
                     )
                 } else {
                     viewModel.editJob(
                             jobForEdition!!.id!!,
                             et_job_title.text.toString(),
                             et_job_description.text.toString(),
-                            viewModel.company!!.id!!,
-                            viewModel.jobType!!.id!!,
-                            txt_location.text.toString(),
-                            txt_skills.text.split(",")
+                            txt_location.text.toString()
                     )
                 }
             }

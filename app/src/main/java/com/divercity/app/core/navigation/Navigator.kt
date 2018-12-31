@@ -9,6 +9,9 @@ import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.entity.skills.SkillResponse
 import com.divercity.app.features.agerange.onboarding.OnboartdingAgeActivity
 import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeActivity
+import com.divercity.app.features.chat.chat.ChatActivity
+import com.divercity.app.features.chat.chatlist.ChatsActivity
+import com.divercity.app.features.chat.newchat.NewChatActivity
 import com.divercity.app.features.company.companysize.CompanySizesActivity
 import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
@@ -17,6 +20,7 @@ import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityActivi
 import com.divercity.app.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.app.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.app.features.gender.withtoolbar.ToolbarGenderActivity
+import com.divercity.app.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingActivity
@@ -139,6 +143,22 @@ class Navigator @Inject constructor() {
 
     fun navigateToLinkedinActivity(activity: FragmentActivity) {
         activity.startActivity(LinkedinActivity.getCallingIntent(activity))
+    }
+
+    fun navigateToChatsActivity(fragment: Fragment) {
+        fragment.startActivity(ChatsActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToNewChatActivity(fragment: Fragment) {
+        fragment.startActivity(NewChatActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String) {
+        fragment.startActivity(ChatActivity.getCallingIntent(fragment.context, userName, userId))
+    }
+
+    fun navigateToGroupDetailActivity(fragment: Fragment, groupId : String) {
+        fragment.startActivity(GroupDetailActivity.getCallingIntent(fragment.context, groupId))
     }
 
     fun navigateToJobPostingForResultActivity(fragment: Fragment, code : Int, job: JobResponse?) {

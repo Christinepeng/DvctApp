@@ -16,11 +16,9 @@ interface JobRepository {
 
     fun fetchJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 
-    fun fetchSimilarJobs(
-            pageNumber: Int,
-            size: Int,
-            jobId: String?
-    ): Observable<List<JobResponse>>
+    fun fetchSimilarJobs(pageNumber: Int,
+                         size: Int,
+                         jobId: String?): Observable<List<JobResponse>>
 
     fun saveJob(jobId: String): Observable<JobResponse>
 
@@ -30,11 +28,9 @@ interface JobRepository {
 
     fun fetchSavedJobs(page: Int, size: Int, query: String?): Observable<IncludedArray<JobResponse>>
 
-    fun fetchMyJobApplications(
-            page: Int,
-            size: Int,
-            query: String?
-    ): Observable<List<JobApplicationResponse>>
+    fun fetchMyJobApplications(page: Int,
+                               size: Int,
+                               query: String?): Observable<List<JobApplicationResponse>>
 
     fun fetchJobTypes(): Observable<List<JobTypeResponse>>
 
@@ -42,30 +38,29 @@ interface JobRepository {
 
     fun shareJob(jobId: String, body: JobShareGroupBody): Observable<JobResponse>
 
-    fun fetchJobPostingsByUser(
-            userId: String,
-            page: Int,
-            size: Int,
-            query: String?
-    ): Observable<List<JobResponse>>
+    fun fetchJobPostingsByUser(userId: String,
+                               page: Int,
+                               size: Int,
+                               query: String?): Observable<List<JobResponse>>
 
-    fun applyJob(
-            jobId: String,
-            userDocId: String,
-            coverLetter: String
-    ): Observable<JobApplicationResponse>
+    fun applyJob(jobId: String,
+                 userDocId: String,
+                 coverLetter: String): Observable<JobApplicationResponse>
 
-    fun fetchApplicants(
-            jobId: String,
-            pageNumber: Int,
-            size: Int
-    ): Observable<List<JobApplicationResponse>>
+    fun editJobApplication(jobId: String,
+                           userDocId: String,
+                           coverLetter: String): Observable<JobApplicationResponse>
 
-    fun performActionJob(
-            jobId: String,
-            action: String
-    ): Observable<JobResponse>
+    fun fetchApplicants(jobId: String,
+                        pageNumber: Int,
+                        size: Int): Observable<List<JobApplicationResponse>>
+
+    fun performActionJob(jobId: String,
+                         action: String): Observable<JobResponse>
 
     fun editJob(jobId: String, body: JobBody): Observable<JobResponse>
 
+    fun cancelJobApplication(jobId: String): Observable<JobApplicationResponse>
+
+    fun fetchJobApplication(applicationId: String): Observable<JobApplicationResponse>
 }

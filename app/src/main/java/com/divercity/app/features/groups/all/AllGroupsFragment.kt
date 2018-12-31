@@ -119,9 +119,9 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
             }
             isEnabled = false
             setColorSchemeColors(
-                ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                ContextCompat.getColor(context, R.color.colorPrimary),
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                    ContextCompat.getColor(context, R.color.colorPrimary),
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
@@ -131,6 +131,10 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     }
 
     private val listener = object : GroupsViewHolder.Listener {
+
+        override fun onGroupClick(group: GroupResponse) {
+            navigator.navigateToGroupDetailActivity(this@AllGroupsFragment, group.id)
+        }
 
         override fun onGroupJoinClick(position: Int, group: GroupResponse) {
             positionJoinClicked = position

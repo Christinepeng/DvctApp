@@ -34,6 +34,16 @@ public final class Util {
         }
     }
 
+    public static Long getMilisecFromStringDate(String date){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                Locale.US);
+        try {
+            return dateFormat.parse(date).getTime();
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+
     public static String getStringDateTimeWithServerDate(String date){
         if (date != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",

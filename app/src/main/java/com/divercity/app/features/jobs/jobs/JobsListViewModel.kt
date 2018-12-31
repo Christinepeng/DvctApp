@@ -18,7 +18,7 @@ import javax.inject.Inject
 
 class JobsListViewModel @Inject
 constructor(
-            private val repository: JobPaginatedRepositoryImpl) : BaseViewModel() {
+        private val repository: JobPaginatedRepositoryImpl) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
@@ -27,7 +27,7 @@ constructor(
     private var lastSearch: String? = null
 
     init {
-        fetchJobs(null, "")
+        fetchJobs(null, null)
     }
 
     fun networkState(): LiveData<NetworkState> = listingPaginatedJob.networkState
@@ -39,17 +39,22 @@ constructor(
     fun refresh() = repository.refresh()
 
     fun fetchJobs(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        searchQuery?.let {
-            if (it != lastSearch) {
-                lastSearch = it
-                listingPaginatedJob = repository.fetchData(searchQuery)
-                pagedJobsList = listingPaginatedJob.pagedList
+        if (searchQuery == null) {
+            lastSearch = ""
+            fetchData(lifecycleOwner, searchQuery)
+        } else if (searchQuery != lastSearch) {
+            lastSearch = searchQuery
+            fetchData(lifecycleOwner, searchQuery)
+        }
+    }
 
-                lifecycleOwner?.let { lifecycleOwner ->
-                    removeObservers(lifecycleOwner)
-                    subscribeToPaginatedLiveData.call()
-                }
-            }
+    private fun fetchData(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
+        listingPaginatedJob = repository.fetchData(searchQuery)
+        pagedJobsList = listingPaginatedJob.pagedList
+
+        lifecycleOwner?.let { lifecycleOwner ->
+            removeObservers(lifecycleOwner)
+            subscribeToPaginatedLiveData.call()
         }
     }
 

@@ -12,9 +12,10 @@ import com.divercity.app.data.entity.major.MajorResponse;
 import com.divercity.app.data.entity.occupationofinterests.OOIResponse;
 import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
-import io.reactivex.Observable;
 
 import java.util.List;
+
+import io.reactivex.Observable;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -52,4 +53,10 @@ public interface DataRepository {
             int pageNumber,
             int size,
             String query);
+
+    Observable<GroupResponse> createGroup
+            (String title,
+             String description,
+             String groupType,
+             String picture);
 }

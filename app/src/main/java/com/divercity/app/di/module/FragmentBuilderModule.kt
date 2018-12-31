@@ -3,11 +3,14 @@ package com.divercity.app.di.module
 import com.divercity.app.features.agerange.base.SelectAgeFragment
 import com.divercity.app.features.agerange.onboarding.OnboardingAgeFragment
 import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeFragment
+import com.divercity.app.features.chat.chatlist.ChatsFragment
+import com.divercity.app.features.chat.newchat.NewChatFragment
 import com.divercity.app.features.company.base.SelectCompanyFragment
 import com.divercity.app.features.company.companysize.CompanySizesFragment
 import com.divercity.app.features.company.createcompany.CreateCompanyFragment
 import com.divercity.app.features.company.onboarding.OnboardingCompanyFragment
 import com.divercity.app.features.company.withtoolbar.ToolbarCompanyFragment
+import com.divercity.app.features.dialogs.jobapplication.JobApplicationDialogFragment
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.app.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogFragment
@@ -19,6 +22,8 @@ import com.divercity.app.features.gender.onboarding.OnboardingGenderFragment
 import com.divercity.app.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
+import com.divercity.app.features.groups.creategroup.step1.CreateGroupFragment
+import com.divercity.app.features.groups.groupdetail.GroupDetailFragment
 import com.divercity.app.features.groups.module.GroupsModule
 import com.divercity.app.features.groups.mygroups.MyGroupsFragment
 import com.divercity.app.features.groups.onboarding.SelectGroupFragment
@@ -45,7 +50,7 @@ import com.divercity.app.features.jobs.description.poster.similarjobs.SimilarJob
 import com.divercity.app.features.jobs.jobs.JobsListFragment
 import com.divercity.app.features.jobs.module.JobsModule
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
-import com.divercity.app.features.jobs.saved.SavedJobsFragment
+import com.divercity.app.features.jobs.savedjobs.SavedJobsFragment
 import com.divercity.app.features.jobs.similarjobs.SimilarJobListFragment
 import com.divercity.app.features.linkedin.LinkedinFragment
 import com.divercity.app.features.location.base.SelectLocationFragment
@@ -266,4 +271,19 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindToolbarAgeFragment (): ToolbarAgeFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindDirectMessagesFragment (): ChatsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindNewChatFragment (): NewChatFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindGroupDetailFragment (): GroupDetailFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobApplicationDialogFragment (): JobApplicationDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCreateGroupFragment (): CreateGroupFragment
 }

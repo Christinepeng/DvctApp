@@ -6,9 +6,9 @@ import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
-import com.divercity.app.features.jobs.description.usecase.FetchJobByIdUseCase
 import com.divercity.app.features.jobs.jobs.usecase.RemoveSavedJobUseCase
 import com.divercity.app.features.jobs.jobs.usecase.SaveJobUseCase
+import com.divercity.app.features.jobs.usecase.FetchJobByIdUseCase
 import com.divercity.app.repository.user.UserRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject

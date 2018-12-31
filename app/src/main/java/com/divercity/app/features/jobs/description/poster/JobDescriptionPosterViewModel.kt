@@ -7,6 +7,7 @@ import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.jobs.mypostings.usecase.PublishJobUseCase
 import com.divercity.app.features.jobs.mypostings.usecase.UnpublishJobUseCase
+import com.divercity.app.features.jobs.usecase.DeleteJobUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -16,9 +17,11 @@ import javax.inject.Inject
 
 class JobDescriptionPosterViewModel @Inject
 constructor(private val publishJobUseCase: PublishJobUseCase,
-            private val unpublishJobUseCase: UnpublishJobUseCase) : BaseViewModel() {
+            private val unpublishJobUseCase: UnpublishJobUseCase,
+            private val deleteJobUseCase : DeleteJobUseCase) : BaseViewModel() {
 
     var publishUnpublishJobResponse = SingleLiveEvent<Resource<JobResponse>>()
+    var deleteJobResponse = SingleLiveEvent<Resource<JobResponse>>()
 
     fun publishUnpublishJob(jobData: JobResponse) {
         publishUnpublishJobResponse.postValue(Resource.loading(null))
@@ -43,5 +46,26 @@ constructor(private val publishJobUseCase: PublishJobUseCase,
             else
                 publishJobUseCase.execute(callback, PublishJobUseCase.Params.forPublish(jobData.id!!))
         }
+    }
+
+    fun deleteJob(jobId : String){
+
+        deleteJobResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<JobResponse>() {
+            override fun onFail(error: String) {
+                deleteJobResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                deleteJobResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: JobResponse) {
+                deleteJobResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+
+        deleteJobUseCase.execute(callback, DeleteJobUseCase.Params.forDelete(jobId))
     }
 }

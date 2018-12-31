@@ -22,21 +22,27 @@ import javax.inject.Singleton
 @Module(includes = [ApiServiceModule::class])
 class ApiModule {
 
+    companion object {
+        const val BASE_URL = "https://".plus(BuildConfig.BASE_URL).plus("/api/")
+    }
+
     @Provides
     @Named("unauth")
     @Singleton
     fun providesUnauthenticatedClient(
         responseCodeCheckInterceptor: ResponseCheckInterceptor,
-        loggingInterceptor: HttpLoggingInterceptor
+        loggingInterceptor: HttpLoggingInterceptor,
+        @Named("addApiPath") addApiPath : Interceptor
     ): Retrofit {
 
         val httpClient = OkHttpClient.Builder()
         httpClient
             .addInterceptor(loggingInterceptor)
             .addInterceptor(responseCodeCheckInterceptor)
+//            .addInterceptor(addApiPath)
 
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(httpClient.build())
@@ -49,16 +55,18 @@ class ApiModule {
     fun providesAuthenticatedClient(
         responseCodeCheckInterceptor: ResponseCheckInterceptor,
         loggingInterceptor: HttpLoggingInterceptor,
-        interceptorHeader: Interceptor
+        interceptorHeader: Interceptor,
+        @Named("addApiPath") addApiPath : Interceptor
     ): Retrofit {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(loggingInterceptor)
             .addInterceptor(responseCodeCheckInterceptor)
             .addInterceptor(interceptorHeader)
+//            .addInterceptor(addApiPath)
 
         return Retrofit.Builder()
-            .baseUrl(BuildConfig.BASE_URL)
+            .baseUrl(BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(httpClient.build())
@@ -91,6 +99,26 @@ class ApiModule {
 
             val request = requestBuilder.build()
 
+            it.proceed(request)
+        }
+    }
+
+    @Provides
+    @Named("addApiPath")
+    internal fun addApiPath(): Interceptor {
+        return Interceptor {
+            val original = it.request()
+
+            // Request customization: add request headers
+            val originalHttpUrl = original.url()
+
+           val url = originalHttpUrl
+               .newBuilder()
+               .addPathSegment("api")
+               .build()
+
+            val requestBuilder = original.newBuilder().url(url)
+            val request = requestBuilder.build()
             it.proceed(request)
         }
     }

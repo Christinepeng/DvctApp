@@ -2,6 +2,8 @@ package com.divercity.app.di.module
 
 import android.app.Application
 import android.content.Context
+import com.divercity.app.repository.chat.ChatRepository
+import com.divercity.app.repository.chat.ChatRepositoryImpl
 import com.divercity.app.repository.data.DataRepository
 import com.divercity.app.repository.data.DataRepositoryImpl
 import com.divercity.app.repository.document.DocumentRepository
@@ -49,4 +51,7 @@ abstract class AppBindsModule {
 
     @Binds
     abstract fun bindRecommenderRepository(repository: RecommenderRepositoryImpl): RecommenderRepository
+
+    @Binds
+    abstract fun bindChatRepository(repository: ChatRepositoryImpl): ChatRepository
 }

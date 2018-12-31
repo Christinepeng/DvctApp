@@ -2,6 +2,9 @@ package com.divercity.app.di.module
 
 import com.divercity.app.features.agerange.onboarding.OnboartdingAgeActivity
 import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeActivity
+import com.divercity.app.features.chat.chat.ChatActivity
+import com.divercity.app.features.chat.chatlist.ChatsActivity
+import com.divercity.app.features.chat.newchat.NewChatActivity
 import com.divercity.app.features.company.companysize.CompanySizesActivity
 import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity
@@ -10,6 +13,8 @@ import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityActivi
 import com.divercity.app.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.app.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.app.features.gender.withtoolbar.ToolbarGenderActivity
+import com.divercity.app.features.groups.creategroup.step1.CreateGroupActivity
+import com.divercity.app.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
 import com.divercity.app.features.industry.onboarding.SelectIndustryOnboardingActivity
@@ -149,4 +154,19 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindToolbarAgeActivity(): ToolbarAgeActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindDirectMessagesActivity(): ChatsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindNewChatActivity(): NewChatActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindGroupDetailActivity(): GroupDetailActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindChatActivity(): ChatActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCreateGroupActivity(): CreateGroupActivity
 }

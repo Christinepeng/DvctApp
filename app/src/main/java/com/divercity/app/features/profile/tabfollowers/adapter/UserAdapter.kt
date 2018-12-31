@@ -42,7 +42,7 @@ constructor() : PagedListAdapter<LoginResponse, RecyclerView.ViewHolder>(userDif
     }
 
     private fun hasExtraRow(): Boolean {
-        return networkState != null && networkState !== NetworkState.LOADED
+        return networkState != null && networkState != NetworkState.LOADED
     }
 
     override fun getItemViewType(position: Int): Int {

@@ -62,14 +62,23 @@ constructor(private val jobService: JobService) : JobRepository {
         }
     }
 
-    override fun fetchJobPostingsByUser(userId: String, page: Int, size: Int, query: String?): Observable<List<JobResponse>> {
+    override fun fetchJobPostingsByUser(
+            userId: String,
+            page: Int,
+            size: Int,
+            query: String?
+    ): Observable<List<JobResponse>> {
         return jobService.fetchJobPostingsByUser(userId, page, size, query).map {
             checkResponse(it)
             it.body()?.data
         }
     }
 
-    override fun fetchMyJobApplications(page: Int, size: Int, query: String?): Observable<List<JobApplicationResponse>> {
+    override fun fetchMyJobApplications(
+            page: Int,
+            size: Int,
+            query: String?
+    ): Observable<List<JobApplicationResponse>> {
         return jobService.fetchMyJobApplications(page, size, query).map {
             checkResponse(it)
             it.body()?.data
@@ -129,6 +138,36 @@ constructor(private val jobService: JobService) : JobRepository {
 
     override fun editJob(jobId: String, body: JobBody): Observable<JobResponse> {
         return jobService.editJob(jobId, body).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun fetchJobApplication(applicationId: String): Observable<JobApplicationResponse> {
+        return jobService.fetchJobApplication(applicationId).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun editJobApplication(
+            jobId: String,
+            userDocId: String,
+            coverLetter: String
+    ): Observable<JobApplicationResponse> {
+        val partDocId = RequestBody.create(MediaType.parse("text/plain"), userDocId)
+        val partCL = RequestBody.create(MediaType.parse("text/plain"), coverLetter)
+
+        return jobService.editJobApplication(jobId, partDocId, partCL).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun cancelJobApplication(jobId: String): Observable<JobApplicationResponse> {
+        val partCanceled = RequestBody.create(MediaType.parse("text/plain"), "true")
+
+        return jobService.cancelJobApplication(jobId, partCanceled).map {
             checkResponse(it)
             it.body()?.data
         }

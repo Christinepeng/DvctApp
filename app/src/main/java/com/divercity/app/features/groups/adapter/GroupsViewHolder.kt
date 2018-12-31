@@ -46,12 +46,18 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 }
                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             }
+
+            itemView.setOnClickListener {
+                listener?.onGroupClick(data)
+            }
         }
     }
 
     interface Listener {
 
         fun onGroupJoinClick(position: Int, group: GroupResponse)
+
+        fun onGroupClick(group : GroupResponse)
     }
 
     companion object {

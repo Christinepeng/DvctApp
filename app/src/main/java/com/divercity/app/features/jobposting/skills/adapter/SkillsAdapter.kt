@@ -49,8 +49,8 @@ constructor() : PagedListAdapter<SkillResponse, RecyclerView.ViewHolder>(userDif
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             R.layout.item_btn_text -> {
-                var skill = getItem(position)
-                skillsPreviousSelected?.let { skillsSelected ->
+                val skill = getItem(position)
+                skillsPreviousSelected.let { skillsSelected ->
                     skill?.let { skill ->
                         if (skillsSelected.contains(skill)) {
                             skill.isSelected = true

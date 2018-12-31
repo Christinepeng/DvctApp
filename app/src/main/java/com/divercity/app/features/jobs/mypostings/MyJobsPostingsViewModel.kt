@@ -56,6 +56,11 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
         }
     }
 
+    fun forceFetchMyPosting(){
+        listingPaginatedJob = repository.fetchData("")
+        pagedJobsList = listingPaginatedJob.pagedList
+    }
+
     fun publishJob(jobData: JobResponse) {
         publishJobResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<JobResponse>() {

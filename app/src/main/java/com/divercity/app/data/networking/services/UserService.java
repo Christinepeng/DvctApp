@@ -52,4 +52,10 @@ public interface UserService {
             @Query("page[number]") int pageNumber,
             @Query("page[size]") int size,
             @Query("search_query") String query);
+
+    @GET("users?order_by_name=asc")
+    Observable<Response<DataArray<LoginResponse>>> fetchUsers(
+            @Query("page[number]") int pageNumber,
+            @Query("page[size]") int size,
+            @Query("search_query") String query);
 }

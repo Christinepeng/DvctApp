@@ -23,7 +23,7 @@ internal constructor(private val fetchJobsUseCase: FetchJobsUseCase) : Paginated
 
     companion object {
 
-        const val pageSize = 20
+        const val pageSize = 10
     }
 
     override fun fetchData(query : String?): Listing<JobResponse> {

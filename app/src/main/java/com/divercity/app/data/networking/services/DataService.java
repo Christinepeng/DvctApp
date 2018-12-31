@@ -1,6 +1,7 @@
 package com.divercity.app.data.networking.services;
 
 import com.divercity.app.data.entity.base.DataArray;
+import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
 import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
@@ -14,10 +15,14 @@ import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 
 import io.reactivex.Observable;
+import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -100,4 +105,12 @@ public interface DataService {
 
     @POST("job_employers")
     Observable<Response<Void>> createCompany(@Body CreateCompanyBody body);
+
+    @Multipart
+    @PUT("api/group_of_interests")
+    Observable<Response<DataObject<GroupResponse>>> createGroup
+            (@Part("group_of_interest[title]") RequestBody title,
+             @Part("group_of_interest[description]") RequestBody description,
+             @Part("group_of_interest[group_type]") RequestBody groupType,
+             @Part("group_of_interest[picture]") RequestBody picture);
 }

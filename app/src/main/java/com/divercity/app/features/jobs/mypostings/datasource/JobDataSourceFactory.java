@@ -16,7 +16,7 @@ public class JobDataSourceFactory extends DataSource.Factory<Long, JobResponse> 
     private FetchJobsPostingsUseCase fetchJobsPostingsUseCase;
     private String query;
 
-    private MutableLiveData<com.divercity.app.features.jobs.mypostings.datasource.JobDataSource> mGroupsInterestsDataSourceMutableLiveData = new MutableLiveData<>();
+    private MutableLiveData<JobDataSource> mGroupsInterestsDataSourceMutableLiveData = new MutableLiveData<>();
 
     public JobDataSourceFactory(CompositeDisposable compositeDisposable,
                                 FetchJobsPostingsUseCase fetchJobsPostingsUseCase,
@@ -28,7 +28,7 @@ public class JobDataSourceFactory extends DataSource.Factory<Long, JobResponse> 
 
     @Override
     public DataSource<Long, JobResponse> create() {
-        com.divercity.app.features.jobs.mypostings.datasource.JobDataSource jobDataSource = new com.divercity.app.features.jobs.mypostings.datasource.JobDataSource(
+        JobDataSource jobDataSource = new JobDataSource(
                 compositeDisposable,
                 fetchJobsPostingsUseCase,
                 query);

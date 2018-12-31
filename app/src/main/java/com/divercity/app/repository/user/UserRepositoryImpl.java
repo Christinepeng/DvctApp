@@ -295,4 +295,13 @@ public class UserRepositoryImpl implements UserRepository {
     public void setAgeRange(@Nullable String ageRange) {
         loggedUserRepository.setAgeRange(ageRange);
     }
+
+    @NotNull
+    @Override
+    public Observable<List<LoginResponse>> fetchUsers(int pageNumber, int size, @Nullable String query) {
+        return userService.fetchUsers(pageNumber, size, query).map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
 }

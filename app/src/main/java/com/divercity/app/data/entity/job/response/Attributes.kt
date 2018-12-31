@@ -22,7 +22,7 @@ data class Attributes(
 	val description: String? = null,
 
 	@field:SerializedName("is_applied_by_current")
-	val isAppliedByCurrent: Boolean? = null,
+	var isAppliedByCurrent: Boolean? = null,
 
 	@field:SerializedName("created_at")
 	val createdAt: String? = null,

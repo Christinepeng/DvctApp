@@ -15,8 +15,9 @@ import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.dialogs.CustomTwoBtnDialogFragment
 import com.divercity.app.features.dialogs.JobSeekerActionsDialogFragment
+import com.divercity.app.features.dialogs.jobapplication.JobApplicationDialogFragment
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
-import kotlinx.android.synthetic.main.fragment_job_description_seeker.*
+import kotlinx.android.synthetic.main.fragment_job_detail.*
 import kotlinx.android.synthetic.main.item_user.view.*
 import kotlinx.android.synthetic.main.view_job_desc.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -27,7 +28,7 @@ import javax.inject.Inject
  */
 
 class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener,
-    JobApplyDialogFragment.Listener {
+    JobApplyDialogFragment.Listener, JobApplicationDialogFragment.Listener {
 
     lateinit var viewModel: JobDetailViewModel
 
@@ -48,7 +49,7 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_job_description_seeker
+    override fun layoutId(): Int = R.layout.fragment_job_detail
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -125,7 +126,7 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
             }
 
             if (viewModel.isLoggedUserJobSeeker()) {
-                btn_apply.visibility = View.VISIBLE
+                showHideButtonsIfApplied(it.attributes?.isAppliedByCurrent!!)
                 setupApplyButton(it)
             } else {
                 btn_apply.visibility = View.GONE
@@ -224,6 +225,26 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         dialog.show(childFragmentManager, null)
     }
 
+    private fun showHideButtonsIfApplied(isAppliedByCurrent : Boolean){
+        if(isAppliedByCurrent){
+            btn_apply.visibility = View.GONE
+            btn_save.visibility = View.GONE
+            btn_view_application.visibility = View.VISIBLE
+            btn_view_application.setOnClickListener {
+                showJobApplicationDialog()
+            }
+        } else {
+            btn_apply.visibility = View.VISIBLE
+            btn_save.visibility = View.VISIBLE
+            btn_view_application.visibility = View.GONE
+        }
+    }
+
+    private fun showJobApplicationDialog(){
+        val fragment = JobApplicationDialogFragment.newInstance(job?.id!!)
+        fragment.show(childFragmentManager, null)
+    }
+
     private fun showToast(resId: Int) {
         Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
     }
@@ -240,5 +261,11 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
 
     override fun onSuccessJobApply() {
         fetchJobData()
+    }
+
+    override fun onCancelJobApplication() {
+        job?.attributes?.isAppliedByCurrent = false
+        setupApplyButton(job)
+        showHideButtonsIfApplied(false)
     }
 }

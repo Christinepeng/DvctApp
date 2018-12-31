@@ -1,13 +1,13 @@
 package com.divercity.app.data.entity.jobapplication
 
-
+import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-
+@Generated("com.robohorse.robopojogenerator")
 data class Employer(
 
 	@field:SerializedName("country")
-	val country: Any? = null,
+	val country: String? = null,
 
 	@field:SerializedName("cover_photos")
 	val coverPhotos: CoverPhotos? = null,

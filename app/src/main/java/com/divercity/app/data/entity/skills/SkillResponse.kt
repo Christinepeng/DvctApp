@@ -44,8 +44,8 @@ data class SkillResponse(
     }
 
     override fun equals(other: Any?): Boolean {
-        if (other != null && other is SkillResponse) {
-            return id == other.id
+        if (other != null && other is SkillResponse && attributes != null) {
+            return attributes.name == other.attributes?.name
         }
         return false
     }

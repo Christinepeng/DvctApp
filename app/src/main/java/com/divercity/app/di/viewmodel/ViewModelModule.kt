@@ -3,16 +3,21 @@ package com.divercity.app.di.viewmodel
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.agerange.onboarding.OnboardingAgeViewModel
+import com.divercity.app.features.chat.chat.ChatViewModel
+import com.divercity.app.features.chat.chatlist.ChatsViewModel
+import com.divercity.app.features.chat.newchat.NewChatViewModel
 import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.companysize.CompanySizesViewModel
 import com.divercity.app.features.company.createcompany.CreateCompanyViewModel
 import com.divercity.app.features.company.onboarding.OnboardingCompanyViewModel
+import com.divercity.app.features.dialogs.jobapplication.JobApplicationDialogViewModel
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.app.features.dialogs.recentdocuments.RecentDocsDialogViewModel
 import com.divercity.app.features.ethnicity.onboarding.OnboardingEthnicityViewModel
 import com.divercity.app.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.all.AllGroupsViewModel
+import com.divercity.app.features.groups.creategroup.step1.CreateGroupViewModel
 import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
 import com.divercity.app.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.app.features.groups.trending.TrendingGroupsViewModel
@@ -31,7 +36,7 @@ import com.divercity.app.features.jobs.description.detail.JobDetailViewModel
 import com.divercity.app.features.jobs.description.poster.JobDescriptionPosterViewModel
 import com.divercity.app.features.jobs.jobs.JobsListViewModel
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsViewModel
-import com.divercity.app.features.jobs.saved.SavedJobsViewModel
+import com.divercity.app.features.jobs.savedjobs.SavedJobsViewModel
 import com.divercity.app.features.jobs.similarjobs.SimilarJobListViewModel
 import com.divercity.app.features.linkedin.LinkedinViewModel
 import com.divercity.app.features.location.base.SelectLocationViewModel
@@ -312,4 +317,29 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(FollowingGroupsViewModel::class)
     abstract fun bindsFollowingGroupsViewModel(viewModel: FollowingGroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChatsViewModel::class)
+    abstract fun bindsDirectMessagesViewModel(viewModel: ChatsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NewChatViewModel::class)
+    abstract fun bindsNewChatViewModel(viewModel: NewChatViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobApplicationDialogViewModel::class)
+    abstract fun bindsJobApplicationDialogViewModel(viewModel: JobApplicationDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChatViewModel::class)
+    abstract fun bindsChatViewModel(viewModel: ChatViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateGroupViewModel::class)
+    abstract fun bindsCreateGroupViewModel(viewModel: CreateGroupViewModel): ViewModel
 }

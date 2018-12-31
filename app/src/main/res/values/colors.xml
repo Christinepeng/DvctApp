@@ -15,7 +15,10 @@
     <color name="divider">#cccccc</color>
     <color name="textTitle">#333241</color>
     <color name="green">#48cc7c</color>
+
+    <!-- Reds-->
     <color name="red">#ff7272</color>
+    <color name="red1">#eb586f</color>
 
     <color name="white">#ffffff</color>
     <color name="whiteDisable">#80ffffff</color>

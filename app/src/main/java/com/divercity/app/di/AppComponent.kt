@@ -2,6 +2,7 @@ package com.divercity.app.di
 
 import android.app.Application
 import com.divercity.app.DivercityApp
+import com.divercity.app.db.RoomModule
 import com.divercity.app.di.module.ActivityBuilderModule
 import com.divercity.app.di.module.AppBindsModule
 import com.divercity.app.di.module.networking.ApiModule
@@ -26,7 +27,8 @@ import javax.inject.Singleton
         ApiModule::class,
         ApiApolloModule::class,
         ViewModelModule::class,
-        ActivityBuilderModule::class]
+        ActivityBuilderModule::class,
+        RoomModule::class]
 )
 interface AppComponent : AndroidInjector<DaggerApplication> {
 

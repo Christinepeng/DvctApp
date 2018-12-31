@@ -5,6 +5,7 @@ import android.net.Uri
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.FileUtils
+import com.divercity.app.core.utils.NetworkErrorsUtil
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.document.DocumentResponse
@@ -76,7 +77,7 @@ constructor(private val context: Application,
             }
 
             override fun onHttpException(error: JsonElement) {
-                applyToJobResponse.postValue(Resource.error(error.toString(), null))
+                applyToJobResponse.postValue(Resource.error(NetworkErrorsUtil.getErrorNode(error), null))
             }
 
             override fun onSuccess(o: JobApplicationResponse) {

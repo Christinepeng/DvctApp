@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
 
-    lateinit var viewModelJobs: MyJobsPostingsViewModel
+    lateinit var viewModel: MyJobsPostingsViewModel
 
     @Inject
     lateinit var adapter: JobsAdapter
@@ -46,7 +46,7 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModelJobs = activity?.run {
+        viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(MyJobsPostingsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
@@ -66,7 +66,7 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
     }
 
     private fun subscribeToLiveData() {
-        viewModelJobs.publishJobResponse.observe(this, Observer { job ->
+        viewModel.publishJobResponse.observe(this, Observer { job ->
             when (job?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -85,22 +85,22 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
             }
         })
 
-        viewModelJobs.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
         })
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModelJobs.pagedJobsList.observe(this, Observer {
+        viewModel.pagedJobsList.observe(this, Observer {
             adapter.submitList(it)
         })
 
-        viewModelJobs.networkState().observe(this, Observer {
+        viewModel.networkState().observe(this, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModelJobs.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(this, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
@@ -124,7 +124,7 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
         swipe_list_main.apply {
             setOnRefreshListener {
                 isListRefreshing = true
-                viewModelJobs.refresh()
+                viewModel.refresh()
             }
             isEnabled = false
             setColorSchemeColors(
@@ -136,14 +136,14 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
     }
 
     override fun retry() {
-        viewModelJobs.retry()
+        viewModel.retry()
     }
 
     private val listener: JobsViewHolder.Listener = object : JobsViewHolder.Listener {
 
         override fun onPublishClick(position: Int, job: JobResponse) {
             positionPublishClicked = position
-            viewModelJobs.publishJob(job)
+            viewModel.publishJob(job)
         }
 
         override fun onJobClick(job: JobResponse) {
@@ -152,14 +152,14 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
     }
 
     override fun fetchJobs(searchQuery: String?) {
-        viewModelJobs.fetchJobs(viewLifecycleOwner, searchQuery)
+        viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_UPDATE){
                 isListRefreshing = true
-                viewModelJobs.refresh()
+                viewModel.refresh()
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

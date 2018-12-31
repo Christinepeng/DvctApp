@@ -12,6 +12,7 @@ import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.job.response.JobResponse
+import com.divercity.app.features.dialogs.CustomTwoBtnDialogFragment
 import com.divercity.app.features.dialogs.JobPosterActionsDialogFragment
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
 import kotlinx.android.synthetic.main.fragment_job_description_poster.*
@@ -87,6 +88,26 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
                 }
             }
         })
+
+        viewModel.deleteJobResponse.observe(viewLifecycleOwner, Observer { job ->
+            when (job?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    activity?.apply {
+                        setResult(Activity.RESULT_OK, intent)
+                        finish()
+                    }
+                }
+            }
+        })
     }
 
     private fun setupTabs() {
@@ -143,7 +164,28 @@ class JobDescriptionPosterFragment : BaseFragment(), JobPosterActionsDialogFragm
     }
 
     override fun onDeleteJobPosting() {
+        showDeleteDialogConfirm()
+    }
 
+    private fun showDeleteDialogConfirm() {
+
+        val dialog = CustomTwoBtnDialogFragment.newInstance(
+            getString(R.string.delete_job),
+            getString(R.string.delete_job_confirmation),
+            getString(R.string.no),
+            getString(R.string.yes)
+        )
+
+        dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
+
+            override fun onNegativeBtnClick() {
+                viewModel.deleteJob(job!!.id!!)
+            }
+
+            override fun onPositiveBtnClick() {
+            }
+        })
+        dialog.show(childFragmentManager, null)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

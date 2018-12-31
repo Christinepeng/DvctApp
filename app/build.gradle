@@ -47,9 +47,9 @@ android {
 
         debug {
             minifyEnabled false
-            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "true"
-//            buildConfigField "String", "BASE_URL", '"https://api.divercity.io/api/"'
-            buildConfigField "String", "BASE_URL", '"https://dev-api.divercity.io/api/"'
+            buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
+            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -91,6 +91,8 @@ dependencies {
 
     def kotlinCoroutines_version = "1.0.1"
 
+    def room_version = "1.1.1"
+
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.3'
 
@@ -109,7 +111,7 @@ dependencies {
     // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
     kapt "com.github.bumptech.glide:compiler:$glide_version"
-    
+
     // Facebook
     implementation("com.facebook.android:facebook-login:$facebook_login_version") {
         exclude group: 'com.android.support'
@@ -156,9 +158,17 @@ dependencies {
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
 
+    // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines_version"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines_version"
-    
+
+    // Room
+    implementation "android.arch.persistence.room:runtime:$room_version"
+    kapt "android.arch.persistence.room:compiler:$room_version"
+
+    // Paginate
+    implementation 'com.github.markomilos:paginate:0.5.1'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

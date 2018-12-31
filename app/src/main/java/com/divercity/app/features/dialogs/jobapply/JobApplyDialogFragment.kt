@@ -170,7 +170,6 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    showToast(R.string.application_succes)
                     listener?.onSuccessJobApply()
                     showJobApplySuccessDialog()
                     dismiss()

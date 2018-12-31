@@ -11,7 +11,7 @@ import com.divercity.app.R
 import com.divercity.app.features.jobs.applications.JobsApplicationsFragment
 import com.divercity.app.features.jobs.jobs.JobsListFragment
 import com.divercity.app.features.jobs.mypostings.MyJobsPostingsFragment
-import com.divercity.app.features.jobs.saved.SavedJobsFragment
+import com.divercity.app.features.jobs.savedjobs.SavedJobsFragment
 import com.divercity.app.repository.user.UserRepository
 
 import javax.inject.Inject

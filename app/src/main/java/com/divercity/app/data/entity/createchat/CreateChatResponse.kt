@@ -1,14 +1,16 @@
 package com.divercity.app.data.entity.createchat
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
+import javax.annotation.Generated
 
-@Generated("com.robohorse.robopojogenerator")
 data class CreateChatResponse(
 
-	@field:SerializedName("current_user_chat")
-	val currentUserChat: CurrentUserChat? = null,
+	@field:SerializedName("attributes")
+	val attributes: Attributes? = null,
 
-	@field:SerializedName("other_user")
-	val otherUser: Int? = null
+	@field:SerializedName("id")
+	val id: String? = null,
+
+	@field:SerializedName("type")
+	val type: String? = null
 )

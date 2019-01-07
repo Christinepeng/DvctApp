@@ -2,6 +2,7 @@ package com.divercity.app.di.module.networking
 
 import android.content.Context
 import com.divercity.app.BuildConfig
+import com.divercity.app.core.utils.MySocket
 import com.divercity.app.data.networking.config.ResponseCheckInterceptor
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl
 import dagger.Module
@@ -12,6 +13,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -30,53 +32,51 @@ class ApiModule {
     @Named("unauth")
     @Singleton
     fun providesUnauthenticatedClient(
-        responseCodeCheckInterceptor: ResponseCheckInterceptor,
-        loggingInterceptor: HttpLoggingInterceptor,
-        @Named("addApiPath") addApiPath : Interceptor
-    ): Retrofit {
+            responseCodeCheckInterceptor: ResponseCheckInterceptor,
+            loggingInterceptor: HttpLoggingInterceptor): Retrofit {
 
         val httpClient = OkHttpClient.Builder()
         httpClient
-            .addInterceptor(loggingInterceptor)
-            .addInterceptor(responseCodeCheckInterceptor)
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor(responseCodeCheckInterceptor)
 //            .addInterceptor(addApiPath)
 
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(httpClient.build())
-            .build()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(httpClient.build())
+                .build()
     }
 
     @Provides
     @Named("auth")
     @Singleton
     fun providesAuthenticatedClient(
-        responseCodeCheckInterceptor: ResponseCheckInterceptor,
-        loggingInterceptor: HttpLoggingInterceptor,
-        interceptorHeader: Interceptor,
-        @Named("addApiPath") addApiPath : Interceptor
-    ): Retrofit {
+            responseCodeCheckInterceptor: ResponseCheckInterceptor,
+            loggingInterceptor: HttpLoggingInterceptor,
+            interceptorHeader: Interceptor): Retrofit {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(loggingInterceptor)
-            .addInterceptor(responseCodeCheckInterceptor)
-            .addInterceptor(interceptorHeader)
+                .addInterceptor(responseCodeCheckInterceptor)
+                .addInterceptor(interceptorHeader)
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(60, TimeUnit.SECONDS)
 //            .addInterceptor(addApiPath)
 
         return Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-            .client(httpClient.build())
-            .build()
+                .baseUrl(BASE_URL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(httpClient.build())
+                .build()
     }
 
     @Provides
     @Singleton
     fun providesHttpLoggingInterceptor(): HttpLoggingInterceptor {
-        return HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY)
+        return HttpLoggingInterceptor().setLevel(if (BuildConfig.DEBUG) HttpLoggingInterceptor.Level.BODY else HttpLoggingInterceptor.Level.NONE)
     }
 
     @Provides
@@ -104,22 +104,18 @@ class ApiModule {
     }
 
     @Provides
-    @Named("addApiPath")
-    internal fun addApiPath(): Interceptor {
-        return Interceptor {
-            val original = it.request()
+    internal fun provideWebSocket(userLocalDataStore: LoggedUserRepositoryImpl,
+                                  loggingInterceptor: HttpLoggingInterceptor): MySocket {
+        val url = "wss://".plus(BuildConfig.BASE_URL).plus("/cable")
+                .plus("?")
+                .plus("token=").plus(userLocalDataStore.getAccessToken()).plus("&")
+                .plus("client=").plus(userLocalDataStore.getClient()).plus("&")
+                .plus("uid=").plus(userLocalDataStore.getUid())
 
-            // Request customization: add request headers
-            val originalHttpUrl = original.url()
-
-           val url = originalHttpUrl
-               .newBuilder()
-               .addPathSegment("api")
-               .build()
-
-            val requestBuilder = original.newBuilder().url(url)
-            val request = requestBuilder.build()
-            it.proceed(request)
-        }
+        return MySocket.Builder
+                .with(url)
+                .addHeader("origin", "https://www.pincapp.com")
+                .addHttpLogginInterceptor(loggingInterceptor)
+                .build()
     }
 }

@@ -57,7 +57,7 @@ class SplashFragment : BaseFragment() {
 
             if (viewModel.isUserLogged)
                 viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
-//                navigator.navigateToChatActivity(this,"irecruiter","1670")
+//                navigator.navigateToChatActivity(this,"Joseph Student","6")
 //                navigator.navigateToSelectInterestsActivity(activity!!, 20)
 //                navigator.navigateToSelectUserTypeActivity(activity!!)
 //                navigator.navigateToSelectOccupationActivity(activity!!, 20)

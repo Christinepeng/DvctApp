@@ -1,15 +1,13 @@
-package com.divercity.app.data.entity.chat
+package com.divercity.app.data.entity.chat.messages
 
 import android.arch.persistence.room.Entity
-import android.arch.persistence.room.PrimaryKey
 import com.google.gson.annotations.SerializedName
 
-@Entity(tableName = "chatMessage")
+@Entity(tableName = "chatMessage",primaryKeys = ["id", "chatId"])
 data class ChatMessageResponse(
 
-    @PrimaryKey
     @field:SerializedName("id")
-    var id: Int? = null,
+    var id: Int,
 
     @field:SerializedName("message_created_at")
     var messageCreatedAt: String? = null,
@@ -36,7 +34,7 @@ data class ChatMessageResponse(
     var picture: String? = null,
 
     @field:SerializedName("chat_id")
-    var chatId: Int? = null,
+    var chatId: Int,
 
     @field:SerializedName("from_user_id")
     var fromUserId: Int? = null

@@ -10,6 +10,8 @@ import com.divercity.app.repository.document.DocumentRepository
 import com.divercity.app.repository.document.DocumentRepositoryImpl
 import com.divercity.app.repository.feed.FeedRepository
 import com.divercity.app.repository.feed.FeedRepositoryImpl
+import com.divercity.app.repository.group.GroupRepository
+import com.divercity.app.repository.group.GroupRepositoryImpl
 import com.divercity.app.repository.job.JobRepository
 import com.divercity.app.repository.job.JobRepositoryImpl
 import com.divercity.app.repository.recommender.RecommenderRepository
@@ -54,4 +56,7 @@ abstract class AppBindsModule {
 
     @Binds
     abstract fun bindChatRepository(repository: ChatRepositoryImpl): ChatRepository
+
+    @Binds
+    abstract fun bindGroupRepository(repository: GroupRepositoryImpl): GroupRepository
 }

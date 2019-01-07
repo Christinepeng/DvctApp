@@ -155,14 +155,21 @@ class EnterEmailFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 viewPagerDotsPanel.onPageSelected(position)
+                handlerViewPager.removeCallbacksAndMessages(null)
+                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
             }
 
             override fun onPageScrollStateChanged(state: Int) {}
         })
+        handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
+    }
 
-        handlerViewPager.postDelayed({
-            viewPager.currentItem = if (viewPager.currentItem == 0) 1 else 0
-        }, AppConstants.CAROUSEL_PAGES_DELAY)
+    private val runnable = Runnable {
+        viewPager.currentItem =
+                if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
+                    0
+                else
+                    viewPager.currentItem + 1
     }
 
     override fun onDestroyView() {

@@ -61,4 +61,10 @@ class ApiServiceModule {
     fun provideChatService(@Named("auth") retrofit: Retrofit): ChatService {
         return retrofit.create(ChatService::class.java)
     }
+
+    @Provides
+    @Singleton
+    fun provideGroupService(@Named("auth") retrofit: Retrofit): GroupService {
+        return retrofit.create(GroupService::class.java)
+    }
 }

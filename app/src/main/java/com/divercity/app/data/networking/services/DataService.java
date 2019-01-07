@@ -1,11 +1,9 @@
 package com.divercity.app.data.networking.services;
 
 import com.divercity.app.data.entity.base.DataArray;
-import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
 import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
-import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.interests.InterestsResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
@@ -15,14 +13,10 @@ import com.divercity.app.data.entity.school.SchoolResponse;
 import com.divercity.app.data.entity.skills.SkillResponse;
 
 import io.reactivex.Observable;
-import okhttp3.RequestBody;
 import retrofit2.Response;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
-import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Query;
 
 /**
@@ -58,29 +52,29 @@ public interface DataService {
     @GET("data/company_sizes")
     Observable<Response<DataArray<CompanySizeResponse>>> fetchCompanySizes();
 
-    @GET("group_of_interests/onboarding")
-    Observable<Response<DataArray<GroupResponse>>> fetchGroups(
-            @Query("page[number]") int pageNumber,
-            @Query("page[size]") int size,
-            @Query("search_query") String query);
-
-    @GET("group_of_interests/trending")
-    Observable<Response<DataArray<GroupResponse>>> fetchTrendingGroups(
-            @Query("page[number]") int pageNumber,
-            @Query("page[size]") int size,
-            @Query("search_query") String query);
-
-    @GET("group_of_interests/my_groups")
-    Observable<Response<DataArray<GroupResponse>>> fetchMyGroups(
-            @Query("page[number]") int pageNumber,
-            @Query("page[size]") int size,
-            @Query("search_query") String query);
-
-    @GET("group_of_interests/following")
-    Observable<Response<DataArray<GroupResponse>>> fetchFollowedGroups(
-            @Query("page[number]") int pageNumber,
-            @Query("page[size]") int size,
-            @Query("search_query") String query);
+//    @GET("group_of_interests/onboarding")
+//    Observable<Response<DataArray<GroupResponse>>> fetchGroups(
+//            @Query("page[number]") int pageNumber,
+//            @Query("page[size]") int size,
+//            @Query("search_query") String query);
+//
+//    @GET("group_of_interests/trending")
+//    Observable<Response<DataArray<GroupResponse>>> fetchTrendingGroups(
+//            @Query("page[number]") int pageNumber,
+//            @Query("page[size]") int size,
+//            @Query("search_query") String query);
+//
+//    @GET("group_of_interests/my_groups")
+//    Observable<Response<DataArray<GroupResponse>>> fetchMyGroups(
+//            @Query("page[number]") int pageNumber,
+//            @Query("page[size]") int size,
+//            @Query("search_query") String query);
+//
+//    @GET("group_of_interests/following")
+//    Observable<Response<DataArray<GroupResponse>>> fetchFollowedGroups(
+//            @Query("page[number]") int pageNumber,
+//            @Query("page[size]") int size,
+//            @Query("search_query") String query);
 
     @GET("data/cities")
     Observable<Response<DataArray<LocationResponse>>> fetchLocations(
@@ -106,11 +100,11 @@ public interface DataService {
     @POST("job_employers")
     Observable<Response<Void>> createCompany(@Body CreateCompanyBody body);
 
-    @Multipart
-    @PUT("api/group_of_interests")
-    Observable<Response<DataObject<GroupResponse>>> createGroup
-            (@Part("group_of_interest[title]") RequestBody title,
-             @Part("group_of_interest[description]") RequestBody description,
-             @Part("group_of_interest[group_type]") RequestBody groupType,
-             @Part("group_of_interest[picture]") RequestBody picture);
+//    @Multipart
+//    @PUT("api/group_of_interests")
+//    Observable<Response<DataObject<GroupResponse>>> createGroup
+//            (@Part("group_of_interest[title]") RequestBody title,
+//             @Part("group_of_interest[description]") RequestBody description,
+//             @Part("group_of_interest[group_type]") RequestBody groupType,
+//             @Part("group_of_interest[picture]") RequestBody picture);
 }

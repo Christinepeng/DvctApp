@@ -3,7 +3,7 @@ package com.divercity.app.features.groups.mygroups.usecase
 import com.divercity.app.core.base.UseCase
 import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.group.GroupResponse
-import com.divercity.app.repository.data.DataRepository
+import com.divercity.app.repository.group.GroupRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Named
 class FetchMyGroupsUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
-            private val repository: DataRepository
+            private val repository: GroupRepository
 ) : UseCase<DataArray<GroupResponse>, FetchMyGroupsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: FetchMyGroupsUseCase.Params): Observable<DataArray<GroupResponse>> {

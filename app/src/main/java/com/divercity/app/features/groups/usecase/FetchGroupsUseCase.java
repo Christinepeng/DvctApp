@@ -3,12 +3,13 @@ package com.divercity.app.features.groups.usecase;
 import com.divercity.app.core.base.UseCase;
 import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.repository.data.DataRepository;
-import io.reactivex.Observable;
-import io.reactivex.Scheduler;
+import com.divercity.app.repository.group.GroupRepository;
 
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import io.reactivex.Observable;
+import io.reactivex.Scheduler;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -16,12 +17,12 @@ import javax.inject.Named;
 
 public class FetchGroupsUseCase extends UseCase<DataArray<GroupResponse>, FetchGroupsUseCase.Params> {
 
-    private DataRepository repository;
+    private GroupRepository repository;
 
     @Inject
     public FetchGroupsUseCase(@Named("executor_thread") Scheduler executorThread,
                               @Named("ui_thread") Scheduler uiThread,
-                              DataRepository repository) {
+                              GroupRepository repository) {
         super(executorThread, uiThread);
         this.repository = repository;
     }

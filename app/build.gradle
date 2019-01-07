@@ -48,8 +48,8 @@ android {
         debug {
             minifyEnabled false
             buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
-            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -64,6 +64,17 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
+//configurations.all {
+//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//        def requested = details.requested
+//        if (requested.group == "com.android.support") {
+//            if (!requested.name.startsWith("multidex")) {
+//                details.useVersion "26.+"
+//            }
+//        }
+//    }
+//}
 
 dependencies {
     def crashLytics_version = "2.9.5@aar"

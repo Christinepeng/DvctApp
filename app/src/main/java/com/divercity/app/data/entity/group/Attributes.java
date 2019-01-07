@@ -1,10 +1,13 @@
 package com.divercity.app.data.entity.group;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Attributes{
+public class Attributes implements Parcelable {
 
 	@SerializedName("current_user_admin_level")
 	private String currentUserAdminLevel;
@@ -59,6 +62,62 @@ public class Attributes{
 
 	@SerializedName("request_to_join_status")
 	private String requestToJoinStatus;
+
+	protected Attributes(Parcel in) {
+		currentUserAdminLevel = in.readString();
+		color = in.readString();
+		questionsCount = in.readInt();
+		description = in.readString();
+		createdAt = in.readInt();
+		groupType = in.readString();
+		title = in.readString();
+		isCurrentUserAdmin = in.readByte() != 0;
+		lastQuestionActivityDate = in.readString();
+		answersCount = in.readInt();
+		followersCount = in.readInt();
+		unseenMessageCount = in.readInt();
+		state = in.readString();
+		isFollowedByCurrent = in.readByte() != 0;
+		pictureMain = in.readString();
+		requestToJoinStatus = in.readString();
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeString(currentUserAdminLevel);
+		dest.writeString(color);
+		dest.writeInt(questionsCount);
+		dest.writeString(description);
+		dest.writeInt(createdAt);
+		dest.writeString(groupType);
+		dest.writeString(title);
+		dest.writeByte((byte) (isCurrentUserAdmin ? 1 : 0));
+		dest.writeString(lastQuestionActivityDate);
+		dest.writeInt(answersCount);
+		dest.writeInt(followersCount);
+		dest.writeInt(unseenMessageCount);
+		dest.writeString(state);
+		dest.writeByte((byte) (isFollowedByCurrent ? 1 : 0));
+		dest.writeString(pictureMain);
+		dest.writeString(requestToJoinStatus);
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<Attributes> CREATOR = new Creator<Attributes>() {
+		@Override
+		public Attributes createFromParcel(Parcel in) {
+			return new Attributes(in);
+		}
+
+		@Override
+		public Attributes[] newArray(int size) {
+			return new Attributes[size];
+		}
+	};
 
 	public void setCurrentUserAdminLevel(String currentUserAdminLevel){
 		this.currentUserAdminLevel = currentUserAdminLevel;

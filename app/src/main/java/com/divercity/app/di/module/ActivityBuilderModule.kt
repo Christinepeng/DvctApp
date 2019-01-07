@@ -3,8 +3,8 @@ package com.divercity.app.di.module
 import com.divercity.app.features.agerange.onboarding.OnboartdingAgeActivity
 import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.app.features.chat.chat.ChatActivity
-import com.divercity.app.features.chat.chatlist.ChatsActivity
 import com.divercity.app.features.chat.newchat.NewChatActivity
+import com.divercity.app.features.chat.recentchats.ChatsActivity
 import com.divercity.app.features.company.companysize.CompanySizesActivity
 import com.divercity.app.features.company.createcompany.CreateCompanyActivity
 import com.divercity.app.features.company.onboarding.OnboardingCompanyActivity

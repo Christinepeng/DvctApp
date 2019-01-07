@@ -37,6 +37,7 @@ constructor(private val repository : UserPaginatedRepositoryImpl): BaseViewModel
     fun fetchUsers(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
         searchQuery?.let {
             if (it != lastSearch) {
+                repository.compositeDisposable.clear()
                 lastSearch = it
                 listingPaginatedJob = repository.fetchData(searchQuery)
                 pagedUserList = listingPaginatedJob.pagedList

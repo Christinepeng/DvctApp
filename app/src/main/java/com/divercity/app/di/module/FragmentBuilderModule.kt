@@ -3,7 +3,8 @@ package com.divercity.app.di.module
 import com.divercity.app.features.agerange.base.SelectAgeFragment
 import com.divercity.app.features.agerange.onboarding.OnboardingAgeFragment
 import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeFragment
-import com.divercity.app.features.chat.chatlist.ChatsFragment
+import com.divercity.app.features.chat.chat.ChatFragment
+import com.divercity.app.features.chat.recentchats.ChatsFragment
 import com.divercity.app.features.chat.newchat.NewChatFragment
 import com.divercity.app.features.company.base.SelectCompanyFragment
 import com.divercity.app.features.company.companysize.CompanySizesFragment
@@ -286,4 +287,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindCreateGroupFragment (): CreateGroupFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindChatFragment (): ChatFragment
 }

@@ -1,4 +1,4 @@
-package com.divercity.app.features.chat.chatlist
+package com.divercity.app.features.chat.recentchats
 
 import android.content.Context
 import android.content.Intent

@@ -1,8 +1,11 @@
 package com.divercity.app.data.entity.group;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
-public class GroupResponse{
+public class GroupResponse implements Parcelable {
 
 	@SerializedName("attributes")
 	private Attributes attributes;
@@ -19,6 +22,38 @@ public class GroupResponse{
 	public GroupResponse(String id) {
 		this.id = id;
 	}
+
+	protected GroupResponse(Parcel in) {
+		attributes = in.readParcelable(Attributes.class.getClassLoader());
+		id = in.readString();
+		type = in.readString();
+		isSelected = in.readByte() != 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeParcelable(attributes, flags);
+		dest.writeString(id);
+		dest.writeString(type);
+		dest.writeByte((byte) (isSelected ? 1 : 0));
+	}
+
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	public static final Creator<GroupResponse> CREATOR = new Creator<GroupResponse>() {
+		@Override
+		public GroupResponse createFromParcel(Parcel in) {
+			return new GroupResponse(in);
+		}
+
+		@Override
+		public GroupResponse[] newArray(int size) {
+			return new GroupResponse[size];
+		}
+	};
 
 	public void setAttributes(Attributes attributes){
 		this.attributes = attributes;

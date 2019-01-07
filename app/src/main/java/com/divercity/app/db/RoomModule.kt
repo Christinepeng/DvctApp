@@ -2,6 +2,7 @@ package com.divercity.app.db
 
 import android.arch.persistence.room.Room
 import android.content.Context
+import com.divercity.app.db.chat.ChatMessageDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

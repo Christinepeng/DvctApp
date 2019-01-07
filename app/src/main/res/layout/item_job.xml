@@ -71,7 +71,6 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:layout_marginBottom="12dp"
         android:orientation="horizontal"
         android:visibility="visible"
@@ -98,7 +97,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_weight="1"
-            tools:text="Kyle Webber Campo" />
+            tools:text="Kyle Webber Campo dssfsdfsdfsdfsdfsdfsdfsdfsdfsd" />
 
         <TextView
             android:id="@+id/txt_recruiter_occup"
@@ -106,10 +105,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_weight="1"
-            tools:text="Tech Recruiter, Tech Recruiter, Tech Recruiter, Tech Recruiter" />
+            android:layout_weight="2"
+            tools:text="Tech Recruiter, Tech Recruiter, Tech Recruiter, Tech Recruiter sdfsdfsdfsdfsdfsdfsdfsdfs" />
 
     </LinearLayout>
 

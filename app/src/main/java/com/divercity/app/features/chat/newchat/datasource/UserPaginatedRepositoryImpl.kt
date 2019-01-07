@@ -18,7 +18,7 @@ class UserPaginatedRepositoryImpl @Inject
 internal constructor(private val fetchUsersUseCase: FetchUsersUseCase) : PaginatedQueryRepository<Any> {
 
     private lateinit var userDataSourceFactory: UserDataSourceFactory
-    private val compositeDisposable = CompositeDisposable()
+    val compositeDisposable = CompositeDisposable()
 
     companion object {
 

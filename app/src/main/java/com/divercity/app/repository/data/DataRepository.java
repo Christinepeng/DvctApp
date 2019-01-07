@@ -4,7 +4,6 @@ import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
 import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
-import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.interests.InterestsResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
@@ -31,17 +30,9 @@ public interface DataRepository {
 
     Observable<DataArray<MajorResponse>> fetchMajors(int page, int size, String query);
 
-    Observable<DataArray<GroupResponse>> fetchGroups(int page, int size, String query);
-
-    Observable<DataArray<GroupResponse>> fetchFollowedGroups(int page, int size, String query);
-
     Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query);
 
     Observable<DataArray<SkillResponse>> fetchSkills(int page, int size, String query);
-
-    Observable<DataArray<GroupResponse>> fetchTrendingGroups(int page, int size, String query);
-
-    Observable<DataArray<GroupResponse>> fetchMyGroups(int page, int size, String query);
 
     Observable<Boolean> createCompany(CreateCompanyBody body);
 
@@ -54,9 +45,4 @@ public interface DataRepository {
             int size,
             String query);
 
-    Observable<GroupResponse> createGroup
-            (String title,
-             String description,
-             String groupType,
-             String picture);
 }

@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:fontFamily="@font/avenir_roman"
-        android:text="@string/create"
+        android:text="@string/next"
         android:textColor="@android:color/white"
         android:textSize="12sp"
         android:textStyle="bold"

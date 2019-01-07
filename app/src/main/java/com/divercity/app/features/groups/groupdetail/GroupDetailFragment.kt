@@ -9,6 +9,7 @@ import android.view.MenuItem
 import android.view.View
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.data.entity.group.GroupResponse
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 
@@ -23,8 +24,14 @@ class GroupDetailFragment : BaseFragment() {
 
     companion object {
 
-        fun newInstance(): GroupDetailFragment {
-            return GroupDetailFragment()
+        private const val PARAM_GROUP = "paramGroup"
+
+        fun newInstance(group: GroupResponse): GroupDetailFragment {
+            val fragment = GroupDetailFragment()
+            val arguments = Bundle()
+            arguments.putParcelable(PARAM_GROUP, group)
+            fragment.arguments = arguments
+            return fragment
         }
     }
 

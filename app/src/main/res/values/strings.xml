@@ -18,6 +18,7 @@
     <string name="done">Done</string>
     <string name="_continue">Continue</string>
     <string name="edit">Edit</string>
+    <string name="next">Next</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>

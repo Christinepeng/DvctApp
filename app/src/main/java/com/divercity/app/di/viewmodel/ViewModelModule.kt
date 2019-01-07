@@ -4,7 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.agerange.onboarding.OnboardingAgeViewModel
 import com.divercity.app.features.chat.chat.ChatViewModel
-import com.divercity.app.features.chat.chatlist.ChatsViewModel
+import com.divercity.app.features.chat.recentchats.ChatsViewModel
 import com.divercity.app.features.chat.newchat.NewChatViewModel
 import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.companysize.CompanySizesViewModel

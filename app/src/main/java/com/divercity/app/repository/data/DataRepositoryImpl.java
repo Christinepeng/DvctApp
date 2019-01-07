@@ -4,7 +4,6 @@ import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.company.createcompanybody.CreateCompanyBody;
 import com.divercity.app.data.entity.company.response.CompanyResponse;
 import com.divercity.app.data.entity.company.sizes.CompanySizeResponse;
-import com.divercity.app.data.entity.group.GroupResponse;
 import com.divercity.app.data.entity.industry.IndustryResponse;
 import com.divercity.app.data.entity.interests.InterestsResponse;
 import com.divercity.app.data.entity.location.LocationResponse;
@@ -19,8 +18,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import okhttp3.MediaType;
-import okhttp3.RequestBody;
 import retrofit2.HttpException;
 import retrofit2.Response;
 
@@ -70,22 +67,6 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Observable<DataArray<GroupResponse>> fetchGroups(int page, int size, String query) {
-        return service.fetchGroups(page, size, query).map(response -> {
-            checkResponse(response);
-            return response.body();
-        });
-    }
-
-    @Override
-    public Observable<DataArray<GroupResponse>> fetchFollowedGroups(int page, int size, String query) {
-        return service.fetchFollowedGroups(page, size, query).map(response -> {
-            checkResponse(response);
-            return response.body();
-        });
-    }
-
-    @Override
     public Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query) {
         return service.fetchLocations(page, size, query).map(response -> {
             checkResponse(response);
@@ -96,22 +77,6 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public Observable<DataArray<SkillResponse>> fetchSkills(int page, int size, String query) {
         return service.fetchSkills(page, size, query).map(response -> {
-            checkResponse(response);
-            return response.body();
-        });
-    }
-
-    @Override
-    public Observable<DataArray<GroupResponse>> fetchTrendingGroups(int page, int size, String query) {
-        return service.fetchTrendingGroups(page, size, query).map(response -> {
-            checkResponse(response);
-            return response.body();
-        });
-    }
-
-    @Override
-    public Observable<DataArray<GroupResponse>> fetchMyGroups(int page, int size, String query) {
-        return service.fetchMyGroups(page, size, query).map(response -> {
             checkResponse(response);
             return response.body();
         });
@@ -144,19 +109,6 @@ public class DataRepositoryImpl implements DataRepository {
     @Override
     public Observable<List<OOIResponse>> fetchOccupationOfInterests(int pageNumber, int size, String query) {
         return service.fetchOccupationOfInterests(pageNumber, size, query).map(response -> {
-            checkResponse(response);
-            return response.body().getData();
-        });
-    }
-
-    @Override
-    public Observable<GroupResponse> createGroup(String title, String description, String groupType, String picture) {
-        RequestBody partTitle = RequestBody.create(MediaType.parse("text/plain"), title);
-        RequestBody partDescription = RequestBody.create(MediaType.parse("text/plain"), description);
-        RequestBody partGroupType = RequestBody.create(MediaType.parse("text/plain"), groupType);
-        RequestBody partPicture = RequestBody.create(MediaType.parse("text/plain"), picture);
-
-        return service.createGroup(partTitle, partDescription, partGroupType, partPicture).map(response -> {
             checkResponse(response);
             return response.body().getData();
         });

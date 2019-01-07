@@ -133,7 +133,7 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     private val listener = object : GroupsViewHolder.Listener {
 
         override fun onGroupClick(group: GroupResponse) {
-            navigator.navigateToGroupDetailActivity(this@AllGroupsFragment, group.id)
+            navigator.navigateToGroupDetailActivity(this@AllGroupsFragment, group)
         }
 
         override fun onGroupJoinClick(position: Int, group: GroupResponse) {

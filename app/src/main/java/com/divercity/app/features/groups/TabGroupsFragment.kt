@@ -16,7 +16,6 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.ViewPagerDotsPanel
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.group.recommendedgroups.RecommendationItem
 import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
 import com.divercity.app.features.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_groups.*
@@ -41,8 +40,8 @@ class TabGroupsFragment : BaseFragment() {
     var lastPositionJoinClick = 0
     lateinit var handlerViewPager: Handler
 
-    private lateinit var searchView : SearchView
-    private var searchItem: MenuItem?= null
+    private lateinit var searchView: SearchView
+    private var searchItem: MenuItem? = null
 
     companion object {
 
@@ -68,8 +67,15 @@ class TabGroupsFragment : BaseFragment() {
         handlerViewPager = Handler()
 
         setupToolbar()
+        initView()
         setupAdapterViewPager()
         subscribeToLiveData()
+    }
+
+    private fun initView() {
+        btn_create_group.setOnClickListener {
+            navigator.navigateToCreateGroupActivity(this)
+        }
     }
 
     private fun subscribeToLiveData() {
@@ -101,7 +107,7 @@ class TabGroupsFragment : BaseFragment() {
     }
 
     private fun initAdapterRecommendedGroups(list: List<RecommendedGroupsResponse>?) {
-        if(list?.size != 0) {
+        if (list?.size != 0) {
             lay_carousel_viewpager.visibility = View.VISIBLE
 
             slider_viewpager.adapter = recommendedGroupsAdapter
@@ -142,14 +148,12 @@ class TabGroupsFragment : BaseFragment() {
         }
     }
 
-    private val runnable = object : Runnable {
-        override fun run() {
-            slider_viewpager.currentItem =
-                    if (slider_viewpager.currentItem == recommendedGroupsAdapter.count - 1)
-                        0
-                    else
-                        slider_viewpager.currentItem + 1
-        }
+    private val runnable = Runnable {
+        slider_viewpager.currentItem =
+                if (slider_viewpager.currentItem == recommendedGroupsAdapter.count - 1)
+                    0
+                else
+                    slider_viewpager.currentItem + 1
     }
 
     private fun setupToolbar() {
@@ -172,7 +176,7 @@ class TabGroupsFragment : BaseFragment() {
 
             override fun onPageSelected(p0: Int) {
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
-                    ?.fetchGroups(lastSearchQuery)
+                        ?.fetchGroups(lastSearchQuery)
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)

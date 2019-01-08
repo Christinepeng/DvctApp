@@ -2,6 +2,8 @@ package com.divercity.app.repository.group
 
 import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.questions.QuestionResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.data.networking.services.GroupService
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -18,6 +20,20 @@ class GroupRepositoryImpl @Inject
 constructor(
         private val service: GroupService
 ) : GroupRepository {
+
+    override fun fetchGroupAdmins(groupId: String, pageNumber: Int, size: Int, query: String?): Observable<List<UserResponse>> {
+        return service.fetchGroupAdmins(groupId, pageNumber, size, query).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun fetchQuestions(groupId: String, page: Int, size: Int, query: String?): Observable<List<QuestionResponse>> {
+        return service.fetchQuestions(groupId, page, size, query).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
 
     override fun fetchGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>> {
         return service.fetchGroups(page, size, query).map {
@@ -58,6 +74,12 @@ constructor(
             it.body()?.data
         }
     }
+
+    override fun fetchGroupMembers(groupId: String, page: Int, size: Int, query: String?): Observable<List<UserResponse>> {
+        return service.fetchGroupMembers(groupId, page, size, query).map {
+            checkResponse(it)
+            it.body()?.data
+        }    }
 
     private fun checkResponse(response: Response<*>) {
         if (!response.isSuccessful)

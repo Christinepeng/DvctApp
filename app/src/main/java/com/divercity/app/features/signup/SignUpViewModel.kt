@@ -3,7 +3,7 @@ package com.divercity.app.features.signup
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.signup.usecase.CheckIsUsernameRegisteredUseCase
 import com.divercity.app.features.signup.usecase.SignUpUseCase
@@ -22,7 +22,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
 
     val signUpResponse = SingleLiveEvent<Resource<Any>>()
     val usernameRegisteredResponse = SingleLiveEvent<Resource<Boolean>>()
-    val uploadProfilePictureResponse = SingleLiveEvent<Resource<LoginResponse>>()
+    val uploadProfilePictureResponse = SingleLiveEvent<Resource<UserResponse>>()
     val navigateToSelectUserType = SingleLiveEvent<Boolean>()
 
     fun signUp(name: String, username: String, email: String, password: String, confirmPassword: String) {
@@ -33,7 +33,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
                 signUpResponse.value = Resource.error(msg, null)
             }
 
-            override fun onSuccess(response: LoginResponse) {
+            override fun onSuccess(response: UserResponse) {
                 signUpResponse.value = Resource.success(response)
             }
         }
@@ -68,7 +68,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
         if (pictureBase64 == "")
             navigateToSelectUserType.call()
         else {
-            val callback = object : DisposableObserverWrapper<LoginResponse>() {
+            val callback = object : DisposableObserverWrapper<UserResponse>() {
 
                 override fun onFail(error: String) {
                     uploadProfilePictureResponse.value = Resource.error(error, null)
@@ -78,7 +78,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
 
                 }
 
-                override fun onSuccess(t: LoginResponse) {
+                override fun onSuccess(t: UserResponse) {
                     uploadProfilePictureResponse.value = Resource.success(t)
                 }
             }

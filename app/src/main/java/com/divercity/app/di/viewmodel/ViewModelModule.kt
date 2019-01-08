@@ -4,8 +4,8 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.app.features.agerange.onboarding.OnboardingAgeViewModel
 import com.divercity.app.features.chat.chat.ChatViewModel
-import com.divercity.app.features.chat.recentchats.ChatsViewModel
 import com.divercity.app.features.chat.newchat.NewChatViewModel
+import com.divercity.app.features.chat.recentchats.ChatsViewModel
 import com.divercity.app.features.company.base.SelectCompanyViewModel
 import com.divercity.app.features.company.companysize.CompanySizesViewModel
 import com.divercity.app.features.company.createcompany.CreateCompanyViewModel
@@ -18,6 +18,9 @@ import com.divercity.app.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.all.AllGroupsViewModel
 import com.divercity.app.features.groups.creategroup.step1.CreateGroupViewModel
+import com.divercity.app.features.groups.groupdetail.GroupDetailViewModel
+import com.divercity.app.features.groups.groupdetail.about.TabAboutGroupDetailViewModel
+import com.divercity.app.features.groups.groupdetail.conversation.GroupConversationViewModel
 import com.divercity.app.features.groups.mygroups.MyGroupsViewModel
 import com.divercity.app.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.app.features.groups.trending.TrendingGroupsViewModel
@@ -342,4 +345,19 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateGroupViewModel::class)
     abstract fun bindsCreateGroupViewModel(viewModel: CreateGroupViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GroupDetailViewModel::class)
+    abstract fun bindsGroupDetailViewModel(viewModel: GroupDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TabAboutGroupDetailViewModel::class)
+    abstract fun bindsTabAboutGroupDetailViewModel(viewModel: TabAboutGroupDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GroupConversationViewModel::class)
+    abstract fun bindsGroupConversationViewModel(viewModel: GroupConversationViewModel): ViewModel
 }

@@ -33,7 +33,7 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
         mTxtGroupName = itemView.findViewById(R.id.item_quest_txt_groupname);
         mImgAnswerAuthor = itemView.findViewById(R.id.item_quest_img_answer);
         mImgAuthor = itemView.findViewById(R.id.item_group_img);
-        mTxtQuestion = itemView.findViewById(R.id.item_quest_txt_question);
+        mTxtQuestion = itemView.findViewById(R.id.item_quest_txt_author_name);
         mTxtAnswer = itemView.findViewById(R.id.item_quest_txt_answer);
         mLayUnseen = itemView.findViewById(R.id.item_quest_lay_unseen);
         mTxtUnseen = itemView.findViewById(R.id.item_quest_txt_unseen);

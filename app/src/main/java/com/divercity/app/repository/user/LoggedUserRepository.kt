@@ -1,7 +1,7 @@
 package com.divercity.app.repository.user
 
 import com.divercity.app.data.entity.base.DataObject
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import retrofit2.Response
 
 /**
@@ -46,9 +46,9 @@ interface LoggedUserRepository {
 
     fun clearUserData()
 
-    fun saveUserHeaderData(response: Response<DataObject<LoginResponse>>)
+    fun saveUserHeaderData(response: Response<DataObject<UserResponse>>)
 
-    fun saveUserData(data: DataObject<LoginResponse>?)
+    fun saveUserData(data: DataObject<UserResponse>?)
 
     fun isLoggedUserJobSeeker(): Boolean
 

@@ -1,7 +1,7 @@
 package com.divercity.app.features.chat.usecase
 
 import com.divercity.app.core.base.UseCase
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -17,9 +17,9 @@ constructor(
         @Named("executor_thread") executorThread: Scheduler,
         @Named("ui_thread") uiThread: Scheduler,
         private val repository: UserRepository
-) : UseCase<@JvmSuppressWildcards List<LoginResponse>, FetchUsersUseCase.Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<UserResponse>, FetchUsersUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<List<LoginResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
         return repository.fetchUsers(
                 params.page,
                 params.size,

@@ -7,7 +7,7 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.features.chat.usecase.FetchUsersUseCase;
 
 import java.util.ArrayList;
@@ -64,9 +64,9 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<LoginResponse>> disposableObserver = new DisposableObserver<List<LoginResponse>>() {
+        DisposableObserver<List<UserResponse>> disposableObserver = new DisposableObserver<List<UserResponse>>() {
             @Override
-            public void onNext(List<LoginResponse> data) {
+            public void onNext(List<UserResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     firstChars.clear();
@@ -109,9 +109,9 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
     public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, Object> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<LoginResponse>> disposableObserver = new DisposableObserver<List<LoginResponse>>() {
+        DisposableObserver<List<UserResponse>> disposableObserver = new DisposableObserver<List<UserResponse>>() {
             @Override
-            public void onNext(List<LoginResponse> data) {
+            public void onNext(List<UserResponse> data) {
                 if (data != null) {
                     setRetry(null);
                     callback.onResult(getSegmentedList(data), params.key + 1);
@@ -156,10 +156,10 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
         }
     }
 
-    private ArrayList<Object> getSegmentedList(List<LoginResponse> data){
+    private ArrayList<Object> getSegmentedList(List<UserResponse> data){
         ArrayList<Object> result = new ArrayList<>();
 
-        for(LoginResponse r : data){
+        for(UserResponse r : data){
             char firstChar = Character.toUpperCase(r.getAttributes().getName().charAt(0));
             if(!firstChars.contains(firstChar)){
                 firstChars.add(firstChar);

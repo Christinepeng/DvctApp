@@ -11,7 +11,7 @@ import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.utils.Listing;
 import com.divercity.app.data.Resource;
 import com.divercity.app.data.entity.industry.IndustryResponse;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.industry.base.industry.IndustryPaginatedRepositoryImpl;
 import com.divercity.app.features.industry.onboarding.usecase.FollowIndustriesUseCase;
@@ -33,7 +33,7 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
     private IndustryPaginatedRepositoryImpl repository;
     private UserRepository userRepository;
     private FollowIndustriesUseCase followIndustriesUseCase;
-    private MutableLiveData<Resource<LoginResponse>> followIndustriesResponse = new MutableLiveData<>();
+    private MutableLiveData<Resource<UserResponse>> followIndustriesResponse = new MutableLiveData<>();
 
     @Inject
     public SelectIndustryOnboardingViewModel(IndustryPaginatedRepositoryImpl repository,
@@ -81,7 +81,7 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
 
     public void followIndustries(List<String> industriesSelected) {
         followIndustriesResponse.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<LoginResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserResponse>() {
             @Override
             protected void onFail(String error) {
                 followIndustriesResponse.postValue(Resource.Companion.error(error, null));
@@ -93,7 +93,7 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(LoginResponse o) {
+            protected void onSuccess(UserResponse o) {
                 followIndustriesResponse.postValue(Resource.Companion.success(o));
             }
         };
@@ -101,7 +101,7 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
         followIndustriesUseCase.execute(callback, FollowIndustriesUseCase.Params.Companion.forIndustry(industriesSelected));
     }
 
-    public MutableLiveData<Resource<LoginResponse>> getFollowIndustriesResponse() {
+    public MutableLiveData<Resource<UserResponse>> getFollowIndustriesResponse() {
         return followIndustriesResponse;
     }
 }

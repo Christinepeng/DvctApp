@@ -1,4 +1,4 @@
-package com.divercity.app.data.entity.login.response
+package com.divercity.app.data.entity.user.response
 
 import com.google.gson.annotations.SerializedName
 

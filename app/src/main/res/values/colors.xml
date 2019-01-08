@@ -16,6 +16,8 @@
     <color name="textTitle">#333241</color>
     <color name="green">#48cc7c</color>
 
+    <color name="transparent">#54000000</color>
+
     <!-- Reds-->
     <color name="red">#ff7272</color>
     <color name="red1">#eb586f</color>

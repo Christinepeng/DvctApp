@@ -8,7 +8,7 @@ import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.core.utils.SingleLiveEvent;
 import com.divercity.app.core.utils.Util;
 import com.divercity.app.data.Resource;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.login.step1.usecase.ChecIskEmailRegisteredUseCase;
 import com.divercity.app.features.login.step1.usecase.ConnectLinkedInApiHelper;
@@ -33,7 +33,7 @@ public class EnterEmailViewModel extends BaseViewModel {
     private ConnectLinkedInApiHelper linkedInApiHelper;
 
     private SingleLiveEvent<Resource<Boolean>> isEmailRegistered = new SingleLiveEvent<>();
-    private SingleLiveEvent<Resource<LoginResponse>> loginFacebookResponse = new SingleLiveEvent<>();
+    private SingleLiveEvent<Resource<UserResponse>> loginFacebookResponse = new SingleLiveEvent<>();
 
     private SingleLiveEvent<Object> navigateToSignUp = new SingleLiveEvent<>();
     private SingleLiveEvent<Object> navigateToLogin = new SingleLiveEvent<>();
@@ -81,7 +81,7 @@ public class EnterEmailViewModel extends BaseViewModel {
     public void loginFacebook(String token){
         loginFacebookResponse.setValue(Resource.Companion.loading(null));
 
-        DisposableObserverWrapper<LoginResponse> disposable = new DisposableObserverWrapper<LoginResponse>() {
+        DisposableObserverWrapper<UserResponse> disposable = new DisposableObserverWrapper<UserResponse>() {
             @Override
             protected void onFail(@NotNull String error) {
                 loginFacebookResponse.setValue(Resource.Companion.error(error,null));
@@ -93,7 +93,7 @@ public class EnterEmailViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(@NotNull LoginResponse loginResponse) {
+            protected void onSuccess(@NotNull UserResponse loginResponse) {
                 loginFacebookResponse.setValue(Resource.Companion.success(loginResponse));
             }
         };
@@ -106,7 +106,7 @@ public class EnterEmailViewModel extends BaseViewModel {
         return isEmailRegistered;
     }
 
-    public SingleLiveEvent<Resource<LoginResponse>> getLoginFacebookResponse() {
+    public SingleLiveEvent<Resource<UserResponse>> getLoginFacebookResponse() {
         return loginFacebookResponse;
     }
 

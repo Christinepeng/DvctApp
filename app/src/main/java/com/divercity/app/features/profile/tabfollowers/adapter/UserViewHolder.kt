@@ -7,13 +7,13 @@ import android.view.ViewGroup
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
 import com.divercity.app.core.utils.GlideApp
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import kotlinx.android.synthetic.main.item_user.view.*
 
 class UserViewHolder
 private constructor(itemView: View, private val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(position: Int, data: LoginResponse?) {
+    fun bindTo(position: Int, data: UserResponse?) {
         data?.let {
             itemView.apply {
 
@@ -31,7 +31,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
 
     interface Listener {
 
-        fun onUserClick(user: LoginResponse)
+        fun onUserClick(user: UserResponse)
     }
 
     companion object {

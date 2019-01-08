@@ -131,6 +131,7 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     private val listener = object : GroupsViewHolder.Listener {
 
         override fun onGroupClick(group: GroupResponse) {
+            navigator.navigateToGroupDetailActivity(this@TrendingGroupsFragment, group)
         }
 
         override fun onGroupJoinClick(position: Int, group: GroupResponse) {

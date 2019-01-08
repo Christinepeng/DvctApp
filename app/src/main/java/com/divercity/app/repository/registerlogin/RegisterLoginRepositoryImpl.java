@@ -3,8 +3,8 @@ package com.divercity.app.repository.registerlogin;
 import com.divercity.app.data.entity.emailusernamecheck.CheckUsernameEmailResponse;
 import com.divercity.app.data.entity.emailusernamecheck.emailbody.CheckEmailBody;
 import com.divercity.app.data.entity.emailusernamecheck.usernamebody.CheckUsernameBody;
-import com.divercity.app.data.entity.login.body.LoginBody;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.body.LoginBody;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.entity.signup.SignUpBody;
 import com.divercity.app.data.networking.services.RegisterLoginService;
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl;
@@ -35,7 +35,7 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     }
 
     @Override
-    public Observable<LoginResponse> login(String email, String password) {
+    public Observable<UserResponse> login(String email, String password) {
         return registerLoginService.login(new LoginBody(email, password))
                 .map(response -> {
                     checkResponse(response);
@@ -45,7 +45,7 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     }
 
     @Override
-    public Observable<LoginResponse> signUp(String nickname, String name, String email, String password, String confirmPassword) {
+    public Observable<UserResponse> signUp(String nickname, String name, String email, String password, String confirmPassword) {
         return registerLoginService.signUp(new SignUpBody(password, confirmPassword, nickname, name, email))
                 .map(response -> {
                     checkResponse(response);
@@ -55,7 +55,7 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     }
 
     @Override
-    public Observable<LoginResponse> loginLinkedin(String code, String state) {
+    public Observable<UserResponse> loginLinkedin(String code, String state) {
         return registerLoginService.loginLinkedin(code, state).map(response -> {
             checkResponse(response);
             loggedUserRepository.saveUserHeaderData(response);
@@ -64,7 +64,7 @@ public class RegisterLoginRepositoryImpl implements RegisterLoginRepository {
     }
 
     @Override
-    public Observable<LoginResponse> loginFacebook(String token) {
+    public Observable<UserResponse> loginFacebook(String token) {
         return registerLoginService.loginFacebook(RequestBody.create(MediaType.parse("text/plain"), token)).map(response -> {
             checkResponse(response);
             loggedUserRepository.saveUserHeaderData(response);

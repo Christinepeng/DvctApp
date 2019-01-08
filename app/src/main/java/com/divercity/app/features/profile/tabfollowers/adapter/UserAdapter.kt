@@ -8,11 +8,11 @@ import com.divercity.app.R
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.NetworkStateViewHolder
 import com.divercity.app.core.ui.RetryCallback
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import javax.inject.Inject
 
 class UserAdapter @Inject
-constructor() : PagedListAdapter<LoginResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+constructor() : PagedListAdapter<UserResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -75,13 +75,13 @@ constructor() : PagedListAdapter<LoginResponse, RecyclerView.ViewHolder>(userDif
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<LoginResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<UserResponse>() {
 
-            override fun areItemsTheSame(oldItem: LoginResponse, newItem: LoginResponse): Boolean {
+            override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
                 return oldItem.id === newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: LoginResponse, newItem: LoginResponse): Boolean {
+            override fun areContentsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
                 return oldItem == newItem
             }
         }

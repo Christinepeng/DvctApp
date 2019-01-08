@@ -1,26 +1,41 @@
 package com.divercity.app.features.groups.groupdetail
 
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.Toast
+import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
+import com.divercity.app.core.utils.GlideApp
+import com.divercity.app.data.Status
 import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import kotlinx.android.synthetic.main.fragment_group_detail.*
+import kotlinx.android.synthetic.main.view_image_with_foreground.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
+import javax.inject.Inject
 
 /**
  * Created by lucas on 25/10/2018.
  */
 
-
 class GroupDetailFragment : BaseFragment() {
 
     lateinit var viewModel: GroupDetailViewModel
+
+    @Inject
+    lateinit var adapter: GroupDetailViewPagerAdapter
+
+    private var group: GroupResponse? = null
 
     companion object {
 
@@ -39,12 +54,22 @@ class GroupDetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[GroupDetailViewModel::class.java]
         setHasOptionsMenu(true)
+        group = arguments?.getParcelable(PARAM_GROUP)
+        group?.let {
+            viewModel.fetchGroupMembers(it, 0, 5, null)
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
+        setupView()
+        subscribeToLiveData()
+    }
 
+    private fun setupToolbar() {
         (activity as AppCompatActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
@@ -52,6 +77,59 @@ class GroupDetailFragment : BaseFragment() {
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
+    }
+
+    private fun setupView() {
+        adapter.group = group!!
+        viewPager.adapter = adapter
+        tab_layout.setupWithViewPager(viewPager)
+
+        group?.let {
+            item_txt_name.text = it.attributes?.title
+            if (it.isPublic)
+                item_txt_detail.text =
+                        "Public Group · ".plus(it.attributes?.followersCount).plus(" Members")
+            else
+                item_txt_detail.text =
+                        "Private Group · ".plus(it.attributes?.followersCount).plus(" Members")
+
+            GlideApp.with(this)
+                .load(it.attributes.pictureMain)
+                .into(img_default_group)
+        }
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.fetchGroupMembersResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    showMemberPictures(response.data!!)
+                }
+            }
+        })
+    }
+
+    private fun showMemberPictures(members: List<UserResponse>) {
+        val imgViews: Array<View> =
+            arrayOf(lay_img1, lay_img2, lay_img3, lay_img4, lay_img5)
+
+        for(i in members.indices){
+            imgViews[i].visibility = View.VISIBLE
+
+            GlideApp.with(this)
+                    .load(members[i].attributes?.avatarThumb)
+                    .apply(RequestOptions().circleCrop())
+                    .into(imgViews[i].img)
+
+            if(i == members.size - 1 && i != group?.attributes?.followersCount!! - 1)
+                (imgViews[i] as FrameLayout).foreground = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -65,12 +143,10 @@ class GroupDetailFragment : BaseFragment() {
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-
                 return true
             }
         })

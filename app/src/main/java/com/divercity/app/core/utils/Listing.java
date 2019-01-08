@@ -6,7 +6,7 @@ import android.arch.paging.PagedList;
 import com.divercity.app.core.ui.NetworkState;
 
 /**
- * LoginResponse class that is necessary for a UI to show a listing and interact w/ the rest of the system
+ * UserResponse class that is necessary for a UI to show a listing and interact w/ the rest of the system
  */
 public class Listing<T> {
 

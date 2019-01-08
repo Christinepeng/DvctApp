@@ -19,6 +19,7 @@
     <string name="_continue">Continue</string>
     <string name="edit">Edit</string>
     <string name="next">Next</string>
+    <string name="conversation">Conversation</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -212,6 +213,13 @@
     <string name="similar_jobs">Similar Jobs</string>
     <string name="group_name">Group Name</string>
     <string name="add_photo">Add Photo</string>
+    <string name="about_this_group">About This Group</string>
+    <string name="admins">Admins</string>
+    <string name="public_group">Public Group</string>
+    <string name="private_group">Private Group</string>
+    <string name="public_group_desc">Anyone is open to join this Group and view Posts in the Group</string>
+    <string name="private_group_desc">Users have to send a request to join the group and see posts and members</string>
+    <string name="members">Members</string>
 
     <!-- Delete Job-->
     <string name="delete_job">Delete Job Posting</string>

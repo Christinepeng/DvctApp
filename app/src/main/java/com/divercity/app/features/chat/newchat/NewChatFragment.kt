@@ -15,7 +15,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.features.chat.newchat.adapter.UserCharViewHolder
 import com.divercity.app.features.chat.newchat.adapter.UserSortedByFirstCharAdapter
 import kotlinx.android.synthetic.main.fragment_new_chat.*
@@ -161,7 +161,7 @@ class NewChatFragment : BaseFragment(), RetryCallback {
 
     private val listener: UserCharViewHolder.Listener = object : UserCharViewHolder.Listener {
 
-        override fun onUserClick(user: LoginResponse) {
+        override fun onUserClick(user: UserResponse) {
             navigator.navigateToChatActivity(this@NewChatFragment, user.attributes?.name!!, user.id!!)
         }
     }

@@ -4,8 +4,8 @@ import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.location.LocationResponse
-import com.divercity.app.data.entity.login.response.LoginResponse
 import com.divercity.app.data.entity.profile.profile.User
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.onboarding.usecase.UpdateUserProfileUseCase
 import com.divercity.app.features.profile.usecase.FetchUserDataUseCase
@@ -22,7 +22,7 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
             private val updateUserProfileUseCase: UpdateUserProfileUseCase,
             private val userRepository: UserRepository) : BaseViewModel() {
 
-    val updateUserProfileResponse = SingleLiveEvent<Resource<LoginResponse>>()
+    val updateUserProfileResponse = SingleLiveEvent<Resource<UserResponse>>()
 
     fun getEthnicity() : String? {
         return userRepository.getEthnicity()
@@ -70,18 +70,18 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
     }
 
     fun updateUserProfile(user : User){
-        updateUserProfileResponse.postValue(Resource.loading<LoginResponse>(null))
+        updateUserProfileResponse.postValue(Resource.loading<UserResponse>(null))
 
-        val callback = object : DisposableObserverWrapper<LoginResponse>() {
+        val callback = object : DisposableObserverWrapper<UserResponse>() {
             override fun onFail(error: String) {
-                updateUserProfileResponse.postValue(Resource.error<LoginResponse>(error, null))
+                updateUserProfileResponse.postValue(Resource.error<UserResponse>(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-                updateUserProfileResponse.postValue(Resource.error<LoginResponse>(error.toString(), null))
+                updateUserProfileResponse.postValue(Resource.error<UserResponse>(error.toString(), null))
             }
 
-            override fun onSuccess(o: LoginResponse) {
+            override fun onSuccess(o: UserResponse) {
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }

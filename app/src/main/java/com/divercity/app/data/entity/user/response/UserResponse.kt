@@ -1,8 +1,8 @@
-package com.divercity.app.data.entity.login.response
+package com.divercity.app.data.entity.user.response
 
 import com.google.gson.annotations.SerializedName
 
-data class LoginResponse(
+data class UserResponse(
 
 	@field:SerializedName("attributes")
 	val attributes: Attributes? = null,

@@ -11,7 +11,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.data.Status
 import com.divercity.app.data.entity.location.LocationResponse
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.app.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.app.features.gender.withtoolbar.ToolbarGenderFragment
@@ -125,7 +125,7 @@ class TabProfileFragment : BaseFragment() {
         })
     }
 
-    private fun setData(user: LoginResponse?) {
+    private fun setData(user: UserResponse?) {
 
         txt_ethnicity.text = user?.attributes?.ethnicity
         txt_gender.text = user?.attributes?.gender

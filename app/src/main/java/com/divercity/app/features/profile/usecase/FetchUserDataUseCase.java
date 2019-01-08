@@ -1,7 +1,7 @@
 package com.divercity.app.features.profile.usecase;
 
 import com.divercity.app.core.base.UseCase;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.repository.user.UserRepository;
 import com.google.gson.JsonElement;
@@ -12,7 +12,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class FetchUserDataUseCase extends UseCase<LoginResponse, FetchUserDataUseCase.Params> {
+public class FetchUserDataUseCase extends UseCase<UserResponse, FetchUserDataUseCase.Params> {
 
     private UserRepository userRepository;
 
@@ -25,7 +25,7 @@ public class FetchUserDataUseCase extends UseCase<LoginResponse, FetchUserDataUs
     }
 
     @Override
-    protected Observable<LoginResponse> createObservableUseCase(Params params) {
+    protected Observable<UserResponse> createObservableUseCase(Params params) {
         return userRepository.fetchRemoteUserData(params.userId);
     }
 
@@ -41,7 +41,7 @@ public class FetchUserDataUseCase extends UseCase<LoginResponse, FetchUserDataUs
         }
     }
 
-    public static abstract class Callback extends DisposableObserverWrapper<LoginResponse> {
+    public static abstract class Callback extends DisposableObserverWrapper<UserResponse> {
 
         @Override
         protected void onHttpException(JsonElement error) {

@@ -3,7 +3,7 @@ package com.divercity.app.repository.user;
 import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.industry.body.FollowIndustryBody;
 import com.divercity.app.data.entity.interests.body.FollowInterestsBody;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.entity.occupationofinterests.body.FollowOOIBody;
 import com.divercity.app.data.entity.profile.picture.ProfilePictureBody;
 import com.divercity.app.data.entity.profile.profile.User;
@@ -43,7 +43,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<LoginResponse> fetchRemoteUserData(String userId) {
+    public Observable<UserResponse> fetchRemoteUserData(String userId) {
         return userService.fetchUserData(userId)
                 .map(response -> {
                     checkResponse(response);
@@ -61,7 +61,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<LoginResponse> uploadUserPhoto(ProfilePictureBody body) {
+    public Observable<UserResponse> uploadUserPhoto(ProfilePictureBody body) {
         return userService.uploadUserPhoto(body).map(response -> {
                     checkResponse(response);
                     loggedUserRepository.saveUserData(response.body());
@@ -71,7 +71,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public Observable<LoginResponse> updateUserProfile(User user) {
+    public Observable<UserResponse> updateUserProfile(User user) {
         UserProfileBody userProfileBody = new UserProfileBody();
         userProfileBody.setUser(user);
         return userService.updateUserProfile(loggedUserRepository.getUserId(), userProfileBody)
@@ -160,12 +160,12 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void saveUserHeaderData(@NotNull Response<DataObject<LoginResponse>> response) {
+    public void saveUserHeaderData(@NotNull Response<DataObject<UserResponse>> response) {
         loggedUserRepository.saveUserHeaderData(response);
     }
 
     @Override
-    public void saveUserData(@Nullable DataObject<LoginResponse> data) {
+    public void saveUserData(@Nullable DataObject<UserResponse> data) {
         loggedUserRepository.saveUserData(data);
     }
 
@@ -193,7 +193,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public Observable<LoginResponse> followOccupationOfInterests(@NotNull List<String> occupationIds) {
+    public Observable<UserResponse> followOccupationOfInterests(@NotNull List<String> occupationIds) {
         return userService.followOccupationOfInterests(new FollowOOIBody(occupationIds)).map(response -> {
             checkResponse(response);
             return response.body().getData();
@@ -207,7 +207,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public Observable<LoginResponse> followInterests(@NotNull List<String> interestsIds) {
+    public Observable<UserResponse> followInterests(@NotNull List<String> interestsIds) {
         return userService.followInterests(new FollowInterestsBody(interestsIds)).map(response -> {
             checkResponse(response);
             return response.body().getData();
@@ -216,7 +216,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public Observable<LoginResponse> followIndustries(@NotNull List<String> industriesIds) {
+    public Observable<UserResponse> followIndustries(@NotNull List<String> industriesIds) {
         return userService.followIndustries(new FollowIndustryBody(industriesIds)).map(response -> {
             checkResponse(response);
             return response.body().getData();
@@ -225,7 +225,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public Observable<List<LoginResponse>> fetchFollowersByUser(@NotNull String userId, int pageNumber, int size, @Nullable String query) {
+    public Observable<List<UserResponse>> fetchFollowersByUser(@NotNull String userId, int pageNumber, int size, @Nullable String query) {
         return userService.fetchFollowersByUser(userId, pageNumber, size, query).map(response -> {
             checkResponse(response);
             return response.body().getData();
@@ -267,7 +267,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public Observable<List<LoginResponse>> fetchFollowingByUser(@NotNull String userId, int pageNumber, int size, @Nullable String query) {
+    public Observable<List<UserResponse>> fetchFollowingByUser(@NotNull String userId, int pageNumber, int size, @Nullable String query) {
         return userService.fetchFollowingByUser(userId, pageNumber, size, query).map(response -> {
             checkResponse(response);
             return response.body().getData();
@@ -298,7 +298,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     @NotNull
     @Override
-    public Observable<List<LoginResponse>> fetchUsers(int pageNumber, int size, @Nullable String query) {
+    public Observable<List<UserResponse>> fetchUsers(int pageNumber, int size, @Nullable String query) {
         return userService.fetchUsers(pageNumber, size, query).map(response -> {
             checkResponse(response);
             return response.body().getData();

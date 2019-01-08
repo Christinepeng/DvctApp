@@ -4,8 +4,8 @@ import com.divercity.app.data.entity.base.DataObject;
 import com.divercity.app.data.entity.emailusernamecheck.CheckUsernameEmailResponse;
 import com.divercity.app.data.entity.emailusernamecheck.emailbody.CheckEmailBody;
 import com.divercity.app.data.entity.emailusernamecheck.usernamebody.CheckUsernameBody;
-import com.divercity.app.data.entity.login.body.LoginBody;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.body.LoginBody;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.entity.signup.SignUpBody;
 
 import io.reactivex.Observable;
@@ -25,7 +25,7 @@ import retrofit2.http.Query;
 public interface RegisterLoginService {
 
     @POST("auth/sign_in")
-    Observable<Response<DataObject<LoginResponse>>> login(@Body LoginBody loginBody);
+    Observable<Response<DataObject<UserResponse>>> login(@Body LoginBody loginBody);
 
     @POST("users/check_email")
     Observable<CheckUsernameEmailResponse> checkEmail(@Body CheckEmailBody loginBody);
@@ -34,14 +34,14 @@ public interface RegisterLoginService {
     Observable<CheckUsernameEmailResponse> checkUsername(@Body CheckUsernameBody loginBody);
 
     @POST("auth")
-    Observable<Response<DataObject<LoginResponse>>> signUp(@Body SignUpBody loginBody);
+    Observable<Response<DataObject<UserResponse>>> signUp(@Body SignUpBody loginBody);
 
     @GET("auth/sso/linkedin")
-    Observable<Response<DataObject<LoginResponse>>> loginLinkedin(
+    Observable<Response<DataObject<UserResponse>>> loginLinkedin(
             @Query("code") String code,
             @Query("state") String state);
 
     @Multipart
     @POST("auth/sso/facebook")
-    Observable<Response<DataObject<LoginResponse>>> loginFacebook( @Part("token") RequestBody token);
+    Observable<Response<DataObject<UserResponse>>> loginFacebook(@Part("token") RequestBody token);
 }

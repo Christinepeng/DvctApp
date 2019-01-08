@@ -1,17 +1,12 @@
 package com.divercity.app.features.groups.groupdetail
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
 import com.divercity.app.core.base.BaseViewModel
-import com.divercity.app.core.ui.NetworkState
-import com.divercity.app.core.utils.Listing
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
-import com.divercity.app.features.groups.mygroups.datasource.MyGroupsPaginatedRepositoryImpl
-import com.divercity.app.features.groups.usecase.JoinGroupUseCase
+import com.divercity.app.features.groups.groupdetail.usecase.FetchGroupMembersUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -20,66 +15,30 @@ import javax.inject.Inject
  */
 
 class GroupDetailViewModel @Inject
-constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
-            private val joinGroupUseCase: JoinGroupUseCase
+constructor(
+        private val fetchGroupMembersUseCase: FetchGroupMembersUseCase
 ) : BaseViewModel() {
 
-    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var joinGroupResponse = SingleLiveEvent<Resource<Any>>()
-    lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
-    private lateinit var listingPaginatedGroup: Listing<GroupResponse>
-    var lastSearch: String? = null
+    var fetchGroupMembersResponse = SingleLiveEvent<Resource<List<UserResponse>>>()
 
-    init {
-//        fetchGroups(null,"")
-    }
+    fun fetchGroupMembers(group: GroupResponse, page : Int, size: Int, query : String?) {
+        fetchGroupMembersResponse.postValue(Resource.loading(null))
 
-    fun networkState(): LiveData<NetworkState> = listingPaginatedGroup.networkState
-
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedGroup.refreshState
-
-    fun retry() = repository.retry()
-
-    fun refresh() = repository.refresh()
-
-    fun fetchGroups(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        searchQuery?.let {
-            if (it != lastSearch) {
-                lastSearch = it
-                repository.compositeDisposable.clear()
-                listingPaginatedGroup = repository.fetchData(searchQuery)
-                pagedGroupList = listingPaginatedGroup.pagedList
-
-                lifecycleOwner?.let { lifecycleOwner ->
-                    removeObservers(lifecycleOwner)
-                    subscribeToPaginatedLiveData.call()
-                }
-            }
-        }
-    }
-
-    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState().removeObservers(lifecycleOwner)
-        refreshState().removeObservers(lifecycleOwner)
-        pagedGroupList.removeObservers(lifecycleOwner)
-    }
-
-    fun joinGroup(group: GroupResponse) {
-        joinGroupResponse.postValue(Resource.loading<Boolean>(null))
-        val callback = object : DisposableObserverWrapper<Boolean>() {
+        val callback = object : DisposableObserverWrapper<List<UserResponse>>() {
             override fun onFail(error: String) {
-                joinGroupResponse.postValue(Resource.error(error, null))
+                fetchGroupMembersResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-                joinGroupResponse.postValue(Resource.error(error.toString(), null))
+                fetchGroupMembersResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: Boolean) {
-                joinGroupResponse.postValue(Resource.success(o))
+            override fun onSuccess(o: List<UserResponse>) {
+                fetchGroupMembersResponse.postValue(Resource.success(o))
             }
         }
         compositeDisposable.add(callback)
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
+        fetchGroupMembersUseCase.execute(callback,
+                FetchGroupMembersUseCase.Params.forGroups(group.id, page, size, query))
     }
 }

@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData;
 
 import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.data.Resource;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.entity.profile.profile.User;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.onboarding.usecase.UpdateUserProfileUseCase;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 public class SelectUserTypeViewModel extends BaseViewModel {
 
-    MutableLiveData<Resource<LoginResponse>> dataUpdateUser = new MutableLiveData<>();
+    MutableLiveData<Resource<UserResponse>> dataUpdateUser = new MutableLiveData<>();
     UpdateUserProfileUseCase updateUserProfileUseCase;
 
     @Inject
@@ -28,7 +28,7 @@ public class SelectUserTypeViewModel extends BaseViewModel {
 
     public void updateUserProfile(String typeId){
         dataUpdateUser.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<LoginResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserResponse>() {
             @Override
             protected void onFail(String error) {
                 dataUpdateUser.postValue(Resource.Companion.error(error,null));
@@ -40,7 +40,7 @@ public class SelectUserTypeViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(LoginResponse o) {
+            protected void onSuccess(UserResponse o) {
                 dataUpdateUser.postValue(Resource.Companion.success(o));
             }
         };

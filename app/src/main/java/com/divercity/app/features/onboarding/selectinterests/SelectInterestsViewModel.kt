@@ -4,7 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.interests.InterestsResponse
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
 import com.divercity.app.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
@@ -22,7 +22,7 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
             val userRepository: UserRepository) : BaseViewModel() {
 
     var fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
-    var followInterestsResponse = MutableLiveData<Resource<LoginResponse>>()
+    var followInterestsResponse = MutableLiveData<Resource<UserResponse>>()
 
     init {
         fetchInterests()
@@ -49,7 +49,7 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
 
     fun followInterests(interestsIds: List<String>) {
         followInterestsResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<LoginResponse>() {
+        val callback = object : DisposableObserverWrapper<UserResponse>() {
             override fun onFail(error: String) {
                 followInterestsResponse.postValue(Resource.error(error, null))
             }
@@ -58,7 +58,7 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
                 followInterestsResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: LoginResponse) {
+            override fun onSuccess(o: UserResponse) {
                 followInterestsResponse.postValue(Resource.success(o))
             }
         }

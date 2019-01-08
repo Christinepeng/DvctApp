@@ -1,7 +1,7 @@
 package com.divercity.app.features.onboarding.usecase;
 
 import com.divercity.app.core.base.UseCase;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.entity.profile.profile.User;
 import com.divercity.app.repository.user.UserRepository;
 import io.reactivex.Observable;
@@ -14,7 +14,7 @@ import javax.inject.Named;
  * Created by lucas on 18/10/2018.
  */
 
-public class UpdateUserProfileUseCase extends UseCase<LoginResponse, UpdateUserProfileUseCase.Params> {
+public class UpdateUserProfileUseCase extends UseCase<UserResponse, UpdateUserProfileUseCase.Params> {
 
     private UserRepository userRepository;
 
@@ -27,7 +27,7 @@ public class UpdateUserProfileUseCase extends UseCase<LoginResponse, UpdateUserP
     }
 
     @Override
-    protected Observable<LoginResponse> createObservableUseCase(UpdateUserProfileUseCase.Params params) {
+    protected Observable<UserResponse> createObservableUseCase(UpdateUserProfileUseCase.Params params) {
         return userRepository.updateUserProfile(params.user);
     }
 

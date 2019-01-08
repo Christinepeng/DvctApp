@@ -13,7 +13,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -99,8 +99,8 @@ class ProfileFragment : BaseFragment() {
         })
     }
 
-    private fun showData(loginResponse: LoginResponse) {
-        var attr = loginResponse.attributes
+    private fun showData(userResponse: UserResponse) {
+        var attr = userResponse.attributes
         GlideApp.with(this)
             .load(attr?.avatarMedium)
             .apply(RequestOptions().circleCrop())

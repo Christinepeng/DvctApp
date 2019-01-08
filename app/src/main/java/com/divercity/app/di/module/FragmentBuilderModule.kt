@@ -4,8 +4,8 @@ import com.divercity.app.features.agerange.base.SelectAgeFragment
 import com.divercity.app.features.agerange.onboarding.OnboardingAgeFragment
 import com.divercity.app.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.app.features.chat.chat.ChatFragment
-import com.divercity.app.features.chat.recentchats.ChatsFragment
 import com.divercity.app.features.chat.newchat.NewChatFragment
+import com.divercity.app.features.chat.recentchats.ChatsFragment
 import com.divercity.app.features.company.base.SelectCompanyFragment
 import com.divercity.app.features.company.companysize.CompanySizesFragment
 import com.divercity.app.features.company.createcompany.CreateCompanyFragment
@@ -25,6 +25,9 @@ import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
 import com.divercity.app.features.groups.creategroup.step1.CreateGroupFragment
 import com.divercity.app.features.groups.groupdetail.GroupDetailFragment
+import com.divercity.app.features.groups.groupdetail.about.TabAboutGroupDetailFragment
+import com.divercity.app.features.groups.groupdetail.conversation.GroupConversationFragment
+import com.divercity.app.features.groups.groupdetail.module.GroupDetailModule
 import com.divercity.app.features.groups.module.GroupsModule
 import com.divercity.app.features.groups.mygroups.MyGroupsFragment
 import com.divercity.app.features.groups.onboarding.SelectGroupFragment
@@ -279,7 +282,7 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindNewChatFragment (): NewChatFragment
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [GroupDetailModule::class])
     abstract fun bindGroupDetailFragment (): GroupDetailFragment
 
     @ContributesAndroidInjector
@@ -290,4 +293,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindChatFragment (): ChatFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTabAboutGroupDetailFragment (): TabAboutGroupDetailFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindGroupConversationFragment (): GroupConversationFragment
 }

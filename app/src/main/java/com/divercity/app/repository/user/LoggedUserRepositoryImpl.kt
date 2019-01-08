@@ -5,7 +5,7 @@ import com.divercity.app.R
 import com.divercity.app.core.sharedpref.SharedPreferencesManager
 import com.divercity.app.core.utils.Util
 import com.divercity.app.data.entity.base.DataObject
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import retrofit2.Response
 
 /**
@@ -148,14 +148,14 @@ class LoggedUserRepositoryImpl(val context: Context) : LoggedUserRepository {
         sharedPreferencesManager.put(Key.AGE_RANGE, ageRange)
     }
 
-    override fun saveUserHeaderData(response: Response<DataObject<LoginResponse>>) {
+    override fun saveUserHeaderData(response: Response<DataObject<UserResponse>>) {
         setClient(response.headers().get("client"))
         setUid(response.headers().get("uid"))
         setAccessToken(response.headers().get("access-token"))
         saveUserData(response.body())
     }
 
-    override fun saveUserData(data: DataObject<LoginResponse>?) {
+    override fun saveUserData(data: DataObject<UserResponse>?) {
         setUserId(data?.data?.id)
         data?.data?.attributes?.apply {
             setAvatarThumbUrl(avatarThumb)

@@ -9,7 +9,7 @@ import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.utils.Listing;
 import com.divercity.app.data.Resource;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.entity.occupationofinterests.OOIResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.onboarding.selectoccupationofinterests.datasource.OOIPaginatedRepositoryImpl;
@@ -28,7 +28,7 @@ public class SelectOOIViewModel extends BaseViewModel {
 
     private LiveData<PagedList<OOIResponse>> pagedOOIList;
     private Listing<OOIResponse> listingPaginatedOOI;
-    private MutableLiveData<Resource<LoginResponse>> followOOIResponse = new MutableLiveData<>();
+    private MutableLiveData<Resource<UserResponse>> followOOIResponse = new MutableLiveData<>();
     private OOIPaginatedRepositoryImpl repository;
     private UserRepository userRepository;
     private FollowOOIUseCase followOOIUseCase;
@@ -79,7 +79,7 @@ public class SelectOOIViewModel extends BaseViewModel {
 
     public void updateUserProfile(List<String> ooiIds) {
         followOOIResponse.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<LoginResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserResponse>() {
             @Override
             protected void onFail(String error) {
                 followOOIResponse.postValue(Resource.Companion.error(error, null));
@@ -91,7 +91,7 @@ public class SelectOOIViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(LoginResponse o) {
+            protected void onSuccess(UserResponse o) {
                 followOOIResponse.postValue(Resource.Companion.success(o));
             }
         };
@@ -99,7 +99,7 @@ public class SelectOOIViewModel extends BaseViewModel {
         followOOIUseCase.execute(callback, FollowOOIUseCase.Params.Companion.forOOI(ooiIds));
     }
 
-    public MutableLiveData<Resource<LoginResponse>> getFollowOOIResponse() {
+    public MutableLiveData<Resource<UserResponse>> getFollowOOIResponse() {
         return followOOIResponse;
     }
 }

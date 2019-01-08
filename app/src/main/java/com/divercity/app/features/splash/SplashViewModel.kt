@@ -3,7 +3,7 @@ package com.divercity.app.features.splash
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.features.profile.usecase.FetchUserDataUseCase
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl
 
@@ -15,7 +15,7 @@ internal constructor(
         private val loggedUserRepository: LoggedUserRepositoryImpl
 ) : BaseViewModel() {
 
-    val userData = SingleLiveEvent<Resource<LoginResponse>>()
+    val userData = SingleLiveEvent<Resource<UserResponse>>()
     val navigateToSelectUserType = SingleLiveEvent<Boolean>()
     val navigateToHome = SingleLiveEvent<Boolean>()
 
@@ -28,10 +28,10 @@ internal constructor(
         val callback = object : FetchUserDataUseCase.Callback() {
 
             override fun onFail(error: String) {
-                userData.value = Resource.error<LoginResponse>(error, null)
+                userData.value = Resource.error<UserResponse>(error, null)
             }
 
-            override fun onSuccess(response: LoginResponse) {
+            override fun onSuccess(response: UserResponse) {
                 userData.value = Resource.success(response)
                 if (response.attributes?.accountType == null)
                     navigateToSelectUserType.value = true

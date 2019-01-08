@@ -7,7 +7,7 @@ import com.divercity.app.R;
 import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.core.utils.SingleLiveEvent;
 import com.divercity.app.data.Resource;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.features.login.step2.usecase.LoginUseCase;
 
 import javax.inject.Inject;
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 public class LoginViewModel extends BaseViewModel {
 
-    private SingleLiveEvent<Resource<LoginResponse>> login = new SingleLiveEvent<>();
+    private SingleLiveEvent<Resource<UserResponse>> login = new SingleLiveEvent<>();
     private LoginUseCase loginUseCase;
     private Application application;
     private String userEmail;
@@ -40,7 +40,7 @@ public class LoginViewModel extends BaseViewModel {
                 }
 
                 @Override
-                protected void onSuccess(LoginResponse response) {
+                protected void onSuccess(UserResponse response) {
                     login.setValue(Resource.Companion.success(response));
                 }
             };
@@ -51,7 +51,7 @@ public class LoginViewModel extends BaseViewModel {
         }
     }
 
-    public LiveData<Resource<LoginResponse>> getLogin() {
+    public LiveData<Resource<UserResponse>> getLogin() {
         return login;
     }
 

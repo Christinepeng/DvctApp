@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="16dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp">
+
+    <RelativeLayout
+        android:id="@+id/cardview_quest_pic_author"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginTop="12dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_groupname">
+
+        <ImageView
+            android:id="@+id/item_group_img"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:contentDescription="TODO"
+            android:scaleType="center"
+            tools:background="@android:color/black" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/item_quest_txt_author_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/avenir_book"
+        android:lineSpacingExtra="1sp"
+        android:textColor="#a4a4b3"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_quest_txt_author_name"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/item_quest_txt_author_name"
+        app:layout_constraintTop_toTopOf="@+id/item_quest_txt_author_name"
+        tools:text="12:52" />
+
+    <TextView
+        android:id="@+id/item_quest_txt_author_name"
+        android:layout_width="wrap_content"
+        android:layout_height="19dp"
+        android:layout_marginStart="16dp"
+        android:layout_toEndOf="@id/cardview_quest_pic_author"
+        android:ellipsize="end"
+        android:fontFamily="@font/avenir_heavy"
+        android:lineSpacingExtra="3dp"
+        android:maxLines="2"
+        android:textColor="#333241"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardview_quest_pic_author"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
+        app:layout_constraintTop_toTopOf="@+id/cardview_quest_pic_author"
+        app:layout_constraintVertical_bias="0.0"
+        tools:text="Amy Lee" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/item_quest_cardview_pic_main"
+        android:layout_width="0dp"
+        android:layout_height="165dp"
+        android:layout_marginTop="8dp"
+        android:shape="ring"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintEnd_toEndOf="@+id/item_quest_txt_answer"
+        app:layout_constraintStart_toStartOf="@+id/item_quest_txt_answer"
+        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_answer">
+
+        <ImageView
+            android:id="@+id/item_quest_img_main"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="TODO"
+            android:scaleType="centerCrop"
+            tools:background="@android:color/black" />
+
+    </android.support.v7.widget.CardView>
+
+    <TextView
+        android:id="@+id/item_quest_txt_answer"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/item_quest_txt_author_name"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_toEndOf="@id/cardview_quest_pic_author"
+        android:ellipsize="end"
+        android:fontFamily="@font/avenir_roman"
+        android:lineSpacingExtra="2dp"
+        android:textColor="#333241"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
+        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_author_name"
+        app:layout_constraintVertical_chainStyle="spread_inside"
+        tools:text="Sara: ventura ventura sfsdf sdf sdfsdf sd sdfsd s ventura ventura ventura ventura ventura ventura ventura  ventura ventura ventura ventura ventura  ventura ventura " />
+
+</android.support.constraint.ConstraintLayout>

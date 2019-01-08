@@ -1,7 +1,7 @@
 package com.divercity.app.features.login.step2.usecase;
 
 import com.divercity.app.core.base.UseCase;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.repository.registerlogin.RegisterLoginRepository;
 import com.google.gson.JsonElement;
@@ -12,7 +12,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class LoginUseCase extends UseCase<LoginResponse, LoginUseCase.Params> {
+public class LoginUseCase extends UseCase<UserResponse, LoginUseCase.Params> {
 
     private RegisterLoginRepository registerLoginRepository;
 
@@ -25,7 +25,7 @@ public class LoginUseCase extends UseCase<LoginResponse, LoginUseCase.Params> {
     }
 
     @Override
-    protected Observable<LoginResponse> createObservableUseCase(Params params) {
+    protected Observable<UserResponse> createObservableUseCase(Params params) {
         return registerLoginRepository.login(params.email, params.password);
     }
 
@@ -44,7 +44,7 @@ public class LoginUseCase extends UseCase<LoginResponse, LoginUseCase.Params> {
         }
     }
 
-    public static abstract class Callback extends DisposableObserverWrapper<LoginResponse> {
+    public static abstract class Callback extends DisposableObserverWrapper<UserResponse> {
 
         @Override
         protected void onHttpException(JsonElement error) {

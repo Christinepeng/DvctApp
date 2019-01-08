@@ -3,7 +3,7 @@ package com.divercity.app.features.onboarding.selectoccupation;
 import android.arch.lifecycle.MutableLiveData;
 import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.data.Resource;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.data.entity.profile.profile.User;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.onboarding.usecase.UpdateUserProfileUseCase;
@@ -19,7 +19,7 @@ import javax.inject.Inject;
 public class SelectOccupationViewModel extends BaseViewModel {
 
     private UserRepository userRepository;
-    private MutableLiveData<Resource<LoginResponse>> updateUserProfileResponse = new MutableLiveData<>();
+    private MutableLiveData<Resource<UserResponse>> updateUserProfileResponse = new MutableLiveData<>();
     private UpdateUserProfileUseCase updateUserProfileUseCase;
 
     @Inject
@@ -31,7 +31,7 @@ public class SelectOccupationViewModel extends BaseViewModel {
 
     public void updateUserProfile(String occupation){
         updateUserProfileResponse.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<LoginResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserResponse>() {
             @Override
             protected void onFail(String error) {
                 updateUserProfileResponse.postValue(Resource.Companion.error(error,null));
@@ -43,7 +43,7 @@ public class SelectOccupationViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(LoginResponse o) {
+            protected void onSuccess(UserResponse o) {
                 updateUserProfileResponse.postValue(Resource.Companion.success(o));
             }
         };
@@ -57,7 +57,7 @@ public class SelectOccupationViewModel extends BaseViewModel {
         return userRepository.getAccountType();
     }
 
-    public MutableLiveData<Resource<LoginResponse>> getUpdateUserProfileResponse() {
+    public MutableLiveData<Resource<UserResponse>> getUpdateUserProfileResponse() {
         return updateUserProfileResponse;
     }
 }

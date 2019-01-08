@@ -87,6 +87,10 @@ public class GroupResponse implements Parcelable {
 		isSelected = selected;
 	}
 
+	public boolean isPublic(){
+		return attributes.getGroupType().equals("public");
+	}
+
 	@Override
  	public String toString(){
 		return 

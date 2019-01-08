@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.divercity.app.core.ui.NetworkState;
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.features.jobs.applications.datasource.JobApplicationsDataSource;
 import com.divercity.app.features.profile.tabfollowers.usecase.FetchFollowersUseCase;
 
@@ -19,7 +19,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class FollowersDataSource extends PageKeyedDataSource<Long, LoginResponse> {
+public class FollowersDataSource extends PageKeyedDataSource<Long, UserResponse> {
 
     private static final String TAG = JobApplicationsDataSource.class.getSimpleName();
 
@@ -53,16 +53,16 @@ public class FollowersDataSource extends PageKeyedDataSource<Long, LoginResponse
     }
 
     @Override
-    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, LoginResponse> callback) {
+    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, UserResponse> callback) {
         // update network states.
         // we also provide an initial load state to the listeners so that the UI can know when the
         // very first list is loaded.
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<LoginResponse>> disposableObserver = new DisposableObserver<List<LoginResponse>>() {
+        DisposableObserver<List<UserResponse>> disposableObserver = new DisposableObserver<List<UserResponse>>() {
             @Override
-            public void onNext(List<LoginResponse> data) {
+            public void onNext(List<UserResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
@@ -96,17 +96,17 @@ public class FollowersDataSource extends PageKeyedDataSource<Long, LoginResponse
     }
 
     @Override
-    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, LoginResponse> callback) {
+    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, UserResponse> callback) {
 
     }
 
     @Override
-    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, LoginResponse> callback) {
+    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, UserResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<LoginResponse>> disposableObserver = new DisposableObserver<List<LoginResponse>>() {
+        DisposableObserver<List<UserResponse>> disposableObserver = new DisposableObserver<List<UserResponse>>() {
             @Override
-            public void onNext(List<LoginResponse> data) {
+            public void onNext(List<UserResponse> data) {
                 if (data != null) {
                     setRetry(null);
                     callback.onResult(data, params.key + 1);

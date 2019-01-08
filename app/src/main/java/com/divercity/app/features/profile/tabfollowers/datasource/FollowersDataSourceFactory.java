@@ -4,12 +4,12 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
 
-import com.divercity.app.data.entity.login.response.LoginResponse;
+import com.divercity.app.data.entity.user.response.UserResponse;
 import com.divercity.app.features.profile.tabfollowers.usecase.FetchFollowersUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class FollowersDataSourceFactory extends DataSource.Factory<Long, LoginResponse> {
+public class FollowersDataSourceFactory extends DataSource.Factory<Long, UserResponse> {
 
     private CompositeDisposable compositeDisposable;
     private FetchFollowersUseCase fetchFollowersUseCase;
@@ -23,7 +23,7 @@ public class FollowersDataSourceFactory extends DataSource.Factory<Long, LoginRe
     }
 
     @Override
-    public DataSource<Long, LoginResponse> create() {
+    public DataSource<Long, UserResponse> create() {
        FollowersDataSource followersDataSource = new FollowersDataSource(
                 compositeDisposable,
                fetchFollowersUseCase);

@@ -4,7 +4,7 @@ import android.arch.lifecycle.Transformations
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.divercity.app.core.utils.Listing
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.features.profile.tabfollowers.usecase.FetchFollowersUseCase
 import com.divercity.app.repository.user.UserRepository
 import io.reactivex.disposables.CompositeDisposable
@@ -27,7 +27,7 @@ internal constructor(private val fetchFollowersUseCase: FetchFollowersUseCase,
         const val pageSize = 20
     }
 
-    fun fetchData(): Listing<LoginResponse> {
+    fun fetchData(): Listing<UserResponse> {
 
         val executor = Executors.newFixedThreadPool(5)
 

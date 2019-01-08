@@ -8,7 +8,7 @@ import com.divercity.app.R
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.NetworkStateViewHolder
 import com.divercity.app.core.ui.RetryCallback
-import com.divercity.app.data.entity.login.response.LoginResponse
+import com.divercity.app.data.entity.user.response.UserResponse
 import javax.inject.Inject
 
 class UserSortedByFirstCharAdapter @Inject
@@ -37,7 +37,7 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_user -> (holder as UserCharViewHolder).bindTo(position, getItem(position) as LoginResponse)
+            R.layout.item_user -> (holder as UserCharViewHolder).bindTo(position, getItem(position) as UserResponse)
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
             R.layout.item_contact_character -> (holder as CharacterViewHolder).bindTo(getItem(position) as Char)
         }
@@ -50,7 +50,7 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
     override fun getItemViewType(position: Int): Int {
         return if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
-        } else if (getItem(position) is LoginResponse) {
+        } else if (getItem(position) is UserResponse) {
             R.layout.item_user
         } else {
             R.layout.item_contact_character

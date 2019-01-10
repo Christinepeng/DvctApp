@@ -32,4 +32,10 @@ interface ChatMessageDao {
 
     @Query("SELECT * FROM chat WHERE otherUserId = :otherUserId")
     fun getChatIdByOtherUserId(otherUserId: Int) : Int
+
+    @Query("DELETE FROM chatMessage")
+    fun deleteChatMessages()
+
+    @Query("DELETE FROM chat")
+    fun deleteChat()
 }

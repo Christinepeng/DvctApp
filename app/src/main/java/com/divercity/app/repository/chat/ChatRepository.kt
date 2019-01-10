@@ -28,4 +28,6 @@ interface ChatRepository {
 
     fun sendMessage(message: String,
                     chatId: String): Observable<ChatMessageResponse>
+
+
 }

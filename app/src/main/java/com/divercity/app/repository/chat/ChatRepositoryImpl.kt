@@ -94,6 +94,18 @@ constructor(
         }
     }
 
+    suspend fun deleteChatMessagesDB() {
+        return withContext(Dispatchers.IO) {
+            chatMessageDao.deleteChatMessages()
+        }
+    }
+
+    suspend fun deleteChatDB() {
+        return withContext(Dispatchers.IO) {
+            chatMessageDao.deleteChat()
+        }
+    }
+
     suspend fun getChatIdByOtherUserIdFromDB(otherUserId: Int): Int {
         return withContext(Dispatchers.IO) {
             chatMessageDao.getChatIdByOtherUserId(otherUserId)

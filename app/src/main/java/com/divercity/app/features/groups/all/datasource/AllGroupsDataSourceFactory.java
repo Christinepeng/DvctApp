@@ -6,20 +6,20 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.features.groups.usecase.FetchGroupsUseCase;
+import com.divercity.app.features.groups.all.usecase.FetchAllGroupsUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;
 
 public class AllGroupsDataSourceFactory extends DataSource.Factory<Long, GroupResponse> {
 
     private CompositeDisposable compositeDisposable;
-    private FetchGroupsUseCase fetchGroupsUseCase;
+    private FetchAllGroupsUseCase fetchGroupsUseCase;
     private String query;
 
     private MutableLiveData<AllGroupsDataSource> mGroupsInterestsDataSourceMutableLiveData = new MutableLiveData<>();
 
     public AllGroupsDataSourceFactory(CompositeDisposable compositeDisposable,
-                                      FetchGroupsUseCase fetchGroupsUseCase,
+                                      FetchAllGroupsUseCase fetchGroupsUseCase,
                                       @Nullable String query) {
         this.compositeDisposable = compositeDisposable;
         this.fetchGroupsUseCase = fetchGroupsUseCase;

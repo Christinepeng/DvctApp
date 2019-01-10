@@ -70,7 +70,8 @@ class FollowingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                 Status.SUCCESS -> {
                     hideProgress()
                     // Updating join btn state
-                    adapter.currentList?.get(positionJoinClicked)?.attributes?.isIsFollowedByCurrent = true
+                    adapter.currentList?.get(positionJoinClicked)
+                        ?.attributes?.isIsFollowedByCurrent = true
                     adapter.notifyItemChanged(positionJoinClicked)
                 }
             }
@@ -130,6 +131,10 @@ class FollowingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     }
 
     private val listener = object : GroupsViewHolder.Listener {
+
+        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
+
+        }
 
         override fun onGroupClick(group: GroupResponse) {
         }

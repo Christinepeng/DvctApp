@@ -11,9 +11,11 @@ import com.divercity.app.core.utils.Listing
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.message.MessageResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.groups.all.datasource.AllGroupsPaginatedRepositoryImpl
 import com.divercity.app.features.groups.usecase.JoinGroupUseCase
+import com.divercity.app.features.groups.usecase.RequestJoinGroupUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -24,13 +26,16 @@ import javax.inject.Inject
 class AllGroupsViewModel @Inject
 constructor(
         private val repository: AllGroupsPaginatedRepositoryImpl,
-        private val joinGroupUseCase: JoinGroupUseCase
+        private val joinGroupUseCase: JoinGroupUseCase,
+        private val requestToJoinUseCase : RequestJoinGroupUseCase
+
 ) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     private var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
+    var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
     private var lastSearch: String? = null
 
     val onJoinGroupResponse: LiveData<Event<Resource<Any>>>
@@ -89,5 +94,26 @@ constructor(
 
         compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
+    }
+
+    fun requestToJoinGroup(group: GroupResponse) {
+        requestToJoinResponse.postValue(Resource.loading(null))
+
+        val callback = object : DisposableObserverWrapper<MessageResponse>() {
+            override fun onFail(error: String) {
+                requestToJoinResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                requestToJoinResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: MessageResponse) {
+                requestToJoinResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+        requestToJoinUseCase.execute(callback,
+            RequestJoinGroupUseCase.Params.toJoin(group.id))
     }
 }

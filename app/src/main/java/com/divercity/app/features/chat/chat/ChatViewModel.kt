@@ -18,7 +18,6 @@ import com.divercity.app.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.app.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.app.features.chat.chat.usecase.SendMessagesUseCase
 import com.divercity.app.repository.chat.ChatRepositoryImpl
-import com.divercity.app.repository.user.UserRepository
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.google.gson.JsonParser
@@ -35,15 +34,13 @@ import javax.inject.Inject
 
 class ChatViewModel @Inject
 constructor(
-    private val fetchOrCreateChatUseCase: FetchOrCreateChatUseCase,
-    private val chatMessageRepository: ChatRepositoryImpl,
-    private val fetchMessagesUseCase: FetchMessagesUseCase,
-    private val sendMessagesUseCase: SendMessagesUseCase,
-    private val socket: MySocket,
-    private val userRepository: UserRepository
-) : BaseViewModel() {
+        private val fetchOrCreateChatUseCase: FetchOrCreateChatUseCase,
+        private val chatMessageRepository: ChatRepositoryImpl,
+        private val fetchMessagesUseCase: FetchMessagesUseCase,
+        private val sendMessagesUseCase: SendMessagesUseCase,
+        private val socket: MySocket) : BaseViewModel() {
 
-    var page = 0
+    var pageFetchList = ArrayList<Int>()
 
     var fetchCreateChatResponse = SingleLiveEvent<Resource<CreateChatResponse>>()
     var fetchMessagesResponse = SingleLiveEvent<Resource<List<ChatMessageResponse>>>()
@@ -78,18 +75,18 @@ constructor(
     fun getChatsIfExist(otherUserId: String) {
         uiScope.launch {
             val chatId = chatMessageRepository.getChatIdByOtherUserIdFromDB(otherUserId.toInt())
-            if(chatId != 0)
+            if (chatId != 0)
                 initializePagedList(chatId)
         }
     }
 
-    fun initializePagedList(chatId : Int) {
+    fun initializePagedList(chatId: Int) {
         val dataSourceFactory = chatMessageRepository.getMessagesByChatId(chatId)
         val config = PagedList.Config.Builder()
-            .setPageSize(15)
-            .setInitialLoadSizeHint(30)
-            .setPrefetchDistance(10)
-            .build()
+                .setPageSize(15)
+                .setInitialLoadSizeHint(30)
+                .setPrefetchDistance(10)
+                .build()
         pagedListLiveData = LivePagedListBuilder(dataSourceFactory, config).build()
         subscribeToPaginatedLiveData.call()
     }
@@ -119,7 +116,7 @@ constructor(
             override fun onSuccess(o: CreateChatResponse) {
                 hasFetchChatError = false
                 createChatResponse = o
-                if(pagedListLiveData == null){
+                if (pagedListLiveData == null) {
                     initializePagedList(o.id!!.toInt())
                 }
                 uiScope.launch {
@@ -127,13 +124,17 @@ constructor(
                 }
                 fetchCreateChatResponse.postValue(Resource.success(o))
                 connectWebSocket()
-                fetchMessages(otherUserId, 0, 1)
+
+                uiScope.launch {
+                    val rows = chatMessageRepository.countMessagesByChatIdFromDB(createChatResponse?.id!!.toInt())
+                    fetchMessages(otherUserId, 0, 30)
+                }
             }
         }
         compositeDisposable.add(callback)
         fetchOrCreateChatUseCase.execute(
-            callback,
-            FetchOrCreateChatUseCase.Params.forUser(otherUserId)
+                callback,
+                FetchOrCreateChatUseCase.Params.forUser(otherUserId)
         )
     }
 
@@ -141,6 +142,7 @@ constructor(
         fetchMessagesResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<DataChatMessageResponse>() {
             override fun onFail(error: String) {
+                pageFetchList.remove(page)
                 fetchMessagesResponse.postValue(Resource.error(error, null))
             }
 
@@ -153,23 +155,22 @@ constructor(
 
                 uiScope.launch {
                     chatMessageRepository.insertChatMessagesOnDB(o.data.chats)
-
-                    val rows = chatMessageRepository.countMessagesByChatIdFromDB(createChatResponse?.id!!.toInt())
-                    if (rows < o.meta!!.totalCount!!) {
-                        fetchMessages(otherUserId, 0, o.meta.totalCount!! - rows + 1)
-                    }
+//                    val rows = chatMessageRepository.countMessagesByChatIdFromDB(createChatResponse?.id!!.toInt())
+//                    if (rows < o.meta!!.totalCount!!) {
+//                        fetchMessages(otherUserId, 0, o.meta.totalCount!! - rows + 15)
+//                    }
                 }
             }
         }
         compositeDisposable.add(callback)
         fetchMessagesUseCase.execute(
-            callback, FetchMessagesUseCase.Params
+                callback, FetchMessagesUseCase.Params
                 .forMsgs(
-                    createChatResponse?.id!!,
-                    otherUserId,
-                    page,
-                    size,
-                    null
+                        createChatResponse?.id!!,
+                        otherUserId,
+                        page,
+                        size,
+                        null
                 )
         )
     }
@@ -191,7 +192,7 @@ constructor(
         }
         compositeDisposable.add(callback)
         sendMessagesUseCase.execute(
-            callback, SendMessagesUseCase.Params
+                callback, SendMessagesUseCase.Params
                 .forMsg(message, createChatResponse?.id!!)
         )
     }
@@ -239,7 +240,7 @@ constructor(
 
             override fun onMessage(event: String?) {
                 val identifier =
-                    "\"{\\\"chat_id\\\": \\\"" + createChatResponse?.id + "\\\",\\\"channel\\\":\\\"MessagesChannel\\\"}\"}"
+                        "\"{\\\"chat_id\\\": \\\"" + createChatResponse?.id + "\\\",\\\"channel\\\":\\\"MessagesChannel\\\"}\"}"
                 Timber.d("onOpen: ".plus(identifier))
                 socket.send("subscribe", identifier)
             }

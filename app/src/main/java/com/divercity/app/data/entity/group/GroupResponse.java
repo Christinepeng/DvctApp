@@ -91,6 +91,14 @@ public class GroupResponse implements Parcelable {
 		return attributes.getGroupType().equals("public");
 	}
 
+	public boolean isJoinRequestPending(){
+		return attributes.getRequestToJoinStatus().equals("pending");
+	}
+
+	public boolean isJoinRequestNotSend(){
+		return attributes.getRequestToJoinStatus().equals("none");
+	}
+
 	@Override
  	public String toString(){
 		return 

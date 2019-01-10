@@ -24,6 +24,7 @@ import com.divercity.app.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.groups.all.AllGroupsFragment
 import com.divercity.app.features.groups.creategroup.step1.CreateGroupFragment
+import com.divercity.app.features.groups.creategroup.step3.GroupDescriptionFragment
 import com.divercity.app.features.groups.groupdetail.GroupDetailFragment
 import com.divercity.app.features.groups.groupdetail.about.TabAboutGroupDetailFragment
 import com.divercity.app.features.groups.groupdetail.conversation.GroupConversationFragment
@@ -299,4 +300,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindGroupConversationFragment (): GroupConversationFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindGroupDescriptionFragment (): GroupDescriptionFragment
 }

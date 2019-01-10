@@ -6,7 +6,7 @@ import android.arch.paging.PagedList
 import com.divercity.app.core.base.PaginatedQueryRepository
 import com.divercity.app.core.utils.Listing
 import com.divercity.app.data.entity.group.GroupResponse
-import com.divercity.app.features.groups.usecase.FetchGroupsUseCase
+import com.divercity.app.features.groups.all.usecase.FetchAllGroupsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -16,7 +16,7 @@ import javax.inject.Inject
  */
 
 class AllGroupsPaginatedRepositoryImpl @Inject
-internal constructor(private val fetchGroupsUseCase: FetchGroupsUseCase) : PaginatedQueryRepository<GroupResponse> {
+internal constructor(private val fetchGroupsUseCase: FetchAllGroupsUseCase) : PaginatedQueryRepository<GroupResponse> {
 
     private lateinit var allGroupsDataSourceFactory: AllGroupsDataSourceFactory
     val compositeDisposable = CompositeDisposable()

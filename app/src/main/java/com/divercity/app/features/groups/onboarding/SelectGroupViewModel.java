@@ -9,11 +9,14 @@ import android.support.annotation.Nullable;
 import com.divercity.app.core.base.BaseViewModel;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.utils.Listing;
+import com.divercity.app.core.utils.SingleLiveEvent;
 import com.divercity.app.data.Resource;
 import com.divercity.app.data.entity.group.GroupResponse;
+import com.divercity.app.data.entity.message.MessageResponse;
 import com.divercity.app.data.networking.config.DisposableObserverWrapper;
 import com.divercity.app.features.groups.onboarding.group.GroupPaginatedRepositoryImpl;
 import com.divercity.app.features.groups.usecase.JoinGroupUseCase;
+import com.divercity.app.features.groups.usecase.RequestJoinGroupUseCase;
 import com.divercity.app.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
@@ -29,6 +32,8 @@ public class SelectGroupViewModel extends BaseViewModel {
     private Listing<GroupResponse> listingPaginatedSchool;
     private GroupPaginatedRepositoryImpl repository;
     private UserRepository userRepository;
+    private RequestJoinGroupUseCase requestJoinGroupUseCase;
+    private SingleLiveEvent<Resource<MessageResponse>> requestToJoinResponse = new SingleLiveEvent<>();
 
     private JoinGroupUseCase joinGroupUseCase;
     private MutableLiveData<Resource<Boolean>> joinGroupResponse = new MutableLiveData<>();
@@ -36,10 +41,12 @@ public class SelectGroupViewModel extends BaseViewModel {
     @Inject
     public SelectGroupViewModel(GroupPaginatedRepositoryImpl repository,
                                 UserRepository userRepository,
-                                JoinGroupUseCase joinGroupUseCase) {
+                                JoinGroupUseCase joinGroupUseCase,
+                                RequestJoinGroupUseCase requestJoinGroupUseCase) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.joinGroupUseCase = joinGroupUseCase;
+        this.requestJoinGroupUseCase = requestJoinGroupUseCase;
 
         fetchGroups(null, "");
     }
@@ -94,6 +101,28 @@ public class SelectGroupViewModel extends BaseViewModel {
         };
         getCompositeDisposable().add(callback);
         joinGroupUseCase.execute(callback,JoinGroupUseCase.Params.forJoin(group));
+    }
+
+    public void requestToJoinGroup(GroupResponse group){
+        requestToJoinResponse.postValue(Resource.Companion.loading(null));
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<MessageResponse>() {
+            @Override
+            protected void onFail(String error) {
+                requestToJoinResponse.postValue(Resource.Companion.error(error,null));
+            }
+
+            @Override
+            protected void onHttpException(JsonElement error) {
+                requestToJoinResponse.postValue(Resource.Companion.error(error.toString(),null));
+            }
+
+            @Override
+            protected void onSuccess(MessageResponse o) {
+                requestToJoinResponse.postValue(Resource.Companion.success(o));
+            }
+        };
+        getCompositeDisposable().add(callback);
+        requestJoinGroupUseCase.execute(callback,RequestJoinGroupUseCase.Params.Companion.toJoin(group.getId()));
     }
 
     public MutableLiveData<Resource<Boolean>> getJoinGroupResponse() {

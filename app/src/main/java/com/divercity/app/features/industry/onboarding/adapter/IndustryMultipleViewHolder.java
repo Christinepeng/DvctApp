@@ -19,7 +19,7 @@ public class IndustryMultipleViewHolder extends RecyclerView.ViewHolder {
     private IndustryMultipleViewHolder(View itemView, Listener listener) {
         super(itemView);
         txtTitle = itemView.findViewById(R.id.txt_title);
-        imgBtn = itemView.findViewById(R.id.btn_select_unselect);
+        imgBtn = itemView.findViewById(R.id.btn_public_private);
         this.listener = listener;
     }
 

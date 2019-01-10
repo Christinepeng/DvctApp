@@ -36,7 +36,7 @@ class HomeActivity : DaggerAppCompatActivity(){
     companion object {
         private const val INTENT_EXTRA_PARAM_SHOW_DIALOG_PROFILE = "showDialogProfile"
 
-        fun getCallingIntent(context: Context, showDialogProfileCompleted: Boolean): Intent {
+        fun getCallingIntent(context: Context?, showDialogProfileCompleted: Boolean): Intent {
             val intent = Intent(context, HomeActivity::class.java)
             intent.putExtra(INTENT_EXTRA_PARAM_SHOW_DIALOG_PROFILE, showDialogProfileCompleted)
             return intent

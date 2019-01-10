@@ -22,6 +22,7 @@ import com.divercity.app.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.app.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.app.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.app.features.groups.creategroup.step1.CreateGroupActivity
+import com.divercity.app.features.groups.creategroup.step3.GroupDescriptionActivity
 import com.divercity.app.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.app.features.groups.onboarding.SelectGroupActivity
 import com.divercity.app.features.home.HomeActivity
@@ -67,6 +68,12 @@ class Navigator @Inject constructor() {
 //        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION)
         activity.startActivity(intent)
 //        activity.overridePendingTransition(0,0)
+    }
+
+    fun navigateToHomeActivityAndClearTop(fragment: Fragment){
+        val intent = HomeActivity.getCallingIntent(fragment.context, false)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        fragment.startActivity(intent)
     }
 
     fun navigateToEnterEmailActivity(activity: FragmentActivity) {
@@ -165,6 +172,11 @@ class Navigator @Inject constructor() {
 
     fun navigateToCreateGroupActivity(fragment: Fragment) {
         fragment.startActivity(CreateGroupActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToGroupDescriptionActivity(fragment: Fragment, groupName : String, photoPath : String?) {
+        fragment.startActivity(GroupDescriptionActivity.getCallingIntent
+            (fragment.context, groupName, photoPath))
     }
 
     fun navigateToJobPostingForResultActivity(fragment: Fragment, code : Int, job: JobResponse?) {

@@ -37,7 +37,7 @@ import javax.inject.Inject
  * Created by lucas on 24/12/2018.
  */
 
-class ChatFragment : BaseFragment() {
+class  ChatFragment : BaseFragment() {
 
     lateinit var viewModel: ChatViewModel
 
@@ -60,6 +60,8 @@ class ChatFragment : BaseFragment() {
 
     companion object {
 
+        const val PAGE_SIZE = 30
+        const val THREASHOLD = 10
         private const val PARAM_USER_ID = "paramUserId"
         private const val PARAM_USER_NAME = "paramUserName"
 
@@ -77,9 +79,7 @@ class ChatFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(ChatViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChatViewModel::class.java)
 
         setHasOptionsMenu(true)
 
@@ -116,7 +116,7 @@ class ChatFragment : BaseFragment() {
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
 
             override fun onItemRangeInserted(positionStart: Int, itemCount: Int) {
-                if (positionStart == 0) {
+                if (checkIfHasToScrollDown() && positionStart == 0) {
                     list.scrollToPosition(0)
                 }
             }
@@ -137,9 +137,28 @@ class ChatFragment : BaseFragment() {
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                checkEndOffset() // Each time when list is scrolled check if end of the list is reached
+                if(dy < 0)
+                    checkEndOffset() // Each time when list is scrolled check if end of the list is reached
             }
         })
+    }
+
+    private fun checkIfHasToScrollDown() : Boolean{
+        val firstVisibleItemPosition: Int
+        if (list.layoutManager is LinearLayoutManager) {
+            firstVisibleItemPosition = (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+        } else if (list.layoutManager is StaggeredGridLayoutManager) {
+            // https://code.google.com/p/android/issues/detail?id=181461
+            firstVisibleItemPosition = if (list.layoutManager!!.childCount > 0) {
+                (list.layoutManager as StaggeredGridLayoutManager).findFirstVisibleItemPositions(null)[0]
+            } else {
+                0
+            }
+        } else {
+            throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
+        }
+
+        return firstVisibleItemPosition < 10
     }
 
     internal fun checkEndOffset() {
@@ -160,9 +179,25 @@ class ChatFragment : BaseFragment() {
             throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
         }
 
-        // Check if end of the list is reached (counting threshold) or if there is no items at all
-        if (totalItemCount - visibleItemCount <= firstVisibleItemPosition || totalItemCount == 0) {
+        val p = firstVisibleItemPosition + visibleItemCount + 10
+        if (p % 30 == 0) {
+            if(!viewModel.pageFetchList.contains(p/30)) {
+                viewModel.pageFetchList.add(p/30)
+                Log.e("TEST", "totalItemCount: " + totalItemCount
+                        + " - firstVisiblePosition: " + firstVisibleItemPosition
+                        + " - visibleItemCount: " + visibleItemCount)
+                Log.e("TEST", "Fetch message PAGE: " + p / 30)
+                viewModel.fetchMessages(userId!!, p/30,30)
+            }
+        }
 
+        if(visibleItemCount + firstVisibleItemPosition == totalItemCount){
+            val p = totalItemCount/30 + 1
+            Log.e("TEST", "Ultimo item page: " + p)
+            if(!viewModel.pageFetchList.contains(p)) {
+                viewModel.pageFetchList.add(p)
+                viewModel.fetchMessages(userId!!, p,30)
+            }
         }
     }
 

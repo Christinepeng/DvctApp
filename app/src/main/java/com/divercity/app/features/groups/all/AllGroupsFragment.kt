@@ -29,7 +29,8 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     @Inject
     lateinit var adapter: GroupsAdapter
 
-    private var positionJoinClicked: Int = 0
+    private var positionJoinClicked: Int = -1
+    private var positionJoinRequest: Int = -1
     private var isListRefreshing = false
 
     companion object {
@@ -72,6 +73,21 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                         hideProgress()
                         adapter.updatePositionOnJoinGroup(positionJoinClicked)
                     }
+                }
+            }
+        })
+
+        viewModel.requestToJoinResponse.observe(viewLifecycleOwner, Observer {response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    adapter.updatePositionOnJoinRequest(positionJoinRequest)
                 }
             }
         })
@@ -131,6 +147,11 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     }
 
     private val listener = object : GroupsViewHolder.Listener {
+
+        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
+            positionJoinRequest = position
+            viewModel.requestToJoinGroup(group)
+        }
 
         override fun onGroupClick(group: GroupResponse) {
             navigator.navigateToGroupDetailActivity(this@AllGroupsFragment, group)

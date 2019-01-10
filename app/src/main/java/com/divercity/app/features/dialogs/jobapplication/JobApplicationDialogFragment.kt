@@ -49,7 +49,7 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
 
         fun newInstance(jobId: String): JobApplicationDialogFragment {
             val fragment =
-                    JobApplicationDialogFragment()
+                JobApplicationDialogFragment()
             val arguments = Bundle()
             arguments.putString(JOB_ID, jobId)
             fragment.arguments = arguments
@@ -73,7 +73,10 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[JobApplicationDialogViewModel::class.java]
+        viewModel = ViewModelProviders.of(
+            this,
+            viewModelFactory
+        )[JobApplicationDialogViewModel::class.java]
 
         if (savedInstanceState == null) {
             jobId = arguments?.getString(JOB_ID)!!
@@ -119,9 +122,10 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
 
             btn_save_application.setOnClickListener {
                 viewModel.editJobApplication(
-                        jobId,
-                        docId!!,
-                        et_cover_letter.text.toString())
+                    jobId,
+                    docId!!,
+                    et_cover_letter.text.toString()
+                )
             }
 
             btn_cancel_application.setOnClickListener {
@@ -146,6 +150,8 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
 
                 et_cover_letter.isEnabled = true
 
+                lay_cl.visibility = View.VISIBLE
+                lbl_cover_letter.visibility = View.VISIBLE
             } else {
                 isEditing = false
                 btn_edit_application.visibility = View.VISIBLE
@@ -182,7 +188,7 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
                 }
                 Status.SUCCESS -> {
                     dialogView.lay_main.visibility = View.VISIBLE
-                    setAndShowData(response.data!!,false)
+                    setAndShowData(response.data!!, false)
                 }
             }
         })
@@ -243,7 +249,7 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
         })
     }
 
-    private fun setAndShowData(application: JobApplicationResponse, isEdition : Boolean){
+    private fun setAndShowData(application: JobApplicationResponse, isEdition: Boolean) {
         jobApplicationResponse = application
 
         docId = application.attributes?.userDocumentId!!.toString()
@@ -253,16 +259,17 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
         dialogView.apply {
 
             GlideApp.with(this)
-                    .load(application.attributes.applicant?.photos?.medium)
-                    .apply(RequestOptions().circleCrop())
-                    .into(img_profile)
+                .load(application.attributes.applicant?.photos?.medium)
+                .apply(RequestOptions().circleCrop())
+                .into(img_profile)
 
             txt_fullname.text = application.attributes.applicant?.name
 
             txt_filename.text = application.attributes.documentName
             txt_date.text = context?.getString(
-                    R.string.last_used_at,
-                    Util.getStringDateTimeWithServerDate(application.attributes.documentLastUsed))
+                R.string.last_used_at,
+                Util.getStringDateTimeWithServerDate(application.attributes.documentLastUsed)
+            )
 
             val cl = application.attributes.coverLetter
 
@@ -280,7 +287,7 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
     private fun openDocSelector() {
         val mimeTypes = arrayOf(
 //                "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
-                "application/pdf"
+            "application/pdf"
         )
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.type = "*/*"
@@ -342,8 +349,8 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
             it.lay_doc_detail.visibility = View.VISIBLE
             it.txt_filename.text = doc?.attributes?.name
             it.txt_date.text = context?.getString(
-                    R.string.created_at,
-                    Util.getStringDateTimeWithServerDate(doc?.attributes?.createdAt)
+                R.string.created_at,
+                Util.getStringDateTimeWithServerDate(doc?.attributes?.createdAt)
             )
         }
     }
@@ -351,10 +358,10 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
     private fun showCancelDialogConfirm() {
 
         val dialog = CustomTwoBtnDialogFragment.newInstance(
-                getString(R.string.cancel_application),
-                getString(R.string.cancel_application_warning),
-                getString(R.string.no),
-                getString(R.string.yes)
+            getString(R.string.cancel_application),
+            getString(R.string.cancel_application_warning),
+            getString(R.string.no),
+            getString(R.string.yes)
         )
 
         dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {

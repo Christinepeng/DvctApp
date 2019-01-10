@@ -3,6 +3,8 @@ package com.divercity.app.data.networking.services
 import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.base.DataObject
 import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.group.creategroup.CreateGroupBody
+import com.divercity.app.data.entity.message.MessageResponse
 import com.divercity.app.data.entity.questions.QuestionResponse
 import com.divercity.app.data.entity.user.response.UserResponse
 import io.reactivex.Observable
@@ -28,6 +30,12 @@ interface GroupService {
             @Query("page[size]") size: Int,
             @Query("search_query") query: String?): Observable<Response<DataArray<GroupResponse>>>
 
+    @GET("group_of_interests")
+    fun fetchAllGroups(
+        @Query("page[number]") pageNumber: Int,
+        @Query("page[size]") size: Int,
+        @Query("search_query") query: String?): Observable<Response<DataArray<GroupResponse>>>
+
     @GET("group_of_interests/my_groups")
     fun fetchMyGroups(
             @Query("page[number]") pageNumber: Int,
@@ -48,6 +56,12 @@ interface GroupService {
                          @Query("page[number]") pageNumber: Int,
                          @Query("page[size]") size: Int,
                          @Query("search_query") query: String?): Observable<Response<DataArray<UserResponse>>>
+
+    @POST("group_of_interests/{groupId}/join")
+    fun requestToJoinGroup(@Path("groupId") groupId: String): Observable<MessageResponse>
+
+    @POST("group_of_interests")
+    fun createGroup(@Body body: CreateGroupBody): Observable<Response<DataObject<GroupResponse>>>
 
     @GET("questions")
     fun fetchQuestions(@Query("group_id") groupId: String,

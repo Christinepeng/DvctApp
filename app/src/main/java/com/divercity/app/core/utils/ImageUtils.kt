@@ -10,13 +10,14 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.IOException
 
+
 /**
  * Created by lucas on 28/11/2018.
  */
 
 object ImageUtils {
 
-    fun decodeSampledBitmapFromResource(photoPath: String, reqWidth: Int, reqHeight: Int): Bitmap {
+    private fun decodeSampledBitmapFromResource(photoPath: String, reqWidth: Int, reqHeight: Int): Bitmap {
         // First decode with inJustDecodeBounds=true to check dimensions
         val options = BitmapFactory.Options()
         options.inJustDecodeBounds = true
@@ -31,13 +32,35 @@ object ImageUtils {
     }
 
     fun getStringBase64(file: File, reqWidth: Int, reqHeight: Int): String {
-        val baos = ByteArrayOutputStream()
-        getBitmap(file, reqWidth, reqHeight)?.compress(Bitmap.CompressFormat.JPEG, 60, baos)
-        val b = baos.toByteArray()
-        return "data:image/jpeg;base64,".plus(Base64.encodeToString(b, Base64.DEFAULT))
+        if (file.exists() && file.isAbsolute) {
+            val baos = ByteArrayOutputStream()
+            getBitmap(file, reqWidth, reqHeight)?.compress(Bitmap.CompressFormat.JPEG, 60, baos)
+            val b = baos.toByteArray()
+            return "data:image/jpeg;base64,".plus(Base64.encodeToString(b, Base64.DEFAULT))
+        } else
+            throw IOException("File doesn't exist")
     }
 
-    fun getBitmap(file: File, reqWidth: Int, reqHeight: Int): Bitmap? {
+    fun getStringBase64(file: String, reqWidth: Int, reqHeight: Int): String {
+        val dir = File(file)
+        if (dir.exists() && dir.isAbsolute) {
+            val baos = ByteArrayOutputStream()
+            getBitmap(file, reqWidth, reqHeight)?.compress(Bitmap.CompressFormat.JPEG, 60, baos)
+            val b = baos.toByteArray()
+            return "data:image/jpeg;base64,".plus(Base64.encodeToString(b, Base64.DEFAULT))
+        } else
+            throw IOException("File doesn't exist")
+    }
+
+    private fun getBitmap(file: String, reqWidth: Int, reqHeight: Int): Bitmap? {
+        val bitmap = decodeSampledBitmapFromResource(file, reqWidth, reqHeight)
+        val rotatedBitmap = getRotatedBitmap(bitmap, file)
+        if (bitmap != rotatedBitmap)
+            copyRotatedImageToFile(rotatedBitmap, file)
+        return rotatedBitmap
+    }
+
+    private fun getBitmap(file: File, reqWidth: Int, reqHeight: Int): Bitmap? {
         val bitmap = decodeSampledBitmapFromResource(file.absolutePath, reqWidth, reqHeight)
         val rotatedBitmap = getRotatedBitmap(bitmap, file.absolutePath)
         if (bitmap != rotatedBitmap)
@@ -49,9 +72,9 @@ object ImageUtils {
         val matrix = Matrix()
         matrix.postRotate(angle)
         return Bitmap.createBitmap(
-            source, 0, 0,
-            source.width, source.height,
-            matrix, true
+                source, 0, 0,
+                source.width, source.height,
+                matrix, true
         )
     }
 
@@ -60,8 +83,8 @@ object ImageUtils {
         try {
             val ei = ExifInterface(photoPath)
             val orientation = ei.getAttributeInt(
-                ExifInterface.TAG_ORIENTATION,
-                ExifInterface.ORIENTATION_UNDEFINED
+                    ExifInterface.TAG_ORIENTATION,
+                    ExifInterface.ORIENTATION_UNDEFINED
             )
             when (orientation) {
                 ExifInterface.ORIENTATION_ROTATE_90 -> rotatedBitmap = rotateImage(bitmap, 90f)
@@ -83,7 +106,7 @@ object ImageUtils {
     }
 
     private fun calculateInSampleSize(
-        options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int
+            options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int
     ): Int {
         // Raw height and width of image
         val height = options.outHeight

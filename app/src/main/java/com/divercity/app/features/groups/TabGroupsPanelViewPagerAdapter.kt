@@ -54,6 +54,7 @@ constructor() : PagerAdapter() {
                 view.txt_title.text = it.title
                 view.txt_members.text = it.followersCount.toString().plus(" Members")
 
+//                TODO: check if group is private
                 if (it.isFollowedByCurrent!!) {
                     view.btn_join.setOnClickListener(null)
                     view.btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)

@@ -2,6 +2,9 @@ package com.divercity.app.repository.group
 
 import com.divercity.app.data.entity.base.DataArray
 import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.group.creategroup.CreateGroupBody
+import com.divercity.app.data.entity.group.creategroup.GroupOfInterest
+import com.divercity.app.data.entity.message.MessageResponse
 import com.divercity.app.data.entity.questions.QuestionResponse
 import com.divercity.app.data.entity.user.response.UserResponse
 import com.divercity.app.data.networking.services.GroupService
@@ -20,6 +23,28 @@ class GroupRepositoryImpl @Inject
 constructor(
         private val service: GroupService
 ) : GroupRepository {
+
+    override fun fetchAllGroups(
+            page: Int,
+            size: Int,
+            query: String?
+    ): Observable<DataArray<GroupResponse>> {
+        return service.fetchAllGroups(page, size, query).map {
+            checkResponse(it)
+            it.body()
+        }
+    }
+
+    override fun requestToJoinGroup(groupId: String): Observable<MessageResponse> {
+        return service.requestToJoinGroup(groupId)
+    }
+
+    override fun createGroup(group: GroupOfInterest): Observable<GroupResponse> {
+        return service.createGroup(CreateGroupBody(group)).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
 
     override fun fetchGroupAdmins(groupId: String, pageNumber: Int, size: Int, query: String?): Observable<List<UserResponse>> {
         return service.fetchGroupAdmins(groupId, pageNumber, size, query).map {
@@ -79,7 +104,8 @@ constructor(
         return service.fetchGroupMembers(groupId, page, size, query).map {
             checkResponse(it)
             it.body()?.data
-        }    }
+        }
+    }
 
     private fun checkResponse(response: Response<*>) {
         if (!response.isSuccessful)

@@ -24,11 +24,11 @@ class ShareJobGroupViewHolder private constructor(itemView: View, private val li
         itemView.item_group_txt_title.text = data.attributes.title
         itemView.item_group_txt_members.text = data.attributes.followersCount.toString().plus(" Members")
 
-        itemView.btn_select_unselect.isSelected = data.selected
-        itemView.btn_select_unselect.setOnClickListener {
-            itemView.btn_select_unselect.isSelected = !itemView.btn_select_unselect.isSelected
-            data.selected = itemView.btn_select_unselect.isSelected
-            listener.onGroupShareClick(data, itemView.btn_select_unselect.isSelected)
+        itemView.btn_public_private.isSelected = data.selected
+        itemView.btn_public_private.setOnClickListener {
+            itemView.btn_public_private.isSelected = !itemView.btn_public_private.isSelected
+            data.selected = itemView.btn_public_private.isSelected
+            listener.onGroupShareClick(data, itemView.btn_public_private.isSelected)
         }
 
     }

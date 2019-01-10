@@ -13,7 +13,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/btn_create_company"
+        android:id="@+id/btn_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
@@ -37,6 +37,7 @@
         app:layout_constraintTop_toBottomOf="@+id/include_toolbar" />
 
     <LinearLayout
+        android:id="@+id/lay_photo_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -74,7 +75,7 @@
         android:fontFamily="@font/avenir_roman"
         android:hint="@string/create_group"
         android:imeOptions="actionDone"
-        android:inputType="textPassword"
+        android:inputType="textCapSentences"
         android:padding="24dp"
         android:textColor="#333241"
         android:textSize="15sp"

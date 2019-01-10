@@ -120,12 +120,13 @@
 
                 <ImageView
                     android:id="@+id/img_username_status"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="27dp"
+                    android:layout_height="27dp"
                     android:layout_gravity="center"
                     android:layout_margin="16dp"
                     android:visibility="gone"
-                    tools:src="@drawable/icon_checkmark" />
+                    tools:visibility="visible"
+                    tools:src="@drawable/img_checkmark" />
 
             </LinearLayout>
 

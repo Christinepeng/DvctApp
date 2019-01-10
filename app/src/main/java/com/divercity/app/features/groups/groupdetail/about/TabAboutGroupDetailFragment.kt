@@ -156,7 +156,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                     (imgViews[i] as FrameLayout).foreground = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
 
                 if(i == 0)
-                    txt_admins.hint = txt_admins.hint.toString().plus(admins[i].attributes?.name)
+                    txt_admins.hint = admins[i].attributes?.name
                 else
                     txt_admins.hint = txt_admins.hint.toString().plus(",").plus(admins[i].attributes?.name)
             }

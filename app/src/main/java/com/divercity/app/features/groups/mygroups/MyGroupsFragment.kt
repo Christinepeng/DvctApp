@@ -138,8 +138,12 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     }
 
     private val listener = object : GroupsViewHolder.Listener {
+        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        }
 
         override fun onGroupClick(group: GroupResponse) {
+
         }
 
         override fun onGroupJoinClick(position: Int, group: GroupResponse) {

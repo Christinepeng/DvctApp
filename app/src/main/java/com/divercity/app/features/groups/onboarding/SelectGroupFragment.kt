@@ -36,7 +36,9 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     @Inject
     lateinit var adapter: GroupsAdapter
 
-    private var positionJoinClicked: Int = 0
+    private var positionJoinClicked: Int = -1
+    private var positionJoinRequest: Int = -1
+
     private var countJoin = 0
     private var currentProgress: Int = 0
 
@@ -186,6 +188,11 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     }
 
     private val listener: GroupsViewHolder.Listener = object : GroupsViewHolder.Listener {
+
+        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
+            positionJoinRequest = position
+            viewModel.requestToJoinGroup(group)
+        }
 
         override fun onGroupClick(group: GroupResponse) {
         }

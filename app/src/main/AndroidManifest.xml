@@ -250,6 +250,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".features.groups.creategroup.step3.GroupDescriptionActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
     </application>
 
 </manifest>

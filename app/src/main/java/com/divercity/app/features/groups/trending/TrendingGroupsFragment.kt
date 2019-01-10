@@ -29,7 +29,8 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     @Inject
     lateinit var adapter: GroupsAdapter
 
-    private var positionJoinClicked: Int = 0
+    private var positionJoinClicked: Int = -1
+    private var positionJoinRequest: Int = -1
     private var isListRefreshing = false
 
     companion object {
@@ -78,6 +79,21 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
         })
+
+        viewModel.requestToJoinResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> showProgress()
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    adapter.updatePositionOnJoinRequest(positionJoinRequest)
+                }
+            }
+        })
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -117,9 +133,9 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
@@ -129,6 +145,11 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     }
 
     private val listener = object : GroupsViewHolder.Listener {
+
+        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
+            positionJoinRequest = position
+            viewModel.requestToJoinGroup(group)
+        }
 
         override fun onGroupClick(group: GroupResponse) {
             navigator.navigateToGroupDetailActivity(this@TrendingGroupsFragment, group)

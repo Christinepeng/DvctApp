@@ -220,6 +220,11 @@
     <string name="public_group_desc">Anyone is open to join this Group and view Posts in the Group</string>
     <string name="private_group_desc">Users have to send a request to join the group and see posts and members</string>
     <string name="members">Members</string>
+    <string name="member">Member</string>
+    <string name="to_conversation">To Conversation</string>
+    <string name="request_to_join">Request To Join</string>
+    <string name="pending">Pending</string>
+    <string name="group_description">Group Description</string>
 
     <!-- Delete Job-->
     <string name="delete_job">Delete Job Posting</string>

@@ -25,7 +25,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                         .load(urlMain)
                         .apply(RequestOptions().transforms(RoundedCorners(16)))
                         .into(itemView.item_group_img)
-            } catch (e: NullPointerException) {
+            } catch (e: Throwable) {
                 itemView.item_group_img.visibility = View.GONE
             }
 
@@ -36,15 +36,23 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 text = if (data.attributes.isIsFollowedByCurrent) {
                     setOnClickListener(null)
                     setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                    setTextColor(ContextCompat.getColor(itemView.context,R.color.appBlue))
+                    setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
                     "Member"
+                } else if (data.isJoinRequestPending) {
+                    setOnClickListener(null)
+                    setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                    setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+                    "Pending"
                 } else {
-                    setOnClickListener { listener?.onGroupJoinClick(position, data) }
+                    if (data.isPublic)
+                        setOnClickListener { listener?.onGroupJoinClick(position, data) }
+                    else
+                        setOnClickListener { listener?.onGroupRequestJoinClick(position, data) }
                     setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-                    setTextColor(ContextCompat.getColor(itemView.context,android.R.color.white))
+                    setTextColor(ContextCompat.getColor(itemView.context, android.R.color.white))
                     "Join"
                 }
-               setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             }
 
             itemView.setOnClickListener {
@@ -54,10 +62,11 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
     }
 
     interface Listener {
+        fun onGroupRequestJoinClick(position: Int, group: GroupResponse)
 
         fun onGroupJoinClick(position: Int, group: GroupResponse)
 
-        fun onGroupClick(group : GroupResponse)
+        fun onGroupClick(group: GroupResponse)
     }
 
     companion object {

@@ -114,25 +114,78 @@
 
                     </LinearLayout>
 
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/item_group_btn_join_member"
-                        style="@style/AppText"
-                        android:layout_width="140dp"
-                        android:layout_height="31dp"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="8dp"
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
-                        android:layout_marginEnd="8dp"
-                        android:background="@drawable/shape_backgrd_round_blue3"
-                        android:fontFamily="@font/avenir_medium"
-                        android:minHeight="30dip"
-                        android:text="Join"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textSize="14sp"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/linearLayout4" />
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_join"
+                            style="@style/AppText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="40dp"
+                            android:layout_marginEnd="40dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_backgrd_round_blue3"
+                            android:fontFamily="@font/avenir_medium"
+                            android:gravity="center"
+                            android:minHeight="32dip"
+                            android:text="@string/join"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/linearLayout4"
+                            tools:visibility="visible" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_member_pending"
+                            style="@style/AppText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/bk_white_stroke_blue_rounded"
+                            android:fontFamily="@font/avenir_medium"
+                            android:gravity="center"
+                            android:minHeight="32dip"
+                            android:text="@string/member"
+                            android:textAllCaps="false"
+                            android:textColor="@color/appBlue"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+                        <android.support.v7.widget.AppCompatButton
+                            android:id="@+id/btn_conversation"
+                            style="@style/AppText"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="8dp"
+                            android:layout_marginEnd="8dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/shape_backgrd_round_blue3"
+                            android:fontFamily="@font/avenir_medium"
+                            android:gravity="center"
+                            android:minHeight="32dip"
+                            android:text="@string/to_conversation"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="14sp"
+                            android:visibility="gone"
+                            tools:visibility="visible" />
+
+
+                    </LinearLayout>
 
                 </LinearLayout>
 

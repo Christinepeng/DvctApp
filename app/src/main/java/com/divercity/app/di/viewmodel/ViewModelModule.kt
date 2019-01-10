@@ -18,6 +18,7 @@ import com.divercity.app.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.app.features.groups.TabGroupsViewModel
 import com.divercity.app.features.groups.all.AllGroupsViewModel
 import com.divercity.app.features.groups.creategroup.step1.CreateGroupViewModel
+import com.divercity.app.features.groups.creategroup.step3.GroupDescriptionViewModel
 import com.divercity.app.features.groups.groupdetail.GroupDetailViewModel
 import com.divercity.app.features.groups.groupdetail.about.TabAboutGroupDetailViewModel
 import com.divercity.app.features.groups.groupdetail.conversation.GroupConversationViewModel
@@ -360,4 +361,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GroupConversationViewModel::class)
     abstract fun bindsGroupConversationViewModel(viewModel: GroupConversationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GroupDescriptionViewModel::class)
+    abstract fun bindsGroupDescriptionViewModel(viewModel: GroupDescriptionViewModel): ViewModel
 }

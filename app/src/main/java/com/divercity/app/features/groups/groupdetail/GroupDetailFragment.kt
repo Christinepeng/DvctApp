@@ -96,6 +96,26 @@ class GroupDetailFragment : BaseFragment() {
             GlideApp.with(this)
                 .load(it.attributes.pictureMain)
                 .into(img_default_group)
+
+            if(it.attributes.isIsFollowedByCurrent){
+                btn_member_pending.setText(R.string.member)
+                btn_member_pending.visibility = View.VISIBLE
+                btn_conversation.visibility = View.VISIBLE
+            } else if(it.isPublic){
+                btn_join.visibility = View.VISIBLE
+                btn_join.setOnClickListener {
+                    viewModel.joinGroup(group!!)
+                }
+            } else if(it.isJoinRequestNotSend){
+                btn_join.setText(R.string.request_to_join)
+                btn_join.visibility = View.VISIBLE
+                btn_join.setOnClickListener {
+                    viewModel.requestToJoinGroup(group!!)
+                }
+            } else if(it.isJoinRequestPending){
+                btn_member_pending.setText(R.string.pending)
+                btn_member_pending.visibility = View.VISIBLE
+            }
         }
     }
 
@@ -111,6 +131,44 @@ class GroupDetailFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     showMemberPictures(response.data!!)
+                }
+            }
+        })
+
+        viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer {
+            it?.getContentIfNotHandled()?.let { group ->
+                when (group.status) {
+                    Status.LOADING -> showProgress()
+
+                    Status.ERROR -> {
+                        hideProgress()
+                        Toast.makeText(activity, group.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        hideProgress()
+                        btn_join.visibility = View.GONE
+                        btn_member_pending.setText(R.string.member)
+                        btn_member_pending.visibility = View.VISIBLE
+                        btn_conversation.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
+
+        viewModel.requestToJoinResponse.observe(viewLifecycleOwner, Observer {response ->
+            when (response?.status) {
+                Status.LOADING -> showProgress()
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    btn_join.visibility = View.GONE
+                    btn_member_pending.setText(R.string.pending)
+                    btn_member_pending.visibility = View.VISIBLE
+                    btn_conversation.visibility = View.GONE
                 }
             }
         })

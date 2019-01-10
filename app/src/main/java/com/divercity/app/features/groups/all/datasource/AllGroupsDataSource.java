@@ -9,7 +9,7 @@ import android.util.Log;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.data.entity.base.DataArray;
 import com.divercity.app.data.entity.group.GroupResponse;
-import com.divercity.app.features.groups.usecase.FetchGroupsUseCase;
+import com.divercity.app.features.groups.all.usecase.FetchAllGroupsUseCase;
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -25,7 +25,7 @@ public class AllGroupsDataSource extends PageKeyedDataSource<Long, GroupResponse
     private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
-    private FetchGroupsUseCase fetchGroupsUseCase;
+    private FetchAllGroupsUseCase fetchGroupsUseCase;
     private CompositeDisposable compositeDisposable;
     private String query;
     /**
@@ -34,7 +34,7 @@ public class AllGroupsDataSource extends PageKeyedDataSource<Long, GroupResponse
     private Completable retryCompletable;
 
     public AllGroupsDataSource(CompositeDisposable compositeDisposable,
-                               FetchGroupsUseCase fetchGroupsUseCase,
+                               FetchAllGroupsUseCase fetchGroupsUseCase,
                                @Nullable String query) {
         this.compositeDisposable = compositeDisposable;
         this.fetchGroupsUseCase = fetchGroupsUseCase;
@@ -91,7 +91,7 @@ public class AllGroupsDataSource extends PageKeyedDataSource<Long, GroupResponse
             }
         };
         compositeDisposable.add(disposableObserver);
-        fetchGroupsUseCase.execute(disposableObserver, FetchGroupsUseCase.Params.forGroups(0, params.requestedLoadSize, query));
+        fetchGroupsUseCase.execute(disposableObserver, FetchAllGroupsUseCase.Params.Companion.forGroups(0, params.requestedLoadSize, query));
     }
 
     @Override
@@ -129,7 +129,7 @@ public class AllGroupsDataSource extends PageKeyedDataSource<Long, GroupResponse
         };
 
         compositeDisposable.add(disposableObserver);
-        fetchGroupsUseCase.execute(disposableObserver, FetchGroupsUseCase.Params.forGroups(params.key.intValue(), params.requestedLoadSize, query));
+        fetchGroupsUseCase.execute(disposableObserver, FetchAllGroupsUseCase.Params.Companion.forGroups(params.key.intValue(), params.requestedLoadSize, query));
     }
 
     @NonNull

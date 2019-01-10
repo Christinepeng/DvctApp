@@ -9,9 +9,9 @@
 
     <item
         android:drawable="@drawable/icon_more"
-        android:bottom="15dp"
+        android:bottom="16dp"
         android:left="10dp"
         android:right="10dp"
-        android:top="15dp" />
+        android:top="16dp" />
 
 </layer-list>

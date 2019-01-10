@@ -37,11 +37,11 @@ class SignUpFragment : BaseFragment() {
     val SAVE_PARAM_ISUSERREGISTERED = "isUserRegistered"
 
     private var photoFile: File? = null
+    private var isPictureSet: Boolean = false
 
     private lateinit var viewModel: SignUpViewModel
     private var username: String? = ""
     private var isUserRegistered: Int = 2
-    private var isPictureSet: Boolean = false
 
     companion object {
         private const val PARAM_EMAIL = "paramEmail"
@@ -241,7 +241,7 @@ class SignUpFragment : BaseFragment() {
             isUserRegistered = 1
         } else {
             et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.green))
-            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.icon_checkmark))
+            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.img_checkmark))
             img_username_status.visibility = View.VISIBLE
             lay_warning_username.visibility = View.GONE
             isUserRegistered = 0

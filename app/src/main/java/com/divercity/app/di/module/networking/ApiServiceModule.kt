@@ -52,12 +52,6 @@ class ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideRecommendersService(@Named("auth") retrofit: Retrofit): RecommendersService {
-        return retrofit.create(RecommendersService::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideChatService(@Named("auth") retrofit: Retrofit): ChatService {
         return retrofit.create(ChatService::class.java)
     }

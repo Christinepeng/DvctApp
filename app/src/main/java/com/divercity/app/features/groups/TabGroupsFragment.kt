@@ -16,7 +16,7 @@ import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.ViewPagerDotsPanel
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
+import com.divercity.app.data.entity.group.GroupResponse
 import com.divercity.app.features.home.HomeActivity
 import kotlinx.android.synthetic.main.fragment_groups.*
 import javax.inject.Inject
@@ -106,7 +106,7 @@ class TabGroupsFragment : BaseFragment() {
         })
     }
 
-    private fun initAdapterRecommendedGroups(list: List<RecommendedGroupsResponse>?) {
+    private fun initAdapterRecommendedGroups(list: List<GroupResponse>?) {
         if (list?.size != 0) {
             lay_carousel_viewpager.visibility = View.VISIBLE
 

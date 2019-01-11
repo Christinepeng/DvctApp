@@ -28,14 +28,13 @@ constructor(
         private val repository: AllGroupsPaginatedRepositoryImpl,
         private val joinGroupUseCase: JoinGroupUseCase,
         private val requestToJoinUseCase : RequestJoinGroupUseCase
-
 ) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    private var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
     var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
+    private var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     private var lastSearch: String? = null
 
     val onJoinGroupResponse: LiveData<Event<Resource<Any>>>

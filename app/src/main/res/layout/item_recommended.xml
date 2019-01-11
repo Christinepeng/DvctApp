@@ -1,47 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="150dp"
-    android:layout_height="wrap_content"
+    android:layout_width="120dp"
+    android:layout_height="180dp"
+    android:layout_marginEnd="8dp"
     android:background="@drawable/shape_backgrd_round2"
     android:orientation="vertical">
 
     <ImageView
         android:id="@+id/img"
-        android:layout_width="90dp"
-        android:layout_height="90dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:layout_gravity="center"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="@string/desc"
         android:scaleType="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         tools:background="@color/appBlue" />
 
     <TextView
         android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:ellipsize="end"
         android:fontFamily="@font/avenir_medium"
         android:gravity="center"
         android:maxLines="2"
         android:textColor="#333241"
-        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img"
         tools:text="Blacks in Tech sdfs df sdf sdfs dfsdfsdfsdfsdfsd" />
 
     <TextView
         android:id="@+id/txt_subtitle"
         style="@style/AppText5"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:ellipsize="end"
         android:gravity="center"
         android:maxLines="2"
+        app:layout_constraintBottom_toTopOf="@+id/btn_action"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title"
         tools:text="San Francisco, USA sad sdad" />
 
     <android.support.v7.widget.AppCompatButton
@@ -50,8 +67,9 @@
         android:layout_width="82dp"
         android:layout_height="31dp"
         android:layout_gravity="center"
-        android:layout_marginTop="4dp"
-        android:layout_marginBottom="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@drawable/shape_backgrd_round_blue3"
         android:fontFamily="@font/avenir_medium"
         android:gravity="center"
@@ -59,6 +77,9 @@
         android:textAllCaps="false"
         android:textColor="@android:color/white"
         android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:text="@string/join" />
 
-</LinearLayout>
+</android.support.constraint.ConstraintLayout>

@@ -1,20 +1,21 @@
-package com.divercity.app.features.home.home.feed.questions;
+package com.divercity.app.features.home.home.feed.datasource;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
+
 import com.divercity.app.core.base.PaginatedRepository;
 import com.divercity.app.core.utils.Listing;
 import com.divercity.app.data.entity.questions.QuestionResponse;
-import com.divercity.app.features.home.home.feed.datasource.GroupsInterestsDataSource;
-import com.divercity.app.features.home.home.feed.datasource.GroupsInterestsDataSourceFactory;
 import com.divercity.app.features.home.home.usecase.GetQuestionsUseCase;
-import io.reactivex.disposables.CompositeDisposable;
 
-import javax.inject.Inject;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by lucas on 01/10/2018.

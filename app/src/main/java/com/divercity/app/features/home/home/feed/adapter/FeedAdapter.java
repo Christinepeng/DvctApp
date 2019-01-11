@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
-
 import com.divercity.app.R;
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.core.ui.NetworkStateViewHolder;
@@ -15,9 +14,8 @@ import com.divercity.app.core.ui.RetryCallback;
 import com.divercity.app.data.entity.questions.QuestionResponse;
 import com.divercity.app.features.home.home.feed.adapter.holder.QuestionsViewHolder;
 
-import java.util.Objects;
-
 import javax.inject.Inject;
+import java.util.Objects;
 
 public class FeedAdapter extends PagedListAdapter<QuestionResponse, RecyclerView.ViewHolder> {
 
@@ -116,5 +114,4 @@ public class FeedAdapter extends PagedListAdapter<QuestionResponse, RecyclerView
             return Objects.equals(oldItem, newItem);
         }
     };
-
 }

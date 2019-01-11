@@ -15,10 +15,15 @@ import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.ui.NetworkState
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.Status
+import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.dialogs.CustomOneBtnDialogFragment
+import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.app.features.home.HomeActivity
-import com.divercity.app.features.home.home.featured.FeaturedAdapter
 import com.divercity.app.features.home.home.feed.adapter.FeedAdapter
+import com.divercity.app.features.home.home.recommended.RecommendedAdapter
+import com.divercity.app.features.home.home.recommended.RecommendedGroupViewHolder
+import com.divercity.app.features.home.home.recommended.RecommendedJobViewHolder
 import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
 import javax.inject.Inject
@@ -28,7 +33,7 @@ import javax.inject.Inject
  */
 
 
-class HomeFragment : BaseFragment(), RetryCallback {
+class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: HomeViewModel
 
@@ -36,9 +41,12 @@ class HomeFragment : BaseFragment(), RetryCallback {
     lateinit var feedAdapter: FeedAdapter
 
     @Inject
-    lateinit var featuredAdapter: FeaturedAdapter
+    lateinit var recommendedAdapter: RecommendedAdapter
 
     private var mIsRefreshing = false
+    private var positionApplyClicked: Int = 0
+    private var positionJoinRequest: Int = 0
+    private var positionJoinClicked: Int = 0
 
     companion object {
 
@@ -79,7 +87,40 @@ class HomeFragment : BaseFragment(), RetryCallback {
     private fun initAdapters() {
         feedAdapter.setRetryCallback(this)
         list_main.adapter = feedAdapter
-        list_featured.adapter = featuredAdapter
+        recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
+
+            override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
+                positionJoinRequest = position
+                viewModel.requestToJoinGroup(group)
+            }
+
+            override fun onGroupClick(group: GroupResponse) {
+                navigator.navigateToGroupDetailActivity(this@HomeFragment, group)
+            }
+
+            override fun onGroupJoinClick(position: Int, group: GroupResponse) {
+                positionJoinClicked = position
+                viewModel.joinGroup(group)
+            }
+        }
+
+        recommendedAdapter.jobListener = object : RecommendedJobViewHolder.Listener {
+
+            override fun onJobClick(job: JobResponse) {
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+            }
+
+            override fun onApplyClick(position: Int, job: JobResponse) {
+                positionApplyClicked = position
+                showJobApplyDialog(job.id)
+            }
+        }
+        list_recommended.adapter = recommendedAdapter
+    }
+
+    private fun showJobApplyDialog(jobId: String?) {
+        val dialog = JobApplyDialogFragment.newInstance(jobId!!)
+        dialog.show(childFragmentManager, null)
     }
 
     private fun subscribeToLiveData() {
@@ -130,8 +171,8 @@ class HomeFragment : BaseFragment(), RetryCallback {
             }
         })
 
-        viewModel.featuredList.observe(this, Observer { resource ->
-            when (resource?.status) {
+        viewModel.fetchRecommendedJobsGroupsResponse.observe(this, Observer { response ->
+            when (response?.status) {
                 Status.LOADING -> {
 
                 }
@@ -139,10 +180,56 @@ class HomeFragment : BaseFragment(), RetryCallback {
 
                 }
                 Status.SUCCESS -> {
-                    featuredAdapter.submitList(resource.data)
+                    recommendedAdapter.data = response.data
                 }
             }
         })
+
+        viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer {
+            it?.getContentIfNotHandled()?.let { group ->
+                when (group.status) {
+                    Status.LOADING -> showProgress()
+
+                    Status.ERROR -> {
+                        hideProgress()
+                        Toast.makeText(activity, group.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        hideProgress()
+                        recommendedAdapter.updatePositionOnJoinGroup(positionJoinClicked)
+                    }
+                }
+            }
+        })
+
+        viewModel.requestToJoinResponse.observe(viewLifecycleOwner, Observer {response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    recommendedAdapter.updatePositionOnJoinRequest(positionJoinRequest)
+                }
+            }
+        })
+
+//        viewModel.featuredList.observe(this, Observer { resource ->
+//            when (resource?.status) {
+//                Status.LOADING -> {
+//
+//                }
+//                Status.ERROR -> {
+//
+//                }
+//                Status.SUCCESS -> {
+//                    recommendedAdapter.submitList(resource.data)
+//                }
+//            }
+//        })
     }
 
     override fun retry() {
@@ -154,7 +241,7 @@ class HomeFragment : BaseFragment(), RetryCallback {
         swipe_list_main.apply {
             setOnRefreshListener {
                 mIsRefreshing = true
-                viewModel.getFeatured()
+                viewModel.fetchRecommendedGroupsJobs()
                 viewModel.refresh()
             }
 
@@ -202,7 +289,9 @@ class HomeFragment : BaseFragment(), RetryCallback {
         btn_create_group.setOnClickListener {
             showToast()
         }
-        btn_explore_groups.setOnClickListener { showToast() }
+        btn_explore_groups.setOnClickListener {
+            showToast()
+        }
     }
 
     private fun showToast() {
@@ -217,5 +306,9 @@ class HomeFragment : BaseFragment(), RetryCallback {
         )
         customOneBtnDialogFragment.setListener { customOneBtnDialogFragment.dismiss() }
         customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    override fun onSuccessJobApply() {
+
     }
 }

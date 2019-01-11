@@ -81,4 +81,8 @@ interface GroupService {
                     @Part("group_of_interest[description]") description: RequestBody,
                     @Part("group_of_interest[group_type]") groupType: RequestBody,
                     @Part("group_of_interest[picture]") picture: RequestBody): Observable<Response<DataObject<GroupResponse>>>
+
+    @GET("recommenders/group_of_interests")
+    fun fetchRecommendedGroups(@Query("page[number]") pageNumber: Int,
+                               @Query("page[size]") size: Int): Observable<Response<DataArray<GroupResponse>>>
 }

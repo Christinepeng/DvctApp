@@ -152,8 +152,8 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                         .apply(RequestOptions().circleCrop())
                         .into(imgViews[i].img)
 
-                if (i == admins.size - 1 && i != group?.attributes?.followersCount!! - 1)
-                    (imgViews[i] as FrameLayout).foreground = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
+//                if (i == admins.size - 1)
+//                    (imgViews[i] as FrameLayout).foreground = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
 
                 if(i == 0)
                     txt_admins.hint = admins[i].attributes?.name

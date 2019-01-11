@@ -4,7 +4,6 @@ import android.arch.lifecycle.LiveData
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import android.os.Handler
-import android.util.Log
 import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.MySocket
 import com.divercity.app.core.utils.SingleLiveEvent
@@ -18,9 +17,8 @@ import com.divercity.app.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.app.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.app.features.chat.chat.usecase.SendMessagesUseCase
 import com.divercity.app.repository.chat.ChatRepositoryImpl
-import com.google.gson.Gson
+import com.divercity.app.socket.ChatWebSocket
 import com.google.gson.JsonElement
-import com.google.gson.JsonParser
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -38,7 +36,7 @@ constructor(
         private val chatMessageRepository: ChatRepositoryImpl,
         private val fetchMessagesUseCase: FetchMessagesUseCase,
         private val sendMessagesUseCase: SendMessagesUseCase,
-        private val socket: MySocket) : BaseViewModel() {
+        private val chatWebSocket: ChatWebSocket) : BaseViewModel() {
 
     var pageFetchList = ArrayList<Int>()
 
@@ -123,7 +121,8 @@ constructor(
                     chatMessageRepository.insertChatOnDB(Chat(o.id!!.toInt(), otherUserId.toInt()))
                 }
                 fetchCreateChatResponse.postValue(Resource.success(o))
-                connectWebSocket()
+
+                connectToChatWebSocket()
 
                 uiScope.launch {
                     val rows = chatMessageRepository.countMessagesByChatIdFromDB(createChatResponse?.id!!.toInt())
@@ -208,54 +207,24 @@ constructor(
         viewModelJob.cancel()
     }
 
-    private fun connectWebSocket() {
-//        val identifier =
-//                "\"{\\\"chat_id\\\": \\\"" + createChatResponse?.id + "\\\",\\\"channel\\\":\\\"MessagesChannel\\\"}\"}"
-//        socket.sendOnOpen("subscribe", identifier)
-        socket.setMessageListener(object : MySocket.OnMessageListener() {
-
-            override fun onMessage(data: String?) {
-
-                try {
-                    // Parse message text
-                    val jsonParser = JsonParser()
-                    val response = jsonParser.parse(data)
-                    val message = response.asJsonObject.getAsJsonObject("message")
-
-                    val gson = Gson()
-                    if (message != null) {
-                        val chat = gson.fromJson(message, ChatMessageResponse::class.java)
-                        insertChatDb(chat)
-                    }
-
-                } catch (e: Exception) {
-                    // Message text not in JSON format or don't have {event}|{data} object
-                    Log.e("WebSocket", "Unknown message format.")
-                }
-            }
-
-        })
-
-        socket.onEvent(MySocket.EVENT_OPEN, object : MySocket.OnEventListener() {
-
-            override fun onMessage(event: String?) {
-                val identifier =
-                        "\"{\\\"chat_id\\\": \\\"" + createChatResponse?.id + "\\\",\\\"channel\\\":\\\"MessagesChannel\\\"}\"}"
-                Timber.d("onOpen: ".plus(identifier))
-                socket.send("subscribe", identifier)
+    private fun connectToChatWebSocket(){
+        chatWebSocket.addOnChatMessageReceivedListener(object : ChatWebSocket.OnChatMessageReceived {
+            override fun onChatMessageReceived(chat: ChatMessageResponse) {
+                insertChatDb(chat)
             }
         })
-        socket.connect()
+
+        chatWebSocket.connect(createChatResponse?.id!!)
     }
 
     fun checkIfReconnectionIsNeeded() {
-        if (createChatResponse != null && socket.state == MySocket.State.CONNECT_ERROR) {
-            socket.stopTryingToReconnect()
-            connectWebSocket()
+        if (createChatResponse != null && chatWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR) {
+            chatWebSocket.stopTryingToReconnect()
+            connectToChatWebSocket()
         }
     }
 
     fun closeSocket() {
-        socket.close()
+        chatWebSocket.close()
     }
 }

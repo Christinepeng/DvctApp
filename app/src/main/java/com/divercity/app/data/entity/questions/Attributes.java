@@ -311,7 +311,10 @@ public class Attributes{
 	}
 
 	public String getPictureMain(){
-		return pictureMain;
+		if(pictureMain.equals("https://apinew.pincapp.com/images/default_avatar.png"))
+			return null;
+		else
+			return pictureMain;
 	}
 
 	@Override

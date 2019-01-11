@@ -21,6 +21,13 @@ import javax.inject.Inject
 class JobRepositoryImpl @Inject
 constructor(private val jobService: JobService) : JobRepository {
 
+    override fun fetchRecommendedJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>> {
+        return jobService.fetchRecommendedJobs(page, size, query).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
     override fun fetchSimilarJobs(pageNumber: Int, size: Int, jobId: String?): Observable<List<JobResponse>> {
         return jobService.fetchSimilarJobs(pageNumber, size, jobId).map {
             checkResponse(it)

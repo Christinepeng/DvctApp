@@ -10,6 +10,7 @@ import android.webkit.CookieSyncManager;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -34,6 +35,17 @@ public final class Util {
         }
     }
 
+    public static boolean areDatesSameDay(String strDate1, String strDate2){
+        Date date1 = getDateWithServerTimeStamp(strDate1);
+        Date date2 = getDateWithServerTimeStamp(strDate2);
+        Calendar cal1 = Calendar.getInstance();
+        Calendar cal2 = Calendar.getInstance();
+        cal1.setTime(date1);
+        cal2.setTime(date2);
+        return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
+    }
+
     public static Long getMilisecFromStringDate(String date){
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                 Locale.US);
@@ -56,6 +68,22 @@ public final class Util {
                     return res.replace("AM", "am").replace("PM", "pm");
                 else
                     return "";
+            } catch (ParseException e) {
+                return "";
+            }
+        } else {
+            return "";
+        }
+    }
+
+    public static String getStringDateWithServerDate(String date){
+        if (date != null) {
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
+                    Locale.getDefault());
+            try {
+                Date myDate = dateFormat.parse(date);
+                DateFormat df = new SimpleDateFormat("MM/dd/yyyy", Locale.getDefault());
+                return df.format(myDate);
             } catch (ParseException e) {
                 return "";
             }

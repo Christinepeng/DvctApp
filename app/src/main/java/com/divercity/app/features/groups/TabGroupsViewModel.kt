@@ -5,7 +5,6 @@ import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.Event
 import com.divercity.app.data.Resource
 import com.divercity.app.data.entity.group.GroupResponse
-import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
 import com.divercity.app.features.groups.usecase.FetchRecommendedGroupsUseCase
 import com.divercity.app.features.groups.usecase.JoinGroupUseCase
@@ -22,14 +21,14 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
 ) : BaseViewModel() {
 
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
-    var fetchRecommendedGroupsResponse = MutableLiveData<Resource<List<RecommendedGroupsResponse>>>()
+    var fetchRecommendedGroupsResponse = MutableLiveData<Resource<List<GroupResponse>>>()
 
     init {
         fetchRecommendedGroups()
     }
 
     private fun fetchRecommendedGroups() {
-        val callback = object : DisposableObserverWrapper<List<RecommendedGroupsResponse>>() {
+        val callback = object : DisposableObserverWrapper<List<GroupResponse>>() {
             override fun onFail(error: String) {
                 fetchRecommendedGroupsResponse.postValue(Resource.error(error, null))
             }
@@ -38,7 +37,7 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
                 fetchRecommendedGroupsResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: List<RecommendedGroupsResponse>) {
+            override fun onSuccess(o: List<GroupResponse>) {
                 fetchRecommendedGroupsResponse.postValue(Resource.success(o))
             }
         }

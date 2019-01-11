@@ -14,6 +14,8 @@ import io.reactivex.Observable
 
 interface JobRepository {
 
+    fun fetchRecommendedJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>>
+
     fun fetchJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 
     fun fetchSimilarJobs(pageNumber: Int,

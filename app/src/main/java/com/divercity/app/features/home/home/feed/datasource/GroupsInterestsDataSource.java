@@ -4,17 +4,19 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.divercity.app.core.ui.NetworkState;
 import com.divercity.app.data.entity.questions.QuestionResponse;
 import com.divercity.app.features.home.home.usecase.GetQuestionsUseCase;
+
+import java.util.List;
+
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
-
-import java.util.List;
 
 public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, QuestionResponse> {
 
@@ -60,7 +62,10 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, Questio
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
-                    callback.onResult(data, null, 2l);
+                    if (data.size() < params.requestedLoadSize)
+                        callback.onResult(data, null, null);
+                    else
+                        callback.onResult(data, null, 2L);
                     initialLoading.postValue(NetworkState.LOADED);
                 } else {
                     NetworkState error = NetworkState.error("Error");

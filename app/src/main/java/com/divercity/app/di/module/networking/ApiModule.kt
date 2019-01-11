@@ -5,6 +5,7 @@ import com.divercity.app.BuildConfig
 import com.divercity.app.core.utils.MySocket
 import com.divercity.app.data.networking.config.ResponseCheckInterceptor
 import com.divercity.app.repository.user.LoggedUserRepositoryImpl
+import com.divercity.app.socket.ChatWebSocket
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -117,5 +118,10 @@ class ApiModule {
                 .addHeader("origin", "https://www.pincapp.com")
                 .addHttpLogginInterceptor(loggingInterceptor)
                 .build()
+    }
+
+    @Provides
+    internal fun provideChatWebSocket(socket : MySocket): ChatWebSocket {
+        return ChatWebSocket(socket)
     }
 }

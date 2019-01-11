@@ -3,9 +3,10 @@ package com.divercity.app.data.entity.group;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.divercity.app.features.home.home.RecommendedItem;
 import com.google.gson.annotations.SerializedName;
 
-public class GroupResponse implements Parcelable {
+public class GroupResponse implements Parcelable, RecommendedItem {
 
 	@SerializedName("attributes")
 	private Attributes attributes;

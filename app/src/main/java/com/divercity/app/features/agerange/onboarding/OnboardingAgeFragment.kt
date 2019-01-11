@@ -52,7 +52,7 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
     }
 
     private fun setupView() {
-
+        btn_continue.visibility = View.VISIBLE
         btn_continue.setOnClickListener {
             if (viewModel.ageRangeSelected != null) {
                 viewModel.updateUserProfileWithSelectedAgeRange()

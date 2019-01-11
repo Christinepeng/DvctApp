@@ -1,5 +1,7 @@
 package com.divercity.app.features.home.home.feed.adapter.holder;
 
+import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -9,9 +11,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.divercity.app.R;
 import com.divercity.app.core.utils.GlideApp;
+import com.divercity.app.core.utils.Util;
 import com.divercity.app.data.entity.questions.QuestionResponse;
 
 public class QuestionsViewHolder extends RecyclerView.ViewHolder {
@@ -43,16 +50,23 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
     }
 
     public void bindTo(QuestionResponse data) {
-        try {
-            cardViewImgMainContainer.setVisibility(View.VISIBLE);
-            String urlMain = data.getAttributes().getPictureMain();
-            GlideApp.with(itemView)
-                    .load(urlMain)
-                    .into(imgMainPicture);
-        } catch (NullPointerException e) {
-            cardViewImgMainContainer.setVisibility(View.GONE);
-        }
+        String urlMain = data.getAttributes().getPictureMain();
+        GlideApp.with(itemView)
+                .load(urlMain)
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        cardViewImgMainContainer.setVisibility(View.GONE);
+                        return false;
+                    }
 
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        cardViewImgMainContainer.setVisibility(View.VISIBLE);
+                        return false;
+                    }
+                })
+                .into(imgMainPicture);
 
         String urlImgAuthor = data.getAttributes().getAuthorInfo().getAvatarMedium();
         if (urlImgAuthor != null)
@@ -68,7 +82,7 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
             mImgAnswerAuthor.setImageResource(R.drawable.tab_profile_inactive);
         }
         mTxtQuestion.setText(data.getAttributes().getText());
-        mTxtAuthorTime.setText(" · " + data.getAttributes().getAuthorInfo().getNickname() + " · ");
+        mTxtAuthorTime.setText(" · " + data.getAttributes().getAuthorInfo().getNickname() + " · " + Util.getStringDateTimeWithServerDate(data.getAttributes().getCreatedAt()));
         mTxtGroupName.setText(data.getAttributes().getGroup().get(0).getTitle());
         try {
             mTxtAnswer.setText(data.getAttributes().getLastActivityInfo().getAuthorInfo().getName() + ": " +

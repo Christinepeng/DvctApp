@@ -1,10 +1,15 @@
 package com.divercity.app.features.groups.groupdetail.conversation.adapter
 
+import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.load.DataSource
+import com.bumptech.glide.load.engine.GlideException
+import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.Target
 import com.divercity.app.R
 import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.core.utils.Util
@@ -24,6 +29,17 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
 
             GlideApp.with(itemView)
                     .load(data.attributes.pictureMain)
+                    .listener(object: RequestListener<Drawable>{
+                        override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
+                            itemView.item_quest_cardview_pic_main.visibility = View.VISIBLE
+                            return false
+                        }
+
+                        override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
+                            itemView.item_quest_cardview_pic_main.visibility = View.GONE
+                            return false
+                        }
+                    })
                     .into(itemView.item_quest_img_main)
 
             itemView.item_quest_txt_author_name.text = it.attributes.authorInfo.name

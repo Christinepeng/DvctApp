@@ -97,4 +97,9 @@ interface JobService {
     @PUT("jobs/{jobId}/apply_edit")
     fun cancelJobApplication(@Path("jobId") jobId: String,
                            @Part("application[canceled]") canceled: RequestBody): Observable<Response<DataObject<JobApplicationResponse>>>
+
+    @GET("recommenders/jobs")
+    fun fetchRecommendedJobs(@Query("page[number]") pageNumber: Int,
+                             @Query("page[size]") size: Int,
+                             @Query("search_query") query: String?): Observable<Response<DataArray<JobResponse>>>
 }

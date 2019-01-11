@@ -5,8 +5,7 @@ import android.os.Looper;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.google.gson.JsonObject;
 
 import java.net.ProtocolException;
 import java.util.HashMap;
@@ -21,6 +20,7 @@ import okhttp3.WebSocketListener;
 import okhttp3.internal.ws.RealWebSocket;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okio.ByteString;
+import timber.log.Timber;
 
 /**
  * Websocket class based on OkHttp3 with {event->data} message format to make your life easier.
@@ -374,30 +374,11 @@ public class MySocket {
         @Override
         public void onMessage(WebSocket webSocket, String text) {
             // print received message in log
-            Log.v(TAG, "New Message received " + text);
+            Timber.v( "New Message received %s", text);
 
             // call message listener
             if (messageListener != null)
                 messageListener.onMessage(MySocket.this, text);
-
-            try {
-                // Parse message text
-                JSONObject response = new JSONObject(text);
-                String event = response.getString("event");
-                JSONObject data = response.getJSONObject("data");
-
-                // call event listener with received data
-                if (eventResponseListener.get(event) != null) {
-                    eventResponseListener.get(event).onMessage(MySocket.this, event, data);
-                }
-                // call event listener
-                if (eventListener.get(event) != null) {
-                    eventListener.get(event).onMessage(MySocket.this, event);
-                }
-            } catch (JSONException e) {
-                // Message text not in JSON format or don't have {event}|{data} object
-                Log.e(TAG, "Unknown message format.");
-            }
         }
 
         @Override
@@ -495,7 +476,7 @@ public class MySocket {
          * @param event  Message received event
          * @param data   Data received in the message
          */
-        private void onMessage(MySocket socket, final String event, final JSONObject data) {
+        private void onMessage(MySocket socket, final String event, final JsonObject data) {
             new Handler(Looper.getMainLooper()).post(new Runnable() {
                 @Override
                 public void run() {

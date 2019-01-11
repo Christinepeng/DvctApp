@@ -16,14 +16,48 @@ private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun bindTo(currentUserId: String, data: ChatMessageResponse?, next: ChatMessageResponse?) {
         data?.let {
             itemView.txt_msg.text = it.message
-            itemView.txt_date.text = Util.getStringDateTimeWithServerDate(it.messageCreatedAt)
+            itemView.txt_time.text = Util.getStringAppTimeWithString(it.messageCreatedAt)
 
-            if(currentUserId == it.fromUserId.toString()){
+            if (currentUserId == it.fromUserId.toString()) {
                 itemView.txt_name.text = "Me"
-                itemView.img_user.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.img_blue_user))
+                itemView.img_user.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.img_blue_user
+                    )
+                )
             } else {
                 itemView.txt_name.text = it.fromUsername
-                itemView.img_user.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.img_orange_user))
+                itemView.img_user.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        itemView.context,
+                        R.drawable.img_orange_user
+                    )
+                )
+            }
+
+            if (next != null) {
+                if (Util.areDatesSameDay(it.messageCreatedAt, next.messageCreatedAt)) {
+                    itemView.txt_date.visibility = View.GONE
+
+                    if (it.fromUserId == next.fromUserId) {
+                        itemView.img_user.visibility = View.GONE
+                        itemView.txt_name.visibility = View.GONE
+                    } else {
+                        itemView.img_user.visibility = View.VISIBLE
+                        itemView.txt_name.visibility = View.VISIBLE
+                    }
+                } else {
+                    itemView.txt_date.text = Util.getStringDateWithServerDate(it.messageCreatedAt)
+                    itemView.txt_date.visibility = View.VISIBLE
+                    itemView.img_user.visibility = View.VISIBLE
+                    itemView.txt_name.visibility = View.VISIBLE
+                }
+            } else {
+                itemView.txt_date.text = Util.getStringDateWithServerDate(it.messageCreatedAt)
+                itemView.txt_date.visibility = View.VISIBLE
+                itemView.img_user.visibility = View.VISIBLE
+                itemView.txt_name.visibility = View.VISIBLE
             }
         }
     }

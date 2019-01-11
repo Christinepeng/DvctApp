@@ -9,7 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.divercity.app.R
 import com.divercity.app.core.utils.GlideApp
-import com.divercity.app.data.entity.recommendedgroups.RecommendedGroupsResponse
+import com.divercity.app.data.entity.group.GroupResponse
 import kotlinx.android.synthetic.main.view_pager_panel_group.view.*
 import javax.inject.Inject
 
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class TabGroupsPanelViewPagerAdapter @Inject
 constructor() : PagerAdapter() {
     private var layoutInflater: LayoutInflater? = null
-    private var list: List<RecommendedGroupsResponse>? = null
+    private var list: List<GroupResponse>? = null
     var listener: Listener? = null
     lateinit var viewGroup: ViewGroup
 
@@ -28,7 +28,7 @@ constructor() : PagerAdapter() {
         return list?.size ?: 0
     }
 
-    fun setList(list: List<RecommendedGroupsResponse>?) {
+    fun setList(list: List<GroupResponse>?) {
         this.list = list
         notifyDataSetChanged()
     }
@@ -55,7 +55,7 @@ constructor() : PagerAdapter() {
                 view.txt_members.text = it.followersCount.toString().plus(" Members")
 
 //                TODO: check if group is private
-                if (it.isFollowedByCurrent!!) {
+                if (it.isIsFollowedByCurrent) {
                     view.btn_join.setOnClickListener(null)
                     view.btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                     view.btn_join.setTextColor(ContextCompat.getColor(container.context, R.color.appBlue))
@@ -84,7 +84,7 @@ constructor() : PagerAdapter() {
 
         list?.get(position)?.apply {
             attributes?.also {
-                it.isFollowedByCurrent = true
+                it.isIsFollowedByCurrent = true
                 it.followersCount = it.followersCount?.plus(1)
 
                 view.txt_members.text = it.followersCount.toString().plus(" Members")

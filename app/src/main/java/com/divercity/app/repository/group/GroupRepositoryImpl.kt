@@ -24,6 +24,13 @@ constructor(
         private val service: GroupService
 ) : GroupRepository {
 
+    override fun fetchRecommendedGroups(pageNumber: Int, size: Int): Observable<List<GroupResponse>> {
+        return service.fetchRecommendedGroups(pageNumber, size).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
     override fun fetchAllGroups(
             page: Int,
             size: Int,

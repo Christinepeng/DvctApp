@@ -42,4 +42,7 @@ interface GroupRepository {
 
     fun requestToJoinGroup(groupId: String): Observable<MessageResponse>
 
+    fun fetchRecommendedGroups(pageNumber: Int,
+                               size: Int): Observable<List<GroupResponse>>
+
 }

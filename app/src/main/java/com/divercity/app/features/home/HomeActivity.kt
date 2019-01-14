@@ -15,21 +15,33 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.divercity.app.R
+import com.divercity.app.Session
+import com.divercity.app.core.navigation.Navigator
 import com.divercity.app.features.dialogs.CompletedProfileDialogFragment
+import com.divercity.app.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.app.features.groups.TabGroupsFragment
 import com.divercity.app.features.home.home.HomeFragment
 import com.divercity.app.features.home.notifications.NotificationsFragment
 import com.divercity.app.features.jobs.TabJobsFragment
 import com.divercity.app.features.profile.ProfileFragment
 import dagger.android.support.DaggerAppCompatActivity
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
-class HomeActivity : DaggerAppCompatActivity(){
+class HomeActivity : DaggerAppCompatActivity() {
 
     @Inject
     lateinit var viewModelFactory: ViewModelProvider.Factory
+
+    private lateinit var logoutDisposable: Disposable
+
+    @Inject
+    lateinit var session: Session
+
+    @Inject
+    lateinit var navigator: Navigator
 
     lateinit var viewModel: HomeActivityViewModel
 
@@ -71,16 +83,16 @@ class HomeActivity : DaggerAppCompatActivity(){
     }
 
     private val myOnNavigationItemSelectedListener =
-            BottomNavigationView.OnNavigationItemSelectedListener { item ->
-                when (item.itemId) {
-                    R.id.menu_item_home -> selectItem(0)
-                    R.id.menu_item_groups -> selectItem(1)
-                    R.id.menu_item_jobs -> selectItem(2)
-                    R.id.menu_item_activity -> selectItem(3)
-                    R.id.menu_item_profile -> selectItem(4)
-                }
-                return@OnNavigationItemSelectedListener true
+        BottomNavigationView.OnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_item_home -> selectItem(0)
+                R.id.menu_item_groups -> selectItem(1)
+                R.id.menu_item_jobs -> selectItem(2)
+                R.id.menu_item_activity -> selectItem(3)
+                R.id.menu_item_profile -> selectItem(4)
             }
+            return@OnNavigationItemSelectedListener true
+        }
 
     fun showDialogProfileComplete(boolean: Boolean) {
         if (boolean) {
@@ -107,23 +119,40 @@ class HomeActivity : DaggerAppCompatActivity(){
         }
 
         Glide
-                .with(this)
-                .load(viewModel.getProfilePictureUrl())
-                .apply(RequestOptions().circleCrop())
-                .into(object : SimpleTarget<Drawable>() {
-                    override fun onResourceReady(
-                            resource: Drawable,
-                            transition: Transition<in Drawable>?
-                    ) {
-                        val states = StateListDrawable()
-                        states.addState(intArrayOf(android.R.attr.state_pressed), resource)
-                        states.addState(intArrayOf(android.R.attr.state_checked), resource)
-                        states.addState(intArrayOf(), resource)
-                        val menu = bottom_nav_view.menu
-                        val te = menu.findItem(R.id.menu_item_profile)
-                        te.icon = states
-                    }
-                })
+            .with(this)
+            .load(viewModel.getProfilePictureUrl())
+            .apply(RequestOptions().circleCrop())
+            .into(object : SimpleTarget<Drawable>() {
+                override fun onResourceReady(
+                    resource: Drawable,
+                    transition: Transition<in Drawable>?
+                ) {
+                    val states = StateListDrawable()
+                    states.addState(intArrayOf(android.R.attr.state_pressed), resource)
+                    states.addState(intArrayOf(android.R.attr.state_checked), resource)
+                    states.addState(intArrayOf(), resource)
+                    val menu = bottom_nav_view.menu
+                    val te = menu.findItem(R.id.menu_item_profile)
+                    te.icon = states
+                }
+            })
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!logoutDisposable.isDisposed) logoutDisposable.dispose()
+    }
+
+    private fun showUnauthorizedUser() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.ups),
+            getString(R.string.unauthorized_user),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener {
+            session.logout()
+            navigator.navigateToEnterEmailActivity(this)
+        }
+        customOneBtnDialogFragment.show(supportFragmentManager, null)
+    }
 }

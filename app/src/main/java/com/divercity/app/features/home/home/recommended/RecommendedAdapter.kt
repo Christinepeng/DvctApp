@@ -4,8 +4,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.divercity.app.core.ui.RetryCallback
 import com.divercity.app.data.entity.group.GroupResponse
+import com.divercity.app.data.entity.home.RecommendedItem
 import com.divercity.app.data.entity.job.response.JobResponse
-import com.divercity.app.features.home.home.RecommendedItem
 import javax.inject.Inject
 
 class RecommendedAdapter @Inject

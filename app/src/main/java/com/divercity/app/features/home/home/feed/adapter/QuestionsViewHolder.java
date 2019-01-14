@@ -1,4 +1,4 @@
-package com.divercity.app.features.home.home.feed.adapter.holder;
+package com.divercity.app.features.home.home.feed.adapter;
 
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
@@ -51,22 +51,26 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
 
     public void bindTo(QuestionResponse data) {
         String urlMain = data.getAttributes().getPictureMain();
-        GlideApp.with(itemView)
-                .load(urlMain)
-                .listener(new RequestListener<Drawable>() {
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        cardViewImgMainContainer.setVisibility(View.GONE);
-                        return false;
-                    }
+        if(urlMain != null) {
+            GlideApp.with(itemView)
+                    .load(urlMain)
+                    .listener(new RequestListener<Drawable>() {
+                        @Override
+                        public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                            cardViewImgMainContainer.setVisibility(View.GONE);
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        cardViewImgMainContainer.setVisibility(View.VISIBLE);
-                        return false;
-                    }
-                })
-                .into(imgMainPicture);
+                        @Override
+                        public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                            cardViewImgMainContainer.setVisibility(View.VISIBLE);
+                            return false;
+                        }
+                    })
+                    .into(imgMainPicture);
+        } else {
+            cardViewImgMainContainer.setVisibility(View.GONE);
+        }
 
         String urlImgAuthor = data.getAttributes().getAuthorInfo().getAvatarMedium();
         if (urlImgAuthor != null)

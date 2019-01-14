@@ -3,28 +3,35 @@ package com.divercity.app.features.home.home.feed.datasource;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
-import com.divercity.app.data.entity.questions.QuestionResponse;
+
+import com.divercity.app.data.entity.home.HomeItem;
+import com.divercity.app.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase;
 import com.divercity.app.features.home.home.usecase.GetQuestionsUseCase;
+
 import io.reactivex.disposables.CompositeDisposable;
 
-public class GroupsInterestsDataSourceFactory extends DataSource.Factory<Long, QuestionResponse> {
+public class GroupsInterestsDataSourceFactory extends DataSource.Factory<Long, HomeItem> {
 
     private CompositeDisposable compositeDisposable;
     private GetQuestionsUseCase getQuestionsUseCase;
+    private FetchFeedRecommendedJobsGroupsUseCase fetchFeedRecommendedJobsGroupsUseCase;
 
     private MutableLiveData<GroupsInterestsDataSource> mGroupsInterestsDataSourceMutableLiveData = new MutableLiveData<>();
 
     public GroupsInterestsDataSourceFactory(CompositeDisposable compositeDisposable,
-                                            GetQuestionsUseCase getQuestionsUseCase) {
+                                            GetQuestionsUseCase getQuestionsUseCase,
+                                            FetchFeedRecommendedJobsGroupsUseCase fetchFeedRecommendedJobsGroupsUseCase) {
         this.compositeDisposable = compositeDisposable;
         this.getQuestionsUseCase = getQuestionsUseCase;
+        this.fetchFeedRecommendedJobsGroupsUseCase = fetchFeedRecommendedJobsGroupsUseCase;
     }
 
     @Override
-    public DataSource<Long, QuestionResponse> create() {
+    public DataSource<Long, HomeItem> create() {
         GroupsInterestsDataSource groupsInterestsDataSource = new GroupsInterestsDataSource(
                 compositeDisposable,
-                getQuestionsUseCase);
+                getQuestionsUseCase,
+                fetchFeedRecommendedJobsGroupsUseCase);
         mGroupsInterestsDataSourceMutableLiveData.postValue(groupsInterestsDataSource);
         return groupsInterestsDataSource;
     }

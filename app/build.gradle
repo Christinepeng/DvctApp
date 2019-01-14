@@ -35,7 +35,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "D-1.9"
+        versionName "D-1.10"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -48,8 +48,8 @@ android {
         debug {
             minifyEnabled false
             buildConfigField "boolean", "ENABLE_CRASHLYTICS", "false"
-//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -64,6 +64,17 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
+
+//configurations.all {
+//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//        def requested = details.requested
+//        if (requested.group == "com.android.support") {
+//            if (!requested.name.startsWith("multidex")) {
+//                details.useVersion "28.+"
+//            }
+//        }
+//    }
+//}
 
 dependencies {
     def crashLytics_version = "2.9.5@aar"
@@ -169,6 +180,8 @@ dependencies {
     // Paginate
     implementation 'com.github.markomilos:paginate:0.5.1'
 
+    implementation 'com.google.firebase:firebase-messaging:17.3.4'
+
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
@@ -184,3 +197,5 @@ repositories {
     jcenter()
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
 }
+
+apply plugin: 'com.google.gms.google-services'

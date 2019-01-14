@@ -1,8 +1,9 @@
 package com.divercity.app.data.entity.questions;
 
+import com.divercity.app.data.entity.home.HomeItem;
 import com.google.gson.annotations.SerializedName;
 
-public class QuestionResponse{
+public class QuestionResponse implements HomeItem {
 
 	@SerializedName("relationships")
 	private Relationships relationships;

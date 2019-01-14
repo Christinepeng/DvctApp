@@ -2,9 +2,9 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:background="@color/white"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_list_main"
@@ -14,123 +14,86 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <android.support.v4.widget.NestedScrollView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:scrollbarSize="5dp"
-            android:scrollbarThumbVertical="@android:color/darker_gray"
-            android:scrollbars="vertical"
             android:layout_height="match_parent">
 
-            <RelativeLayout
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/list_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:scrollbarSize="5dp"
+                android:scrollbarThumbVertical="@android:color/darker_gray"
+                android:scrollbars="vertical"
+                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+                tools:listitem="@layout/item_question" />
 
-                <LinearLayout
-                    android:id="@+id/lay_featured"
-                    android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/lay_no_groups"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/white"
-                    android:orientation="vertical"
-                    android:paddingBottom="2dp">
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/icon_no_conversation" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:layout_marginTop="16dp"
-                        android:fontFamily="@font/avenir_heavy"
-                        android:text="@string/recommended"
-                        android:textColor="@color/textTitle"
-                        android:textSize="15sp" />
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/list_recommended"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="12dp"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal"
-                        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                        tools:listitem="@layout/item_recommended" />
-
-                </LinearLayout>
-
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/list_main"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_below="@+id/lay_featured"
-                    android:background="@android:color/white"
-                    app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_question" />
-
-                <LinearLayout
-                    android:id="@+id/lay_no_groups"
-                    android:layout_width="match_parent"
+                <TextView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginBottom="8dp"
-                    android:orientation="vertical"
-                    android:visibility="visible">
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/avenir_roman"
+                    android:gravity="center_horizontal"
+                    android:lineSpacingExtra="6dp"
+                    android:text="@string/no_conversation"
+                    android:textColor="@color/textTitle"
+                    android:textSize="15sp" />
 
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:src="@drawable/icon_no_conversation" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_explore_groups"
+                    style="@style/AppText"
+                    android:layout_width="match_parent"
+                    android:layout_height="31dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/shape_backgrd_round_blue2"
+                    android:fontFamily="@font/avenir_medium"
+                    android:minHeight="30dip"
+                    android:text="@string/explore_groups"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_horizontal"
-                        android:layout_margin="16dp"
-                        android:fontFamily="@font/avenir_roman"
-                        android:gravity="center_horizontal"
-                        android:lineSpacingExtra="6dp"
-                        android:text="@string/no_conversation"
-                        android:textColor="@color/textTitle"
-                        android:textSize="15sp" />
+                <android.support.v7.widget.AppCompatButton
+                    android:id="@+id/btn_create_group"
+                    style="@style/AppText"
+                    android:layout_width="match_parent"
+                    android:layout_height="31dp"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/shape_backgrd_round_blue2"
+                    android:fontFamily="@font/avenir_medium"
+                    android:minHeight="30dip"
+                    android:text="@string/create_group"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="15sp" />
 
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/btn_explore_groups"
-                        style="@style/AppText"
-                        android:layout_width="match_parent"
-                        android:layout_height="31dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/shape_backgrd_round_blue2"
-                        android:fontFamily="@font/avenir_medium"
-                        android:minHeight="30dip"
-                        android:text="@string/explore_groups"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp" />
+            </LinearLayout>
 
-                    <android.support.v7.widget.AppCompatButton
-                        android:id="@+id/btn_create_group"
-                        style="@style/AppText"
-                        android:layout_width="match_parent"
-                        android:layout_height="31dp"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="30dp"
-                        android:layout_marginRight="30dp"
-                        android:layout_marginBottom="20dp"
-                        android:background="@drawable/shape_backgrd_round_blue2"
-                        android:fontFamily="@font/avenir_medium"
-                        android:minHeight="30dip"
-                        android:text="@string/create_group"
-                        android:textAllCaps="false"
-                        android:textColor="@android:color/white"
-                        android:textSize="15sp" />
-
-                </LinearLayout>
-
-            </RelativeLayout>
-
-        </android.support.v4.widget.NestedScrollView>
+        </RelativeLayout>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

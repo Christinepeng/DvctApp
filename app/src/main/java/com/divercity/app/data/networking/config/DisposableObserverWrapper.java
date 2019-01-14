@@ -26,13 +26,15 @@ public abstract class DisposableObserverWrapper<T> extends DisposableObserver<T>
     public void onError(Throwable t) {
         if (t instanceof HttpException) {
             ResponseBody responseBody = ((HttpException) t).response().errorBody();
-            try {
-                String responseBodyJson = responseBody.string();
-                Gson gson = new Gson();
-                JsonElement jsonElement = gson.fromJson(responseBodyJson, JsonElement.class);
-                onHttpException(jsonElement);
-            } catch (Exception e) {
-                onFail(((HttpException) t).response().code() + ": " + e.getMessage());
+            if (((HttpException) t).response().code() != 401) {
+                try {
+                    String responseBodyJson = responseBody.string();
+                    Gson gson = new Gson();
+                    JsonElement jsonElement = gson.fromJson(responseBodyJson, JsonElement.class);
+                    onHttpException(jsonElement);
+                } catch (Exception e) {
+                    onFail(((HttpException) t).response().code() + ": " + e.getMessage());
+                }
             }
         } else
             onFail(t.getMessage());

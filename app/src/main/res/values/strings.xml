@@ -253,6 +253,9 @@
         <item>55 – 64</item>
         <item>65+</item>
     </string-array>
+    
+    <string name="noti_channel_chats">Chats</string>
+    <string name="unauthorized_user">Unauthorized user</string>
 
     <!-- Facebook-->
     <string name="facebook_app_id">1497808533858953</string>

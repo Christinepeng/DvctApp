@@ -20,7 +20,7 @@ import com.divercity.app.data.entity.job.response.JobResponse
 import com.divercity.app.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.app.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.app.features.home.HomeActivity
-import com.divercity.app.features.home.home.feed.adapter.FeedAdapter
+import com.divercity.app.features.home.home.feed.adapter.HomeAdapter
 import com.divercity.app.features.home.home.recommended.RecommendedAdapter
 import com.divercity.app.features.home.home.recommended.RecommendedGroupViewHolder
 import com.divercity.app.features.home.home.recommended.RecommendedJobViewHolder
@@ -38,7 +38,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     lateinit var viewModel: HomeViewModel
 
     @Inject
-    lateinit var feedAdapter: FeedAdapter
+    lateinit var homeAdapter: HomeAdapter
 
     @Inject
     lateinit var recommendedAdapter: RecommendedAdapter
@@ -85,8 +85,8 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     }
 
     private fun initAdapters() {
-        feedAdapter.setRetryCallback(this)
-        list_main.adapter = feedAdapter
+        homeAdapter.setRetryCallback(this)
+
         recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
 
             override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
@@ -115,7 +115,9 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 showJobApplyDialog(job.id)
             }
         }
-        list_recommended.adapter = recommendedAdapter
+
+        homeAdapter.setRecommendedAdapter(recommendedAdapter)
+        list_main.adapter = homeAdapter
     }
 
     private fun showJobApplyDialog(jobId: String?) {
@@ -125,32 +127,32 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     private fun subscribeToLiveData() {
         viewModel.questionList.observe(this, Observer {
-            feedAdapter.submitList(it)
-            if (feedAdapter.getCurrentList() != null)
-                Timber.e("questionList CURRENT LIST: " + feedAdapter.currentList!!.size)
+            homeAdapter.submitList(it)
+            if (homeAdapter.getCurrentList() != null)
+                Timber.e("questionList CURRENT LIST: " + homeAdapter.currentList!!.size)
         })
 
         viewModel.networkState.observe(this, Observer {
-            if (feedAdapter.getCurrentList() != null)
-                Timber.e("CURRENT LIST: " + feedAdapter.currentList!!.size)
+            if (homeAdapter.getCurrentList() != null)
+                Timber.e("CURRENT LIST: " + homeAdapter.currentList!!.size)
 
             if (!mIsRefreshing || it!!.getStatus() === Status.ERROR || it!!.getStatus() === Status.SUCCESS)
-                feedAdapter.setNetworkState(it)
+                homeAdapter.setNetworkState(it)
 
-            if (feedAdapter.itemCount == 1 && it!!.getStatus() == Status.LOADING) {
+            if (homeAdapter.itemCount == 1 && it!!.getStatus() == Status.LOADING) {
                 viewModel.getFeatured()
             }
         })
 
         viewModel.refreshState.observe(this, Observer { networkState ->
-            if (feedAdapter.getCurrentList() != null)
-                Timber.e("CURRENT LIST: " + feedAdapter.currentList!!.size + " y " + networkState!!.status.name)
+            if (homeAdapter.getCurrentList() != null)
+                Timber.e("CURRENT LIST: " + homeAdapter.currentList!!.size + " y " + networkState!!.status.name)
             if (networkState != null) {
                 Timber.e("STATUS: " + networkState.status.name)
-                if (feedAdapter.getCurrentList() != null) {
+                if (homeAdapter.getCurrentList() != null) {
                     if (networkState.getStatus() === NetworkState.LOADED.getStatus() || networkState.getStatus() === Status.ERROR)
                         mIsRefreshing = false
-                    Timber.e("STATUS size: " + feedAdapter.currentList!!.size)
+                    Timber.e("STATUS size: " + homeAdapter.currentList!!.size)
 
                     val d = networkState.getStatus() === NetworkState.LOADING.getStatus()
                     Timber.e("STATUS: $d")
@@ -161,7 +163,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 if (!mIsRefreshing)
                     swipe_list_main.isEnabled = networkState.getStatus() === Status.SUCCESS
 
-                if (networkState.getStatus() === Status.SUCCESS && feedAdapter.currentList!!.size == 0) {
+                if (networkState.getStatus() === Status.SUCCESS && homeAdapter.currentList!!.size == 0) {
                     lay_no_groups.visibility = View.VISIBLE
                     (btn_fab as View).visibility = View.GONE
                 } else {
@@ -241,7 +243,6 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         swipe_list_main.apply {
             setOnRefreshListener {
                 mIsRefreshing = true
-                viewModel.fetchRecommendedGroupsJobs()
                 viewModel.refresh()
             }
 
@@ -285,6 +286,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     private fun setupEvents() {
         btn_fab.setOnClickListener {
             showToast()
+            viewModel.showNotification()
         }
         btn_create_group.setOnClickListener {
             showToast()

@@ -4,13 +4,11 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 import android.util.Log;
-
 import com.divercity.app.core.ui.NetworkState;
+import com.divercity.app.data.entity.home.HomeItem;
 import com.divercity.app.data.entity.questions.QuestionResponse;
+import com.divercity.app.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase;
 import com.divercity.app.features.home.home.usecase.GetQuestionsUseCase;
-
-import java.util.List;
-
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
@@ -18,7 +16,10 @@ import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, QuestionResponse> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, HomeItem> {
 
     private static final String TAG = GroupsInterestsDataSource.class.getSimpleName();
 
@@ -27,15 +28,18 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, Questio
 
     private GetQuestionsUseCase getQuestionsUseCase;
     private CompositeDisposable compositeDisposable;
+    private FetchFeedRecommendedJobsGroupsUseCase fetchFeedRecommendedJobsGroupsUseCase;
     /**
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
 
     public GroupsInterestsDataSource(CompositeDisposable compositeDisposable,
-                                     GetQuestionsUseCase getQuestionsUseCase) {
+                                     GetQuestionsUseCase getQuestionsUseCase,
+                                     FetchFeedRecommendedJobsGroupsUseCase fetchFeedRecommendedJobsGroupsUseCase) {
         this.compositeDisposable = compositeDisposable;
         this.getQuestionsUseCase = getQuestionsUseCase;
+        this.fetchFeedRecommendedJobsGroupsUseCase = fetchFeedRecommendedJobsGroupsUseCase;
     }
 
     public void retry() {
@@ -49,16 +53,16 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, Questio
     }
 
     @Override
-    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, QuestionResponse> callback) {
+    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, HomeItem> callback) {
         // update network states.
         // we also provide an initial load state to the listeners so that the UI can know when the
         // very first list is loaded.
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<QuestionResponse>> disposableObserver = new DisposableObserver<List<QuestionResponse>>() {
+        DisposableObserver<List<HomeItem>> disposableObserver = new DisposableObserver<List<HomeItem>>() {
             @Override
-            public void onNext(List<QuestionResponse> data) {
+            public void onNext(List<HomeItem> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
@@ -88,16 +92,18 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, Questio
             }
         };
         compositeDisposable.add(disposableObserver);
-        getQuestionsUseCase.execute(disposableObserver, GetQuestionsUseCase.Params.forInterests(0, params.requestedLoadSize));
+        fetchFeedRecommendedJobsGroupsUseCase.execute(
+                disposableObserver,
+                FetchFeedRecommendedJobsGroupsUseCase.Params.Companion.forJobs(0, params.requestedLoadSize, null));
     }
 
     @Override
-    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, QuestionResponse> callback) {
+    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, HomeItem> callback) {
 
     }
 
     @Override
-    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, QuestionResponse> callback) {
+    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, HomeItem> callback) {
         networkState.postValue(NetworkState.LOADING);
 
         DisposableObserver<List<QuestionResponse>> disposableObserver = new DisposableObserver<List<QuestionResponse>>() {
@@ -105,7 +111,8 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, Questio
             public void onNext(List<QuestionResponse> data) {
                 if (data != null) {
                     setRetry(null);
-                    callback.onResult(data, params.key + 1);
+                    ArrayList<HomeItem> res = new ArrayList<>(data);
+                    callback.onResult(res, params.key + 1);
                     networkState.postValue(NetworkState.LOADED);
                 } else {
                     setRetry(() -> loadAfter(params, callback));                // publish the error
@@ -146,5 +153,4 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, Questio
             this.retryCompletable = Completable.fromAction(action);
         }
     }
-
 }

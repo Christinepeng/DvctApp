@@ -6,8 +6,8 @@ import com.divercity.app.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.app.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.app.data.entity.createchat.CreateChatResponse
 import com.divercity.app.data.networking.services.ChatService
-import com.divercity.app.db.chat.Chat
 import com.divercity.app.db.chat.ChatMessageDao
+import com.divercity.app.db.chat.ExistingChatDao
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -24,7 +24,8 @@ import javax.inject.Inject
 class ChatRepositoryImpl @Inject
 constructor(
     private val chatService: ChatService,
-    private val chatMessageDao: ChatMessageDao
+    private val chatMessageDao: ChatMessageDao,
+    private val existingChatDao: ExistingChatDao
 ) : ChatRepository {
 
     override fun fetchMessages(
@@ -88,9 +89,15 @@ constructor(
         }
     }
 
-    suspend fun insertChatOnDB(chat: Chat) {
+    suspend fun insertChatsOnDB(list: List<ExistingUsersChatListItem>) {
         return withContext(Dispatchers.IO) {
-            chatMessageDao.insertChat(chat)
+            existingChatDao.insertChatMessages(list)
+        }
+    }
+
+    suspend fun insertChatOnDB(chat: ExistingUsersChatListItem) {
+        return withContext(Dispatchers.IO) {
+            existingChatDao.insertChat(chat)
         }
     }
 
@@ -102,13 +109,13 @@ constructor(
 
     suspend fun deleteChatDB() {
         return withContext(Dispatchers.IO) {
-            chatMessageDao.deleteChat()
+            //            chatMessageDao.deleteChat()
         }
     }
 
-    suspend fun getChatIdByOtherUserIdFromDB(otherUserId: Int): Int {
+    suspend fun fetchChatIdByUser(userId: String): Int {
         return withContext(Dispatchers.IO) {
-            chatMessageDao.getChatIdByOtherUserId(otherUserId)
+            existingChatDao.fetchChatIdByUser(userId)
         }
     }
 
@@ -122,7 +129,7 @@ constructor(
         size: Int,
         query: String?
     ): Observable<List<ExistingUsersChatListItem>> {
-        return chatService.fetchCurrentChats(currentUserId, pageNumber, size,query).map {
+        return chatService.fetchCurrentChats(currentUserId, pageNumber, size, query).map {
             checkResponse(it)
             it.body()?.data?.existingUsersChatList
         }

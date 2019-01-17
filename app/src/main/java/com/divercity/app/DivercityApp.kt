@@ -6,6 +6,7 @@ import android.content.Context
 import android.support.multidex.MultiDex
 import com.crashlytics.android.Crashlytics
 import com.divercity.app.di.DaggerAppComponent
+import com.divercity.app.helpers.NotificationHelper
 import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
@@ -21,6 +22,9 @@ class DivercityApp : Application(), HasActivityInjector {
 
     @Inject
     lateinit var dispatchingAndroidInjector: DispatchingAndroidInjector<Activity>
+
+    @Inject
+    lateinit var notificationHelper: NotificationHelper
 
     override fun activityInjector(): AndroidInjector<Activity> = dispatchingAndroidInjector
 
@@ -46,5 +50,7 @@ class DivercityApp : Application(), HasActivityInjector {
             .applicationBind(this)
             .build()
             .inject(this)
+
+        notificationHelper.cancellAllNotifications()
     }
 }

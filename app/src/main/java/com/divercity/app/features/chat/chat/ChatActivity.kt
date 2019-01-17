@@ -15,16 +15,36 @@ class ChatActivity : BaseActivity() {
 
         private const val PARAM_USER_ID = "paramUserId"
         private const val PARAM_USER_NAME = "paramUserName"
+        private const val PARAM_CHAT_ID = "paramChatId"
 
-        fun getCallingIntent(context: Context?, userName: String, userId: String): Intent {
+        fun getCallingIntent(
+            context: Context?,
+            userName: String,
+            userId: String?,
+            chatId: Int?
+        ): Intent {
             val intent = Intent(context, ChatActivity::class.java)
             intent.putExtra(PARAM_USER_ID, userId)
             intent.putExtra(PARAM_USER_NAME, userName)
+            intent.putExtra(PARAM_CHAT_ID, chatId)
             return intent
         }
     }
 
     override fun fragment(): BaseFragment = ChatFragment
-            .newInstance(intent.getStringExtra(PARAM_USER_NAME),
-                    intent.getStringExtra(PARAM_USER_ID))
+        .newInstance(
+            intent.getStringExtra(PARAM_USER_NAME),
+            intent.getStringExtra(PARAM_USER_ID),
+            intent.getIntExtra(PARAM_CHAT_ID, -1)
+        )
+
+
+    override fun onBackPressed() {
+        if (isTaskRoot) {
+            navigator.navigateToChatsActivity(this)
+            super.onBackPressed()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

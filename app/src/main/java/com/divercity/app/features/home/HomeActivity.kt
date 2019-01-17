@@ -16,6 +16,8 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.divercity.app.R
 import com.divercity.app.Session
+import com.divercity.app.core.bus.RxBus
+import com.divercity.app.core.bus.RxEvent
 import com.divercity.app.core.navigation.Navigator
 import com.divercity.app.features.dialogs.CompletedProfileDialogFragment
 import com.divercity.app.features.dialogs.CustomOneBtnDialogFragment
@@ -63,6 +65,10 @@ class HomeActivity : DaggerAppCompatActivity() {
         setupBottomNavigationView()
         savedInstanceState ?: selectItem(0)
         setSupportActionBar(include_toolbar.toolbar)
+
+        logoutDisposable = RxBus.listen(RxEvent.EventUnauthorizedUser::class.java).subscribe {
+            showUnauthorizedUser()
+        }
     }
 
     /**

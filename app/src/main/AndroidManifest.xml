@@ -10,8 +10,8 @@
 
     <application
         android:name=".DivercityApp"
-        android:fullBackupContent="false"
         android:allowBackup="false"
+        android:fullBackupContent="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:largeHeap="true"
@@ -41,6 +41,12 @@
                 android:resource="@xml/file_paths" />
         </provider>
 
+        <service android:name=".services.DivercityMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -52,6 +58,7 @@
         <activity
             android:name=".features.home.HomeActivity"
             android:configChanges="orientation"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustNothing" />
 
@@ -228,6 +235,7 @@
         <activity
             android:name=".features.chat.recentchats.ChatsActivity"
             android:configChanges="orientation"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity
@@ -243,6 +251,7 @@
         <activity
             android:name=".features.chat.chat.ChatActivity"
             android:configChanges="orientation"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
 
         <activity

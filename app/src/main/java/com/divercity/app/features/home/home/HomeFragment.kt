@@ -276,7 +276,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 true
             }
             android.R.id.home -> {
-                navigator.navigateToChatsActivity(this)
+                navigator.navigateToChatsActivity(activity!!)
                 true
             }
             else -> super.onOptionsItemSelected(item)

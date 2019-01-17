@@ -20,4 +20,13 @@ class ChatsActivity : BaseActivity() {
 
     override fun fragment(): BaseFragment =
             ChatsFragment.newInstance()
+
+    override fun onBackPressed() {
+        if(isTaskRoot){
+            navigator.navigateToHomeActivity(this)
+            super.onBackPressed()
+        } else {
+            super.onBackPressed()
+        }
+    }
 }

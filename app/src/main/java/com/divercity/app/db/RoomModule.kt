@@ -3,6 +3,7 @@ package com.divercity.app.db
 import android.arch.persistence.room.Room
 import android.content.Context
 import com.divercity.app.db.chat.ChatMessageDao
+import com.divercity.app.db.chat.ExistingChatDao
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -27,5 +28,12 @@ object RoomModule {
     @Singleton
     fun provideChatMessageDao(db: AppDatabase) : ChatMessageDao {
         return db.chatMessageDao()
+    }
+
+    @JvmStatic
+    @Provides
+    @Singleton
+    fun provideExistingChatDao(db: AppDatabase) : ExistingChatDao {
+        return db.existingChatDao()
     }
 }

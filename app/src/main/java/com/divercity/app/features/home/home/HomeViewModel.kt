@@ -148,7 +148,22 @@ constructor(
     }
 
     fun showNotification(){
-        notificationHelper.notify(100, notificationHelper.getNotification1("Test", "Hola"))
+//        notificationHelper.notify(20, notificationHelper.getChatMessageNotification("Test", "12"))
+//
+//        Handler().postDelayed( {
+//            notificationHelper.notify(100, notificationHelper.getChatMessageNotification("Test", "3"))
+//
+//            Handler().postDelayed( {
+//                notificationHelper.notify(120, notificationHelper.getChatMessageNotification("Test", "15"))
+//
+//                Handler().postDelayed( {
+//                    notificationHelper.notify(130, notificationHelper.getChatMessageNotification("Test", "6"))
+//
+//                }, 4000)
+//
+//            }, 4000)
+//
+//        }, 4000)
     }
 
     override fun onCleared() {

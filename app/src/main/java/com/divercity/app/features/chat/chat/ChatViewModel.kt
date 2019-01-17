@@ -8,11 +8,11 @@ import com.divercity.app.core.base.BaseViewModel
 import com.divercity.app.core.utils.MySocket
 import com.divercity.app.core.utils.SingleLiveEvent
 import com.divercity.app.data.Resource
+import com.divercity.app.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.app.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.app.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.app.data.entity.createchat.CreateChatResponse
 import com.divercity.app.data.networking.config.DisposableObserverWrapper
-import com.divercity.app.db.chat.Chat
 import com.divercity.app.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.app.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.app.features.chat.chat.usecase.SendMessagesUseCase
@@ -32,11 +32,12 @@ import javax.inject.Inject
 
 class ChatViewModel @Inject
 constructor(
-        private val fetchOrCreateChatUseCase: FetchOrCreateChatUseCase,
-        private val chatMessageRepository: ChatRepositoryImpl,
-        private val fetchMessagesUseCase: FetchMessagesUseCase,
-        private val sendMessagesUseCase: SendMessagesUseCase,
-        private val chatWebSocket: ChatWebSocket) : BaseViewModel() {
+    private val fetchOrCreateChatUseCase: FetchOrCreateChatUseCase,
+    private val chatMessageRepository: ChatRepositoryImpl,
+    private val fetchMessagesUseCase: FetchMessagesUseCase,
+    private val sendMessagesUseCase: SendMessagesUseCase,
+    private val chatWebSocket: ChatWebSocket
+) : BaseViewModel() {
 
     var pageFetchList = ArrayList<Int>()
 
@@ -44,36 +45,41 @@ constructor(
     var fetchMessagesResponse = SingleLiveEvent<Resource<List<ChatMessageResponse>>>()
     var sendMessageResponse = SingleLiveEvent<Resource<ChatMessageResponse>>()
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
+    var pagedListLiveData: LiveData<PagedList<ChatMessageResponse>>? = null
 
     private val viewModelJob = Job()
-
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
-    var createChatResponse: CreateChatResponse? = null
-
     var handlerReconnect = Handler()
+    var reconnectingAttempts = 0
 
-    val RECONNECTING_ATTEMPS = 4
-    var reconnectingAttemps = 0
+    var chatId: Int? = null
+    var userId: String? = null
 
     var hasFetchChatError = false
 
-//    val pagedListLiveData: LiveData<PagedList<ChatMessageResponse>> by lazy {
-//        val dataSourceFactory = chatMessageRepository.getMessagesByChatId()
-//        val config = PagedList.Config.Builder()
-//            .setPageSize(15)
-//            .setInitialLoadSizeHint(30)
-//            .setPrefetchDistance(10)
-//            .build()
-//        LivePagedListBuilder(dataSourceFactory, config).build()
-//    }
+    companion object {
+        const val RECONNECTING_ATTEMPTS = 4
+        private const val PAGE_SIZE = 30
+        private const val THRESHOLD = 10
+    }
 
-    var pagedListLiveData: LiveData<PagedList<ChatMessageResponse>>? = null
+    fun start() {
+        if (chatId != null && chatId != -1) {
+            initializePagedList(chatId!!)
+            connectToChatWebSocket(chatId!!)
+            fetchMessages(userId!!, 0, PAGE_SIZE)
+        } else if (userId != null) {
+            getChatsIfExist(userId!!)
+            fetchOrCreateChat(userId!!)
+        }
+    }
 
-    fun getChatsIfExist(otherUserId: String) {
+    fun getChatsIfExist(userId: String) {
         uiScope.launch {
-            val chatId = chatMessageRepository.getChatIdByOtherUserIdFromDB(otherUserId.toInt())
-            if (chatId != 0)
+            val user = "\"id\":\"".plus(userId).plus("\"")
+            val chatId = chatMessageRepository.fetchChatIdByUser(user)
+            if (chatId != -1 && chatId != 0)
                 initializePagedList(chatId)
         }
     }
@@ -81,10 +87,10 @@ constructor(
     fun initializePagedList(chatId: Int) {
         val dataSourceFactory = chatMessageRepository.getMessagesByChatId(chatId)
         val config = PagedList.Config.Builder()
-                .setPageSize(15)
-                .setInitialLoadSizeHint(30)
-                .setPrefetchDistance(10)
-                .build()
+            .setPageSize(15)
+            .setInitialLoadSizeHint(30)
+            .setPrefetchDistance(10)
+            .build()
         pagedListLiveData = LivePagedListBuilder(dataSourceFactory, config).build()
         subscribeToPaginatedLiveData.call()
     }
@@ -97,9 +103,9 @@ constructor(
                 hasFetchChatError = true
                 fetchCreateChatResponse.postValue(Resource.error(error, null))
 
-                if (reconnectingAttemps != RECONNECTING_ATTEMPS) {
-                    Timber.d("fetchOrCreateChat: attemp: ".plus(reconnectingAttemps))
-                    reconnectingAttemps++
+                if (reconnectingAttempts != RECONNECTING_ATTEMPTS) {
+                    Timber.d("fetchOrCreateChat: attemp: ".plus(reconnectingAttempts))
+                    reconnectingAttempts++
                     handlerReconnect.postDelayed({
                         fetchOrCreateChat(otherUserId)
                     }, 3000)
@@ -107,33 +113,37 @@ constructor(
             }
 
             override fun onHttpException(error: JsonElement) {
-                hasFetchChatError = true
                 fetchCreateChatResponse.postValue(Resource.error(error.toString(), null))
             }
 
             override fun onSuccess(o: CreateChatResponse) {
                 hasFetchChatError = false
-                createChatResponse = o
+
+                chatId = o.id.toInt()
+
                 if (pagedListLiveData == null) {
-                    initializePagedList(o.id!!.toInt())
+                    initializePagedList(o.id.toInt())
                 }
+
                 uiScope.launch {
-                    chatMessageRepository.insertChatOnDB(Chat(o.id!!.toInt(), otherUserId.toInt()))
+                    chatMessageRepository.insertChatOnDB(
+                        ExistingUsersChatListItem(
+                            chatId = o.id.toInt(),
+                            chatUsers = o.attributes?.users
+                        )
+                    )
+                    fetchMessages(otherUserId, 0, PAGE_SIZE)
                 }
+
                 fetchCreateChatResponse.postValue(Resource.success(o))
 
-                connectToChatWebSocket()
-
-                uiScope.launch {
-                    val rows = chatMessageRepository.countMessagesByChatIdFromDB(createChatResponse?.id!!.toInt())
-                    fetchMessages(otherUserId, 0, 30)
-                }
+                connectToChatWebSocket(o.id.toInt())
             }
         }
         compositeDisposable.add(callback)
         fetchOrCreateChatUseCase.execute(
-                callback,
-                FetchOrCreateChatUseCase.Params.forUser(otherUserId)
+            callback,
+            FetchOrCreateChatUseCase.Params.forUser(otherUserId)
         )
     }
 
@@ -154,22 +164,18 @@ constructor(
 
                 uiScope.launch {
                     chatMessageRepository.insertChatMessagesOnDB(o.data.chats)
-//                    val rows = chatMessageRepository.countMessagesByChatIdFromDB(createChatResponse?.id!!.toInt())
-//                    if (rows < o.meta!!.totalCount!!) {
-//                        fetchMessages(otherUserId, 0, o.meta.totalCount!! - rows + 15)
-//                    }
                 }
             }
         }
         compositeDisposable.add(callback)
         fetchMessagesUseCase.execute(
-                callback, FetchMessagesUseCase.Params
+            callback, FetchMessagesUseCase.Params
                 .forMsgs(
-                        createChatResponse?.id!!,
-                        otherUserId,
-                        page,
-                        size,
-                        null
+                    chatId.toString(),
+                    otherUserId,
+                    page,
+                    size,
+                    null
                 )
         )
     }
@@ -191,8 +197,8 @@ constructor(
         }
         compositeDisposable.add(callback)
         sendMessagesUseCase.execute(
-                callback, SendMessagesUseCase.Params
-                .forMsg(message, createChatResponse?.id!!)
+            callback, SendMessagesUseCase.Params
+                .forMsg(message, chatId.toString())
         )
     }
 
@@ -202,29 +208,57 @@ constructor(
         }
     }
 
+    fun checkIfFetchMoreData(visibleItemCount: Int, totalItemCount: Int, firstVisibleItemPosition: Int){
+        val items = firstVisibleItemPosition + visibleItemCount + THRESHOLD
+
+        if (items % PAGE_SIZE == 0) {
+            val page = items / PAGE_SIZE
+            if (!pageFetchList.contains(page)) {
+                pageFetchList.add(page)
+                fetchMessages(userId!!, page, PAGE_SIZE)
+            }
+        } else if (visibleItemCount + firstVisibleItemPosition == totalItemCount) {
+//            We add one to check if the next page has been fetched
+            val page = totalItemCount / PAGE_SIZE + 1
+            if (!pageFetchList.contains(page)) {
+                pageFetchList.add(page)
+                fetchMessages(userId!!, page, PAGE_SIZE)
+            }
+        }
+    }
+
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
     }
 
-    private fun connectToChatWebSocket(){
-        chatWebSocket.addOnChatMessageReceivedListener(object : ChatWebSocket.OnChatMessageReceived {
+    private fun connectToChatWebSocket(chatId : Int) {
+        chatWebSocket.addOnChatMessageReceivedListener(object :
+            ChatWebSocket.OnChatMessageReceived {
             override fun onChatMessageReceived(chat: ChatMessageResponse) {
                 insertChatDb(chat)
             }
         })
 
-        chatWebSocket.connect(createChatResponse?.id!!)
+        chatWebSocket.connect(chatId.toString())
     }
 
     fun checkIfReconnectionIsNeeded() {
-        if (createChatResponse != null && chatWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR) {
+        if (chatId != null && chatId != -1 && chatWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR) {
             chatWebSocket.stopTryingToReconnect()
-            connectToChatWebSocket()
+            connectToChatWebSocket(chatId!!)
         }
     }
 
-    fun closeSocket() {
+    fun checkErrorsToReconnect(){
+        if (hasFetchChatError) {
+            fetchOrCreateChat(userId!!)
+        } else {
+            checkIfReconnectionIsNeeded()
+        }
+    }
+
+    fun onDestroy(){
         chatWebSocket.close()
     }
 }

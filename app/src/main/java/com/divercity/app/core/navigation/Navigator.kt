@@ -154,16 +154,16 @@ class Navigator @Inject constructor() {
         activity.startActivity(LinkedinActivity.getCallingIntent(activity))
     }
 
-    fun navigateToChatsActivity(fragment: Fragment) {
-        fragment.startActivity(ChatsActivity.getCallingIntent(fragment.context))
+    fun navigateToChatsActivity(activity: FragmentActivity) {
+        activity.startActivity(ChatsActivity.getCallingIntent(activity))
     }
 
     fun navigateToNewChatActivity(fragment: Fragment) {
         fragment.startActivity(NewChatActivity.getCallingIntent(fragment.context))
     }
 
-    fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String) {
-        fragment.startActivity(ChatActivity.getCallingIntent(fragment.context, userName, userId))
+    fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String?, chatId : Int) {
+        fragment.startActivity(ChatActivity.getCallingIntent(fragment.context, userName, userId, chatId))
     }
 
     fun navigateToGroupDetailActivity(fragment: Fragment, group : GroupResponse) {

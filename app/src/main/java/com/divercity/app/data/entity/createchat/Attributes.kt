@@ -1,6 +1,5 @@
 package com.divercity.app.data.entity.createchat
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
 data class Attributes(
@@ -24,5 +23,5 @@ data class Attributes(
 	val createdAt: String? = null,
 
 	@field:SerializedName("users")
-	val users: List<UsersItem?>? = null
+	val users: List<UsersItem>? = null
 )

@@ -27,15 +27,6 @@ interface ChatMessageDao {
     @Query("SELECT COUNT(*) FROM chatMessage WHERE chatId = :chatId ")
     fun countMessagesByChatId(chatId : Int): Int
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertChat(chat: Chat)
-
-    @Query("SELECT * FROM chat WHERE otherUserId = :otherUserId")
-    fun getChatIdByOtherUserId(otherUserId: Int) : Int
-
     @Query("DELETE FROM chatMessage")
     fun deleteChatMessages()
-
-    @Query("DELETE FROM chat")
-    fun deleteChat()
 }

@@ -1,11 +1,12 @@
 package com.divercity.app.features.chat.chat.adapter
 
-import android.support.v4.content.ContextCompat
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.request.RequestOptions
 import com.divercity.app.R
+import com.divercity.app.core.utils.GlideApp
 import com.divercity.app.core.utils.Util
 import com.divercity.app.data.entity.chat.messages.ChatMessageResponse
 import kotlinx.android.synthetic.main.item_chat.view.*
@@ -20,21 +21,14 @@ private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
             if (currentUserId == it.fromUserId.toString()) {
                 itemView.txt_name.text = "Me"
-                itemView.img_user.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        itemView.context,
-                        R.drawable.img_blue_user
-                    )
-                )
             } else {
                 itemView.txt_name.text = it.fromUsername
-                itemView.img_user.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        itemView.context,
-                        R.drawable.img_orange_user
-                    )
-                )
             }
+
+            GlideApp.with(itemView)
+                    .load(data.fromUserAvatarMedium)
+                    .apply(RequestOptions().circleCrop())
+                    .into(itemView.img_user)
 
             if (next != null) {
                 if (Util.areDatesSameDay(it.messageCreatedAt, next.messageCreatedAt)) {

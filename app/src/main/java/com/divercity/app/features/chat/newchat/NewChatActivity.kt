@@ -20,4 +20,5 @@ class NewChatActivity : BaseActivity() {
 
     override fun fragment(): BaseFragment =
             NewChatFragment.newInstance()
+
 }

@@ -37,8 +37,8 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     private var isListRefreshing = false
 
     private var handlerSearch = Handler()
-    private lateinit var searchView : SearchView
-    private var searchItem: MenuItem?= null
+    private lateinit var searchView: SearchView
+    private var searchItem: MenuItem? = null
 
     companion object {
 
@@ -94,10 +94,15 @@ class ChatsFragment : BaseFragment(), RetryCallback {
         list.adapter = adapter
     }
 
-    private val listener : RecentChatViewHolder.Listener = object : RecentChatViewHolder.Listener{
+    private val listener: RecentChatViewHolder.Listener = object : RecentChatViewHolder.Listener {
 
         override fun onChatClick(chat: ExistingUsersChatListItem) {
-            navigator.navigateToChatActivity(this@ChatsFragment, chat.name!!,chat.id.toString())
+            navigator.navigateToChatActivity(
+                this@ChatsFragment,
+                chat.name!!,
+                chat.id.toString(),
+                chat.chatId
+            )
         }
     }
 
@@ -147,9 +152,9 @@ class ChatsFragment : BaseFragment(), RetryCallback {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }

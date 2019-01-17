@@ -162,7 +162,7 @@ class NewChatFragment : BaseFragment(), RetryCallback {
     private val listener: UserCharViewHolder.Listener = object : UserCharViewHolder.Listener {
 
         override fun onUserClick(user: UserResponse) {
-            navigator.navigateToChatActivity(this@NewChatFragment, user.attributes?.name!!, user.id!!)
+            navigator.navigateToChatActivity(this@NewChatFragment, user.attributes?.name!!, user.id!!, -1)
         }
     }
 }

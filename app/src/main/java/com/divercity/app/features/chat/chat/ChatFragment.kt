@@ -10,39 +10,28 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
-import android.support.v7.widget.StaggeredGridLayoutManager
-import android.util.Log
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
-import com.divercity.app.BuildConfig
 import com.divercity.app.R
 import com.divercity.app.core.base.BaseFragment
 import com.divercity.app.core.extension.networkInfo
 import com.divercity.app.data.Status
-import com.divercity.app.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.app.features.chat.chat.adapter.ChatAdapter
 import com.divercity.app.repository.user.UserRepository
-import com.google.gson.Gson
-import com.google.gson.JsonParser
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
-import okhttp3.*
-import okio.ByteString
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
  * Created by lucas on 24/12/2018.
  */
 
-class  ChatFragment : BaseFragment() {
+class ChatFragment : BaseFragment() {
 
     lateinit var viewModel: ChatViewModel
-
     var userName: String? = null
-    var userId: String? = null
 
     @Inject
     lateinit var userRepository: UserRepository
@@ -50,26 +39,18 @@ class  ChatFragment : BaseFragment() {
     @Inject
     lateinit var adapter: ChatAdapter
 
-    private lateinit var client: OkHttpClient
-    private var webSocket: WebSocket? = null
-
-    var count = 700
-
-    private var isLoadings = false
-    private var hasLoadedAllItems = false
-
     companion object {
 
-        const val PAGE_SIZE = 30
-        const val THREASHOLD = 10
         private const val PARAM_USER_ID = "paramUserId"
         private const val PARAM_USER_NAME = "paramUserName"
+        private const val PARAM_CHAT_ID = "paramChatId"
 
-        fun newInstance(userName: String, userId: String): ChatFragment {
+        fun newInstance(userName: String, userId: String, chatId: Int?): ChatFragment {
             val fragment = ChatFragment()
             val arguments = Bundle()
             arguments.putString(PARAM_USER_ID, userId)
             arguments.putString(PARAM_USER_NAME, userName)
+            arguments.putInt(PARAM_CHAT_ID, chatId ?: -1)
             fragment.arguments = arguments
             return fragment
         }
@@ -83,11 +64,11 @@ class  ChatFragment : BaseFragment() {
 
         setHasOptionsMenu(true)
 
-        userId = arguments?.getString(PARAM_USER_ID)
         userName = arguments?.getString(PARAM_USER_NAME)
+        viewModel.userId = arguments?.getString(PARAM_USER_ID)
+        viewModel.chatId = arguments?.getInt(PARAM_CHAT_ID)
 
-        viewModel.getChatsIfExist(userId!!)
-        viewModel.fetchOrCreateChat(userId!!)
+        viewModel.start()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -107,7 +88,7 @@ class  ChatFragment : BaseFragment() {
 
     private fun setupView() {
         btn_send.setOnClickListener {
-            if(et_msg.text.toString() != "")
+            if (et_msg.text.toString() != "")
                 viewModel.sendMessage(et_msg.text.toString())
         }
 
@@ -122,38 +103,19 @@ class  ChatFragment : BaseFragment() {
             }
         })
 
-//        Paginate.with(list, object : Paginate.Callbacks{
-//            override fun onLoadMore() {
-//                Toast.makeText(activity, "onLoadMore", Toast.LENGTH_SHORT).show()
-//            }
-//
-//            override fun isLoading(): Boolean = false
-//
-//
-//            override fun hasLoadedAllItems(): Boolean = hasLoadedAllItems
-//
-//        }).build()
-
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                if(dy < 0)
+                if (dy < 0)
                     checkEndOffset() // Each time when list is scrolled check if end of the list is reached
             }
         })
     }
 
-    private fun checkIfHasToScrollDown() : Boolean{
+    private fun checkIfHasToScrollDown(): Boolean {
         val firstVisibleItemPosition: Int
         if (list.layoutManager is LinearLayoutManager) {
             firstVisibleItemPosition = (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-        } else if (list.layoutManager is StaggeredGridLayoutManager) {
-            // https://code.google.com/p/android/issues/detail?id=181461
-            firstVisibleItemPosition = if (list.layoutManager!!.childCount > 0) {
-                (list.layoutManager as StaggeredGridLayoutManager).findFirstVisibleItemPositions(null)[0]
-            } else {
-                0
-            }
         } else {
             throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
         }
@@ -168,66 +130,14 @@ class  ChatFragment : BaseFragment() {
         val firstVisibleItemPosition: Int
         if (list.layoutManager is LinearLayoutManager) {
             firstVisibleItemPosition = (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
-        } else if (list.layoutManager is StaggeredGridLayoutManager) {
-            // https://code.google.com/p/android/issues/detail?id=181461
-            firstVisibleItemPosition = if (list.layoutManager!!.childCount > 0) {
-                (list.layoutManager as StaggeredGridLayoutManager).findFirstVisibleItemPositions(null)[0]
-            } else {
-                0
-            }
         } else {
             throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
         }
 
-        val p = firstVisibleItemPosition + visibleItemCount + 10
-        if (p % 30 == 0) {
-            if(!viewModel.pageFetchList.contains(p/30)) {
-                viewModel.pageFetchList.add(p/30)
-                Log.e("TEST", "totalItemCount: " + totalItemCount
-                        + " - firstVisiblePosition: " + firstVisibleItemPosition
-                        + " - visibleItemCount: " + visibleItemCount)
-                Log.e("TEST", "Fetch message PAGE: " + p / 30)
-                viewModel.fetchMessages(userId!!, p/30,30)
-            }
-        }
-
-        if(visibleItemCount + firstVisibleItemPosition == totalItemCount){
-            val p = totalItemCount/30 + 1
-            Log.e("TEST", "Ultimo item page: " + p)
-            if(!viewModel.pageFetchList.contains(p)) {
-                viewModel.pageFetchList.add(p)
-                viewModel.fetchMessages(userId!!, p,30)
-            }
-        }
+        viewModel.checkIfFetchMoreData(visibleItemCount, totalItemCount, firstVisibleItemPosition)
     }
 
     private fun subscribeToLiveData() {
-        viewModel.fetchCreateChatResponse.observe(this, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-                }
-
-                Status.ERROR -> {
-//                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
-                }
-
-                Status.SUCCESS -> { }
-            }
-        })
-
-        viewModel.fetchMessagesResponse.observe(this, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-                }
-
-                Status.ERROR -> {
-                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.SUCCESS -> {
-                }
-            }
-        })
-
         viewModel.sendMessageResponse.observe(this, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
@@ -250,15 +160,13 @@ class  ChatFragment : BaseFragment() {
         })
 
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
-           subscribeToPagedListLiveData()
+            subscribeToPagedListLiveData()
         })
     }
 
-    private fun subscribeToPagedListLiveData(){
+    private fun subscribeToPagedListLiveData() {
         viewModel.pagedListLiveData!!.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            hasLoadedAllItems = false
-            isLoadings = false
         })
     }
 
@@ -266,81 +174,6 @@ class  ChatFragment : BaseFragment() {
         menu.clear()
         inflater.inflate(R.menu.menu_search, menu)
         super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    private inner class EchoWebSocketListener : WebSocketListener() {
-
-        override fun onOpen(webSocket: WebSocket, response: Response) {
-            val subscribeStr = "{\"command\": \"subscribe\",\"identifier\": \"{\\\"chat_id\\\": \\\"" +
-                    viewModel.createChatResponse?.id +
-                    "\\\",\\\"channel\\\":\\\"MessagesChannel\\\"}\"}"
-            webSocket.send(subscribeStr)
-            Timber.d("WebSocket onOpen: ".plus(subscribeStr))
-        }
-
-        override fun onMessage(webSocket: WebSocket?, text: String?) {
-            Timber.d("WebSocket onMessage: ".plus(text))
-            output("Receiving : " + text!!)
-
-            try {
-                // Parse message text
-                val jsonParser = JsonParser()
-                val response = jsonParser.parse(text)
-                val message = response.asJsonObject.getAsJsonObject("message")
-
-                val gson = Gson()
-                if (message != null) {
-                    val chat = gson.fromJson(message, ChatMessageResponse::class.java)
-                    viewModel.insertChatDb(chat)
-                }
-
-            } catch (e: Exception) {
-                // Message text not in JSON format or don't have {event}|{data} object
-                Log.e("WebSocket", "Unknown message format.")
-            }
-
-        }
-
-        override fun onMessage(webSocket: WebSocket?, bytes: ByteString) {
-            output("Receiving bytes : " + bytes.hex())
-        }
-
-        override fun onClosing(webSocket: WebSocket, code: Int, reason: String?) {
-            webSocket.close(1000, null)
-            output("Closing : $code / $reason")
-            Timber.d("WebSocket onClosing: ".plus(code).plus(" - reason: ").plus(reason))
-        }
-
-        override fun onFailure(webSocket: WebSocket, t: Throwable, response: Response?) {
-            Timber.d("WebSocket onFailure: ".plus(t.message))
-            output("Error : " + t.message)
-        }
-    }
-
-    private fun start() {
-        val url = "wss://".plus(BuildConfig.BASE_URL).plus("/cable")
-                .plus("?")
-                .plus("token=").plus(userRepository.getAccessToken()).plus("&")
-                .plus("client=").plus(userRepository.getClient()).plus("&")
-                .plus("uid=").plus(userRepository.getUid())
-
-        Log.i("WebSocket", "URL: ".plus(url))
-
-        val request = Request.Builder()
-                .url(url)
-                .header("origin", "https://www.pincapp.com")
-                .build()
-
-        val listener = EchoWebSocketListener()
-        client = OkHttpClient.Builder()
-                .retryOnConnectionFailure(true)
-                .build()
-        webSocket = client.newWebSocket(request, listener)
-        client.dispatcher().executorService().shutdown()
-    }
-
-    private fun output(txt: String) {
-//        runOnUiThread(Runnable { output.setText(output.getText().toString() + "\n\n" + txt) })
     }
 
     override fun onResume() {
@@ -356,8 +189,7 @@ class  ChatFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        webSocket?.close(1000, "bye")
-        viewModel.closeSocket()
+        viewModel.onDestroy()
     }
 
     private val networkChangeReceiver = object : BroadcastReceiver() {
@@ -365,11 +197,7 @@ class  ChatFragment : BaseFragment() {
         override fun onReceive(p0: Context?, p1: Intent?) {
             val netInfo = context!!.networkInfo
             if (netInfo != null && netInfo.isConnected) {
-                if(viewModel.hasFetchChatError){
-                    viewModel.fetchOrCreateChat(userId!!)
-                } else {
-                    viewModel.checkIfReconnectionIsNeeded()
-                }
+                viewModel.checkErrorsToReconnect()
             }
         }
     }

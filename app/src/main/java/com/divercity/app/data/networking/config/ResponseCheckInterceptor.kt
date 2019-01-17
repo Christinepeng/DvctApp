@@ -27,7 +27,7 @@ class ResponseCheckInterceptor(var context: Context) : Interceptor {
         val response = chain.proceed(chain.request())
 
         if (response.code() == 401) {
-            RxBus.publish(RxEvent.EventUnauthorizedUser("Test"))
+            RxBus.publish(RxEvent.EventUnauthorizedUser(""))
         }
 
         return response

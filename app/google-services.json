@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "188241973450",
+    "firebase_url": "https://divercity-b610c.firebaseio.com",
+    "project_id": "divercity-b610c",
+    "storage_bucket": "divercity-b610c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188241973450:android:e6bb88cae5ea56bf",
+        "android_client_info": {
+          "package_name": "com.divercity.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188241973450-9ohc7h94m9bcc4hdnk4b0nkojie09rju.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtHuVDOVVrujy1_auQKFtPYphS6QqcSRs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

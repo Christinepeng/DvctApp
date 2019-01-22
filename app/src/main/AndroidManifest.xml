@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.divercity.app">
+    package="com.divercity.android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -52,8 +52,12 @@
             android:value="@string/facebook_app_id" />
 
         <meta-data
-            android:name="io.fabric.ApiKey"
-            android:value="c89b5c70f080c86af29acf814d51cac090ea41f5" />
+            android:name="firebase_crashlytics_collection_enabled"
+            android:value="${enableCrashReporting}" />
+
+        <!--<meta-data-->
+            <!--android:name="io.fabric.ApiKey"-->
+            <!--android:value="c89b5c70f080c86af29acf814d51cac090ea41f5" />-->
 
         <activity
             android:name=".features.home.HomeActivity"
@@ -121,7 +125,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.divercity.app.features.gender.onboarding.OnboardingGenderActivity"
+            android:name=".features.gender.onboarding.OnboardingGenderActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -176,7 +180,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.divercity.app.features.jobs.description.detail.JobDetailActivity"
+            android:name=".features.jobs.description.detail.JobDetailActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

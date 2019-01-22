@@ -56,6 +56,7 @@
             android:fontFamily="@font/avenir_book"
             android:lineSpacingExtra="-2sp"
             android:textColor="#80333241"
+            android:visibility="gone"
             android:textSize="14sp"
             tools:text="San Francisco, USA" />
 
@@ -75,6 +76,7 @@
         app:layout_constraintTop_toTopOf="@+id/img">
 
         <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/btn_follow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
@@ -82,6 +84,7 @@
             android:src="@drawable/icon_request_connection" />
 
         <android.support.v7.widget.AppCompatImageButton
+            android:id="@+id/btn_direct_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"

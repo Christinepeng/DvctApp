@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,92 +9,102 @@
 
     <include
         android:id="@+id/include_toolbar"
-        layout="@layout/view_toolbar" />
+        layout="@layout/view_toolbar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<android.support.v7.widget.RecyclerView-->
-    <!--android:id="@+id/list"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--android:layout_above="@+id/lay_msg"-->
-    <!--android:layout_below="@id/include_toolbar"-->
-    <!--android:background="@android:color/white"-->
-    <!--android:fadeScrollbars="true"-->
-    <!--android:scrollbarSize="5dp"-->
-    <!--android:scrollbarThumbVertical="@android:color/darker_gray"-->
-    <!--android:scrollbars="vertical"-->
-    <!--app:layoutManager="android.support.v7.widget.LinearLayoutManager"-->
-    <!--app:reverseLayout="true"-->
-    <!--app:stackFromEnd="false" />-->
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/list"
+    <!-- This wraps is because of a bug with recyclerview within constraintlayout-->
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_above="@+id/lay_msg"
-        android:layout_below="@id/include_toolbar"
-        android:background="@android:color/white"
-        android:fadeScrollbars="true"
-        android:scrollbarSize="5dp"
-        android:scrollbarThumbVertical="@android:color/darker_gray"
-        android:scrollbars="vertical"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-        app:reverseLayout="true"
-        app:stackFromEnd="false" />
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/view7"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:fadeScrollbars="true"
+            android:scrollbarSize="5dp"
+            android:scrollbarThumbVertical="@android:color/darker_gray"
+            android:scrollbars="vertical"
+            android:visibility="visible"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            app:reverseLayout="true"
+            app:stackFromEnd="false" />
+
+    </RelativeLayout>
 
     <include
         android:id="@+id/include_loading"
         layout="@layout/view_loading_nobk"
-        android:visibility="gone" />
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/lay_msg"
-        android:layout_width="match_parent"
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/list_users"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/grey_background"
+        android:maxHeight="50dp"
+        android:visibility="gone"
+        app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@+id/et_msg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_default="wrap"
+        app:layout_constraintHeight_max="200dp"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/view7"
+        style="@style/Divider"
+        app:layout_constraintBottom_toTopOf="@+id/et_msg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="277dp" />
+
+    <EditText
+        android:id="@+id/et_msg"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true">
+        android:background="@android:color/transparent"
+        android:fontFamily="@font/avenir_roman"
+        android:hint="@string/write_a_message"
+        android:inputType="textCapSentences"
+        android:padding="24dp"
+        android:textColor="#333241"
+        android:textSize="15sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/btn_send"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <View
-            android:id="@+id/view7"
-            style="@style/Divider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent" />
+    <ImageButton
+        android:id="@+id/btn_send"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:padding="22dp"
+        android:src="@drawable/send"
+        app:layout_constraintBottom_toBottomOf="@+id/et_msg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_msg" />
 
-        <EditText
-            android:id="@+id/et_msg"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/avenir_roman"
-            android:inputType="textCapSentences"
-            android:hint="@string/write_a_message"
-            android:padding="24dp"
-            android:textColor="#333241"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/btn_send"
-            app:layout_constraintStart_toStartOf="parent" />
+    <ProgressBar
+        android:id="@+id/pb_sending_msg"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_marginEnd="16dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/et_msg"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_msg" />
 
-        <ImageButton
-            android:id="@+id/btn_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:padding="22dp"
-            android:src="@drawable/send"
-            app:layout_constraintBottom_toBottomOf="@+id/et_msg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_msg" />
-
-        <ProgressBar
-            android:id="@+id/pb_sending_msg"
-            android:layout_width="28dp"
-            android:layout_height="28dp"
-            android:layout_marginEnd="16dp"
-            android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/et_msg"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/view7" />
-
-    </android.support.constraint.ConstraintLayout>
-
-</RelativeLayout>
+</android.support.constraint.ConstraintLayout>

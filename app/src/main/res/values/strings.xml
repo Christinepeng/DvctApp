@@ -20,6 +20,7 @@
     <string name="edit">Edit</string>
     <string name="next">Next</string>
     <string name="conversation">Conversation</string>
+    <string name="settings">Settings</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>

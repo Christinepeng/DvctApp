@@ -123,7 +123,7 @@ class ApiModule {
 
         return MySocket.Builder
                 .with(url)
-                .addHeader("origin", "https://www.pincapp.com")
+                .addHeader("origin", "https://www.divercity.io")
                 .addHttpLogginInterceptor(loggingInterceptor)
                 .build()
     }

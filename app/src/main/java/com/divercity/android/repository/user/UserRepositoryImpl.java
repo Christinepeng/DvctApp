@@ -1,6 +1,8 @@
 package com.divercity.android.repository.user;
 
 import com.divercity.android.data.entity.base.DataObject;
+import com.divercity.android.data.entity.device.body.DeviceBody;
+import com.divercity.android.data.entity.device.response.DeviceResponse;
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody;
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody;
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody;
@@ -10,19 +12,16 @@ import com.divercity.android.data.entity.profile.profile.UserProfileBody;
 import com.divercity.android.data.entity.user.followuser.FollowUserResponse;
 import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.services.UserService;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.List;
-
-import javax.inject.Inject;
-
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import retrofit2.HttpException;
 import retrofit2.Response;
+
+import javax.inject.Inject;
+import java.util.List;
 
 /**
  * Created by lucas on 18/10/2018.
@@ -312,7 +311,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public Observable<FollowUserResponse> followUser(@NotNull String userId) {
         RequestBody partUserId = RequestBody.create(MediaType.parse("text/plain"), userId);
-        return userService.followUser(partUserId).map(response->{
+        return userService.followUser(partUserId).map(response -> {
             checkResponse(response);
             return response.body().getData();
         });
@@ -326,5 +325,45 @@ public class UserRepositoryImpl implements UserRepository {
             checkResponse(response);
             return response.body();
         });
+    }
+
+    @NotNull
+    @Override
+    public Observable<DeviceResponse> saveDevice(@NotNull DeviceBody body) {
+        return userService.saveDevice(body).map(response -> {
+            checkResponse(response);
+            return response.body().getData();
+        });
+    }
+
+    @NotNull
+    @Override
+    public Observable<Void> updateDevice(@NotNull String deviceId, @NotNull DeviceBody body) {
+        return userService.updateDevice(deviceId, body).map(response -> {
+            checkResponse(response);
+            return response.body();
+        });
+    }
+
+    @Nullable
+    @Override
+    public String getDeviceId() {
+        return loggedUserRepository.getDeviceId();
+    }
+
+    @Override
+    public void setDeviceId(@Nullable String deviceId) {
+        loggedUserRepository.setDeviceId(deviceId);
+    }
+
+    @Nullable
+    @Override
+    public String getFCMToken() {
+        return loggedUserRepository.getFCMToken();
+    }
+
+    @Override
+    public void setFCMToken(@Nullable String token) {
+        loggedUserRepository.setFCMToken(token);
     }
 }

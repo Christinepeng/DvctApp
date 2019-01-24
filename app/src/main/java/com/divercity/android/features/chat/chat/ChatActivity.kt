@@ -38,7 +38,6 @@ class ChatActivity : BaseActivity() {
             intent.getIntExtra(PARAM_CHAT_ID, -1)
         )
 
-
     override fun onBackPressed() {
         if (isTaskRoot) {
             navigator.navigateToChatsActivity(this)

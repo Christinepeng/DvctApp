@@ -1,9 +1,7 @@
 package com.divercity.android.data.entity.interests
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-@Generated("com.robohorse.robopojogenerator")
 data class Attributes(
 
 	@field:SerializedName("showable")

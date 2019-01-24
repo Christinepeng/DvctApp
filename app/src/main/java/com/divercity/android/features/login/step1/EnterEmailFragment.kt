@@ -17,8 +17,13 @@ import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.divercity.android.data.Status
 import com.divercity.android.features.login.step1.usecase.ConnectFacebookApiHelper
 import com.facebook.internal.CallbackManagerImpl
+import com.google.firebase.iid.FirebaseInstanceId
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 
@@ -49,6 +54,11 @@ class EnterEmailFragment : BaseFragment() {
         viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
         connectFacebookApiHelper = ConnectFacebookApiHelper(this)
         connectFacebookApiHelper.setListener(facebookListener)
+
+        CoroutineScope(Dispatchers.IO).launch {
+            Timber.e("Called Launch")
+            FirebaseInstanceId.getInstance().deleteInstanceId()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

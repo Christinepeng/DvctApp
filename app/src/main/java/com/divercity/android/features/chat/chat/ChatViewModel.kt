@@ -64,6 +64,8 @@ constructor(
     var hasFetchChatError = false
     var hasFetchGroupMembersError = false
 
+    var mentions = HashSet<UserResponse>()
+
     companion object {
         const val RECONNECTING_ATTEMPTS = 4
         private const val PAGE_SIZE = 30
@@ -94,7 +96,7 @@ constructor(
     fun initializePagedList(chatId: Int) {
         val dataSourceFactory = chatMessageRepository.getMessagesByChatId(chatId)
         val config = PagedList.Config.Builder()
-            .setPageSize(15)
+            .setPageSize(PAGE_SIZE)
             .setInitialLoadSizeHint(30)
             .setPrefetchDistance(10)
             .build()
@@ -221,6 +223,15 @@ constructor(
     }
 
     fun sendMessage(message: String) {
+        var parsedMessage = message
+        if (mentions.size != 0) {
+            for (user in mentions) {
+                val mention = "@".plus(user.userAttributes?.name)
+                val replace = "<@U-".plus(user.id).plus(">")
+                parsedMessage = parsedMessage.replace(mention, replace)
+            }
+        }
+
         sendMessageResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<ChatMessageResponse>() {
             override fun onFail(error: String) {
@@ -232,6 +243,7 @@ constructor(
             }
 
             override fun onSuccess(o: ChatMessageResponse) {
+                mentions.clear()
                 sendMessageResponse.postValue(Resource.success(null))
             }
         }
@@ -308,5 +320,13 @@ constructor(
 
     fun onDestroy() {
         chatWebSocket.close()
+    }
+
+    fun onResume() {
+
+    }
+
+    fun onPause() {
+
     }
 }

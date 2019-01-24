@@ -6,12 +6,15 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.text.Editable
+import android.text.Spannable
 import android.text.TextWatcher
+import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
@@ -25,12 +28,9 @@ import com.divercity.android.features.chat.chat.chatadapter.ChatAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
 import com.divercity.android.repository.user.UserRepository
-import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
-
-
 
 /**
  * Created by lucas on 24/12/2018.
@@ -50,10 +50,6 @@ class ChatFragment : BaseFragment() {
     @Inject
     lateinit var userAdapter: UserMentionAdapter
 
-    var isShowingUsers = false
-    var positionOfAt = 0
-
-    var lastPositionMention = HashMap<Int, UserResponse>()
     var isReplacing = false
 
     companion object {
@@ -62,7 +58,7 @@ class ChatFragment : BaseFragment() {
         private const val PARAM_USER_NAME = "paramUserName"
         private const val PARAM_CHAT_ID = "paramChatId"
 
-        fun newInstance(userName: String, userId: String, chatId: Int?): ChatFragment {
+        fun newInstance(userName: String, userId: String?, chatId: Int?): ChatFragment {
             val fragment = ChatFragment()
             val arguments = Bundle()
             arguments.putString(PARAM_USER_ID, userId)
@@ -103,15 +99,16 @@ class ChatFragment : BaseFragment() {
         setupView()
 
 
-        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-            val token = it.token
-        }
+//        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
+//            val token = it.token
+//        }
     }
 
     private fun setupView() {
         btn_send.setOnClickListener {
-            if (et_msg.text.toString() != "")
+            if (et_msg.text.toString() != "") {
                 viewModel.sendMessage(et_msg.text.toString())
+            }
         }
 
         list.adapter = adapter
@@ -128,31 +125,40 @@ class ChatFragment : BaseFragment() {
         et_msg.addTextChangedListener(object : TextWatcher {
 
             override fun afterTextChanged(p0: Editable?) {
-            }
-
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
                 val message = p0.toString()
                 if (message != "" && !isReplacing) {
-                    val lastCharacter = message.substring(message.length - 1)
-                    val lastWord = message.substring(message.lastIndexOf(" ") + 1)
-                    val lastWordTilAt = message.substringAfterLast("@")
+                    val fullText = et_msg.text.toString().substring(0, et_msg.selectionStart)
+                    val lastWord = fullText.substring(fullText.lastIndexOf(" ") + 1)
 
-                    if (lastWord != "" && lastWord[0] == '@' && !isShowingUsers) {
+                    if (lastWord != "" && lastWord[0] == '@') {
                         showList(true)
-                    } else if (lastCharacter != " " && isShowingUsers) {
-                        viewModel.filterUserList(lastWordTilAt)
-                    } else if (lastCharacter == " ") {
+                        viewModel.filterUserList(lastWord.substring(1))
+                    } else {
                         showList(false)
-                        viewModel.filterUserList("")
                     }
-                } else if(isReplacing) {
-                    isReplacing = false
+                } else {
                     showList(false)
                     viewModel.filterUserList("")
                 }
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                if (!isReplacing) {
+                    if (p2 > p3) {
+                        val spanStyle = et_msg.text.getSpans(p1, p1 + p2, StyleSpan::class.java)
+//                        val spanUser = et_msg.text.getSpans(p1, p1 + p2, ChatMember::class.java)
+                        if (spanStyle.isNotEmpty()) {
+                            for (i in spanStyle.indices) {
+                                et_msg.text.removeSpan(spanStyle[i])
+//                                et_msg.text.removeSpan(spanUser[i])
+                            }
+                        }
+                    }
+                }
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
             }
         })
 
@@ -171,22 +177,47 @@ class ChatFragment : BaseFragment() {
             }
         }
         list_users.adapter = userAdapter
+//
+//        Paginate.with(list, object : Paginate.Callbacks{
+//            override fun onLoadMore() {
+//            }
+//
+//            override fun isLoading(): Boolean {
+//                return false
+//            }
+//
+//            override fun hasLoadedAllItems(): Boolean {
+//                return false
+//            }
+//
+//        }).build()
     }
 
 
     private fun replaceMention(user: UserResponse) {
-        val actualText = et_msg.text.toString()
-        val newVal = actualText.replaceAfterLast("@", user.userAttributes?.name!!)
-        lastPositionMention[newVal.length] = user
         isReplacing = true
-        et_msg.setText(newVal)
 
-//        val sb = SpannableStringBuilder("")
-//        val bss = StyleSpan(android.graphics.Typeface.BOLD) // Span to make text bold
-//        sb.setSpan(bss, 0, 10, Spannable.SPAN_INCLUSIVE_INCLUSIVE) // make first 10 characters Bold
-        isShowingUsers = false
-        et_msg.setText(newVal)
-        et_msg.setSelection(newVal.length)
+        val fullTextTillCursor = et_msg.text.toString().substring(0, et_msg.selectionStart)
+        val lastIndexOfAT = fullTextTillCursor.lastIndexOf("@")
+        val textToInsert = "@".plus(user.userAttributes?.name!!)
+
+        et_msg.text.replace(lastIndexOfAT, et_msg.selectionStart, "@".plus(user.userAttributes.name))
+        viewModel.mentions.add(user)
+        val bss = StyleSpan(Typeface.BOLD)
+//        et_msg.text.setSpan(user.toChatMember(),
+//            lastIndexOfAT,
+//            lastIndexOfAT + textToInsert.length,
+//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+//        )
+
+        et_msg.text.setSpan(
+            bss,
+            lastIndexOfAT,
+            lastIndexOfAT + textToInsert.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        et_msg.setSelection(lastIndexOfAT + textToInsert.length)
+        isReplacing = false
     }
 
     private fun checkIfHasToScrollDown(): Boolean {
@@ -274,11 +305,13 @@ class ChatFragment : BaseFragment() {
         super.onResume()
         val intentFilter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
         activity!!.registerReceiver(networkChangeReceiver, intentFilter)
+        viewModel.onResume()
     }
 
     override fun onPause() {
         super.onPause()
         activity!!.unregisterReceiver(networkChangeReceiver)
+        viewModel.onPause()
     }
 
     override fun onDestroy() {
@@ -291,7 +324,6 @@ class ChatFragment : BaseFragment() {
             list_users.visibility = View.VISIBLE
         else
             list_users.visibility = View.GONE
-        isShowingUsers = active
     }
 
     private val networkChangeReceiver = object : BroadcastReceiver() {

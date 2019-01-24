@@ -71,4 +71,12 @@ interface LoggedUserRepository {
     fun getAgeRange(): String?
 
     fun setAgeRange(ageRange: String?)
+
+    fun getDeviceId(): String?
+
+    fun setDeviceId(deviceId: String?)
+
+    fun getFCMToken(): String?
+
+    fun setFCMToken(token: String?)
 }

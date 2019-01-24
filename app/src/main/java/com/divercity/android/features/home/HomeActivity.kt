@@ -69,6 +69,8 @@ class HomeActivity : DaggerAppCompatActivity() {
         logoutDisposable = RxBus.listen(RxEvent.EventUnauthorizedUser::class.java).subscribe {
             showUnauthorizedUser()
         }
+
+        viewModel.checkFCMDevice()
     }
 
     /**

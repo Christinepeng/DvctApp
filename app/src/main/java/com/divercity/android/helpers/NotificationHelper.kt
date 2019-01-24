@@ -34,9 +34,9 @@ constructor(val context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 
             val chatChannel = NotificationChannel(
-                    CHAT_CHANNEL,
-                    context.getString(R.string.noti_channel_chats),
-                    NotificationManager.IMPORTANCE_MAX
+                CHAT_CHANNEL,
+                context.getString(R.string.noti_channel_chats),
+                NotificationManager.IMPORTANCE_MAX
             )
             chatChannel.enableLights(true)
             chatChannel.lockscreenVisibility = Notification.VISIBILITY_PUBLIC
@@ -45,26 +45,40 @@ constructor(val context: Context) {
         }
     }
 
-    fun getChatMessageNotification(title: String, body: String): NotificationCompat.Builder {
+    fun getChatMessageNotification(
+        title: String,
+        body: String,
+        userId: String?,
+        chatId: Int,
+        nameDisplay: String?
+    ): NotificationCompat.Builder {
 
         val requestID = System.currentTimeMillis().toInt()
 
-        val intent = ChatActivity.getCallingIntent(context, title, body, null)
+        val intent = ChatActivity.getCallingIntent(context, nameDisplay!!, userId, chatId)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
-        val resultPendingIntent = PendingIntent.getActivity(getApplicationContext(),
-                requestID, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT)
+        val resultPendingIntent = PendingIntent.getActivity(
+            getApplicationContext(),
+            requestID, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
 
         return NotificationCompat.Builder(context, CHAT_CHANNEL)
-                .setContentTitle(title)
-                .setContentIntent(resultPendingIntent)
-                .setContentText(body)
-                .setDefaults(NotificationCompat.DEFAULT_ALL)
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(Notification.CATEGORY_MESSAGE)
-                .setSmallIcon(getSmallIcon())
-                .setAutoCancel(true)
+            .setContentTitle(title)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(body)
+                    .setBigContentTitle(title)
+            )
+            .setContentIntent(resultPendingIntent)
+            .setContentText(body)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(Notification.CATEGORY_MESSAGE)
+            .setSmallIcon(getSmallIcon())
+            .setAutoCancel(true)
     }
 
     fun notify(id: Int, notification: NotificationCompat.Builder) {
@@ -72,7 +86,7 @@ constructor(val context: Context) {
     }
 
     private fun getSmallIcon(): Int {
-        return android.R.drawable.stat_notify_chat
+        return R.drawable.icon_notification
     }
 
     private fun getManager(): NotificationManager {

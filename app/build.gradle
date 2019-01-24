@@ -47,8 +47,8 @@ android {
         debug {
             minifyEnabled false
             manifestPlaceholders = [enableCrashReporting:"false"]
-            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 
@@ -182,7 +182,7 @@ dependencies {
     // Paginate
     implementation 'com.github.markomilos:paginate:0.5.1'
 
-//    api 'com.linkedin.android.spyglass:spyglass:2.0.0'
+    implementation 'com.linkedin.android.spyglass:spyglass:1.5.0'
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'

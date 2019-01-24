@@ -2,6 +2,8 @@ package com.divercity.android.data.networking.services;
 
 import com.divercity.android.data.entity.base.DataArray;
 import com.divercity.android.data.entity.base.DataObject;
+import com.divercity.android.data.entity.device.body.DeviceBody;
+import com.divercity.android.data.entity.device.response.DeviceResponse;
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody;
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody;
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody;
@@ -46,6 +48,12 @@ public interface UserService {
 
     @POST("users/current/update_interests")
     Observable<Response<DataObject<UserResponse>>> followInterests(@Body FollowInterestsBody body);
+
+    @POST("devices")
+    Observable<Response<DataObject<DeviceResponse>>> saveDevice(@Body DeviceBody body);
+
+    @PUT("devices/{deviceId}")
+    Observable<Response<Void>> updateDevice(@Path("deviceId") String deviceId, @Body DeviceBody body);
 
     @Multipart
     @POST("users/follow")

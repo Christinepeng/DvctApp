@@ -5,6 +5,7 @@ import com.divercity.android.DivercityApp
 import com.divercity.android.db.RoomModule
 import com.divercity.android.di.module.ActivityBuilderModule
 import com.divercity.android.di.module.AppBindsModule
+import com.divercity.android.di.module.ServiceBuilderModule
 import com.divercity.android.di.module.networking.ApiModule
 import com.divercity.android.di.module.networking.apollo.ApiApolloModule
 import com.divercity.android.di.viewmodel.ViewModelModule
@@ -28,6 +29,7 @@ import javax.inject.Singleton
         ApiApolloModule::class,
         ViewModelModule::class,
         ActivityBuilderModule::class,
+        ServiceBuilderModule::class,
         RoomModule::class]
 )
 interface AppComponent : AndroidInjector<DaggerApplication> {

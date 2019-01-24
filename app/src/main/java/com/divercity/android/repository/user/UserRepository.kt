@@ -1,5 +1,7 @@
 package com.divercity.android.repository.user
 
+import com.divercity.android.data.entity.device.body.DeviceBody
+import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
 import com.divercity.android.data.entity.user.followuser.FollowUserResponse
@@ -29,6 +31,10 @@ interface UserRepository : LoggedUserRepository {
     fun followUser(userId: String): Observable<FollowUserResponse>
 
     fun unfollowUser(userId: String): Observable<Void>
+
+    fun saveDevice(body: DeviceBody): Observable<DeviceResponse>
+
+    fun updateDevice(deviceId: String, body: DeviceBody): Observable<Void>
 
     fun fetchFollowersByUser(
             userId: String,

@@ -30,11 +30,13 @@ class LoggedUserRepositoryImpl(val context: Context) : LoggedUserRepository {
         ETHNICITY,
         GENDER,
         INDUSTRY,
-        AGE_RANGE
+        AGE_RANGE,
+        DEVICE_ID,
+        FCM_TOKEN
     }
 
     private val sharedPreferencesManager: SharedPreferencesManager<Key> =
-            SharedPreferencesManager(context, USER_PREF_NAME)
+        SharedPreferencesManager(context, USER_PREF_NAME)
 
     override fun setAccessToken(token: String?) {
         sharedPreferencesManager.put(Key.ACCESS_TOKEN, token)
@@ -146,6 +148,23 @@ class LoggedUserRepositoryImpl(val context: Context) : LoggedUserRepository {
 
     override fun setAgeRange(ageRange: String?) {
         sharedPreferencesManager.put(Key.AGE_RANGE, ageRange)
+    }
+
+    override fun getDeviceId(): String? {
+        return sharedPreferencesManager.getString(Key.DEVICE_ID)
+    }
+
+    override fun setDeviceId(deviceId: String?) {
+        sharedPreferencesManager.put(Key.DEVICE_ID, deviceId)
+    }
+
+    override fun getFCMToken(): String? {
+        return sharedPreferencesManager.getString(Key.FCM_TOKEN)
+
+    }
+
+    override fun setFCMToken(token: String?) {
+        sharedPreferencesManager.put(Key.FCM_TOKEN, token)
     }
 
     override fun saveUserHeaderData(response: Response<DataObject<UserResponse>>) {

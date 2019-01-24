@@ -5,6 +5,8 @@ import com.apollographql.apollo.ApolloClient;
 import com.divercity.android.Session;
 import com.divercity.android.features.apollo.ApolloRepository;
 import com.divercity.android.helpers.NotificationHelper;
+import com.divercity.android.repository.appstate.AppStateRepository;
+import com.divercity.android.repository.appstate.AppStateRepositoryImpl;
 import com.divercity.android.repository.chat.ChatRepositoryImpl;
 import com.divercity.android.repository.user.LoggedUserRepositoryImpl;
 import com.divercity.android.repository.user.UserRepository;
@@ -42,6 +44,12 @@ public abstract class AppProvidesModule {
     @Singleton
     static LoggedUserRepositoryImpl provideUserLocalDataStore(Context context) {
         return new LoggedUserRepositoryImpl(context);
+    }
+
+    @Provides
+    @Singleton
+    static AppStateRepository provideAppStateRepository(Context context) {
+        return new AppStateRepositoryImpl(context);
     }
 
     @Provides

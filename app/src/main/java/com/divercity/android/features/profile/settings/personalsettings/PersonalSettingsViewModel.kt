@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.settings
+package com.divercity.android.features.profile.settings.personalsettings
 
 import android.content.Context
 import com.divercity.android.R
@@ -15,7 +15,7 @@ import javax.inject.Inject
  * Created by lucas on 27/09/2018.
  */
 
-class ProfileSettingsViewModel @Inject
+class PersonalSettingsViewModel @Inject
 constructor(
     private val context : Context,
     private val userRepository: UserRepository,

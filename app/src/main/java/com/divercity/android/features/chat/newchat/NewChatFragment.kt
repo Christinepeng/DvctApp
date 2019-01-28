@@ -17,7 +17,7 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.newchat.adapter.UserSortedByFirstCharAdapter
-import com.divercity.android.features.profile.tabfollowers.adapter.UserViewHolder
+import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_new_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject

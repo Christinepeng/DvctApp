@@ -55,7 +55,7 @@ constructor(val context: Context) {
 
         val requestID = System.currentTimeMillis().toInt()
 
-        val intent = ChatActivity.getCallingIntent(context, nameDisplay!!, userId, chatId)
+        val intent = ChatActivity.getCallingIntent(context, nameDisplay ?: "", userId, chatId)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         val resultPendingIntent = PendingIntent.getActivity(

@@ -34,46 +34,49 @@ class ApiModule {
     @Named("unauth")
     @Singleton
     fun providesUnauthenticatedClient(
-            checkConnectivityInterceptor: CheckConnectivityInterceptor,
-            loggingInterceptor: HttpLoggingInterceptor): Retrofit {
+        checkConnectivityInterceptor: CheckConnectivityInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor
+    ): Retrofit {
 
         val httpClient = OkHttpClient.Builder()
         httpClient
-                .addInterceptor(loggingInterceptor)
-                .addInterceptor(checkConnectivityInterceptor)
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(checkConnectivityInterceptor)
 
         return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(httpClient.build())
-                .build()
+            .baseUrl(BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(httpClient.build())
+            .build()
     }
 
     @Provides
     @Named("auth")
     @Singleton
     fun providesAuthenticatedClient(
-            checkConnectivityInterceptor: CheckConnectivityInterceptor,
-            checkUnauthorizedInterceptor: CheckUnauthorizedInterceptor,
-            loggingInterceptor: HttpLoggingInterceptor,
-            interceptorHeader: Interceptor): Retrofit {
+        checkConnectivityInterceptor: CheckConnectivityInterceptor,
+        checkUnauthorizedInterceptor: CheckUnauthorizedInterceptor,
+        loggingInterceptor: HttpLoggingInterceptor,
+        interceptorHeader: Interceptor
+    ): Retrofit {
 
         val httpClient = OkHttpClient.Builder()
         httpClient.addInterceptor(loggingInterceptor)
-                .addInterceptor(checkConnectivityInterceptor)
-                .addInterceptor(checkUnauthorizedInterceptor)
-                .addInterceptor(interceptorHeader)
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(60, TimeUnit.SECONDS)
+            .addInterceptor(checkConnectivityInterceptor)
+            .addInterceptor(checkUnauthorizedInterceptor)
+            .addInterceptor(interceptorHeader)
+            .connectTimeout(10, TimeUnit.SECONDS)
+            .readTimeout(60, TimeUnit.SECONDS)
 //            .addInterceptor(addApiPath)
 
         return Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .client(httpClient.build())
-                .build()
+            .baseUrl(BASE_URL)
+//            .addConverterFactory(NullOnEmptyConverterFactory())
+            .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+            .client(httpClient.build())
+            .build()
     }
 
     @Provides
@@ -113,19 +116,21 @@ class ApiModule {
     }
 
     @Provides
-    internal fun provideWebSocket(userLocalDataStore: LoggedUserRepositoryImpl,
-                                  loggingInterceptor: HttpLoggingInterceptor): MySocket {
+    internal fun provideWebSocket(
+        userLocalDataStore: LoggedUserRepositoryImpl,
+        loggingInterceptor: HttpLoggingInterceptor
+    ): MySocket {
         val url = "wss://".plus(BuildConfig.BASE_URL).plus("/cable")
-                .plus("?")
-                .plus("token=").plus(userLocalDataStore.getAccessToken()).plus("&")
-                .plus("client=").plus(userLocalDataStore.getClient()).plus("&")
-                .plus("uid=").plus(userLocalDataStore.getUid())
+            .plus("?")
+            .plus("token=").plus(userLocalDataStore.getAccessToken()).plus("&")
+            .plus("client=").plus(userLocalDataStore.getClient()).plus("&")
+            .plus("uid=").plus(userLocalDataStore.getUid())
 
         return MySocket.Builder
-                .with(url)
-                .addHeader("origin", "https://www.divercity.io")
-                .addHttpLogginInterceptor(loggingInterceptor)
-                .build()
+            .with(url)
+            .addHeader("origin", "https://www.divercity.io")
+            .addHttpLogginInterceptor(loggingInterceptor)
+            .build()
     }
 
     @Provides

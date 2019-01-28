@@ -33,7 +33,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "D-1.11"
+        versionName "D-1.12"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
@@ -46,9 +46,9 @@ android {
 
         debug {
             minifyEnabled false
-            manifestPlaceholders = [enableCrashReporting:"false"]
-//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+            manifestPlaceholders = [enableCrashReporting:"true"]
+            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
 

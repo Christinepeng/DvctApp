@@ -47,6 +47,7 @@ import com.divercity.android.features.onboarding.selectoccupation.SelectOccupati
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIActivity
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
+import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -189,6 +190,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToToolbarLocationActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(ToolbarLocationActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToProfileSettingsActivity(fragment: Fragment) {
+        fragment.startActivity(ProfileSettingsActivity.getCallingIntent(fragment.context))
     }
 
     fun navigateToSelectSingleIndustryActivityForResult(fragment: Fragment, code: Int) {

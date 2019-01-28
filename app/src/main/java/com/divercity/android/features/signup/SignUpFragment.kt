@@ -165,7 +165,7 @@ class SignUpFragment : BaseFragment() {
 
     private fun setupEvents() {
         btn_photo.setOnClickListener {
-            EasyImage.openChooserWithGallery(this, "Pick source", 0)
+            EasyImage.openChooserWithGallery(this, getString(R.string.pick_source), 0)
         }
 
         et_username.addTextChangedListener(object : TextWatcher {

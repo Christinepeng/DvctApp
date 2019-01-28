@@ -72,7 +72,8 @@ import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragme
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.profile.ProfileFragment
 import com.divercity.android.features.profile.module.ProfileModule
-import com.divercity.android.features.profile.tabfollowers.FollowerFragment
+import com.divercity.android.features.profile.settings.ProfileSettingsFragment
+import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsFragment
 import com.divercity.android.features.profile.tabprofile.TabProfileFragment
@@ -251,7 +252,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindTabProfileFragment (): TabProfileFragment
 
     @ContributesAndroidInjector
-    abstract fun bindFollowerFragment (): FollowerFragment
+    abstract fun bindFollowerFragment (): ConnectionsFragment
 
     @ContributesAndroidInjector
     abstract fun bindToolbarEthnicityFragment (): ToolbarEthnicityFragment
@@ -303,4 +304,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindGroupDescriptionFragment (): GroupDescriptionFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindProfileSettingsFragment (): ProfileSettingsFragment
 }

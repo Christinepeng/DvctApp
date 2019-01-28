@@ -67,9 +67,11 @@ public class SelectInterestsAdapter extends RecyclerView.Adapter<SelectInterests
         setBackground(holder, item);
 
         holder.itemView.setOnClickListener(view -> {
-            item.setSelected(!item.isSelected());
-            setBackground(holder, item);
-            listener.onInterestClick(idsSelected);
+            if(listener != null) {
+                item.setSelected(!item.isSelected());
+                setBackground(holder, item);
+                listener.onInterestClick(idsSelected);
+            }
         });
     }
 

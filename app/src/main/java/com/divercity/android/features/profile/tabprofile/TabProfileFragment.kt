@@ -5,6 +5,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
 import android.widget.Toast
 import com.divercity.android.R
@@ -16,7 +17,9 @@ import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
+import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
+import javax.inject.Inject
 
 /**
  * Created by lucas on 16/11/2018.
@@ -25,6 +28,9 @@ import kotlinx.android.synthetic.main.fragment_tab_profile.*
 class TabProfileFragment : BaseFragment() {
 
     private lateinit var viewModel: TabProfileViewModel
+
+    @Inject
+    lateinit var adapter: SelectInterestsAdapter
 
     companion object {
 
@@ -76,6 +82,9 @@ class TabProfileFragment : BaseFragment() {
         txt_industry.text = viewModel.getIndustries()
         txt_age_range.text = viewModel.getAgeRange()
         txt_location.text = viewModel.getLocation()
+
+        list_interest.layoutManager = StaggeredGridLayoutManager(2, 1)
+        list_interest.adapter = adapter
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -120,6 +129,16 @@ class TabProfileFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     setData(response.data)
+                }
+            }
+        })
+
+        viewModel.fetchInterestsResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING ->{}
+                Status.ERROR -> {}
+                Status.SUCCESS -> {
+                    adapter.setList(response.data)
                 }
             }
         })

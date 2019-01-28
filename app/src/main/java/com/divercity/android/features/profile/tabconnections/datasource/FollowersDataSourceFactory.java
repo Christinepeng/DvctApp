@@ -1,11 +1,11 @@
-package com.divercity.android.features.profile.tabfollowers.datasource;
+package com.divercity.android.features.profile.tabconnections.datasource;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
 
 import com.divercity.android.data.entity.user.response.UserResponse;
-import com.divercity.android.features.profile.tabfollowers.usecase.FetchFollowersUseCase;
+import com.divercity.android.features.profile.tabconnections.usecase.FetchFollowersUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;
 

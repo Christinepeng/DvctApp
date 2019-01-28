@@ -7,9 +7,7 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.divercity.android.R
-import com.divercity.android.features.profile.tabfollowers.FollowerFragment
-import com.divercity.android.features.profile.tabfollowing.FollowingFragment
-import com.divercity.android.features.profile.tabgroups.FollowingGroupsFragment
+import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabprofile.TabProfileFragment
 import javax.inject.Inject
 
@@ -17,7 +15,7 @@ import javax.inject.Inject
  * Created by lucas on 16/10/2018.
  */
 
-class ProfileViewPagerAdapter
+class   ProfileViewPagerAdapter
 @Inject constructor(
         val context: Context,
         fm: FragmentManager
@@ -27,15 +25,13 @@ class ProfileViewPagerAdapter
 
     companion object {
 
-        private const val PAGE_COUNT = 4
+        private const val PAGE_COUNT = 2
     }
 
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
             context.getString(R.string.profile),
-            context.getString(R.string.followers),
-            context.getString(R.string.following),
-            context.getString(R.string.groups)
+            context.getString(R.string.connections)
     )
 
     override fun getItem(position: Int): Fragment {
@@ -45,9 +41,7 @@ class ProfileViewPagerAdapter
     private fun getFragments(position: Int): Fragment {
         return when (position) {
             0 -> TabProfileFragment.newInstance()
-            1 -> FollowerFragment.newInstance()
-            2 -> FollowingFragment.newInstance()
-            else -> FollowingGroupsFragment.newInstance()
+            else -> ConnectionsFragment.newInstance()
         }
     }
 

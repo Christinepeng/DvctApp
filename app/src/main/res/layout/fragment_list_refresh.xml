@@ -66,7 +66,7 @@
             android:layout_marginTop="16dp"
             android:fontFamily="@font/avenir_roman"
             android:gravity="center_horizontal"
-            tools:text="You don’t seem to have any Followers yet :("
+            tools:text="You don’t seem to have any Connections yet :("
             android:textColor="#333241"
             android:textSize="15sp" />
 

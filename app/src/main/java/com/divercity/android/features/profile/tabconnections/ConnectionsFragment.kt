@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.tabfollowers
+package com.divercity.android.features.profile.tabconnections
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
@@ -10,9 +10,9 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.tabfollower.FollowerViewModel
-import com.divercity.android.features.profile.tabfollowers.adapter.UserAdapter
-import com.divercity.android.features.profile.tabfollowers.adapter.UserViewHolder
+import com.divercity.android.features.profile.tabconnections.adapter.UserAdapter
+import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.tabfollower.ConnectionsViewModel
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -20,9 +20,9 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class FollowerFragment : BaseFragment(), RetryCallback {
+class ConnectionsFragment : BaseFragment(), RetryCallback {
 
-    lateinit var viewModel: FollowerViewModel
+    lateinit var viewModel: ConnectionsViewModel
 
     @Inject
     lateinit var adapter: UserAdapter
@@ -31,8 +31,8 @@ class FollowerFragment : BaseFragment(), RetryCallback {
 
     companion object {
 
-        fun newInstance(): FollowerFragment {
-            return FollowerFragment()
+        fun newInstance(): ConnectionsFragment {
+            return ConnectionsFragment()
         }
     }
 
@@ -41,7 +41,7 @@ class FollowerFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(FollowerViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory).get(ConnectionsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
@@ -69,7 +69,7 @@ class FollowerFragment : BaseFragment(), RetryCallback {
             )
         }
 
-        txt_empty_array.setText(R.string.no_followers)
+        txt_empty_array.setText(R.string.no_connection)
     }
 
     private fun subscribeToPaginatedLiveData() {

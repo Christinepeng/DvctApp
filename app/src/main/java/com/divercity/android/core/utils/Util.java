@@ -7,11 +7,14 @@ import android.text.TextUtils;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
 
+import com.divercity.android.R;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -152,11 +155,13 @@ public final class Util {
         }
     }
 
-//    public static <T extends DataBase<T>> T checkResponse(Response<T> response){
-//        if (response.isSuccessful()) {
-//            return response.body().getData();
-//        } else {
-//            throw new HttpException(response);
-//        }
-//    }
+    public static HashMap<String, String> getUserTypeMap(Context context){
+        String[] userTypeId = context.getResources().getStringArray(R.array.user_type_id);
+        String[] userType = context.getResources().getStringArray(R.array.user_type);
+        HashMap<String, String> userTypeMap = new HashMap<>();
+        for(int i = 0; i < userTypeId.length; i++){
+            userTypeMap.put(userTypeId[i], userType[i]);
+        }
+        return userTypeMap;
+    }
 }

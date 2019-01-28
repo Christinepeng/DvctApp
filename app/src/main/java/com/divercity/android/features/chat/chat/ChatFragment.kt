@@ -42,9 +42,6 @@ class ChatFragment : BaseFragment() {
     var userName: String? = null
 
     @Inject
-    lateinit var userRepository: UserRepository
-
-    @Inject
     lateinit var adapter: ChatAdapter
 
     @Inject
@@ -177,16 +174,19 @@ class ChatFragment : BaseFragment() {
             }
         }
         list_users.adapter = userAdapter
-//
+
 //        Paginate.with(list, object : Paginate.Callbacks{
 //            override fun onLoadMore() {
+//                Timber.e("onLoadMore called")
 //            }
 //
 //            override fun isLoading(): Boolean {
+//                Timber.e("isLoading called")
 //                return false
 //            }
 //
 //            override fun hasLoadedAllItems(): Boolean {
+//                Timber.e("hasLoadedAllItems called")
 //                return false
 //            }
 //
@@ -244,6 +244,7 @@ class ChatFragment : BaseFragment() {
             throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
         }
 
+//        Timber.e("totalItemCount: " + totalItemCount + " - visibleItemCount: " + visibleItemCount + " - firstVisibleItemPosition: " + firstVisibleItemPosition)
         viewModel.checkIfFetchMoreData(visibleItemCount, totalItemCount, firstVisibleItemPosition)
     }
 

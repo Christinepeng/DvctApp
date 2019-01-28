@@ -55,7 +55,8 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.profile.ProfileViewModel
-import com.divercity.android.features.profile.tabfollower.FollowerViewModel
+import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
+import com.divercity.android.features.profile.tabfollower.ConnectionsViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsViewModel
 import com.divercity.android.features.profile.tabprofile.TabProfileViewModel
@@ -304,8 +305,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FollowerViewModel::class)
-    abstract fun bindsFollowerViewModel(viewModel: FollowerViewModel): ViewModel
+    @ViewModelKey(ConnectionsViewModel::class)
+    abstract fun bindsFollowerViewModel(viewModel: ConnectionsViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -366,4 +367,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GroupDescriptionViewModel::class)
     abstract fun bindsGroupDescriptionViewModel(viewModel: GroupDescriptionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ProfileSettingsViewModel::class)
+    abstract fun bindsProfileSettingsViewModel(viewModel: ProfileSettingsViewModel): ViewModel
 }

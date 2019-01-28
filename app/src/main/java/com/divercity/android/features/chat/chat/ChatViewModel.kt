@@ -19,6 +19,7 @@ import com.divercity.android.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.android.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.android.features.chat.chat.usecase.SendMessagesUseCase
 import com.divercity.android.repository.chat.ChatRepositoryImpl
+import com.divercity.android.repository.user.UserRepository
 import com.divercity.android.socket.ChatWebSocket
 import com.google.gson.JsonElement
 import kotlinx.coroutines.CoroutineScope
@@ -39,7 +40,8 @@ constructor(
     private val fetchMessagesUseCase: FetchMessagesUseCase,
     private val sendMessagesUseCase: SendMessagesUseCase,
     private val chatWebSocket: ChatWebSocket,
-    private val fetchChatMembersUseCase: FetchChatMembersUseCase
+    private val fetchChatMembersUseCase: FetchChatMembersUseCase,
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     var pageFetchList = ArrayList<Int>()
@@ -118,7 +120,9 @@ constructor(
 
             override fun onSuccess(o: List<UserResponse>) {
                 hasFetchGroupMembersError = false
-                chatMembers = o
+                chatMembers = o.filter {
+                    it.id != userRepository.getUserId()
+                }
                 fetchChatMembersResponse.postValue(Resource.success(o))
             }
         }
@@ -250,7 +254,7 @@ constructor(
         compositeDisposable.add(callback)
         sendMessagesUseCase.execute(
             callback, SendMessagesUseCase.Params
-                .forMsg(message, chatId.toString())
+                .forMsg(parsedMessage, chatId.toString())
         )
     }
 

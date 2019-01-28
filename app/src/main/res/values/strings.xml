@@ -21,6 +21,9 @@
     <string name="next">Next</string>
     <string name="conversation">Conversation</string>
     <string name="settings">Settings</string>
+    <string name="connections">Connections</string>
+    <string name="pick_source">Pick source</string>
+    <string name="error_notifications">Error setting up notifications, try to restart the app</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -31,8 +34,19 @@
     <string name="age_range">Age Range</string>
     <string name="occupation">Occupation</string>
     <string name="no_followers">You don’t seem to have any Followers yet :(</string>
+    <string name="no_connection">You don’t seem to have any connections yet :(</string>
     <string name="no_following">You don’t seem to be Following anyone yet :(</string>
     <string name="no_groups_following">You haven’t joined any Group yet :(</string>
+    <string name="change_profile_picture">Change Profile Picture</string>
+    <string name="account">Account</string>
+    <string name="account_settings">Account Settings</string>
+    <string name="lbl_name_email">Name, Email</string>
+    <string name="change_password">Change Password</string>
+    <string name="change_job_status">Change Job Status</string>
+    <string name="app">App</string>
+    <string name="notifications">Notifications</string>
+    <string name="personal_settings">Personal Settings</string>
+    <string name="personal_settings_subtitle">Ethnicity, Gender, Occupation, Location…</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -254,7 +268,25 @@
         <item>55 – 64</item>
         <item>65+</item>
     </string-array>
-    
+
+    <string-array name="user_type_id">
+        <item>job_seeker</item>
+        <item>student</item>
+        <item>entrepreneur</item>
+        <item>professional</item>
+        <item>hiring_manager</item>
+        <item>recruiter</item>
+    </string-array>
+
+    <string-array name="user_type">
+        <item>Job Seeker</item>
+        <item>Student</item>
+        <item>Entrepreneur</item>
+        <item>Professional</item>
+        <item>Hiring Manager</item>
+        <item>Recruiter</item>
+    </string-array>
+
     <string name="noti_channel_chats">Chats</string>
     <string name="unauthorized_user">Unauthorized user</string>
 

@@ -10,8 +10,8 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.tabfollowers.adapter.UserAdapter
-import com.divercity.android.features.profile.tabfollowers.adapter.UserViewHolder
+import com.divercity.android.features.profile.tabconnections.adapter.UserAdapter
+import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 

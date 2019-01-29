@@ -4,7 +4,6 @@ import android.content.Context
 import android.content.Intent
 import com.divercity.android.core.base.BaseActivity
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsFragment
 
 /**
  * Created by lucas on 24/12/2018.
@@ -20,7 +19,7 @@ class ChatsActivity : BaseActivity() {
     }
 
     override fun fragment(): BaseFragment =
-            ChatsFragment.newInstance()
+            com.divercity.android.features.chat.recentchats.newrecentchats.ChatsFragment.newInstance()
 
     override fun onBackPressed() {
         if(isTaskRoot){

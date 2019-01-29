@@ -1,111 +1,112 @@
 package com.divercity.android.data.entity.user.response
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
-data class UserAttributes(
+data class UserAttributes (
 
 	@field:SerializedName("country")
-	val country: String? = null,
+	var country: String? = "",
 
 	@field:SerializedName("avatar_medium")
-	val avatarMedium: String? = null,
+	var avatarMedium: String? = "",
 
 	@field:SerializedName("account_type")
-	val accountType: String? = null,
+	var accountType: String? = "",
 
 	@field:SerializedName("occupation")
-	val occupation: String? = null,
+	var occupation: String? = "",
 
 	@field:SerializedName("birthdate")
-	val birthdate: String? = null,
+	var birthdate: String? = "",
 
 	@field:SerializedName("role")
-	val role: String? = null,
+	var role: String? = "",
 
 	@field:SerializedName("gender")
-	val gender: String? = null,
+	var gender: String? = "",
 
 	@field:SerializedName("ethnicity")
-	val ethnicity: String? = null,
+	var ethnicity: String? = "",
 
 	@field:SerializedName("city")
-	val city: String? = null,
+	var city: String? = "",
 
 	@field:SerializedName("timezone")
-	val timezone: String? = null,
+	var timezone: String? = "",
 
 	@field:SerializedName("phonenumber")
-	val phonenumber: String? = null,
+	var phonenumber: String? = "",
 
 	@field:SerializedName("created_at")
-	val createdAt: String? = null,
+	var createdAt: String? = "",
 
 	@field:SerializedName("questions_count")
-	val questionsCount: Int? = null,
+	var questionsCount: Int? = -1,
 
 	@field:SerializedName("occupation_of_interests")
-	val occupationOfInterests: List<String?>? = null,
+	var occupationOfInterests: List<String>? = Collections.emptyList(),
 
 	@field:SerializedName("group_of_interest_following_count")
-	val groupOfInterestFollowingCount: Int? = null,
+	var groupOfInterestFollowingCount: Int? = -1,
 
 	@field:SerializedName("uid")
-	val uid: String? = null,
+	var uid: String? = "",
 
 	@field:SerializedName("answers_count")
-	val answersCount: Int? = null,
+	var answersCount: Int? = -1,
 
 	@field:SerializedName("nickname")
-	val nickname: String? = null,
+	var nickname: String? = "",
 
 	@field:SerializedName("company")
-	val company: Company? = null,
+	var company: Company? = Company(),
 
 	@field:SerializedName("is_followed_by_current")
-	val isFollowedByCurrent: String? = null,
+	var isFollowedByCurrent: Boolean? = false,
 
 	@field:SerializedName("email")
-	val email: String? = null,
+	var email: String? = "",
 
 	@field:SerializedName("lat")
-	val lat: String? = null,
+	var lat: String? = "",
 
 	@field:SerializedName("no_password_set")
-	val noPasswordSet: String? = null,
+	var noPasswordSet: String? = "",
 
 	@field:SerializedName("lng")
-	val lng: String? = null,
+	var lng: String? = "",
 
 	@field:SerializedName("avatar_thumb")
-	val avatarThumb: String? = null,
+	var avatarThumb: String? = "",
 
 	@field:SerializedName("last_name")
-	val lastName: String? = null,
+	var lastName: String? = "",
 
 	@field:SerializedName("school_name")
-	val schoolName: String? = null,
+	var schoolName: String? = "",
 
 	@field:SerializedName("is_default_avatar")
-	val isDefaultAvatar: Boolean? = null,
+	var isDefaultAvatar: Boolean? = false,
 
 	@field:SerializedName("interest_ids")
-	val interestIds: List<Int?>? = null,
+	var interestIds: List<Int>? = Collections.emptyList(),
 
 	@field:SerializedName("following_count")
-	val followingCount: Int? = null,
+	var followingCount: Int? = -1,
 
 	@field:SerializedName("followers_count")
-	val followersCount: Int? = null,
+	var followersCount: Int? = -1,
 
 	@field:SerializedName("industries")
-	val industries: List<String?>? = null,
+	var industries: List<String>? = Collections.emptyList(),
 
 	@field:SerializedName("student_majors")
-	val studentMajors: List<String?>? = null,
+	var studentMajors: List<String>? = Collections.emptyList(),
 
 	@field:SerializedName("name")
-	val name: String? = null,
+	var name: String? = "",
 
 	@field:SerializedName("age_range")
-	val ageRange: String? = null
+	var ageRange: String? = ""
 )

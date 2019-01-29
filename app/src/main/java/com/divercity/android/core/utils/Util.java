@@ -38,7 +38,7 @@ public final class Util {
         }
     }
 
-    public static boolean areDatesSameDay(String strDate1, String strDate2){
+    public static boolean areDatesSameDay(String strDate1, String strDate2) {
         Date date1 = getDateWithServerTimeStamp(strDate1);
         Date date2 = getDateWithServerTimeStamp(strDate2);
         Calendar cal1 = Calendar.getInstance();
@@ -49,7 +49,7 @@ public final class Util {
                 cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
     }
 
-    public static Long getMilisecFromStringDate(String date){
+    public static Long getMilisecFromStringDate(String date) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                 Locale.US);
         try {
@@ -59,7 +59,7 @@ public final class Util {
         }
     }
 
-    public static String getStringDateTimeWithServerDate(String date){
+    public static String getStringDateTimeWithServerDate(String date) {
         if (date != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                     Locale.getDefault());
@@ -79,7 +79,17 @@ public final class Util {
         }
     }
 
-    public static String getStringDateWithServerDate(String date){
+    public static String getStringDateTimeWithServerDate(Date date) {
+        if (date != null) {
+            DateFormat df = new SimpleDateFormat("MM/dd/yyyy K:mm a", Locale.getDefault());
+            String res = df.format(date);
+            return res.replace("AM", "am").replace("PM", "pm");
+        } else {
+            return "";
+        }
+    }
+
+    public static String getStringDateWithServerDate(String date) {
         if (date != null) {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ",
                     Locale.getDefault());
@@ -145,9 +155,9 @@ public final class Util {
             CookieManager.getInstance().removeAllCookies(null);
             CookieManager.getInstance().flush();
         } else {
-            CookieSyncManager cookieSyncMngr=CookieSyncManager.createInstance(context);
+            CookieSyncManager cookieSyncMngr = CookieSyncManager.createInstance(context);
             cookieSyncMngr.startSync();
-            CookieManager cookieManager=CookieManager.getInstance();
+            CookieManager cookieManager = CookieManager.getInstance();
             cookieManager.removeAllCookie();
             cookieManager.removeSessionCookie();
             cookieSyncMngr.stopSync();
@@ -155,11 +165,11 @@ public final class Util {
         }
     }
 
-    public static HashMap<String, String> getUserTypeMap(Context context){
+    public static HashMap<String, String> getUserTypeMap(Context context) {
         String[] userTypeId = context.getResources().getStringArray(R.array.user_type_id);
         String[] userType = context.getResources().getStringArray(R.array.user_type);
         HashMap<String, String> userTypeMap = new HashMap<>();
-        for(int i = 0; i < userTypeId.length; i++){
+        for (int i = 0; i < userTypeId.length; i++) {
             userTypeMap.put(userTypeId[i], userType[i]);
         }
         return userTypeMap;

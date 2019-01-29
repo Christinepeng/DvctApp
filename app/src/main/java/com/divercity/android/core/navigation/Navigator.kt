@@ -48,6 +48,8 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
+import com.divercity.android.features.profile.settings.interests.InterestsActivity
+import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -238,6 +240,14 @@ class Navigator @Inject constructor() {
 
     fun navigateToJobApplicantsActivity(fragment: Fragment, job: JobResponse) {
         fragment.startActivity(JobApplicantsActivity.getCallingIntent(fragment.context, job))
+    }
+
+    fun navigateToPersonalSettingsActivity(fragment: Fragment) {
+        fragment.startActivity(PersonalSettingsActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToInterestsActivity(fragment: Fragment) {
+        fragment.startActivity(InterestsActivity.getCallingIntent(fragment.context))
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,

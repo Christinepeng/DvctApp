@@ -1,4 +1,4 @@
-package com.divercity.android.features.chat.recentchats.adapter
+package com.divercity.android.features.chat.recentchats.newrecentchats
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -23,6 +23,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
 
             itemView.txt_name.text = data.name
             itemView.txt_msg.text = data.lastMessage
+
             itemView.txt_date.text = Util.getStringDateTimeWithServerDate(data.lastMessageDate)
 
             itemView.setOnClickListener {
@@ -41,7 +42,10 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
         fun create(parent: ViewGroup, listener: Listener?): RecentChatViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_chats, parent, false)
-            return RecentChatViewHolder(view, listener)
+            return RecentChatViewHolder(
+                view,
+                listener
+            )
         }
     }
 }

@@ -22,18 +22,19 @@ import com.divercity.android.features.home.home.feed.datasource.QuestionsPaginat
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase
 import com.divercity.android.features.home.home.usecase.GetStoriesFeatured
 import com.divercity.android.helpers.NotificationHelper
-import com.divercity.android.repository.chat.ChatRepositoryImpl
-import com.divercity.android.repository.user.LoggedUserRepositoryImpl
+import com.divercity.android.repository.user.UserRepositoryImpl
 import com.google.gson.JsonElement
 import io.reactivex.observers.DisposableObserver
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import javax.inject.Inject
 
 class HomeViewModel @Inject
 constructor(
         private val questionsRepository: QuestionsPaginatedRepositoryImpl,
         private val getStoriesFeatured: GetStoriesFeatured,
-        private val loggedUserRepository: LoggedUserRepositoryImpl,
-        private val chatRepositoryImpl: ChatRepositoryImpl,
+        private val userRepositoryImpl: UserRepositoryImpl,
         private val fetchFeedRecommendedJobsGroupsUseCase: FetchFeedRecommendedJobsGroupsUseCase,
         private val joinGroupUseCase: JoinGroupUseCase,
         private val requestToJoinUseCase : RequestJoinGroupUseCase,
@@ -53,6 +54,9 @@ constructor(
 
     val refreshState: LiveData<NetworkState> = questionListing.refreshState
 
+    private val viewModelJob = Job()
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
     init {
         questionList = questionListing.pagedList
 //        fetchRecommendedGroupsJobs()
@@ -64,6 +68,13 @@ constructor(
 
     fun refresh() {
         questionsRepository.refresh()
+    }
+
+    fun getUser(){
+//        uiScope.launch {
+//            val user = se.getSavedUser()
+//            val test = user
+//        }
     }
 
 //    fun fetchRecommendedGroupsJobs() {
@@ -170,6 +181,8 @@ constructor(
         super.onCleared()
         questionsRepository.clear()
     }
+
+
 
     fun clearUserData() {
         session.logout()

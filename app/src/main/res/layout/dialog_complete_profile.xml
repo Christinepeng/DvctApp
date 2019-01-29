@@ -19,7 +19,7 @@
         android:layout_marginStart="40dp"
         app:cardElevation="0dp">
 
-        <com.divercity.app.core.ui.AnimateHorizontalProgressBar
+        <com.divercity.android.core.ui.AnimateHorizontalProgressBar
             android:id="@+id/progress_bar"
             android:layout_width="match_parent"
             android:layout_height="25dp"

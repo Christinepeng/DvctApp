@@ -16,6 +16,7 @@ import com.divercity.android.data.entity.school.SchoolResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.onboarding.selectschool.school.SchoolPaginatedRepositoryImpl;
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase;
+import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
@@ -31,6 +32,7 @@ public class SelectSchoolViewModel extends BaseViewModel {
     private Listing<SchoolResponse> listingPaginatedSchool;
     private SchoolPaginatedRepositoryImpl repository;
     private UserRepository userRepository;
+    private SessionRepository sessionRepository;
 
     private MutableLiveData<Resource<UserResponse>> updateUserProfileResponse = new MutableLiveData<>();
     private UpdateUserProfileUseCase updateUserProfileUseCase;
@@ -38,10 +40,12 @@ public class SelectSchoolViewModel extends BaseViewModel {
     @Inject
     public SelectSchoolViewModel(SchoolPaginatedRepositoryImpl repository,
                                  UpdateUserProfileUseCase updateUserProfileUseCase,
-                                 UserRepository userRepository) {
+                                 UserRepository userRepository,
+                                 SessionRepository sessionRepository) {
         this.repository = repository;
         this.updateUserProfileUseCase = updateUserProfileUseCase;
         this.userRepository = userRepository;
+        this.sessionRepository = sessionRepository;
     }
 
     public void retry() {
@@ -95,7 +99,7 @@ public class SelectSchoolViewModel extends BaseViewModel {
     }
 
     public String getAccountType(){
-        return userRepository.getAccountType();
+        return sessionRepository.getAccountType();
     }
 
     public MutableLiveData<Resource<UserResponse>> getUpdateUserProfileResponse() {

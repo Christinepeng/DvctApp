@@ -17,8 +17,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
-import com.divercity.android.features.chat.recentchats.adapter.RecentChatAdapter
-import com.divercity.android.features.chat.recentchats.adapter.RecentChatViewHolder
+import com.divercity.android.features.chat.recentchats.newrecentchats.RecentChatViewHolder
 import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject

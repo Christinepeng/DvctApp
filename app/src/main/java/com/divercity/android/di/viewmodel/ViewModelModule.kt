@@ -5,7 +5,7 @@ import android.arch.lifecycle.ViewModelProvider
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeViewModel
 import com.divercity.android.features.chat.chat.ChatViewModel
 import com.divercity.android.features.chat.newchat.NewChatViewModel
-import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel
+import com.divercity.android.features.chat.recentchats.newrecentchats.ChatsViewModel
 import com.divercity.android.features.company.base.SelectCompanyViewModel
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
@@ -56,6 +56,8 @@ import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewMo
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.profile.ProfileViewModel
 import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
+import com.divercity.android.features.profile.settings.interests.InterestsViewModel
+import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsViewModel
 import com.divercity.android.features.profile.tabfollower.ConnectionsViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsViewModel
@@ -323,10 +325,10 @@ abstract class ViewModelModule {
     @ViewModelKey(FollowingGroupsViewModel::class)
     abstract fun bindsFollowingGroupsViewModel(viewModel: FollowingGroupsViewModel): ViewModel
 
-    @Binds
-    @IntoMap
-    @ViewModelKey(ChatsViewModel::class)
-    abstract fun bindsDirectMessagesViewModel(viewModel: ChatsViewModel): ViewModel
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(ChatsViewModel::class)
+//    abstract fun bindsDirectMessagesViewModel(viewModel: com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -372,4 +374,19 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ProfileSettingsViewModel::class)
     abstract fun bindsProfileSettingsViewModel(viewModel: ProfileSettingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PersonalSettingsViewModel::class)
+    abstract fun bindsPersonalSettingsViewModel(viewModel: PersonalSettingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(InterestsViewModel::class)
+    abstract fun bindsInterestsViewModel(viewModel: InterestsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChatsViewModel::class)
+    abstract fun bindsChatsViewModel(viewModel: com.divercity.android.features.chat.recentchats.newrecentchats.ChatsViewModel): ViewModel
 }

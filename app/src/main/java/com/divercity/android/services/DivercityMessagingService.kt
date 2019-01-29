@@ -3,7 +3,7 @@ package com.divercity.android.services
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.usecase.UpdateFCMTokenUseCase
 import com.divercity.android.helpers.NotificationHelper
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.google.gson.JsonElement
@@ -24,7 +24,7 @@ class DivercityMessagingService : FirebaseMessagingService() {
     lateinit var updateFCMTokenUseCase: UpdateFCMTokenUseCase
 
     @Inject
-    lateinit var userRepository: UserRepository
+    lateinit var sessionRepository: SessionRepository
 
     companion object {
         const val NEW_DIRECT_MESSAGE = "NEW_DIRECT_MESSAGE"
@@ -60,8 +60,8 @@ class DivercityMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(p0: String?) {
         super.onNewToken(p0)
-        userRepository.setFCMToken(p0)
-        userRepository.getDeviceId()?.let { deviceId ->
+        sessionRepository.setFCMToken(p0)
+        sessionRepository.getDeviceId()?.let { deviceId ->
             p0?.let { token ->
                 val callback = object : DisposableObserverWrapper<Void>() {
                     override fun onFail(error: String) {

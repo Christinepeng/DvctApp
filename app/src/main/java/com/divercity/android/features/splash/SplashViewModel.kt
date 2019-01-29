@@ -5,14 +5,13 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
-import com.divercity.android.repository.user.LoggedUserRepositoryImpl
-
+import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 class SplashViewModel @Inject
 internal constructor(
-        private val fetchUserDataUseCase: FetchUserDataUseCase,
-        private val loggedUserRepository: LoggedUserRepositoryImpl
+    private val fetchUserDataUseCase: FetchUserDataUseCase,
+    private val sessionRepository: SessionRepository
 ) : BaseViewModel() {
 
     val userData = SingleLiveEvent<Resource<UserResponse>>()
@@ -20,7 +19,7 @@ internal constructor(
     val navigateToHome = SingleLiveEvent<Boolean>()
 
     val isUserLogged: Boolean
-        get() = loggedUserRepository.isUserLogged()
+        get() = sessionRepository.isUserLogged()
 
     fun fetchCurrentUserDataToCheckUserTypeDefined() {
 
@@ -33,6 +32,8 @@ internal constructor(
 
             override fun onSuccess(response: UserResponse) {
                 userData.value = Resource.success(response)
+                sessionRepository.saveUserData(response)
+
                 if (response.userAttributes?.accountType == null)
                     navigateToSelectUserType.value = true
                 else
@@ -40,6 +41,6 @@ internal constructor(
             }
         }
         compositeDisposable.add(callback)
-        fetchUserDataUseCase.execute(callback, FetchUserDataUseCase.Params.forUserData(loggedUserRepository.getUserId()))
+        fetchUserDataUseCase.execute(callback, FetchUserDataUseCase.Params.forUserData(sessionRepository.getUserId()))
     }
 }

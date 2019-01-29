@@ -1,18 +1,30 @@
 package com.divercity.android.data.entity.user.response
 
+import android.arch.persistence.room.Embedded
+import android.arch.persistence.room.Entity
+import android.arch.persistence.room.TypeConverters
+import com.divercity.android.db.converter.CompanyTypeConverter
+import com.divercity.android.db.converter.IntListTypeConverter
+import com.divercity.android.db.converter.StringListTypeConverter
 import com.divercity.android.features.chat.chat.model.ChatMember
 import com.google.gson.annotations.SerializedName
 
+@Entity(tableName = "user",primaryKeys = ["id"])
+@TypeConverters(
+	CompanyTypeConverter::class,
+	IntListTypeConverter::class,
+	StringListTypeConverter::class)
 data class UserResponse(
 
 	@field:SerializedName("attributes")
-	val userAttributes: UserAttributes? = null,
+	@Embedded( prefix = "attr_" )
+	var userAttributes: UserAttributes? = null,
 
 	@field:SerializedName("id")
-	val id: String? = null,
+	var id: String = "-1",
 
 	@field:SerializedName("type")
-	val type: String? = null
+	var type: String? = "users"
 ) {
 	fun toChatMember() = ChatMember(id,
 		userAttributes?.name,

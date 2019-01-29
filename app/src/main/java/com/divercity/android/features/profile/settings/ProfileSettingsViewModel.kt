@@ -1,13 +1,13 @@
 package com.divercity.android.features.profile.settings
 
-import android.content.Context
+import android.app.Application
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.usecase.UpdateFCMTokenUseCase
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 class ProfileSettingsViewModel @Inject
 constructor(
-    private val context : Context,
-    private val userRepository: UserRepository,
+    private val context : Application,
+    private val sessionRepository: SessionRepository,
     private val updateFCMTokenUseCase: UpdateFCMTokenUseCase
 ) : BaseViewModel() {
 
@@ -28,12 +28,12 @@ constructor(
 //    val navigateToSelectUserType = SingleLiveEvent<Boolean>()
 
     fun getProfilePicture(): String? {
-        return userRepository.getAvatarUrl()
+        return sessionRepository.getUserAvatarUrl()
     }
 
     fun enableNotifications(enabled: Boolean) {
         updateFCMTokenResponse.postValue(Resource.loading(null))
-        if (!userRepository.getDeviceId().isNullOrEmpty() && !userRepository.getFCMToken().isNullOrEmpty()) {
+        if (!sessionRepository.getDeviceId().isNullOrEmpty() && !sessionRepository.getFCMToken().isNullOrEmpty()) {
             val callback = object : DisposableObserverWrapper<Void>() {
                 override fun onFail(error: String) {
                     updateFCMTokenResponse.postValue(Resource.error(error, enabled))
@@ -50,8 +50,8 @@ constructor(
             }
             updateFCMTokenUseCase.execute(
                 callback, UpdateFCMTokenUseCase.Params.forDevice(
-                    userRepository.getDeviceId()!!,
-                    userRepository.getFCMToken()!!,
+                    sessionRepository.getDeviceId()!!,
+                    sessionRepository.getFCMToken()!!,
                     enabled
                 )
             )

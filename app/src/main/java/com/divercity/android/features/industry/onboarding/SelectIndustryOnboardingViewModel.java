@@ -15,6 +15,7 @@ import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.industry.base.industry.IndustryPaginatedRepositoryImpl;
 import com.divercity.android.features.industry.onboarding.usecase.FollowIndustriesUseCase;
+import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
@@ -31,6 +32,7 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
     private LiveData<PagedList<IndustryResponse>> pagedIndustryList;
     private Listing<IndustryResponse> listingPaginatedIndustry;
     private IndustryPaginatedRepositoryImpl repository;
+    private SessionRepository sessionRepository;
     private UserRepository userRepository;
     private FollowIndustriesUseCase followIndustriesUseCase;
     private MutableLiveData<Resource<UserResponse>> followIndustriesResponse = new MutableLiveData<>();
@@ -38,10 +40,12 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
     @Inject
     public SelectIndustryOnboardingViewModel(IndustryPaginatedRepositoryImpl repository,
                                              FollowIndustriesUseCase followIndustriesUseCase,
-                                             UserRepository userRepository) {
+                                             UserRepository userRepository,
+                                             SessionRepository sessionRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.followIndustriesUseCase = followIndustriesUseCase;
+        this.sessionRepository = sessionRepository;
         fetchIndustries(null, null);
     }
 
@@ -76,7 +80,7 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
     }
 
     public String getAccountType() {
-        return userRepository.getAccountType();
+        return sessionRepository.getAccountType();
     }
 
     public void followIndustries(List<String> industriesSelected) {

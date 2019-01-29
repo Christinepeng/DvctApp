@@ -10,9 +10,10 @@ import com.divercity.android.data.entity.profile.profile.User
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
+import com.divercity.android.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
 import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -21,36 +22,36 @@ import javax.inject.Inject
  */
 
 class TabProfileViewModel @Inject
-constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
-            private val updateUserProfileUseCase: UpdateUserProfileUseCase,
-            private val userRepository: UserRepository,
-            private val fetchInterestsUseCase: FetchInterestsUseCase) : BaseViewModel() {
+constructor(
+    private val fetchUserDataUseCase: FetchUserDataUseCase,
+    private val updateUserProfileUseCase: UpdateUserProfileUseCase,
+    private val sessionRepository: SessionRepository,
+    private val fetchInterestsUseCase: FetchInterestsUseCase,
+    private val followInterestsUseCase: FollowInterestsUseCase
+) : BaseViewModel() {
 
     var fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
     val updateUserProfileResponse = SingleLiveEvent<Resource<UserResponse>>()
+    var followInterestsResponse = MutableLiveData<Resource<ResponseFollowInterest>>()
 
-    init {
-        fetchInterests()
+    fun getEthnicity(): String? {
+        return sessionRepository.getEthnicity()
     }
 
-    fun getEthnicity() : String? {
-        return userRepository.getEthnicity()
+    fun getGender(): String? {
+        return sessionRepository.getGender()
     }
 
-    fun getGender() : String?{
-        return userRepository.getGender()
+    fun getIndustries(): String? {
+        return sessionRepository.getIndustries()
     }
 
-    fun getIndustries() : String? {
-        return userRepository.getIndustry()
+    fun getAgeRange(): String? {
+        return sessionRepository.getAgeRange()
     }
 
-    fun getAgeRange() : String? {
-        return userRepository.getAgeRange()
-    }
-
-    fun getLocation() : String? {
-        return userRepository.getLocation()
+    fun getLocation(): String? {
+        return sessionRepository.getLocation()
     }
 
     fun updateEthnicity(ethnicity: String?) {
@@ -59,26 +60,26 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
         updateUserProfile(user)
     }
 
-    fun updateGender(gender : String?){
+    fun updateGender(gender: String?) {
         val user = User()
         user.gender = gender
         updateUserProfile(user)
     }
 
-    fun updateAgeRange(ageRange : String?){
+    fun updateAgeRange(ageRange: String?) {
         val user = User()
         user.ageRange = ageRange
         updateUserProfile(user)
     }
 
-    fun updateLocation(location : LocationResponse){
+    fun updateLocation(location: LocationResponse) {
         val user = User()
         user.city = location.attributes?.name
         user.country = location.attributes?.countryName
         updateUserProfile(user)
     }
 
-    private fun fetchInterests() {
+    fun fetchInterests() {
         fetchInterestsResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<List<InterestsResponse>>() {
             override fun onFail(error: String) {
@@ -97,7 +98,32 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
         fetchInterestsUseCase.execute(callback, null)
     }
 
-    fun updateUserProfile(user : User){
+    fun followInterests(interest: InterestsResponse, position: Int) {
+        val interestId = ArrayList<String>()
+        interestId.add(interest.id!!)
+
+        followInterestsResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<UserResponse>() {
+            override fun onFail(error: String) {
+                followInterestsResponse.postValue(Resource.error(error, ResponseFollowInterest(null, position)))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                followInterestsResponse.postValue(Resource.error(error.toString(), ResponseFollowInterest(null, position)))
+            }
+
+            override fun onSuccess(o: UserResponse) {
+                followInterestsResponse.postValue(Resource.success(ResponseFollowInterest(o, position)))
+            }
+        }
+        compositeDisposable.add(callback)
+        followInterestsUseCase.execute(
+            callback,
+            FollowInterestsUseCase.Params.forInterests(interestId)
+        )
+    }
+
+    fun updateUserProfile(user: User) {
         updateUserProfileResponse.postValue(Resource.loading<UserResponse>(null))
 
         val callback = object : DisposableObserverWrapper<UserResponse>() {
@@ -106,7 +132,12 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
             }
 
             override fun onHttpException(error: JsonElement) {
-                updateUserProfileResponse.postValue(Resource.error<UserResponse>(error.toString(), null))
+                updateUserProfileResponse.postValue(
+                    Resource.error<UserResponse>(
+                        error.toString(),
+                        null
+                    )
+                )
             }
 
             override fun onSuccess(o: UserResponse) {
@@ -115,6 +146,7 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
         }
         compositeDisposable.add(callback)
         updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
-
     }
+
+    class ResponseFollowInterest(val user: UserResponse?,val position : Int)
 }

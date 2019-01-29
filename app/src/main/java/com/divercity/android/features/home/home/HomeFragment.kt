@@ -287,6 +287,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         btn_fab.setOnClickListener {
             showToast()
             viewModel.showNotification()
+            viewModel.getUser()
         }
         btn_create_group.setOnClickListener {
             showToast()

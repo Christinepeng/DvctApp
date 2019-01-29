@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 class ChatAdapter @Inject
-constructor(val userRepository: UserRepository) :
+constructor(val sessionRepository: SessionRepository) :
     PagedListAdapter<ChatMessageResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var retryCallback: RetryCallback? = null
@@ -26,9 +26,9 @@ constructor(val userRepository: UserRepository) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (itemCount > position + 1)
-            (holder as ChatViewHolder).bindTo(userRepository.getUserId()!!, getItem(position), getItem(position + 1))
+            (holder as ChatViewHolder).bindTo(sessionRepository.getUserId(), getItem(position), getItem(position + 1))
         else
-            (holder as ChatViewHolder).bindTo(userRepository.getUserId()!!, getItem(position), null)
+            (holder as ChatViewHolder).bindTo(sessionRepository.getUserId(), getItem(position), null)
     }
 
     override fun getItemViewType(position: Int): Int {

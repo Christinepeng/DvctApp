@@ -1,7 +1,7 @@
 package com.divercity.android
 
 import com.divercity.android.repository.chat.ChatRepositoryImpl
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import kotlinx.coroutines.CoroutineScope
@@ -17,7 +17,7 @@ import javax.inject.Inject
 class Session @Inject
 constructor(
     private val chatRepositoryImpl: ChatRepositoryImpl,
-    private val userRepository: UserRepository
+    private val sessionRepository: SessionRepository
 ) {
 
     fun logout() {
@@ -30,6 +30,6 @@ constructor(
                 FirebaseInstanceId.getInstance().deleteInstanceId()
             }
         }
-        userRepository.clearUserData()
+        sessionRepository.clearUserData()
     }
 }

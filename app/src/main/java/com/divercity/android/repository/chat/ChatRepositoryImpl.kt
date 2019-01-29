@@ -7,8 +7,8 @@ import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.android.data.entity.createchat.CreateChatResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.ChatService
-import com.divercity.android.db.chat.ChatMessageDao
-import com.divercity.android.db.chat.ExistingChatDao
+import com.divercity.android.db.dao.ChatMessageDao
+import com.divercity.android.db.dao.RecentChatsDao
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,7 +26,7 @@ class ChatRepositoryImpl @Inject
 constructor(
         private val chatService: ChatService,
         private val chatMessageDao: ChatMessageDao,
-        private val existingChatDao: ExistingChatDao
+        private val recentChatsDao: RecentChatsDao
 ) : ChatRepository {
 
     override fun fetchChatMembers(currentUserId: String, chatId: String, pageNumber: Int, size: Int, query: String?): Observable<List<UserResponse>> {
@@ -97,15 +97,15 @@ constructor(
         }
     }
 
-    suspend fun insertChatsOnDB(list: List<ExistingUsersChatListItem>) {
+    suspend fun saveRecentChats(list: List<ExistingUsersChatListItem>) {
         return withContext(Dispatchers.IO) {
-            existingChatDao.insertChatMessages(list)
+            recentChatsDao.insertChatMessages(list)
         }
     }
 
     suspend fun insertChatOnDB(chat: ExistingUsersChatListItem) {
         return withContext(Dispatchers.IO) {
-            existingChatDao.insertChat(chat)
+            recentChatsDao.insertChat(chat)
         }
     }
 
@@ -123,12 +123,16 @@ constructor(
 
     suspend fun fetchChatIdByUser(userId: String): Int {
         return withContext(Dispatchers.IO) {
-            existingChatDao.fetchChatIdByUser(userId)
+            recentChatsDao.fetchChatIdByUser(userId)
         }
     }
 
     fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageResponse> {
         return chatMessageDao.getPagedMessagesByChatId(chatId)
+    }
+
+    fun getRecentChats(): DataSource.Factory<Int, ExistingUsersChatListItem> {
+        return recentChatsDao.getPagedRecentChats()
     }
 
     override fun fetchCurrentChats(

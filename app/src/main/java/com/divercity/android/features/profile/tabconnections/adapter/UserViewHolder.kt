@@ -39,6 +39,10 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 txt_name.text = it.userAttributes?.name
                 txt_type.text = "@".plus(it.userAttributes?.nickname)
 //                txt_school.text = "Need data"
+
+                setOnClickListener {
+                    listener?.onUserClick(data)
+                }
             }
         }
     }

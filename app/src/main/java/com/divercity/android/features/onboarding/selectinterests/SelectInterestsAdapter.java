@@ -27,6 +27,7 @@ public class SelectInterestsAdapter extends RecyclerView.Adapter<SelectInterests
     private List<InterestsResponse> list = Collections.emptyList();
     private List<String> idsSelected = new ArrayList<>();
     private Listener listener;
+    private ListenerByPosition listenerByPosition;
 
     static class Holder extends RecyclerView.ViewHolder {
 
@@ -39,15 +40,24 @@ public class SelectInterestsAdapter extends RecyclerView.Adapter<SelectInterests
     }
 
     @Inject
-    public SelectInterestsAdapter() { }
+    public SelectInterestsAdapter() {
+    }
 
     public void setListener(Listener listener) {
         this.listener = listener;
     }
 
+    public void setListener(ListenerByPosition listener) {
+        this.listenerByPosition = listener;
+    }
+
     public void setList(List<InterestsResponse> list) {
         this.list = list;
         notifyDataSetChanged();
+    }
+
+    public List<InterestsResponse> getList() {
+        return list;
     }
 
     @NonNull
@@ -67,10 +77,15 @@ public class SelectInterestsAdapter extends RecyclerView.Adapter<SelectInterests
         setBackground(holder, item);
 
         holder.itemView.setOnClickListener(view -> {
-            if(listener != null) {
+            if (listener != null || listenerByPosition != null) {
                 item.setSelected(!item.isSelected());
                 setBackground(holder, item);
-                listener.onInterestClick(idsSelected);
+
+                if (listener != null)
+                    listener.onInterestClick(idsSelected);
+
+                if (listenerByPosition != null)
+                    listenerByPosition.onInterestClick(item, position);
             }
         });
     }
@@ -100,5 +115,10 @@ public class SelectInterestsAdapter extends RecyclerView.Adapter<SelectInterests
     interface Listener {
 
         void onInterestClick(List<String> idsSelected);
+    }
+
+    public interface ListenerByPosition {
+
+        void onInterestClick(InterestsResponse interests, int position);
     }
 }

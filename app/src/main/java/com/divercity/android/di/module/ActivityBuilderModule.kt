@@ -40,6 +40,8 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
+import com.divercity.android.features.profile.settings.interests.InterestsActivity
+import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
 import com.divercity.android.features.splash.SplashActivity
 import dagger.Module
@@ -177,4 +179,10 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindProfileSettingsActivity(): ProfileSettingsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindPersonalSettingsActivity(): PersonalSettingsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindInterestsActivity(): InterestsActivity
 }

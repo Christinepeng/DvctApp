@@ -3,7 +3,7 @@ package com.divercity.android.features.chat.chat.usecase
 import com.divercity.android.core.base.UseCase
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.android.repository.chat.ChatRepository
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import javax.inject.Inject
@@ -17,12 +17,12 @@ class FetchMessagesUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: ChatRepository,
-            private val userRepository: UserRepository
+            private val sessionRepository: SessionRepository
 ) : UseCase<@JvmSuppressWildcards DataChatMessageResponse, FetchMessagesUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<DataChatMessageResponse> {
         return repository.fetchMessages(
-                userRepository.getUserId()!!,
+                sessionRepository.getUserId(),
                 params.chatId,
                 params.otherUserId,
                 params.page,

@@ -6,7 +6,7 @@ import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class ProfileViewModel @Inject
 constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
-            private val userRepository: UserRepository) : BaseViewModel() {
+            private val sessionRepository: SessionRepository) : BaseViewModel() {
 
     var fetchUserDataResponse = MutableLiveData<Resource<UserResponse>>()
 
@@ -40,6 +40,6 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
             }
         }
         compositeDisposable.add(callback)
-        fetchUserDataUseCase.execute(callback, FetchUserDataUseCase.Params.forUserData(userRepository.getUserId()))
+        fetchUserDataUseCase.execute(callback, FetchUserDataUseCase.Params.forUserData(sessionRepository.getUserId()))
     }
 }

@@ -6,6 +6,7 @@ import android.arch.paging.PagedList
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.profile.tabfollowing.usecase.FetchFollowingUseCase
+import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
@@ -17,7 +18,7 @@ import javax.inject.Inject
 
 class FollowingPaginatedRepositoryImpl @Inject
 internal constructor(private val fetchFollowersUseCase: FetchFollowingUseCase,
-                     private val userRepository: UserRepository) {
+                     private val sessionRepository: SessionRepository) {
 
     private lateinit var followingDataSourceFactory: FollowingDataSourceFactory
     private val compositeDisposable = CompositeDisposable()
@@ -31,7 +32,7 @@ internal constructor(private val fetchFollowersUseCase: FetchFollowingUseCase,
 
         val executor = Executors.newFixedThreadPool(5)
 
-        fetchFollowersUseCase.userId = userRepository.getUserId()!!
+        fetchFollowersUseCase.userId = sessionRepository.getUserId()
 
         followingDataSourceFactory =
                 FollowingDataSourceFactory(

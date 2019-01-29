@@ -12,7 +12,7 @@ import io.reactivex.Observable
  * Created by lucas on 18/10/2018.
  */
 
-interface UserRepository : LoggedUserRepository {
+interface UserRepository {
 
     fun fetchRemoteUserData(userId: String): Observable<UserResponse>
 

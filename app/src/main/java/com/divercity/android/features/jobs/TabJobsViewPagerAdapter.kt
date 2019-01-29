@@ -6,14 +6,12 @@ import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
-
 import com.divercity.android.R
 import com.divercity.android.features.jobs.applications.JobsApplicationsFragment
 import com.divercity.android.features.jobs.jobs.JobsListFragment
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsFragment
 import com.divercity.android.features.jobs.savedjobs.SavedJobsFragment
-import com.divercity.android.repository.user.UserRepository
-
+import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 /**
@@ -24,7 +22,7 @@ class TabJobsViewPagerAdapter
 @Inject constructor(
         val context: Context,
         fm: FragmentManager,
-        val userRepository: UserRepository
+        private val sessionRepository: SessionRepository
 ) : FragmentStatePagerAdapter(fm) {
 
     private val PAGE_COUNT = 3
@@ -47,7 +45,7 @@ class TabJobsViewPagerAdapter
     )
 
     override fun getItem(position: Int): Fragment {
-        return if (userRepository.isLoggedUserJobSeeker())
+        return if (sessionRepository.isLoggedUserJobSeeker())
             getFragmentsSeeker(position)
         else
             getFragmentsRecruiter(position)
@@ -73,8 +71,7 @@ class TabJobsViewPagerAdapter
 
 
     override fun getPageTitle(position: Int): CharSequence? {
-
-        return if (userRepository.isLoggedUserJobSeeker())
+        return if (sessionRepository.isLoggedUserJobSeeker())
             tabTitlesJobSeeker[position]
         else
             tabTitlesRecruiter[position]

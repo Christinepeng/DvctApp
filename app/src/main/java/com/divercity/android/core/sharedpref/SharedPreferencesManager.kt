@@ -24,6 +24,8 @@ class SharedPreferencesManager<T : Enum<*>>(context: Context, prefName: String) 
 
     fun put(key: T, value: Long) = editor.putLong(key.name, value).commit()
 
+    fun put(key: T, value: MutableSet<String>?) = editor.putStringSet(key.name, value).commit()
+
     //    GETS
 
     fun getInt(key: T): Int = mPref.getInt(key.name, -1)
@@ -33,4 +35,6 @@ class SharedPreferencesManager<T : Enum<*>>(context: Context, prefName: String) 
     fun getString(key: T): String? = mPref.getString(key.name, null)
 
     fun getLong(key: T): Long = mPref.getLong(key.name, -1)
+
+    fun getSet(key: T): MutableSet<String>? = mPref.getStringSet(key.name, null)
 }

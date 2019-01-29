@@ -1,4 +1,4 @@
-package com.divercity.android.db.chat
+package com.divercity.android.db.dao
 
 import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao

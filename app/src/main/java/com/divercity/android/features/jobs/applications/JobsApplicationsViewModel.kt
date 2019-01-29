@@ -4,7 +4,6 @@ import android.app.Application
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
-import com.divercity.android.R
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
@@ -16,6 +15,7 @@ import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.jobs.applications.datasource.JobApplicationsPaginatedRepositoryImpl
 import com.divercity.android.features.jobs.jobs.usecase.RemoveSavedJobUseCase
 import com.divercity.android.features.jobs.jobs.usecase.SaveJobUseCase
+import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -29,6 +29,7 @@ constructor(private val context: Application,
             private val userRepository: UserRepository,
             private val repositoryApplications: JobApplicationsPaginatedRepositoryImpl,
             private val removeSavedJobUseCase: RemoveSavedJobUseCase,
+            private val sessionRepository: SessionRepository,
             private val saveJobUseCase: SaveJobUseCase) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
@@ -111,12 +112,9 @@ constructor(private val context: Application,
     }
 
     fun onJobClickNavigateToNext(job : JobResponse) {
-        if (userRepository.getAccountType() != null &&
-                (userRepository.getAccountType().equals(context.getString(R.string.hiring_manager_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.recruiter_id)))
-        )
-            navigateToJobRecruiterDescription.value = job
-        else
+        if(sessionRepository.isLoggedUserJobSeeker())
             navigateToJobSeekerDescription.value = job
+        else
+            navigateToJobRecruiterDescription.value = job
     }
 }

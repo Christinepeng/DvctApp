@@ -27,7 +27,6 @@ import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.chat.chatadapter.ChatAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
-import com.divercity.android.repository.user.UserRepository
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -201,7 +200,7 @@ class ChatFragment : BaseFragment() {
         val lastIndexOfAT = fullTextTillCursor.lastIndexOf("@")
         val textToInsert = "@".plus(user.userAttributes?.name!!)
 
-        et_msg.text.replace(lastIndexOfAT, et_msg.selectionStart, "@".plus(user.userAttributes.name))
+        et_msg.text.replace(lastIndexOfAT, et_msg.selectionStart, "@".plus(user.userAttributes?.name))
         viewModel.mentions.add(user)
         val bss = StyleSpan(Typeface.BOLD)
 //        et_msg.text.setSpan(user.toChatMember(),

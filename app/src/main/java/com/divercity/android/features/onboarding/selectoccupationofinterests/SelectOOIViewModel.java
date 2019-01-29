@@ -5,20 +5,23 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PagedList;
 import android.support.annotation.Nullable;
+
 import com.divercity.android.core.base.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;
-import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse;
+import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.onboarding.selectoccupationofinterests.datasource.OOIPaginatedRepositoryImpl;
 import com.divercity.android.features.onboarding.selectoccupationofinterests.usecase.FollowOOIUseCase;
+import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
-import javax.inject.Inject;
 import java.util.List;
+
+import javax.inject.Inject;
 
 /**
  * Created by lucas on 17/10/2018.
@@ -32,14 +35,17 @@ public class SelectOOIViewModel extends BaseViewModel {
     private OOIPaginatedRepositoryImpl repository;
     private UserRepository userRepository;
     private FollowOOIUseCase followOOIUseCase;
+    private SessionRepository sessionRepository;
 
     @Inject
     public SelectOOIViewModel(OOIPaginatedRepositoryImpl repository,
                               UserRepository userRepository,
-                              FollowOOIUseCase followOOIUseCase) {
+                              FollowOOIUseCase followOOIUseCase,
+                              SessionRepository sessionRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.followOOIUseCase = followOOIUseCase;
+        this.sessionRepository = sessionRepository;
         fetchOOI(null, null);
     }
 
@@ -70,7 +76,7 @@ public class SelectOOIViewModel extends BaseViewModel {
     }
 
     public String getAccountType() {
-        return userRepository.getAccountType();
+        return sessionRepository.getAccountType();
     }
 
     public LiveData<PagedList<OOIResponse>> getPagedOOIList() {

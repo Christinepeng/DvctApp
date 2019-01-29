@@ -1,23 +1,26 @@
 package com.divercity.android.di.module;
 
 import android.content.Context;
+
 import com.apollographql.apollo.ApolloClient;
 import com.divercity.android.Session;
+import com.divercity.android.db.dao.UserDao;
 import com.divercity.android.features.apollo.ApolloRepository;
 import com.divercity.android.helpers.NotificationHelper;
 import com.divercity.android.repository.appstate.AppStateRepository;
 import com.divercity.android.repository.appstate.AppStateRepositoryImpl;
 import com.divercity.android.repository.chat.ChatRepositoryImpl;
-import com.divercity.android.repository.user.LoggedUserRepositoryImpl;
-import com.divercity.android.repository.user.UserRepository;
+import com.divercity.android.repository.session.SessionRepository;
+import com.divercity.android.repository.session.SessionRepositoryImpl;
+
+import javax.inject.Named;
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
-
-import javax.inject.Named;
-import javax.inject.Singleton;
 
 /**
  * Created by lucas on 8/31/17.
@@ -42,8 +45,8 @@ public abstract class AppProvidesModule {
 
     @Provides
     @Singleton
-    static LoggedUserRepositoryImpl provideUserLocalDataStore(Context context) {
-        return new LoggedUserRepositoryImpl(context);
+    static SessionRepository provideSessionRepository(Context context, UserDao userDao) {
+        return new SessionRepositoryImpl(context, userDao);
     }
 
     @Provides
@@ -61,8 +64,8 @@ public abstract class AppProvidesModule {
     @Provides
     @Singleton
     static Session provideSession(ChatRepositoryImpl chatRepositoryImpl,
-                                  UserRepository userRepository) {
-        return new Session(chatRepositoryImpl, userRepository);
+                                  SessionRepository sessionRepository) {
+        return new Session(chatRepositoryImpl, sessionRepository);
     }
 
     @Provides

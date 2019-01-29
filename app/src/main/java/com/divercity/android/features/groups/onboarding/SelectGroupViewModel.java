@@ -17,6 +17,7 @@ import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.groups.onboarding.group.GroupPaginatedRepositoryImpl;
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase;
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase;
+import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
@@ -37,16 +38,19 @@ public class SelectGroupViewModel extends BaseViewModel {
 
     private JoinGroupUseCase joinGroupUseCase;
     private MutableLiveData<Resource<Boolean>> joinGroupResponse = new MutableLiveData<>();
+    private SessionRepository sessionRepository;
 
     @Inject
     public SelectGroupViewModel(GroupPaginatedRepositoryImpl repository,
                                 UserRepository userRepository,
                                 JoinGroupUseCase joinGroupUseCase,
-                                RequestJoinGroupUseCase requestJoinGroupUseCase) {
+                                RequestJoinGroupUseCase requestJoinGroupUseCase,
+                                SessionRepository sessionRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
         this.joinGroupUseCase = joinGroupUseCase;
         this.requestJoinGroupUseCase = requestJoinGroupUseCase;
+        this.sessionRepository = sessionRepository;
 
         fetchGroups(null, "");
     }
@@ -78,7 +82,7 @@ public class SelectGroupViewModel extends BaseViewModel {
     }
 
     public String getAccountType(){
-        return userRepository.getAccountType();
+        return sessionRepository.getAccountType();
     }
 
     public void joinGroup(GroupResponse group){

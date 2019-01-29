@@ -10,6 +10,7 @@ import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.entity.industry.IndustryResponse;
 import com.divercity.android.features.industry.base.industry.IndustryPaginatedRepositoryImpl;
+import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 
 import javax.inject.Inject;
@@ -23,13 +24,16 @@ public class SelectSingleIndustryViewModel extends BaseViewModel {
     private LiveData<PagedList<IndustryResponse>> pagedIndustryList;
     private Listing<IndustryResponse> listingPaginatedIndustry;
     private IndustryPaginatedRepositoryImpl repository;
+    private SessionRepository sessionRepository;
     private UserRepository userRepository;
 
     @Inject
     public SelectSingleIndustryViewModel(IndustryPaginatedRepositoryImpl repository,
-                                         UserRepository userRepository) {
+                                         UserRepository userRepository,
+                                         SessionRepository sessionRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.sessionRepository = sessionRepository;
         fetchIndustries(null, null);
     }
 
@@ -64,6 +68,6 @@ public class SelectSingleIndustryViewModel extends BaseViewModel {
     }
 
     public String getAccountType() {
-        return userRepository.getAccountType();
+        return sessionRepository.getAccountType();
     }
 }

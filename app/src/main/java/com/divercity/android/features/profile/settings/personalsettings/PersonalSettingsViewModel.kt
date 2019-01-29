@@ -1,13 +1,13 @@
 package com.divercity.android.features.profile.settings.personalsettings
 
-import android.content.Context
+import android.app.Application
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.usecase.UpdateFCMTokenUseCase
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -17,8 +17,8 @@ import javax.inject.Inject
 
 class PersonalSettingsViewModel @Inject
 constructor(
-    private val context : Context,
-    private val userRepository: UserRepository,
+    private val context : Application,
+    private val sessionRepository: SessionRepository,
     private val updateFCMTokenUseCase: UpdateFCMTokenUseCase
 ) : BaseViewModel() {
 
@@ -28,12 +28,12 @@ constructor(
 //    val navigateToSelectUserType = SingleLiveEvent<Boolean>()
 
     fun getProfilePicture(): String? {
-        return userRepository.getAvatarUrl()
+        return sessionRepository.getUserAvatarUrl()
     }
 
     fun enableNotifications(enabled: Boolean) {
         updateFCMTokenResponse.postValue(Resource.loading(null))
-        if (!userRepository.getDeviceId().isNullOrEmpty() && !userRepository.getFCMToken().isNullOrEmpty()) {
+        if (!sessionRepository.getDeviceId().isNullOrEmpty() && !sessionRepository.getFCMToken().isNullOrEmpty()) {
             val callback = object : DisposableObserverWrapper<Void>() {
                 override fun onFail(error: String) {
                     updateFCMTokenResponse.postValue(Resource.error(error, enabled))
@@ -50,8 +50,8 @@ constructor(
             }
             updateFCMTokenUseCase.execute(
                 callback, UpdateFCMTokenUseCase.Params.forDevice(
-                    userRepository.getDeviceId()!!,
-                    userRepository.getFCMToken()!!,
+                    sessionRepository.getDeviceId()!!,
+                    sessionRepository.getFCMToken()!!,
                     enabled
                 )
             )
@@ -59,45 +59,4 @@ constructor(
             updateFCMTokenResponse.postValue(Resource.error(context.resources.getString(R.string.error_notifications), null))
         }
     }
-//
-//    fun checkUsernameRegistered(username: String) {
-//
-//        val callback = object : DisposableObserverWrapper<Boolean>() {
-//
-//            override fun onFail(error: String) {
-//            }
-//
-//            override fun onHttpException(error: JsonElement?) {
-//            }
-//
-//            override fun onSuccess(t: Boolean) {
-//                usernameRegisteredResponse.value = Resource.success(t)
-//            }
-//        }
-//        compositeDisposable.add(callback)
-//        usernameRegisteredUseCase.execute(callback, CheckIsUsernameRegisteredUseCase.Params.forCheckUsername(username))
-//    }
-//
-//    fun uploadPicture(pictureBase64: String) {
-//        if (pictureBase64 == "")
-//            navigateToSelectUserType.call()
-//        else {
-//            val callback = object : DisposableObserverWrapper<UserResponse>() {
-//
-//                override fun onFail(error: String) {
-//                    uploadProfilePictureResponse.value = Resource.error(error, null)
-//                }
-//
-//                override fun onHttpException(error: JsonElement?) {
-//
-//                }
-//
-//                override fun onSuccess(t: UserResponse) {
-//                    uploadProfilePictureResponse.value = Resource.success(t)
-//                }
-//            }
-//            compositeDisposable.add(callback)
-//            uploadProfilePictureUseCase.execute(callback, UploadProfilePictureUseCase.Params.forUploadPic(pictureBase64))
-//        }
-//    }
 }

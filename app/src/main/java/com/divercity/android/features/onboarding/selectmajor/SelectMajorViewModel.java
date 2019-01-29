@@ -10,6 +10,7 @@ import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.entity.major.MajorResponse;
 import com.divercity.android.features.onboarding.selectmajor.major.MajorPaginatedRepositoryImpl;
+import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 
 import javax.inject.Inject;
@@ -24,12 +25,15 @@ public class SelectMajorViewModel extends BaseViewModel {
     private Listing<MajorResponse> listingPaginatedMajor;
     private MajorPaginatedRepositoryImpl repository;
     private UserRepository userRepository;
+    private SessionRepository sessionRepository;
 
     @Inject
     public SelectMajorViewModel(MajorPaginatedRepositoryImpl repository,
-                                UserRepository userRepository) {
+                                UserRepository userRepository,
+                                SessionRepository sessionRepository) {
         this.repository = repository;
         this.userRepository = userRepository;
+        this.sessionRepository = sessionRepository;
     }
 
     public void retry() {
@@ -59,7 +63,7 @@ public class SelectMajorViewModel extends BaseViewModel {
     }
 
     public String getAccountType(){
-        return userRepository.getAccountType();
+        return sessionRepository.getAccountType();
     }
 
     public LiveData<PagedList<MajorResponse>> getPagedMajorList() {

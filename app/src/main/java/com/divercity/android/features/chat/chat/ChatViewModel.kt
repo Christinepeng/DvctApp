@@ -8,7 +8,6 @@ import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.MySocket
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.android.data.entity.createchat.CreateChatResponse
@@ -19,7 +18,7 @@ import com.divercity.android.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.android.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.android.features.chat.chat.usecase.SendMessagesUseCase
 import com.divercity.android.repository.chat.ChatRepositoryImpl
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.socket.ChatWebSocket
 import com.google.gson.JsonElement
 import kotlinx.coroutines.CoroutineScope
@@ -27,6 +26,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.*
 import javax.inject.Inject
 
 /**
@@ -41,7 +41,7 @@ constructor(
     private val sendMessagesUseCase: SendMessagesUseCase,
     private val chatWebSocket: ChatWebSocket,
     private val fetchChatMembersUseCase: FetchChatMembersUseCase,
-    private val userRepository: UserRepository
+    private val sessionRepository: SessionRepository
 ) : BaseViewModel() {
 
     var pageFetchList = ArrayList<Int>()
@@ -121,7 +121,7 @@ constructor(
             override fun onSuccess(o: List<UserResponse>) {
                 hasFetchGroupMembersError = false
                 chatMembers = o.filter {
-                    it.id != userRepository.getUserId()
+                    it.id != sessionRepository.getUserId()
                 }
                 fetchChatMembersResponse.postValue(Resource.success(o))
             }
@@ -134,12 +134,13 @@ constructor(
     }
 
     fun filterUserList(filter: String) {
-        fetchChatMembersResponse.postValue(
-            Resource.success(
-                chatMembers?.filter {
-                    it.userAttributes?.name!!.toLowerCase().contains(filter.toLowerCase())
-                })
-        )
+        if (!chatMembers.isNullOrEmpty())
+            fetchChatMembersResponse.postValue(
+                Resource.success(
+                    chatMembers?.filter {
+                        it.userAttributes?.name!!.toLowerCase().contains(filter.toLowerCase())
+                    })
+            )
     }
 
     fun fetchOrCreateChat(otherUserId: String) {
@@ -172,12 +173,13 @@ constructor(
                     initializePagedList(o.id.toInt())
 
                 uiScope.launch {
-                    chatMessageRepository.insertChatOnDB(
-                        ExistingUsersChatListItem(
-                            chatId = o.id.toInt(),
-                            chatUsers = o.attributes?.users
-                        )
-                    )
+//                    chatMessageRepository.insertChatOnDB(
+//                        ExistingUsersChatListItem(
+//                            lastMessageDate = Date(),
+//                            chatId = o.id.toInt(),
+//                            chatUsers = o.attributes?.users
+//                        )
+//                    )
                     fetchMessages(otherUserId, 0, PAGE_SIZE)
                 }
 

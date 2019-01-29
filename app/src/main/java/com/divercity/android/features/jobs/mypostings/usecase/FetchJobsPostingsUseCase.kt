@@ -3,7 +3,7 @@ package com.divercity.android.features.jobs.mypostings.usecase
 import com.divercity.android.core.base.UseCase
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.repository.job.JobRepository
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
 import javax.inject.Inject
@@ -17,11 +17,11 @@ class FetchJobsPostingsUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: JobRepository,
-            private val userRepository: UserRepository
+            private val sessionRepository: SessionRepository
 ) : UseCase<@JvmSuppressWildcards List<JobResponse>, FetchJobsPostingsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<List<JobResponse>> {
-        return repository.fetchJobPostingsByUser(userRepository.getUserId()!!,
+        return repository.fetchJobPostingsByUser(sessionRepository.getUserId(),
                 params.page, params.size, if(params.query != null && params.query == "") null else params.query)
     }
 

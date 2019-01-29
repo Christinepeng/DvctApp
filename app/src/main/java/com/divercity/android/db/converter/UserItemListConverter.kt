@@ -1,4 +1,4 @@
-package com.divercity.android.db
+package com.divercity.android.db.converter
 
 import android.arch.persistence.room.TypeConverter
 import com.divercity.android.data.entity.createchat.UsersItem
@@ -8,7 +8,7 @@ import com.google.gson.Gson
  * Created by lucas on 16/01/2019.
  */
 
-object Converters {
+object UserItemListConverter {
 
     @TypeConverter
     @JvmStatic

@@ -1,4 +1,4 @@
-package com.divercity.android.features.chat.recentchats.datasource
+package com.divercity.android.features.chat.recentchats.oldrecentchats.datasource
 
 import android.arch.lifecycle.Transformations
 import android.arch.paging.LivePagedListBuilder

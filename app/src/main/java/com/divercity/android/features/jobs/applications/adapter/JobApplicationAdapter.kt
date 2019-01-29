@@ -9,11 +9,11 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.jobapplication.JobApplicationResponse
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 class JobApplicationAdapter @Inject
-constructor(val userRepository: UserRepository) : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+constructor(val sessionRepository: SessionRepository) : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -29,7 +29,7 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<JobApplicatio
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_job -> JobApplicationViewHolder.create(parent, listener, userRepository.isLoggedUserJobSeeker())
+            R.layout.item_job -> JobApplicationViewHolder.create(parent, listener, sessionRepository.isLoggedUserJobSeeker())
             R.layout.view_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type")
         }

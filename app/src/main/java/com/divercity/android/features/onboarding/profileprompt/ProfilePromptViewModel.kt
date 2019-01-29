@@ -4,6 +4,7 @@ import android.app.Application
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
+import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository
 import javax.inject.Inject
 
@@ -13,7 +14,8 @@ import javax.inject.Inject
 
 class ProfilePromptViewModel @Inject
 constructor(val userRepository: UserRepository,
-            val application: Application) : BaseViewModel() {
+            val application: Application,
+            private val sessionRepository: SessionRepository) : BaseViewModel() {
 
     val showRecruiterText = SingleLiveEvent<Boolean>()
 
@@ -24,5 +26,5 @@ constructor(val userRepository: UserRepository,
     }
 
     val accountType: String?
-        get() = userRepository.getAccountType()
+        get() = sessionRepository.getAccountType()
 }

@@ -1,4 +1,4 @@
-package com.divercity.android.features.chat.recentchats.adapter
+package com.divercity.android.features.chat.recentchats.oldrecentchats
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil
@@ -9,11 +9,14 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
+import com.divercity.android.features.chat.recentchats.newrecentchats.RecentChatViewHolder
 import com.divercity.android.repository.user.UserRepository
 import javax.inject.Inject
 
 class RecentChatAdapter @Inject
-constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsersChatListItem, RecyclerView.ViewHolder>(userDiffCallback) {
+constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsersChatListItem, RecyclerView.ViewHolder>(
+    userDiffCallback
+) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -29,7 +32,10 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsers
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_chats -> RecentChatViewHolder.create(parent, listener)
+            R.layout.item_chats -> RecentChatViewHolder.create(
+                parent,
+                listener
+            )
             R.layout.view_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type")
         }

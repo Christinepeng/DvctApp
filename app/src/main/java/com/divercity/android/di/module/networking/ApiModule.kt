@@ -5,8 +5,9 @@ import com.divercity.android.BuildConfig
 import com.divercity.android.core.utils.MySocket
 import com.divercity.android.data.networking.config.CheckConnectivityInterceptor
 import com.divercity.android.data.networking.config.CheckUnauthorizedInterceptor
-import com.divercity.android.repository.user.LoggedUserRepositoryImpl
+import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.socket.ChatWebSocket
+import com.google.gson.GsonBuilder
 import dagger.Module
 import dagger.Provides
 import okhttp3.Interceptor
@@ -18,6 +19,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
+
+
 
 /**
  * Created by lucas on 24/10/2018.
@@ -70,10 +73,13 @@ class ApiModule {
             .readTimeout(60, TimeUnit.SECONDS)
 //            .addInterceptor(addApiPath)
 
+        val gsonDate = GsonBuilder()
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+            .create()
+
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
-//            .addConverterFactory(NullOnEmptyConverterFactory())
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(GsonConverterFactory.create(gsonDate))
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .client(httpClient.build())
             .build()
@@ -98,16 +104,16 @@ class ApiModule {
     }
 
     @Provides
-    internal fun provideAuthorizationHeaders(userLocalDataStore: LoggedUserRepositoryImpl): Interceptor {
+    internal fun provideAuthorizationHeaders(sessionRepository: SessionRepository): Interceptor {
         return Interceptor {
             val original = it.request()
 
             // Request customization: add request headers
             val requestBuilder = original.newBuilder()
 
-            requestBuilder.addHeader("access-token", userLocalDataStore.getAccessToken()!!)
-            requestBuilder.addHeader("client", userLocalDataStore.getClient()!!)
-            requestBuilder.addHeader("uid", userLocalDataStore.getUid()!!)
+            requestBuilder.addHeader("access-token", sessionRepository.getAccessToken()!!)
+            requestBuilder.addHeader("client", sessionRepository.getClient()!!)
+            requestBuilder.addHeader("uid", sessionRepository.getUid()!!)
 
             val request = requestBuilder.build()
 
@@ -117,14 +123,14 @@ class ApiModule {
 
     @Provides
     internal fun provideWebSocket(
-        userLocalDataStore: LoggedUserRepositoryImpl,
+        sessionRepository: SessionRepository,
         loggingInterceptor: HttpLoggingInterceptor
     ): MySocket {
         val url = "wss://".plus(BuildConfig.BASE_URL).plus("/cable")
             .plus("?")
-            .plus("token=").plus(userLocalDataStore.getAccessToken()).plus("&")
-            .plus("client=").plus(userLocalDataStore.getClient()).plus("&")
-            .plus("uid=").plus(userLocalDataStore.getUid())
+            .plus("token=").plus(sessionRepository.getAccessToken()).plus("&")
+            .plus("client=").plus(sessionRepository.getClient()).plus("&")
+            .plus("uid=").plus(sessionRepository.getUid())
 
         return MySocket.Builder
             .with(url)

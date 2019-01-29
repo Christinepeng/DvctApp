@@ -8,6 +8,7 @@ import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
 import com.divercity.android.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
+import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -19,6 +20,7 @@ import javax.inject.Inject
 class SelectInterestsViewModel @Inject
 constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
             private val followInterestsUseCase: FollowInterestsUseCase,
+            private val sessionRepository: SessionRepository,
             val userRepository: UserRepository) : BaseViewModel() {
 
     var fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
@@ -67,6 +69,6 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
     }
 
     fun getAccountType(): String {
-        return userRepository.getAccountType()!!
+        return sessionRepository.getAccountType()
     }
 }

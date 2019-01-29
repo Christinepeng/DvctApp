@@ -73,6 +73,8 @@ import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFr
 import com.divercity.android.features.profile.ProfileFragment
 import com.divercity.android.features.profile.module.ProfileModule
 import com.divercity.android.features.profile.settings.ProfileSettingsFragment
+import com.divercity.android.features.profile.settings.interests.InterestsFragment
+import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsFragment
 import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsFragment
@@ -307,4 +309,13 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindProfileSettingsFragment (): ProfileSettingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindPersonalSettingsFragment (): PersonalSettingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindInterestsFragment (): InterestsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindChatsFragmentChatsFragment (): com.divercity.android.features.chat.recentchats.newrecentchats.ChatsFragment
 }

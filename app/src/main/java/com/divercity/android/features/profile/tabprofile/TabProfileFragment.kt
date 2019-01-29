@@ -18,6 +18,7 @@ import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFrag
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
+import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsActivity
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
 import javax.inject.Inject
 
@@ -51,6 +52,9 @@ class TabProfileFragment : BaseFragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(TabProfileViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
+
+        if (activity !is PersonalSettingsActivity)
+            viewModel.fetchInterests()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,6 +64,12 @@ class TabProfileFragment : BaseFragment() {
     }
 
     fun setupView() {
+
+        if(activity is PersonalSettingsActivity){
+            lbl_personal.visibility = View.GONE
+            lbl_interests.visibility = View.GONE
+            list_interest.visibility = View.GONE
+        }
 
         lay_ethnicity.setOnClickListener {
             navigator.navigateToToolbarEthnicityActivityForResult(this, REQUEST_CODE_ETHNICITY)
@@ -84,7 +94,23 @@ class TabProfileFragment : BaseFragment() {
         txt_location.text = viewModel.getLocation()
 
         list_interest.layoutManager = StaggeredGridLayoutManager(2, 1)
+        adapter.setListener { interests, position ->
+            viewModel.followInterests(interests, position)
+        }
         list_interest.adapter = adapter
+
+        swipe_refresh.setOnRefreshListener {
+            txt_ethnicity.text = viewModel.getEthnicity()
+            txt_gender.text = viewModel.getGender()
+            txt_industry.text = viewModel.getIndustries()
+            txt_age_range.text = viewModel.getAgeRange()
+            txt_location.text = viewModel.getLocation()
+
+            if (activity !is PersonalSettingsActivity)
+                viewModel.fetchInterests()
+
+            swipe_refresh.isRefreshing = false
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -102,7 +128,8 @@ class TabProfileFragment : BaseFragment() {
                     viewModel.updateAgeRange(this)
                 }
             } else if (requestCode == REQUEST_CODE_LOCATION) {
-                val location = data?.extras?.getParcelable<LocationResponse>(ToolbarLocationFragment.LOCATION_PICKED)
+                val location =
+                    data?.extras?.getParcelable<LocationResponse>(ToolbarLocationFragment.LOCATION_PICKED)
                 location?.apply {
                     viewModel.updateLocation(location)
                 }
@@ -135,10 +162,29 @@ class TabProfileFragment : BaseFragment() {
 
         viewModel.fetchInterestsResponse.observe(this, Observer { response ->
             when (response?.status) {
-                Status.LOADING ->{}
-                Status.ERROR -> {}
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                }
                 Status.SUCCESS -> {
-                    adapter.setList(response.data)
+                    adapter.list = response.data
+                }
+            }
+        })
+
+        viewModel.followInterestsResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> showProgress()
+
+                Status.ERROR -> {
+                    hideProgress()
+                    val item = adapter.list[response.data?.position!!]
+                    item.isSelected = !item.isSelected
+                    adapter.notifyItemChanged(response.data.position)
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
                 }
             }
         })
@@ -149,6 +195,7 @@ class TabProfileFragment : BaseFragment() {
         txt_ethnicity.text = user?.userAttributes?.ethnicity
         txt_gender.text = user?.userAttributes?.gender
         txt_age_range.text = user?.userAttributes?.ageRange
-        txt_location.text = user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
+        txt_location.text =
+                user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
     }
 }

@@ -8,7 +8,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
-import com.divercity.android.features.chat.recentchats.datasource.ChatsPaginatedRepositoryImpl
+import com.divercity.android.features.chat.recentchats.oldrecentchats.datasource.ChatsPaginatedRepositoryImpl
 import javax.inject.Inject
 
 /**

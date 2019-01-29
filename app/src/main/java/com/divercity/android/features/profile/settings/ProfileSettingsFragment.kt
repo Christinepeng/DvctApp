@@ -78,6 +78,13 @@ class ProfileSettingsFragment : BaseFragment() {
 //            EasyImage.openChooserWithGallery(this, getString(R.string.pick_source), 0)
         }
 
+        lay_account_settings.setOnClickListener {
+        }
+
+        lay_personal_settings.setOnClickListener {
+            navigator.navigateToPersonalSettingsActivity(this)
+        }
+
 //        enableSwitchListener()
     }
 
@@ -227,29 +234,6 @@ class ProfileSettingsFragment : BaseFragment() {
 
     private fun showToast(msg: String?) {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun isUsernameRegistered(b: Boolean) {
-//        if (b) {
-//            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.red))
-//            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.icon_wrong))
-//            img_username_status.visibility = View.VISIBLE
-//            lay_warning_username.visibility = View.VISIBLE
-//            isUserRegistered = 1
-//        } else {
-//            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.green))
-//            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.img_checkmark))
-//            img_username_status.visibility = View.VISIBLE
-//            lay_warning_username.visibility = View.GONE
-//            isUserRegistered = 0
-//        }
-    }
-
-    private fun removeUsernameStyleAndHideImg() {
-//        isUserRegistered = 2
-//        et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.appText1))
-//        img_username_status.visibility = View.GONE
-//        lay_warning_username.visibility = View.GONE
     }
 
 //    TODO hanlde if photo uploading fails

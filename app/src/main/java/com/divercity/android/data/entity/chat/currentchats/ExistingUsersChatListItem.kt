@@ -1,16 +1,22 @@
 package com.divercity.android.data.entity.chat.currentchats
 
 import android.arch.persistence.room.Entity
+import android.arch.persistence.room.TypeConverters
 import android.os.Parcel
 import android.os.Parcelable
 import com.divercity.android.data.entity.createchat.UsersItem
+import com.divercity.android.db.converter.DateTypeConverter
+import com.divercity.android.db.converter.UserItemListConverter
 import com.google.gson.annotations.SerializedName
+import java.util.*
+import kotlin.collections.ArrayList
 
-@Entity(tableName = "existingChat",primaryKeys = ["chatId"])
+@Entity(tableName = "recentChat",primaryKeys = ["chatId"])
+@TypeConverters(UserItemListConverter::class, DateTypeConverter::class)
 data class ExistingUsersChatListItem(
 
     @field:SerializedName("last_message_date")
-    var lastMessageDate: String? = "",
+    var lastMessageDate: Date?,
 
     @field:SerializedName("avatar_medium")
     var avatarMedium: String? = "",
@@ -63,29 +69,29 @@ data class ExistingUsersChatListItem(
     @field:SerializedName("chat_name")
     var chatName: String? = ""
 ) : Parcelable {
-
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readString(),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readInt(),
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readString(),
-            parcel.readString(),
-            parcel.createTypedArrayList(UsersItem),
-            parcel.readValue(Int::class.java.classLoader) as? Int,
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString())
+        Date(parcel.readLong()),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readInt(),
+        parcel.readString(),
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.createTypedArrayList(UsersItem),
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(lastMessageDate)
+        parcel.writeLong(lastMessageDate!!.time)
         parcel.writeString(avatarMedium)
         parcel.writeString(chatPicture)
         parcel.writeString(avatarThumb)

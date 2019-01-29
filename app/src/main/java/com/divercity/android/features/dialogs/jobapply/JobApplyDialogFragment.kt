@@ -21,7 +21,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
-import com.divercity.android.repository.user.UserRepository
+import com.divercity.android.repository.session.SessionRepository
 import kotlinx.android.synthetic.main.dialog_job_apply.view.*
 import javax.inject.Inject
 
@@ -35,7 +35,7 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
     var listener: Listener? = null
 
     @Inject
-    lateinit var userRepository: UserRepository
+    lateinit var sessionRepository: SessionRepository
     lateinit var viewModel: JobApplyDialogViewModel
 
     private lateinit var dialogView: View
@@ -87,12 +87,12 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
         dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_apply, null)
 
         GlideApp.with(this)
-            .load(userRepository.getAvatarUrl())
+            .load(sessionRepository.getUserAvatarUrl())
             .apply(RequestOptions().circleCrop())
             .into(dialogView.img_profile)
 
         dialogView.apply {
-            txt_fullname.text = userRepository.getFullName()
+            txt_fullname.text = sessionRepository.getUserName()
 
             txt_usr_occupation.visibility = View.GONE
             txt_usr_location.visibility = View.GONE

@@ -94,9 +94,6 @@ class TabProfileFragment : BaseFragment() {
         txt_location.text = viewModel.getLocation()
 
         list_interest.layoutManager = StaggeredGridLayoutManager(2, 1)
-        adapter.setListener { interests, position ->
-            viewModel.followInterests(interests, position)
-        }
         list_interest.adapter = adapter
 
         swipe_refresh.setOnRefreshListener {

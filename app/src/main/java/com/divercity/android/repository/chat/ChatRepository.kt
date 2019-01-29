@@ -1,5 +1,6 @@
 package com.divercity.android.repository.chat
 
+import android.arch.paging.DataSource
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
@@ -35,4 +36,20 @@ interface ChatRepository {
                          pageNumber: Int,
                          size: Int,
                          query: String?): Observable<List<UserResponse>>
+
+    fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageResponse>
+
+    fun getRecentChats(): DataSource.Factory<Int, ExistingUsersChatListItem>
+
+    suspend fun fetchChatIdByUser(userId: String): Int
+
+    suspend fun deleteChatMessagesDB()
+
+    suspend fun deleteRecentChatsDB()
+
+    suspend fun saveRecentChats(list: List<ExistingUsersChatListItem>)
+
+    suspend fun insertChatMessagesOnDB(list: List<ChatMessageResponse>)
+
+    suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageResponse)
 }

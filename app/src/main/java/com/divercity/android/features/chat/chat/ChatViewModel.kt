@@ -17,7 +17,7 @@ import com.divercity.android.features.chat.chat.usecase.FetchChatMembersUseCase
 import com.divercity.android.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.android.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.android.features.chat.chat.usecase.SendMessagesUseCase
-import com.divercity.android.repository.chat.ChatRepositoryImpl
+import com.divercity.android.repository.chat.ChatRepository
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.socket.ChatWebSocket
 import com.google.gson.JsonElement
@@ -36,7 +36,7 @@ import javax.inject.Inject
 class ChatViewModel @Inject
 constructor(
     private val fetchOrCreateChatUseCase: FetchOrCreateChatUseCase,
-    private val chatMessageRepository: ChatRepositoryImpl,
+    private val chatMessageRepository: ChatRepository,
     private val fetchMessagesUseCase: FetchMessagesUseCase,
     private val sendMessagesUseCase: SendMessagesUseCase,
     private val chatWebSocket: ChatWebSocket,

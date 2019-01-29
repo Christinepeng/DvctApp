@@ -79,59 +79,47 @@ constructor(
         return chatService.sendMessage(partMessage, partChatId)
     }
 
-    suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageResponse) {
+    override suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageResponse) {
         withContext(Dispatchers.IO) {
             chatMessageDao.insertChatMessage(chatMessageResponse)
         }
     }
 
-    suspend fun insertChatMessagesOnDB(list: List<ChatMessageResponse>) {
+    override suspend fun insertChatMessagesOnDB(list: List<ChatMessageResponse>) {
         withContext(Dispatchers.IO) {
             chatMessageDao.insertChatMessages(list)
         }
     }
 
-    suspend fun countMessagesByChatIdFromDB(chatId: Int): Int {
-        return withContext(Dispatchers.IO) {
-            chatMessageDao.countMessagesByChatId(chatId)
-        }
-    }
-
-    suspend fun saveRecentChats(list: List<ExistingUsersChatListItem>) {
+    override suspend fun saveRecentChats(list: List<ExistingUsersChatListItem>) {
         return withContext(Dispatchers.IO) {
             recentChatsDao.insertChatMessages(list)
         }
     }
 
-    suspend fun insertChatOnDB(chat: ExistingUsersChatListItem) {
+    override suspend fun deleteRecentChatsDB() {
         return withContext(Dispatchers.IO) {
-            recentChatsDao.insertChat(chat)
+            recentChatsDao.deleteRecentChats()
         }
     }
 
-    suspend fun deleteChatMessagesDB() {
+    override suspend fun deleteChatMessagesDB() {
         return withContext(Dispatchers.IO) {
             chatMessageDao.deleteChatMessages()
         }
     }
 
-    suspend fun deleteChatDB() {
-        return withContext(Dispatchers.IO) {
-            //            chatMessageDao.deleteChat()
-        }
-    }
-
-    suspend fun fetchChatIdByUser(userId: String): Int {
+    override suspend fun fetchChatIdByUser(userId: String): Int {
         return withContext(Dispatchers.IO) {
             recentChatsDao.fetchChatIdByUser(userId)
         }
     }
 
-    fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageResponse> {
+    override fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageResponse> {
         return chatMessageDao.getPagedMessagesByChatId(chatId)
     }
 
-    fun getRecentChats(): DataSource.Factory<Int, ExistingUsersChatListItem> {
+    override fun getRecentChats(): DataSource.Factory<Int, ExistingUsersChatListItem> {
         return recentChatsDao.getPagedRecentChats()
     }
 

@@ -9,7 +9,7 @@ import com.divercity.android.features.apollo.ApolloRepository;
 import com.divercity.android.helpers.NotificationHelper;
 import com.divercity.android.repository.appstate.AppStateRepository;
 import com.divercity.android.repository.appstate.AppStateRepositoryImpl;
-import com.divercity.android.repository.chat.ChatRepositoryImpl;
+import com.divercity.android.repository.chat.ChatRepository;
 import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.session.SessionRepositoryImpl;
 
@@ -63,9 +63,9 @@ public abstract class AppProvidesModule {
 
     @Provides
     @Singleton
-    static Session provideSession(ChatRepositoryImpl chatRepositoryImpl,
+    static Session provideSession(ChatRepository chatRepository,
                                   SessionRepository sessionRepository) {
-        return new Session(chatRepositoryImpl, sessionRepository);
+        return new Session(chatRepository, sessionRepository);
     }
 
     @Provides

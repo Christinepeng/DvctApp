@@ -131,6 +131,13 @@ class ChatsFragment : BaseFragment() {
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPagedListLiveData()
         })
+
+        viewModel.showNoRecentMessages.observe(viewLifecycleOwner, Observer {
+            if(it!!)
+                lay_no_messages.visibility = View.VISIBLE
+            else
+                lay_no_messages.visibility = View.GONE
+        })
     }
 
     private fun subscribeToPagedListLiveData() {

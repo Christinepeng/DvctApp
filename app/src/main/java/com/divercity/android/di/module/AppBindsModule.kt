@@ -20,6 +20,7 @@ import com.divercity.android.repository.user.UserRepository
 import com.divercity.android.repository.user.UserRepositoryImpl
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 /**
  * Created by lucas on 24/10/2018.
@@ -50,6 +51,7 @@ abstract class AppBindsModule {
     abstract fun bindContext(application: Application): Context
 
     @Binds
+    @Singleton
     abstract fun bindChatRepository(repository: ChatRepositoryImpl): ChatRepository
 
     @Binds

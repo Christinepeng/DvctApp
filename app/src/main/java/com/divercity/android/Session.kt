@@ -1,6 +1,6 @@
 package com.divercity.android
 
-import com.divercity.android.repository.chat.ChatRepositoryImpl
+import com.divercity.android.repository.chat.ChatRepository
 import com.divercity.android.repository.session.SessionRepository
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
@@ -16,7 +16,7 @@ import javax.inject.Inject
 
 class Session @Inject
 constructor(
-    private val chatRepositoryImpl: ChatRepositoryImpl,
+    private val chatRepository: ChatRepository,
     private val sessionRepository: SessionRepository
 ) {
 
@@ -24,8 +24,8 @@ constructor(
         FirebaseMessaging.getInstance().isAutoInitEnabled = false
         val uiScope = CoroutineScope(Dispatchers.Main)
         uiScope.launch {
-            chatRepositoryImpl.deleteChatDB()
-            chatRepositoryImpl.deleteChatMessagesDB()
+            chatRepository.deleteRecentChatsDB()
+            chatRepository.deleteChatMessagesDB()
             withContext(Dispatchers.IO) {
                 FirebaseInstanceId.getInstance().deleteInstanceId()
             }

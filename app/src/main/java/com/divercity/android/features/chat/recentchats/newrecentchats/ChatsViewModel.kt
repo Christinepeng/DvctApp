@@ -9,7 +9,7 @@ import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.chat.recentchats.usecase.FetchCurrentChatsUseCase
-import com.divercity.android.repository.chat.ChatRepositoryImpl
+import com.divercity.android.repository.chat.ChatRepository
 import com.google.gson.JsonElement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -23,10 +23,11 @@ import javax.inject.Inject
  */
  
 class ChatsViewModel @Inject
-constructor(private val repository: ChatRepositoryImpl,
+constructor(private val repository: ChatRepository,
             private val fetchCurrentChatsUseCase: FetchCurrentChatsUseCase
 ): BaseViewModel(){
 
+    var showNoRecentMessages = SingleLiveEvent<Boolean>()
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var fetchCurrentChatsResponse = SingleLiveEvent<Resource<Any>>()
     lateinit var pagedChatsList: LiveData<PagedList<ExistingUsersChatListItem>>
@@ -98,6 +99,12 @@ constructor(private val repository: ChatRepositoryImpl,
                 uiScope.launch {
                     repository.saveRecentChats(o)
                 }
+
+                if(page == 0 && o.isEmpty())
+                    showNoRecentMessages.postValue(true)
+                else
+                    showNoRecentMessages.postValue(false)
+
                 fetchCurrentChatsResponse.postValue(Resource.success(o))
             }
         }

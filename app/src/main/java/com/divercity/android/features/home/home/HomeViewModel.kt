@@ -3,6 +3,7 @@ package com.divercity.android.features.home.home
 import android.arch.lifecycle.LiveData
 import android.arch.lifecycle.MutableLiveData
 import android.arch.paging.PagedList
+import android.os.Parcelable
 import com.divercity.android.Session
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
@@ -20,6 +21,7 @@ import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.divercity.android.features.home.home.feed.datasource.QuestionsPaginatedRepositoryImpl
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase
+import com.divercity.android.features.home.home.usecase.FetchUnreadMessagesCountUseCase
 import com.divercity.android.features.home.home.usecase.GetStoriesFeatured
 import com.divercity.android.helpers.NotificationHelper
 import com.divercity.android.repository.user.UserRepositoryImpl
@@ -39,13 +41,15 @@ constructor(
         private val joinGroupUseCase: JoinGroupUseCase,
         private val requestToJoinUseCase : RequestJoinGroupUseCase,
         private val session : Session,
-        private val notificationHelper: NotificationHelper
+        private val notificationHelper: NotificationHelper,
+        private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase
 ) : BaseViewModel() {
 
     var featuredList = MutableLiveData<Resource<List<StoriesFeaturedResponse>>>()
     var questionList: LiveData<PagedList<HomeItem>>
     var fetchRecommendedJobsGroupsResponse = MutableLiveData<Resource<List<RecommendedItem>>>()
     var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
+    var fetchUnreadMessagesCountResponse = MutableLiveData<Resource<Int>>()
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
 
     private var questionListing: Listing<HomeItem> = questionsRepository.fetchData()
@@ -57,8 +61,12 @@ constructor(
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
+    // To hold tab1 scroll position when fragment dies
+    val listState = MutableLiveData<Parcelable>()
+
     init {
         questionList = questionListing.pagedList
+        fetchUnreadMessagesCount()
 //        fetchRecommendedGroupsJobs()
     }
 
@@ -158,31 +166,30 @@ constructor(
                 RequestJoinGroupUseCase.Params.toJoin(group.id))
     }
 
-    fun showNotification(){
-//        notificationHelper.notify(20, notificationHelper.getChatMessageNotification("Test", "12"))
-//
-//        Handler().postDelayed( {
-//            notificationHelper.notify(100, notificationHelper.getChatMessageNotification("Test", "3"))
-//
-//            Handler().postDelayed( {
-//                notificationHelper.notify(120, notificationHelper.getChatMessageNotification("Test", "15"))
-//
-//                Handler().postDelayed( {
-//                    notificationHelper.notify(130, notificationHelper.getChatMessageNotification("Test", "6"))
-//
-//                }, 4000)
-//
-//            }, 4000)
-//
-//        }, 4000)
+    fun fetchUnreadMessagesCount() {
+        fetchUnreadMessagesCountResponse.postValue(Resource.loading(null))
+
+        val callback = object : DisposableObserverWrapper<Int>() {
+            override fun onFail(error: String) {
+                fetchUnreadMessagesCountResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                fetchUnreadMessagesCountResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: Int) {
+                fetchUnreadMessagesCountResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+        fetchUnreadMessagesCountUseCase.execute(callback,null)
     }
 
     override fun onCleared() {
         super.onCleared()
         questionsRepository.clear()
     }
-
-
 
     fun clearUserData() {
         session.logout()

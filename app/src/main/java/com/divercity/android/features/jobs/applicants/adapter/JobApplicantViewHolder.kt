@@ -9,6 +9,7 @@ import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.jobapplication.JobApplicationResponse
 import kotlinx.android.synthetic.main.item_user.view.*
+import kotlinx.android.synthetic.main.item_user_mention.view.*
 
 class JobApplicantViewHolder
 private constructor(itemView: View, private val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
@@ -20,7 +21,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 GlideApp.with(this)
                         .load(it.attributes?.applicant?.photos?.thumb)
                         .apply(RequestOptions().circleCrop())
-                        .into(img)
+                        .into(include_img_desc.img)
 
                 txt_name.text = it.attributes?.applicant?.name
             }

@@ -67,9 +67,13 @@ constructor(
     }
 
     override fun clearUserData() {
-        sharedPreferencesManager.clearAllData()
         currentLoggedUser = null
-        userDao.deleteUser()
+        uiScope.launch {
+            withContext(Dispatchers.IO) {
+                userDao.deleteUser()
+            }
+        }
+        sharedPreferencesManager.clearAllData()
     }
 
     override fun getDeviceId(): String? {
@@ -118,12 +122,20 @@ constructor(
         return ""
     }
 
+    override fun getInterests(): List<Int>? {
+        return currentLoggedUser?.userAttributes?.interestIds
+    }
+
     override fun getAgeRange(): String? {
         return currentLoggedUser?.userAttributes?.ageRange
     }
 
     override fun getLocation(): String? {
         return currentLoggedUser?.userAttributes?.city.plus(", ").plus(currentLoggedUser?.userAttributes?.country)
+    }
+
+    override fun getEmail(): String? {
+        return currentLoggedUser?.userAttributes?.email
     }
 
     override fun saveUserHeaderData(response: Response<DataObject<UserResponse>>) {

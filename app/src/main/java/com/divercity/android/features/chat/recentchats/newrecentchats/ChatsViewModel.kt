@@ -21,16 +21,17 @@ import javax.inject.Inject
 /**
  * Created by lucas on 24/12/2018.
  */
- 
+
 class ChatsViewModel @Inject
-constructor(private val repository: ChatRepository,
-            private val fetchCurrentChatsUseCase: FetchCurrentChatsUseCase
-): BaseViewModel(){
+constructor(
+    private val repository: ChatRepository,
+    private val fetchCurrentChatsUseCase: FetchCurrentChatsUseCase
+) : BaseViewModel() {
 
     var showNoRecentMessages = SingleLiveEvent<Boolean>()
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var fetchCurrentChatsResponse = SingleLiveEvent<Resource<Any>>()
-    lateinit var pagedChatsList: LiveData<PagedList<ExistingUsersChatListItem>>
+    var pagedChatsList: LiveData<PagedList<ExistingUsersChatListItem>>? = null
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -38,8 +39,8 @@ constructor(private val repository: ChatRepository,
     var pageFetchList = ArrayList<Int>()
 
     companion object {
-        private const val PAGE_SIZE = 30
-        private const val THRESHOLD = 10
+        private const val PAGE_SIZE = 10
+        private const val THRESHOLD = 0
     }
 
     init {
@@ -47,13 +48,20 @@ constructor(private val repository: ChatRepository,
     }
 
     fun initializePagedList() {
+        initList()
+        fetchRecentChats(0)
+    }
+
+    private fun initList() {
+//        if (pagedChatsList != null)
+//            pagedChatsList?.value?.dataSource?.invalidate()
+
         val dataSourceFactory = repository.getRecentChats()
         val config = PagedList.Config.Builder()
             .setPageSize(PAGE_SIZE)
             .build()
         pagedChatsList = LivePagedListBuilder(dataSourceFactory, config).build()
         subscribeToPaginatedLiveData.call()
-        fetchRecentChats(0)
     }
 
     fun checkIfFetchMoreData(
@@ -78,12 +86,12 @@ constructor(private val repository: ChatRepository,
         }
     }
 
-    fun refresh(){
+    fun refresh() {
         pageFetchList.clear()
         fetchRecentChats(0)
     }
 
-    fun fetchRecentChats(page : Int) {
+    fun fetchRecentChats(page: Int) {
         fetchCurrentChatsResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<List<ExistingUsersChatListItem>>() {
             override fun onFail(error: String) {
@@ -100,7 +108,7 @@ constructor(private val repository: ChatRepository,
                     repository.saveRecentChats(o)
                 }
 
-                if(page == 0 && o.isEmpty())
+                if (page == 0 && o.isEmpty())
                     showNoRecentMessages.postValue(true)
                 else
                     showNoRecentMessages.postValue(false)

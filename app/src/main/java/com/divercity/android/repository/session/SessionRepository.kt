@@ -46,6 +46,8 @@ interface SessionRepository {
 
     fun getUserName(): String
 
+    fun getEmail() : String?
+
     fun getUserAvatarUrl(): String
 
     fun getAccountType(): String
@@ -59,4 +61,6 @@ interface SessionRepository {
     fun getAgeRange(): String?
 
     fun getLocation(): String?
+
+    fun getInterests() : List<Int>?
 }

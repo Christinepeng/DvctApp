@@ -79,7 +79,7 @@ constructor(val sessionRepository: SessionRepository) : PagedListAdapter<JobResp
         private val userDiffCallback = object : DiffUtil.ItemCallback<JobResponse>() {
 
             override fun areItemsTheSame(oldItem: JobResponse, newItem: JobResponse): Boolean {
-                return oldItem.id === newItem.id
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: JobResponse, newItem: JobResponse): Boolean {

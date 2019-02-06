@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
+import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
@@ -12,7 +13,6 @@ import android.widget.Toast
 import com.divercity.android.BuildConfig
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.GroupResponse
@@ -20,12 +20,12 @@ import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.home.HomeActivity
-import com.divercity.android.features.home.home.feed.adapter.HomeAdapter
+import com.divercity.android.features.home.home.feed.adapter.HomeAdapterNew
 import com.divercity.android.features.home.home.recommended.RecommendedAdapter
 import com.divercity.android.features.home.home.recommended.RecommendedGroupViewHolder
 import com.divercity.android.features.home.home.recommended.RecommendedJobViewHolder
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
-import timber.log.Timber
 import javax.inject.Inject
 
 /**
@@ -37,8 +37,11 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     lateinit var viewModel: HomeViewModel
 
+//    @Inject
+//    lateinit var homeAdapter: HomeAdapter
+
     @Inject
-    lateinit var homeAdapter: HomeAdapter
+    lateinit var homeAdapter: HomeAdapterNew
 
     @Inject
     lateinit var recommendedAdapter: RecommendedAdapter
@@ -117,6 +120,8 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         }
 
         homeAdapter.setRecommendedAdapter(recommendedAdapter)
+
+        list_main.layoutManager = LinearLayoutManager(context)
         list_main.adapter = homeAdapter
     }
 
@@ -126,51 +131,36 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     }
 
     private fun subscribeToLiveData() {
-        viewModel.questionList.observe(this, Observer {
-            homeAdapter.submitList(it)
-            if (homeAdapter.getCurrentList() != null)
-                Timber.e("questionList CURRENT LIST: " + homeAdapter.currentList!!.size)
-        })
 
         viewModel.networkState.observe(this, Observer {
-            if (homeAdapter.getCurrentList() != null)
-                Timber.e("CURRENT LIST: " + homeAdapter.currentList!!.size)
-
-            if (!mIsRefreshing || it!!.getStatus() === Status.ERROR || it!!.getStatus() === Status.SUCCESS)
+            if (!mIsRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 homeAdapter.setNetworkState(it)
-
-            if (homeAdapter.itemCount == 1 && it!!.getStatus() == Status.LOADING) {
-                viewModel.getFeatured()
-            }
         })
 
         viewModel.refreshState.observe(this, Observer { networkState ->
-            if (homeAdapter.getCurrentList() != null)
-                Timber.e("CURRENT LIST: " + homeAdapter.currentList!!.size + " y " + networkState!!.status.name)
-            if (networkState != null) {
-                Timber.e("STATUS: " + networkState.status.name)
-                if (homeAdapter.getCurrentList() != null) {
-                    if (networkState.getStatus() === NetworkState.LOADED.getStatus() || networkState.getStatus() === Status.ERROR)
-                        mIsRefreshing = false
-                    Timber.e("STATUS size: " + homeAdapter.currentList!!.size)
 
-                    val d = networkState.getStatus() === NetworkState.LOADING.getStatus()
-                    Timber.e("STATUS: $d")
+            homeAdapter.currentList?.let { pagedList ->
 
-                    swipe_list_main.isRefreshing = networkState.getStatus() === NetworkState.LOADING.getStatus()
-                }
+                if (networkState?.status != Status.LOADING)
+                    mIsRefreshing = false
 
-                if (!mIsRefreshing)
-                    swipe_list_main.isEnabled = networkState.getStatus() === Status.SUCCESS
-
-                if (networkState.getStatus() === Status.SUCCESS && homeAdapter.currentList!!.size == 0) {
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0) {
                     lay_no_groups.visibility = View.VISIBLE
                     (btn_fab as View).visibility = View.GONE
                 } else {
                     lay_no_groups.visibility = View.GONE
                     (btn_fab as View).visibility = View.VISIBLE
                 }
+
+                swipe_list_main.isRefreshing = mIsRefreshing
             }
+
+            if (!mIsRefreshing)
+                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
+        })
+
+        viewModel.questionList.observe(this, Observer {
+            homeAdapter.submitList(it)
         })
 
         viewModel.fetchRecommendedJobsGroupsResponse.observe(this, Observer { response ->
@@ -204,7 +194,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         })
 
-        viewModel.requestToJoinResponse.observe(viewLifecycleOwner, Observer {response ->
+        viewModel.requestToJoinResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                 }
@@ -219,19 +209,29 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         })
 
-//        viewModel.featuredList.observe(this, Observer { resource ->
-//            when (resource?.status) {
-//                Status.LOADING -> {
-//
-//                }
-//                Status.ERROR -> {
-//
-//                }
-//                Status.SUCCESS -> {
-//                    recommendedAdapter.submitList(resource.data)
-//                }
-//            }
-//        })
+        viewModel.fetchUnreadMessagesCountResponse.observe(this, Observer { resource ->
+            when (resource?.status) {
+                Status.LOADING -> {
+
+                }
+                Status.ERROR -> {
+
+                }
+                Status.SUCCESS -> {
+                    activity?.apply {
+                        if (resource.data!! > 0) {
+                            icon_notification.visibility = View.VISIBLE
+                            icon_notification.text = resource.data.toString()
+                        } else
+                            icon_notification.visibility = View.GONE
+                    }
+                }
+            }
+        })
+
+        viewModel.listState.observe(this, Observer { parcelable ->
+            list_main.layoutManager?.onRestoreInstanceState(parcelable)
+        })
     }
 
     override fun retry() {
@@ -247,9 +247,9 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
 
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
@@ -286,8 +286,6 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     private fun setupEvents() {
         btn_fab.setOnClickListener {
             showToast()
-            viewModel.showNotification()
-            viewModel.getUser()
         }
         btn_create_group.setOnClickListener {
             showToast()
@@ -303,9 +301,9 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     private fun showAboutDialog() {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
-                getString(R.string.app_name),
-                "Version: ".plus(BuildConfig.VERSION_NAME),
-                getString(R.string.ok)
+            getString(R.string.app_name),
+            "Version: ".plus(BuildConfig.VERSION_NAME),
+            getString(R.string.ok)
         )
         customOneBtnDialogFragment.setListener { customOneBtnDialogFragment.dismiss() }
         customOneBtnDialogFragment.show(childFragmentManager, null)
@@ -313,5 +311,23 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     override fun onSuccessJobApply() {
 
+    }
+
+    override fun onViewStateRestored(savedInstanceState: Bundle?) {
+        super.onViewStateRestored(savedInstanceState)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewModel.listState.value = list_main.layoutManager?.onSaveInstanceState()
+    }
+
+    override fun onPause() {
+        super.onPause()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchUnreadMessagesCount()
     }
 }

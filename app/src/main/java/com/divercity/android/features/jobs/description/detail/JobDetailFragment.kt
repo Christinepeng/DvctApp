@@ -21,6 +21,7 @@ import kotlinx.android.synthetic.main.fragment_job_detail.*
 import kotlinx.android.synthetic.main.item_user.view.*
 import kotlinx.android.synthetic.main.view_job_desc.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
+import kotlinx.android.synthetic.main.view_user_image_desc.view.*
 import javax.inject.Inject
 
 /**
@@ -117,12 +118,12 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
                 GlideApp.with(this)
                     .load(it.attributes?.recruiter?.avatarThumb)
                     .apply(RequestOptions().circleCrop())
-                    .into(img)
+                    .into(include_img_desc.img)
 
                 //TODO : Remove hardcoded
-                txt_name.text = it.attributes?.recruiter?.name
-                txt_school.text = "Hardvard University"
-                txt_type.text = "Tech Recruiter"
+                include_img_desc.txt_name.text = it.attributes?.recruiter?.name
+                include_img_desc.txt_school.text = "Hardvard University"
+                include_img_desc.txt_type.text = "Tech Recruiter"
             }
 
             if (viewModel.isLoggedUserJobSeeker()) {

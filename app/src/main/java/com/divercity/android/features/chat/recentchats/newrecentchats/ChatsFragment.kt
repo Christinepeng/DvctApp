@@ -27,6 +27,8 @@ class ChatsFragment : BaseFragment() {
     @Inject
     lateinit var adapter: ChatsAdapter
 
+    private var isRefreshing = false
+
     companion object {
 
         fun newInstance(): ChatsFragment {
@@ -69,6 +71,16 @@ class ChatsFragment : BaseFragment() {
             }
         }
 
+//        adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
+//
+//            override fun onItemRangeChanged(positionStart: Int, itemCount: Int, payload: Any?) {
+//                if(isRefreshing) {
+//                    list.scrollToPosition(0)
+//                    isRefreshing = false
+//                }
+//            }
+//        })
+
         list.adapter = adapter
 
         btn_new_chat.setOnClickListener {
@@ -89,6 +101,7 @@ class ChatsFragment : BaseFragment() {
 
         swipe_list_main.apply {
             setOnRefreshListener {
+                isRefreshing = true
                 viewModel.refresh()
             }
             setColorSchemeColors(
@@ -106,7 +119,7 @@ class ChatsFragment : BaseFragment() {
         val firstVisibleItemPosition: Int
         if (list.layoutManager is LinearLayoutManager) {
             firstVisibleItemPosition =
-                    (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
         } else {
             throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
         }
@@ -133,7 +146,7 @@ class ChatsFragment : BaseFragment() {
         })
 
         viewModel.showNoRecentMessages.observe(viewLifecycleOwner, Observer {
-            if(it!!)
+            if (it!!)
                 lay_no_messages.visibility = View.VISIBLE
             else
                 lay_no_messages.visibility = View.GONE
@@ -141,7 +154,8 @@ class ChatsFragment : BaseFragment() {
     }
 
     private fun subscribeToPagedListLiveData() {
-        viewModel.pagedChatsList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedChatsList?.removeObservers(viewLifecycleOwner)
+        viewModel.pagedChatsList?.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
     }

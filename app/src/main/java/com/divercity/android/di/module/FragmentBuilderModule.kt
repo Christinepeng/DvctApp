@@ -4,7 +4,9 @@ import com.divercity.android.features.agerange.base.SelectAgeFragment
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeFragment
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.android.features.chat.chat.ChatFragment
+import com.divercity.android.features.chat.creategroupchat.CreateGroupChatFragment
 import com.divercity.android.features.chat.newchat.NewChatFragment
+import com.divercity.android.features.chat.newgroupchat.NewGroupChatFragment
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsFragment
 import com.divercity.android.features.company.base.SelectCompanyFragment
 import com.divercity.android.features.company.companysize.CompanySizesFragment
@@ -72,13 +74,14 @@ import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragme
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.profile.ProfileFragment
 import com.divercity.android.features.profile.module.ProfileModule
+import com.divercity.android.features.profile.profileconnections.tabconnections.ConnectionsFragment
+import com.divercity.android.features.profile.profileconnections.tabprofile.TabProfileFragment
 import com.divercity.android.features.profile.settings.ProfileSettingsFragment
+import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsFragment
 import com.divercity.android.features.profile.settings.interests.InterestsFragment
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsFragment
-import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsFragment
-import com.divercity.android.features.profile.tabprofile.TabProfileFragment
 import com.divercity.android.features.signup.SignUpFragment
 import com.divercity.android.features.splash.SplashFragment
 import dagger.Module
@@ -280,8 +283,8 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindToolbarAgeFragment (): ToolbarAgeFragment
 
-    @ContributesAndroidInjector
-    abstract fun bindDirectMessagesFragment (): ChatsFragment
+//    @ContributesAndroidInjector
+//    abstract fun bindDirectMessagesFragment (): ChatsFragment
 
     @ContributesAndroidInjector
     abstract fun bindNewChatFragment (): NewChatFragment
@@ -317,5 +320,14 @@ abstract class FragmentBuilderModule {
     abstract fun bindInterestsFragment (): InterestsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindChatsFragmentChatsFragment (): com.divercity.android.features.chat.recentchats.newrecentchats.ChatsFragment
+    abstract fun bindChatsFragment (): ChatsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindNewGroupChatFragment (): NewGroupChatFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCreateGroupChatFragment (): CreateGroupChatFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindAccountSettingsFragment (): AccountSettingsFragment
 }

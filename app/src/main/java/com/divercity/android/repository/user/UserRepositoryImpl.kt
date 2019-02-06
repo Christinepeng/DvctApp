@@ -150,10 +150,17 @@ constructor(
         }
     }
 
-    override fun updateDevice(deviceId: String, body: DeviceBody): Observable<Void> {
+    override fun updateDevice(deviceId: String, body: DeviceBody): Observable<Boolean> {
         return userService.updateDevice(deviceId, body).map { response ->
             checkResponse(response)
-            response.body()
+            true
+        }
+    }
+
+    override fun fetchUnreadMessagesCount(userId: String): Observable<Int> {
+        return userService.fetchUnreadMessagesCount(userId).map { response ->
+            checkResponse(response)
+            response.body()!!.data.count
         }
     }
 }

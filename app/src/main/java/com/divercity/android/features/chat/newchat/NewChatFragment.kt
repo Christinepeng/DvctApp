@@ -1,7 +1,9 @@
 package com.divercity.android.features.chat.newchat
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.content.ContextCompat
@@ -17,7 +19,7 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.newchat.adapter.UserSortedByFirstCharAdapter
-import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.profileconnections.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_new_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -38,6 +40,8 @@ class NewChatFragment : BaseFragment(), RetryCallback {
     private var handlerSearch = Handler()
 
     companion object {
+
+        const val REQUEST_CODE_GROUP_CREATED = 300
 
         fun newInstance(): NewChatFragment {
             return NewChatFragment()
@@ -62,6 +66,11 @@ class NewChatFragment : BaseFragment(), RetryCallback {
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
+
+        lay_new_group.setOnClickListener {
+            navigator.navigateToNewGroupChatActivityForResult(this, REQUEST_CODE_GROUP_CREATED)
+        }
+
         initAdapter()
         subscribeToLiveData()
         subscribeToPaginatedLiveData()
@@ -167,7 +176,16 @@ class NewChatFragment : BaseFragment(), RetryCallback {
         }
 
         override fun onUserClick(user: UserResponse) {
-            navigator.navigateToChatActivity(this@NewChatFragment, user.userAttributes?.name!!, user.id!!, -1)
+            navigator.navigateToChatActivity(this@NewChatFragment, user.userAttributes?.name!!, user.id, -1)
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if(resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_GROUP_CREATED){
+                activity?.finish()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
     }
 }

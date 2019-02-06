@@ -9,6 +9,7 @@ import com.divercity.android.data.entity.interests.body.FollowInterestsBody;
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody;
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody;
 import com.divercity.android.data.entity.profile.profile.UserProfileBody;
+import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountResponse;
 import com.divercity.android.data.entity.user.followuser.FollowUserResponse;
 import com.divercity.android.data.entity.user.response.UserResponse;
 
@@ -48,6 +49,9 @@ public interface UserService {
 
     @POST("users/current/update_interests")
     Observable<Response<DataObject<UserResponse>>> followInterests(@Body FollowInterestsBody body);
+
+    @GET("users/{userId}/chats/unread_messages_count")
+    Observable<Response<DataObject<UnreadMessageCountResponse>>> fetchUnreadMessagesCount(@Path("userId") String userId);
 
     @POST("devices")
     Observable<Response<DataObject<DeviceResponse>>> saveDevice(@Body DeviceBody body);

@@ -68,7 +68,7 @@ public class ChatsDataSource extends PageKeyedDataSource<Long, ExistingUsersChat
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
-                    if(data.size() < params.requestedLoadSize)
+                    if(data.size() < params.requestedLoadSize - 1)
                         callback.onResult(data, null, null);
                     else
                         callback.onResult(data, null, 2L);
@@ -152,5 +152,4 @@ public class ChatsDataSource extends PageKeyedDataSource<Long, ExistingUsersChat
             this.retryCompletable = Completable.fromAction(action);
         }
     }
-
 }

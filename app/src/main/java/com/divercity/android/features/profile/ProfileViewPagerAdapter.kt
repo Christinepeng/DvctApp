@@ -7,8 +7,8 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.divercity.android.R
-import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
-import com.divercity.android.features.profile.tabprofile.TabProfileFragment
+import com.divercity.android.features.profile.profileconnections.tabconnections.ConnectionsFragment
+import com.divercity.android.features.profile.profileconnections.tabprofile.TabProfileFragment
 import javax.inject.Inject
 
 /**

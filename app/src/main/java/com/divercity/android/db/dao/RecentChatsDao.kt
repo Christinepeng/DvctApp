@@ -1,5 +1,6 @@
 package com.divercity.android.db.dao
 
+import android.arch.lifecycle.LiveData
 import android.arch.paging.DataSource
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
@@ -23,6 +24,9 @@ interface RecentChatsDao {
 
     @Query("SELECT * FROM recentChat ORDER BY lastMessageDate DESC")
     fun getPagedRecentChats(): DataSource.Factory<Int, ExistingUsersChatListItem>
+
+    @Query("SELECT * FROM recentChat ORDER BY lastMessageDate DESC")
+    fun getRecentChats(): LiveData<List<ExistingUsersChatListItem>>
 
     @Query("SELECT chatId FROM recentChat WHERE chatUsers LIKE '%'||:userId||'%'  AND chatType != 'group'")
     fun fetchChatIdByUser(userId: String): Int

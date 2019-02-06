@@ -2,9 +2,11 @@ package com.divercity.android.features.home.notifications
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.home.HomeActivity
+import kotlinx.android.synthetic.main.activity_home.*
 
 /**
  * Created by lucas on 24/10/2018.
@@ -35,6 +37,7 @@ class NotificationsFragment : BaseFragment() {
 
     private fun setupToolbar() {
         (activity as HomeActivity).apply {
+            icon_notification.visibility = View.GONE
             supportActionBar?.let {
                 it.setTitle(R.string.activity)
                 it.setDisplayHomeAsUpEnabled(false)

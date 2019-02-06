@@ -11,8 +11,8 @@ object DateTypeConverter {
 
     @TypeConverter
     @JvmStatic
-    fun toLong(value: Date): Long {
-        return value.time
+    fun toLong(value: Date?): Long {
+        return value?.time ?: Date().time
     }
 
     @TypeConverter

@@ -4,7 +4,6 @@ import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.divercity.android.R
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.repository.user.UserRepository
 import javax.inject.Inject
@@ -21,10 +20,6 @@ constructor(val userRepository: UserRepository) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         (holder as RecentChatViewHolder).bindTo(getItem(position))
-    }
-
-    override fun getItemViewType(position: Int): Int {
-        return R.layout.item_text
     }
 
     companion object {

@@ -55,9 +55,9 @@ public class ConnectFacebookApiHelper {
                                         SocialLoginEntity socialLoginEntity = new SocialLoginEntity();
                                         try {
                                             socialLoginEntity.setProvider("facebook");
-                                            socialLoginEntity.setProviderId(object.getString("id"));
-                                            socialLoginEntity.setName(object.getString("first_name"));
-                                            socialLoginEntity.setLastname(object.getString("last_name"));
+//                                            socialLoginEntity.setProviderId(object.getString("id"));
+//                                            socialLoginEntity.setName(object.getString("first_name"));
+//                                            socialLoginEntity.setLastname(object.getString("last_name"));
                                             socialLoginEntity.setEmail(object.getString("email"));
                                             socialLoginEntity.setAccessToken(AccessToken.getCurrentAccessToken().getToken());
 //                                            socialLoginEntity.setBirthday(Utilities.formatDateForServer(facebookDateStringToDate(object.getString("birthday"))));

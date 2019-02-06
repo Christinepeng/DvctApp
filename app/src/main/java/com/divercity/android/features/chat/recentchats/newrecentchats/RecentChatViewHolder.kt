@@ -9,7 +9,7 @@ import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
-import kotlinx.android.synthetic.main.item_chats.view.*
+import kotlinx.android.synthetic.main.item_recent_chat.view.*
 
 class RecentChatViewHolder
 private constructor(itemView: View, private val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
@@ -29,6 +29,12 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
             itemView.setOnClickListener {
                 listener?.onChatClick(data)
             }
+
+            if(data.unreadMessageCount!! > 0){
+                itemView.icon_notification.text = data.unreadMessageCount!!.toString()
+                itemView.icon_notification.visibility = View.VISIBLE
+            } else
+                itemView.icon_notification.visibility = View.GONE
         }
     }
 
@@ -41,7 +47,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
 
         fun create(parent: ViewGroup, listener: Listener?): RecentChatViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(R.layout.item_chats, parent, false)
+            val view = layoutInflater.inflate(R.layout.item_recent_chat, parent, false)
             return RecentChatViewHolder(
                 view,
                 listener

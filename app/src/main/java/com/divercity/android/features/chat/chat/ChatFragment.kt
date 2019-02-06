@@ -51,14 +51,14 @@ class ChatFragment : BaseFragment() {
     companion object {
 
         private const val PARAM_USER_ID = "paramUserId"
-        private const val PARAM_USER_NAME = "paramUserName"
+        private const val PARAM_DISPLAY_NAME = "paramDisplayName"
         private const val PARAM_CHAT_ID = "paramChatId"
 
         fun newInstance(userName: String, userId: String?, chatId: Int?): ChatFragment {
             val fragment = ChatFragment()
             val arguments = Bundle()
             arguments.putString(PARAM_USER_ID, userId)
-            arguments.putString(PARAM_USER_NAME, userName)
+            arguments.putString(PARAM_DISPLAY_NAME, userName)
             arguments.putInt(PARAM_CHAT_ID, chatId ?: -1)
             fragment.arguments = arguments
             return fragment
@@ -73,7 +73,7 @@ class ChatFragment : BaseFragment() {
 
         setHasOptionsMenu(true)
 
-        userName = arguments?.getString(PARAM_USER_NAME)
+        userName = arguments?.getString(PARAM_DISPLAY_NAME)
         viewModel.userId = arguments?.getString(PARAM_USER_ID)
         viewModel.chatId = arguments?.getInt(PARAM_CHAT_ID)
 
@@ -86,18 +86,13 @@ class ChatFragment : BaseFragment() {
         (activity as AppCompatActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
-                it.title = arguments?.getString(PARAM_USER_NAME)
+                it.title = arguments?.getString(PARAM_DISPLAY_NAME)
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
 
         subscribeToLiveData()
         setupView()
-
-
-//        FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-//            val token = it.token
-//        }
     }
 
     private fun setupView() {

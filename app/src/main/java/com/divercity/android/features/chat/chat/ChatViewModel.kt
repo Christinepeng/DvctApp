@@ -166,25 +166,13 @@ constructor(
 
             override fun onSuccess(o: CreateChatResponse) {
                 hasFetchChatError = false
-
                 chatId = o.id.toInt()
 
                 if (pagedListLiveData == null)
                     initializePagedList(o.id.toInt())
 
-                uiScope.launch {
-//                    chatMessageRepository.insertChatOnDB(
-//                        ExistingUsersChatListItem(
-//                            lastMessageDate = Date(),
-//                            chatId = o.id.toInt(),
-//                            chatUsers = o.attributes?.users
-//                        )
-//                    )
-                    fetchMessages(otherUserId, 0, PAGE_SIZE)
-                }
-
+                fetchMessages(otherUserId, 0, PAGE_SIZE)
                 fetchCreateChatResponse.postValue(Resource.success(o))
-
                 connectToChatWebSocket(o.id.toInt())
             }
         }

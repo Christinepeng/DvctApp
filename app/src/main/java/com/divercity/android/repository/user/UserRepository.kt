@@ -4,6 +4,7 @@ import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
+import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountResponse
 import com.divercity.android.data.entity.user.followuser.FollowUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import io.reactivex.Observable
@@ -34,7 +35,9 @@ interface UserRepository {
 
     fun saveDevice(body: DeviceBody): Observable<DeviceResponse>
 
-    fun updateDevice(deviceId: String, body: DeviceBody): Observable<Void>
+    fun updateDevice(deviceId: String, body: DeviceBody): Observable<Boolean>
+
+    fun fetchUnreadMessagesCount(userId: String): Observable<Int>
 
     fun fetchFollowersByUser(
             userId: String,

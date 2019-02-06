@@ -97,12 +97,16 @@ public class SelectInterestsAdapter extends RecyclerView.Adapter<SelectInterests
         }
     }
 
+    public List<String> getIdsSelected() {
+        return idsSelected;
+    }
+
     @Override
     public int getItemCount() {
         return this.list != null ? this.list.size() : 0;
     }
 
-    interface Listener {
+    public interface Listener {
 
         void onInterestClick(List<String> idsSelected);
     }

@@ -287,7 +287,12 @@
         <item>Recruiter</item>
     </string-array>
 
+    <!-- Chat-->
     <string name="noti_channel_chats">Chats</string>
+    <string name="new_group_dm">New Group Direct Message</string>
+    <string name="new_group_chat">New Group Chat</string>
+    <string name="group_dm_name">Group DM Name</string>
+
     <string name="unauthorized_user">Unauthorized user</string>
 
     <!-- Facebook-->

@@ -29,7 +29,7 @@ public class HomeAdapter extends PagedListAdapter<HomeItem, RecyclerView.ViewHol
 
     @Inject
     public HomeAdapter() {
-        super(UserDiffCallback);
+        super(feedDiffUtil);
     }
 
     public void setRetryCallback(RetryCallback retryCallback) {
@@ -116,7 +116,7 @@ public class HomeAdapter extends PagedListAdapter<HomeItem, RecyclerView.ViewHol
         super.onCurrentListChanged(currentList);
     }
 
-    private static DiffUtil.ItemCallback<HomeItem> UserDiffCallback = new DiffUtil.ItemCallback<HomeItem>() {
+    private static DiffUtil.ItemCallback<HomeItem> feedDiffUtil = new DiffUtil.ItemCallback<HomeItem>() {
 
         @Override
         public boolean areItemsTheSame(HomeItem oldItem, HomeItem newItem) {

@@ -1,12 +1,13 @@
 package com.divercity.android.features.profile.settings.interests
 
-import android.app.Application
-import com.divercity.android.R
+import android.arch.lifecycle.MutableLiveData
 import com.divercity.android.core.base.BaseViewModel
-import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
+import com.divercity.android.data.entity.interests.InterestsResponse
+import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.usecase.UpdateFCMTokenUseCase
+import com.divercity.android.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
+import com.divercity.android.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -17,87 +18,61 @@ import javax.inject.Inject
 
 class InterestsViewModel @Inject
 constructor(
-    private val context : Application,
     private val sessionRepository: SessionRepository,
-    private val updateFCMTokenUseCase: UpdateFCMTokenUseCase
+    private val fetchInterestsUseCase: FetchInterestsUseCase,
+    private val followInterestsUseCase: FollowInterestsUseCase
 ) : BaseViewModel() {
 
-    val updateFCMTokenResponse = SingleLiveEvent<Resource<Boolean>>()
-//    val usernameRegisteredResponse = SingleLiveEvent<Resource<Boolean>>()
-//    val uploadProfilePictureResponse = SingleLiveEvent<Resource<UserResponse>>()
-//    val navigateToSelectUserType = SingleLiveEvent<Boolean>()
+    var fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
+    var followInterestsResponse = MutableLiveData<Resource<UserResponse>>()
 
-    fun getProfilePicture(): String? {
-        return sessionRepository.getUserAvatarUrl()
+    init {
+        fetchInterests()
     }
 
-    fun enableNotifications(enabled: Boolean) {
-        updateFCMTokenResponse.postValue(Resource.loading(null))
-        if (!sessionRepository.getDeviceId().isNullOrEmpty() && !sessionRepository.getFCMToken().isNullOrEmpty()) {
-            val callback = object : DisposableObserverWrapper<Void>() {
-                override fun onFail(error: String) {
-                    updateFCMTokenResponse.postValue(Resource.error(error, enabled))
-                }
-
-                override fun onHttpException(error: JsonElement) {
-                    updateFCMTokenResponse.postValue(Resource.error(error.toString(), enabled))
-
-                }
-
-                override fun onSuccess(o: Void) {
-                    updateFCMTokenResponse.postValue(Resource.success(enabled))
-                }
+    fun fetchInterests() {
+        fetchInterestsResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<List<InterestsResponse>>() {
+            override fun onFail(error: String) {
+                fetchInterestsResponse.postValue(Resource.error(error, null))
             }
-            updateFCMTokenUseCase.execute(
-                callback, UpdateFCMTokenUseCase.Params.forDevice(
-                    sessionRepository.getDeviceId()!!,
-                    sessionRepository.getFCMToken()!!,
-                    enabled
-                )
-            )
-        } else {
-            updateFCMTokenResponse.postValue(Resource.error(context.resources.getString(R.string.error_notifications), null))
+
+            override fun onHttpException(error: JsonElement) {
+                fetchInterestsResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: List<InterestsResponse>) {
+                val interests = sessionRepository.getInterests()
+                interests?.let {
+                    for(i in o){
+                        if(interests.contains(i.id?.toInt())){
+                            i.isSelected = true
+                        }
+                    }
+                }
+                fetchInterestsResponse.postValue(Resource.success(o))
+            }
         }
+        compositeDisposable.add(callback)
+        fetchInterestsUseCase.execute(callback, null)
     }
-//
-//    fun checkUsernameRegistered(username: String) {
-//
-//        val callback = object : DisposableObserverWrapper<Boolean>() {
-//
-//            override fun onFail(error: String) {
-//            }
-//
-//            override fun onHttpException(error: JsonElement?) {
-//            }
-//
-//            override fun onSuccess(t: Boolean) {
-//                usernameRegisteredResponse.value = Resource.success(t)
-//            }
-//        }
-//        compositeDisposable.add(callback)
-//        usernameRegisteredUseCase.execute(callback, CheckIsUsernameRegisteredUseCase.Params.forCheckUsername(username))
-//    }
-//
-//    fun uploadPicture(pictureBase64: String) {
-//        if (pictureBase64 == "")
-//            navigateToSelectUserType.call()
-//        else {
-//            val callback = object : DisposableObserverWrapper<UserResponse>() {
-//
-//                override fun onFail(error: String) {
-//                    uploadProfilePictureResponse.value = Resource.error(error, null)
-//                }
-//
-//                override fun onHttpException(error: JsonElement?) {
-//
-//                }
-//
-//                override fun onSuccess(t: UserResponse) {
-//                    uploadProfilePictureResponse.value = Resource.success(t)
-//                }
-//            }
-//            compositeDisposable.add(callback)
-//            uploadProfilePictureUseCase.execute(callback, UploadProfilePictureUseCase.Params.forUploadPic(pictureBase64))
-//        }
-//    }
+
+    fun followInterests(interestsIds: List<String>) {
+        followInterestsResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<UserResponse>() {
+            override fun onFail(error: String) {
+                followInterestsResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                followInterestsResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: UserResponse) {
+                followInterestsResponse.postValue(Resource.success(o))
+            }
+        }
+        compositeDisposable.add(callback)
+        followInterestsUseCase.execute(callback, FollowInterestsUseCase.Params.forInterests(interestsIds))
+    }
 }

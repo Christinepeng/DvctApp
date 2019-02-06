@@ -1,6 +1,7 @@
 package com.divercity.android.repository.chat
 
 import android.arch.paging.DataSource
+import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
@@ -16,26 +17,46 @@ interface ChatRepository {
 
     fun createChat(currentUserId: String, otherUserId: String): Observable<CreateChatResponse>
 
-    fun fetchMessages(currentUserId: String,
-                      chatId: String,
-                      otherUserId: String,
-                      pageNumber: Int,
-                      size: Int,
-                      query: String?): Observable<DataChatMessageResponse>
+    fun createGroupChat(
+        currentUserId: String,
+        otherUserId: String,
+        createGroupChatBody: CreateGroupChatBody
+    ): Observable<CreateChatResponse>
 
-    fun fetchCurrentChats(currentUserId: String,
-                      pageNumber: Int,
-                      size: Int,
-                      query: String?): Observable<List<ExistingUsersChatListItem>>
+    fun addGroupMember(
+        currentUserId: String,
+        chatId: String,
+        usersIds : List<String>
+    ): Observable<Boolean>
 
-    fun sendMessage(message: String,
-                    chatId: String): Observable<ChatMessageResponse>
+    fun fetchMessages(
+        currentUserId: String,
+        chatId: String,
+        otherUserId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<DataChatMessageResponse>
 
-    fun fetchChatMembers(currentUserId: String,
-                         chatId: String,
-                         pageNumber: Int,
-                         size: Int,
-                         query: String?): Observable<List<UserResponse>>
+    fun fetchCurrentChats(
+        currentUserId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<ExistingUsersChatListItem>>
+
+    fun sendMessage(
+        message: String,
+        chatId: String
+    ): Observable<ChatMessageResponse>
+
+    fun fetchChatMembers(
+        currentUserId: String,
+        chatId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>>
 
     fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageResponse>
 

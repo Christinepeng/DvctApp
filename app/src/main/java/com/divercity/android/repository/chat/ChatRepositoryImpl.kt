@@ -1,6 +1,8 @@
 package com.divercity.android.repository.chat
 
 import android.arch.paging.DataSource
+import com.divercity.android.data.entity.chat.addchatmemberbody.AddChatMemberBody
+import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
@@ -24,12 +26,18 @@ import javax.inject.Inject
 
 class ChatRepositoryImpl @Inject
 constructor(
-        private val chatService: ChatService,
-        private val chatMessageDao: ChatMessageDao,
-        private val recentChatsDao: RecentChatsDao
+    private val chatService: ChatService,
+    private val chatMessageDao: ChatMessageDao,
+    private val recentChatsDao: RecentChatsDao
 ) : ChatRepository {
 
-    override fun fetchChatMembers(currentUserId: String, chatId: String, pageNumber: Int, size: Int, query: String?): Observable<List<UserResponse>> {
+    override fun fetchChatMembers(
+        currentUserId: String,
+        chatId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>> {
         return chatService.fetchChatMembers(currentUserId, chatId, pageNumber, size, query).map {
             checkResponse(it)
             it.body()?.data
@@ -37,20 +45,20 @@ constructor(
     }
 
     override fun fetchMessages(
-            currentUserId: String,
-            chatId: String,
-            otherUserId: String,
-            pageNumber: Int,
-            size: Int,
-            query: String?
+        currentUserId: String,
+        chatId: String,
+        otherUserId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
     ): Observable<DataChatMessageResponse> {
         return chatService.fetchMessages(
-                currentUserId,
-                chatId,
-                otherUserId,
-                pageNumber,
-                size,
-                query
+            currentUserId,
+            chatId,
+            otherUserId,
+            pageNumber,
+            size,
+            query
         ).map {
             checkResponse(it)
             it.body()
@@ -58,8 +66,8 @@ constructor(
     }
 
     override fun createChat(
-            currentUserId: String,
-            otherUserId: String
+        currentUserId: String,
+        otherUserId: String
     ): Observable<CreateChatResponse> {
         return chatService.createChat(currentUserId, otherUserId).map {
             checkResponse(it)
@@ -124,14 +132,36 @@ constructor(
     }
 
     override fun fetchCurrentChats(
-            currentUserId: String,
-            pageNumber: Int,
-            size: Int,
-            query: String?
+        currentUserId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
     ): Observable<List<ExistingUsersChatListItem>> {
         return chatService.fetchCurrentChats(currentUserId, pageNumber, size, query).map {
             checkResponse(it)
             it.body()?.data?.existingUsersChatList
+        }
+    }
+
+    override fun createGroupChat(
+        currentUserId: String,
+        otherUserId: String,
+        createGroupChatBody: CreateGroupChatBody
+    ): Observable<CreateChatResponse> {
+        return chatService.createGroupChat(currentUserId, otherUserId, createGroupChatBody).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun addGroupMember(
+        currentUserId: String,
+        chatId: String,
+        usersIds : List<String>
+    ): Observable<Boolean> {
+        return chatService.addGroupMember(currentUserId, chatId, AddChatMemberBody(usersIds)).map {
+            checkResponse(it)
+            true
         }
     }
 }

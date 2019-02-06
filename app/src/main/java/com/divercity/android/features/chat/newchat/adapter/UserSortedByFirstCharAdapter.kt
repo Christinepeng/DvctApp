@@ -9,7 +9,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.profileconnections.tabconnections.adapter.UserViewHolder
 import javax.inject.Inject
 
 class UserSortedByFirstCharAdapter @Inject

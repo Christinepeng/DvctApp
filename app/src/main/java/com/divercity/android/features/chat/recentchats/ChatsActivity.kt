@@ -17,9 +17,13 @@ class ChatsActivity : BaseActivity() {
             return Intent(context, ChatsActivity::class.java)
         }
     }
+//
+//    override fun fragment(): BaseFragment =
+//            com.divercity.android.features.chat.recentchats.newrecentchats.ChatsFragment.newInstance()
+
 
     override fun fragment(): BaseFragment =
-            com.divercity.android.features.chat.recentchats.newrecentchats.ChatsFragment.newInstance()
+        com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsFragment.newInstance()
 
     override fun onBackPressed() {
         if(isTaskRoot){

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -9,93 +9,83 @@
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/swipe_list_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <RelativeLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_main"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/list_main"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/white"
-                android:scrollbarSize="5dp"
-                android:scrollbarThumbVertical="@android:color/darker_gray"
-                android:scrollbars="vertical"
-                app:layoutManager="android.support.v7.widget.LinearLayoutManager"
-                tools:listitem="@layout/item_question" />
-
-            <LinearLayout
-                android:id="@+id/lay_no_groups"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:orientation="vertical"
-                android:visibility="visible">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:src="@drawable/icon_no_conversation" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_margin="16dp"
-                    android:fontFamily="@font/avenir_roman"
-                    android:gravity="center_horizontal"
-                    android:lineSpacingExtra="6dp"
-                    android:text="@string/no_conversation"
-                    android:textColor="@color/textTitle"
-                    android:textSize="15sp" />
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btn_explore_groups"
-                    style="@style/AppText"
-                    android:layout_width="match_parent"
-                    android:layout_height="31dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/shape_backgrd_round_blue2"
-                    android:fontFamily="@font/avenir_medium"
-                    android:minHeight="30dip"
-                    android:text="@string/explore_groups"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="15sp" />
-
-                <android.support.v7.widget.AppCompatButton
-                    android:id="@+id/btn_create_group"
-                    style="@style/AppText"
-                    android:layout_width="match_parent"
-                    android:layout_height="31dp"
-                    android:layout_gravity="center"
-                    android:layout_marginLeft="30dp"
-                    android:layout_marginRight="30dp"
-                    android:layout_marginBottom="20dp"
-                    android:background="@drawable/shape_backgrd_round_blue2"
-                    android:fontFamily="@font/avenir_medium"
-                    android:minHeight="30dip"
-                    android:text="@string/create_group"
-                    android:textAllCaps="false"
-                    android:textColor="@android:color/white"
-                    android:textSize="15sp" />
-
-            </LinearLayout>
-
-        </RelativeLayout>
+            android:layout_height="match_parent"
+            android:scrollbarSize="5dp"
+            android:scrollbarThumbVertical="@android:color/darker_gray"
+            android:scrollbars="vertical"
+            app:layoutManager="android.support.v7.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_question" />
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <LinearLayout
+        android:id="@+id/lay_no_groups"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:orientation="vertical"
+        android:visibility="gone">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/icon_no_conversation" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_margin="16dp"
+            android:fontFamily="@font/avenir_roman"
+            android:gravity="center_horizontal"
+            android:lineSpacingExtra="6dp"
+            android:text="@string/no_conversation"
+            android:textColor="@color/textTitle"
+            android:textSize="15sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_explore_groups"
+            style="@style/AppText"
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_backgrd_round_blue2"
+            android:fontFamily="@font/avenir_medium"
+            android:minHeight="30dip"
+            android:text="@string/explore_groups"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_create_group"
+            style="@style/AppText"
+            android:layout_width="match_parent"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_backgrd_round_blue2"
+            android:fontFamily="@font/avenir_medium"
+            android:minHeight="30dip"
+            android:text="@string/create_group"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+    </LinearLayout>
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/btn_fab"
@@ -106,8 +96,6 @@
         android:layout_marginEnd="33dp"
         android:layout_marginBottom="33dp"
         android:src="@drawable/ic_add_24dp"
-        app:backgroundTint="@color/appBlue"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:backgroundTint="@color/appBlue" />
 
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

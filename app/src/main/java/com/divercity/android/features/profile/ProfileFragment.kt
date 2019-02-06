@@ -17,6 +17,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
 
@@ -97,6 +98,7 @@ class ProfileFragment : BaseFragment() {
 
     private fun setupToolbar() {
         (activity as AppCompatActivity).apply {
+            icon_notification.visibility = View.GONE
             supportActionBar?.let {
                 it.setTitle(R.string.profile)
                 it.setDisplayHomeAsUpEnabled(false)

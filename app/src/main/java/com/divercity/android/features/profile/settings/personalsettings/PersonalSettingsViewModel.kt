@@ -34,7 +34,7 @@ constructor(
     fun enableNotifications(enabled: Boolean) {
         updateFCMTokenResponse.postValue(Resource.loading(null))
         if (!sessionRepository.getDeviceId().isNullOrEmpty() && !sessionRepository.getFCMToken().isNullOrEmpty()) {
-            val callback = object : DisposableObserverWrapper<Void>() {
+            val callback = object : DisposableObserverWrapper<Boolean>() {
                 override fun onFail(error: String) {
                     updateFCMTokenResponse.postValue(Resource.error(error, enabled))
                 }
@@ -44,7 +44,7 @@ constructor(
 
                 }
 
-                override fun onSuccess(o: Void) {
+                override fun onSuccess(o: Boolean) {
                     updateFCMTokenResponse.postValue(Resource.success(enabled))
                 }
             }

@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 data class ExistingUsersChatListItem(
 
     @field:SerializedName("last_message_date")
-    var lastMessageDate: Date?,
+    var lastMessageDate: Date? = Date(),
 
     @field:SerializedName("avatar_medium")
     var avatarMedium: String? = "",

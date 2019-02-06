@@ -14,6 +14,7 @@ import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.home.HomeActivity
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_jobs.*
 import javax.inject.Inject
 
@@ -29,8 +30,8 @@ class TabJobsFragment : BaseFragment() {
     @Inject
     lateinit var adapterTab: TabJobsViewPagerAdapter
 
-    private lateinit var searchView : SearchView
-    private var searchItem: MenuItem?= null
+    private var searchView: SearchView? = null
+    private var searchItem: MenuItem? = null
 
     private var handlerSearch = Handler()
     private var lastSearchQuery: String? = ""
@@ -74,6 +75,7 @@ class TabJobsFragment : BaseFragment() {
 
     private fun setupToolbar() {
         (activity as HomeActivity).apply {
+            icon_notification.visibility = View.GONE
             supportActionBar?.let {
                 it.setTitle(R.string.job_board)
                 it.setDisplayHomeAsUpEnabled(false)
@@ -92,7 +94,7 @@ class TabJobsFragment : BaseFragment() {
 
             override fun onPageSelected(p0: Int) {
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabJobs)
-                        ?.fetchJobs(lastSearchQuery)
+                    ?.fetchJobs(lastSearchQuery)
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)
@@ -100,9 +102,9 @@ class TabJobsFragment : BaseFragment() {
         tab_layout.setupWithViewPager(viewpager)
 
 
-        viewpager.post {
-            onPageListener.onPageSelected(0)
-        }
+//        viewpager.post {
+//            onPageListener.onPageSelected(0)
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -110,14 +112,14 @@ class TabJobsFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_search, menu)
         searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = getString(R.string.search)
+        searchView?.queryHint = getString(R.string.search)
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabJobs)
-                        ?.fetchJobs(query)
+                    ?.fetchJobs(query)
                 lastSearchQuery = query
                 return false
             }
@@ -126,7 +128,7 @@ class TabJobsFragment : BaseFragment() {
                 handlerSearch.removeCallbacksAndMessages(null)
                 handlerSearch.postDelayed({
                     (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabJobs)
-                            ?.fetchJobs(newText)
+                        ?.fetchJobs(newText)
                     lastSearchQuery = newText
                 }, AppConstants.SEARCH_DELAY)
                 return true
@@ -139,7 +141,7 @@ class TabJobsFragment : BaseFragment() {
     override fun onDestroyView() {
         handlerSearch.removeCallbacksAndMessages(null)
 
-        searchView.setOnQueryTextListener(null)
+        searchView?.setOnQueryTextListener(null)
         searchItem?.setOnActionExpandListener(null)
         searchItem = null
 

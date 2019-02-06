@@ -32,7 +32,7 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsers
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_chats -> RecentChatViewHolder.create(
+            R.layout.item_recent_chat -> RecentChatViewHolder.create(
                 parent,
                 listener
             )
@@ -43,7 +43,7 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsers
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_chats -> (holder as RecentChatViewHolder).bindTo(getItem(position))
+            R.layout.item_recent_chat -> (holder as RecentChatViewHolder).bindTo(getItem(position))
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
     }
@@ -56,7 +56,7 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsers
         return if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
         } else {
-            R.layout.item_chats
+            R.layout.item_recent_chat
         }
     }
 

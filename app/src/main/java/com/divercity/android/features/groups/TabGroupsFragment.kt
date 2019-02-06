@@ -18,6 +18,7 @@ import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.features.home.HomeActivity
+import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_groups.*
 import javax.inject.Inject
 
@@ -40,7 +41,7 @@ class TabGroupsFragment : BaseFragment() {
     var lastPositionJoinClick = 0
     lateinit var handlerViewPager: Handler
 
-    private lateinit var searchView: SearchView
+    private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
 
     companion object {
@@ -158,6 +159,7 @@ class TabGroupsFragment : BaseFragment() {
 
     private fun setupToolbar() {
         (activity as HomeActivity).apply {
+            icon_notification.visibility = View.GONE
             supportActionBar?.let {
                 it.setTitle(R.string.groups)
                 it.setDisplayHomeAsUpEnabled(false)
@@ -183,9 +185,9 @@ class TabGroupsFragment : BaseFragment() {
         viewpager.adapter = adapterTab
         tab_layout.setupWithViewPager(viewpager)
 
-        viewpager.post {
-            onPageListener.onPageSelected(0)
-        }
+//        viewpager.post {
+//            onPageListener.onPageSelected(0)
+//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -193,7 +195,7 @@ class TabGroupsFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_search, menu)
         searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = getString(R.string.search)
+        searchView?.queryHint = getString(R.string.search)
 
         searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
@@ -208,7 +210,7 @@ class TabGroupsFragment : BaseFragment() {
 
         })
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
@@ -236,7 +238,7 @@ class TabGroupsFragment : BaseFragment() {
         handlerViewPager.removeCallbacksAndMessages(null)
         handlerSearch.removeCallbacksAndMessages(null)
 
-        searchView.setOnQueryTextListener(null)
+        searchView?.setOnQueryTextListener(null)
         searchItem?.setOnActionExpandListener(null)
         searchItem = null
 

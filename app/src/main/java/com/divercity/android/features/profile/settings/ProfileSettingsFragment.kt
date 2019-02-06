@@ -79,13 +79,18 @@ class ProfileSettingsFragment : BaseFragment() {
         }
 
         lay_account_settings.setOnClickListener {
+            navigator.navigateToAccountSettingsActivity(this)
         }
 
         lay_personal_settings.setOnClickListener {
             navigator.navigateToPersonalSettingsActivity(this)
         }
 
-//        enableSwitchListener()
+        lay_interests.setOnClickListener {
+            navigator.navigateToInterestsActivity(this)
+        }
+
+        enableSwitchListener()
     }
 
     private fun enableSwitchListener(){

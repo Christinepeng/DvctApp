@@ -33,7 +33,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "D-1.13"
+        versionName "D-1.14"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -52,7 +52,7 @@ android {
 
         debug {
             minifyEnabled false
-            manifestPlaceholders = [enableCrashReporting:"true"]
+            manifestPlaceholders = [enableCrashReporting:"false"]
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
 //            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -109,7 +109,7 @@ dependencies {
     def room_version = "1.1.1"
 
     def firebase_messaging_version = "17.3.4"
-    def firebas_core_version = "16.0.6"
+    def firebas_core_version = "16.0.7"
     def crashlytics_version = "2.9.8"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])

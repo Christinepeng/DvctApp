@@ -63,14 +63,14 @@ class DivercityMessagingService : FirebaseMessagingService() {
         sessionRepository.setFCMToken(p0)
         sessionRepository.getDeviceId()?.let { deviceId ->
             p0?.let { token ->
-                val callback = object : DisposableObserverWrapper<Void>() {
+                val callback = object : DisposableObserverWrapper<Boolean>() {
                     override fun onFail(error: String) {
                     }
 
                     override fun onHttpException(error: JsonElement) {
                     }
 
-                    override fun onSuccess(o: Void) {
+                    override fun onSuccess(o: Boolean) {
                     }
                 }
                 updateFCMTokenUseCase.execute(callback, UpdateFCMTokenUseCase.Params.forDevice(deviceId, token, true))

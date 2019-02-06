@@ -3,7 +3,9 @@ package com.divercity.android.di.module
 import com.divercity.android.features.agerange.onboarding.OnboartdingAgeActivity
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.android.features.chat.chat.ChatActivity
+import com.divercity.android.features.chat.creategroupchat.CreateGroupChatActivity
 import com.divercity.android.features.chat.newchat.NewChatActivity
+import com.divercity.android.features.chat.newgroupchat.NewGroupChatActivity
 import com.divercity.android.features.chat.recentchats.ChatsActivity
 import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
@@ -40,6 +42,7 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
+import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.profile.settings.interests.InterestsActivity
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
@@ -185,4 +188,13 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindInterestsActivity(): InterestsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindNewGroupChatActivity(): NewGroupChatActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCreateGroupChatActivity(): CreateGroupChatActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindAccountSettingsActivity(): AccountSettingsActivity
 }

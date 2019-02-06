@@ -6,6 +6,7 @@ import com.apollographql.apollo.ApolloClient;
 import com.divercity.android.Session;
 import com.divercity.android.db.dao.UserDao;
 import com.divercity.android.features.apollo.ApolloRepository;
+import com.divercity.android.features.usecase.UpdateFCMTokenUseCase;
 import com.divercity.android.helpers.NotificationHelper;
 import com.divercity.android.repository.appstate.AppStateRepository;
 import com.divercity.android.repository.appstate.AppStateRepositoryImpl;
@@ -64,8 +65,9 @@ public abstract class AppProvidesModule {
     @Provides
     @Singleton
     static Session provideSession(ChatRepository chatRepository,
-                                  SessionRepository sessionRepository) {
-        return new Session(chatRepository, sessionRepository);
+                                  SessionRepository sessionRepository,
+                                  UpdateFCMTokenUseCase updateFCMTokenUseCase) {
+        return new Session(chatRepository, sessionRepository, updateFCMTokenUseCase);
     }
 
     @Provides

@@ -36,7 +36,7 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     private var isListRefreshing = false
 
     private var handlerSearch = Handler()
-    private lateinit var searchView: SearchView
+    private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
 
     companion object {
@@ -163,9 +163,9 @@ class ChatsFragment : BaseFragment(), RetryCallback {
         inflater.inflate(R.menu.menu_search, menu)
         searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = getString(R.string.search)
+        searchView?.queryHint = getString(R.string.search)
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
@@ -192,7 +192,7 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     override fun onDestroyView() {
         handlerSearch.removeCallbacksAndMessages(null)
 
-        searchView.setOnQueryTextListener(null)
+        searchView?.setOnQueryTextListener(null)
         searchItem?.setOnActionExpandListener(null)
         searchItem = null
         super.onDestroyView()

@@ -4,8 +4,10 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeViewModel
 import com.divercity.android.features.chat.chat.ChatViewModel
+import com.divercity.android.features.chat.creategroupchat.CreateGroupChatViewModel
 import com.divercity.android.features.chat.newchat.NewChatViewModel
-import com.divercity.android.features.chat.recentchats.newrecentchats.ChatsViewModel
+import com.divercity.android.features.chat.newgroupchat.NewGroupChatViewModel
+import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel
 import com.divercity.android.features.company.base.SelectCompanyViewModel
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
@@ -55,13 +57,14 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.profile.ProfileViewModel
+import com.divercity.android.features.profile.profileconnections.tabconnections.ConnectionsViewModel
+import com.divercity.android.features.profile.profileconnections.tabprofile.TabProfileViewModel
 import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
+import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsViewModel
 import com.divercity.android.features.profile.settings.interests.InterestsViewModel
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsViewModel
-import com.divercity.android.features.profile.tabfollower.ConnectionsViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsViewModel
-import com.divercity.android.features.profile.tabprofile.TabProfileViewModel
 import com.divercity.android.features.signup.SignUpViewModel
 import com.divercity.android.features.splash.SplashViewModel
 import dagger.Binds
@@ -325,10 +328,10 @@ abstract class ViewModelModule {
     @ViewModelKey(FollowingGroupsViewModel::class)
     abstract fun bindsFollowingGroupsViewModel(viewModel: FollowingGroupsViewModel): ViewModel
 
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(ChatsViewModel::class)
-//    abstract fun bindsDirectMessagesViewModel(viewModel: com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel): ViewModel
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChatsViewModel::class)
+    abstract fun bindsDirectMessagesViewModel(viewModel: com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -385,8 +388,23 @@ abstract class ViewModelModule {
     @ViewModelKey(InterestsViewModel::class)
     abstract fun bindsInterestsViewModel(viewModel: InterestsViewModel): ViewModel
 
+//    @Binds
+//    @IntoMap
+//    @ViewModelKey(ChatsViewModel::class)
+//    abstract fun bindsChatsViewModel(viewModel: ChatsViewModel): ViewModel
+
     @Binds
     @IntoMap
-    @ViewModelKey(ChatsViewModel::class)
-    abstract fun bindsChatsViewModel(viewModel: com.divercity.android.features.chat.recentchats.newrecentchats.ChatsViewModel): ViewModel
+    @ViewModelKey(NewGroupChatViewModel::class)
+    abstract fun bindsNewGroupChatViewModel(viewModel: NewGroupChatViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateGroupChatViewModel::class)
+    abstract fun bindsCreateGroupChatViewModel(viewModel: CreateGroupChatViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AccountSettingsViewModel::class)
+    abstract fun bindsAccountSettingsViewModel(viewModel: AccountSettingsViewModel): ViewModel
 }

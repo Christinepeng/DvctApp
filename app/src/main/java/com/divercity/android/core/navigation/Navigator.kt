@@ -11,7 +11,9 @@ import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.features.agerange.onboarding.OnboartdingAgeActivity
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.android.features.chat.chat.ChatActivity
+import com.divercity.android.features.chat.creategroupchat.CreateGroupChatActivity
 import com.divercity.android.features.chat.newchat.NewChatActivity
+import com.divercity.android.features.chat.newgroupchat.NewGroupChatActivity
 import com.divercity.android.features.chat.recentchats.ChatsActivity
 import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
@@ -48,6 +50,7 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
+import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.profile.settings.interests.InterestsActivity
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
@@ -165,7 +168,7 @@ class Navigator @Inject constructor() {
         fragment.startActivity(NewChatActivity.getCallingIntent(fragment.context))
     }
 
-    fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String?, chatId : Int) {
+    fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String, chatId : Int?) {
         fragment.startActivity(ChatActivity.getCallingIntent(fragment.context, userName, userId, chatId))
     }
 
@@ -248,6 +251,18 @@ class Navigator @Inject constructor() {
 
     fun navigateToInterestsActivity(fragment: Fragment) {
         fragment.startActivity(InterestsActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToAccountSettingsActivity(fragment: Fragment) {
+        fragment.startActivity(AccountSettingsActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToNewGroupChatActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(NewGroupChatActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToCreateGroupChatActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(CreateGroupChatActivity.getCallingIntent(fragment.context), code)
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,

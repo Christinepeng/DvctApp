@@ -1,14 +1,18 @@
 package com.divercity.android.features.profile.settings.interests
 
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
+import android.widget.Toast
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.features.profile.tabprofile.TabProfileFragment
-import kotlinx.android.synthetic.main.fragment_profile_settings.*
+import com.divercity.android.data.Status
+import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
+import kotlinx.android.synthetic.main.fragment_interests.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
-import java.io.File
+import javax.inject.Inject
 
 /**
  * Created by lucas on 24/10/2018.
@@ -16,16 +20,10 @@ import java.io.File
 
 class InterestsFragment : BaseFragment() {
 
-    val SAVE_PARAM_FILEPATH = "saveParamFilepath"
-    val SAVE_PARAM_USERNAME = "username"
-    val SAVE_PARAM_ISUSERREGISTERED = "isUserRegistered"
-
-    private var photoFile: File? = null
-    private var isPictureSet: Boolean = false
-
     private lateinit var viewModel: InterestsViewModel
-    private var username: String? = ""
-    private var isUserRegistered: Int = 2
+
+    @Inject
+    lateinit var adapter: SelectInterestsAdapter
 
     companion object {
 
@@ -34,7 +32,7 @@ class InterestsFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_personal_settings
+    override fun layoutId(): Int = R.layout.fragment_interests
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,9 +41,9 @@ class InterestsFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        childFragmentManager.beginTransaction().add(
-            R.id.fragment_container, TabProfileFragment.newInstance()).commit()
         setupToolbar()
+        setupView()
+        subscribeToLiveData()
     }
 
     private fun setupToolbar() {
@@ -53,8 +51,47 @@ class InterestsFragment : BaseFragment() {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
                 it.setDisplayHomeAsUpEnabled(true)
-                it.setTitle(R.string.settings)
+                it.setTitle(R.string.interests)
             }
         }
+    }
+
+    private fun setupView(){
+        list.layoutManager = StaggeredGridLayoutManager(2, 1)
+        adapter.setListener { }
+
+        list.adapter = adapter
+
+        btn_save.setOnClickListener {
+            viewModel.followInterests(adapter.idsSelected)
+        }
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.fetchInterestsResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                }
+                Status.SUCCESS -> {
+                    adapter.list = response.data
+                }
+            }
+        })
+
+        viewModel.followInterestsResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> showProgress()
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                }
+            }
+        })
     }
 }

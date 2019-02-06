@@ -4,16 +4,19 @@ import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.Transformations;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
+
 import com.divercity.android.core.base.PaginatedRepository;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.entity.home.HomeItem;
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase;
 import com.divercity.android.features.home.home.usecase.GetQuestionsUseCase;
-import io.reactivex.disposables.CompositeDisposable;
 
-import javax.inject.Inject;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
+import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
 
 /**
  * Created by lucas on 01/10/2018.

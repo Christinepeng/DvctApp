@@ -18,9 +18,9 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: UserRepository
-) : UseCase<Void, UpdateFCMTokenUseCase.Params>(executorThread, uiThread) {
+) : UseCase<Boolean, UpdateFCMTokenUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<Void> {
+    override fun createObservableUseCase(params: Params): Observable<Boolean> {
         val deviceBody = DeviceBody(Device("android", params.enabled, params.token))
         return repository.updateDevice(params.deviceId, deviceBody)
     }

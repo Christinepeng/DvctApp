@@ -38,7 +38,6 @@ constructor(private val publishJobUseCase: PublishJobUseCase,
                 publishUnpublishJobResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
 
         jobData.attributes?.publishable?.let {
             if(it)
@@ -64,8 +63,13 @@ constructor(private val publishJobUseCase: PublishJobUseCase,
                 deleteJobResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
-
         deleteJobUseCase.execute(callback, DeleteJobUseCase.Params.forDelete(jobId))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        deleteJobUseCase.dispose()
+        publishJobUseCase.dispose()
+        unpublishJobUseCase.dispose()
     }
 }

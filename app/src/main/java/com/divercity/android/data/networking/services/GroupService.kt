@@ -3,6 +3,8 @@ package com.divercity.android.data.networking.services
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.contactinvitation.body.GroupInviteBody
+import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
@@ -100,4 +102,9 @@ interface GroupService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int
     ): Observable<Response<DataArray<GroupResponse>>>
+
+    @POST("group_of_interests/group_invite")
+    fun inviteContact(
+        @Body body: GroupInviteBody
+    ): Observable<GroupInviteResponse>
 }

@@ -116,9 +116,13 @@ constructor(
                 fetchCurrentChatsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchCurrentChatsUseCase.execute(
             callback, FetchCurrentChatsUseCase.Params.forChat(page, PAGE_SIZE, null)
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        fetchCurrentChatsUseCase.dispose()
     }
 }

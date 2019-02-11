@@ -1,6 +1,7 @@
 package com.divercity.android.core.navigation
 
 import android.content.Intent
+import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import com.divercity.android.R
@@ -19,6 +20,7 @@ import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
 import com.divercity.android.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.withtoolbar.ToolbarCompanyActivity
+import com.divercity.android.features.contacts.InvitePhoneContactsActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
@@ -154,6 +156,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToSelectOOIActivity(activity: FragmentActivity, progress: Int) {
         activity.startActivity(SelectOOIActivity.getCallingIntent(activity, progress))
+    }
+
+    fun navigateToPhoneContactsActivity(activity: FragmentActivity, data : Bundle) {
+        activity.startActivity(InvitePhoneContactsActivity.getCallingIntent(activity, data))
     }
 
     fun navigateToLinkedinActivity(activity: FragmentActivity) {

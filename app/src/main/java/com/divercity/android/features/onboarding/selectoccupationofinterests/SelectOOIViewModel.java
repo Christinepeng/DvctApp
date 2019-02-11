@@ -101,11 +101,16 @@ public class SelectOOIViewModel extends BaseViewModel {
                 followOOIResponse.postValue(Resource.Companion.success(o));
             }
         };
-        getCompositeDisposable().add(callback);
         followOOIUseCase.execute(callback, FollowOOIUseCase.Params.Companion.forOOI(ooiIds));
     }
 
     public MutableLiveData<Resource<UserResponse>> getFollowOOIResponse() {
         return followOOIResponse;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        followOOIUseCase.dispose();
     }
 }

@@ -43,7 +43,6 @@ constructor(private val createGroupUseCase: CreateGroupUseCase
                 }
             }
             val groupType = if(isPrivate) "private" else "public"
-            compositeDisposable.add(callback)
             createGroupUseCase.execute(callback,
                     CreateGroupUseCase.Params.forGroups(
                             GroupOfInterest(
@@ -56,5 +55,10 @@ constructor(private val createGroupUseCase: CreateGroupUseCase
         } catch (exception : IOException){
             createGroupResponse.postValue(Resource.error(exception.message!!, null))
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        createGroupUseCase.dispose()
     }
 }

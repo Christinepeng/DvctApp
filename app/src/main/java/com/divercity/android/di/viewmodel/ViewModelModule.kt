@@ -12,6 +12,7 @@ import com.divercity.android.features.company.base.SelectCompanyViewModel
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
 import com.divercity.android.features.company.onboarding.OnboardingCompanyViewModel
+import com.divercity.android.features.contacts.InvitePhoneContactsViewModel
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogViewModel
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogViewModel
@@ -57,14 +58,14 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.profile.ProfileViewModel
-import com.divercity.android.features.profile.profileconnections.tabconnections.ConnectionsViewModel
-import com.divercity.android.features.profile.profileconnections.tabprofile.TabProfileViewModel
 import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsViewModel
 import com.divercity.android.features.profile.settings.interests.InterestsViewModel
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsViewModel
+import com.divercity.android.features.profile.tabconnections.ConnectionsViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsViewModel
+import com.divercity.android.features.profile.tabprofile.TabProfileViewModel
 import com.divercity.android.features.signup.SignUpViewModel
 import com.divercity.android.features.splash.SplashViewModel
 import dagger.Binds
@@ -407,4 +408,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AccountSettingsViewModel::class)
     abstract fun bindsAccountSettingsViewModel(viewModel: AccountSettingsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(InvitePhoneContactsViewModel::class)
+    abstract fun bindsPhoneContactsViewModel(viewModel: InvitePhoneContactsViewModel): ViewModel
 }

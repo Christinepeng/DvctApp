@@ -84,7 +84,6 @@ constructor(private val repository: FollowingGroupsPaginatedRepositoryImpl,
                 joinGroupResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
     }
 
@@ -104,8 +103,13 @@ constructor(private val repository: FollowingGroupsPaginatedRepositoryImpl,
                 requestToJoinResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         requestToJoinUseCase.execute(callback,
             RequestJoinGroupUseCase.Params.toJoin(group.id))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        requestToJoinUseCase.dispose()
+        joinGroupUseCase.dispose()
     }
 }

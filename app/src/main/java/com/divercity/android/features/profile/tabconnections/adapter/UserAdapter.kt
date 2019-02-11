@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.profileconnections.tabconnections.adapter
+package com.divercity.android.features.profile.tabconnections.adapter
 
 import android.arch.paging.PagedListAdapter
 import android.support.v7.util.DiffUtil

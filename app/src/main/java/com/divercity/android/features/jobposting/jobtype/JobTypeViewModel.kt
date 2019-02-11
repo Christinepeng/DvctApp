@@ -37,7 +37,11 @@ constructor(private val fetchJobTypesUseCase: FetchJobTypesUseCase) : BaseViewMo
                 fetchJobTypesResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchJobTypesUseCase.execute(callback, Any())
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        fetchJobTypesUseCase.dispose()
     }
 }

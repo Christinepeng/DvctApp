@@ -41,7 +41,6 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
                 fetchRecommendedGroupsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchRecommendedGroupsUseCase.execute(callback, FetchRecommendedGroupsUseCase.Params.forGroups(0,5))
     }
 
@@ -60,7 +59,12 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
                 joinGroupResponse.postValue(Event(Resource.success(o)))
             }
         }
-        compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(GroupResponse(jobId)))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        joinGroupUseCase.dispose()
+        fetchRecommendedGroupsUseCase.dispose()
     }
 }

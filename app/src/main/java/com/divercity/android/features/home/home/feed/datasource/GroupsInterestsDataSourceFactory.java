@@ -29,7 +29,6 @@ public class GroupsInterestsDataSourceFactory extends DataSource.Factory<Long, H
     @Override
     public DataSource<Long, HomeItem> create() {
         GroupsInterestsDataSource groupsInterestsDataSource = new GroupsInterestsDataSource(
-                compositeDisposable,
                 getQuestionsUseCase,
                 fetchFeedRecommendedJobsGroupsUseCase);
         mGroupsInterestsDataSourceMutableLiveData.postValue(groupsInterestsDataSource);

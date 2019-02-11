@@ -87,7 +87,7 @@ constructor(
     }
 
     fun getChatsIfExist(userId: String) {
-        uiScope.launch {
+       uiScope.launch {
             val user = "\"id\":\"".plus(userId).plus("\"")
             val chatId = chatMessageRepository.fetchChatIdByUser(user)
             if (chatId != -1 && chatId != 0)
@@ -126,7 +126,6 @@ constructor(
                 fetchChatMembersResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchChatMembersUseCase.execute(
             callback,
             FetchChatMembersUseCase.Params.forMember(chatId, page, size, null)
@@ -176,7 +175,6 @@ constructor(
                 connectToChatWebSocket(o.id.toInt())
             }
         }
-        compositeDisposable.add(callback)
         fetchOrCreateChatUseCase.execute(
             callback,
             FetchOrCreateChatUseCase.Params.forUser(otherUserId)
@@ -203,7 +201,6 @@ constructor(
                 }
             }
         }
-        compositeDisposable.add(callback)
         fetchMessagesUseCase.execute(
             callback, FetchMessagesUseCase.Params
                 .forMsgs(
@@ -241,7 +238,6 @@ constructor(
                 sendMessageResponse.postValue(Resource.success(null))
             }
         }
-        compositeDisposable.add(callback)
         sendMessagesUseCase.execute(
             callback, SendMessagesUseCase.Params
                 .forMsg(parsedMessage, chatId.toString())
@@ -280,6 +276,10 @@ constructor(
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+        fetchChatMembersUseCase.dispose()
+        sendMessagesUseCase.dispose()
+        fetchOrCreateChatUseCase.dispose()
+        fetchMessagesUseCase.dispose()
     }
 
     private fun connectToChatWebSocket(chatId: Int) {

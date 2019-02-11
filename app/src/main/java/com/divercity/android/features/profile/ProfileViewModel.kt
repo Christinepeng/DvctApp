@@ -15,8 +15,10 @@ import javax.inject.Inject
  */
 
 class ProfileViewModel @Inject
-constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
-            private val sessionRepository: SessionRepository) : BaseViewModel() {
+constructor(
+    private val fetchUserDataUseCase: FetchUserDataUseCase,
+    private val sessionRepository: SessionRepository
+) : BaseViewModel() {
 
     var fetchUserDataResponse = MutableLiveData<Resource<UserResponse>>()
 
@@ -39,7 +41,14 @@ constructor(private val fetchUserDataUseCase: FetchUserDataUseCase,
                 fetchUserDataResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
-        fetchUserDataUseCase.execute(callback, FetchUserDataUseCase.Params.forUserData(sessionRepository.getUserId()))
+        fetchUserDataUseCase.execute(
+            callback,
+            FetchUserDataUseCase.Params.forUserData(sessionRepository.getUserId())
+        )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        fetchUserDataUseCase.dispose()
     }
 }

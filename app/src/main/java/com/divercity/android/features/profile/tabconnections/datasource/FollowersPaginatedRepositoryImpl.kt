@@ -1,11 +1,11 @@
-package com.divercity.android.features.profile.profileconnections.tabconnections.datasource
+package com.divercity.android.features.profile.tabconnections.datasource
 
 import android.arch.lifecycle.Transformations
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.profileconnections.tabconnections.usecase.FetchFollowersUseCase
+import com.divercity.android.features.profile.tabconnections.usecase.FetchFollowersUseCase
 import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors

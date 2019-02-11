@@ -18,47 +18,54 @@ import javax.inject.Named
  */
 
 class FetchFeedRecommendedJobsGroupsUseCase @Inject
-constructor(@Named("executor_thread") executorThread: Scheduler,
-            @Named("ui_thread") uiThread: Scheduler,
-            private val jobRepository: JobRepository,
-            private val groupRepository: GroupRepository,
-            private val feedRepository: FeedRepository
-) : UseCase<@JvmSuppressWildcards List<HomeItem>, FetchFeedRecommendedJobsGroupsUseCase.Params>(executorThread, uiThread) {
+constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
+    private val jobRepository: JobRepository,
+    private val groupRepository: GroupRepository,
+    private val feedRepository: FeedRepository
+) : UseCase<@JvmSuppressWildcards List<HomeItem>, FetchFeedRecommendedJobsGroupsUseCase.Params>(
+    executorThread,
+    uiThread
+) {
 
     override fun createObservableUseCase(params: Params): Observable<List<HomeItem>> {
 
         val fetchJobs = jobRepository.fetchRecommendedJobs(
-                0,
-                5,
-                null)
+            0,
+            5,
+            null
+        )
 
         val fetchGroups = groupRepository.fetchRecommendedGroups(
-                0,
-                5)
+            0,
+            5
+        )
 
         val fetchQuestions = feedRepository.fetchQuestions(
-                params.page,
-                params.size)
+            params.page,
+            params.size
+        )
 
-       return Observable.zip(
-               fetchGroups,
-               fetchJobs,
-               fetchQuestions,
-               Function3 { t1, t2, t3 ->
-                   val recommendedRes = ArrayList<RecommendedItem>()
-                   recommendedRes.addAll(t2)
-                   recommendedRes.addAll(t1)
-                   recommendedRes.shuffle()
+        return Observable.zip(
+            fetchGroups,
+            fetchJobs,
+            fetchQuestions,
+            Function3 { t1, t2, t3 ->
+                val recommendedRes = ArrayList<RecommendedItem>()
+                recommendedRes.addAll(t2)
+                recommendedRes.addAll(t1)
+                recommendedRes.shuffle()
 
-                   val recommended = Recommended(recommendedRes)
+                val recommended = Recommended(recommendedRes)
 
-                   val res = ArrayList<HomeItem>()
-                   res.add(recommended)
-                   res.addAll(t3)
+                val res = ArrayList<HomeItem>()
+                res.add(recommended)
+                res.addAll(t3)
 
-                   return@Function3 res
-               }
-       )
+                return@Function3 res
+            }
+        )
     }
 
     class Params private constructor(val page: Int, val size: Int, val query: String?) {

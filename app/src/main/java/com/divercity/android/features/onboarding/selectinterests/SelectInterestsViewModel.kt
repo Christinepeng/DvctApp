@@ -45,7 +45,6 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
                 fetchInterestsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchInterestsUseCase.execute(callback, null)
     }
 
@@ -64,11 +63,16 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
                 followInterestsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         followInterestsUseCase.execute(callback, FollowInterestsUseCase.Params.forInterests(interestsIds))
     }
 
     fun getAccountType(): String {
         return sessionRepository.getAccountType()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        fetchInterestsUseCase.dispose()
+        followInterestsUseCase.dispose()
     }
 }

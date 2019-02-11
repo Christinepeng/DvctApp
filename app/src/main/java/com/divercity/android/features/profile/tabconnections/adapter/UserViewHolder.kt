@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.profileconnections.tabconnections.adapter
+package com.divercity.android.features.profile.tabconnections.adapter
 
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater

@@ -34,9 +34,13 @@ constructor(val loginLinkedInUseCase: LoginLinkedInUseCase) : BaseViewModel() {
                             navigateToHome.setValue(true)
                     }
                 }
-                compositeDisposable.add(callback)
                 loginLinkedInUseCase.execute(callback, LoginLinkedInUseCase.Params.forLogin(code, state))
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        loginLinkedInUseCase.dispose()
     }
 }

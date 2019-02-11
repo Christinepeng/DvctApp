@@ -120,7 +120,6 @@ constructor(
 
             }
         }
-        compositeDisposable.add(disposable)
         getStoriesFeatured.execute(disposable, null)
     }
 
@@ -140,8 +139,6 @@ constructor(
                 joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
             }
         }
-
-        compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
     }
 
@@ -161,7 +158,6 @@ constructor(
                 requestToJoinResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         requestToJoinUseCase.execute(callback,
                 RequestJoinGroupUseCase.Params.toJoin(group.id))
     }
@@ -182,13 +178,16 @@ constructor(
                 fetchUnreadMessagesCountResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchUnreadMessagesCountUseCase.execute(callback,null)
     }
 
     override fun onCleared() {
         super.onCleared()
         questionsRepository.clear()
+        fetchFeedRecommendedJobsGroupsUseCase.dispose()
+        fetchUnreadMessagesCountUseCase.dispose()
+        joinGroupUseCase.dispose()
+        requestToJoinUseCase.dispose()
     }
 
     fun clearUserData() {

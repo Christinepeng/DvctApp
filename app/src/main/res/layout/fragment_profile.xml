@@ -47,13 +47,55 @@
         app:layout_constraintTop_toBottomOf="@+id/txt_name"
         tools:text="Job Seeker" />
 
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_connect"
+        style="@style/AppText"
+        android:layout_width="131dp"
+        android:layout_height="31dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_backgrd_round_blue3"
+        android:fontFamily="@font/avenir_medium"
+        android:minHeight="32dip"
+        android:text="@string/connect"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/btn_dm"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_user_type" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_dm"
+        style="@style/AppText"
+        android:layout_width="131dp"
+        android:layout_height="31dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_weight="1"
+        android:background="@drawable/shape_backgrd_round_blue3"
+        android:fontFamily="@font/avenir_medium"
+        android:minHeight="32dip"
+        android:text="@string/direct_message"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_connect"
+        app:layout_constraintTop_toTopOf="@+id/btn_connect" />
+
     <View
         android:id="@+id/view5"
         style="@style/Divider"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_user_type" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_connect" />
 
     <android.support.design.widget.TabLayout
         android:id="@+id/tab_layout"
@@ -68,6 +110,13 @@
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/MyCustomTextAppearance"
         app:tabTextColor="@color/grey3" />
+
+    <android.support.constraint.Group
+        android:id="@+id/group_connect_dm"
+        android:layout_width="wrap_content"
+        android:visibility="gone"
+        android:layout_height="wrap_content"
+        app:constraint_referenced_ids="btn_connect,btn_dm" />
 
     <View
         android:id="@+id/view6"

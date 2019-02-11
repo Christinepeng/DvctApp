@@ -24,6 +24,11 @@
     <string name="connections">Connections</string>
     <string name="pick_source">Pick source</string>
     <string name="error_notifications">Error setting up notifications, try to restart the app</string>
+    <string name="invitations">Invitations</string>
+    <string name="invite">Invite</string>
+    <string name="invite_friends">Invite friends</string>
+    <string name="invite_friends_subtitle">Your group is better with friends</string>
+    <string name="not_now">Not Now</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -47,6 +52,9 @@
     <string name="notifications">Notifications</string>
     <string name="personal_settings">Personal Settings</string>
     <string name="personal_settings_subtitle">Ethnicity, Gender, Occupation, Location…</string>
+    <string name="experience">Experience</string>
+    <string name="education">Education</string>
+    <string name="view_resume">View Resume</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -213,6 +221,9 @@
     <string name="job_application_way">Your Application is on its Way!</string>
     <string name="job_application_meantime">In the meantime, here are some jobs you might be interested in:</string>
     <string name="view_application">View Application</string>
+    <string name="connect">Connect</string>
+    <string name="direct_message">Direct Message</string>
+
 
     <string name="cancel_application">Cancel Application</string>
     <string name="cancel_application_warning">Are you sure you want to cancel your application? (Note that they may have already viewed your application)</string>
@@ -238,8 +249,15 @@
     <string name="member">Member</string>
     <string name="to_conversation">To Conversation</string>
     <string name="request_to_join">Request To Join</string>
+    <string name="admin">Admin</string>
     <string name="pending">Pending</string>
     <string name="group_description">Group Description</string>
+    <string name="write_new_post">Write a New Post</string>
+    <string name="edit_group">Edit Group</string>
+    <string name="add_admin">Add Admin</string>
+    <string name="view_members">View Members</string>
+    <string name="invite_from_divercity">Invite From Divercity</string>
+    <string name="invite_from_contact_list">Invite From Contact List</string>
 
     <!-- Delete Job-->
     <string name="delete_job">Delete Job Posting</string>
@@ -298,5 +316,6 @@
     <!-- Facebook-->
     <string name="facebook_app_id">1497808533858953</string>
     <string name="fb_login_protocol_scheme">fb1497808533858953</string>
+    <string name="read_contact_permission_title">Read Contact Permission is necessary</string>
 
 </resources>

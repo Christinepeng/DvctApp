@@ -143,7 +143,7 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         }
 
         override fun onGroupClick(group: GroupResponse) {
-
+            navigator.navigateToGroupDetailActivity(this@MyGroupsFragment, group)
         }
 
         override fun onGroupJoinClick(position: Int, group: GroupResponse) {

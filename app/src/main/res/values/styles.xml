@@ -6,10 +6,14 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/appText1</item>
-        <!--<item name="android:itemBackground">@color/colorPrimaryDark</item>-->
         <item name="cardViewStyle">@style/CardView</item>
         <item name="colorControlNormal">@android:color/white</item>
         <item name="searchViewStyle">@style/MySearchViewStyle</item>
+    </style>
+
+    <!-- The launcher theme. It sets the main window background to the launch_screen drawable -->
+    <style name="AppTheme.Launcher">
+        <item name="android:windowBackground">@drawable/ll_app_background</item>
     </style>
 
     <style name="MySearchViewStyle" parent="Widget.AppCompat.SearchView">

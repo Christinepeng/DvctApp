@@ -131,7 +131,8 @@ constructor(
     }
 
     override fun getLocation(): String? {
-        return currentLoggedUser?.userAttributes?.city.plus(", ").plus(currentLoggedUser?.userAttributes?.country)
+        return currentLoggedUser?.userAttributes?.city.plus(", ")
+            .plus(currentLoggedUser?.userAttributes?.country)
     }
 
     override fun getEmail(): String? {
@@ -160,10 +161,14 @@ constructor(
     }
 
     override fun isLoggedUserJobSeeker(): Boolean {
-        val accountType = currentLoggedUser?.type
+        val accountType = currentLoggedUser?.userAttributes?.accountType
         return accountType != null &&
                 (accountType == context.getString(R.string.job_seeker_id) ||
                         accountType == context.getString(R.string.student_id) ||
                         accountType == context.getString(R.string.professional_id))
+    }
+
+    override fun getUserType(): String? {
+        return currentLoggedUser?.userAttributes?.accountType
     }
 }

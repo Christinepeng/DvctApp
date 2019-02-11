@@ -41,7 +41,6 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         val user = User()
         user.ageRange = ageRangeSelected
         updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
@@ -49,5 +48,10 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
 
     fun getAccountType(): String {
         return sessionRepository.getAccountType()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        updateUserProfileUseCase.dispose()
     }
 }

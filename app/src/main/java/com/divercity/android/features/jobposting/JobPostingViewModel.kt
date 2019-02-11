@@ -44,7 +44,6 @@ constructor(private val postJobUseCase: PostJobUseCase,
                 jobResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         postJobUseCase.execute(callback, PostJobUseCase.Params.forJob
             (title, desc, company!!.id!!, jobType!!.id!!, location, getStringSkillList()))
     }
@@ -67,7 +66,6 @@ constructor(private val postJobUseCase: PostJobUseCase,
                 jobResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         editJobUseCase.execute(callback, EditJobUseCase.Params.forJob
             (id, title, desc, company!!.id!!, jobType!!.id!!, location, getStringSkillList()))
     }
@@ -85,5 +83,11 @@ constructor(private val postJobUseCase: PostJobUseCase,
                 skillList.add(SkillResponse(attributes = Attributes(item)))
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        editJobUseCase.dispose()
+        postJobUseCase.dispose()
     }
 }

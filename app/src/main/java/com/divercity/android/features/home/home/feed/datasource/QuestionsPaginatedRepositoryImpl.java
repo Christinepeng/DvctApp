@@ -78,7 +78,6 @@ public class QuestionsPaginatedRepositoryImpl implements PaginatedRepository<Hom
 
     @Override
     public void clear() {
-        compositeDisposable.dispose();
+        groupsInterestsDataSourceFactory.getGroupsInterestsDataSource().getValue().dispose();
     }
-
 }

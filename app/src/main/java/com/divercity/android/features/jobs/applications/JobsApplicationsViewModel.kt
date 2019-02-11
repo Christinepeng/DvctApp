@@ -88,7 +88,6 @@ constructor(private val context: Application,
                 jobSaveUnsaveResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         saveJobUseCase.execute(callback, SaveJobUseCase.Params.forJobs(jobData.id!!))
     }
 
@@ -107,7 +106,6 @@ constructor(private val context: Application,
                 jobSaveUnsaveResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         removeSavedJobUseCase.execute(callback, RemoveSavedJobUseCase.Params.forJobs(jobData.id!!))
     }
 
@@ -116,5 +114,11 @@ constructor(private val context: Application,
             navigateToJobSeekerDescription.value = job
         else
             navigateToJobRecruiterDescription.value = job
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        removeSavedJobUseCase.dispose()
+        saveJobUseCase.dispose()
     }
 }

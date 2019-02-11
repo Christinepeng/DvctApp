@@ -37,7 +37,12 @@ constructor(private val fetchCompanySizesUseCase: FetchCompanySizesUseCase) : Ba
                 fetchCompanySizeResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchCompanySizesUseCase.execute(callback, null)
+    }
+
+
+    override fun onCleared() {
+        super.onCleared()
+        fetchCompanySizesUseCase.dispose()
     }
 }

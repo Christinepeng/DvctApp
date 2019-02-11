@@ -92,7 +92,6 @@ public class SelectSchoolViewModel extends BaseViewModel {
                 updateUserProfileResponse.postValue(Resource.Companion.success(o));
             }
         };
-        getCompositeDisposable().add(callback);
         User user = new User();
         user.setSchoolId(schoolResponse.getId());
         updateUserProfileUseCase.execute(callback,UpdateUserProfileUseCase.Params.forUser(user));
@@ -108,5 +107,11 @@ public class SelectSchoolViewModel extends BaseViewModel {
 
     public LiveData<PagedList<SchoolResponse>> getPagedSchoolList() {
         return pagedSchoolList;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        updateUserProfileUseCase.dispose();
     }
 }

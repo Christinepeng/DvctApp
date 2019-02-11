@@ -32,7 +32,7 @@ public class FetchFollowedGroupsUseCase extends UseCase<DataArray<GroupResponse>
         return repository.fetchFollowedGroups(
                 params.page,
                 params.size,
-                params.query.equals("") ? null : params.query);
+                params.query);
     }
 
     public static final class Params {

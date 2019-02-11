@@ -9,7 +9,6 @@ import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
 import com.divercity.android.repository.session.SessionRepository
-import com.divercity.android.repository.user.UserRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -19,7 +18,6 @@ import javax.inject.Inject
 
 class OnboardingLocationViewModel @Inject
 constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
-            private val userRepository: UserRepository,
             private val sessionRepository: SessionRepository) : BaseViewModel() {
 
     val updateUserProfileResponse = MutableLiveData<Resource<UserResponse>>()
@@ -40,7 +38,6 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         val user = User()
         user.city = location.attributes?.name
         user.country = location.attributes?.countryName
@@ -49,5 +46,10 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
 
     fun getAccountType(): String {
         return sessionRepository.getAccountType()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        updateUserProfileUseCase.dispose()
     }
 }

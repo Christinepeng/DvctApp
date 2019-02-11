@@ -16,6 +16,7 @@ import com.divercity.android.data.entity.home.HomeItem;
 import com.divercity.android.data.entity.home.Recommended;
 import com.divercity.android.data.entity.questions.QuestionResponse;
 import com.divercity.android.features.home.home.recommended.RecommendedAdapter;
+import com.divercity.android.repository.session.SessionRepository;
 
 import java.util.Objects;
 
@@ -26,6 +27,8 @@ public class HomeAdapter extends PagedListAdapter<HomeItem, RecyclerView.ViewHol
     private NetworkState networkState;
     private RetryCallback retryCallback;
     private RecommendedAdapter recommendedAdapter;
+
+    private SessionRepository sessionRepository;
 
     @Inject
     public HomeAdapter() {
@@ -45,7 +48,7 @@ public class HomeAdapter extends PagedListAdapter<HomeItem, RecyclerView.ViewHol
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case R.layout.item_question:
-                return QuestionsViewHolder.create(parent);
+                return QuestionsViewHolder.create(parent, sessionRepository);
             case R.layout.view_network_state:
                 return NetworkStateViewHolder.create(parent, retryCallback);
             case R.layout.item_list_recommended:

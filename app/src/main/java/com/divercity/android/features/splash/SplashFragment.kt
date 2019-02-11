@@ -37,7 +37,22 @@ class SplashFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startTimer()
+//        startTimer()
+
+        if (viewModel.isUserLogged)
+            viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+//                navigator.navigateToChatActivity(this,"Joseph Student","6")
+//                navigator.navigateToSelectInterestsActivity(activity!!, 20)
+//                navigator.navigateToSelectUserTypeActivity(activity!!)
+//                navigator.navigateToSelectOccupationActivity(activity!!, 20)
+//                navigator.navigateToOnboardingIndustryActivity(activity!!, 30)
+//            navigator.navigateToSelectSingleIndustryActivityForResult(this, 30)
+//            navigator.navigateToOnboardingGenderActivity(activity!!, 30)
+//            navigator.navigateToOnboardingLocationActivity(activity!!, 76)
+        else {
+            navigator.navigateToEnterEmailActivity(activity!!)
+            activity!!.finish()
+        }
     }
 
     fun startTimer() {

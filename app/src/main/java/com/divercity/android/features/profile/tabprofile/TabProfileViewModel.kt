@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.profileconnections.tabprofile
+package com.divercity.android.features.profile.tabprofile
 
 import android.arch.lifecycle.MutableLiveData
 import com.divercity.android.core.base.BaseViewModel
@@ -12,7 +12,6 @@ import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
 import com.divercity.android.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
-import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -23,7 +22,6 @@ import javax.inject.Inject
 
 class TabProfileViewModel @Inject
 constructor(
-    private val fetchUserDataUseCase: FetchUserDataUseCase,
     private val updateUserProfileUseCase: UpdateUserProfileUseCase,
     private val sessionRepository: SessionRepository,
     private val fetchInterestsUseCase: FetchInterestsUseCase,
@@ -51,6 +49,10 @@ constructor(
 
     fun getLocation(): String? {
         return sessionRepository.getLocation()
+    }
+
+    fun getUserType() : String?{
+        return sessionRepository.getUserType()
     }
 
     fun updateEthnicity(ethnicity: String?) {
@@ -92,6 +94,7 @@ constructor(
             override fun onSuccess(o: List<InterestsResponse>) {
                 val interests = sessionRepository.getInterests()
                 interests?.let {
+
                     for(i in o){
                         if(interests.contains(i.id?.toInt())){
                             i.isSelected = true
@@ -101,7 +104,6 @@ constructor(
                 fetchInterestsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchInterestsUseCase.execute(callback, null)
     }
 
@@ -126,7 +128,13 @@ constructor(
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        updateUserProfileUseCase.dispose()
+        fetchInterestsUseCase.dispose()
+        followInterestsUseCase.dispose()
     }
 }

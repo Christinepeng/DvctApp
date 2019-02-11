@@ -50,7 +50,6 @@ constructor(
                 addChatGroupMembers(t, listMembers)
             }
         }
-        compositeDisposable.add(callback)
         createGroupChatUseCase.execute(
             callback, CreateGroupChatUseCase.Params.forUser(
                 listMembers[0].id,
@@ -86,10 +85,15 @@ constructor(
                 addChatGroupMemberResponse.value = Resource.success(chatResponse)
             }
         }
-        compositeDisposable.add(callback)
         addChatGroupMemberUseCase.execute(
             callback,
             AddChatGroupMemberUseCase.Params.forUser(chatResponse.id, membersIds)
         )
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        addChatGroupMemberUseCase.dispose()
+        createGroupChatUseCase.dispose()
     }
 }

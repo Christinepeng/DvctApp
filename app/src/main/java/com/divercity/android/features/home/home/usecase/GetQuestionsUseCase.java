@@ -43,5 +43,4 @@ public class GetQuestionsUseCase extends UseCase<List<QuestionResponse>, GetQues
             return new Params(page, size);
         }
     }
-
 }

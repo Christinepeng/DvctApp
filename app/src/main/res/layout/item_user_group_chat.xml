@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:background="@null"
         android:padding="12dp"
+        android:scaleType="fitCenter"
         android:src="@drawable/selector_checkmark"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

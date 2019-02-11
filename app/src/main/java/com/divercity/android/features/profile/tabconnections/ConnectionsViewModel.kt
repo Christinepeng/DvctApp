@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.profileconnections.tabconnections
+package com.divercity.android.features.profile.tabconnections
 
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
@@ -6,7 +6,7 @@ import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.profileconnections.tabconnections.datasource.FollowersPaginatedRepositoryImpl
+import com.divercity.android.features.profile.tabconnections.datasource.FollowersPaginatedRepositoryImpl
 import javax.inject.Inject
 
 /**

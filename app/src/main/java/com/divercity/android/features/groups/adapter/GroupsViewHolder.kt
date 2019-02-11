@@ -14,7 +14,8 @@ import com.divercity.android.data.entity.group.GroupResponse
 import kotlinx.android.synthetic.main.item_group.view.*
 
 class GroupsViewHolder
-private constructor(itemView: View, private val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
+private constructor(itemView: View, private val listener: Listener?) :
+    RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(position: Int, data: GroupResponse?) {
         data?.let {
@@ -22,37 +23,47 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 itemView.item_group_img.visibility = View.VISIBLE
                 val urlMain = data.attributes.pictureMain
                 GlideApp.with(itemView)
-                        .load(urlMain)
-                        .apply(RequestOptions().transforms(RoundedCorners(16)))
-                        .into(itemView.item_group_img)
+                    .load(urlMain)
+                    .apply(RequestOptions().transforms(RoundedCorners(16)))
+                    .into(itemView.item_group_img)
             } catch (e: Throwable) {
                 itemView.item_group_img.visibility = View.GONE
             }
 
             itemView.item_group_txt_title.text = data.attributes.title
-            itemView.item_group_txt_members.text = data.attributes.followersCount.toString().plus(" Members")
+            itemView.item_group_txt_members.text =
+                data.attributes.followersCount.toString().plus(" Members")
 
             itemView.item_group_btn_join_member.apply {
-                text = if (data.attributes.isIsFollowedByCurrent) {
-                    setOnClickListener(null)
-                    setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                    setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-                    "Member"
-                } else if (data.isJoinRequestPending) {
-                    setOnClickListener(null)
-                    setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                    setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-                    "Pending"
+                if (data.attributes.isIsCurrentUserAdmin) {
+                    visibility = View.GONE
                 } else {
-                    if (data.isPublic)
-                        setOnClickListener { listener?.onGroupJoinClick(position, data) }
-                    else
-                        setOnClickListener { listener?.onGroupRequestJoinClick(position, data) }
-                    setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-                    setTextColor(ContextCompat.getColor(itemView.context, android.R.color.white))
-                    "Join"
+                    text = if (data.attributes.isIsFollowedByCurrent) {
+                        setOnClickListener(null)
+                        setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+                        "Member"
+                    } else if (data.isJoinRequestPending) {
+                        setOnClickListener(null)
+                        setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+                        "Pending"
+                    } else {
+                        if (data.isPublic)
+                            setOnClickListener { listener?.onGroupJoinClick(position, data) }
+                        else
+                            setOnClickListener { listener?.onGroupRequestJoinClick(position, data) }
+                        setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
+                        setTextColor(
+                            ContextCompat.getColor(
+                                itemView.context,
+                                android.R.color.white
+                            )
+                        )
+                        "Join"
+                    }
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                 }
-                setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             }
 
             itemView.setOnClickListener {

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@drawable/shape_backgrd_round1"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/btn_write_new_post"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/write_new_post" />
+
+    <TextView
+        android:id="@+id/btn_invite"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/invite" />
+
+    <TextView
+        android:id="@+id/btn_view_members"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/view_members" />
+
+</LinearLayout>

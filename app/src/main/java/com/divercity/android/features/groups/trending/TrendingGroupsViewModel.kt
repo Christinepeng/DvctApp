@@ -83,7 +83,6 @@ constructor(
                 joinGroupResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
     }
 
@@ -103,8 +102,13 @@ constructor(
                 requestToJoinResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         requestToJoinUseCase.execute(callback,
             RequestJoinGroupUseCase.Params.toJoin(group.id))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        joinGroupUseCase.dispose()
+        requestToJoinUseCase.dispose()
     }
 }

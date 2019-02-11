@@ -2,6 +2,7 @@ package com.divercity.android.data.entity.job.response
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.data.entity.home.RecommendedItem
 import com.google.gson.annotations.SerializedName
 
@@ -15,7 +16,7 @@ data class JobResponse(
 
 	@field:SerializedName("type")
 	val type: String? = null
-) : RecommendedItem, Parcelable {
+) : RecommendedItem, HomeItem, Parcelable {
 	constructor(parcel: Parcel) : this(
 			parcel.readParcelable(Attributes::class.java.classLoader),
 			parcel.readString(),

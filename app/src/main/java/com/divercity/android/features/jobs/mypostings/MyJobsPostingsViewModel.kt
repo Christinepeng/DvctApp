@@ -76,7 +76,6 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
                 publishJobResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         publishJobUseCase.execute(callback, PublishJobUseCase.Params.forPublish(jobData.id!!))
     }
 
@@ -84,5 +83,10 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
         networkState().removeObservers(lifecycleOwner)
         refreshState().removeObservers(lifecycleOwner)
         pagedJobsList.removeObservers(lifecycleOwner)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        publishJobUseCase.dispose()
     }
 }

@@ -33,7 +33,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "D-1.14"
+        versionName "D-1.15"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -45,14 +45,16 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             manifestPlaceholders = [enableCrashReporting:"true"]
         }
 
         debug {
             minifyEnabled false
-            manifestPlaceholders = [enableCrashReporting:"false"]
+            debuggable true
+            manifestPlaceholders = [enableCrashReporting:"true"]
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
 //            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -93,12 +95,12 @@ dependencies {
 
     def retrofit_version = "2.5.0"
     def okhttp3_version = "3.9.1"
-    def rxjava_version = "2.1.5"
-    def rxandroid_version = "2.0.2"
+    def rxjava_version = "2.2.4"
+    def rxandroid_version = "2.1.0"
 
     def glide_version = "4.8.0"
     def lifecycle_version = "1.1.1"
-    def dagger_version = "2.19"
+    def dagger_version = "2.21"
 
     def timber_version = "4.7.1"
 
@@ -111,6 +113,8 @@ dependencies {
     def firebase_messaging_version = "17.3.4"
     def firebas_core_version = "16.0.7"
     def crashlytics_version = "2.9.8"
+
+    def spyglass_version = "1.5.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.3'
@@ -150,8 +154,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     // RxJava
-    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
-    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+    implementation "io.reactivex.rxjava2:rxjava:2.2.4"
 
     // Dagger2
     implementation "com.google.dagger:dagger-android:$dagger_version"
@@ -188,7 +192,7 @@ dependencies {
     // Paginate
     implementation 'com.github.markomilos:paginate:0.5.1'
 
-    implementation 'com.linkedin.android.spyglass:spyglass:1.5.0'
+    implementation "com.linkedin.android.spyglass:spyglass:$spyglass_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'

@@ -103,7 +103,6 @@ public class SelectGroupViewModel extends BaseViewModel {
                 joinGroupResponse.postValue(Resource.Companion.success(o));
             }
         };
-        getCompositeDisposable().add(callback);
         joinGroupUseCase.execute(callback,JoinGroupUseCase.Params.forJoin(group));
     }
 
@@ -125,7 +124,6 @@ public class SelectGroupViewModel extends BaseViewModel {
                 requestToJoinResponse.postValue(Resource.Companion.success(o));
             }
         };
-        getCompositeDisposable().add(callback);
         requestJoinGroupUseCase.execute(callback,RequestJoinGroupUseCase.Params.Companion.toJoin(group.getId()));
     }
 
@@ -135,5 +133,12 @@ public class SelectGroupViewModel extends BaseViewModel {
 
     public LiveData<PagedList<GroupResponse>> getPagedGroupList() {
         return pagedGroupList;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        joinGroupUseCase.dispose();
+        requestJoinGroupUseCase.dispose();
     }
 }

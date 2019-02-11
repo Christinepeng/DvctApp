@@ -30,7 +30,7 @@
                     android:textSize="17sp" />
 
                 <LinearLayout
-                    android:id="@+id/lay_ethnicity"
+                    android:id="@+id/lay_resume"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
@@ -42,43 +42,43 @@
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_globe" />
+                        android:src="@drawable/icon_calendar" />
 
                     <TextView
-                        android:id="@+id/txt_ethnicity"
+                        android:id="@+id/txt_resume"
                         style="@style/AppText2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:background="@android:color/transparent"
-                        android:hint="@string/ethnicity"
+                        android:hint="@string/view_resume"
                         android:paddingTop="17dp"
                         android:paddingBottom="17dp" />
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/lay_gender"
+                    android:id="@+id/lay_school"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="1dp"
                     android:background="@android:color/white"
                     android:orientation="horizontal"
-                    android:padding="14dp">
+                    android:padding="16dp">
 
                     <ImageView
                         android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:src="@drawable/icon_user" />
+                        android:src="@drawable/icon_hat" />
 
                     <TextView
-                        android:id="@+id/txt_gender"
+                        android:id="@+id/txt_school"
                         style="@style/AppText2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
-                        android:hint="@string/gender" />
+                        android:hint="@string/school" />
 
                 </LinearLayout>
 
@@ -108,31 +108,6 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/lay_company_size"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="1dp"
-                    android:background="@android:color/white"
-                    android:orientation="horizontal"
-                    android:padding="16dp">
-
-                    <ImageView
-                        android:layout_width="30dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:src="@drawable/icon_hat" />
-
-                    <TextView
-                        android:id="@+id/txt_company_sizse"
-                        style="@style/AppText2"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
-                        android:hint="@string/school" />
-
-                </LinearLayout>
-
-                <LinearLayout
                     android:id="@+id/lay_location"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -154,6 +129,59 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="20dp"
                         android:hint="@string/location" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lay_gender"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal"
+                    android:padding="14dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/icon_user" />
+
+                    <TextView
+                        android:id="@+id/txt_gender"
+                        style="@style/AppText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:hint="@string/gender" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/lay_ethnicity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal"
+                    android:paddingStart="14dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@drawable/icon_globe" />
+
+                    <TextView
+                        android:id="@+id/txt_ethnicity"
+                        style="@style/AppText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="20dp"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/ethnicity"
+                        android:paddingTop="17dp"
+                        android:paddingBottom="17dp" />
 
                 </LinearLayout>
 
@@ -181,6 +209,63 @@
                         android:hint="@string/age_range" />
 
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/lbl_skills"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/avenir_heavy"
+                    android:gravity="center_horizontal"
+                    android:text="@string/skills"
+                    android:textColor="#333241"
+                    android:textSize="17sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_skills"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/lbl_experience"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/avenir_heavy"
+                    android:gravity="center_horizontal"
+                    android:text="@string/experience"
+                    android:textColor="#333241"
+                    android:textSize="17sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_experience"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+
+                <TextView
+                    android:id="@+id/lbl_education"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/avenir_heavy"
+                    android:gravity="center_horizontal"
+                    android:text="@string/education"
+                    android:textColor="#333241"
+                    android:textSize="17sp" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list_education"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:background="@android:color/white"
+                    app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
 
                 <TextView
                     android:id="@+id/lbl_interests"

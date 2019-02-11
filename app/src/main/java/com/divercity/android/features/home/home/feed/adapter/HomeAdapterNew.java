@@ -19,6 +19,7 @@ import com.divercity.android.data.entity.home.HomeItem;
 import com.divercity.android.data.entity.home.Recommended;
 import com.divercity.android.data.entity.questions.QuestionResponse;
 import com.divercity.android.features.home.home.recommended.RecommendedAdapter;
+import com.divercity.android.repository.session.SessionRepository;
 
 import javax.inject.Inject;
 
@@ -29,9 +30,11 @@ public class HomeAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder
     private RecommendedAdapter recommendedAdapter;
 
     private AsyncPagedListDiffer<HomeItem> mDiffer;
+    private SessionRepository sessionRepository;
 
     @Inject
-    public HomeAdapterNew() {
+    public HomeAdapterNew(SessionRepository sessionRepository) {
+        this.sessionRepository = sessionRepository;
         final AdapterListUpdateCallback adapterCallback = new AdapterListUpdateCallback(this);
         mDiffer = new AsyncPagedListDiffer<>(new ListUpdateCallback() {
             @Override
@@ -87,7 +90,7 @@ public class HomeAdapterNew extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case R.layout.item_question:
-                return QuestionsViewHolder.create(parent);
+                return QuestionsViewHolder.create(parent, sessionRepository);
             case R.layout.view_network_state:
                 return NetworkStateViewHolder.create(parent, retryCallback);
             case R.layout.item_list_recommended:

@@ -53,7 +53,6 @@ constructor(
                 fetchInterestsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchInterestsUseCase.execute(callback, null)
     }
 
@@ -72,7 +71,12 @@ constructor(
                 followInterestsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         followInterestsUseCase.execute(callback, FollowInterestsUseCase.Params.forInterests(interestsIds))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        followInterestsUseCase.dispose()
+        fetchInterestsUseCase.dispose()
     }
 }

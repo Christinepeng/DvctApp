@@ -101,11 +101,16 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
                 followIndustriesResponse.postValue(Resource.Companion.success(o));
             }
         };
-        getCompositeDisposable().add(callback);
         followIndustriesUseCase.execute(callback, FollowIndustriesUseCase.Params.Companion.forIndustry(industriesSelected));
     }
 
     public MutableLiveData<Resource<UserResponse>> getFollowIndustriesResponse() {
         return followIndustriesResponse;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        followIndustriesUseCase.dispose();
     }
 }

@@ -63,4 +63,6 @@ interface SessionRepository {
     fun getLocation(): String?
 
     fun getInterests() : List<Int>?
+
+    fun getUserType() : String?
 }

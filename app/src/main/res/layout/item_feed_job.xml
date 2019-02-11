@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    android:paddingStart="16dp"
+    android:paddingTop="10dp"
+    android:paddingEnd="16dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/item_quest_txt_groupname"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_medium"
+        android:textColor="#3198e5"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_quest_lay_unseen"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Racism &amp; Equality" />
+
+    <TextView
+        android:id="@+id/item_quest_txt_author_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:fontFamily="@font/avenir_book"
+        android:lineSpacingExtra="1sp"
+        android:textColor="#a4a4b3"
+        android:textSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_quest_lay_unseen"
+        app:layout_constraintStart_toEndOf="@+id/item_quest_txt_groupname"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="&#183; \ufeff@johndoe &#183; 12/03/2018" />
+
+    <include layout="@layout/item_job"/>
+
+</android.support.constraint.ConstraintLayout>

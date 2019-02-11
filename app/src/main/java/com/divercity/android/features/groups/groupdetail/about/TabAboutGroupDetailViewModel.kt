@@ -39,7 +39,6 @@ constructor(private val fetchGroupMembersUseCase: FetchGroupMembersUseCase,
                 fetchGroupMembersResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchGroupMembersUseCase.execute(callback,
             FetchGroupMembersUseCase.Params.forGroups(group.id, page, size, query))
     }
@@ -60,8 +59,13 @@ constructor(private val fetchGroupMembersUseCase: FetchGroupMembersUseCase,
                 fetchGroupAdminsResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchGroupAdminsUseCase.execute(callback,
                 FetchGroupAdminsUseCase.Params.forGroups(group.id, page, size, query))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        fetchGroupAdminsUseCase.dispose()
+        fetchGroupMembersUseCase.dispose()
     }
 }

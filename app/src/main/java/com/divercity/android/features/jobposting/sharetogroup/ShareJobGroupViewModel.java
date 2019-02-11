@@ -82,7 +82,6 @@ public class ShareJobGroupViewModel extends BaseViewModel {
                 shareJobGroupsResponse.postValue(Resource.Companion.success(o));
             }
         };
-        getCompositeDisposable().add(callback);
         shareJobGroupsUseCase.execute(callback,ShareJobGroupsUseCase.Params.Companion.forShare(jobId,groupsIds));
     }
 
@@ -92,5 +91,11 @@ public class ShareJobGroupViewModel extends BaseViewModel {
 
     public LiveData<PagedList<GroupResponse>> getPagedGroupList() {
         return pagedGroupList;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        shareJobGroupsUseCase.dispose();
     }
 }

@@ -13,6 +13,7 @@ import com.divercity.android.features.company.companysize.CompanySizesFragment
 import com.divercity.android.features.company.createcompany.CreateCompanyFragment
 import com.divercity.android.features.company.onboarding.OnboardingCompanyFragment
 import com.divercity.android.features.company.withtoolbar.ToolbarCompanyFragment
+import com.divercity.android.features.contacts.InvitePhoneContactsFragment
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
@@ -74,14 +75,14 @@ import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragme
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.profile.ProfileFragment
 import com.divercity.android.features.profile.module.ProfileModule
-import com.divercity.android.features.profile.profileconnections.tabconnections.ConnectionsFragment
-import com.divercity.android.features.profile.profileconnections.tabprofile.TabProfileFragment
 import com.divercity.android.features.profile.settings.ProfileSettingsFragment
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsFragment
 import com.divercity.android.features.profile.settings.interests.InterestsFragment
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsFragment
+import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
 import com.divercity.android.features.profile.tabgroups.FollowingGroupsFragment
+import com.divercity.android.features.profile.tabprofile.TabProfileFragment
 import com.divercity.android.features.signup.SignUpFragment
 import com.divercity.android.features.splash.SplashFragment
 import dagger.Module
@@ -330,4 +331,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindAccountSettingsFragment (): AccountSettingsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindPhoneContactsFragment (): InvitePhoneContactsFragment
 }

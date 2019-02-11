@@ -47,9 +47,13 @@ constructor(
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         val user = User()
         user.occupation = occupation
         updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        updateUserProfileUseCase.dispose()
     }
 }

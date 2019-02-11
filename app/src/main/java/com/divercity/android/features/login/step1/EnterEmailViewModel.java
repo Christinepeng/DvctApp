@@ -72,7 +72,6 @@ public class EnterEmailViewModel extends BaseViewModel {
 
                 }
             };
-            getCompositeDisposable().add(disposable);
             checIskEmailRegisteredUseCase.execute(disposable, ChecIskEmailRegisteredUseCase.Params.forCheckEmail(email));
         } else
             isEmailRegistered.setValue(Resource.Companion.error(application.getResources().getString(R.string.insert_valid_email), null));
@@ -98,7 +97,6 @@ public class EnterEmailViewModel extends BaseViewModel {
             }
         };
 
-        getCompositeDisposable().add(disposable);
         loginFacebookUseCase.execute(disposable, LoginFacebookUseCase.Params.forFacebook(token));
     }
 
@@ -116,5 +114,12 @@ public class EnterEmailViewModel extends BaseViewModel {
 
     public SingleLiveEvent<Object> getNavigateToLogin() {
         return navigateToLogin;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        loginFacebookUseCase.dispose();
+        checIskEmailRegisteredUseCase.dispose();
     }
 }

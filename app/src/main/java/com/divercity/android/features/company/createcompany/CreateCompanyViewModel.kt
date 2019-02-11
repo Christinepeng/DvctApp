@@ -42,7 +42,11 @@ constructor(private val createCompanyUseCase: CreateCompanyUseCase) : BaseViewMo
                 createCompanyResponse.postValue(Resource.success(null))
             }
         }
-        compositeDisposable.add(callback)
         createCompanyUseCase.execute(callback, CreateCompanyUseCase.Params.forCompany(name, sizeId, desc, headquarters, industryId, logo))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        createCompanyUseCase.dispose()
     }
 }

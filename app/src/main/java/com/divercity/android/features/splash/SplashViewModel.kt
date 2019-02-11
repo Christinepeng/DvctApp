@@ -40,7 +40,11 @@ internal constructor(
                     navigateToHome.value = true
             }
         }
-        compositeDisposable.add(callback)
         fetchUserDataUseCase.execute(callback, FetchUserDataUseCase.Params.forUserData(sessionRepository.getUserId()))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        fetchUserDataUseCase.dispose()
     }
 }

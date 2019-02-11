@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.profileconnections.tabprofile
+package com.divercity.android.features.profile.tabprofile
 
 import android.app.Activity
 import android.arch.lifecycle.Observer
@@ -37,7 +37,7 @@ class TabProfileFragment : BaseFragment() {
 
         const val REQUEST_CODE_ETHNICITY = 100
         const val REQUEST_CODE_GENDER = 150
-        const val REQUEST_CODE_AGERANGE = 180
+        const val REQUEST_CODE_AGE_RANGE = 180
         const val REQUEST_CODE_LOCATION = 200
 
         fun newInstance(): TabProfileFragment {
@@ -53,8 +53,9 @@ class TabProfileFragment : BaseFragment() {
             ViewModelProviders.of(this, viewModelFactory).get(TabProfileViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
 
-        if (activity !is PersonalSettingsActivity)
+        if (activity !is PersonalSettingsActivity) {
             viewModel.fetchInterests()
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,26 +66,61 @@ class TabProfileFragment : BaseFragment() {
 
     fun setupView() {
 
-        if(activity is PersonalSettingsActivity){
+        if (activity is PersonalSettingsActivity) {
             lbl_personal.visibility = View.GONE
-            lbl_interests.visibility = View.GONE
-            list_interest.visibility = View.GONE
-        }
+            showInterestsSection(false)
+            showSkillSection(false)
+            showEducationSection(false)
+            showExperienceSection(false)
 
-        lay_ethnicity.setOnClickListener {
-            navigator.navigateToToolbarEthnicityActivityForResult(this, REQUEST_CODE_ETHNICITY)
-        }
+            lay_ethnicity.setOnClickListener {
+                navigator.navigateToToolbarEthnicityActivityForResult(this, REQUEST_CODE_ETHNICITY)
+            }
 
-        lay_gender.setOnClickListener {
-            navigator.navigateToToolbarGenderActivityForResult(this, REQUEST_CODE_GENDER)
-        }
+            lay_gender.setOnClickListener {
+                navigator.navigateToToolbarGenderActivityForResult(this, REQUEST_CODE_GENDER)
+            }
 
-        lay_age_range.setOnClickListener {
-            navigator.navigateToToolbarAgeActivityForResult(this, REQUEST_CODE_AGERANGE)
-        }
+            lay_age_range.setOnClickListener {
+                navigator.navigateToToolbarAgeActivityForResult(this, REQUEST_CODE_AGE_RANGE)
+            }
 
-        lay_location.setOnClickListener {
-            navigator.navigateToToolbarLocationActivityForResult(this, REQUEST_CODE_LOCATION)
+            lay_location.setOnClickListener {
+                navigator.navigateToToolbarLocationActivityForResult(this, REQUEST_CODE_LOCATION)
+            }
+
+          if(viewModel.getUserType() == getString(R.string.recruiter_id) ||
+                viewModel.getUserType() == getString(R.string.hiring_manager_id)){
+                lay_resume.visibility = View.GONE
+                lay_school.visibility = View.GONE
+                lay_age_range.visibility = View.GONE
+            }
+        } else if(viewModel.getUserType() == getString(R.string.student_id)){
+            showSkillSection(true)
+            showExperienceSection(true)
+            showEducationSection(true)
+            showInterestsSection(true)
+        } else if(viewModel.getUserType() == getString(R.string.entrepreneur_id)){
+            showInterestsSection(true)
+            showSkillSection(false)
+            showExperienceSection(false)
+            showEducationSection(false)
+        } else if(viewModel.getUserType() == getString(R.string.professional_id) ||
+                viewModel.getUserType() == getString(R.string.job_seeker_id)){
+            showSkillSection(true)
+            showExperienceSection(true)
+            showEducationSection(true)
+            showInterestsSection(true)
+            lay_school.visibility = View.GONE
+        } else if(viewModel.getUserType() == getString(R.string.recruiter_id) ||
+                viewModel.getUserType() == getString(R.string.hiring_manager_id)){
+            lay_resume.visibility = View.GONE
+            lay_school.visibility = View.GONE
+            lay_age_range.visibility = View.GONE
+            showInterestsSection(false)
+            showSkillSection(false)
+            showEducationSection(false)
+            showExperienceSection(false)
         }
 
         txt_ethnicity.text = viewModel.getEthnicity()
@@ -119,7 +155,7 @@ class TabProfileFragment : BaseFragment() {
             } else if (requestCode == REQUEST_CODE_GENDER) {
                 val gender = data?.extras?.getString(ToolbarGenderFragment.GENDER_PICKED)
                 viewModel.updateGender(gender)
-            } else if (requestCode == REQUEST_CODE_AGERANGE) {
+            } else if (requestCode == REQUEST_CODE_AGE_RANGE) {
                 val ageRange = data?.extras?.getString(ToolbarAgeFragment.AGE_RANGE_PICKED)
                 ageRange?.apply {
                     viewModel.updateAgeRange(this)
@@ -170,12 +206,51 @@ class TabProfileFragment : BaseFragment() {
         })
     }
 
-    private fun setData(user: UserResponse?) {
+    private fun showSkillSection(enable: Boolean) {
+        if (enable) {
+            lbl_skills.visibility = View.VISIBLE
+            list_skills.visibility = View.VISIBLE
+        } else {
+            lbl_skills.visibility = View.GONE
+            list_skills.visibility = View.GONE
+        }
+    }
 
+    private fun showExperienceSection(enable: Boolean) {
+        if (enable) {
+            lbl_experience.visibility = View.VISIBLE
+            list_experience.visibility = View.VISIBLE
+        } else {
+            lbl_experience.visibility = View.GONE
+            list_experience.visibility = View.GONE
+        }
+    }
+
+    private fun showEducationSection(enable: Boolean) {
+        if (enable) {
+            lbl_education.visibility = View.VISIBLE
+            list_education.visibility = View.VISIBLE
+        } else {
+            lbl_education.visibility = View.GONE
+            list_education.visibility = View.GONE
+        }
+    }
+
+    private fun showInterestsSection(enable: Boolean) {
+        if (enable) {
+            lbl_interests.visibility = View.VISIBLE
+            list_interest.visibility = View.VISIBLE
+        } else {
+            lbl_interests.visibility = View.GONE
+            list_interest.visibility = View.GONE
+        }
+    }
+
+    private fun setData(user: UserResponse?) {
         txt_ethnicity.text = user?.userAttributes?.ethnicity
         txt_gender.text = user?.userAttributes?.gender
         txt_age_range.text = user?.userAttributes?.ageRange
         txt_location.text =
-                user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
+            user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
     }
 }

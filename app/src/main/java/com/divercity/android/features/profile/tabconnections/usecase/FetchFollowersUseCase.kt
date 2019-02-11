@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.profileconnections.tabconnections.usecase
+package com.divercity.android.features.profile.tabconnections.usecase
 
 import com.divercity.android.core.base.UseCase
 import com.divercity.android.data.entity.user.response.UserResponse

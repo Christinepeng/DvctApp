@@ -44,7 +44,6 @@ public class LoginViewModel extends BaseViewModel {
                     login.setValue(Resource.Companion.success(response));
                 }
             };
-            getCompositeDisposable().add(callback);
             loginUseCase.execute(callback, LoginUseCase.Params.forLogin(userEmail, password));
         } else {
             login.setValue(Resource.Companion.error(application.getResources().getString(R.string.insert_valid_password), null));
@@ -57,5 +56,11 @@ public class LoginViewModel extends BaseViewModel {
 
     public void setUserEmail(String userEmail) {
         this.userEmail = userEmail;
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        loginUseCase.dispose();
     }
 }

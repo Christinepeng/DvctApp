@@ -39,11 +39,8 @@ class ChatActivity : BaseActivity() {
         )
 
     override fun onBackPressed() {
-        if (isTaskRoot) {
+        if (isTaskRoot)
             navigator.navigateToChatsActivity(this)
-            super.onBackPressed()
-        } else {
-            super.onBackPressed()
-        }
+        super.onBackPressed()
     }
 }

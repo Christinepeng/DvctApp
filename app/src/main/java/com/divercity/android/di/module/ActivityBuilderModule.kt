@@ -11,6 +11,7 @@ import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
 import com.divercity.android.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.withtoolbar.ToolbarCompanyActivity
+import com.divercity.android.features.contacts.InvitePhoneContactsActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
@@ -197,4 +198,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindAccountSettingsActivity(): AccountSettingsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindPhoneContactsActivity(): InvitePhoneContactsActivity
 }

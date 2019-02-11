@@ -4,20 +4,22 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
 import android.support.annotation.NonNull;
 import android.util.Log;
+
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.home.HomeItem;
 import com.divercity.android.data.entity.questions.QuestionResponse;
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase;
 import com.divercity.android.features.home.home.usecase.GetQuestionsUseCase;
-import io.reactivex.Completable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.functions.Action;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.observers.DisposableObserver;
+import io.reactivex.schedulers.Schedulers;
 
 public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, HomeItem> {
 
@@ -27,28 +29,26 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, HomeIte
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
     private GetQuestionsUseCase getQuestionsUseCase;
-    private CompositeDisposable compositeDisposable;
     private FetchFeedRecommendedJobsGroupsUseCase fetchFeedRecommendedJobsGroupsUseCase;
     /**
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
+    private Disposable disposableRetry;
 
-    public GroupsInterestsDataSource(CompositeDisposable compositeDisposable,
-                                     GetQuestionsUseCase getQuestionsUseCase,
+    public GroupsInterestsDataSource(GetQuestionsUseCase getQuestionsUseCase,
                                      FetchFeedRecommendedJobsGroupsUseCase fetchFeedRecommendedJobsGroupsUseCase) {
-        this.compositeDisposable = compositeDisposable;
         this.getQuestionsUseCase = getQuestionsUseCase;
         this.fetchFeedRecommendedJobsGroupsUseCase = fetchFeedRecommendedJobsGroupsUseCase;
     }
 
     public void retry() {
         if (retryCompletable != null) {
-            compositeDisposable.add(retryCompletable
+            disposableRetry = retryCompletable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                    }, throwable -> Log.e(TAG, throwable.getMessage())));
+                    }, throwable -> Log.e(TAG, throwable.getMessage()));
         }
     }
 
@@ -91,7 +91,6 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, HomeIte
 
             }
         };
-        compositeDisposable.add(disposableObserver);
         fetchFeedRecommendedJobsGroupsUseCase.execute(
                 disposableObserver,
                 FetchFeedRecommendedJobsGroupsUseCase.Params.Companion.forJobs(0, params.requestedLoadSize, null));
@@ -132,7 +131,6 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, HomeIte
             }
         };
 
-        compositeDisposable.add(disposableObserver);
         getQuestionsUseCase.execute(disposableObserver, GetQuestionsUseCase.Params.forInterests(params.key.intValue(), params.requestedLoadSize));
     }
 
@@ -152,5 +150,12 @@ public class GroupsInterestsDataSource extends PageKeyedDataSource<Long, HomeIte
         } else {
             this.retryCompletable = Completable.fromAction(action);
         }
+    }
+
+    public void dispose(){
+        fetchFeedRecommendedJobsGroupsUseCase.dispose();
+        getQuestionsUseCase.dispose();
+        if(disposableRetry != null)
+            disposableRetry.dispose();
     }
 }

@@ -37,7 +37,6 @@ constructor(private val signUpUseCase: SignUpUseCase,
                 signUpResponse.value = Resource.success(response)
             }
         }
-        compositeDisposable.add(callback)
         signUpUseCase.execute(callback, SignUpUseCase.Params.forSignUp(
                 username,
                 name,
@@ -60,7 +59,6 @@ constructor(private val signUpUseCase: SignUpUseCase,
                 usernameRegisteredResponse.value = Resource.success(t)
             }
         }
-        compositeDisposable.add(callback)
         usernameRegisteredUseCase.execute(callback, CheckIsUsernameRegisteredUseCase.Params.forCheckUsername(username))
     }
 
@@ -82,8 +80,14 @@ constructor(private val signUpUseCase: SignUpUseCase,
                     uploadProfilePictureResponse.value = Resource.success(t)
                 }
             }
-            compositeDisposable.add(callback)
             uploadProfilePictureUseCase.execute(callback, UploadProfilePictureUseCase.Params.forUploadPic(pictureBase64))
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        usernameRegisteredUseCase.dispose()
+        uploadProfilePictureUseCase.dispose()
+        signUpUseCase.dispose()
     }
 }

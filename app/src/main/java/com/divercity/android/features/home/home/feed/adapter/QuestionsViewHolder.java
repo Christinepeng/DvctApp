@@ -20,6 +20,7 @@ import com.divercity.android.R;
 import com.divercity.android.core.utils.GlideApp;
 import com.divercity.android.core.utils.Util;
 import com.divercity.android.data.entity.questions.QuestionResponse;
+import com.divercity.android.repository.session.SessionRepository;
 
 public class QuestionsViewHolder extends RecyclerView.ViewHolder {
 
@@ -35,8 +36,12 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
     private CardView cardViewImgMainContainer;
     private ImageView imgMainPicture;
 
-    private QuestionsViewHolder(View itemView) {
+    private SessionRepository sessionRepository;
+
+    private QuestionsViewHolder(View itemView,
+                                SessionRepository sessionRepository) {
         super(itemView);
+        this.sessionRepository = sessionRepository;
         mTxtGroupName = itemView.findViewById(R.id.item_quest_txt_groupname);
         mImgAnswerAuthor = itemView.findViewById(R.id.item_quest_img_answer);
         mImgAuthor = itemView.findViewById(R.id.item_group_img);
@@ -83,7 +88,10 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
             GlideApp.with(itemView)
                     .load(urlImgAnswerAuthor).into(mImgAnswerAuthor);
         } catch (NullPointerException e) {
-            mImgAnswerAuthor.setImageResource(R.drawable.tab_profile_inactive);
+            GlideApp.with(itemView)
+                    .load(sessionRepository.getUserAvatarUrl())
+                    .into(mImgAnswerAuthor);
+//            mImgAnswerAuthor.setImageResource(R.drawable.tab_profile_inactive);
         }
         mTxtQuestion.setText(data.getAttributes().getText());
         mTxtAuthorTime.setText(" · " + data.getAttributes().getAuthorInfo().getNickname() + " · " + Util.getStringDateTimeWithServerDate(data.getAttributes().getCreatedAt()));
@@ -92,14 +100,14 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
             mTxtAnswer.setText(data.getAttributes().getLastActivityInfo().getAuthorInfo().getName() + ": " +
                     data.getAttributes().getLastActivityInfo().getAnswerInfo().getText());
         } catch (NullPointerException e) {
-            mTxtAnswer.setText("No activity");
+            mTxtAnswer.setText("");
+            mTxtAnswer.setHint("Be the first to comment");
         }
     }
 
-    public static QuestionsViewHolder create(ViewGroup parent) {
+    public static QuestionsViewHolder create(ViewGroup parent, SessionRepository sessionRepository) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.item_question, parent, false);
-        return new QuestionsViewHolder(view);
+        return new QuestionsViewHolder(view, sessionRepository);
     }
-
 }

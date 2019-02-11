@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.features.profile.profileconnections.tabprofile.TabProfileFragment
+import com.divercity.android.features.profile.tabprofile.TabProfileFragment
 import kotlinx.android.synthetic.main.fragment_profile_settings.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import java.io.File

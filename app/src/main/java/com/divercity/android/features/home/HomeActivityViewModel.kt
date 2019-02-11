@@ -36,9 +36,13 @@ constructor(var sessionRepository: SessionRepository,
                         sessionRepository.setFCMToken(o.attributes?.token)
                     }
                 }
-                compositeDisposable.add(callback)
                 saveFCMTokenUseCase.execute(callback, SaveFCMTokenUseCase.Params.forDevice(it.token))
             }
         }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        saveFCMTokenUseCase.dispose()
     }
 }

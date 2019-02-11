@@ -79,7 +79,11 @@ constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
                 joinGroupResponse.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        joinGroupUseCase.dispose()
     }
 }

@@ -7,18 +7,18 @@ import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.divercity.android.R
-import com.divercity.android.features.profile.profileconnections.tabconnections.ConnectionsFragment
-import com.divercity.android.features.profile.profileconnections.tabprofile.TabProfileFragment
+import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
+import com.divercity.android.features.profile.tabprofile.TabProfileFragment
 import javax.inject.Inject
 
 /**
  * Created by lucas on 16/10/2018.
  */
 
-class   ProfileViewPagerAdapter
+class ProfileViewPagerAdapter
 @Inject constructor(
-        val context: Context,
-        fm: FragmentManager
+    val context: Context,
+    fm: FragmentManager
 ) : FragmentStatePagerAdapter(fm) {
 
     private var registeredFragments = SparseArray<Fragment>()
@@ -30,8 +30,8 @@ class   ProfileViewPagerAdapter
 
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
-            context.getString(R.string.profile),
-            context.getString(R.string.connections)
+        context.getString(R.string.profile),
+        context.getString(R.string.connections)
     )
 
     override fun getItem(position: Int): Fragment {
@@ -45,7 +45,8 @@ class   ProfileViewPagerAdapter
         }
     }
 
-    override fun getCount(): Int = PAGE_COUNT
+    override fun getCount(): Int =
+        PAGE_COUNT
 
     override fun getPageTitle(position: Int): CharSequence? {
         return tabTitles[position]

@@ -87,10 +87,7 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
-                var toSearch: String? = include_search.edtxt_search.getText().toString()
-
-                if (toSearch == "")
-                    toSearch = null
+                val toSearch: String? = include_search.edtxt_search.text.toString()
 
                 viewModel.fetchFollowedGroups(toSearch)
                 subscribeToPaginatedLiveData()

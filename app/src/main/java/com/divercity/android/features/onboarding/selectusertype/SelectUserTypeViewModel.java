@@ -44,9 +44,14 @@ public class SelectUserTypeViewModel extends BaseViewModel {
                 dataUpdateUser.postValue(Resource.Companion.success(o));
             }
         };
-        getCompositeDisposable().add(callback);
         User user = new User();
         user.setAccountType(typeId);
         updateUserProfileUseCase.execute(callback,UpdateUserProfileUseCase.Params.forUser(user));
+    }
+
+    @Override
+    protected void onCleared() {
+        super.onCleared();
+        updateUserProfileUseCase.dispose();
     }
 }

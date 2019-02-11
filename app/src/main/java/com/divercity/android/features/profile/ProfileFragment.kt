@@ -81,7 +81,8 @@ class ProfileFragment : BaseFragment() {
             .into(img_profile)
 
         txt_name.text = attr?.name
-        txt_user_type.text = Util.getUserTypeMap(context!!)[userResponse.userAttributes?.accountType]
+        txt_user_type.text =
+            Util.getUserTypeMap(context!!)[userResponse.userAttributes?.accountType]
 
 //        txt_user_track.text = attr?.followersCount.toString()
 //            .plus(" Followers \u00B7 ")

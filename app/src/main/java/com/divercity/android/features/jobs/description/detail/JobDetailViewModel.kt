@@ -42,7 +42,6 @@ constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
                 showJobData.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         saveJobUseCase.execute(callback, SaveJobUseCase.Params.forJobs(jobData.id!!))
     }
 
@@ -61,7 +60,6 @@ constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
                 showJobData.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         removeSavedJobUseCase.execute(callback, RemoveSavedJobUseCase.Params.forJobs(jobData.id!!))
     }
 
@@ -80,11 +78,17 @@ constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
                 showJobData.postValue(Resource.success(o))
             }
         }
-        compositeDisposable.add(callback)
         fetchJobByIdUseCase.execute(callback, FetchJobByIdUseCase.Params.forJob(jobId))
     }
 
     fun isLoggedUserJobSeeker() : Boolean{
         return sessionRepository.isLoggedUserJobSeeker()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        removeSavedJobUseCase.dispose()
+        fetchJobByIdUseCase.dispose()
+        saveJobUseCase.dispose()
     }
 }

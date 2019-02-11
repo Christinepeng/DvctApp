@@ -2,6 +2,8 @@ package com.divercity.android.repository.group
 
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
+import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
@@ -16,33 +18,60 @@ interface GroupRepository {
 
     fun fetchGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
 
-    fun fetchFollowedGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
+    fun fetchFollowedGroups(
+        page: Int,
+        size: Int,
+        query: String?
+    ): Observable<DataArray<GroupResponse>>
 
-    fun fetchTrendingGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
+    fun fetchTrendingGroups(
+        page: Int,
+        size: Int,
+        query: String?
+    ): Observable<DataArray<GroupResponse>>
 
     fun fetchAllGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
 
     fun fetchMyGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
 
-    fun fetchGroupMembers(groupId: String, page: Int, size: Int, query: String?): Observable<List<UserResponse>>
+    fun fetchGroupMembers(
+        groupId: String,
+        page: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>>
 
-    fun createGroup(title: String,
-                    description: String,
-                    groupType: String,
-                    picture: String): Observable<GroupResponse>
+    fun inviteContact(
+        invitations: GroupInvite
+    ): Observable<GroupInviteResponse>
 
-    fun fetchQuestions(groupId: String, page: Int, size: Int, query: String?): Observable<List<QuestionResponse>>
+    fun createGroup(
+        title: String,
+        description: String,
+        groupType: String,
+        picture: String
+    ): Observable<GroupResponse>
 
-    fun fetchGroupAdmins(groupId: String,
-                         pageNumber: Int,
-                         size: Int,
-                         query: String?): Observable<List<UserResponse>>
+    fun fetchQuestions(
+        groupId: String,
+        page: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<QuestionResponse>>
+
+    fun fetchGroupAdmins(
+        groupId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>>
 
     fun createGroup(group: GroupOfInterest): Observable<GroupResponse>
 
     fun requestToJoinGroup(groupId: String): Observable<MessageResponse>
 
-    fun fetchRecommendedGroups(pageNumber: Int,
-                               size: Int): Observable<List<GroupResponse>>
-
+    fun fetchRecommendedGroups(
+        pageNumber: Int,
+        size: Int
+    ): Observable<List<GroupResponse>>
 }

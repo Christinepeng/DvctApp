@@ -17,7 +17,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
     fun bindTo(position: Int, data: JobResponse?) {
         data?.let {
             GlideApp.with(itemView)
-                    .load(it.attributes?.employer?.photos?.thumb)
+                    .load(it.attributes?.employer?.photos?.original)
                     .apply(RequestOptions().circleCrop())
                     .into(itemView.img)
 

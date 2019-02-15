@@ -19,7 +19,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
             itemView.apply {
 
                 GlideApp.with(this)
-                        .load(it.attributes?.applicant?.photos?.thumb)
+                        .load(it.attributes?.applicant?.photos?.original)
                         .apply(RequestOptions().circleCrop())
                         .into(include_img_desc.img)
 

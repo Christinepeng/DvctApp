@@ -21,7 +21,7 @@ private constructor(itemView: View, private val listener: JobsViewHolder.Listene
         data?.let {
             itemView.apply {
                 GlideApp.with(itemView)
-                    .load(it.attributes?.employer?.photos?.thumb)
+                    .load(it.attributes?.employer?.photos?.original)
                     .into(item_jobs_img)
 
                 item_jobs_txt_company.text = it.attributes?.employer?.name

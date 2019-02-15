@@ -127,7 +127,7 @@ class JobApplicantsFragment : BaseFragment(), RetryCallback {
     private fun initView() {
         job?.also {
             GlideApp.with(this)
-                    .load(it.attributes?.employer?.photos?.thumb)
+                    .load(it.attributes?.employer?.photos?.original)
                     .into(inc_job_desc.img_company)
 
             inc_job_desc.txt_company.text = it.attributes?.employer?.name

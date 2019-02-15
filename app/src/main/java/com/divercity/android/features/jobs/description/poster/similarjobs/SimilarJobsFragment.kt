@@ -40,7 +40,7 @@ class SimilarJobsFragment : BaseFragment(){
         arguments?.getParcelable<Employer>(PARAM_COMPANY_DESC)?.also {
 
             GlideApp.with(this)
-                    .load(it.photos?.thumb)
+                    .load(it.photos?.original)
                     .into(img_company)
 
             txt_company_name.text = it.name

@@ -35,7 +35,6 @@ constructor(
     }
 
     override fun signUp(
-        nickname: String,
         name: String,
         email: String,
         password: String,
@@ -45,7 +44,6 @@ constructor(
             SignUpBody(
                 password,
                 confirmPassword,
-                nickname,
                 name,
                 email
             )

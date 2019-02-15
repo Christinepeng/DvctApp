@@ -5,7 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
@@ -32,7 +31,6 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
     var fragListener: Listener? = null
 
     private var handlerSearch = Handler()
-    private var lastSearch: String? = null
 
     companion object {
 
@@ -47,15 +45,21 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectCompanyViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[SelectCompanyViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchCompanies(this, null)
         setupView()
-        subscribeToPaginatedLiveData()
+        subscribeToLiveData()
         setupSearch()
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+            subscribeToPaginatedLiveData()
+        })
     }
 
     private fun setupView() {
@@ -67,8 +71,14 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
             navigator.navigateToCreateCompanyActivityForResult(this, REQUEST_CODE_CREATE_COMPANY)
         }
 
-        img_action.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.icon_briefcase))
+        img_action.setImageResource(R.drawable.icon_briefcase)
         txt_action_title.setText(R.string.create_new_company)
+
+        lay_action2.visibility = View.VISIBLE
+        lay_action2.setOnClickListener {
+            fragListener?.onNoCurrentCompany()
+        }
+        img_action2.setImageResource(R.drawable.icon_briefcase)
     }
 
     override fun onAttach(context: Context?) {
@@ -104,14 +114,11 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
     }
 
     private fun search(query: String?) {
-        if(lastSearch != query) {
-            handlerSearch.removeCallbacksAndMessages(null)
-            handlerSearch.postDelayed({
-                viewModel.fetchCompanies(this@SelectCompanyFragment, if (query == "") null else query)
-                subscribeToPaginatedLiveData()
-                lastSearch = query
-            }, AppConstants.SEARCH_DELAY)
-        }
+        handlerSearch.removeCallbacksAndMessages(null)
+        handlerSearch.postDelayed({
+            viewModel.fetchCompanies(viewLifecycleOwner, if (query == "") null else query)
+
+        }, AppConstants.SEARCH_DELAY)
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -149,6 +156,8 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
     }
 
     interface Listener {
+
+        fun onNoCurrentCompany()
 
         fun onCompanyChosen(company: CompanyResponse)
     }

@@ -29,15 +29,15 @@ public class SelectEthnicityAdapter extends RecyclerView.Adapter<SelectEthnicity
     private void fillList(Context context) {
 
         int drawables[] = {
-                R.drawable.ic_male,
-                R.drawable.ic_female,
-                R.drawable.ic_no_gender,
-                R.drawable.ic_male,
-                R.drawable.ic_female,
-                R.drawable.ic_no_gender,
-                R.drawable.ic_male,
-                R.drawable.ic_female,
-                R.drawable.ic_no_gender,
+                R.drawable.icon_asian,
+                R.drawable.icon_black,
+                R.drawable.icon_hispanic,
+                R.drawable.icon_indian,
+                R.drawable.icon_latin_american,
+                R.drawable.icon_mixed_race,
+                R.drawable.icon_native_american,
+                R.drawable.icon_south_east_asian,
+                R.drawable.icon_white,
         };
 
         int strings[] = {
@@ -103,8 +103,7 @@ public class SelectEthnicityAdapter extends RecyclerView.Adapter<SelectEthnicity
     @Override
     public void onBindViewHolder(Holder holder, final int position) {
         Ethnicity item = list.get(position);
-//        holder.imgIcon.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.drawable));
-        holder.imgIcon.setVisibility(View.GONE);
+        holder.imgIcon.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.getDrawable()));
         holder.txtTitle.setText(item.getTextId());
         holder.itemView.setOnClickListener(view -> {
             listener.onEthnicityClick(item);

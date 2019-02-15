@@ -16,7 +16,7 @@ import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.jobs.ITabJobs
 import com.divercity.android.features.jobs.mypostings.adapter.JobsAdapter
 import com.divercity.android.features.jobs.mypostings.adapter.JobsViewHolder
-import kotlinx.android.synthetic.main.fragment_list_refresh.*
+import kotlinx.android.synthetic.main.fragment_jobs_my_postings.*
 import javax.inject.Inject
 
 /**
@@ -42,7 +42,7 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_list_refresh
+    override fun layoutId(): Int = R.layout.fragment_jobs_my_postings
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -106,10 +106,18 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
                 if (networkState?.status != Status.LOADING)
                     isListRefreshing = false
 
-                if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
-                    txt_no_results.visibility = View.VISIBLE
-                else
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0) {
+                    if (viewModel.lastSearch == null || viewModel.lastSearch == "") {
+                        txt_no_job_postings.visibility = View.VISIBLE
+                        txt_no_results.visibility = View.GONE
+                    } else {
+                        txt_no_job_postings.visibility = View.GONE
+                        txt_no_results.visibility = View.VISIBLE
+                    }
+                } else {
+                    txt_no_job_postings.visibility = View.GONE
                     txt_no_results.visibility = View.GONE
+                }
 
                 swipe_list_main.isRefreshing = isListRefreshing
             }

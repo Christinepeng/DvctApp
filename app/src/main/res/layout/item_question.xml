@@ -42,17 +42,20 @@
 
     <TextView
         android:id="@+id/item_quest_txt_author_time"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="4dp"
         android:fontFamily="@font/avenir_book"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:lineSpacingExtra="1sp"
         android:textColor="#a4a4b3"
         android:textSize="11sp"
         app:layout_constraintBottom_toBottomOf="@+id/item_quest_lay_unseen"
+        app:layout_constraintEnd_toStartOf="@id/item_quest_lay_unseen"
         app:layout_constraintStart_toEndOf="@+id/item_quest_txt_groupname"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="&#183; \ufeff@johndoe &#183;" />
+        tools:text="&#183; \ufeff@johndoe &#183; sdfsdfsdfs dsfs dfs fsdfs dfsdfsdfs dfs sdfs sdfsdfs @string/check_fields gdfgdf dfgd " />
 
     <TextView
         android:id="@+id/item_quest_txt_author_name"
@@ -64,6 +67,7 @@
         android:inputType="none"
         android:lineSpacingExtra="3dp"
         android:maxLines="2"
+        android:ellipsize="end"
         android:textColor="#333241"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/cardview_quest_pic_author"
@@ -71,7 +75,7 @@
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
         app:layout_constraintTop_toTopOf="@+id/cardview_quest_pic_author"
-        tools:text="Aiden Doe Aiden DoeAiden DoeAiden Doe sfsd sd sAiden Doe sdfsdfsdfs dfsdfsdfsdfsdfsdfsdfs dfsdfsdfsdfsdfs" />
+        tools:text="Aiden Doe Aiden DoeAiden DoeAiden Doe sfsd sd sAiden Doe sf dfsdfsdff s dff  sdfsf dfsf  f dfsdfsdfsdfs dfsdfsdfsdfsdfs dfdfvdf df df df df " />
 
     <android.support.v7.widget.CardView
         android:id="@+id/item_quest_cardview_pic_main"
@@ -108,6 +112,7 @@
         android:fontFamily="@font/avenir_roman"
         android:lineSpacingExtra="2dp"
         android:maxLines="4"
+        android:ellipsize="end"
         android:textColor="#333241"
         android:textSize="13sp"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -41,12 +41,11 @@ constructor(
         return Observable.zip(
             fetchJobs,
             fetchQuestions,
-            BiFunction { t1, t2 ->
+            BiFunction { jobs, questions ->
                 val res = ArrayList<HomeItem>()
-                res.addAll(t1)
-                res.addAll(t2)
+                res.addAll(jobs)
+                res.addAll(questions)
                 res.shuffle()
-
                 return@BiFunction res
             }
         )

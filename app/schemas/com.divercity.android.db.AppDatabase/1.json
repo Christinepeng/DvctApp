@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "89f42480d9d99748b7fc290751e9981f",
+    "identityHash": "e1b88965029892d82a4e645d03e19b46",
     "entities": [
       {
         "tableName": "chatMessage",
@@ -221,7 +221,7 @@
       },
       {
         "tableName": "user",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT, `attr_country` TEXT, `attr_avatarMedium` TEXT, `attr_accountType` TEXT, `attr_occupation` TEXT, `attr_birthdate` TEXT, `attr_role` TEXT, `attr_gender` TEXT, `attr_ethnicity` TEXT, `attr_city` TEXT, `attr_timezone` TEXT, `attr_phonenumber` TEXT, `attr_createdAt` TEXT, `attr_questionsCount` INTEGER, `attr_occupationOfInterests` TEXT, `attr_groupOfInterestFollowingCount` INTEGER, `attr_uid` TEXT, `attr_answersCount` INTEGER, `attr_nickname` TEXT, `attr_company` TEXT, `attr_isFollowedByCurrent` INTEGER, `attr_email` TEXT, `attr_lat` TEXT, `attr_noPasswordSet` TEXT, `attr_lng` TEXT, `attr_avatarThumb` TEXT, `attr_lastName` TEXT, `attr_schoolName` TEXT, `attr_isDefaultAvatar` INTEGER, `attr_interestIds` TEXT, `attr_followingCount` INTEGER, `attr_followersCount` INTEGER, `attr_industries` TEXT, `attr_studentMajors` TEXT, `attr_name` TEXT, `attr_ageRange` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT, `attr_country` TEXT, `attr_avatarMedium` TEXT, `attr_accountType` TEXT, `attr_occupation` TEXT, `attr_birthdate` TEXT, `attr_role` TEXT, `attr_gender` TEXT, `attr_ethnicity` TEXT, `attr_city` TEXT, `attr_timezone` TEXT, `attr_phonenumber` TEXT, `attr_createdAt` TEXT, `attr_questionsCount` INTEGER, `attr_occupationOfInterests` TEXT, `attr_groupOfInterestFollowingCount` INTEGER, `attr_uid` TEXT, `attr_answersCount` INTEGER, `attr_nickname` TEXT, `attr_company` TEXT, `attr_isFollowedByCurrent` INTEGER, `attr_email` TEXT, `attr_lat` TEXT, `attr_noPasswordSet` TEXT, `attr_lng` TEXT, `attr_avatarThumb` TEXT, `attr_lastName` TEXT, `attr_schoolName` TEXT, `attr_isDefaultAvatar` INTEGER, `attr_interestIds` TEXT, `attr_followingCount` INTEGER, `attr_followersCount` INTEGER, `attr_industries` TEXT, `attr_studentMajors` TEXT, `attr_name` TEXT, `attr_ageRange` TEXT, `attr_skills` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
@@ -444,6 +444,12 @@
             "columnName": "attr_ageRange",
             "affinity": "TEXT",
             "notNull": false
+          },
+          {
+            "fieldPath": "userAttributes.skills",
+            "columnName": "attr_skills",
+            "affinity": "TEXT",
+            "notNull": false
           }
         ],
         "primaryKey": {
@@ -458,7 +464,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"89f42480d9d99748b7fc290751e9981f\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e1b88965029892d82a4e645d03e19b46\")"
     ]
   }
 }

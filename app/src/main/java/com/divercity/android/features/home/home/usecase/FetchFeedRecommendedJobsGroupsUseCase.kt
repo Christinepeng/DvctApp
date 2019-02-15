@@ -9,7 +9,7 @@ import com.divercity.android.repository.group.GroupRepository
 import com.divercity.android.repository.job.JobRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.functions.Function3
+import io.reactivex.functions.Function4
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -31,7 +31,7 @@ constructor(
 
     override fun createObservableUseCase(params: Params): Observable<List<HomeItem>> {
 
-        val fetchJobs = jobRepository.fetchRecommendedJobs(
+        val fetchRecommendedJobs = jobRepository.fetchRecommendedJobs(
             0,
             5,
             null
@@ -47,11 +47,18 @@ constructor(
             params.size
         )
 
+        val fetchJobs = jobRepository.fetchJobs(
+            params.page,
+            params.size,
+            null
+        )
+
         return Observable.zip(
             fetchGroups,
-            fetchJobs,
+            fetchRecommendedJobs,
             fetchQuestions,
-            Function3 { t1, t2, t3 ->
+            fetchJobs,
+            Function4 { t1, t2, t3, t4 ->
                 val recommendedRes = ArrayList<RecommendedItem>()
                 recommendedRes.addAll(t2)
                 recommendedRes.addAll(t1)
@@ -59,11 +66,16 @@ constructor(
 
                 val recommended = Recommended(recommendedRes)
 
+                val shuffledJobsAndQuestions = ArrayList<HomeItem>()
+                shuffledJobsAndQuestions.addAll(t3)
+                shuffledJobsAndQuestions.addAll(t4)
+                shuffledJobsAndQuestions.shuffle()
+
                 val res = ArrayList<HomeItem>()
                 res.add(recommended)
-                res.addAll(t3)
+                res.addAll(shuffledJobsAndQuestions)
 
-                return@Function3 res
+                return@Function4 res
             }
         )
     }

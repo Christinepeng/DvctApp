@@ -10,8 +10,8 @@ public class SignUpBody{
 	@SerializedName("password_confirmation")
 	private String passwordConfirmation;
 
-	@SerializedName("nickname")
-	private String nickname;
+//	@SerializedName("nickname")
+//	private String nickname;
 
 	@SerializedName("name")
 	private String name;
@@ -19,10 +19,9 @@ public class SignUpBody{
 	@SerializedName("email")
 	private String email;
 
-	public SignUpBody(String password, String passwordConfirmation, String nickname, String name, String email) {
+	public SignUpBody(String password, String passwordConfirmation, String name, String email) {
 		this.password = password;
 		this.passwordConfirmation = passwordConfirmation;
-		this.nickname = nickname;
 		this.name = name;
 		this.email = email;
 	}
@@ -41,14 +40,6 @@ public class SignUpBody{
 
 	public String getPasswordConfirmation(){
 		return passwordConfirmation;
-	}
-
-	public void setNickname(String nickname){
-		this.nickname = nickname;
-	}
-
-	public String getNickname(){
-		return nickname;
 	}
 
 	public void setName(String name){
@@ -73,8 +64,7 @@ public class SignUpBody{
 			"SignUpBody{" + 
 			"password = '" + password + '\'' + 
 			",password_confirmation = '" + passwordConfirmation + '\'' + 
-			",nickname = '" + nickname + '\'' + 
-			",name = '" + name + '\'' + 
+			",name = '" + name + '\'' +
 			",email = '" + email + '\'' + 
 			"}";
 		}

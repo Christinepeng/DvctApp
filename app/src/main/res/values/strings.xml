@@ -29,6 +29,9 @@
     <string name="invite_friends">Invite friends</string>
     <string name="invite_friends_subtitle">Your group is better with friends</string>
     <string name="not_now">Not Now</string>
+    <string name="maybe_later">Maybe later</string>
+    <string name="no_notifications">You have no activity yet; post or respond/react to a question or comment so we can get this show on the road</string>
+    <string name="no_connection_requests">No Requests Yet</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -55,6 +58,7 @@
     <string name="experience">Experience</string>
     <string name="education">Education</string>
     <string name="view_resume">View Resume</string>
+    <string name="connection_requests">Connection Requests</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -223,7 +227,9 @@
     <string name="view_application">View Application</string>
     <string name="connect">Connect</string>
     <string name="direct_message">Direct Message</string>
-
+    <string name="no_job_posting">You haven\'t posted any job yet</string>
+    <string name="no_saved_job">You haven\'t saved any job yet</string>
+    <string name="no_job_application">You haven\'t applied to any job yet</string>
 
     <string name="cancel_application">Cancel Application</string>
     <string name="cancel_application_warning">Are you sure you want to cancel your application? (Note that they may have already viewed your application)</string>

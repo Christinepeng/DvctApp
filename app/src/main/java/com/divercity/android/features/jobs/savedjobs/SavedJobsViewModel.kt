@@ -27,7 +27,7 @@ constructor(private val context: Application,
     var navigateToJobRecruiterDescription = SingleLiveEvent<JobResponse>()
     lateinit var pagedJobsList: LiveData<PagedList<JobResponse>>
     private lateinit var listingPaginatedJob: Listing<JobResponse>
-    private var lastSearch: String? = null
+    var lastSearch: String? = null
 
     init {
         fetchJobs(null, "")

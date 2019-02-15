@@ -18,7 +18,7 @@ interface RegisterLoginRepository {
     fun isUsernameRegistered(username: String): Observable<CheckUsernameEmailResponse>
 
     fun signUp(
-        nickname: String,
+//        nickname: String,
         name: String,
         email: String,
         password: String,

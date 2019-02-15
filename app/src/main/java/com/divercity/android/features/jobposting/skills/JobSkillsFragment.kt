@@ -105,7 +105,6 @@ class JobSkillsFragment : BaseFragment(), RetryCallback, IOnBackPressed {
                         txt_no_results.visibility = View.GONE
                 }
             }
-
         })
     }
 

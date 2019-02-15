@@ -5,10 +5,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
-import android.text.Editable
-import android.text.Selection
-import android.text.TextWatcher
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
@@ -19,6 +15,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
+import com.divercity.android.features.dialogs.AddProfilePictureDialogFragment
 import com.divercity.android.features.dialogs.CustomTwoBtnDialogFragment
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -33,7 +30,7 @@ import java.io.File
 class SignUpFragment : BaseFragment() {
 
     val SAVE_PARAM_FILEPATH = "saveParamFilepath"
-    val SAVE_PARAM_USERNAME = "username"
+    //    val SAVE_PARAM_USERNAME = "username"
     val SAVE_PARAM_ISUSERREGISTERED = "isUserRegistered"
 
     private var photoFile: File? = null
@@ -67,19 +64,19 @@ class SignUpFragment : BaseFragment() {
 
         savedInstanceState?.let {
             val data = savedInstanceState.getSerializable(SAVE_PARAM_FILEPATH)
-            if(data != null){
+            if (data != null) {
                 photoFile = data as File
                 onPhotosReturned(photoFile)
             }
 
-            username = savedInstanceState.getString(SAVE_PARAM_USERNAME)
-
-            isUserRegistered = savedInstanceState.getInt(SAVE_PARAM_ISUSERREGISTERED)
-            when (isUserRegistered) {
-                2 -> removeUsernameStyleAndHideImg()
-                1 -> isUsernameRegistered(true)
-                0 -> isUsernameRegistered(false)
-            }
+//            username = savedInstanceState.getString(SAVE_PARAM_USERNAME)
+//
+//            isUserRegistered = savedInstanceState.getInt(SAVE_PARAM_ISUSERREGISTERED)
+//            when (isUserRegistered) {
+//                2 -> removeUsernameStyleAndHideImg()
+//                1 -> isUsernameRegistered(true)
+//                0 -> isUsernameRegistered(false)
+//            }
         }
 
         setupToolbar()
@@ -118,17 +115,17 @@ class SignUpFragment : BaseFragment() {
             }
         })
 
-        viewModel.usernameRegisteredResponse.observe(this, Observer { isRegistered ->
-            isRegistered?.let { response ->
-
-                if (response.status == Status.SUCCESS) {
-
-                    response.data?.let {
-                        isUsernameRegistered(it)
-                    }
-                }
-            }
-        })
+//        viewModel.usernameRegisteredResponse.observe(this, Observer { isRegistered ->
+//            isRegistered?.let { response ->
+//
+//                if (response.status == Status.SUCCESS) {
+//
+//                    response.data?.let {
+//                        isUsernameRegistered(it)
+//                    }
+//                }
+//            }
+//        })
 
         viewModel.uploadProfilePictureResponse.observe(this, Observer {
             when (it?.status) {
@@ -168,33 +165,33 @@ class SignUpFragment : BaseFragment() {
             EasyImage.openChooserWithGallery(this, getString(R.string.pick_source), 0)
         }
 
-        et_username.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, count: Int) {
-                /* This is because when onSaveInstanceState is not null you need to restore the state
-                of EditText, if count != 1 or 0, it means that is restoring from onSaveInstanceState
-               */
-                if (count == 1 || count == 0)
-                    removeUsernameStyleAndHideImg()
-            }
-
-            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-            }
-
-            override fun afterTextChanged(s: Editable?) {
-                if (!s.toString().startsWith("@") && s.toString().length == 1) {
-                    et_username.setText("@".plus(s.toString()))
-                    Selection.setSelection(et_username.text, et_username.length())
-                }
-            }
-        })
-
-        et_username.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
-            var text = et_username.text.toString()
-            if (!hasFocus && text != username && text != "" && text.substring(1) != "") {
-                viewModel.checkUsernameRegistered(text.substring(1))
-                username = et_username.text.toString()
-            }
-        }
+//        et_username.addTextChangedListener(object : TextWatcher {
+//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, count: Int) {
+//                /* This is because when onSaveInstanceState is not null you need to restore the state
+//                of EditText, if count != 1 or 0, it means that is restoring from onSaveInstanceState
+//               */
+//                if (count == 1 || count == 0)
+//                    removeUsernameStyleAndHideImg()
+//            }
+//
+//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+//            }
+//
+//            override fun afterTextChanged(s: Editable?) {
+//                if (!s.toString().startsWith("@") && s.toString().length == 1) {
+//                    et_username.setText("@".plus(s.toString()))
+//                    Selection.setSelection(et_username.text, et_username.length())
+//                }
+//            }
+//        })
+//
+//        et_username.onFocusChangeListener = View.OnFocusChangeListener { _, hasFocus ->
+//            var text = et_username.text.toString()
+//            if (!hasFocus && text != username && text != "" && text.substring(1) != "") {
+//                viewModel.checkUsernameRegistered(text.substring(1))
+//                username = et_username.text.toString()
+//            }
+//        }
 
         lay_warning_username.setOnClickListener {
             lay_warning_username.visibility = View.GONE
@@ -202,13 +199,10 @@ class SignUpFragment : BaseFragment() {
 
         btn_create_account.setOnClickListener {
             if (checkFormIsCompleted())
-                viewModel.signUp(
-                    getTextEditText(et_name),
-                    getTextEditText(et_username).substring(1),
-                    getTextEditText(et_email),
-                    getTextEditText(et_password),
-                    getTextEditText(et_confirm_pass)
-                )
+                if (!isPictureSet)
+                    showAddProfilePictureDialog()
+                else
+                    signUp()
             else
                 showToast(getString(R.string.check_fields))
         }
@@ -216,8 +210,8 @@ class SignUpFragment : BaseFragment() {
 
     private fun checkFormIsCompleted(): Boolean {
         return et_name.text.toString() != "" &&
-                et_username.text.toString() != "" &&
-                et_username.text.toString().length != 1 &&
+//                et_username.text.toString() != "" &&
+//                et_username.text.toString().length != 1 &&
                 et_email.text.toString() != "" &&
                 Util.isValidEmail(et_email.text.toString()) &&
                 et_password.text.toString() != "" &&
@@ -232,30 +226,40 @@ class SignUpFragment : BaseFragment() {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
-    private fun isUsernameRegistered(b: Boolean) {
-        if (b) {
-            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.red))
-            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.icon_wrong))
-            img_username_status.visibility = View.VISIBLE
-            lay_warning_username.visibility = View.VISIBLE
-            isUserRegistered = 1
-        } else {
-            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.green))
-            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.img_checkmark))
-            img_username_status.visibility = View.VISIBLE
-            lay_warning_username.visibility = View.GONE
-            isUserRegistered = 0
-        }
+//    private fun isUsernameRegistered(b: Boolean) {
+//        if (b) {
+//            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.red))
+//            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.icon_wrong))
+//            img_username_status.visibility = View.VISIBLE
+//            lay_warning_username.visibility = View.VISIBLE
+//            isUserRegistered = 1
+//        } else {
+//            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.green))
+//            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.img_checkmark))
+//            img_username_status.visibility = View.VISIBLE
+//            lay_warning_username.visibility = View.GONE
+//            isUserRegistered = 0
+//        }
+//    }
+//
+//    private fun removeUsernameStyleAndHideImg() {
+//        isUserRegistered = 2
+//        et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.appText1))
+//        img_username_status.visibility = View.GONE
+//        lay_warning_username.visibility = View.GONE
+//    }
+
+    private fun signUp() {
+        viewModel.signUp(
+            Util.getNameFormatted(getTextEditText(et_name)),
+//                    getTextEditText(et_username).substring(1),
+            getTextEditText(et_email),
+            getTextEditText(et_password),
+            getTextEditText(et_confirm_pass)
+        )
     }
 
-    private fun removeUsernameStyleAndHideImg() {
-        isUserRegistered = 2
-        et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.appText1))
-        img_username_status.visibility = View.GONE
-        lay_warning_username.visibility = View.GONE
-    }
-
-//    TODO hanlde if photo uploading fails
+    //    TODO hanlde if photo uploading fails
     private fun showDialogErrorProfilePictureUpload() {
         var dialog = CustomTwoBtnDialogFragment.newInstance(
             getString(R.string.ups),
@@ -278,25 +282,57 @@ class SignUpFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        EasyImage.handleActivityResult(requestCode, resultCode, data, activity, object : DefaultCallback() {
-            override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
-                //Some error handling
-                e!!.printStackTrace()
-                showToast(e.message)
-            }
-
-            override fun onImagesPicked(imageFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
-                onPhotosReturned(imageFiles[0])
-            }
-
-            override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
-                //Cancel handling, you might wanna remove taken photoFile if it was canceled
-                if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                    val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
-                    photoFile?.delete()
+        EasyImage.handleActivityResult(
+            requestCode,
+            resultCode,
+            data,
+            activity,
+            object : DefaultCallback() {
+                override fun onImagePickerError(
+                    e: Exception?,
+                    source: EasyImage.ImageSource?,
+                    type: Int
+                ) {
+                    //Some error handling
+                    e!!.printStackTrace()
+                    showToast(e.message)
                 }
+
+                override fun onImagesPicked(
+                    imageFiles: List<File>,
+                    source: EasyImage.ImageSource,
+                    type: Int
+                ) {
+                    onPhotosReturned(imageFiles[0])
+                }
+
+                override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
+                    //Cancel handling, you might wanna remove taken photoFile if it was canceled
+                    if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        photoFile?.delete()
+                    }
+                }
+            })
+    }
+
+    private fun showAddProfilePictureDialog() {
+        val dialog = AddProfilePictureDialogFragment.newInstance()
+        dialog.listener = object : AddProfilePictureDialogFragment.Listener {
+
+            override fun onAddPicture() {
+                EasyImage.openChooserWithGallery(
+                    this@SignUpFragment,
+                    getString(R.string.pick_source),
+                    0
+                )
             }
-        })
+
+            override fun onMaybeLater() {
+                signUp()
+            }
+        }
+        dialog.show(childFragmentManager, null)
     }
 
     private fun onPhotosReturned(file: File?) {
@@ -305,13 +341,14 @@ class SignUpFragment : BaseFragment() {
             .load(file)
             .apply(RequestOptions().circleCrop())
             .into(img_profile)
+        img_icon_add_edit.setImageResource(R.drawable.icon_edit_stroke)
         isPictureSet = true
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
         outState.putSerializable(SAVE_PARAM_FILEPATH, photoFile)
-        outState.putString(SAVE_PARAM_USERNAME, username)
+//        outState.putString(SAVE_PARAM_USERNAME, username)
         outState.putInt(SAVE_PARAM_ISUSERREGISTERED, isUserRegistered)
     }
 

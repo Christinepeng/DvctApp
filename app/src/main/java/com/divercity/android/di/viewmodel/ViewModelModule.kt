@@ -2,6 +2,9 @@ package com.divercity.android.di.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import com.divercity.android.features.activity.ActivityViewModel
+import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsViewModel
+import com.divercity.android.features.activity.notifications.NotificationsViewModel
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeViewModel
 import com.divercity.android.features.chat.chat.ChatViewModel
 import com.divercity.android.features.chat.creategroupchat.CreateGroupChatViewModel
@@ -413,4 +416,19 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(InvitePhoneContactsViewModel::class)
     abstract fun bindsPhoneContactsViewModel(viewModel: InvitePhoneContactsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ActivityViewModel::class)
+    abstract fun bindsActivityViewModel(viewModel: ActivityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(NotificationsViewModel::class)
+    abstract fun bindsNotificationsViewModel(viewModel: NotificationsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ConnectionRequestsViewModel::class)
+    abstract fun bindsConnectionRequestsViewModel(viewModel: ConnectionRequestsViewModel): ViewModel
 }

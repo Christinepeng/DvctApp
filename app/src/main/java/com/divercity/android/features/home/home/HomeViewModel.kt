@@ -19,7 +19,7 @@ import com.divercity.android.data.entity.storiesfeatured.StoriesFeaturedResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
-import com.divercity.android.features.home.home.feed.datasource.QuestionsPaginatedRepositoryImpl
+import com.divercity.android.features.home.home.datasource.QuestionsPaginatedRepositoryImpl
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase
 import com.divercity.android.features.home.home.usecase.FetchUnreadMessagesCountUseCase
 import com.divercity.android.features.home.home.usecase.GetStoriesFeatured

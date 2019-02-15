@@ -5,6 +5,7 @@ import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
+import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.data.entity.user.response.UserResponse
@@ -74,4 +75,14 @@ interface GroupRepository {
         pageNumber: Int,
         size: Int
     ): Observable<List<GroupResponse>>
+
+    fun fetchGroupInvitations(
+        page: Int,
+        size: Int
+    ): Observable<List<GroupInviteResponse>>
+
+    fun fetchGroupJoinRequests(
+        page: Int,
+        size: Int
+    ): Observable<List<JoinGroupRequestResponse>>
 }

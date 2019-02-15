@@ -27,7 +27,7 @@ constructor(private val repository: JobPaginatedRepositoryImpl,
     var publishJobResponse = SingleLiveEvent<Resource<JobResponse>>()
     lateinit var pagedJobsList: LiveData<PagedList<JobResponse>>
     private lateinit var listingPaginatedJob: Listing<JobResponse>
-    private var lastSearch: String? = null
+    var lastSearch: String? = null
 
     init {
         fetchJobs(null, "")

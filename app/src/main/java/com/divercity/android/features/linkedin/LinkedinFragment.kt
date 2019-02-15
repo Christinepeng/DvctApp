@@ -91,32 +91,33 @@ class LinkedinFragment : BaseFragment() {
             }
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-                super.onReceivedError(view, request, error)
+//                super.onReceivedError(view, request, error)
                 hideProgress()
                 showDialogConnectionError()
             }
 
             override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
-                super.onReceivedError(view, errorCode, description, failingUrl)
+//                super.onReceivedError(view, errorCode, description, failingUrl)
                 hideProgress()
                 showDialogConnectionError()
             }
 
             override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
-                super.onReceivedSslError(view, handler, error)
+//                super.onReceivedSslError(view, handler, error)
                 hideProgress()
                 showDialogConnectionError()
             }
 
             override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
-                super.onReceivedHttpError(view, request, errorResponse)
+//                super.onReceivedHttpError(view, request, errorResponse)
                 hideProgress()
                 showDialogConnectionError()
             }
 
             override fun onPageFinished(view: WebView?, url: String?) {
-                super.onPageFinished(view, url)
-                hideProgress()
+//                super.onPageFinished(view, url)
+                if(url == null || !url.startsWith(REDIRECT_URI))
+                    hideProgress()
             }
         }
         Timber.e("Authorize URL: ".plus(getAuthorizationUrl()))

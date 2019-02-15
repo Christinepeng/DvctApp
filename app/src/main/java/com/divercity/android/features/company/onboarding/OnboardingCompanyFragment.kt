@@ -70,13 +70,17 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
             }
 
             btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(activity!!,
-                        viewModel.getAccountType(),
-                        currentProgress,
-                        false
-                )
+              onSkip()
             }
         }
+    }
+
+    private fun onSkip(){
+        navigator.navigateToNextOnboarding(activity!!,
+            viewModel.getAccountType(),
+            currentProgress,
+            false
+        )
     }
 
     private fun subscribeToLiveData() {
@@ -103,5 +107,9 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
 
     override fun onCompanyChosen(company: CompanyResponse) {
         viewModel.updateUserProfile(company.id)
+    }
+
+    override fun onNoCurrentCompany() {
+        onSkip()
     }
 }

@@ -53,19 +53,17 @@
 
                 <ImageView
                     android:id="@+id/img_profile"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:scaleType="centerCrop" />
 
-                <android.support.v7.widget.AppCompatImageButton
+                <ImageView
                     android:id="@+id/img_icon_add_edit"
                     android:layout_width="29dp"
                     android:layout_height="29dp"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentBottom="true"
-                    android:background="@drawable/circle_blue"
-                    android:src="@drawable/ic_add_24dp"
-                    app:backgroundTint="#333241" />
+                    android:src="@drawable/ic_add_stroke" />
 
             </RelativeLayout>
 
@@ -94,41 +92,41 @@
 
             </FrameLayout>
 
-            <LinearLayout
-                android:id="@+id/lay_username"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="1dp"
-                android:background="@android:color/white"
-                android:orientation="horizontal"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lay_name">
+            <!--<LinearLayout-->
+                <!--android:id="@+id/lay_username"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="1dp"-->
+                <!--android:background="@android:color/white"-->
+                <!--android:orientation="horizontal"-->
+                <!--app:layout_constraintEnd_toEndOf="parent"-->
+                <!--app:layout_constraintStart_toStartOf="parent"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/lay_name">-->
 
-                <EditText
-                    android:id="@+id/et_username"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@android:color/transparent"
-                    android:fontFamily="@font/avenir_roman"
-                    android:hint="@string/username"
-                    android:inputType="text"
-                    android:padding="24dp"
-                    android:textColor="#333241"
-                    android:textSize="15sp" />
+                <!--<EditText-->
+                    <!--android:id="@+id/et_username"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@android:color/transparent"-->
+                    <!--android:fontFamily="@font/avenir_roman"-->
+                    <!--android:hint="@string/username"-->
+                    <!--android:inputType="text"-->
+                    <!--android:padding="24dp"-->
+                    <!--android:textColor="#333241"-->
+                    <!--android:textSize="15sp" />-->
 
-                <ImageView
-                    android:id="@+id/img_username_status"
-                    android:layout_width="27dp"
-                    android:layout_height="27dp"
-                    android:layout_gravity="center"
-                    android:layout_margin="16dp"
-                    android:visibility="gone"
-                    tools:visibility="visible"
-                    tools:src="@drawable/img_checkmark" />
+                <!--<ImageView-->
+                    <!--android:id="@+id/img_username_status"-->
+                    <!--android:layout_width="27dp"-->
+                    <!--android:layout_height="27dp"-->
+                    <!--android:layout_gravity="center"-->
+                    <!--android:layout_margin="16dp"-->
+                    <!--android:visibility="gone"-->
+                    <!--tools:visibility="visible"-->
+                    <!--tools:src="@drawable/img_checkmark" />-->
 
-            </LinearLayout>
+            <!--</LinearLayout>-->
 
             <FrameLayout
                 android:id="@+id/lay_email"
@@ -139,7 +137,7 @@
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lay_username">
+                app:layout_constraintTop_toBottomOf="@+id/lay_name">
 
                 <EditText
                     android:id="@+id/et_email"

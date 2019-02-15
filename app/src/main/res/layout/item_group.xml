@@ -31,12 +31,14 @@
 
     <TextView
         android:id="@+id/item_group_txt_title"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="8dp"
         android:fontFamily="@font/avenir_medium"
         android:textColor="#333241"
+        android:maxLines="1"
+        android:ellipsize="end"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/item_group_txt_members"
         app:layout_constraintEnd_toStartOf="@+id/item_group_btn_join_member"
@@ -44,7 +46,7 @@
         app:layout_constraintStart_toEndOf="@+id/cardview"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_chainStyle="packed"
-        tools:text="Blacks in Tech" />
+        tools:text="Blacks in Tech Blacks in Tech Blacks in Tech Blacks in Tech Blacks in Tech" />
 
     <TextView
         android:id="@+id/item_group_txt_members"

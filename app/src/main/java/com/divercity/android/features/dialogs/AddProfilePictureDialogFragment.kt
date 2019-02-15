@@ -1,19 +1,21 @@
 package com.divercity.android.features.dialogs
 
 import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
 import android.support.v7.app.AlertDialog
-import android.view.View
-import android.widget.TextView
 import com.divercity.android.R
-import com.divercity.android.core.ui.AnimateHorizontalProgressBar
+import kotlinx.android.synthetic.main.dialog_add_profile_picture.view.*
 
 /**
  * Created by lucas on 18/03/2018.
  */
 
 class AddProfilePictureDialogFragment : DialogFragment() {
+
+    var listener : Listener? = null
 
     companion object {
 
@@ -25,18 +27,35 @@ class AddProfilePictureDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val builder = AlertDialog.Builder(activity!!)
         val inflater = activity!!.layoutInflater
-        val dialogView = inflater.inflate(R.layout.dialog_complete_profile, null)
+        val dialogView = inflater.inflate(R.layout.dialog_add_profile_picture, null)
 
-        val progressBar = dialogView.findViewById<AnimateHorizontalProgressBar>(R.id.progress_bar)
-        progressBar.max = 100
-        progressBar.progress = 0
-        progressBar.setProgressWithAnim(100)
+        dialogView.apply {
+            btn_add_picture.setOnClickListener {
+                dismiss()
+                listener?.onAddPicture()
+            }
 
-        val progressText = dialogView.findViewById<TextView>(R.id.txt_progress)
-        progressText.text = "100%"
+            btn_maybe_later.setOnClickListener {
+                dismiss()
+                listener?.onMaybeLater()
+            }
+        }
 
-        dialogView.findViewById<View>(R.id.dlg_cmpl_prf_btn_thanks).setOnClickListener { _ -> dismiss() }
         builder.setView(dialogView)
         return builder.create()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        dialog?.window?.apply {
+            setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        }
+    }
+
+    interface Listener {
+
+        fun onAddPicture()
+
+        fun onMaybeLater()
     }
 }

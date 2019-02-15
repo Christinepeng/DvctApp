@@ -49,4 +49,8 @@ class ToolbarCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener {
             finish()
         }
     }
+
+    override fun onNoCurrentCompany() {
+        activity?.finish()
+    }
 }

@@ -64,5 +64,7 @@ interface SessionRepository {
 
     fun getInterests() : List<Int>?
 
+    fun getSkills() : List<String>?
+
     fun getUserType() : String?
 }

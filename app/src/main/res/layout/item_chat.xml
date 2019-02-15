@@ -27,7 +27,7 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
-        android:src="@drawable/img_orange_user"
+        tools:src="@drawable/tab_profile_inactive"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_date" />
 

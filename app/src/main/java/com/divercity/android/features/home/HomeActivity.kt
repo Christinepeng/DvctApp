@@ -23,7 +23,7 @@ import com.divercity.android.features.dialogs.CompletedProfileDialogFragment
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
-import com.divercity.android.features.home.notifications.NotificationsFragment
+import com.divercity.android.features.activity.ActivityFragment
 import com.divercity.android.features.jobs.TabJobsFragment
 import com.divercity.android.features.profile.ProfileFragment
 import dagger.android.support.DaggerAppCompatActivity
@@ -82,7 +82,7 @@ class HomeActivity : DaggerAppCompatActivity() {
             0 -> selectedFragment = HomeFragment.newInstance()
             1 -> selectedFragment = TabGroupsFragment.newInstance()
             2 -> selectedFragment = TabJobsFragment.newInstance()
-            3 -> selectedFragment = NotificationsFragment.newInstance()
+            3 -> selectedFragment = ActivityFragment.newInstance()
             4 -> selectedFragment = ProfileFragment.newInstance()
         }
         val transaction = supportFragmentManager.beginTransaction()

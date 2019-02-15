@@ -171,4 +171,8 @@ constructor(
     override fun getUserType(): String? {
         return currentLoggedUser?.userAttributes?.accountType
     }
+
+    override fun getSkills(): List<String>? {
+        return currentLoggedUser?.userAttributes?.skills
+    }
 }

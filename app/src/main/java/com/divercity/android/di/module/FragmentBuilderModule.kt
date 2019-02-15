@@ -1,5 +1,9 @@
 package com.divercity.android.di.module
 
+import com.divercity.android.features.activity.ActivityFragment
+import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsFragment
+import com.divercity.android.features.activity.module.NotificationsModule
+import com.divercity.android.features.activity.notifications.NotificationsFragment
 import com.divercity.android.features.agerange.base.SelectAgeFragment
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeFragment
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
@@ -37,7 +41,6 @@ import com.divercity.android.features.groups.mygroups.MyGroupsFragment
 import com.divercity.android.features.groups.onboarding.SelectGroupFragment
 import com.divercity.android.features.groups.trending.TrendingGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
-import com.divercity.android.features.home.notifications.NotificationsFragment
 import com.divercity.android.features.home.settings.SettingsFragment
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingFragment
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryFragment
@@ -116,8 +119,8 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector(modules = [JobsModule::class])
     abstract fun bindJobsFragment (): TabJobsFragment
 
-    @ContributesAndroidInjector
-    abstract fun bindNotificationsFragment (): NotificationsFragment
+    @ContributesAndroidInjector(modules = [NotificationsModule::class])
+    abstract fun bindActivityFragment (): ActivityFragment
 
     @ContributesAndroidInjector(modules = [ProfileModule::class])
     abstract fun bindProfileFragment (): ProfileFragment
@@ -334,4 +337,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindPhoneContactsFragment (): InvitePhoneContactsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindConnectionRequestsFragment(): ConnectionRequestsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindNotificationsFragment(): NotificationsFragment
 }

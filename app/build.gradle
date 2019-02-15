@@ -33,7 +33,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
-        versionName "D-1.15"
+        versionName "D-1.16"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -112,12 +112,14 @@ dependencies {
 
     def firebase_messaging_version = "17.3.4"
     def firebas_core_version = "16.0.7"
-    def crashlytics_version = "2.9.8"
+    def crashlytics_version = "2.9.9"
 
     def spyglass_version = "1.5.0"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.android.support:multidex:1.0.3'
+
+    compileOnly 'javax.annotation:jsr250-api:1.0'
 
     // Firebase
     implementation "com.google.firebase:firebase-core:$firebas_core_version"

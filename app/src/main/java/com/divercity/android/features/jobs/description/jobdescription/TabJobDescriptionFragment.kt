@@ -33,6 +33,9 @@ class TabJobDescriptionFragment : BaseFragment(){
     }
 
     private fun initView(){
-        txt_job_desc.text = arguments?.getString(PARAM_JOB_DESC)
+        webview.loadDataWithBaseURL(null
+            , arguments?.getString(PARAM_JOB_DESC),
+            "text/html", "UTF-8",
+            "")
     }
 }

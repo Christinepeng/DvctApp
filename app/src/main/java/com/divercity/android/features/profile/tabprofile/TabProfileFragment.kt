@@ -31,7 +31,7 @@ class TabProfileFragment : BaseFragment() {
     private lateinit var viewModel: TabProfileViewModel
 
     @Inject
-    lateinit var adapter: SelectInterestsAdapter
+    lateinit var interestAdapter: SelectInterestsAdapter
 
     companion object {
 
@@ -89,31 +89,34 @@ class TabProfileFragment : BaseFragment() {
                 navigator.navigateToToolbarLocationActivityForResult(this, REQUEST_CODE_LOCATION)
             }
 
-          if(viewModel.getUserType() == getString(R.string.recruiter_id) ||
-                viewModel.getUserType() == getString(R.string.hiring_manager_id)){
+            if (viewModel.getUserType() == getString(R.string.recruiter_id) ||
+                viewModel.getUserType() == getString(R.string.hiring_manager_id)
+            ) {
                 lay_resume.visibility = View.GONE
                 lay_school.visibility = View.GONE
                 lay_age_range.visibility = View.GONE
             }
-        } else if(viewModel.getUserType() == getString(R.string.student_id)){
+        } else if (viewModel.getUserType() == getString(R.string.student_id)) {
             showSkillSection(true)
             showExperienceSection(true)
             showEducationSection(true)
             showInterestsSection(true)
-        } else if(viewModel.getUserType() == getString(R.string.entrepreneur_id)){
+        } else if (viewModel.getUserType() == getString(R.string.entrepreneur_id)) {
             showInterestsSection(true)
             showSkillSection(false)
             showExperienceSection(false)
             showEducationSection(false)
-        } else if(viewModel.getUserType() == getString(R.string.professional_id) ||
-                viewModel.getUserType() == getString(R.string.job_seeker_id)){
+        } else if (viewModel.getUserType() == getString(R.string.professional_id) ||
+            viewModel.getUserType() == getString(R.string.job_seeker_id)
+        ) {
             showSkillSection(true)
             showExperienceSection(true)
             showEducationSection(true)
             showInterestsSection(true)
             lay_school.visibility = View.GONE
-        } else if(viewModel.getUserType() == getString(R.string.recruiter_id) ||
-                viewModel.getUserType() == getString(R.string.hiring_manager_id)){
+        } else if (viewModel.getUserType() == getString(R.string.recruiter_id) ||
+            viewModel.getUserType() == getString(R.string.hiring_manager_id)
+        ) {
             lay_resume.visibility = View.GONE
             lay_school.visibility = View.GONE
             lay_age_range.visibility = View.GONE
@@ -130,7 +133,7 @@ class TabProfileFragment : BaseFragment() {
         txt_location.text = viewModel.getLocation()
 
         list_interest.layoutManager = StaggeredGridLayoutManager(2, 1)
-        list_interest.adapter = adapter
+        list_interest.adapter = interestAdapter
 
         swipe_refresh.setOnRefreshListener {
             txt_ethnicity.text = viewModel.getEthnicity()
@@ -149,22 +152,28 @@ class TabProfileFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_ETHNICITY) {
-                val ethnicity = data?.extras?.getString(ToolbarEthnicityFragment.ETHNICITY_PICKED)
-                viewModel.updateEthnicity(ethnicity)
-            } else if (requestCode == REQUEST_CODE_GENDER) {
-                val gender = data?.extras?.getString(ToolbarGenderFragment.GENDER_PICKED)
-                viewModel.updateGender(gender)
-            } else if (requestCode == REQUEST_CODE_AGE_RANGE) {
-                val ageRange = data?.extras?.getString(ToolbarAgeFragment.AGE_RANGE_PICKED)
-                ageRange?.apply {
-                    viewModel.updateAgeRange(this)
+            when (requestCode) {
+                REQUEST_CODE_ETHNICITY -> {
+                    val ethnicity =
+                        data?.extras?.getString(ToolbarEthnicityFragment.ETHNICITY_PICKED)
+                    viewModel.updateEthnicity(ethnicity)
                 }
-            } else if (requestCode == REQUEST_CODE_LOCATION) {
-                val location =
-                    data?.extras?.getParcelable<LocationResponse>(ToolbarLocationFragment.LOCATION_PICKED)
-                location?.apply {
-                    viewModel.updateLocation(location)
+                REQUEST_CODE_GENDER -> {
+                    val gender = data?.extras?.getString(ToolbarGenderFragment.GENDER_PICKED)
+                    viewModel.updateGender(gender)
+                }
+                REQUEST_CODE_AGE_RANGE -> {
+                    val ageRange = data?.extras?.getString(ToolbarAgeFragment.AGE_RANGE_PICKED)
+                    ageRange?.apply {
+                        viewModel.updateAgeRange(this)
+                    }
+                }
+                REQUEST_CODE_LOCATION -> {
+                    val location =
+                        data?.extras?.getParcelable<LocationResponse>(ToolbarLocationFragment.LOCATION_PICKED)
+                    location?.apply {
+                        viewModel.updateLocation(location)
+                    }
                 }
             }
         }
@@ -200,7 +209,7 @@ class TabProfileFragment : BaseFragment() {
                 Status.ERROR -> {
                 }
                 Status.SUCCESS -> {
-                    adapter.list = response.data
+                    interestAdapter.list = response.data
                 }
             }
         })

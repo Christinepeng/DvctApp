@@ -108,5 +108,8 @@ data class UserAttributes (
 	var name: String? = "",
 
 	@field:SerializedName("age_range")
-	var ageRange: String? = ""
+	var ageRange: String? = "",
+
+	@field:SerializedName("skills")
+	var skills: List<String>? = Collections.emptyList()
 )

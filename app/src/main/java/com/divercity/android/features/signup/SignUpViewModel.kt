@@ -25,7 +25,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
     val uploadProfilePictureResponse = SingleLiveEvent<Resource<UserResponse>>()
     val navigateToSelectUserType = SingleLiveEvent<Boolean>()
 
-    fun signUp(name: String, username: String, email: String, password: String, confirmPassword: String) {
+    fun signUp(name: String, email: String, password: String, confirmPassword: String) {
 
         signUpResponse.value = Resource.loading(null)
         val callback = object : SignUpUseCase.Callback() {
@@ -38,29 +38,28 @@ constructor(private val signUpUseCase: SignUpUseCase,
             }
         }
         signUpUseCase.execute(callback, SignUpUseCase.Params.forSignUp(
-                username,
                 name,
                 email,
                 password,
                 confirmPassword))
     }
 
-    fun checkUsernameRegistered(username: String) {
-
-        val callback = object : DisposableObserverWrapper<Boolean>() {
-
-            override fun onFail(error: String) {
-            }
-
-            override fun onHttpException(error: JsonElement?) {
-            }
-
-            override fun onSuccess(t: Boolean) {
-                usernameRegisteredResponse.value = Resource.success(t)
-            }
-        }
-        usernameRegisteredUseCase.execute(callback, CheckIsUsernameRegisteredUseCase.Params.forCheckUsername(username))
-    }
+//    fun checkUsernameRegistered(username: String) {
+//
+//        val callback = object : DisposableObserverWrapper<Boolean>() {
+//
+//            override fun onFail(error: String) {
+//            }
+//
+//            override fun onHttpException(error: JsonElement?) {
+//            }
+//
+//            override fun onSuccess(t: Boolean) {
+//                usernameRegisteredResponse.value = Resource.success(t)
+//            }
+//        }
+//        usernameRegisteredUseCase.execute(callback, CheckIsUsernameRegisteredUseCase.Params.forCheckUsername(username))
+//    }
 
     fun uploadPicture(pictureBase64: String) {
         if (pictureBase64 == "")

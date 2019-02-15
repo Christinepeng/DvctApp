@@ -20,10 +20,11 @@ import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.home.HomeActivity
-import com.divercity.android.features.home.home.feed.adapter.HomeAdapterNew
-import com.divercity.android.features.home.home.recommended.RecommendedAdapter
-import com.divercity.android.features.home.home.recommended.RecommendedGroupViewHolder
-import com.divercity.android.features.home.home.recommended.RecommendedJobViewHolder
+import com.divercity.android.features.home.home.adapter.HomeAdapter
+import com.divercity.android.features.home.home.adapter.recommended.RecommendedAdapter
+import com.divercity.android.features.home.home.adapter.recommended.RecommendedGroupViewHolder
+import com.divercity.android.features.home.home.adapter.recommended.RecommendedJobViewHolder
+import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -41,7 +42,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 //    lateinit var homeAdapter: HomeAdapter
 
     @Inject
-    lateinit var homeAdapter: HomeAdapterNew
+    lateinit var homeAdapter: HomeAdapter
 
     @Inject
     lateinit var recommendedAdapter: RecommendedAdapter
@@ -119,7 +120,18 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         }
 
-        homeAdapter.setRecommendedAdapter(recommendedAdapter)
+        homeAdapter.recommendedAdapter = recommendedAdapter
+
+        homeAdapter.feedJobListener = object : JobsViewHolder.Listener {
+
+            override fun onApplyClick(position: Int, job: JobResponse) {
+                showJobApplyDialog(job.id)
+            }
+
+            override fun onJobClick(job: JobResponse) {
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+            }
+        }
 
         list_main.layoutManager = LinearLayoutManager(context)
         list_main.adapter = homeAdapter

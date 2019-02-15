@@ -21,7 +21,7 @@ interface DocumentService {
     @Multipart
     @POST("user_documents")
     fun uploadDocument(@Part("document[name]") docName: RequestBody,
-                @Part() doc: MultipartBody.Part): Observable<Response<DataObject<DocumentResponse>>>
+                @Part doc: MultipartBody.Part): Observable<Response<DataObject<DocumentResponse>>>
 
     @GET("user_documents")
     fun fetchRecentDocs(): Observable<Response<DataArray<DocumentResponse>>>

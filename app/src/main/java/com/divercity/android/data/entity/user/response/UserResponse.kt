@@ -6,7 +6,6 @@ import android.arch.persistence.room.TypeConverters
 import com.divercity.android.db.converter.CompanyTypeConverter
 import com.divercity.android.db.converter.IntListTypeConverter
 import com.divercity.android.db.converter.StringListTypeConverter
-import com.divercity.android.features.chat.chat.model.ChatMember
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "user",primaryKeys = ["id"])
@@ -25,10 +24,4 @@ data class UserResponse(
 
 	@field:SerializedName("type")
 	var type: String? = "users"
-) {
-	fun toChatMember() = ChatMember(id,
-		userAttributes?.name,
-		userAttributes?.avatarMedium,
-		userAttributes?.accountType,
-		0,0)
-}
+)

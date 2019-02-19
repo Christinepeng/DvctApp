@@ -48,6 +48,7 @@ android {
             minifyEnabled true
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
             manifestPlaceholders = [enableCrashReporting:"true"]
         }
 

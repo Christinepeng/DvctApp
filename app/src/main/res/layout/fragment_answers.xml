@@ -27,55 +27,68 @@
         android:layout_width="35dp"
         android:layout_height="35dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_date"
         tools:src="@drawable/tab_profile_inactive" />
 
-    <TextView
-        android:id="@+id/txt_name"
+    <LinearLayout
+        android:id="@+id/lay_date_time"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:fontFamily="@font/avenir_medium"
-        android:textColor="#333241"
-        android:textSize="15sp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="@+id/img_user"
-        app:layout_constraintEnd_toStartOf="@+id/txt_time"
-        app:layout_constraintHorizontal_chainStyle="spread_inside"
-        app:layout_constraintStart_toEndOf="@+id/img_user"
-        app:layout_constraintTop_toTopOf="@+id/img_user"
-        tools:text="ghdfghd dsfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsfsfg" />
-
-    <TextView
-        android:id="@+id/txt_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/avenir_book"
-        android:textColor="@color/grey3"
-        android:textSize="13sp"
-        app:layout_constrainedWidth="true"
-        app:layout_constraintBottom_toBottomOf="@+id/txt_name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/txt_name"
-        app:layout_constraintTop_toTopOf="@+id/txt_name"
-        app:layout_constraintWidth_default="wrap"
-        tools:text="12:51 am" />
+        app:layout_constraintStart_toEndOf="@+id/img_user"
+        app:layout_constraintTop_toTopOf="@+id/img_user">
+
+        <TextView
+            android:id="@+id/txt_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_weight="1"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:fontFamily="@font/avenir_medium"
+            android:textColor="#333241"
+            android:textSize="15sp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_user"
+            app:layout_constraintEnd_toStartOf="@+id/txt_time"
+            app:layout_constraintHorizontal_chainStyle="spread_inside"
+            app:layout_constraintStart_toEndOf="@+id/img_user"
+            app:layout_constraintTop_toTopOf="@+id/img_user"
+            tools:text="ghdfghd dsfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsdfsfsfg" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginEnd="8dp"
+            android:layout_weight="0"
+            android:ellipsize="end"
+            android:fontFamily="@font/avenir_book"
+            android:maxLines="1"
+            android:textColor="@color/grey3"
+            android:textSize="13sp"
+            tools:text="12:51 am" />
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/txt_msg"
+        android:id="@+id/txt_question"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="59dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:fontFamily="@font/avenir_book"
         android:textColor="#333241"
         android:textSize="15sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/txt_time"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_user"
@@ -88,12 +101,14 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:shape="ring"
         app:cardCornerRadius="10dp"
         app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
-        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_author_name">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_question">
 
         <ImageView
             android:id="@+id/item_quest_img_main"

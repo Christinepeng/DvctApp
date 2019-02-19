@@ -54,7 +54,7 @@ android {
         debug {
             minifyEnabled false
             debuggable true
-            manifestPlaceholders = [enableCrashReporting:"true"]
+            manifestPlaceholders = [enableCrashReporting:"false"]
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
 //            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

@@ -2,7 +2,7 @@ package com.divercity.android.features.apollo
 
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.ApolloQueryCall
-import com.divercity.android.FindQuery
+import com.divercity.android.JobQuery
 import javax.inject.Inject
 
 /**
@@ -12,11 +12,10 @@ import javax.inject.Inject
 class ApolloRepository @Inject
 constructor(private val apolloClient: ApolloClient) {
 
-    fun getRepositoryData(reponame : String, username : String) : ApolloQueryCall<FindQuery.Data>{
+    fun getJob(jobId : String) : ApolloQueryCall<JobQuery.Data> {
 
-        return apolloClient.query(FindQuery.builder()
-            .name(reponame)
-            .owner(username)
+        return apolloClient.query(JobQuery.builder()
+            .id(jobId)
             .build())
     }
 }

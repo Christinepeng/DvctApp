@@ -66,8 +66,9 @@ public abstract class AppProvidesModule {
     @Singleton
     static Session provideSession(ChatRepository chatRepository,
                                   SessionRepository sessionRepository,
-                                  UpdateFCMTokenUseCase updateFCMTokenUseCase) {
-        return new Session(chatRepository, sessionRepository, updateFCMTokenUseCase);
+                                  UpdateFCMTokenUseCase updateFCMTokenUseCase,
+                                  Context context) {
+        return new Session(chatRepository, sessionRepository, updateFCMTokenUseCase, context);
     }
 
     @Provides

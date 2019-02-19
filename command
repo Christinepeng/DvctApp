@@ -1,1 +1,1 @@
-apollo service:download ./app/src/main/graphql/com/divercity/app/schema.json --endpoint https://dev-api.divercity.io/graphql --header "access-token: 7byBGFwrGORfNgUs5vHsTg" --header "client: 0YEEw0UOIEIT5KaggmoOUg" --header "uid: r@r.com"
+apollo service:download ./app/src/main/graphql/com/divercity/android/schema.json --endpoint https://dev-api.divercity.io/graphql --header "access-token: 1lbOwuKxirVphvbKpXf8Rg" --header "client: ucMmarscZDU4aRU4dXh3OQ" --header "uid: s@s.com"

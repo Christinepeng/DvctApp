@@ -1,5 +1,4 @@
-package com.divercity.android.features.profile.tabgroups
-
+package com.divercity.android.features.groups.createtopic
 
 import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
@@ -10,11 +9,9 @@ import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.GroupResponse
-import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.groups.mygroups.datasource.MyGroupsPaginatedRepositoryImpl
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
-import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
-import com.divercity.android.features.profile.tabgroups.datasource.FollowingGroupsPaginatedRepositoryImpl
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -22,21 +19,19 @@ import javax.inject.Inject
  * Created by lucas on 16/10/2018.
  */
 
-class FollowingGroupsViewModel @Inject
-constructor(private val repository: FollowingGroupsPaginatedRepositoryImpl,
-            private val joinGroupUseCase: JoinGroupUseCase,
-            private val requestToJoinUseCase : RequestJoinGroupUseCase
+class CreateTopicViewModel @Inject
+constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
+            private val joinGroupUseCase: JoinGroupUseCase
 ) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var joinGroupResponse = SingleLiveEvent<Resource<Any>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
-    var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
     var lastSearch: String? = null
 
     init {
-        fetchGroups(null,"")
+//        fetchGroups(null,"")
     }
 
     fun networkState(): LiveData<NetworkState> = listingPaginatedGroup.networkState
@@ -63,6 +58,10 @@ constructor(private val repository: FollowingGroupsPaginatedRepositoryImpl,
         }
     }
 
+    fun createNewTopic(){
+
+    }
+
     private fun removeObservers(lifecycleOwner: LifecycleOwner) {
         networkState().removeObservers(lifecycleOwner)
         refreshState().removeObservers(lifecycleOwner)
@@ -87,29 +86,8 @@ constructor(private val repository: FollowingGroupsPaginatedRepositoryImpl,
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
     }
 
-    fun requestToJoinGroup(group: GroupResponse) {
-        requestToJoinResponse.postValue(Resource.loading(null))
-
-        val callback = object : DisposableObserverWrapper<MessageResponse>() {
-            override fun onFail(error: String) {
-                requestToJoinResponse.postValue(Resource.error(error, null))
-            }
-
-            override fun onHttpException(error: JsonElement) {
-                requestToJoinResponse.postValue(Resource.error(error.toString(), null))
-            }
-
-            override fun onSuccess(o: MessageResponse) {
-                requestToJoinResponse.postValue(Resource.success(o))
-            }
-        }
-        requestToJoinUseCase.execute(callback,
-            RequestJoinGroupUseCase.Params.toJoin(group.id))
-    }
-
     override fun onCleared() {
         super.onCleared()
-        requestToJoinUseCase.dispose()
         joinGroupUseCase.dispose()
     }
 }

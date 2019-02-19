@@ -108,7 +108,10 @@ public class MyGroupsDataSource extends PageKeyedDataSource<Long, GroupResponse>
             public void onNext(DataArray<GroupResponse> data) {
                 if (data != null) {
                     setRetry(null);
-                    callback.onResult(data.getData(), params.key + 1);
+                    if(data.getData().size() <= params.requestedLoadSize)
+                        callback.onResult(data.getData(), params.key + 1);
+                    else
+                        callback.onResult(data.getData(), null);
                     networkState.postValue(NetworkState.LOADED);
                 } else {
                     setRetry(() -> loadAfter(params, callback));                // publish the error

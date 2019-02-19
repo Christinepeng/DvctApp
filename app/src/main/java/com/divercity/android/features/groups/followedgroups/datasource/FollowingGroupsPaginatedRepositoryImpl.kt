@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.tabgroups.datasource
+package com.divercity.android.features.groups.followedgroups.datasource
 
 import android.arch.lifecycle.Transformations
 import android.arch.paging.LivePagedListBuilder
@@ -33,7 +33,6 @@ internal constructor(private val fetchFollowedGroupsUseCase: FetchFollowedGroups
 
         followingGroupsDataSourceFactory =
                 FollowingGroupsDataSourceFactory(
-                        compositeDisposable,
                         fetchFollowedGroupsUseCase,
                         query
                 )
@@ -64,5 +63,5 @@ internal constructor(private val fetchFollowedGroupsUseCase: FetchFollowedGroups
             followingGroupsDataSourceFactory.groupsInterestsDataSource.value!!.invalidate()
 
 
-    override fun clear() = compositeDisposable.dispose()
+    override fun clear() =followingGroupsDataSourceFactory.groupsInterestsDataSource.value!!.dispose()
 }

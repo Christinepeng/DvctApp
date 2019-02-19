@@ -92,7 +92,7 @@ public class ShareJobGroupDataSource extends PageKeyedDataSource<Long, GroupResp
             }
         };
         compositeDisposable.add(disposableObserver);
-        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.forGroups(0, params.requestedLoadSize, query));
+        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(0, params.requestedLoadSize, query));
     }
 
     @Override
@@ -130,7 +130,7 @@ public class ShareJobGroupDataSource extends PageKeyedDataSource<Long, GroupResp
         };
 
         compositeDisposable.add(disposableObserver);
-        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.forGroups(params.key.intValue(), params.requestedLoadSize, query));
+        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(params.key.intValue(), params.requestedLoadSize, query));
     }
 
     @NonNull

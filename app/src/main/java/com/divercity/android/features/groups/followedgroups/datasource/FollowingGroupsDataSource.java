@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.tabgroups.datasource;
+package com.divercity.android.features.groups.followedgroups.datasource;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.PageKeyedDataSource;
@@ -13,7 +13,7 @@ import com.divercity.android.features.jobposting.sharetogroup.usecase.FetchFollo
 
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -26,28 +26,26 @@ public class FollowingGroupsDataSource extends PageKeyedDataSource<Long, GroupRe
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
     private FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase;
-    private CompositeDisposable compositeDisposable;
     private String query;
     /**
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
+    private Disposable disposableRetry;
 
-    public FollowingGroupsDataSource(CompositeDisposable compositeDisposable,
-                                     FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase,
+    public FollowingGroupsDataSource(FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase,
                                      @Nullable String query) {
-        this.compositeDisposable = compositeDisposable;
         this.fetchFollowedGroupsUseCase = fetchFollowedGroupsUseCase;
         this.query = query;
     }
 
     public void retry() {
         if (retryCompletable != null) {
-            compositeDisposable.add(retryCompletable
+            disposableRetry = retryCompletable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                    }, throwable -> Log.e(TAG, throwable.getMessage())));
+                    }, throwable -> Log.e(TAG, throwable.getMessage()));
         }
     }
 
@@ -65,7 +63,10 @@ public class FollowingGroupsDataSource extends PageKeyedDataSource<Long, GroupRe
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
-                    callback.onResult(data.getData(), null, 2l);
+                    if (data.getData().size() < params.requestedLoadSize)
+                        callback.onResult(data.getData(), null, null);
+                    else
+                        callback.onResult(data.getData(), null, 2l);
                     initialLoading.postValue(NetworkState.LOADED);
                 } else {
                     NetworkState error = NetworkState.error("Error");
@@ -87,8 +88,7 @@ public class FollowingGroupsDataSource extends PageKeyedDataSource<Long, GroupRe
 
             }
         };
-        compositeDisposable.add(disposableObserver);
-        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.forGroups(0, params.requestedLoadSize, query));
+        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(0, params.requestedLoadSize, query));
     }
 
     @Override
@@ -124,9 +124,7 @@ public class FollowingGroupsDataSource extends PageKeyedDataSource<Long, GroupRe
 
             }
         };
-
-        compositeDisposable.add(disposableObserver);
-        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.forGroups(params.key.intValue(), params.requestedLoadSize, query));
+        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(params.key.intValue(), params.requestedLoadSize, query));
     }
 
     @NonNull
@@ -147,4 +145,9 @@ public class FollowingGroupsDataSource extends PageKeyedDataSource<Long, GroupRe
         }
     }
 
+    public void dispose() {
+        fetchFollowedGroupsUseCase.dispose();
+        if (disposableRetry != null)
+            disposableRetry.dispose();
+    }
 }

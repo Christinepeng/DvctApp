@@ -3,7 +3,9 @@ package com.divercity.android.di.module.networking.apollo
 import com.apollographql.apollo.ApolloClient
 import com.apollographql.apollo.response.CustomTypeAdapter
 import com.apollographql.apollo.response.CustomTypeValue
+import com.divercity.android.BuildConfig
 import com.divercity.android.data.networking.config.CheckConnectivityInterceptor
+import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.type.CustomType
 import dagger.Module
 import dagger.Provides
@@ -22,7 +24,8 @@ class ApiApolloModule {
     @Singleton
     fun providesApolloClient(
         loggingInterceptor: HttpLoggingInterceptor,
-        codeCheckConnectivityInterceptor: CheckConnectivityInterceptor
+        codeCheckConnectivityInterceptor: CheckConnectivityInterceptor,
+        sessionRepository: SessionRepository
     ): ApolloClient {
 
         val okHttp = OkHttpClient
@@ -33,10 +36,10 @@ class ApiApolloModule {
                             original.method(),
                             original.body()
                     )
-                    builder.addHeader(
-                            "Authorization"
-                            , "Bearer " + "9f1c0897e8996587d2c5264766b4cfd0d3178843"
-                    )
+                    builder.addHeader("access-token", sessionRepository.getAccessToken()!!)
+                    builder.addHeader("client", sessionRepository.getClient()!!)
+                    builder.addHeader("uid", sessionRepository.getUid()!!)
+
                     chain.proceed(builder.build())
                 }
                 .addInterceptor(loggingInterceptor)
@@ -55,9 +58,9 @@ class ApiApolloModule {
         }
 
         return ApolloClient.builder()
-                .serverUrl("https://api.github.com/graphql")
+                .serverUrl("https://".plus(BuildConfig.BASE_URL).plus("/graphql"))
                 .okHttpClient(okHttp)
-                .addCustomTypeAdapter(CustomType.URI, customTypeAdapter)
+                .addCustomTypeAdapter(CustomType.ID, customTypeAdapter)
                 .build()
     }
 }

@@ -27,6 +27,8 @@ import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.android.features.groups.creategroup.step1.CreateGroupActivity
 import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionActivity
+import com.divercity.android.features.groups.createtopic.CreateTopicActivity
+import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
 import com.divercity.android.features.home.HomeActivity
@@ -231,6 +233,10 @@ class Navigator @Inject constructor() {
         fragment.startActivityForResult(ToolbarEthnicityActivity.getCallingIntent(fragment.context), code)
     }
 
+    fun navigateToFollowingGroupsActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(FollowingGroupsActivity.getCallingIntent(fragment.context), code)
+    }
+
     fun navigateToToolbarAgeActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(ToolbarAgeActivity.getCallingIntent(fragment.context), code)
     }
@@ -269,6 +275,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToCreateGroupChatActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(CreateGroupChatActivity.getCallingIntent(fragment.context), code)
+    }
+
+    fun navigateToCreateTopicActivity(fragment: Fragment, group: GroupResponse?) {
+        fragment.startActivity(CreateTopicActivity.getCallingIntent(fragment.context, group))
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,

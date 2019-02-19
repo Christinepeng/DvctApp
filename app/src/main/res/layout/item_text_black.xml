@@ -8,17 +8,18 @@
     android:padding="16dp">
 
     <TextView
-        android:id="@+id/item_text"
-        android:layout_width="wrap_content"
+        android:id="@+id/txt_name"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/avenir_book"
+        android:layout_gravity="center"
+        android:fontFamily="@font/avenir_medium"
+        android:maxLines="2"
         android:textColor="#333241"
-        android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Accountant" />
+        tools:text="Blacks in Tdfg dfg dfg dg d dfggfdfsdfsdfsd" />
 
 </android.support.constraint.ConstraintLayout>

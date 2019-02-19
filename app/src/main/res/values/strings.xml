@@ -91,7 +91,7 @@
     <string name="select_your_interests">Select 3 or more Areas of Interests</string>
     <string name="select_your_agerange">Select your Age Range</string>
     <string name="select_your_school">Select your School</string>
-    <string name="select_group">Choose some communities you would like to join</string>
+    <string name="select_group">Choose some groups you would like to join</string>
     <string name="profile_prompt_title">Let\'s Set Up For Success</string>
     <string name="profile_prompt_subtitle_recruiter">For the best experience and to find the best candidates and the right connections please provide some basic information to complete you profile.</string>
     <string name="profile_prompt_subtitle_nonrecruiter">For the best experience and to find the best opportunities and the right connections please provide some basic information to complete you profile.</string>
@@ -264,6 +264,11 @@
     <string name="view_members">View Members</string>
     <string name="invite_from_divercity">Invite From Divercity</string>
     <string name="invite_from_contact_list">Invite From Contact List</string>
+    <string name="create_new_topic">Create New Topic</string>
+    <string name="choose_group">Choose a Group</string>
+    <string name="topic_name">Topic Name</string>
+    <string name="start_topic">Start a Topic</string>
+    <string name="change_group">Change Group</string>
 
     <!-- Delete Job-->
     <string name="delete_job">Delete Job Posting</string>

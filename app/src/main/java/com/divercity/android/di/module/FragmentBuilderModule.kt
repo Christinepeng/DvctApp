@@ -32,6 +32,8 @@ import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.groups.all.AllGroupsFragment
 import com.divercity.android.features.groups.creategroup.step1.CreateGroupFragment
 import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionFragment
+import com.divercity.android.features.groups.createtopic.CreateTopicFragment
+import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
 import com.divercity.android.features.groups.groupdetail.GroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.conversation.GroupConversationFragment
@@ -84,7 +86,6 @@ import com.divercity.android.features.profile.settings.interests.InterestsFragme
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsFragment
 import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
-import com.divercity.android.features.profile.tabgroups.FollowingGroupsFragment
 import com.divercity.android.features.profile.tabprofile.TabProfileFragment
 import com.divercity.android.features.signup.SignUpFragment
 import com.divercity.android.features.splash.SplashFragment
@@ -343,4 +344,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindNotificationsFragment(): NotificationsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCreateTopicFragment(): CreateTopicFragment
 }

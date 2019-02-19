@@ -18,6 +18,8 @@ import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.android.features.groups.creategroup.step1.CreateGroupActivity
 import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionActivity
+import com.divercity.android.features.groups.createtopic.CreateTopicActivity
+import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
 import com.divercity.android.features.home.HomeActivity
@@ -201,4 +203,10 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindPhoneContactsActivity(): InvitePhoneContactsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCreateTopicActivity(): CreateTopicActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindFollowingGroupsActivity(): FollowingGroupsActivity
 }

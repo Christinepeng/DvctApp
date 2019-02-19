@@ -18,6 +18,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
+import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.home.home.adapter.HomeAdapter
@@ -37,9 +38,6 @@ import javax.inject.Inject
 class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: HomeViewModel
-
-//    @Inject
-//    lateinit var homeAdapter: HomeAdapter
 
     @Inject
     lateinit var homeAdapter: HomeAdapter
@@ -297,7 +295,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     private fun setupEvents() {
         btn_fab.setOnClickListener {
-            showToast()
+            showHomeTabActionDialog()
         }
         btn_create_group.setOnClickListener {
             showToast()
@@ -323,6 +321,21 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     override fun onSuccessJobApply() {
 
+    }
+
+    private fun showHomeTabActionDialog() {
+        val dialog = HomeTabActionDialogFragment.newInstance()
+        dialog.listener = object : HomeTabActionDialogFragment.Listener {
+
+            override fun onNewGroup() {
+                navigator.navigateToCreateGroupActivity(this@HomeFragment)
+            }
+
+            override fun onNewTopic() {
+                navigator.navigateToCreateTopicActivity(this@HomeFragment, null)
+            }
+        }
+        dialog.show(childFragmentManager, null)
     }
 
     override fun onViewStateRestored(savedInstanceState: Bundle?) {

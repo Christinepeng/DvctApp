@@ -1,20 +1,28 @@
-package com.divercity.android.features.profile.tabgroups
+package com.divercity.android.features.groups.followedgroups
 
+import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.SearchView
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
+import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.GroupResponse
-import com.divercity.android.features.groups.ITabsGroups
-import com.divercity.android.features.groups.adapter.GroupsAdapter
-import com.divercity.android.features.groups.adapter.GroupsViewHolder
+import com.divercity.android.features.groups.followedgroups.adapter.GroupsSimpleAdapter
+import com.divercity.android.features.groups.followedgroups.adapter.GroupsSimpleViewHolder
 import kotlinx.android.synthetic.main.fragment_following_groups.*
+import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
 /**
@@ -22,17 +30,21 @@ import javax.inject.Inject
  */
 
 
-class FollowingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
+class FollowingGroupsFragment : BaseFragment(), RetryCallback {
 
     lateinit var viewModel: FollowingGroupsViewModel
 
     @Inject
-    lateinit var adapter: GroupsAdapter
+    lateinit var adapter: GroupsSimpleAdapter
 
     private var positionJoinClicked: Int = 0
     private var isListRefreshing = false
 
+    private var handlerSearch = Handler()
+
     companion object {
+
+        const val GROUP_PICKED = "groupPicked"
 
         fun newInstance(): FollowingGroupsFragment {
             return FollowingGroupsFragment()
@@ -43,19 +55,34 @@ class FollowingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)[FollowingGroupsViewModel::class.java]
-        } ?: throw Exception("Invalid Fragment")
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[FollowingGroupsViewModel::class.java]
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.fetchGroups(viewLifecycleOwner, "")
+
+        setupToolbar()
+        initAdapter()
+        initSwipeToRefresh()
+        subscribeToLiveData()
+    }
+
+    private fun setupToolbar() {
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(include_toolbar.toolbar)
+            supportActionBar?.let {
+                it.setTitle(R.string.choose_group)
+                it.setDisplayHomeAsUpEnabled(true)
+            }
+        }
+    }
+
+    private fun initAdapter(){
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
-        initSwipeToRefresh()
-        subscribeToPaginatedLiveData()
-        subscribeToLiveData()
     }
 
     private fun subscribeToLiveData() {
@@ -97,10 +124,18 @@ class FollowingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
                 if (networkState?.status != Status.LOADING)
                     isListRefreshing = false
 
-                if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
-                    lay_no_groups.visibility = View.VISIBLE
-                else
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0) {
+                    if (viewModel.lastSearch == null || viewModel.lastSearch == "") {
+                        lay_no_groups.visibility = View.VISIBLE
+                        txt_no_results.visibility = View.GONE
+                    } else {
+                        lay_no_groups.visibility = View.GONE
+                        txt_no_results.visibility = View.VISIBLE
+                    }
+                } else {
                     lay_no_groups.visibility = View.GONE
+                    txt_no_results.visibility = View.GONE
+                }
 
                 swipe_list_main.isRefreshing = isListRefreshing
             }
@@ -126,26 +161,56 @@ class FollowingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_search, menu)
+
+        val searchItem = menu.findItem(R.id.action_search)
+        val searchView = searchItem?.actionView as SearchView
+        searchView.queryHint = getString(R.string.search)
+
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if(query != null) {
+                    handlerSearch.removeCallbacksAndMessages(null)
+                    viewModel.fetchGroups(viewLifecycleOwner, query)
+                }
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if(newText != null) {
+                    handlerSearch.removeCallbacksAndMessages(null)
+                    handlerSearch.postDelayed({
+                        viewModel.fetchGroups(viewLifecycleOwner, newText)
+                    }, AppConstants.SEARCH_DELAY)
+                }
+                return true
+            }
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
     override fun retry() {
         viewModel.retry()
     }
 
-    private val listener = object : GroupsViewHolder.Listener {
-
-        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
-
-        }
+    private val listener = object : GroupsSimpleViewHolder.Listener {
 
         override fun onGroupClick(group: GroupResponse) {
-        }
-
-        override fun onGroupJoinClick(position: Int, group: GroupResponse) {
-            positionJoinClicked = position
-            viewModel.joinGroup(group)
+            val intent = Intent()
+            intent.putExtra(GROUP_PICKED, group)
+            activity?.apply {
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
         }
     }
 
-    override fun fetchGroups(searchQuery: String?) {
-        viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
+    override fun onDestroyView() {
+        handlerSearch.removeCallbacksAndMessages(null)
+        super.onDestroyView()
     }
 }

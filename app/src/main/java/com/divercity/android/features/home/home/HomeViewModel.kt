@@ -17,6 +17,7 @@ import com.divercity.android.data.entity.home.RecommendedItem
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.storiesfeatured.StoriesFeaturedResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.apollo.FetchJobUseCase
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.divercity.android.features.home.home.datasource.QuestionsPaginatedRepositoryImpl
@@ -34,15 +35,16 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject
 constructor(
-        private val questionsRepository: QuestionsPaginatedRepositoryImpl,
-        private val getStoriesFeatured: GetStoriesFeatured,
-        private val userRepositoryImpl: UserRepositoryImpl,
-        private val fetchFeedRecommendedJobsGroupsUseCase: FetchFeedRecommendedJobsGroupsUseCase,
-        private val joinGroupUseCase: JoinGroupUseCase,
-        private val requestToJoinUseCase : RequestJoinGroupUseCase,
-        private val session : Session,
-        private val notificationHelper: NotificationHelper,
-        private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase
+    private val questionsRepository: QuestionsPaginatedRepositoryImpl,
+    private val getStoriesFeatured: GetStoriesFeatured,
+    private val userRepositoryImpl: UserRepositoryImpl,
+    private val fetchFeedRecommendedJobsGroupsUseCase: FetchFeedRecommendedJobsGroupsUseCase,
+    private val joinGroupUseCase: JoinGroupUseCase,
+    private val requestToJoinUseCase: RequestJoinGroupUseCase,
+    private val session: Session,
+    private val notificationHelper: NotificationHelper,
+    private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase,
+    private val fetchJobUseCase: FetchJobUseCase
 ) : BaseViewModel() {
 
     var featuredList = MutableLiveData<Resource<List<StoriesFeaturedResponse>>>()
@@ -68,6 +70,7 @@ constructor(
         questionList = questionListing.pagedList
         fetchUnreadMessagesCount()
 //        fetchRecommendedGroupsJobs()
+        getJob()
     }
 
     fun retry() {
@@ -78,11 +81,20 @@ constructor(
         questionsRepository.refresh()
     }
 
-    fun getUser(){
+    fun getJob() {
 //        uiScope.launch {
 //            val user = se.getSavedUser()
 //            val test = user
 //        }
+
+//        fetchJobUseCase.invoke(FetchJobUseCase.Params.forJob("1181")) {
+//            it.either({
+//
+//            }, {
+//
+//            })
+//        }
+
     }
 
 //    fun fetchRecommendedGroupsJobs() {
@@ -158,8 +170,10 @@ constructor(
                 requestToJoinResponse.postValue(Resource.success(o))
             }
         }
-        requestToJoinUseCase.execute(callback,
-                RequestJoinGroupUseCase.Params.toJoin(group.id))
+        requestToJoinUseCase.execute(
+            callback,
+            RequestJoinGroupUseCase.Params.toJoin(group.id)
+        )
     }
 
     fun fetchUnreadMessagesCount() {
@@ -178,7 +192,7 @@ constructor(
                 fetchUnreadMessagesCountResponse.postValue(Resource.success(o))
             }
         }
-        fetchUnreadMessagesCountUseCase.execute(callback,null)
+        fetchUnreadMessagesCountUseCase.execute(callback, null)
     }
 
     override fun onCleared() {

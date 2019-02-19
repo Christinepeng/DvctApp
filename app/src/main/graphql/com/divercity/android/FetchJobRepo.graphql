@@ -1,0 +1,20 @@
+query Job ($id : ID!){
+    Job (id : $id){
+        id
+        title
+        description
+        location_display_name
+        employer{
+            name
+            id
+        }
+        recruiter{
+            name
+            avatar_medium
+            avatar_thumb
+            id
+        }
+        is_applied_by_current
+        is_bookmarked_by_current
+   }
+}

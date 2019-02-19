@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.tabgroups.datasource;
+package com.divercity.android.features.groups.followedgroups.datasource;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
@@ -8,20 +8,15 @@ import android.support.annotation.Nullable;
 import com.divercity.android.data.entity.group.GroupResponse;
 import com.divercity.android.features.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
 
-import io.reactivex.disposables.CompositeDisposable;
-
 public class FollowingGroupsDataSourceFactory extends DataSource.Factory<Long, GroupResponse> {
 
-    private CompositeDisposable compositeDisposable;
     private FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase;
     private String query;
 
     private MutableLiveData<FollowingGroupsDataSource> mGroupsInterestsDataSourceMutableLiveData = new MutableLiveData<>();
 
-    public FollowingGroupsDataSourceFactory(CompositeDisposable compositeDisposable,
-                                            FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase,
+    public FollowingGroupsDataSourceFactory(FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase,
                                             @Nullable String query) {
-        this.compositeDisposable = compositeDisposable;
         this.fetchFollowedGroupsUseCase = fetchFollowedGroupsUseCase;
         this.query = query;
     }
@@ -29,7 +24,6 @@ public class FollowingGroupsDataSourceFactory extends DataSource.Factory<Long, G
     @Override
     public DataSource<Long, GroupResponse> create() {
         FollowingGroupsDataSource allGroupsDataSource = new FollowingGroupsDataSource(
-                compositeDisposable,
                 fetchFollowedGroupsUseCase,
                 query);
         mGroupsInterestsDataSourceMutableLiveData.postValue(allGroupsDataSource);

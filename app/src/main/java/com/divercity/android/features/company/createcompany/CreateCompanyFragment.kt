@@ -233,7 +233,7 @@ class CreateCompanyFragment : BaseFragment() {
                         et_company_desc.text.toString(),
                         txt_company_location.text.toString(),
                         viewModel.industry?.id!!,
-                        if (photoFile != null) ImageUtils.getStringBase64(photoFile!!, 400, 400) else "")
+                        if (photoFile != null) ImageUtils.getStringBase64(photoFile, 400, 400)!! else "")
             }
         } else
             btn_create_company.setTextColor(ContextCompat.getColor(activity!!, R.color.whiteDisable))

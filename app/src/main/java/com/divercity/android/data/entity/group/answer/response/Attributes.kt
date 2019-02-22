@@ -1,59 +1,58 @@
-package com.divercity.android.data.entity.group.answer
+package com.divercity.android.data.entity.group.answer.response
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
+import java.util.*
 
-@Generated("com.robohorse.robopojogenerator")
 data class Attributes(
 
 	@field:SerializedName("raw_text")
-	val rawText: String? = null,
+	var rawText: String? = null,
 
 	@field:SerializedName("aggregated_sentiment_counts")
-	val aggregatedSentimentCounts: List<String?>? = null,
+	var aggregatedSentimentCounts: List<String>? = Collections.emptyList(),
 
 	@field:SerializedName("images")
-	val images: List<String?>? = null,
+	var images: List<String>? = null,
 
 	@field:SerializedName("report_count")
-	val reportCount: Int? = null,
+	var reportCount: Int? = null,
 
 	@field:SerializedName("created_at")
-	val createdAt: String? = null,
+	var createdAt: Date? = null,
 
 	@field:SerializedName("voted")
-	val voted: Int? = null,
+	var voted: String? = null,
 
 	@field:SerializedName("question_id")
-	val questionId: Int? = null,
+	var questionId: Int? = null,
 
 	@field:SerializedName("current_user_sentiment_id")
-	val currentUserSentimentId: Int? = null,
+	var currentUserSentimentId: Int? = null,
 
 	@field:SerializedName("location_display_name")
-	val locationDisplayName: String? = null,
+	var locationDisplayName: String? = null,
 
 	@field:SerializedName("votesdown")
-	val votesdown: Int? = null,
+	var votesdown: Int? = null,
 
 	@field:SerializedName("sentiment_type")
-	val sentimentType: String? = null,
+	var sentimentType: String? = null,
 
 	@field:SerializedName("replied_to_id")
-	val repliedToId: Int? = null,
+	var repliedToId: Int? = null,
 
 	@field:SerializedName("text")
-	val text: String? = null,
+	var text: String? = null,
 
 	@field:SerializedName("author_id")
-	val authorId: Int? = null,
+	var authorId: Int? = null,
 
 	@field:SerializedName("is_flagged")
-	val isFlagged: Boolean? = null,
+	var isFlagged: Boolean? = null,
 
 	@field:SerializedName("votesup")
-	val votesup: Int? = null,
+	var votesup: Int? = null,
 
 	@field:SerializedName("author_info")
-	val authorInfo: AuthorInfo? = null
+	var authorInfo: AuthorInfo? = null
 )

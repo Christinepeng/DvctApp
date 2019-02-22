@@ -108,7 +108,7 @@ class SignUpFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     if (isPictureSet)
-                        viewModel.uploadPicture(ImageUtils.getStringBase64(photoFile!!, 600, 600))
+                        viewModel.uploadPicture(ImageUtils.getStringBase64(photoFile, 600, 600)!!)
                     else
                         viewModel.navigateToSelectUserType.call()
                 }

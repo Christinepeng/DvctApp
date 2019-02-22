@@ -3,9 +3,12 @@ package com.divercity.android.data.networking.services
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.answer.body.AnswerBody
+import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInviteBody
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
+import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
@@ -121,4 +124,22 @@ interface GroupService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int
     ): Observable<Response<DataArray<JoinGroupRequestResponse>>>
+
+    @POST("questions")
+    fun createNewTopic(
+        @Body body: NewQuestionBody
+    ): Observable<Response<DataObject<QuestionResponse>>>
+
+    @GET("questions/{questionId}/answers")
+    fun fetchAnswers(
+        @Path("questionId") questionId: String,
+        @Query("page[number]") pageNumber: Int,
+        @Query("page[size]") size: Int,
+        @Query("search_query") query: String?
+    ): Observable<Response<DataArray<AnswerResponse>>>
+
+    @POST("answers")
+    fun sendNewAnswer(
+        @Body body : AnswerBody
+    ): Observable<Response<DataObject<AnswerResponse>>>
 }

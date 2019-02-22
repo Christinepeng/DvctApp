@@ -9,7 +9,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
+import com.divercity.android.data.entity.questions.QuestionResponse
+import com.divercity.android.features.groups.answers.model.Question
 import com.divercity.android.features.groups.groupdetail.conversation.adapter.GroupConversationAdapter
+import com.divercity.android.features.groups.groupdetail.conversation.adapter.GroupConversationViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -64,6 +67,21 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
 
     private fun initAdapter() {
         adapter.setRetryCallback(this)
+        adapter.setListener(object : GroupConversationViewHolder.Listener {
+
+            override fun onConversationClick(question: QuestionResponse) {
+                navigator.navigateToAnswerActivity(
+                    this@GroupConversationFragment, Question(
+                        id = question.id,
+                        authorProfilePicUrl = question.attributes.authorInfo.avatarThumb,
+                        authorName = question.attributes.authorInfo.name,
+                        createdAt = question.attributes.createdAt,
+                        question = question.attributes.text,
+                        groupTitle =  question.attributes.group[0].title,
+                        questionPicUrl = question.attributes.pictureMain
+                    )
+                )            }
+        })
         list.adapter = adapter
     }
 

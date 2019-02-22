@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class Attributes{
+public class Attributes {
 
 	@SerializedName("heat")
 	private int heat;

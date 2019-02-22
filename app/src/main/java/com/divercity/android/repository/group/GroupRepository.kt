@@ -1,7 +1,10 @@
 package com.divercity.android.repository.group
 
+import android.arch.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.answer.body.AnswerBody
+import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
@@ -85,4 +88,23 @@ interface GroupRepository {
         page: Int,
         size: Int
     ): Observable<List<JoinGroupRequestResponse>>
+
+    fun createNewTopic(
+        question : String, groupId : String, image : String?
+    ): Observable<QuestionResponse>
+
+    fun fetchAnswers(
+       questionId: String,
+       pageNumber: Int,
+       size: Int,
+       query: String?
+    ): Observable<List<AnswerResponse>>
+
+    fun getPagedAnswersByQuestionId(questionId : Int): DataSource.Factory<Int, AnswerResponse>
+
+    suspend fun insertAnswers(list : List<AnswerResponse>)
+
+    suspend fun insertAnswer(answer : AnswerResponse)
+
+    fun sendNewAnswer(body : AnswerBody): Observable<AnswerResponse>
 }

@@ -4,8 +4,10 @@ import android.arch.persistence.room.Database
 import android.arch.persistence.room.RoomDatabase
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.db.dao.ChatMessageDao
+import com.divercity.android.db.dao.GroupDao
 import com.divercity.android.db.dao.RecentChatsDao
 import com.divercity.android.db.dao.UserDao
 
@@ -17,14 +19,15 @@ import com.divercity.android.db.dao.UserDao
     entities = [
         ChatMessageResponse::class,
         ExistingUsersChatListItem::class,
-        UserResponse::class],
+        UserResponse::class,
+        AnswerResponse::class],
     version = AppDatabase.VERSION,
     exportSchema = true
 )
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
-        const val VERSION = 1
+        const val VERSION = 2
         const val DATABASE_NAME = "divercity-db"
     }
 
@@ -33,4 +36,6 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun existingChatDao(): RecentChatsDao
 
     abstract fun userDao(): UserDao
+
+    abstract fun groupDao(): GroupDao
 }

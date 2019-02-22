@@ -21,18 +21,18 @@ constructor(
 ) : UseCase<DataArray<GroupResponse>, FetchAllGroupsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: FetchAllGroupsUseCase.Params): Observable<DataArray<GroupResponse>> {
-        return repository.fetchTrendingGroups(
+        return repository.fetchAllGroups(
             params.page,
             params.size,
             if (params.query == "") null else params.query
         )
     }
 
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
+    class Params private constructor(val page: Int, val size: Int, val query: String) {
 
         companion object {
 
-            fun forGroups(page: Int, size: Int, query: String?): FetchAllGroupsUseCase.Params {
+            fun forGroups(page: Int, size: Int, query: String): FetchAllGroupsUseCase.Params {
                 return FetchAllGroupsUseCase.Params(page, size, query)
             }
         }

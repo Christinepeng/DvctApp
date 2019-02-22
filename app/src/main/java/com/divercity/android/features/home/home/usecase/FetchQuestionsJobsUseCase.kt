@@ -42,11 +42,33 @@ constructor(
             fetchJobs,
             fetchQuestions,
             BiFunction { jobs, questions ->
-                val res = ArrayList<HomeItem>()
-                res.addAll(jobs)
-                res.addAll(questions)
-                res.shuffle()
-                return@BiFunction res
+                val shuffledJobsAndQuestions = ArrayList<HomeItem>()
+                var startLimitJobs = 0
+                var startLimitQuestions = 0
+
+                while(jobs.isNotEmpty() && startLimitJobs < jobs.size ||
+                    questions.isNotEmpty() && startLimitQuestions < questions.size){
+
+                    if(startLimitJobs < jobs.size){
+                        val randJobs = (1..2).random()
+                        var endLimitJobs = startLimitJobs + randJobs
+                        if(endLimitJobs > jobs.size) endLimitJobs = jobs.size
+                        for(i in startLimitJobs..(endLimitJobs - 1))
+                            shuffledJobsAndQuestions.add(jobs[i])
+                        startLimitJobs += randJobs
+                    }
+
+                    if(startLimitQuestions < questions.size){
+                        val randQuestions = (1..2).random()
+                        var endLimitQuestions = randQuestions + startLimitQuestions
+                        if(endLimitQuestions > questions.size) endLimitQuestions = questions.size
+                        for(i in startLimitQuestions..(endLimitQuestions - 1))
+                            shuffledJobsAndQuestions.add(questions[i])
+                        startLimitQuestions += randQuestions
+                    }
+                }
+
+                return@BiFunction shuffledJobsAndQuestions
             }
         )
     }

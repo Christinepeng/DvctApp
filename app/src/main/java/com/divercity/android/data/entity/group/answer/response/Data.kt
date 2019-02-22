@@ -1,9 +1,7 @@
-package com.divercity.android.data.entity.group.answer
+package com.divercity.android.data.entity.group.answer.response
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-@Generated("com.robohorse.robopojogenerator")
 data class Data(
 
 	@field:SerializedName("id")

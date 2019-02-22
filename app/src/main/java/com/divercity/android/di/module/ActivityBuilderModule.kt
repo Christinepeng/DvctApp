@@ -16,6 +16,7 @@ import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityAc
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
+import com.divercity.android.features.groups.answers.AnswerActivity
 import com.divercity.android.features.groups.creategroup.step1.CreateGroupActivity
 import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionActivity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
@@ -209,4 +210,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindFollowingGroupsActivity(): FollowingGroupsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindAnswerActivity(): AnswerActivity
 }

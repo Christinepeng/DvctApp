@@ -1,18 +1,26 @@
 package com.divercity.android.repository.group
 
+import android.arch.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.answer.body.AnswerBody
+import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInviteBody
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
+import com.divercity.android.data.entity.group.question.NewQuestionBody
+import com.divercity.android.data.entity.group.question.Question
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.GroupService
+import com.divercity.android.db.dao.GroupDao
 import io.reactivex.Observable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import retrofit2.HttpException
@@ -25,7 +33,8 @@ import javax.inject.Inject
 
 class GroupRepositoryImpl @Inject
 constructor(
-    private val service: GroupService
+    private val service: GroupService,
+    private val groupDao: GroupDao
 ) : GroupRepository {
 
     override fun fetchRecommendedGroups(
@@ -181,6 +190,60 @@ constructor(
         size: Int
     ): Observable<List<JoinGroupRequestResponse>> {
         return service.fetchGroupJoinRequests(page, size).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun createNewTopic(
+        question: String,
+        groupId: String,
+        image: String?
+    ): Observable<QuestionResponse> {
+        return service.createNewTopic(
+            NewQuestionBody(
+                Question(
+                    text = question,
+                    groupOfInterestIds = listOf(groupId),
+                    image = image
+                )
+            )
+        ).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun fetchAnswers(
+        questionId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<AnswerResponse>> {
+        return service.fetchAnswers(questionId, pageNumber, size, query).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun getPagedAnswersByQuestionId(questionId: Int): DataSource.Factory<Int, AnswerResponse> {
+        return groupDao.getPagedAnswersByQuestionId(questionId)
+    }
+
+    override suspend fun insertAnswers(list: List<AnswerResponse>) {
+        return withContext(Dispatchers.IO) {
+            groupDao.insertAnswers(list)
+        }
+    }
+
+    override suspend fun insertAnswer(answer: AnswerResponse) {
+        return withContext(Dispatchers.IO) {
+            groupDao.insertAnswer(answer)
+        }
+    }
+
+    override fun sendNewAnswer(body: AnswerBody): Observable<AnswerResponse> {
+        return service.sendNewAnswer(body).map {
             checkResponse(it)
             it.body()?.data
         }

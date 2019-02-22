@@ -58,7 +58,7 @@ constructor(
             fetchRecommendedJobs,
             fetchQuestions,
             fetchJobs,
-            Function4 { t1, t2, t3, t4 ->
+            Function4 { t1, t2, questions, jobs ->
                 val recommendedRes = ArrayList<RecommendedItem>()
                 recommendedRes.addAll(t2)
                 recommendedRes.addAll(t1)
@@ -67,9 +67,30 @@ constructor(
                 val recommended = Recommended(recommendedRes)
 
                 val shuffledJobsAndQuestions = ArrayList<HomeItem>()
-                shuffledJobsAndQuestions.addAll(t3)
-                shuffledJobsAndQuestions.addAll(t4)
-                shuffledJobsAndQuestions.shuffle()
+                var startLimitJobs = 0
+                var startLimitQuestions = 0
+
+                while(jobs.isNotEmpty() && startLimitJobs < jobs.size ||
+                    questions.isNotEmpty() && startLimitQuestions < questions.size){
+
+                    if(startLimitJobs < jobs.size){
+                        val randJobs = (1..2).random()
+                        var endLimitJobs = startLimitJobs + randJobs
+                        if(endLimitJobs > jobs.size) endLimitJobs = jobs.size
+                        for(i in startLimitJobs..(endLimitJobs - 1))
+                            shuffledJobsAndQuestions.add(jobs[i])
+                        startLimitJobs += randJobs
+                    }
+
+                    if(startLimitQuestions < questions.size){
+                        val randQuestions = (1..2).random()
+                        var endLimitQuestions = randQuestions + startLimitQuestions
+                        if(endLimitQuestions > questions.size) endLimitQuestions = questions.size
+                        for(i in startLimitQuestions..(endLimitQuestions - 1))
+                            shuffledJobsAndQuestions.add(questions[i])
+                        startLimitQuestions += randQuestions
+                    }
+                }
 
                 val res = ArrayList<HomeItem>()
                 res.add(recommended)

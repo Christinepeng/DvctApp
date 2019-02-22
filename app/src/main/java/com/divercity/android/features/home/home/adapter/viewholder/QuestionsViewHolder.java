@@ -37,11 +37,14 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
     private ImageView imgMainPicture;
 
     private SessionRepository sessionRepository;
+    private Listener listener;
 
     private QuestionsViewHolder(View itemView,
-                                SessionRepository sessionRepository) {
+                                SessionRepository sessionRepository,
+                                Listener listener) {
         super(itemView);
         this.sessionRepository = sessionRepository;
+        this.listener = listener;
         mTxtGroupName = itemView.findViewById(R.id.item_quest_txt_groupname);
         mImgAnswerAuthor = itemView.findViewById(R.id.item_quest_img_answer);
         mImgAuthor = itemView.findViewById(R.id.item_group_img);
@@ -56,7 +59,7 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
 
     public void bindTo(QuestionResponse data) {
         String urlMain = data.getAttributes().getPictureMain();
-        if(urlMain != null) {
+        if (urlMain != null) {
             GlideApp.with(itemView)
                     .load(urlMain)
                     .listener(new RequestListener<Drawable>() {
@@ -103,11 +106,21 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
             mTxtAnswer.setText("");
             mTxtAnswer.setHint("Be the first to comment");
         }
+
+        itemView.setOnClickListener(view -> {
+            if (listener != null)
+                listener.onQuestionClick(data);
+        });
     }
 
-    public static QuestionsViewHolder create(ViewGroup parent, SessionRepository sessionRepository) {
+    public static QuestionsViewHolder create(ViewGroup parent, SessionRepository sessionRepository, Listener listener) {
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
         View view = layoutInflater.inflate(R.layout.item_question, parent, false);
-        return new QuestionsViewHolder(view, sessionRepository);
+        return new QuestionsViewHolder(view, sessionRepository, listener);
+    }
+
+    public interface Listener {
+
+        void onQuestionClick(QuestionResponse question);
     }
 }

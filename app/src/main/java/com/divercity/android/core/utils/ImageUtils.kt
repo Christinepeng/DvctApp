@@ -31,14 +31,18 @@ object ImageUtils {
         return BitmapFactory.decodeFile(photoPath, options)
     }
 
-    fun getStringBase64(file: File, reqWidth: Int, reqHeight: Int): String {
-        if (file.exists() && file.isAbsolute) {
-            val baos = ByteArrayOutputStream()
-            getBitmap(file, reqWidth, reqHeight)?.compress(Bitmap.CompressFormat.JPEG, 60, baos)
-            val b = baos.toByteArray()
-            return "data:image/jpeg;base64,".plus(Base64.encodeToString(b, Base64.DEFAULT))
-        } else
-            throw IOException("File doesn't exist")
+    fun getStringBase64(file: File?, reqWidth: Int, reqHeight: Int): String? {
+        if(file != null) {
+            if (file.exists() && file.isAbsolute) {
+                val baos = ByteArrayOutputStream()
+                getBitmap(file, reqWidth, reqHeight)?.compress(Bitmap.CompressFormat.JPEG, 60, baos)
+                val b = baos.toByteArray()
+                return "data:image/jpeg;base64,".plus(Base64.encodeToString(b, Base64.DEFAULT))
+            } else
+                throw IOException("File doesn't exist")
+        } else {
+            return null
+        }
     }
 
     fun getStringBase64(file: String, reqWidth: Int, reqHeight: Int): String {

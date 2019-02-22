@@ -26,14 +26,36 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.android'
 
+def keystorePropertiesFile = rootProject.file("../DivercityAppCredentials/keystore.properties")
+def keystoreProperties = new Properties()
+if (keystorePropertiesFile.exists())
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
+
+    if (keystorePropertiesFile.exists()) {
+        signingConfigs {
+            config {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+            }
+        }
+    } else {
+        signingConfigs {
+            config {
+            }
+        }
+    }
+
     compileSdkVersion 28
     defaultConfig {
         applicationId "com.divercity.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 1
-        versionName "D-1.17"
+        versionCode 3
+        versionName "B-1.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -45,20 +67,22 @@ android {
     }
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
             manifestPlaceholders = [enableCrashReporting:"true"]
+            signingConfig signingConfigs.config
         }
 
         debug {
             minifyEnabled false
             debuggable true
-            manifestPlaceholders = [enableCrashReporting:"false"]
+            manifestPlaceholders = [enableCrashReporting:"true"]
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
 //            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig getSigningConfig()
         }
 
         applicationVariants.all { variant ->
@@ -72,17 +96,6 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 }
-
-//configurations.all {
-//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-//        def requested = details.requested
-//        if (requested.group == "com.android.support") {
-//            if (!requested.name.startsWith("multidex")) {
-//                details.useVersion "28.+"
-//            }
-//        }
-//    }
-//}
 
 dependencies {
 
@@ -198,6 +211,9 @@ dependencies {
     implementation "com.linkedin.android.spyglass:spyglass:$spyglass_version"
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.2.1'
+
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'

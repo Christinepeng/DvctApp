@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "e1b88965029892d82a4e645d03e19b46",
+    "identityHash": "2169840b23614fc39c78edd6d9c3fba2",
     "entities": [
       {
         "tableName": "chatMessage",
@@ -460,11 +460,139 @@
         },
         "indices": [],
         "foreignKeys": []
+      },
+      {
+        "tableName": "answers",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` TEXT NOT NULL, `type` TEXT, `attr_rawText` TEXT, `attr_aggregatedSentimentCounts` TEXT, `attr_images` TEXT, `attr_reportCount` INTEGER, `attr_createdAt` INTEGER, `attr_voted` TEXT, `attr_questionId` INTEGER, `attr_currentUserSentimentId` INTEGER, `attr_locationDisplayName` TEXT, `attr_votesdown` INTEGER, `attr_sentimentType` TEXT, `attr_repliedToId` INTEGER, `attr_text` TEXT, `attr_authorId` INTEGER, `attr_isFlagged` INTEGER, `attr_votesup` INTEGER, `attr_authorInfo` TEXT, PRIMARY KEY(`id`))",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.rawText",
+            "columnName": "attr_rawText",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.aggregatedSentimentCounts",
+            "columnName": "attr_aggregatedSentimentCounts",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.images",
+            "columnName": "attr_images",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.reportCount",
+            "columnName": "attr_reportCount",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.createdAt",
+            "columnName": "attr_createdAt",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.voted",
+            "columnName": "attr_voted",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.questionId",
+            "columnName": "attr_questionId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.currentUserSentimentId",
+            "columnName": "attr_currentUserSentimentId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.locationDisplayName",
+            "columnName": "attr_locationDisplayName",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.votesdown",
+            "columnName": "attr_votesdown",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.sentimentType",
+            "columnName": "attr_sentimentType",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.repliedToId",
+            "columnName": "attr_repliedToId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.text",
+            "columnName": "attr_text",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.authorId",
+            "columnName": "attr_authorId",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.isFlagged",
+            "columnName": "attr_isFlagged",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.votesup",
+            "columnName": "attr_votesup",
+            "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "attributes.authorInfo",
+            "columnName": "attr_authorInfo",
+            "affinity": "TEXT",
+            "notNull": false
+          }
+        ],
+        "primaryKey": {
+          "columnNames": [
+            "id"
+          ],
+          "autoGenerate": false
+        },
+        "indices": [],
+        "foreignKeys": []
       }
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"e1b88965029892d82a4e645d03e19b46\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"2169840b23614fc39c78edd6d9c3fba2\")"
     ]
   }
 }

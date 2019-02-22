@@ -13,7 +13,6 @@ import com.bumptech.glide.request.target.Target
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
-import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
 import kotlinx.android.synthetic.main.item_group_conversation.view.*
 
@@ -45,12 +44,15 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
             itemView.item_quest_txt_author_name.text = it.attributes.authorInfo.name
             itemView.item_quest_txt_answer.text = it.attributes.text
             itemView.item_quest_txt_author_time.text = Util.getStringDateTimeWithServerDate(it.attributes.createdAt)
+            itemView.setOnClickListener {
+                listener?.onConversationClick(data)
+            }
         }
     }
 
     interface Listener {
 
-        fun onConversationClick(job: JobResponse)
+        fun onConversationClick(question: QuestionResponse)
     }
 
     companion object {

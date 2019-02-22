@@ -23,9 +23,11 @@ import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityVi
 import com.divercity.android.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.android.features.groups.TabGroupsViewModel
 import com.divercity.android.features.groups.all.AllGroupsViewModel
+import com.divercity.android.features.groups.answers.AnswerViewModel
 import com.divercity.android.features.groups.creategroup.step1.CreateGroupViewModel
 import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionViewModel
 import com.divercity.android.features.groups.createtopic.CreateTopicViewModel
+import com.divercity.android.features.groups.followedgroups.FollowingGroupsViewModel
 import com.divercity.android.features.groups.groupdetail.GroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.conversation.GroupConversationViewModel
@@ -68,7 +70,6 @@ import com.divercity.android.features.profile.settings.interests.InterestsViewMo
 import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsViewModel
 import com.divercity.android.features.profile.tabconnections.ConnectionsViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
-import com.divercity.android.features.groups.followedgroups.FollowingGroupsViewModel
 import com.divercity.android.features.profile.tabprofile.TabProfileViewModel
 import com.divercity.android.features.signup.SignUpViewModel
 import com.divercity.android.features.splash.SplashViewModel
@@ -437,4 +438,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(CreateTopicViewModel::class)
     abstract fun bindsCreateTopicViewModel(viewModel: CreateTopicViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AnswerViewModel::class)
+    abstract fun bindsAnswerViewModel(viewModel: AnswerViewModel): ViewModel
 }

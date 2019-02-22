@@ -20,11 +20,13 @@ import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.android.features.groups.answers.model.Question
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.home.home.adapter.HomeAdapter
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedAdapter
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedGroupViewHolder
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedJobViewHolder
+import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -88,6 +90,20 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     private fun initAdapters() {
         homeAdapter.setRetryCallback(this)
+
+        homeAdapter.questionListener = QuestionsViewHolder.Listener {
+            navigator.navigateToAnswerActivity(
+                this, Question(
+                    id = it.id,
+                    authorProfilePicUrl = it.attributes.authorInfo.avatarThumb,
+                    authorName = it.attributes.authorInfo.name,
+                    createdAt = it.attributes.createdAt,
+                    question = it.attributes.text,
+                    groupTitle =  it.attributes.group[0].title,
+                    questionPicUrl = it.attributes.pictureMain
+                )
+            )
+        }
 
         recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
 

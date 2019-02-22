@@ -51,7 +51,7 @@ public class QuestionsPaginatedRepositoryImpl implements PaginatedRepository<Hom
         PagedList.Config config = new PagedList.Config.Builder()
                 .setPageSize(pageSize)
                 .setInitialLoadSizeHint(pageSize * 2)
-                .setPrefetchDistance(10)
+                .setPrefetchDistance(20)
                 .setEnablePlaceholders(false)
                 .build();
 

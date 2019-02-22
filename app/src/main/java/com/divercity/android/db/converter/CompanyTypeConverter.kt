@@ -19,7 +19,6 @@ object CompanyTypeConverter {
     @TypeConverter
     @JvmStatic
     fun stringToCompany(value: String): Company {
-        val company = Gson().fromJson(value, Company::class.java) as Company
-        return company
+        return  Gson().fromJson(value, Company::class.java) as Company
     }
 }

@@ -105,8 +105,8 @@ constructor(
         return currentLoggedUser?.userAttributes?.name!!
     }
 
-    override fun getUserAvatarUrl(): String {
-        return currentLoggedUser?.userAttributes?.avatarMedium!!
+    override fun getUserAvatarUrl(): String? {
+        return currentLoggedUser?.userAttributes?.avatarMedium
     }
 
     override fun getEthnicity(): String? {

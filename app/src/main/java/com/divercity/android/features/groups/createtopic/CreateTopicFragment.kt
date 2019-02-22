@@ -1,6 +1,7 @@
 package com.divercity.android.features.groups.createtopic
 
 import android.app.Activity
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
@@ -11,6 +12,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
+import com.divercity.android.core.utils.ImageUtils
+import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
 import kotlinx.android.synthetic.main.fragment_create_topic.*
@@ -28,9 +31,6 @@ class CreateTopicFragment : BaseFragment() {
     lateinit var viewModel: CreateTopicViewModel
 
     private var photoFile: File? = null
-
-    private var isTopicPictureSet = false
-
     private var currentGroup: GroupResponse? = null
 
     companion object {
@@ -60,6 +60,7 @@ class CreateTopicFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         setupToolbar()
         setupView()
+        subscribeToLiveData()
     }
 
     private fun setupToolbar() {
@@ -80,8 +81,12 @@ class CreateTopicFragment : BaseFragment() {
         }
 
         btn_create.setOnClickListener {
-            if (checkFormIsCompleted())
-                viewModel.createNewTopic()
+            if (checkFormIsCompleted() && currentGroup != null)
+                viewModel.createNewTopic(
+                    et_topic_name.text.toString(),
+                    currentGroup!!,
+                    ImageUtils.getStringBase64(photoFile, 600, 600)
+                )
             else
                 showToast("Complete field")
         }
@@ -172,6 +177,24 @@ class CreateTopicFragment : BaseFragment() {
             .load(file)
             .into(img_topic)
         lay_img.visibility = View.VISIBLE
-        isTopicPictureSet = true
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.createTopicResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    activity!!.finish()
+                }
+            }
+        })
     }
 }

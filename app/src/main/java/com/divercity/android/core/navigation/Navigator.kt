@@ -25,6 +25,8 @@ import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityAc
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
+import com.divercity.android.features.groups.answers.AnswerActivity
+import com.divercity.android.features.groups.answers.model.Question
 import com.divercity.android.features.groups.creategroup.step1.CreateGroupActivity
 import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionActivity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
@@ -279,6 +281,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToCreateTopicActivity(fragment: Fragment, group: GroupResponse?) {
         fragment.startActivity(CreateTopicActivity.getCallingIntent(fragment.context, group))
+    }
+
+    fun navigateToAnswerActivity(fragment: Fragment, question: Question) {
+        fragment.startActivity(AnswerActivity.getCallingIntent(fragment.context, question))
     }
 
     fun navigateToNextOnboarding(activity: FragmentActivity,

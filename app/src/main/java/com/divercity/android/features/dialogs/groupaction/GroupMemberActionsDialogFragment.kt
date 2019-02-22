@@ -33,7 +33,8 @@ class GroupMemberActionsDialogFragment : DialogFragment() {
         dialogView.apply {
 
             btn_write_new_post.setOnClickListener {
-
+                listener?.onWriteNewPost()
+                dismiss()
             }
 
             btn_invite.setOnClickListener {

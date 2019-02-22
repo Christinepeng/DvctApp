@@ -48,7 +48,7 @@ interface SessionRepository {
 
     fun getEmail() : String?
 
-    fun getUserAvatarUrl(): String
+    fun getUserAvatarUrl(): String?
 
     fun getAccountType(): String
 

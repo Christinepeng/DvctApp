@@ -91,7 +91,7 @@
             android:background="@android:color/transparent"
             android:fontFamily="@font/avenir_roman"
             android:hint="@string/topic_name"
-            android:inputType="textCapWords"
+            android:inputType="textCapSentences"
             android:padding="24dp"
             android:textColor="#333241"
             android:textSize="15sp" />

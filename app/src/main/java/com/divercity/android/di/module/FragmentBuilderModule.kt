@@ -30,6 +30,7 @@ import com.divercity.android.features.gender.onboarding.OnboardingGenderFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.groups.all.AllGroupsFragment
+import com.divercity.android.features.groups.answers.AnswerFragment
 import com.divercity.android.features.groups.creategroup.step1.CreateGroupFragment
 import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionFragment
 import com.divercity.android.features.groups.createtopic.CreateTopicFragment
@@ -347,4 +348,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindCreateTopicFragment(): CreateTopicFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindAnswerFragment(): AnswerFragment
 }

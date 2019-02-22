@@ -30,6 +30,7 @@ constructor(val sessionRepository: SessionRepository) :
     private var retryCallback: RetryCallback? = null
     lateinit var recommendedAdapter: RecommendedAdapter
     var feedJobListener : JobsViewHolder.Listener? = null
+    var questionListener : QuestionsViewHolder.Listener? = null
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
@@ -37,7 +38,7 @@ constructor(val sessionRepository: SessionRepository) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_question -> QuestionsViewHolder.create(parent, sessionRepository)
+            R.layout.item_question -> QuestionsViewHolder.create(parent, sessionRepository, questionListener)
             R.layout.view_network_state -> NetworkStateViewHolder.create(
                 parent,
                 retryCallback

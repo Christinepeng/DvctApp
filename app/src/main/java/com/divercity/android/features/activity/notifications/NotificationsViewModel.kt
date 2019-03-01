@@ -1,12 +1,14 @@
 package com.divercity.android.features.activity.notifications
 
+import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.LiveData
 import android.arch.paging.PagedList
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
-import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.tabfollowing.datasource.FollowingPaginatedRepositoryImpl
+import com.divercity.android.core.utils.SingleLiveEvent
+import com.divercity.android.data.entity.activity.notification.NotificationResponse
+import com.divercity.android.features.activity.notifications.datasource.NotificationsPaginatedRepositoryImpl
 import javax.inject.Inject
 
 /**
@@ -14,18 +16,31 @@ import javax.inject.Inject
  */
 
 class NotificationsViewModel @Inject
-constructor(private val repository: FollowingPaginatedRepositoryImpl) : BaseViewModel() {
+constructor(private val repository: NotificationsPaginatedRepositoryImpl) : BaseViewModel() {
 
-    var pagedApplicantsList: LiveData<PagedList<UserResponse>> ?= null
-    private lateinit var listingPaginatedJob: Listing<UserResponse>
+    lateinit var pagedApplicantsList: LiveData<PagedList<NotificationResponse>>
+    private lateinit var listingPaginatedJob: Listing<NotificationResponse>
+    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
 
-//    init {
-//        fetchFollowing()
-//    }
+    init {
+        fetchData(null)
+    }
 
-    private fun fetchFollowing() {
+    private fun fetchData(lifecycleOwner: LifecycleOwner?) {
         listingPaginatedJob = repository.fetchData()
         pagedApplicantsList = listingPaginatedJob.pagedList
+
+        lifecycleOwner?.let {
+            removeObservers(it)
+        }
+
+        subscribeToPaginatedLiveData.call()
+    }
+
+    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
+        networkState().removeObservers(lifecycleOwner)
+        refreshState().removeObservers(lifecycleOwner)
+        pagedApplicantsList.removeObservers(lifecycleOwner)
     }
 
     fun networkState(): LiveData<NetworkState> = listingPaginatedJob.networkState

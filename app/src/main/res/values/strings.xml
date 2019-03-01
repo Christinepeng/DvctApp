@@ -32,6 +32,7 @@
     <string name="maybe_later">Maybe later</string>
     <string name="no_notifications">You have no activity yet; post or respond/react to a question or comment so we can get this show on the road</string>
     <string name="no_connection_requests">No Requests Yet</string>
+    <string name="me">Me</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -84,7 +85,7 @@
     <string name="select_your_industry">Select your Industry</string>
     <string name="select_your_major">Select your Major</string>
     <string name="select_your_ooi">Select your Occupation of Interests</string>
-    <string name="select_your_country">Select your Country</string>
+    <string name="select_your_location">Select your Location</string>
     <string name="select_your_ethnicity">Select your Ethnicity</string>
     <string name="select_your_occupation">Select your Occupation</string>
     <string name="select_your_gender">Select your Gender</string>
@@ -269,6 +270,7 @@
     <string name="topic_name">Topic Name</string>
     <string name="start_topic">Start a Topic</string>
     <string name="change_group">Change Group</string>
+    <string name="be_first_comment">Be the first to comment</string>
 
     <!-- Delete Job-->
     <string name="delete_job">Delete Job Posting</string>

@@ -71,6 +71,7 @@ interface ChatService {
     @POST("messages")
     fun sendMessage(
         @Part("message[content]") message: RequestBody,
-        @Part("message[chat_id]") chatId: RequestBody
+        @Part("message[chat_id]") chatId: RequestBody,
+        @Part("message[picture]") image: RequestBody
     ): Observable<ChatMessageResponse>
 }

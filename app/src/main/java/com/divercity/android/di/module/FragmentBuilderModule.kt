@@ -47,10 +47,6 @@ import com.divercity.android.features.home.home.HomeFragment
 import com.divercity.android.features.home.settings.SettingsFragment
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingFragment
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryFragment
-import com.divercity.android.features.jobposting.JobPostingFragment
-import com.divercity.android.features.jobposting.jobtype.JobTypeFragment
-import com.divercity.android.features.jobposting.sharetogroup.ShareJobGroupFragment
-import com.divercity.android.features.jobposting.skills.JobSkillsFragment
 import com.divercity.android.features.jobs.TabJobsFragment
 import com.divercity.android.features.jobs.applicants.JobApplicantsFragment
 import com.divercity.android.features.jobs.applications.JobsApplicationsFragment
@@ -61,12 +57,17 @@ import com.divercity.android.features.jobs.description.jobdescription.TabJobDesc
 import com.divercity.android.features.jobs.description.poster.JobDescriptionPosterFragment
 import com.divercity.android.features.jobs.description.poster.module.JobDescriptionPosterModule
 import com.divercity.android.features.jobs.description.poster.similarjobs.SimilarJobsFragment
+import com.divercity.android.features.jobs.jobposting.JobPostingFragment
+import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeFragment
+import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupFragment
+import com.divercity.android.features.jobs.jobposting.skills.JobSkillsFragment
 import com.divercity.android.features.jobs.jobs.JobsListFragment
 import com.divercity.android.features.jobs.module.JobsModule
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsFragment
 import com.divercity.android.features.jobs.savedjobs.SavedJobsFragment
 import com.divercity.android.features.jobs.similarjobs.SimilarJobListFragment
 import com.divercity.android.features.linkedin.LinkedinFragment
+import com.divercity.android.features.loadurl.LoadUrlFragment
 import com.divercity.android.features.location.base.SelectLocationFragment
 import com.divercity.android.features.location.onboarding.OnboardingLocationFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
@@ -78,6 +79,7 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorFragment
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationFragment
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIFragment
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragment
+import com.divercity.android.features.onboarding.selectskill.SelectSkillFragment
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.profile.ProfileFragment
 import com.divercity.android.features.profile.module.ProfileModule
@@ -351,4 +353,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindAnswerFragment(): AnswerFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindLoadUrlFragment(): LoadUrlFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSelectSkillFragment(): SelectSkillFragment
 }

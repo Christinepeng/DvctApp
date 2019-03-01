@@ -6,7 +6,7 @@ import android.arch.paging.PagedList
 import com.divercity.android.core.base.PaginatedQueryRepository
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.group.GroupResponse
-import com.divercity.android.features.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase
+import com.divercity.android.features.jobs.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
 import javax.inject.Inject

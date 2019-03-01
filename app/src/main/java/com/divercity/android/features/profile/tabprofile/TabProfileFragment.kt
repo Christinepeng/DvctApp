@@ -4,6 +4,7 @@ import android.app.Activity
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.support.v7.widget.StaggeredGridLayoutManager
 import android.view.View
@@ -11,9 +12,11 @@ import android.widget.Toast
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
+import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
+import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
@@ -22,11 +25,12 @@ import com.divercity.android.features.profile.settings.personalsettings.Personal
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
 import javax.inject.Inject
 
+
 /**
  * Created by lucas on 16/11/2018.
  */
 
-class TabProfileFragment : BaseFragment() {
+class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener  {
 
     private lateinit var viewModel: TabProfileViewModel
 
@@ -147,6 +151,10 @@ class TabProfileFragment : BaseFragment() {
 
             swipe_refresh.isRefreshing = false
         }
+
+        lay_resume.setOnClickListener {
+            showRecentDocsDialog()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -255,11 +263,23 @@ class TabProfileFragment : BaseFragment() {
         }
     }
 
+    private fun showRecentDocsDialog() {
+        val dialog = RecentDocsDialogFragment.newInstance()
+        dialog.show(childFragmentManager, null)
+    }
+
     private fun setData(user: UserResponse?) {
         txt_ethnicity.text = user?.userAttributes?.ethnicity
         txt_gender.text = user?.userAttributes?.gender
         txt_age_range.text = user?.userAttributes?.ageRange
         txt_location.text =
             user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
+    }
+
+    override fun onDocumentClick(doc: DocumentResponse) {
+        val i = Intent(Intent.ACTION_VIEW)
+        i.data = Uri.parse(doc.attributes?.document)
+        startActivity(i)
+//        navigator.navigateToLoadUrlActivity(this, doc.attributes?.document!!)
     }
 }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class Answer(
 
-	@field:SerializedName("images[]")
+	@field:SerializedName("images")
 	val images: List<String?>? = null,
 
 	@field:SerializedName("text")

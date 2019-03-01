@@ -22,13 +22,22 @@ import android.widget.Toast
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.extension.networkInfo
+import com.divercity.android.core.utils.GlideApp
+import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.chat.chatadapter.ChatAdapter
+import com.divercity.android.features.chat.chat.chatadapter.ChatViewHolder
 import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
 import kotlinx.android.synthetic.main.fragment_chat.*
+import kotlinx.android.synthetic.main.view_image_btn_full.view.*
+import kotlinx.android.synthetic.main.view_image_btn_small.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
+import pl.aprilapps.easyphotopicker.DefaultCallback
+import pl.aprilapps.easyphotopicker.EasyImage
+import timber.log.Timber
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -47,6 +56,7 @@ class ChatFragment : BaseFragment() {
     lateinit var userAdapter: UserMentionAdapter
 
     var isReplacing = false
+    private var photoFile: File? = null
 
     companion object {
 
@@ -96,10 +106,33 @@ class ChatFragment : BaseFragment() {
     }
 
     private fun setupView() {
+        lay_image.btn_remove_img.setOnClickListener {
+            photoFile = null
+            lay_image.visibility = View.GONE
+        }
+
+        btn_add_image.setOnClickListener {
+            EasyImage.openChooserWithGallery(this, getString(R.string.pick_source), 0)
+        }
+
         btn_send.setOnClickListener {
-            if (et_msg.text.toString() != "") {
-                viewModel.sendMessage(et_msg.text.toString())
+            if (et_msg.text.toString() != "" || photoFile != null) {
+                viewModel.sendMessage(et_msg.text.toString(), ImageUtils.getStringBase64(photoFile, 600, 600))
             }
+        }
+
+        adapter.chatListener = object : ChatViewHolder.Listener {
+
+            override fun onImageTap(imageUrl: String) {
+                lay_image_full_screen.visibility = View.VISIBLE
+                GlideApp.with(this@ChatFragment)
+                    .load(imageUrl)
+                    .into(lay_image_full_screen.img_full_screen)
+            }
+        }
+
+        lay_image_full_screen.btn_close_full_screen_image.setOnClickListener {
+            lay_image_full_screen.visibility = View.GONE
         }
 
         list.adapter = adapter
@@ -195,7 +228,11 @@ class ChatFragment : BaseFragment() {
         val lastIndexOfAT = fullTextTillCursor.lastIndexOf("@")
         val textToInsert = "@".plus(user.userAttributes?.name!!)
 
-        et_msg.text.replace(lastIndexOfAT, et_msg.selectionStart, "@".plus(user.userAttributes?.name))
+        et_msg.text.replace(
+            lastIndexOfAT,
+            et_msg.selectionStart,
+            "@".plus(user.userAttributes?.name)
+        )
         viewModel.mentions.add(user)
         val bss = StyleSpan(Typeface.BOLD)
 //        et_msg.text.setSpan(user.toChatMember(),
@@ -218,7 +255,7 @@ class ChatFragment : BaseFragment() {
         val firstVisibleItemPosition: Int
         if (list.layoutManager is LinearLayoutManager) {
             firstVisibleItemPosition =
-                    (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
         } else {
             throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
         }
@@ -233,7 +270,7 @@ class ChatFragment : BaseFragment() {
         val firstVisibleItemPosition: Int
         if (list.layoutManager is LinearLayoutManager) {
             firstVisibleItemPosition =
-                    (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+                (list.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
         } else {
             throw IllegalStateException("LayoutManager needs to subclass LinearLayoutManager or StaggeredGridLayoutManager")
         }
@@ -259,6 +296,8 @@ class ChatFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     btn_send.visibility = View.VISIBLE
                     pb_sending_msg.visibility = View.GONE
+                    photoFile = null
+                    lay_image.visibility = View.GONE
                     et_msg.setText("")
                 }
             }
@@ -311,7 +350,10 @@ class ChatFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        EasyImage.clearConfiguration(context!!)
         viewModel.onDestroy()
+        Timber.e("ApolloLuc onDestroy")
+        adapter.onDestroy()
     }
 
     private fun showList(active: Boolean) {
@@ -319,6 +361,55 @@ class ChatFragment : BaseFragment() {
             list_users.visibility = View.VISIBLE
         else
             list_users.visibility = View.GONE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        EasyImage.handleActivityResult(
+            requestCode,
+            resultCode,
+            data,
+            activity,
+            object : DefaultCallback() {
+                override fun onImagePickerError(
+                    e: Exception?,
+                    source: EasyImage.ImageSource?,
+                    type: Int
+                ) {
+                    //Some error handling
+                    e!!.printStackTrace()
+                    showToast(e.message)
+                }
+
+                override fun onImagesPicked(
+                    imageFiles: List<File>,
+                    source: EasyImage.ImageSource,
+                    type: Int
+                ) {
+                    onPhotosReturned(imageFiles[0])
+                }
+
+                override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
+                    //Cancel handling, you might wanna remove taken photoFile if it was canceled
+                    if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        photoFile?.delete()
+                    }
+                }
+            })
+    }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onPhotosReturned(file: File?) {
+        lay_image.visibility = View.VISIBLE
+        photoFile = file
+        GlideApp.with(this)
+            .load(file)
+            .into(lay_image.img_added)
     }
 
     private val networkChangeReceiver = object : BroadcastReceiver() {

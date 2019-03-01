@@ -30,6 +30,15 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 listener?.onChatClick(data)
             }
 
+            if(it.getCheckedPicture() != null){
+                GlideApp.with(itemView)
+                    .load(data.lastMessagePicture)
+                    .into(itemView.img_msg_picture)
+                itemView.cardview_msg_picture.visibility = View.VISIBLE
+            } else {
+                itemView.cardview_msg_picture.visibility = View.GONE
+            }
+
             if(data.unreadMessageCount!! > 0){
                 itemView.icon_notification.text = data.unreadMessageCount!!.toString()
                 itemView.icon_notification.visibility = View.VISIBLE

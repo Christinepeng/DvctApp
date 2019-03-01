@@ -80,11 +80,12 @@ constructor(
             throw HttpException(response)
     }
 
-    override fun sendMessage(message: String, chatId: String): Observable<ChatMessageResponse> {
+    override fun sendMessage(message: String, chatId: String, image : String): Observable<ChatMessageResponse> {
         val partMessage = RequestBody.create(MediaType.parse("text/plain"), message)
         val partChatId = RequestBody.create(MediaType.parse("text/plain"), chatId)
+        val partImage = RequestBody.create(MediaType.parse("text/plain"), image)
 
-        return chatService.sendMessage(partMessage, partChatId)
+        return chatService.sendMessage(partMessage, partChatId, partImage)
     }
 
     override suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageResponse) {

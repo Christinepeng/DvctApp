@@ -24,7 +24,7 @@
     </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
-        android:id="@+id/txt_no_job_postings"
+        android:id="@+id/txt_no_notification"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -46,7 +46,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/avenir_medium"
         android:text="Coming soon"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

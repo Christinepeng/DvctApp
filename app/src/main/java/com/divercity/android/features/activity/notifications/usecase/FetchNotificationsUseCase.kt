@@ -1,7 +1,7 @@
 package com.divercity.android.features.activity.notifications.usecase
 
 import com.divercity.android.core.base.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -13,23 +13,25 @@ import javax.inject.Named
  */
 
 class FetchNotificationsUseCase @Inject
-constructor(@Named("executor_thread") executorThread: Scheduler,
-            @Named("ui_thread") uiThread: Scheduler,
-            private val repository: UserRepository
-) : UseCase<@JvmSuppressWildcards List<UserResponse>, FetchNotificationsUseCase.Params>(executorThread, uiThread) {
+constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
+    private val repository: UserRepository
+) : UseCase<@JvmSuppressWildcards List<NotificationResponse>, FetchNotificationsUseCase.Params>(
+    executorThread,
+    uiThread
+) {
 
-    lateinit var userId: String
-
-    override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
-        return repository.fetchFollowingByUser(userId, params.page, params.size, params.query)
+    override fun createObservableUseCase(params: Params): Observable<List<NotificationResponse>> {
+        return repository.fetchNotifications(params.page, params.size)
     }
 
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
+    class Params private constructor(val page: Int, val size: Int) {
 
         companion object {
 
-            fun forFollowing(page: Int, size: Int, query: String?): Params {
-                return Params(page, size, query)
+            fun forFollowing(page: Int, size: Int): Params {
+                return Params(page, size)
             }
         }
     }

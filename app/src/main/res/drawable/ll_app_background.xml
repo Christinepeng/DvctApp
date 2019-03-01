@@ -4,11 +4,13 @@
     <!-- The background color, preferably the same as your normal theme -->
     <item android:drawable="@color/white" />
 
+    <item android:drawable="@color/splash_background" />
+
     <item>
 
         <bitmap
             android:gravity="center"
-            android:src="@drawable/img_splash" />
+            android:src="@drawable/logo" />
     </item>
 
 </layer-list>

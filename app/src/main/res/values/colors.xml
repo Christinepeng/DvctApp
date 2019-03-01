@@ -17,6 +17,8 @@
     <color name="green">#48cc7c</color>
 
     <color name="transparent">#54000000</color>
+    <color name="transparent_picture">#C4000000</color>
+    <color name="splash">#2675C2F6</color>
 
     <!-- Reds-->
     <color name="red">#ff7272</color>

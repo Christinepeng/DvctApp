@@ -18,7 +18,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@+id/view7"
+        app:layout_constraintBottom_toTopOf="@+id/lay_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
@@ -48,6 +48,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/lay_image"
+        layout="@layout/view_image_btn_small"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/view7"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/list_users"
         android:layout_width="0dp"
@@ -71,6 +79,19 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="277dp" />
 
+    <android.support.v7.widget.AppCompatImageButton
+        android:id="@+id/btn_add_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:paddingStart="13dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        android:src="@drawable/icon_add_image"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/et_msg" />
+
     <EditText
         android:id="@+id/et_msg"
         android:layout_width="0dp"
@@ -85,7 +106,7 @@
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_send"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/btn_add_image"
         tools:text="dfsdfsfdsfsdfsdfsdfsgyjghjghjghjghjghjghjghjghjghjghjghjgdfsdfsdfsdfdgdghgfhfghfghfghfghfghfghfghfghfghfghfsdfsdfsfdsfdfsdfsdfsdfsdfsdfsdfsdfsd" />
 
     <ImageButton
@@ -108,5 +129,16 @@
         app:layout_constraintBottom_toBottomOf="@+id/et_msg"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/et_msg" />
+
+    <include
+        android:id="@+id/lay_image_full_screen"
+        layout="@layout/view_image_btn_full"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </android.support.constraint.ConstraintLayout>

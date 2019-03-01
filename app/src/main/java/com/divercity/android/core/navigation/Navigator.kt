@@ -9,7 +9,7 @@ import com.divercity.android.core.utils.OnboardingProgression
 import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.skills.SkillResponse
-import com.divercity.android.features.agerange.onboarding.OnboartdingAgeActivity
+import com.divercity.android.features.agerange.onboarding.OnboardingAgeActivity
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.android.features.chat.chat.ChatActivity
 import com.divercity.android.features.chat.creategroupchat.CreateGroupChatActivity
@@ -36,14 +36,15 @@ import com.divercity.android.features.groups.onboarding.SelectGroupActivity
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingActivity
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryActivity
-import com.divercity.android.features.jobposting.JobPostingActivity
-import com.divercity.android.features.jobposting.jobtype.JobTypeActivity
-import com.divercity.android.features.jobposting.sharetogroup.ShareJobGroupActivity
-import com.divercity.android.features.jobposting.skills.JobSkillsActivity
 import com.divercity.android.features.jobs.applicants.JobApplicantsActivity
 import com.divercity.android.features.jobs.description.detail.JobDetailActivity
 import com.divercity.android.features.jobs.description.poster.JobDescriptionPosterActivity
+import com.divercity.android.features.jobs.jobposting.JobPostingActivity
+import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeActivity
+import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupActivity
+import com.divercity.android.features.jobs.jobposting.skills.JobSkillsActivity
 import com.divercity.android.features.linkedin.LinkedinActivity
+import com.divercity.android.features.loadurl.LoadUrlActivity
 import com.divercity.android.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.android.features.login.step1.EnterEmailActivity
@@ -54,7 +55,9 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIActivity
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
+import com.divercity.android.features.onboarding.selectskill.SelectSkillActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
+import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.profile.settings.interests.InterestsActivity
@@ -82,7 +85,7 @@ class Navigator @Inject constructor() {
 //        activity.overridePendingTransition(0,0)
     }
 
-    fun navigateToHomeActivityAndClearTop(fragment: Fragment){
+    fun navigateToHomeActivityAndClearTop(fragment: Fragment) {
         val intent = HomeActivity.getCallingIntent(fragment.context, false)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         fragment.startActivity(intent)
@@ -122,6 +125,10 @@ class Navigator @Inject constructor() {
         activity.startActivity(SelectGroupActivity.getCallingIntent(activity, progress))
     }
 
+    fun navigateToUploadResumeActivity(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(UploadResumeActivity.getCallingIntent(activity, progress))
+    }
+
     fun navigateToSelectCompanyActivity(activity: FragmentActivity, progress: Int) {
         activity.startActivity(OnboardingCompanyActivity.getCallingIntent(activity, progress))
     }
@@ -135,7 +142,12 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToOnboardingIndustryActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectIndustryOnboardingActivity.getCallingIntent(activity, progress))
+        activity.startActivity(
+            SelectIndustryOnboardingActivity.getCallingIntent(
+                activity,
+                progress
+            )
+        )
     }
 
     fun navigateToOnboardingGenderActivity(activity: FragmentActivity, progress: Int) {
@@ -147,7 +159,7 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToSelectBirthdayActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboartdingAgeActivity.getCallingIntent(activity, progress))
+        activity.startActivity(OnboardingAgeActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToOnboardingEthnicityActivity(activity: FragmentActivity, progress: Int) {
@@ -158,11 +170,15 @@ class Navigator @Inject constructor() {
         activity.startActivity(SelectMajorActivity.getCallingIntent(activity, progress))
     }
 
+    fun navigateToSelectSkillActivity(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(SelectSkillActivity.getCallingIntent(activity, progress))
+    }
+
     fun navigateToSelectOOIActivity(activity: FragmentActivity, progress: Int) {
         activity.startActivity(SelectOOIActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToPhoneContactsActivity(activity: FragmentActivity, data : Bundle) {
+    fun navigateToPhoneContactsActivity(activity: FragmentActivity, data: Bundle) {
         activity.startActivity(InvitePhoneContactsActivity.getCallingIntent(activity, data))
     }
 
@@ -178,11 +194,18 @@ class Navigator @Inject constructor() {
         fragment.startActivity(NewChatActivity.getCallingIntent(fragment.context))
     }
 
-    fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String, chatId : Int?) {
-        fragment.startActivity(ChatActivity.getCallingIntent(fragment.context, userName, userId, chatId))
+    fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String, chatId: Int?) {
+        fragment.startActivity(
+            ChatActivity.getCallingIntent(
+                fragment.context,
+                userName,
+                userId,
+                chatId
+            )
+        )
     }
 
-    fun navigateToGroupDetailActivity(fragment: Fragment, group : GroupResponse) {
+    fun navigateToGroupDetailActivity(fragment: Fragment, group: GroupResponse) {
         fragment.startActivity(GroupDetailActivity.getCallingIntent(fragment.context, group))
     }
 
@@ -190,21 +213,36 @@ class Navigator @Inject constructor() {
         fragment.startActivity(CreateGroupActivity.getCallingIntent(fragment.context))
     }
 
-    fun navigateToGroupDescriptionActivity(fragment: Fragment, groupName : String, photoPath : String?) {
-        fragment.startActivity(GroupDescriptionActivity.getCallingIntent
-            (fragment.context, groupName, photoPath))
+    fun navigateToGroupDescriptionActivity(
+        fragment: Fragment,
+        groupName: String,
+        photoPath: String?
+    ) {
+        fragment.startActivity(
+            GroupDescriptionActivity.getCallingIntent
+                (fragment.context, groupName, photoPath)
+        )
     }
 
-    fun navigateToJobPostingForResultActivity(fragment: Fragment, code : Int, job: JobResponse?) {
-        fragment.startActivityForResult(JobPostingActivity.getCallingIntent(fragment.context, job), code)
+    fun navigateToJobPostingForResultActivity(fragment: Fragment, code: Int, job: JobResponse?) {
+        fragment.startActivityForResult(
+            JobPostingActivity.getCallingIntent(fragment.context, job),
+            code
+        )
     }
 
     fun navigateToCreateCompanyActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(CreateCompanyActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            CreateCompanyActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToToolbarLocationActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(ToolbarLocationActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            ToolbarLocationActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToProfileSettingsActivity(fragment: Fragment) {
@@ -212,31 +250,55 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToSelectSingleIndustryActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(SelectSingleIndustryActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            SelectSingleIndustryActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToToolbarCompanyActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(ToolbarCompanyActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            ToolbarCompanyActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToCompanySizesActivity(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(CompanySizesActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            CompanySizesActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToJobTypeActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(JobTypeActivity.getCallingIntent(fragment.context), code)
     }
 
-    fun navigateToJobSkillsActivityForResult(fragment: Fragment, code: Int, skillList: ArrayList<SkillResponse>) {
-        fragment.startActivityForResult(JobSkillsActivity.getCallingIntent(fragment.context, skillList), code)
+    fun navigateToJobSkillsActivityForResult(
+        fragment: Fragment,
+        code: Int,
+        skillList: ArrayList<SkillResponse>
+    ) {
+        fragment.startActivityForResult(
+            JobSkillsActivity.getCallingIntent(
+                fragment.context,
+                skillList
+            ), code
+        )
     }
 
     fun navigateToToolbarEthnicityActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(ToolbarEthnicityActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            ToolbarEthnicityActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToFollowingGroupsActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(FollowingGroupsActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            FollowingGroupsActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToToolbarAgeActivityForResult(fragment: Fragment, code: Int) {
@@ -244,15 +306,27 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToToolbarGenderActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(ToolbarGenderActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            ToolbarGenderActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToShareJobGroupActivity(fragment: Fragment, jobId: String?) {
         fragment.startActivity(ShareJobGroupActivity.getCallingIntent(fragment.context, jobId))
     }
 
-    fun navigateToJobDescriptionPosterForResultActivity(fragment: Fragment, code : Int, job: JobResponse) {
-        fragment.startActivityForResult(JobDescriptionPosterActivity.getCallingIntent(fragment.context, job), code)
+    fun navigateToJobDescriptionPosterForResultActivity(
+        fragment: Fragment,
+        code: Int,
+        job: JobResponse
+    ) {
+        fragment.startActivityForResult(
+            JobDescriptionPosterActivity.getCallingIntent(
+                fragment.context,
+                job
+            ), code
+        )
     }
 
     fun navigateToJobApplicantsActivity(fragment: Fragment, job: JobResponse) {
@@ -267,16 +341,26 @@ class Navigator @Inject constructor() {
         fragment.startActivity(InterestsActivity.getCallingIntent(fragment.context))
     }
 
+    fun navigateToLoadUrlActivity(fragment: Fragment, url: String) {
+        fragment.startActivity(LoadUrlActivity.getCallingIntent(fragment.context, url))
+    }
+
     fun navigateToAccountSettingsActivity(fragment: Fragment) {
         fragment.startActivity(AccountSettingsActivity.getCallingIntent(fragment.context))
     }
 
     fun navigateToNewGroupChatActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(NewGroupChatActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            NewGroupChatActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToCreateGroupChatActivityForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(CreateGroupChatActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            CreateGroupChatActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToCreateTopicActivity(fragment: Fragment, group: GroupResponse?) {
@@ -287,73 +371,171 @@ class Navigator @Inject constructor() {
         fragment.startActivity(AnswerActivity.getCallingIntent(fragment.context, question))
     }
 
-    fun navigateToNextOnboarding(activity: FragmentActivity,
-                                 userTypeId: String,
-                                 cprogress: Int,
-                                 shouldIncrementProgress: Boolean) {
+    fun navigateToNextOnboarding(
+        activity: FragmentActivity,
+        userTypeId: String,
+        cprogress: Int,
+        shouldIncrementProgress: Boolean
+    ) {
         var progress = cprogress
         if (shouldIncrementProgress) {
-            progress = OnboardingProgression.getNextNavigationProgressOnboarding(activity, userTypeId, progress)
+            progress = OnboardingProgression.getNextNavigationProgressOnboarding(
+                activity,
+                userTypeId,
+                progress
+            )
         }
 
-        if (activity is ProfilePromptActivity) {
-
-            if (userTypeId == activity.getString(R.string.student_id))
-                navigateToSelectSchoolActivity(activity, progress)
-            else
-                navigateToSelectCompanyActivity(activity, progress)
-        } else if (activity is OnboardingCompanyActivity) {
-
-            if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
-                navigateToOnboardingLocationActivity(activity, progress)
-            else if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(R.string.job_seeker_id))
-                navigateToSelectOccupationActivity(activity, progress)
-            else if (userTypeId == activity.getString(R.string.entrepreneur_id)) {
-                navigateToOnboardingIndustryActivity(activity, progress)
+        when (userTypeId) {
+            activity.getString(R.string.recruiter_id) -> {
+                when (activity) {
+                    is ProfilePromptActivity ->
+                        navigateToSelectCompanyActivity(activity, progress)
+                    is OnboardingCompanyActivity ->
+                        navigateToOnboardingIndustryActivity(activity, progress)
+                    is SelectIndustryOnboardingActivity ->
+                        navigateToOnboardingLocationActivity(activity, progress)
+                    is OnboardingLocationActivity ->
+                        navigateToOnboardingGenderActivity(activity, progress)
+                    is OnboardingGenderActivity ->
+                        navigateToOnboardingEthnicityActivity(activity, progress)
+                    is OnboardingEthnicityActivity ->
+                        navigateToSelectGroupActivity(activity, progress)
+                }
             }
-        } else if (activity is OnboardingLocationActivity) {
-
-            if (userTypeId == activity.getString(R.string.student_id)) {
-                navigateToSelectOOIActivity(activity, progress)
-            } else {
-                navigateToOnboardingGenderActivity(activity, progress)
+            activity.getString(R.string.hiring_manager_id) -> {
+                when (activity) {
+                    is ProfilePromptActivity ->
+                        navigateToSelectCompanyActivity(activity, progress)
+                    is OnboardingCompanyActivity ->
+                        navigateToOnboardingIndustryActivity(activity, progress)
+                    is SelectIndustryOnboardingActivity ->
+                        navigateToSelectOccupationActivity(activity, progress)
+                    is SelectOccupationActivity ->
+                        navigateToOnboardingLocationActivity(activity, progress)
+                    is OnboardingLocationActivity ->
+                        navigateToOnboardingGenderActivity(activity, progress)
+                    is OnboardingGenderActivity ->
+                        navigateToOnboardingEthnicityActivity(activity, progress)
+                    is OnboardingEthnicityActivity ->
+                        navigateToSelectGroupActivity(activity, progress)
+                }
             }
-        } else if (activity is OnboardingEthnicityActivity) {
-
-            if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(R.string.hiring_manager_id))
-                navigateToSelectGroupActivity(activity, progress)
-            else
-                navigateToSelectBirthdayActivity(activity, progress)
-        } else if (activity is OnboardingGenderActivity) {
-
-            navigateToOnboardingEthnicityActivity(activity, progress)
-        } else if (activity is SelectSchoolActivity) {
-
-            navigateToSelectMajorActivity(activity, progress)
-        } else if (activity is SelectMajorActivity) {
-
-            navigateToOnboardingLocationActivity(activity, progress)
-        } else if (activity is SelectOccupationActivity) {
-
-            if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(R.string.job_seeker_id))
-                navigateToOnboardingLocationActivity(activity, progress)
-            else
-                navigateToOnboardingGenderActivity(activity, progress)
-        } else if (activity is SelectInterestsActivity) {
-
-            if (userTypeId == activity.getString(R.string.student_id))
-                navigateToSelectGroupActivity(activity, progress)
-            else
-                navigateToOnboardingGenderActivity(activity, progress)
-        } else if (activity is OnboartdingAgeActivity) {
-
-            navigateToSelectGroupActivity(activity, progress)
-        } else if (activity is SelectOOIActivity) {
-
-            if (userTypeId == activity.getString(R.string.student_id))
-                navigateToOnboardingGenderActivity(activity, progress)
-        } else if (activity is SelectIndustryOnboardingActivity) {
-            navigateToOnboardingLocationActivity(activity, progress)
+            activity.getString(R.string.professional_id),
+            activity.getString(R.string.entrepreneur_id),
+            activity.getString(R.string.job_seeker_id) -> {
+                when (activity) {
+                    is ProfilePromptActivity ->
+                        navigateToSelectCompanyActivity(activity, progress)
+                    is OnboardingCompanyActivity ->
+                        navigateToOnboardingIndustryActivity(activity, progress)
+                    is SelectIndustryOnboardingActivity ->
+                        navigateToSelectOccupationActivity(activity, progress)
+                    is SelectOccupationActivity ->
+                        navigateToOnboardingLocationActivity(activity, progress)
+                    is OnboardingLocationActivity ->
+                        navigateToUploadResumeActivity(activity, progress)
+                    is UploadResumeActivity ->
+                        navigateToSelectSkillActivity(activity, progress)
+                    is SelectSkillActivity ->
+                        navigateToOnboardingGenderActivity(activity, progress)
+                    is OnboardingEthnicityActivity ->
+                        navigateToSelectBirthdayActivity(activity, progress)
+                    is OnboardingAgeActivity ->
+                        navigateToSelectGroupActivity(activity, progress)
+                }
+            }
+            activity.getString(R.string.student_id) -> {
+                when (activity) {
+                    is ProfilePromptActivity ->
+                        navigateToSelectSchoolActivity(activity, progress)
+                    is SelectSchoolActivity ->
+                        navigateToSelectMajorActivity(activity, progress)
+                    is SelectMajorActivity ->
+                        navigateToOnboardingLocationActivity(activity, progress)
+                    is OnboardingLocationActivity ->
+                        navigateToSelectOOIActivity(activity, progress)
+                    is SelectOOIActivity ->
+                        navigateToSelectSkillActivity(activity, progress)
+                    is SelectSkillActivity ->
+                        navigateToOnboardingGenderActivity(activity, progress)
+                    is OnboardingEthnicityActivity ->
+                        navigateToSelectBirthdayActivity(activity, progress)
+                    is OnboardingAgeActivity ->
+                        navigateToSelectGroupActivity(activity, progress)
+                }
+            }
         }
+
+//        if (activity is ProfilePromptActivity) {
+//            if (userTypeId == activity.getString(R.string.student_id))
+//                navigateToSelectSchoolActivity(activity, progress)
+//            else
+//                navigateToSelectCompanyActivity(activity, progress)
+//        } else if (activity is OnboardingCompanyActivity) {
+//
+//            if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(
+//                    R.string.hiring_manager_id
+//                )
+//            )
+//                navigateToOnboardingLocationActivity(activity, progress)
+//            else if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(
+//                    R.string.job_seeker_id
+//                )
+//            )
+//                navigateToSelectOccupationActivity(activity, progress)
+//            else if (userTypeId == activity.getString(R.string.entrepreneur_id)) {
+//                navigateToOnboardingIndustryActivity(activity, progress)
+//            }
+//        } else if (activity is OnboardingLocationActivity) {
+//
+//            if (userTypeId == activity.getString(R.string.student_id)) {
+//                navigateToSelectOOIActivity(activity, progress)
+//            } else {
+//                navigateToOnboardingGenderActivity(activity, progress)
+//            }
+//        } else if (activity is OnboardingEthnicityActivity) {
+//
+//            if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(
+//                    R.string.hiring_manager_id
+//                )
+//            )
+//                navigateToSelectGroupActivity(activity, progress)
+//            else
+//                navigateToSelectBirthdayActivity(activity, progress)
+//        } else if (activity is OnboardingGenderActivity) {
+//
+//            navigateToOnboardingEthnicityActivity(activity, progress)
+//        } else if (activity is SelectSchoolActivity) {
+//
+//            navigateToSelectMajorActivity(activity, progress)
+//        } else if (activity is SelectMajorActivity) {
+//
+//            navigateToOnboardingLocationActivity(activity, progress)
+//        } else if (activity is SelectOccupationActivity) {
+//
+//            if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(
+//                    R.string.job_seeker_id
+//                )
+//            )
+//                navigateToOnboardingLocationActivity(activity, progress)
+//            else
+//                navigateToOnboardingGenderActivity(activity, progress)
+//        } else if (activity is SelectInterestsActivity) {
+//
+//            if (userTypeId == activity.getString(R.string.student_id))
+//                navigateToSelectGroupActivity(activity, progress)
+//            else
+//                navigateToOnboardingGenderActivity(activity, progress)
+//        } else if (activity is OnboardingAgeActivity) {
+//
+//            navigateToSelectGroupActivity(activity, progress)
+//        } else if (activity is SelectOOIActivity) {
+//
+//            if (userTypeId == activity.getString(R.string.student_id))
+//                navigateToOnboardingGenderActivity(activity, progress)
+//        } else if (activity is SelectIndustryOnboardingActivity) {
+//            navigateToOnboardingLocationActivity(activity, progress)
+//        }
     }
 }

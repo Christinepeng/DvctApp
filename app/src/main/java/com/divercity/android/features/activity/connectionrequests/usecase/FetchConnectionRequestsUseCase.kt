@@ -20,21 +20,48 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
 ) : UseCase<@JvmSuppressWildcards List<ConnectionItem>, FetchConnectionRequestsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<List<ConnectionItem>> {
-        val fetchQuestions = repository.fetchGroupInvitations(
+        val fetchGroupInvitations = repository.fetchGroupInvitations(
             params.page,
             params.size
         )
 
-        val fetchJobs = repository.fetchGroupJoinRequests(
+        val fetchGroupJoinRequests = repository.fetchGroupJoinRequests(
             params.page,
             params.size
         )
 
         return Observable.zip(
-            fetchQuestions,
-            fetchJobs,
-            BiFunction { t1, t2 ->
-                return@BiFunction ArrayList()
+            fetchGroupInvitations,
+            fetchGroupJoinRequests,
+            BiFunction {groupInvitations, groupJoinRequests ->
+
+                val shuffledGroupInvitationsAndJoinRequests = ArrayList<ConnectionItem>()
+                var startLimitGroupInvitations = 0
+                var startLimitJoinRequests = 0
+
+                while(groupInvitations.isNotEmpty() && startLimitGroupInvitations < groupInvitations.size ||
+                    groupJoinRequests.isNotEmpty() && startLimitJoinRequests < groupJoinRequests.size){
+
+                    if(startLimitGroupInvitations < groupInvitations.size){
+                        val randJobs = (1..2).random()
+                        var endLimitGroupInvitations = startLimitGroupInvitations + randJobs
+                        if(endLimitGroupInvitations > groupInvitations.size) endLimitGroupInvitations = groupInvitations.size
+                        for(i in startLimitGroupInvitations..(endLimitGroupInvitations - 1))
+                            shuffledGroupInvitationsAndJoinRequests.add(groupInvitations[i])
+                        startLimitGroupInvitations += randJobs
+                    }
+
+                    if(startLimitJoinRequests < groupJoinRequests.size){
+                        val randQuestions = (1..2).random()
+                        var endLimitJoinRequests = randQuestions + startLimitJoinRequests
+                        if(endLimitJoinRequests > groupJoinRequests.size) endLimitJoinRequests = groupJoinRequests.size
+                        for(i in startLimitJoinRequests..(endLimitJoinRequests - 1))
+                            shuffledGroupInvitationsAndJoinRequests.add(groupJoinRequests[i])
+                        startLimitJoinRequests += randQuestions
+                    }
+                }
+
+                return@BiFunction shuffledGroupInvitationsAndJoinRequests
             }
         )
     }

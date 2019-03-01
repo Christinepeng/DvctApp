@@ -87,7 +87,7 @@ constructor(
     }
 
     fun getChatsIfExist(userId: String) {
-       uiScope.launch {
+        uiScope.launch {
             val user = "\"id\":\"".plus(userId).plus("\"")
             val chatId = chatMessageRepository.fetchChatIdByUser(user)
             if (chatId != -1 && chatId != 0)
@@ -213,7 +213,7 @@ constructor(
         )
     }
 
-    fun sendMessage(message: String) {
+    fun sendMessage(message: String, image: String?) {
         var parsedMessage = message
         if (mentions.size != 0) {
             for (user in mentions) {
@@ -240,7 +240,7 @@ constructor(
         }
         sendMessagesUseCase.execute(
             callback, SendMessagesUseCase.Params
-                .forMsg(parsedMessage, chatId.toString())
+                .forMsg(parsedMessage, chatId.toString(), image ?: "")
         )
     }
 

@@ -12,7 +12,7 @@ import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import kotlinx.android.synthetic.main.item_answer.view.*
 
 class AnswerViewHolder
-private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
+private constructor(itemView: View, val listener : Listener?) : RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(data: AnswerResponse?, next: AnswerResponse?) {
         data?.attributes?.let {
@@ -25,6 +25,19 @@ private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
                     .load(it.authorInfo?.avatarMedium)
                     .apply(RequestOptions().circleCrop())
                     .into(img_user)
+
+                if(it.images != null && it.images?.size != 0){
+                    GlideApp.with(itemView)
+                        .load(it.images?.get(0))
+                        .into(itemView.img_msg_picture)
+                    itemView.cardview_msg_picture.visibility = View.VISIBLE
+                    itemView.cardview_msg_picture.setOnClickListener {
+                        listener?.onImageTap(data.attributes!!.images!![0])
+                    }
+                } else {
+                    itemView.cardview_msg_picture.visibility = View.GONE
+                    itemView.cardview_msg_picture.setOnClickListener(null)
+                }
 
                 if (next != null) {
                     if (Util.areDatesSameDay(it.createdAt, next.attributes?.createdAt)) {
@@ -55,10 +68,15 @@ private constructor(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     companion object {
 
-        fun create(parent: ViewGroup): AnswerViewHolder {
+        fun create(parent: ViewGroup, listener : Listener?): AnswerViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_answer, parent, false)
-            return AnswerViewHolder(view)
+            return AnswerViewHolder(view, listener)
         }
+    }
+
+    interface Listener {
+
+        fun onImageTap(imageUrl: String)
     }
 }

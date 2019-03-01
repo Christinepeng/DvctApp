@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
-import com.divercity.android.data.entity.user.response.UserResponse;
+import com.divercity.android.data.entity.activity.notification.NotificationResponse;
 import com.divercity.android.features.activity.notifications.usecase.FetchNotificationsUseCase;
 import com.divercity.android.features.jobs.applications.datasource.JobApplicationsDataSource;
 
@@ -19,7 +19,7 @@ import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class NotificationsDataSource extends PageKeyedDataSource<Long, UserResponse> {
+public class NotificationsDataSource extends PageKeyedDataSource<Long, NotificationResponse> {
 
     private static final String TAG = JobApplicationsDataSource.class.getSimpleName();
 
@@ -51,16 +51,16 @@ public class NotificationsDataSource extends PageKeyedDataSource<Long, UserRespo
     }
 
     @Override
-    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, UserResponse> callback) {
+    public void loadInitial(@NonNull final LoadInitialParams<Long> params, @NonNull final LoadInitialCallback<Long, NotificationResponse> callback) {
         // update network states.
         // we also provide an initial load state to the listeners so that the UI can know when the
         // very first list is loaded.
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<UserResponse>> disposableObserver = new DisposableObserver<List<UserResponse>>() {
+        DisposableObserver<List<NotificationResponse>> disposableObserver = new DisposableObserver<List<NotificationResponse>>() {
             @Override
-            public void onNext(List<UserResponse> data) {
+            public void onNext(List<NotificationResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
@@ -90,21 +90,21 @@ public class NotificationsDataSource extends PageKeyedDataSource<Long, UserRespo
             }
         };
         compositeDisposable.add(disposableObserver);
-        fetchNotificationsUseCase.execute(disposableObserver, FetchNotificationsUseCase.Params.Companion.forFollowing(0, params.requestedLoadSize, null));
+        fetchNotificationsUseCase.execute(disposableObserver, FetchNotificationsUseCase.Params.Companion.forFollowing(0, params.requestedLoadSize));
     }
 
     @Override
-    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, UserResponse> callback) {
+    public void loadBefore(@NonNull LoadParams<Long> params, @NonNull LoadCallback<Long, NotificationResponse> callback) {
 
     }
 
     @Override
-    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, UserResponse> callback) {
+    public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, NotificationResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<List<UserResponse>> disposableObserver = new DisposableObserver<List<UserResponse>>() {
+        DisposableObserver<List<NotificationResponse>> disposableObserver = new DisposableObserver<List<NotificationResponse>>() {
             @Override
-            public void onNext(List<UserResponse> data) {
+            public void onNext(List<NotificationResponse> data) {
                 if (data != null) {
                     setRetry(null);
                     callback.onResult(data, params.key + 1);
@@ -128,7 +128,7 @@ public class NotificationsDataSource extends PageKeyedDataSource<Long, UserRespo
         };
 
         compositeDisposable.add(disposableObserver);
-        fetchNotificationsUseCase.execute(disposableObserver, FetchNotificationsUseCase.Params.Companion.forFollowing(params.key.intValue(), params.requestedLoadSize, null));
+        fetchNotificationsUseCase.execute(disposableObserver, FetchNotificationsUseCase.Params.Companion.forFollowing(params.key.intValue(), params.requestedLoadSize));
     }
 
     @NonNull

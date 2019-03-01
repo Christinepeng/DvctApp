@@ -124,4 +124,11 @@ data class ExistingUsersChatListItem(
             return arrayOfNulls(size)
         }
     }
+
+    fun getCheckedPicture(): String? {
+        return if (lastMessagePicture == "https://apinew.pincapp.com/images/default_avatar.png")
+            null
+        else
+            lastMessagePicture
+    }
 }

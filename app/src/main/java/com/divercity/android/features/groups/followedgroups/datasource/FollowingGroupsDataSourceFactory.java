@@ -6,7 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 import com.divercity.android.data.entity.group.GroupResponse;
-import com.divercity.android.features.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
+import com.divercity.android.features.jobs.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
 
 public class FollowingGroupsDataSourceFactory extends DataSource.Factory<Long, GroupResponse> {
 

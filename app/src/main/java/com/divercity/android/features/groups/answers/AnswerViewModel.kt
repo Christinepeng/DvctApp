@@ -26,6 +26,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
 
 /**
  * Created by lucas on 24/12/2018.
@@ -59,7 +60,7 @@ constructor(
     var reconnectingAttempts = 0
 
     var question: Question? = null
-    var questionId : Int = -1
+    var questionId: Int = -1
 
     var hasFetchChatError = false
     var hasFetchGroupMembersError = false
@@ -80,7 +81,7 @@ constructor(
     }
 
     fun initializePagedList(questionId: Int) {
-        val dataSourceFactory = groupRepository.getPagedAnswersByQuestionId(question!!.id!!.toInt())
+        val dataSourceFactory = groupRepository.getPagedAnswersByQuestionId(questionId)
         val config = PagedList.Config.Builder()
             .setPageSize(PAGE_SIZE)
             .setInitialLoadSizeHint(30)
@@ -89,32 +90,6 @@ constructor(
         pagedListLiveData = LivePagedListBuilder(dataSourceFactory, config).build()
         subscribeToPaginatedLiveData.call()
     }
-
-//    fun fetchChatMembers(chatId: String, page: Int, size: Int) {
-//        fetchChatMembersResponse.postValue(Resource.loading(null))
-//        val callback = object : DisposableObserverWrapper<List<UserResponse>>() {
-//            override fun onFail(error: String) {
-//                hasFetchGroupMembersError = true
-//                fetchChatMembersResponse.postValue(Resource.error(error, null))
-//            }
-//
-//            override fun onHttpException(error: JsonElement) {
-//                fetchChatMembersResponse.postValue(Resource.error(error.toString(), null))
-//            }
-//
-//            override fun onSuccess(o: List<UserResponse>) {
-//                hasFetchGroupMembersError = false
-//                chatMembers = o.filter {
-//                    it.id != sessionRepository.getUserId()
-//                }
-//                fetchChatMembersResponse.postValue(Resource.success(o))
-//            }
-//        }
-//        fetchChatMembersUseCase.execute(
-//            callback,
-//            FetchChatMembersUseCase.Params.forMember(chatId, page, size, null)
-//        )
-//    }
 
     fun filterUserList(filter: String) {
         if (!chatMembers.isNullOrEmpty())
@@ -125,77 +100,6 @@ constructor(
                     })
             )
     }
-
-//    fun fetchOrCreateChat(otherUserId: String) {
-//        handlerReconnect.removeCallbacksAndMessages(null)
-//        fetchCreateChatResponse.postValue(Resource.loading(null))
-//        val callback = object : DisposableObserverWrapper<CreateChatResponse>() {
-//            override fun onFail(error: String) {
-//                hasFetchChatError = true
-//                fetchCreateChatResponse.postValue(Resource.error(error, null))
-//
-//                if (reconnectingAttempts != RECONNECTING_ATTEMPTS) {
-//                    Timber.d("fetchOrCreateChat: attemp: ".plus(reconnectingAttempts))
-//                    reconnectingAttempts++
-//                    handlerReconnect.postDelayed({
-//                        fetchOrCreateChat(otherUserId)
-//                    }, 3000)
-//                }
-//            }
-//
-//            override fun onHttpException(error: JsonElement) {
-//                fetchCreateChatResponse.postValue(Resource.error(error.toString(), null))
-//            }
-//
-//            override fun onSuccess(o: CreateChatResponse) {
-//                hasFetchChatError = false
-//                chatId = o.id.toInt()
-//
-//                if (pagedListLiveData == null)
-//                    initializePagedList(o.id.toInt())
-//
-//                fetchMessages(otherUserId, 0, PAGE_SIZE)
-//                fetchCreateChatResponse.postValue(Resource.success(o))
-//                connectToAnswersWebSocket(o.id.toInt())
-//            }
-//        }
-//        fetchOrCreateChatUseCase.execute(
-//            callback,
-//            FetchOrCreateChatUseCase.Params.forUser(otherUserId)
-//        )
-//    }
-
-//    fun fetchMessages(otherUserId: String, page: Int, size: Int) {
-//        fetchMessagesResponse.postValue(Resource.loading(null))
-//        val callback = object : DisposableObserverWrapper<DataChatMessageResponse>() {
-//            override fun onFail(error: String) {
-//                pageFetchList.remove(page)
-//                fetchMessagesResponse.postValue(Resource.error(error, null))
-//            }
-//
-//            override fun onHttpException(error: JsonElement) {
-//                fetchMessagesResponse.postValue(Resource.error(error.toString(), null))
-//            }
-//
-//            override fun onSuccess(o: DataChatMessageResponse) {
-//                fetchMessagesResponse.postValue(Resource.success(o.data?.chats!!))
-//
-//                uiScope.launch {
-//                    chatMessageRepository.insertChatMessagesOnDB(o.data.chats)
-//                }
-//            }
-//        }
-//        fetchMessagesUseCase.execute(
-//            callback, FetchMessagesUseCase.Params
-//                .forMsgs(
-//                    chatId.toString(),
-//                    otherUserId,
-//                    page,
-//                    size,
-//                    null
-//                )
-//        )
-//    }
 
     fun fetchAnswers(questionId: String, page: Int, size: Int, searchQuery: String) {
         fetchAnswersResponse.postValue(Resource.loading(null))
@@ -228,7 +132,7 @@ constructor(
         )
     }
 
-    fun sendNewAnswer(answer : String, images : List<String>?) {
+    fun sendNewAnswer(answer: String, image: String?) {
 //        var parsedMessage = message
 //        if (mentions.size != 0) {
 //            for (user in mentions) {
@@ -237,6 +141,11 @@ constructor(
 //                parsedMessage = parsedMessage.replace(mention, replace)
 //            }
 //        }
+
+        var images: List<String>? = null
+        image?.let {
+            images = listOf(it)
+        }
 
         sendNewAnswerResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<AnswerResponse>() {
@@ -277,14 +186,14 @@ constructor(
             val page = items / PAGE_SIZE
             if (!pageFetchList.contains(page)) {
                 pageFetchList.add(page)
-                fetchAnswers(question!!.id!!, page, PAGE_SIZE,"")
+                fetchAnswers(question!!.id!!, page, PAGE_SIZE, "")
             }
         } else if (visibleItemCount + firstVisibleItemPosition == totalItemCount) {
 //          We add one to check if the next page has been fetched
             val page = totalItemCount / PAGE_SIZE + 1
             if (!pageFetchList.contains(page)) {
                 pageFetchList.add(page)
-                fetchAnswers(question!!.id!!, page, PAGE_SIZE,"")
+                fetchAnswers(question!!.id!!, page, PAGE_SIZE, "")
             }
         }
     }

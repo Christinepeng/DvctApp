@@ -60,7 +60,7 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
                 progress = 0
                 setProgressWithAnim(currentProgress)
             }
-            txt_title.setText(R.string.select_your_country)
+            txt_title.setText(R.string.select_your_location)
 
             txt_progress.text = currentProgress.toString().plus("%")
 

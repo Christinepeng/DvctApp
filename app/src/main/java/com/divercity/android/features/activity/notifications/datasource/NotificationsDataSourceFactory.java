@@ -4,14 +4,12 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.paging.DataSource;
 import android.support.annotation.NonNull;
 
-import com.divercity.android.data.entity.user.response.UserResponse;
+import com.divercity.android.data.entity.activity.notification.NotificationResponse;
 import com.divercity.android.features.activity.notifications.usecase.FetchNotificationsUseCase;
-import com.divercity.android.features.profile.tabfollowing.datasource.FollowingDataSource;
-import com.divercity.android.features.profile.tabfollowing.usecase.FetchFollowingUseCase;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-public class NotificationsDataSourceFactory extends DataSource.Factory<Long, UserResponse> {
+public class NotificationsDataSourceFactory extends DataSource.Factory<Long, NotificationResponse> {
 
     private CompositeDisposable compositeDisposable;
     private FetchNotificationsUseCase fetchNotificationsUseCase;
@@ -25,7 +23,7 @@ public class NotificationsDataSourceFactory extends DataSource.Factory<Long, Use
     }
 
     @Override
-    public DataSource<Long, UserResponse> create() {
+    public DataSource<Long, NotificationResponse> create() {
         NotificationsDataSource followersDataSource = new NotificationsDataSource(
                 compositeDisposable,
                 fetchNotificationsUseCase);

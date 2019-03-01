@@ -9,18 +9,29 @@ import com.divercity.android.R
 
 object OnboardingProgression {
 
-    private const val COUNT_RECRUITER_HR = 100 / 5
-    private const val COUNT_STUDENT = (100 / 8) + 1
-    private const val COUNT_PROF_ENTREPNR_JOBSK = (100 / 7) + 1
+    private var COUNT_RECRUITER = Math.ceil(100 / 5.0).toInt()
+    private var COUNT_HR = Math.ceil(100 / 6.0).toInt()
+    private var COUNT_PROF_ENTREPNR_JOBSK = Math.ceil(100 / 9.0).toInt()
+    private var COUNT_STUDENT = Math.ceil(100 / 8.0).toInt()
 
-    fun getNextNavigationProgressOnboarding(activity: Activity, userTypeId: String, progress: Int): Int {
-
-        return if (userTypeId == activity.getString(R.string.recruiter_id) ||
-                userTypeId == activity.getString(R.string.hiring_manager_id))
-            progress + COUNT_RECRUITER_HR
-        else if (userTypeId == activity.getString(R.string.student_id))
-            progress + COUNT_STUDENT
-        else
-            progress + COUNT_PROF_ENTREPNR_JOBSK
+    fun getNextNavigationProgressOnboarding(
+        activity: Activity,
+        userTypeId: String,
+        progress: Int
+    ): Int {
+        return when (userTypeId) {
+            activity.getString(R.string.recruiter_id) -> {
+                progress + COUNT_RECRUITER
+            }
+            activity.getString(R.string.hiring_manager_id) -> {
+                progress + COUNT_HR
+            }
+            activity.getString(R.string.student_id) -> {
+                progress + COUNT_STUDENT
+            }
+            else -> {
+                progress + COUNT_PROF_ENTREPNR_JOBSK
+            }
+        }
     }
 }

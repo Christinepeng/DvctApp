@@ -361,10 +361,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.listState.value = list_main.layoutManager?.onSaveInstanceState()
-    }
-
-    override fun onPause() {
-        super.onPause()
+        viewModel.onDestroyView()
     }
 
     override fun onResume() {

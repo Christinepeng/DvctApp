@@ -15,13 +15,14 @@ constructor(val sessionRepository: SessionRepository) :
     PagedListAdapter<AnswerResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var retryCallback: RetryCallback? = null
+    var answerListener: AnswerViewHolder.Listener? = null
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return AnswerViewHolder.create(parent)
+        return AnswerViewHolder.create(parent, answerListener)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -39,11 +40,17 @@ constructor(val sessionRepository: SessionRepository) :
 
         private val userDiffCallback = object : DiffUtil.ItemCallback<AnswerResponse>() {
 
-            override fun areItemsTheSame(oldItem: AnswerResponse, newItem: AnswerResponse): Boolean {
+            override fun areItemsTheSame(
+                oldItem: AnswerResponse,
+                newItem: AnswerResponse
+            ): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: AnswerResponse, newItem: AnswerResponse): Boolean {
+            override fun areContentsTheSame(
+                oldItem: AnswerResponse,
+                newItem: AnswerResponse
+            ): Boolean {
                 return oldItem == newItem
             }
         }

@@ -1,5 +1,6 @@
 package com.divercity.android.repository.user
 
+import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
@@ -161,6 +162,16 @@ constructor(
         return userService.fetchUnreadMessagesCount(userId).map { response ->
             checkResponse(response)
             response.body()!!.data.count
+        }
+    }
+
+    override fun fetchNotifications(
+        pageNumber: Int,
+        size: Int
+    ): Observable<List<NotificationResponse>> {
+        return userService.fetchNotifications(pageNumber, size).map { response ->
+            checkResponse(response)
+            response.body()!!.data
         }
     }
 }

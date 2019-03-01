@@ -9,12 +9,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsFragment
-import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsViewModel
-import com.divercity.android.features.profile.tabconnections.adapter.UserAdapter
-import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
-import kotlinx.android.synthetic.main.fragment_list_refresh.*
+import com.divercity.android.data.entity.activity.notification.NotificationResponse
+import com.divercity.android.features.activity.notifications.adapter.NotificationsAdapter
+import com.divercity.android.features.activity.notifications.adapter.NotificationsViewHolder
+import kotlinx.android.synthetic.main.fragment_notifications.*
 import javax.inject.Inject
 
 /**
@@ -23,17 +21,17 @@ import javax.inject.Inject
 
 class NotificationsFragment : BaseFragment(), RetryCallback {
 
-    lateinit var viewModel: ConnectionRequestsViewModel
+    lateinit var viewModel: NotificationsViewModel
 
     @Inject
-    lateinit var adapter: UserAdapter
+    lateinit var adapter: NotificationsAdapter
 
     private var isListRefreshing = false
 
     companion object {
 
-        fun newInstance(): ConnectionRequestsFragment {
-            return ConnectionRequestsFragment()
+        fun newInstance(): NotificationsFragment {
+            return NotificationsFragment()
         }
     }
 
@@ -42,14 +40,22 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(ConnectionRequestsViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(NotificationsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initList()
-//        subscribeToPaginatedLiveData()
+        initList()
+        subscribeToLiveData()
+        subscribeToPaginatedLiveData()
+    }
+
+    private fun subscribeToLiveData(){
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+            subscribeToPaginatedLiveData()
+        })
     }
 
     private fun initList() {
@@ -64,17 +70,17 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
 
-        txt_empty_array.setText(R.string.no_following)
+//        txt_empty_array.setText(R.string.no_following)
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedApplicantsList?.observe(this, Observer {
+        viewModel.pagedApplicantsList.observe(this, Observer {
             adapter.submitList(it)
         })
 
@@ -91,9 +97,9 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
                     isListRefreshing = false
 
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
-                    lay_no_followers.visibility = View.VISIBLE
+                    txt_no_notification.visibility = View.VISIBLE
                 else
-                    lay_no_followers.visibility = View.GONE
+                    txt_no_notification.visibility = View.GONE
 
                 swipe_list_main.isRefreshing = isListRefreshing
             }
@@ -108,15 +114,10 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
     }
 
     private
-    val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
+    val listener: NotificationsViewHolder.Listener = object : NotificationsViewHolder.Listener {
 
-        override fun onUserFollow(user: UserResponse) {
-        }
+        override fun onNotificationClick(notification: NotificationResponse) {
 
-        override fun onUserDirectMessage(user: UserResponse) {
-        }
-
-        override fun onUserClick(user: UserResponse) {
         }
     }
 }

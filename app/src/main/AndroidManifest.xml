@@ -34,8 +34,11 @@
 
             <!-- Branch URI scheme -->
             <intent-filter>
-                <data android:scheme="diverqa" android:host="open" />
+                <data
+                    android:host="open"
+                    android:scheme="diverqa" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
             </intent-filter>
@@ -124,7 +127,7 @@
             android:windowSoftInputMode="adjustPan" />
 
         <activity
-            android:name=".features.agerange.onboarding.OnboartdingAgeActivity"
+            android:name=".features.agerange.onboarding.OnboardingAgeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -169,7 +172,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.jobposting.JobPostingActivity"
+            android:name="com.divercity.android.features.jobs.jobposting.JobPostingActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -184,17 +187,17 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.jobposting.jobtype.JobTypeActivity"
+            android:name="com.divercity.android.features.jobs.jobposting.jobtype.JobTypeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.jobposting.sharetogroup.ShareJobGroupActivity"
+            android:name="com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.jobposting.skills.JobSkillsActivity"
+            android:name="com.divercity.android.features.jobs.jobposting.skills.JobSkillsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -334,6 +337,16 @@
 
         <activity
             android:name=".features.groups.answers.AnswerActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.loadurl.LoadUrlActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.onboarding.selectskill.SelectSkillActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

@@ -10,6 +10,7 @@ import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvit
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
+import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.question.Question
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
@@ -178,7 +179,7 @@ constructor(
     override fun fetchGroupInvitations(
         page: Int,
         size: Int
-    ): Observable<List<GroupInviteResponse>> {
+    ): Observable<List<GroupInvitationNotificationResponse>> {
         return service.fetchGroupInvitations(page, size).map {
             checkResponse(it)
             it.body()?.data

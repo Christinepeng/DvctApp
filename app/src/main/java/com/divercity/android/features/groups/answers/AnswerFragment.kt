@@ -22,16 +22,24 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.extension.networkInfo
+import com.divercity.android.core.utils.GlideApp
+import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
 import com.divercity.android.features.groups.answers.answeradapter.AnswerAdapter
+import com.divercity.android.features.groups.answers.answeradapter.AnswerViewHolder
 import com.divercity.android.features.groups.answers.model.Question
 import kotlinx.android.synthetic.main.fragment_answers.*
+import kotlinx.android.synthetic.main.view_image_btn_full.view.*
+import kotlinx.android.synthetic.main.view_image_btn_small.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
+import pl.aprilapps.easyphotopicker.DefaultCallback
+import pl.aprilapps.easyphotopicker.EasyImage
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -51,6 +59,7 @@ class AnswerFragment : BaseFragment() {
     var isReplacing = false
 
     var question : Question? = null
+    private var photoFile: File? = null
 
     companion object {
 
@@ -123,12 +132,34 @@ class AnswerFragment : BaseFragment() {
             item_quest_cardview_pic_main.visibility = View.GONE
         }
 
+        lay_image.btn_remove_img.setOnClickListener {
+            photoFile = null
+            lay_image.visibility = View.GONE
+        }
+
+        btn_add_image.setOnClickListener {
+            EasyImage.openChooserWithGallery(this, getString(R.string.pick_source), 0)
+        }
+
         btn_send.setOnClickListener {
-            if (et_msg.text.toString() != "") {
-                viewModel.sendNewAnswer(et_msg.text.toString(), null)
+            if (et_msg.text.toString() != "" || photoFile != null) {
+                viewModel.sendNewAnswer(et_msg.text.toString(), ImageUtils.getStringBase64(photoFile, 600, 600))
             }
         }
 
+        lay_image_full_screen.btn_close_full_screen_image.setOnClickListener {
+            lay_image_full_screen.visibility = View.GONE
+        }
+
+        adapter.answerListener = object : AnswerViewHolder.Listener {
+
+            override fun onImageTap(imageUrl: String) {
+                lay_image_full_screen.visibility = View.VISIBLE
+                GlideApp.with(this@AnswerFragment)
+                    .load(imageUrl)
+                    .into(lay_image_full_screen.img_full_screen)
+            }
+        }
         list.adapter = adapter
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
 
@@ -275,6 +306,8 @@ class AnswerFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     btn_send.visibility = View.VISIBLE
                     pb_sending_msg.visibility = View.GONE
+                    photoFile = null
+                    lay_image.visibility = View.GONE
                     et_msg.setText("")
                 }
             }
@@ -303,6 +336,10 @@ class AnswerFragment : BaseFragment() {
     private fun subscribeToPagedListLiveData() {
         viewModel.pagedListLiveData!!.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
+            if(it.isNullOrEmpty())
+                txt_first_comment.visibility = View.VISIBLE
+            else
+                txt_first_comment.visibility = View.GONE
         })
     }
 
@@ -335,6 +372,55 @@ class AnswerFragment : BaseFragment() {
             list_users.visibility = View.VISIBLE
         else
             list_users.visibility = View.GONE
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        EasyImage.handleActivityResult(
+            requestCode,
+            resultCode,
+            data,
+            activity,
+            object : DefaultCallback() {
+                override fun onImagePickerError(
+                    e: Exception?,
+                    source: EasyImage.ImageSource?,
+                    type: Int
+                ) {
+                    //Some error handling
+                    e!!.printStackTrace()
+                    showToast(e.message)
+                }
+
+                override fun onImagesPicked(
+                    imageFiles: List<File>,
+                    source: EasyImage.ImageSource,
+                    type: Int
+                ) {
+                    onPhotosReturned(imageFiles[0])
+                }
+
+                override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
+                    //Cancel handling, you might wanna remove taken photoFile if it was canceled
+                    if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        photoFile?.delete()
+                    }
+                }
+            })
+    }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun onPhotosReturned(file: File?) {
+        lay_image.visibility = View.VISIBLE
+        photoFile = file
+        GlideApp.with(this)
+            .load(file)
+            .into(lay_image.img_added)
     }
 
     private val networkChangeReceiver = object : BroadcastReceiver() {

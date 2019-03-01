@@ -5,7 +5,10 @@ import com.apollographql.apollo.ApolloQueryCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.divercity.android.core.functional.Either
-import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.suspendCancellableCoroutine
 import kotlin.coroutines.resume
 
 /**
@@ -14,14 +17,12 @@ import kotlin.coroutines.resume
 
 abstract class ApolloUseCase<T, Params> {
 
-    protected lateinit var call: ApolloQueryCall<T>
-    protected lateinit var job: Job
+    private var calls = ArrayList<ApolloQueryCall<T>>()
 
     protected abstract fun buildQuery(params: Params): ApolloQueryCall<T>
 
     operator fun invoke(params: Params, onResult: (Either<String, T>) -> Unit = {}) {
-        call = buildQuery(params)
-        job = GlobalScope.launch(Dispatchers.Main) {
+        GlobalScope.launch(Dispatchers.Main) {
 
             onResult(suspendCancellableCoroutine { continuation ->
 
@@ -40,13 +41,12 @@ abstract class ApolloUseCase<T, Params> {
                                 continuation.resume(Either.Right(response.data()!!))
                     }
                 }
+                val call = buildQuery(params)
+                calls.add(call)
                 call.enqueue(callback)
             })
         }
     }
 
-    fun cancel() {
-        job.cancel()
-        call.cancel()
-    }
+    fun cancel() { calls.forEach { it.cancel() } }
 }

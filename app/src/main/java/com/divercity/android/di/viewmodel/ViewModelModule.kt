@@ -38,15 +38,15 @@ import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.features.home.home.HomeViewModel
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingViewModel
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
-import com.divercity.android.features.jobposting.JobPostingViewModel
-import com.divercity.android.features.jobposting.jobtype.JobTypeViewModel
-import com.divercity.android.features.jobposting.sharetogroup.ShareJobGroupViewModel
-import com.divercity.android.features.jobposting.skills.JobSkillsViewModel
 import com.divercity.android.features.jobs.TabJobsViewModel
 import com.divercity.android.features.jobs.applicants.JobApplicantsViewModel
 import com.divercity.android.features.jobs.applications.JobsApplicationsViewModel
 import com.divercity.android.features.jobs.description.detail.JobDetailViewModel
 import com.divercity.android.features.jobs.description.poster.JobDescriptionPosterViewModel
+import com.divercity.android.features.jobs.jobposting.JobPostingViewModel
+import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeViewModel
+import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupViewModel
+import com.divercity.android.features.jobs.jobposting.skills.JobSkillsViewModel
 import com.divercity.android.features.jobs.jobs.JobsListViewModel
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.android.features.jobs.savedjobs.SavedJobsViewModel
@@ -62,6 +62,7 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorViewMode
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationViewModel
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIViewModel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
+import com.divercity.android.features.onboarding.selectskill.SelectSkillViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.profile.ProfileViewModel
 import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
@@ -443,4 +444,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AnswerViewModel::class)
     abstract fun bindsAnswerViewModel(viewModel: AnswerViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectSkillViewModel::class)
+    abstract fun bindsSelectSkillViewModel(viewModel: SelectSkillViewModel): ViewModel
 }

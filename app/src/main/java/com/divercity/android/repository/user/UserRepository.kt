@@ -1,10 +1,10 @@
 package com.divercity.android.repository.user
 
+import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
-import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountResponse
 import com.divercity.android.data.entity.user.followuser.FollowUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import io.reactivex.Observable
@@ -57,4 +57,9 @@ interface UserRepository {
                    size: Int,
                    query: String?
     ): Observable<List<UserResponse>>
+
+    fun fetchNotifications(
+        pageNumber: Int,
+        size: Int
+    ): Observable<List<NotificationResponse>>
 }

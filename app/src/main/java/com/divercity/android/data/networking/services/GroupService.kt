@@ -8,6 +8,7 @@ import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInviteBody
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
+import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
@@ -112,12 +113,11 @@ interface GroupService {
         @Body body: GroupInviteBody
     ): Observable<GroupInviteResponse>
 
-//    TODO update return
     @GET("group_of_interests/my_invites")
     fun fetchGroupInvitations(
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int
-    ): Observable<Response<DataArray<GroupInviteResponse>>>
+    ): Observable<Response<DataArray<GroupInvitationNotificationResponse>>>
 
     @GET("group_of_interests/requests")
     fun fetchGroupJoinRequests(

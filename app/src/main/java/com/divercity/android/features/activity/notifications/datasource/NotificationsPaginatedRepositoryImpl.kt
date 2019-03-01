@@ -4,7 +4,7 @@ import android.arch.lifecycle.Transformations
 import android.arch.paging.LivePagedListBuilder
 import android.arch.paging.PagedList
 import com.divercity.android.core.utils.Listing
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.features.activity.notifications.usecase.FetchNotificationsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
@@ -25,7 +25,7 @@ internal constructor(private val fetchNotificationsUseCase: FetchNotificationsUs
         const val pageSize = 20
     }
 
-    fun fetchData(): Listing<UserResponse> {
+    fun fetchData(): Listing<NotificationResponse> {
 
         val executor = Executors.newFixedThreadPool(5)
 

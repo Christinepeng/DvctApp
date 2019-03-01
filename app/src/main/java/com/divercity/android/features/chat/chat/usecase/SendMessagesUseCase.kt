@@ -13,23 +13,26 @@ import javax.inject.Named
  */
 
 class SendMessagesUseCase @Inject
-constructor(@Named("executor_thread") executorThread: Scheduler,
-            @Named("ui_thread") uiThread: Scheduler,
-            private val repository: ChatRepository)
-    : UseCase<ChatMessageResponse, SendMessagesUseCase.Params>(executorThread, uiThread) {
+constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
+    private val repository: ChatRepository
+) : UseCase<ChatMessageResponse, SendMessagesUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<ChatMessageResponse> {
         return repository.sendMessage(
-                params.message,
-                params.chatId)
+            params.message,
+            params.chatId,
+            params.image
+        )
     }
 
-    class Params private constructor(val message: String, val chatId: String) {
+    class Params private constructor(val message: String, val chatId: String, val image: String) {
 
         companion object {
 
-            fun forMsg(message: String, chatId: String): Params {
-                return Params(message, chatId)
+            fun forMsg(message: String, chatId: String, image: String): Params {
+                return Params(message, chatId, image)
             }
         }
     }

@@ -17,7 +17,7 @@ import com.divercity.android.data.entity.home.RecommendedItem
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.storiesfeatured.StoriesFeaturedResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.apollo.FetchJobUseCase
+import com.divercity.android.features.apollo.FetchJobFromViewHolderUseCase
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.divercity.android.features.home.home.datasource.QuestionsPaginatedRepositoryImpl
@@ -44,7 +44,7 @@ constructor(
     private val session: Session,
     private val notificationHelper: NotificationHelper,
     private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase,
-    private val fetchJobUseCase: FetchJobUseCase
+    private val fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase
 ) : BaseViewModel() {
 
     var featuredList = MutableLiveData<Resource<List<StoriesFeaturedResponse>>>()
@@ -87,7 +87,7 @@ constructor(
 //            val test = user
 //        }
 
-//        fetchJobUseCase.invoke(FetchJobUseCase.Params.forJob("1181")) {
+//        fetchJobFromViewHolderUseCase.invoke(FetchJobFromViewHolderUseCase.Params.forJob("1181")) {
 //            it.either({
 //
 //            }, {
@@ -199,9 +199,12 @@ constructor(
         super.onCleared()
         questionsRepository.clear()
         fetchFeedRecommendedJobsGroupsUseCase.dispose()
-        fetchUnreadMessagesCountUseCase.dispose()
         joinGroupUseCase.dispose()
         requestToJoinUseCase.dispose()
+    }
+
+    fun onDestroyView(){
+        fetchUnreadMessagesCountUseCase.dispose()
     }
 
     fun clearUserData() {

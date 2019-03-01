@@ -215,6 +215,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
         val fragment = GroupAdminActionsDialogFragment.newInstance()
         fragment.listener = object : GroupAdminActionsDialogFragment.Listener {
             override fun onWriteNewPost() {
+                navigator.navigateToCreateTopicActivity(this@GroupDetailFragment, group)
             }
 
             override fun onInvite() {

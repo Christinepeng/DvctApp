@@ -2,10 +2,10 @@ package com.divercity.android.features.activity
 
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.support.v7.app.AppCompatActivity
 import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.features.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_activity.*
 import javax.inject.Inject
@@ -33,11 +33,10 @@ class ActivityFragment : BaseFragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(ActivityViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-        setupToolbar()
     }
 
     private fun setupToolbar() {
-        (activity as HomeActivity).apply {
+        (activity as AppCompatActivity).apply {
             icon_notification.visibility = View.GONE
             supportActionBar?.let {
                 it.setTitle(R.string.activity)
@@ -48,6 +47,7 @@ class ActivityFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setupView()
     }
 

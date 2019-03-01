@@ -1,5 +1,6 @@
 package com.divercity.android.data.networking.services;
 
+import com.divercity.android.data.entity.activity.notification.NotificationResponse;
 import com.divercity.android.data.entity.base.DataArray;
 import com.divercity.android.data.entity.base.DataObject;
 import com.divercity.android.data.entity.device.body.DeviceBody;
@@ -89,4 +90,12 @@ public interface UserService {
             @Query("page[number]") int pageNumber,
             @Query("page[size]") int size,
             @Query("search_query") String query);
+
+    @GET("activity_records")
+    Observable<Response<DataArray<NotificationResponse>>> fetchNotifications(
+            @Query("page[number]") int pageNumber,
+            @Query("page[size]") int size);
+
+//    @POST("activity_records/mark_read")
+//    Observable<Response<DataObject<UserResponse>>> followIndustries(@Body FollowIndustryBody body);
 }

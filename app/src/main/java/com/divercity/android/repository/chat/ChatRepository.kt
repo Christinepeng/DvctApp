@@ -47,7 +47,8 @@ interface ChatRepository {
 
     fun sendMessage(
         message: String,
-        chatId: String
+        chatId: String,
+        image: String
     ): Observable<ChatMessageResponse>
 
     fun fetchChatMembers(

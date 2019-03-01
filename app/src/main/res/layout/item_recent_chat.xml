@@ -64,7 +64,7 @@
         android:textColor="#333241"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/icon_notification"
+        app:layout_constraintEnd_toStartOf="@+id/cardview_msg_picture"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/img_user"
         app:layout_constraintTop_toBottomOf="@+id/txt_name"
@@ -87,5 +87,27 @@
         app:layout_constraintTop_toTopOf="@+id/txt_msg"
         tools:text="1"
         tools:visibility="visible" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardview_msg_picture"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="8dp"
+        android:shape="ring"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_msg"
+        app:layout_constraintEnd_toStartOf="@+id/icon_notification"
+        app:layout_constraintTop_toTopOf="@+id/txt_msg">
+
+        <ImageView
+            android:id="@+id/img_msg_picture"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:contentDescription="TODO"
+            android:scaleType="centerCrop"
+            tools:background="@android:color/black" />
+
+    </android.support.v7.widget.CardView>
 
 </android.support.constraint.ConstraintLayout>

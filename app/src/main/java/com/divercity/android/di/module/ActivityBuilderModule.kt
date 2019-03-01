@@ -1,6 +1,6 @@
 package com.divercity.android.di.module
 
-import com.divercity.android.features.agerange.onboarding.OnboartdingAgeActivity
+import com.divercity.android.features.agerange.onboarding.OnboardingAgeActivity
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.android.features.chat.chat.ChatActivity
 import com.divercity.android.features.chat.creategroupchat.CreateGroupChatActivity
@@ -26,14 +26,15 @@ import com.divercity.android.features.groups.onboarding.SelectGroupActivity
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingActivity
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryActivity
-import com.divercity.android.features.jobposting.JobPostingActivity
-import com.divercity.android.features.jobposting.jobtype.JobTypeActivity
-import com.divercity.android.features.jobposting.sharetogroup.ShareJobGroupActivity
-import com.divercity.android.features.jobposting.skills.JobSkillsActivity
 import com.divercity.android.features.jobs.applicants.JobApplicantsActivity
 import com.divercity.android.features.jobs.description.detail.JobDetailActivity
 import com.divercity.android.features.jobs.description.poster.JobDescriptionPosterActivity
+import com.divercity.android.features.jobs.jobposting.JobPostingActivity
+import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeActivity
+import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupActivity
+import com.divercity.android.features.jobs.jobposting.skills.JobSkillsActivity
 import com.divercity.android.features.linkedin.LinkedinActivity
+import com.divercity.android.features.loadurl.LoadUrlActivity
 import com.divercity.android.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.android.features.login.step1.EnterEmailActivity
@@ -44,6 +45,7 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIActivity
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
+import com.divercity.android.features.onboarding.selectskill.SelectSkillActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
@@ -89,7 +91,7 @@ abstract class ActivityBuilderModule {
     abstract fun bindSelectGroupActivity(): SelectGroupActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectBirthdayActivity(): OnboartdingAgeActivity
+    abstract fun bindSelectBirthdayActivity(): OnboardingAgeActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectCompanyActivity(): OnboardingCompanyActivity
@@ -213,4 +215,10 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindAnswerActivity(): AnswerActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindLoadUrlActivity(): LoadUrlActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindSelectSkillActivity(): SelectSkillActivity
 }

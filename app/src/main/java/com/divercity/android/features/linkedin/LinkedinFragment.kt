@@ -78,7 +78,7 @@ class LinkedinFragment : BaseFragment() {
 
     private fun loadWeb(){
         showProgress()
-        web_view_linkedin.webViewClient = object : WebViewClient() {
+        web_view.webViewClient = object : WebViewClient() {
 
             @SuppressWarnings("deprecation")
             override fun shouldOverrideUrlLoading(view: WebView?, url: String): Boolean {
@@ -121,7 +121,7 @@ class LinkedinFragment : BaseFragment() {
             }
         }
         Timber.e("Authorize URL: ".plus(getAuthorizationUrl()))
-        web_view_linkedin.loadUrl(getAuthorizationUrl())
+        web_view.loadUrl(getAuthorizationUrl())
     }
 
     private fun showDialogConnectionError() {
@@ -172,7 +172,7 @@ class LinkedinFragment : BaseFragment() {
             } else {
                 //Default behaviour
                 Timber.i("Redirecting to: $authorizationUrl")
-                web_view_linkedin.loadUrl(authorizationUrl)
+                web_view.loadUrl(authorizationUrl)
             }
         }
         return true

@@ -1,6 +1,6 @@
 package com.divercity.android.features.profile.settings.accountsettings
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
 import com.divercity.android.R

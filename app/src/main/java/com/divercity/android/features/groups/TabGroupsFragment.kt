@@ -1,11 +1,11 @@
 package com.divercity.android.features.groups
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.SearchView
+import androidx.viewpager.widget.ViewPager
+import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem

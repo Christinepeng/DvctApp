@@ -1,8 +1,8 @@
 package com.divercity.android.data.entity.user.response
 
-import android.arch.persistence.room.Embedded
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.TypeConverters
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.TypeConverters
 import com.divercity.android.db.converter.CompanyTypeConverter
 import com.divercity.android.db.converter.IntListTypeConverter
 import com.divercity.android.db.converter.StringListTypeConverter

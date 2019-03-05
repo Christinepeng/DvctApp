@@ -29,22 +29,22 @@ class ApiApolloModule {
     ): ApolloClient {
 
         val okHttp = OkHttpClient
-                .Builder()
-                .addInterceptor { chain ->
-                    val original = chain.request()
-                    val builder = original.newBuilder().method(
-                            original.method(),
-                            original.body()
-                    )
-                    builder.addHeader("access-token", sessionRepository.getAccessToken()!!)
-                    builder.addHeader("client", sessionRepository.getClient()!!)
-                    builder.addHeader("uid", sessionRepository.getUid()!!)
+            .Builder()
+            .addInterceptor { chain ->
+                val original = chain.request()
+                val builder = original.newBuilder().method(
+                    original.method(),
+                    original.body()
+                )
+                builder.addHeader("access-token", sessionRepository.getAccessToken()!!)
+                builder.addHeader("client", sessionRepository.getClient()!!)
+                builder.addHeader("uid", sessionRepository.getUid()!!)
 
-                    chain.proceed(builder.build())
-                }
-                .addInterceptor(loggingInterceptor)
-                .addInterceptor(codeCheckConnectivityInterceptor)
-                .build()
+                chain.proceed(builder.build())
+            }
+            .addInterceptor(loggingInterceptor)
+            .addInterceptor(codeCheckConnectivityInterceptor)
+            .build()
 
         val customTypeAdapter = object : CustomTypeAdapter<String> {
 
@@ -58,9 +58,10 @@ class ApiApolloModule {
         }
 
         return ApolloClient.builder()
-                .serverUrl("https://".plus(BuildConfig.BASE_URL).plus("/graphql"))
-                .okHttpClient(okHttp)
-                .addCustomTypeAdapter(CustomType.ID, customTypeAdapter)
-                .build()
+            .serverUrl("https://".plus(BuildConfig.BASE_URL).plus("/graphql"))
+            .okHttpClient(okHttp)
+            .addCustomTypeAdapter(CustomType.ID, customTypeAdapter)
+            .addCustomTypeAdapter(CustomType.JSON, customTypeAdapter)
+            .build()
     }
 }

@@ -1,13 +1,12 @@
 package com.divercity.android.features.jobs.jobposting.skills.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-
 import com.divercity.android.data.entity.skills.SkillResponse;
-import com.divercity.android.features.jobs.jobposting.skills.usecase.FetchSkillsUseCase;
+import com.divercity.android.features.onboarding.selectskill.usecase.FetchSkillsUseCase;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class SkillDataSourceFactory extends DataSource.Factory<Long, SkillResponse> {

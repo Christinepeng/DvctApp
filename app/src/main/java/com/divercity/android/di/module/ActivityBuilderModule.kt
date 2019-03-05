@@ -47,6 +47,7 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectskill.SelectSkillActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
+import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.profile.settings.interests.InterestsActivity
@@ -221,4 +222,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectSkillActivity(): SelectSkillActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindUploadResumeActivity(): UploadResumeActivity
 }

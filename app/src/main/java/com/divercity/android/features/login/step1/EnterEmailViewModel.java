@@ -1,7 +1,7 @@
 package com.divercity.android.features.login.step1;
 
 import android.app.Application;
-import android.arch.lifecycle.MutableLiveData;
+import androidx.lifecycle.MutableLiveData;
 
 import com.divercity.android.R;
 import com.divercity.android.core.base.BaseViewModel;

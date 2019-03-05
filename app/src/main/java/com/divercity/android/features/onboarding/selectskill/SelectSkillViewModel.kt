@@ -1,16 +1,21 @@
 package com.divercity.android.features.onboarding.selectskill
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
-
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
-import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.company.base.company.CompanyPaginatedRepositoryImpl
-
+import com.divercity.android.data.Resource
+import com.divercity.android.data.entity.profile.profile.User
+import com.divercity.android.data.entity.skills.SkillResponse
+import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.jobs.jobposting.skills.datasource.SkillPaginatedRepositoryImpl
+import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
+import com.divercity.android.repository.session.SessionRepository
+import com.google.gson.JsonElement
 import javax.inject.Inject
 
 /**
@@ -18,37 +23,45 @@ import javax.inject.Inject
  */
 
 class SelectSkillViewModel @Inject
-constructor(private val repository: CompanyPaginatedRepositoryImpl) : BaseViewModel() {
+constructor(private val repository: SkillPaginatedRepositoryImpl,
+            private val sessionRepository: SessionRepository,
+            private val updateUserProfileUseCase: UpdateUserProfileUseCase
+            ) : BaseViewModel() {
 
-    lateinit var pagedCompanyList: LiveData<PagedList<CompanyResponse>>
-    lateinit var listingPaginatedCompany: Listing<CompanyResponse>
+    lateinit var pagedSkillsList: LiveData<PagedList<SkillResponse>>
+    private lateinit var listingPaginatedSkill: Listing<SkillResponse>
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var lastSearch: String? = null
+    val updateUserProfileResponse = SingleLiveEvent<Resource<UserResponse>>()
+    private var lastSearch: String? = null
 
-    val networkState: LiveData<NetworkState>
-        get() = listingPaginatedCompany.networkState
+    val accountType: String
+        get() = sessionRepository.getAccountType()
 
-    val refreshState: LiveData<NetworkState>
-        get() = listingPaginatedCompany.refreshState
-
-    fun retry() {
-        repository.retry()
+    init {
+        fetchSkills(null, null)
     }
 
-    fun refresh() {
-        repository.refresh()
-    }
+    fun networkState(): LiveData<NetworkState> = listingPaginatedSkill.networkState
 
-    fun fetchCompanies(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-       if (searchQuery != lastSearch) {
+    fun refreshState(): LiveData<NetworkState> = listingPaginatedSkill.refreshState
+
+    fun retry() = repository.retry()
+
+    fun refresh() = repository.refresh()
+
+    fun fetchSkills(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
+        if (searchQuery == null) {
+            lastSearch = ""
+            fetchData(lifecycleOwner, searchQuery)
+        } else if (searchQuery != lastSearch) {
             lastSearch = searchQuery
             fetchData(lifecycleOwner, searchQuery)
         }
     }
 
-    private fun fetchData(lifecycleOwner: LifecycleOwner?, query: String?) {
-        listingPaginatedCompany = repository.fetchData(query)
-        pagedCompanyList = listingPaginatedCompany.pagedList
+    private fun fetchData(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
+        listingPaginatedSkill = repository.fetchData(searchQuery)
+        pagedSkillsList = listingPaginatedSkill.pagedList
 
         lifecycleOwner?.let {
             removeObservers(it)
@@ -57,8 +70,34 @@ constructor(private val repository: CompanyPaginatedRepositoryImpl) : BaseViewMo
     }
 
     private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState.removeObservers(lifecycleOwner)
-        refreshState.removeObservers(lifecycleOwner)
-        pagedCompanyList.removeObservers(lifecycleOwner)
+        networkState().removeObservers(lifecycleOwner)
+        refreshState().removeObservers(lifecycleOwner)
+        pagedSkillsList.removeObservers(lifecycleOwner)
+    }
+
+    fun addSkills(skills: List<String>) {
+        updateUserProfileResponse.postValue(Resource.loading<UserResponse>(null))
+
+        val callback = object : DisposableObserverWrapper<UserResponse>() {
+            override fun onFail(error: String) {
+                updateUserProfileResponse.postValue(Resource.error<UserResponse>(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                updateUserProfileResponse.postValue(
+                    Resource.error<UserResponse>(
+                        error.toString(),
+                        null
+                    )
+                )
+            }
+
+            override fun onSuccess(o: UserResponse) {
+                updateUserProfileResponse.postValue(Resource.success(o))
+            }
+        }
+        val user = User()
+        user.skillList = skills
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
     }
 }

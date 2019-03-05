@@ -1,7 +1,7 @@
 package com.divercity.android.features.jobs
 
 import android.app.Application
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import android.view.View
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.repository.session.SessionRepository

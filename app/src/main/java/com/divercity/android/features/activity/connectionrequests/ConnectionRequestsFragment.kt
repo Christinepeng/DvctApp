@@ -1,16 +1,16 @@
 package com.divercity.android.features.activity.connectionrequests
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.tabconnections.adapter.UserAdapter
+import com.divercity.android.features.activity.connectionrequests.adapter.ConnectionRequestAdapter
 import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
@@ -24,7 +24,7 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: ConnectionRequestsViewModel
 
     @Inject
-    lateinit var adapter: UserAdapter
+    lateinit var adapter: ConnectionRequestAdapter
 
     private var isListRefreshing = false
 
@@ -52,7 +52,7 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
 
     private fun initList() {
         adapter.setRetryCallback(this)
-        adapter.setListener(listener)
+//        adapter.setListener(listener)
         list.adapter = adapter
 
         swipe_list_main.apply {
@@ -107,7 +107,7 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
     private
     val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
 
-        override fun onUserFollow(user: UserResponse) {
+        override fun onConnectUser(user: UserResponse) {
         }
 
         override fun onUserDirectMessage(user: UserResponse) {

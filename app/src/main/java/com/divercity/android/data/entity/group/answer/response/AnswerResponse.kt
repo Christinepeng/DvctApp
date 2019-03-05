@@ -1,9 +1,9 @@
 package com.divercity.android.data.entity.group.answer.response
 
-import android.arch.persistence.room.Embedded
-import android.arch.persistence.room.Entity
-import android.arch.persistence.room.Ignore
-import android.arch.persistence.room.TypeConverters
+import androidx.room.Embedded
+import androidx.room.Entity
+import androidx.room.Ignore
+import androidx.room.TypeConverters
 import com.divercity.android.db.converter.AuthorInfoConverter
 import com.divercity.android.db.converter.DateTypeConverter
 import com.divercity.android.db.converter.IntListTypeConverter

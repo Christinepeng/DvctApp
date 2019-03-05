@@ -1,12 +1,11 @@
 package com.divercity.android.features.activity.connectionrequests.datasource
 
-import android.arch.lifecycle.Transformations
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.Transformations
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.group.ConnectionItem
 import com.divercity.android.features.activity.connectionrequests.usecase.FetchConnectionRequestsUseCase
-import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
 import javax.inject.Inject
@@ -17,9 +16,7 @@ import javax.inject.Inject
 
 class ConnectionRequestsPaginatedRepositoryImpl @Inject
 internal constructor(
-    private val fetchConnectionRequestsUseCase: FetchConnectionRequestsUseCase,
-    private val sessionRepository: SessionRepository
-) {
+    private val fetchConnectionRequestsUseCase: FetchConnectionRequestsUseCase) {
 
     private lateinit var notificationsDataSourceFactory: ConnectionRequestsDataSourceFactory
     private val compositeDisposable = CompositeDisposable()

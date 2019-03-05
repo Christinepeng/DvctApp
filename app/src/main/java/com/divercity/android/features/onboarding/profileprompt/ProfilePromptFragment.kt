@@ -1,9 +1,9 @@
 package com.divercity.android.features.onboarding.profileprompt
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import kotlinx.android.synthetic.main.fragment_profile_prompt.*
@@ -34,9 +34,9 @@ class ProfilePromptFragment : BaseFragment() {
         viewModel.showRecruiterText.observe(this, Observer {
             it?.let { data ->
                 if (data)
-                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_recruiter)
+                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_recruiter, viewModel.userName)
                 else
-                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_nonrecruiter)
+                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_nonrecruiter, viewModel.userName)
             }
         })
     }

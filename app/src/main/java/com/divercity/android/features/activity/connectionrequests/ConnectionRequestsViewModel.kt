@@ -1,12 +1,12 @@
 package com.divercity.android.features.activity.connectionrequests
 
-import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
-import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.tabfollowing.datasource.FollowingPaginatedRepositoryImpl
+import com.divercity.android.data.entity.group.ConnectionItem
+import com.divercity.android.features.activity.connectionrequests.datasource.ConnectionRequestsPaginatedRepositoryImpl
 import javax.inject.Inject
 
 /**
@@ -14,16 +14,16 @@ import javax.inject.Inject
  */
 
 class ConnectionRequestsViewModel @Inject
-constructor(private val repository: FollowingPaginatedRepositoryImpl) : BaseViewModel() {
+constructor(private val repository: ConnectionRequestsPaginatedRepositoryImpl) : BaseViewModel() {
 
-    var pagedApplicantsList: LiveData<PagedList<UserResponse>> ?= null
-    private lateinit var listingPaginatedJob: Listing<UserResponse>
+    var pagedApplicantsList: LiveData<PagedList<ConnectionItem>> ?= null
+    private lateinit var listingPaginatedJob: Listing<ConnectionItem>
 
-//    init {
-//        fetchFollowing()
-//    }
+    init {
+        fetchConnectionRequests()
+    }
 
-    private fun fetchFollowing() {
+    private fun fetchConnectionRequests() {
         listingPaginatedJob = repository.fetchData()
         pagedApplicantsList = listingPaginatedJob.pagedList
     }

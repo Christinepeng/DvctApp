@@ -66,13 +66,9 @@ constructor(
         return getAccessToken() != null && getUid() != null && getClient() != null
     }
 
-    override fun clearUserData() {
+    override suspend fun clearUserData() {
         currentLoggedUser = null
-        uiScope.launch {
-            withContext(Dispatchers.IO) {
-                userDao.deleteUser()
-            }
-        }
+        userDao.deleteUser()
         sharedPreferencesManager.clearAllData()
     }
 

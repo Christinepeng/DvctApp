@@ -1,6 +1,6 @@
 package com.divercity.android.features.contacts.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.divercity.android.features.contacts.model.PhoneContact
 import javax.inject.Inject

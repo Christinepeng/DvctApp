@@ -1,9 +1,8 @@
 package com.divercity.android.features.activity.module;
 
-import android.support.v4.app.FragmentManager;
-
 import com.divercity.android.features.activity.ActivityFragment;
 
+import androidx.fragment.app.FragmentManager;
 import dagger.Module;
 import dagger.Provides;
 

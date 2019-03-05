@@ -1,10 +1,5 @@
 package com.divercity.android.features.home.home.datasource;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
-
 import com.divercity.android.core.base.PaginatedRepository;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.entity.home.HomeItem;
@@ -16,6 +11,10 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**

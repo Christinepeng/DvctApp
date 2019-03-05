@@ -1,6 +1,6 @@
 package com.divercity.android.repository.group
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.group.answer.body.AnswerBody

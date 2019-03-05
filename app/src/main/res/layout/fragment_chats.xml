@@ -8,20 +8,20 @@
         android:id="@+id/include_toolbar"
         layout="@layout/view_toolbar" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_list_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/include_toolbar">
 
-        <android.support.v7.widget.RecyclerView
+        <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/white"
-            app:layoutManager="android.support.v7.widget.LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <LinearLayout
         android:id="@+id/lay_no_messages"
@@ -51,7 +51,7 @@
             android:textColor="@color/textTitle"
             android:textSize="15sp" />
 
-        <android.support.v7.widget.AppCompatButton
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/btn_new_chat"
             style="@style/AppText"
             android:layout_width="match_parent"
@@ -82,7 +82,7 @@
         android:text="@string/no_results"
         android:visibility="gone" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_create_new_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -8,7 +8,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
-import android.support.v4.app.NotificationCompat
+import androidx.core.app.NotificationCompat
 import com.divercity.android.R
 import com.divercity.android.features.chat.chat.ChatActivity
 import com.facebook.FacebookSdk.getApplicationContext

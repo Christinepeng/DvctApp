@@ -1,6 +1,6 @@
 package com.divercity.android.features.home.home.adapter.recommended
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.home.RecommendedItem

@@ -1,6 +1,7 @@
 package com.divercity.android.core.base
 
 import android.os.Bundle
+import android.view.View
 import com.divercity.android.R
 import com.divercity.android.Session
 import com.divercity.android.core.bus.RxBus
@@ -10,6 +11,7 @@ import com.divercity.android.core.ui.IOnBackPressed
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.Disposable
+import kotlinx.android.synthetic.main.activity_home.*
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -73,9 +75,18 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
             getString(R.string.ok)
         )
         customOneBtnDialogFragment.setListener {
-            session.logout()
-            navigator.navigateToEnterEmailActivity(this)
+            logout()
         }
         customOneBtnDialogFragment.show(supportFragmentManager, null)
+    }
+
+    fun logout(){
+        include_loading.visibility = View.VISIBLE
+        session.logout(::onFinish)
+    }
+
+    private fun onFinish(){
+        include_loading.visibility = View.GONE
+        navigator.navigateToEnterEmailActivity(this)
     }
 }

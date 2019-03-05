@@ -1,15 +1,15 @@
 package com.divercity.android.features.home
 
-import android.arch.lifecycle.ViewModelProvider
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.StateListDrawable
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v4.app.Fragment
-import android.support.v4.content.res.ResourcesCompat
+import android.view.View
+import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
@@ -19,13 +19,14 @@ import com.divercity.android.Session
 import com.divercity.android.core.bus.RxBus
 import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.navigation.Navigator
+import com.divercity.android.features.activity.ActivityFragment
 import com.divercity.android.features.dialogs.CompletedProfileDialogFragment
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
-import com.divercity.android.features.activity.ActivityFragment
 import com.divercity.android.features.jobs.TabJobsFragment
 import com.divercity.android.features.profile.ProfileFragment
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_home.*
@@ -149,6 +150,7 @@ class HomeActivity : DaggerAppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         if (!logoutDisposable.isDisposed) logoutDisposable.dispose()
+        session.cancel()
     }
 
     private fun showUnauthorizedUser() {
@@ -158,17 +160,18 @@ class HomeActivity : DaggerAppCompatActivity() {
             getString(R.string.ok)
         )
         customOneBtnDialogFragment.setListener {
-            session.logout()
-            navigator.navigateToEnterEmailActivity(this)
+            logout()
         }
         customOneBtnDialogFragment.show(supportFragmentManager, null)
     }
 
-    override fun onStop() {
-        super.onStop()
+    fun logout(){
+        include_loading.visibility = View.VISIBLE
+        session.logout(::onFinish)
     }
 
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
+    private fun onFinish(){
+        include_loading.visibility = View.GONE
+        navigator.navigateToEnterEmailActivity(this)
     }
 }

@@ -1,8 +1,8 @@
 package com.divercity.android.features.groups.answers
 
-import android.arch.lifecycle.LiveData
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.LiveData
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import android.os.Handler
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.MySocket

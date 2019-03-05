@@ -1,8 +1,8 @@
 package com.divercity.android.features.jobs.similarjobs.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
+import androidx.annotation.NonNull;
 
 import com.divercity.android.data.entity.job.response.JobResponse;
 import com.divercity.android.features.jobs.similarjobs.usecase.FetchSimilarJobsUseCase;

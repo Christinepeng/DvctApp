@@ -1,18 +1,18 @@
 package com.divercity.android.features.activity.connectionrequests.adapter
 
-import android.arch.paging.PagedListAdapter
-import android.support.v7.util.DiffUtil
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.activity.notification.NotificationResponse
+import com.divercity.android.data.entity.group.ConnectionItem
 import javax.inject.Inject
 
 class ConnectionRequestAdapter @Inject
-constructor() : PagedListAdapter<NotificationResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+constructor() : PagedListAdapter<ConnectionItem, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -75,13 +75,13 @@ constructor() : PagedListAdapter<NotificationResponse, RecyclerView.ViewHolder>(
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<NotificationResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<ConnectionItem>() {
 
-            override fun areItemsTheSame(oldItem: NotificationResponse, newItem: NotificationResponse): Boolean {
-                return oldItem.id == newItem.id
+            override fun areItemsTheSame(oldItem: ConnectionItem, newItem: ConnectionItem): Boolean {
+                return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: NotificationResponse, newItem: NotificationResponse): Boolean {
+            override fun areContentsTheSame(oldItem: ConnectionItem, newItem: ConnectionItem): Boolean {
                 return oldItem == newItem
             }
         }

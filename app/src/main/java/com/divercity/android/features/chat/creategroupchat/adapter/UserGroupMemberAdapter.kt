@@ -1,6 +1,6 @@
 package com.divercity.android.features.chat.creategroupchat.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.newgroupchat.adapter.UserMultipleViewHolder

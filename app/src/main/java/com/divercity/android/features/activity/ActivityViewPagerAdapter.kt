@@ -1,11 +1,11 @@
 package com.divercity.android.features.activity
 
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
 import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsFragment
 import com.divercity.android.features.activity.notifications.NotificationsFragment

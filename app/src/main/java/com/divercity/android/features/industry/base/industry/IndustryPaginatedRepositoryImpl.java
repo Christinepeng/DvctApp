@@ -1,10 +1,10 @@
 package com.divercity.android.features.industry.base.industry;
 
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.Transformations;
-import android.arch.paging.LivePagedListBuilder;
-import android.arch.paging.PagedList;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
+import androidx.annotation.Nullable;
 
 import com.divercity.android.core.base.PaginatedQueryRepository;
 import com.divercity.android.core.utils.Listing;

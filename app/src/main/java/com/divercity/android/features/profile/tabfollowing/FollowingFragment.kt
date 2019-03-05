@@ -1,9 +1,9 @@
 package com.divercity.android.features.profile.tabfollowing
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -107,7 +107,7 @@ class FollowingFragment : BaseFragment(), RetryCallback {
     private
     val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
 
-        override fun onUserFollow(user: UserResponse) {
+        override fun onConnectUser(user: UserResponse) {
         }
 
         override fun onUserDirectMessage(user: UserResponse) {

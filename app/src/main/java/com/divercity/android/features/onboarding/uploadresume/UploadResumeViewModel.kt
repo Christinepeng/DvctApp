@@ -1,8 +1,8 @@
 package com.divercity.android.features.onboarding.uploadresume
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
@@ -10,6 +10,7 @@ import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.company.base.company.CompanyPaginatedRepositoryImpl
+import com.divercity.android.repository.session.SessionRepository
 
 import javax.inject.Inject
 
@@ -18,12 +19,18 @@ import javax.inject.Inject
  */
 
 class UploadResumeViewModel @Inject
-constructor(private val repository: CompanyPaginatedRepositoryImpl) : BaseViewModel() {
+constructor(
+    private val repository: CompanyPaginatedRepositoryImpl,
+    private val sessionRepository: SessionRepository
+) : BaseViewModel() {
 
     lateinit var pagedCompanyList: LiveData<PagedList<CompanyResponse>>
     lateinit var listingPaginatedCompany: Listing<CompanyResponse>
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var lastSearch: String? = null
+
+    val accountType: String
+        get() = sessionRepository.getAccountType()
 
     val networkState: LiveData<NetworkState>
         get() = listingPaginatedCompany.networkState
@@ -40,7 +47,7 @@ constructor(private val repository: CompanyPaginatedRepositoryImpl) : BaseViewMo
     }
 
     fun fetchCompanies(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-       if (searchQuery != lastSearch) {
+        if (searchQuery != lastSearch) {
             lastSearch = searchQuery
             fetchData(lifecycleOwner, searchQuery)
         }

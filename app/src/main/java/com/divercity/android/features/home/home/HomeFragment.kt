@@ -1,15 +1,15 @@
 package com.divercity.android.features.home.home
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.divercity.android.BuildConfig
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -289,8 +289,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.logout -> {
-                viewModel.clearUserData()
-                navigator.navigateToEnterEmailActivity(activity!!)
+                (activity as HomeActivity).logout()
                 true
             }
             R.id.action_search -> {

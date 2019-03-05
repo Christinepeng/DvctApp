@@ -1,7 +1,7 @@
 package com.divercity.android.features.chat.chat.useradapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.data.entity.user.response.UserResponse
 import javax.inject.Inject
 

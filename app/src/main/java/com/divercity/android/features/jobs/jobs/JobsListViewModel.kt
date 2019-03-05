@@ -1,8 +1,8 @@
 package com.divercity.android.features.jobs.jobs
 
-import android.arch.lifecycle.LifecycleOwner
-import android.arch.lifecycle.LiveData
-import android.arch.paging.PagedList
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.LiveData
+import androidx.paging.PagedList
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
@@ -52,8 +52,8 @@ constructor(
         listingPaginatedJob = repository.fetchData(searchQuery)
         pagedJobsList = listingPaginatedJob.pagedList
 
-        lifecycleOwner?.let { lifecycleOwner ->
-            removeObservers(lifecycleOwner)
+        lifecycleOwner?.let {
+            removeObservers(it)
             subscribeToPaginatedLiveData.call()
         }
     }

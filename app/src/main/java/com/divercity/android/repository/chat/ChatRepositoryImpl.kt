@@ -1,6 +1,6 @@
 package com.divercity.android.repository.chat
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import com.divercity.android.data.entity.chat.addchatmemberbody.AddChatMemberBody
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
@@ -107,15 +107,11 @@ constructor(
     }
 
     override suspend fun deleteRecentChatsDB() {
-        return withContext(Dispatchers.IO) {
-            recentChatsDao.deleteRecentChats()
-        }
+        recentChatsDao.deleteRecentChats()
     }
 
     override suspend fun deleteChatMessagesDB() {
-        return withContext(Dispatchers.IO) {
-            chatMessageDao.deleteChatMessages()
-        }
+        chatMessageDao.deleteChatMessages()
     }
 
     override suspend fun fetchChatIdByUser(userId: String): Int {

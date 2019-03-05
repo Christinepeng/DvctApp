@@ -1,7 +1,7 @@
 package com.divercity.android.di.viewmodel
 
-import android.arch.lifecycle.ViewModel
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.divercity.android.features.activity.ActivityViewModel
 import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsViewModel
 import com.divercity.android.features.activity.notifications.NotificationsViewModel
@@ -64,6 +64,7 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.android.features.onboarding.selectskill.SelectSkillViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
+import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
 import com.divercity.android.features.profile.ProfileViewModel
 import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsViewModel
@@ -449,4 +450,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectSkillViewModel::class)
     abstract fun bindsSelectSkillViewModel(viewModel: SelectSkillViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UploadResumeViewModel::class)
+    abstract fun bindsUploadResumeViewModel(viewModel: UploadResumeViewModel): ViewModel
 }

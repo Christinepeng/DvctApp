@@ -1,16 +1,11 @@
 package com.divercity.android.features.chat.chat
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Typeface
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.text.Editable
 import android.text.Spannable
 import android.text.TextWatcher
@@ -19,6 +14,11 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.extension.networkInfo
@@ -30,6 +30,7 @@ import com.divercity.android.features.chat.chat.chatadapter.ChatAdapter
 import com.divercity.android.features.chat.chat.chatadapter.ChatViewHolder
 import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
+import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.view_image_btn_full.view.*
 import kotlinx.android.synthetic.main.view_image_btn_small.view.*
@@ -44,7 +45,7 @@ import javax.inject.Inject
  * Created by lucas on 24/12/2018.
  */
 
-class ChatFragment : BaseFragment() {
+class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: ChatViewModel
     var userName: String? = null
@@ -122,6 +123,14 @@ class ChatFragment : BaseFragment() {
         }
 
         adapter.chatListener = object : ChatViewHolder.Listener {
+
+            override fun onJobApply(jobId: String) {
+                showJobApplyDialog(jobId)
+            }
+
+            override fun onJobClick(jobId: String) {
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, jobId)
+            }
 
             override fun onImageTap(imageUrl: String) {
                 lay_image_full_screen.visibility = View.VISIBLE
@@ -357,10 +366,7 @@ class ChatFragment : BaseFragment() {
     }
 
     private fun showList(active: Boolean) {
-        if (active)
-            list_users.visibility = View.VISIBLE
-        else
-            list_users.visibility = View.GONE
+        list_users.visibility = if(active) View.VISIBLE else View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -400,6 +406,11 @@ class ChatFragment : BaseFragment() {
             })
     }
 
+    private fun showJobApplyDialog(jobId: String?) {
+        val dialog = JobApplyDialogFragment.newInstance(jobId!!)
+        dialog.show(childFragmentManager, null)
+    }
+
     private fun showToast(msg: String?) {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
@@ -420,5 +431,8 @@ class ChatFragment : BaseFragment() {
                 viewModel.checkErrorsToReconnect()
             }
         }
+    }
+
+    override fun onSuccessJobApply() {
     }
 }

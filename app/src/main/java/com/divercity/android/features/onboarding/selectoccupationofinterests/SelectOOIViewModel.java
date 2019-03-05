@@ -1,11 +1,5 @@
 package com.divercity.android.features.onboarding.selectoccupationofinterests;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PagedList;
-import android.support.annotation.Nullable;
-
 import com.divercity.android.core.base.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
@@ -22,6 +16,12 @@ import com.google.gson.JsonElement;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PagedList;
 
 /**
  * Created by lucas on 17/10/2018.

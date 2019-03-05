@@ -81,6 +81,7 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragment
 import com.divercity.android.features.onboarding.selectskill.SelectSkillFragment
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
+import com.divercity.android.features.onboarding.uploadresume.UploadResumeFragment
 import com.divercity.android.features.profile.ProfileFragment
 import com.divercity.android.features.profile.module.ProfileModule
 import com.divercity.android.features.profile.settings.ProfileSettingsFragment
@@ -359,4 +360,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindSelectSkillFragment(): SelectSkillFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindUploadResumeFragment(): UploadResumeFragment
 }

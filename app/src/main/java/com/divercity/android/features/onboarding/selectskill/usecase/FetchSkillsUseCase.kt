@@ -1,4 +1,4 @@
-package com.divercity.android.features.jobs.jobposting.skills.usecase
+package com.divercity.android.features.onboarding.selectskill.usecase
 
 import com.divercity.android.core.base.UseCase
 import com.divercity.android.data.entity.base.DataArray
@@ -20,7 +20,10 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
 ) : UseCase<DataArray<SkillResponse>, FetchSkillsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<DataArray<SkillResponse>> {
-        return repository.fetchSkills(params.page, params.size, params.query)
+        return repository.fetchSkills(
+            params.page,
+            params.size,
+            params.query)
     }
 
     class Params private constructor(val page: Int, val size: Int, val query: String?) {

@@ -1,16 +1,16 @@
 package com.divercity.android.features.onboarding.selectskill.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.base.DataArray;
 import com.divercity.android.data.entity.skills.SkillResponse;
-import com.divercity.android.features.jobs.jobposting.skills.usecase.FetchSkillsUseCase;
+import com.divercity.android.features.onboarding.selectskill.usecase.FetchSkillsUseCase;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

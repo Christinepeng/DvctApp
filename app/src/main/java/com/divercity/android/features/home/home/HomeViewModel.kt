@@ -1,9 +1,9 @@
 package com.divercity.android.features.home.home
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.MutableLiveData
-import android.arch.paging.PagedList
 import android.os.Parcelable
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.PagedList
 import com.divercity.android.Session
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
@@ -205,9 +205,5 @@ constructor(
 
     fun onDestroyView(){
         fetchUnreadMessagesCountUseCase.dispose()
-    }
-
-    fun clearUserData() {
-        session.logout()
     }
 }

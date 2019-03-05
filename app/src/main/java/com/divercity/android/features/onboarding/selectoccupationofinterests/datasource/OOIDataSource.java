@@ -1,9 +1,9 @@
 package com.divercity.android.features.onboarding.selectoccupationofinterests.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse;

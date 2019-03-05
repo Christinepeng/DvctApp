@@ -5,7 +5,7 @@ import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
-import com.divercity.android.data.entity.user.followuser.FollowUserResponse
+import com.divercity.android.data.entity.user.connectuser.ConnectUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import io.reactivex.Observable
 
@@ -29,7 +29,7 @@ interface UserRepository {
 
     fun followIndustries(industriesIds: List<String>): Observable<UserResponse>
 
-    fun followUser(userId: String): Observable<FollowUserResponse>
+    fun connectUser(userId: String): Observable<ConnectUserResponse>
 
     fun unfollowUser(userId: String): Observable<Void>
 

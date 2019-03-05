@@ -1,6 +1,6 @@
 package com.divercity.android.features.groups.module;
 
-import android.support.v4.app.FragmentManager;
+import androidx.fragment.app.FragmentManager;
 
 import com.divercity.android.features.groups.TabGroupsFragment;
 

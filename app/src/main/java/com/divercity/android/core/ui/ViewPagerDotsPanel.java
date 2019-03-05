@@ -1,11 +1,12 @@
 package com.divercity.android.core.ui;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.divercity.android.R;
+
+import androidx.core.content.ContextCompat;
 
 /**
  * Created by lucas on 21/02/2018.

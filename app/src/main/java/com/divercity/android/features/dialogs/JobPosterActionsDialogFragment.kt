@@ -5,8 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
-import android.support.v7.app.AlertDialog
+import androidx.fragment.app.DialogFragment
+import androidx.appcompat.app.AlertDialog
 import com.divercity.android.R
 import com.divercity.android.data.entity.job.response.JobResponse
 import kotlinx.android.synthetic.main.dialog_job_poster_actions.view.*

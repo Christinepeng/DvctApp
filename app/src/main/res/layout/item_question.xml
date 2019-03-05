@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -77,7 +77,7 @@
         app:layout_constraintTop_toTopOf="@+id/cardview_quest_pic_author"
         tools:text="Aiden Doe Aiden DoeAiden DoeAiden Doe sfsd sd sAiden Doe sf dfsdfsdff s dff  sdfsf dfsf  f dfsdfsdfsdfs dfsdfsdfsdfsdfs dfdfvdf df df df df " />
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/item_quest_cardview_pic_main"
         android:layout_width="0dp"
         android:layout_height="165dp"
@@ -99,7 +99,7 @@
             android:scaleType="centerCrop"
             tools:background="@android:color/black" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/item_quest_txt_answer"
@@ -152,7 +152,7 @@
 
     </FrameLayout>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:id="@+id/cardview_quest_pic_answer"
         android:layout_width="20dp"
         android:layout_height="20dp"
@@ -172,6 +172,6 @@
             android:scaleType="centerCrop"
             tools:background="@android:color/black" />
 
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-</android.support.constraint.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

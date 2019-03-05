@@ -9,10 +9,10 @@ import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Environment
 import android.provider.MediaStore
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.FragmentActivity
-import android.support.v4.content.ContextCompat
-import android.support.v4.content.FileProvider
+import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentActivity
+import androidx.core.content.ContextCompat
+import androidx.core.content.FileProvider
 import android.util.Base64
 import com.divercity.android.BuildConfig
 import java.io.ByteArrayOutputStream

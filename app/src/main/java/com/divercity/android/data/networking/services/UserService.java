@@ -11,7 +11,7 @@ import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBod
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody;
 import com.divercity.android.data.entity.profile.profile.UserProfileBody;
 import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountResponse;
-import com.divercity.android.data.entity.user.followuser.FollowUserResponse;
+import com.divercity.android.data.entity.user.connectuser.ConnectUserResponse;
 import com.divercity.android.data.entity.user.response.UserResponse;
 
 import io.reactivex.Observable;
@@ -61,8 +61,8 @@ public interface UserService {
     Observable<Response<Void>> updateDevice(@Path("deviceId") String deviceId, @Body DeviceBody body);
 
     @Multipart
-    @POST("users/follow")
-    Observable<Response<DataObject<FollowUserResponse>>> followUser(@Part("user_id")RequestBody userId);
+    @POST("users/connect")
+    Observable<Response<DataObject<ConnectUserResponse>>> connectUser(@Part("user_id")RequestBody userId);
 
     @Multipart
     @DELETE("users/unfollow")
@@ -96,6 +96,6 @@ public interface UserService {
             @Query("page[number]") int pageNumber,
             @Query("page[size]") int size);
 
-//    @POST("activity_records/mark_read")
-//    Observable<Response<DataObject<UserResponse>>> followIndustries(@Body FollowIndustryBody body);
+    @POST("activity_records/mark_read")
+    Observable<Response<DataObject<UserResponse>>> markNotificationRead(@Body FollowIndustryBody body);
 }

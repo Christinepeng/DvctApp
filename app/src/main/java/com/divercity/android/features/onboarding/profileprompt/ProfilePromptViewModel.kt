@@ -13,18 +13,23 @@ import javax.inject.Inject
  */
 
 class ProfilePromptViewModel @Inject
-constructor(val userRepository: UserRepository,
-            val application: Application,
-            private val sessionRepository: SessionRepository) : BaseViewModel() {
+constructor(
+    val userRepository: UserRepository,
+    val application: Application,
+    private val sessionRepository: SessionRepository
+) : BaseViewModel() {
 
     val showRecruiterText = SingleLiveEvent<Boolean>()
 
     init {
         showRecruiterText.value =
-                accountType == application.getString(R.string.recruiter_id) ||
-                accountType == application.getString(R.string.hiring_manager_id)
+            accountType == application.getString(R.string.recruiter_id) ||
+                    accountType == application.getString(R.string.hiring_manager_id)
     }
 
-    val accountType: String?
+    val accountType
         get() = sessionRepository.getAccountType()
+
+    val userName
+        get() = sessionRepository.getUserName()
 }

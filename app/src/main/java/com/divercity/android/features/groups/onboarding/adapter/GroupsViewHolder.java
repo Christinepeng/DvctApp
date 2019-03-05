@@ -1,8 +1,8 @@
 package com.divercity.android.features.groups.onboarding.adapter;
 
 import android.annotation.SuppressLint;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.RecyclerView;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;

@@ -1,9 +1,10 @@
 package com.divercity.android.core.utils;
 
 
-import android.arch.lifecycle.LiveData;
-import android.arch.paging.PagedList;
 import com.divercity.android.core.ui.NetworkState;
+
+import androidx.lifecycle.LiveData;
+import androidx.paging.PagedList;
 
 /**
  * UserResponse class that is necessary for a UI to show a listing and interact w/ the rest of the system

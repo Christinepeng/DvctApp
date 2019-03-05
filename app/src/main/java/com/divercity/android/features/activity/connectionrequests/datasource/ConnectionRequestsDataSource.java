@@ -1,8 +1,5 @@
 package com.divercity.android.features.activity.connectionrequests.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
@@ -12,6 +9,9 @@ import com.divercity.android.features.jobs.applications.datasource.JobApplicatio
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

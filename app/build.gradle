@@ -56,7 +56,7 @@ android {
         targetSdkVersion 28
         versionCode 3
         versionName "D-1.18"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
         kapt {
@@ -99,13 +99,15 @@ android {
 
 dependencies {
 
-    def supportLibrary_version = "28.0.0"
+    def supportLibrary_version = '1.0.0-beta01'
 
-    def constraintLayout_version = "1.1.3"
+    def appcompat_version = '1.0.2'
+
+    def constraintLayout_version = '1.1.3'
 
     def facebook_login_version = "4.38.1"
 
-    def paging_version = "1.0.1"
+    def paging_version = '2.1.0'
 
     def retrofit_version = "2.5.0"
     def okhttp3_version = "3.9.1"
@@ -113,18 +115,18 @@ dependencies {
     def rxandroid_version = "2.1.0"
 
     def glide_version = "4.8.0"
-    def lifecycle_version = "1.1.1"
+    def lifecycle_version = '2.1.0-alpha02'
     def dagger_version = "2.21"
 
     def timber_version = "4.7.1"
 
     def leakCanary_version = "1.6.2"
 
-    def kotlinCoroutines_version = "1.0.1"
+    def kotlinCoroutines_version = "1.1.1"
 
-    def room_version = "1.1.1"
+    def room_version = '2.1.0-alpha04'
 
-    def firebase_messaging_version = "17.3.4"
+    def firebase_messaging_version = "17.4.0"
     def firebas_core_version = "16.0.7"
     def crashlytics_version = "2.9.9"
 
@@ -133,7 +135,7 @@ dependencies {
     def tagview_version = "1.1.7"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
-    implementation 'com.android.support:multidex:1.0.3'
+    implementation 'androidx.multidex:multidex:2.0.1'
 
     compileOnly 'javax.annotation:jsr250-api:1.0'
 
@@ -143,11 +145,11 @@ dependencies {
     implementation "com.crashlytics.sdk.android:crashlytics:$crashlytics_version"
 
     // Android support
-    implementation "com.android.support:support-v4:$supportLibrary_version"
-    implementation "com.android.support:appcompat-v7:$supportLibrary_version"
-    implementation "com.android.support:cardview-v7:$supportLibrary_version"
-    implementation "com.android.support:design:$supportLibrary_version"
-    implementation "com.android.support.constraint:constraint-layout:$constraintLayout_version"
+    implementation "androidx.legacy:legacy-support-v4:$supportLibrary_version"
+    implementation "androidx.appcompat:appcompat:$appcompat_version"
+    implementation "androidx.cardview:cardview:$supportLibrary_version"
+    implementation "com.google.android.material:material:$supportLibrary_version"
+    implementation "androidx.constraintlayout:constraintlayout:$constraintLayout_version"
 
     // Glide
     implementation "com.github.bumptech.glide:glide:$glide_version"
@@ -159,10 +161,10 @@ dependencies {
     }
 
     // Arch components
-    implementation "android.arch.paging:runtime:$paging_version"
+    implementation "androidx.paging:paging-runtime:$paging_version"
 
     // ViewModel and LiveData
-    implementation "android.arch.lifecycle:extensions:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
 
     // Retrofit & OkHttp
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
@@ -172,8 +174,8 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     // RxJava
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
-    implementation "io.reactivex.rxjava2:rxjava:2.2.4"
+    implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"
+    implementation "io.reactivex.rxjava2:rxjava:$rxjava_version"
 
     // Dagger2
     implementation "com.google.dagger:dagger-android:$dagger_version"
@@ -204,8 +206,9 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines_version"
 
     // Room
-    implementation "android.arch.persistence.room:runtime:$room_version"
-    kapt "android.arch.persistence.room:compiler:$room_version"
+    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-coroutines:$room_version"
+    kapt "androidx.room:room-compiler:$room_version"
 
     // Paginate
     implementation 'com.github.markomilos:paginate:0.5.1'
@@ -219,8 +222,8 @@ dependencies {
     implementation "co.lujun:androidtagview:$tagview_version"
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
 }
 
 repositories {

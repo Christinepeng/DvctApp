@@ -1,10 +1,5 @@
 package com.divercity.android.features.onboarding.selectmajor;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.paging.PagedList;
-import android.support.annotation.Nullable;
-
 import com.divercity.android.core.base.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
@@ -14,6 +9,11 @@ import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 
 import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.paging.PagedList;
 
 /**
  * Created by lucas on 17/10/2018.

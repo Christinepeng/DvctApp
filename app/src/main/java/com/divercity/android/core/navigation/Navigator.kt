@@ -2,8 +2,8 @@ package com.divercity.android.core.navigation
 
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.divercity.android.R
 import com.divercity.android.core.utils.OnboardingProgression
 import com.divercity.android.data.entity.group.GroupResponse
@@ -434,11 +434,13 @@ class Navigator @Inject constructor() {
                     is SelectOccupationActivity ->
                         navigateToOnboardingLocationActivity(activity, progress)
                     is OnboardingLocationActivity ->
-                        navigateToUploadResumeActivity(activity, progress)
-                    is UploadResumeActivity ->
+//                        navigateToUploadResumeActivity(activity, progress)
+//                    is UploadResumeActivity ->
                         navigateToSelectSkillActivity(activity, progress)
                     is SelectSkillActivity ->
                         navigateToOnboardingGenderActivity(activity, progress)
+                    is OnboardingGenderActivity ->
+                        navigateToOnboardingEthnicityActivity(activity, progress)
                     is OnboardingEthnicityActivity ->
                         navigateToSelectBirthdayActivity(activity, progress)
                     is OnboardingAgeActivity ->
@@ -459,6 +461,8 @@ class Navigator @Inject constructor() {
                         navigateToSelectSkillActivity(activity, progress)
                     is SelectSkillActivity ->
                         navigateToOnboardingGenderActivity(activity, progress)
+                    is OnboardingGenderActivity ->
+                        navigateToOnboardingEthnicityActivity(activity, progress)
                     is OnboardingEthnicityActivity ->
                         navigateToSelectBirthdayActivity(activity, progress)
                     is OnboardingAgeActivity ->
@@ -466,76 +470,5 @@ class Navigator @Inject constructor() {
                 }
             }
         }
-
-//        if (activity is ProfilePromptActivity) {
-//            if (userTypeId == activity.getString(R.string.student_id))
-//                navigateToSelectSchoolActivity(activity, progress)
-//            else
-//                navigateToSelectCompanyActivity(activity, progress)
-//        } else if (activity is OnboardingCompanyActivity) {
-//
-//            if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(
-//                    R.string.hiring_manager_id
-//                )
-//            )
-//                navigateToOnboardingLocationActivity(activity, progress)
-//            else if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(
-//                    R.string.job_seeker_id
-//                )
-//            )
-//                navigateToSelectOccupationActivity(activity, progress)
-//            else if (userTypeId == activity.getString(R.string.entrepreneur_id)) {
-//                navigateToOnboardingIndustryActivity(activity, progress)
-//            }
-//        } else if (activity is OnboardingLocationActivity) {
-//
-//            if (userTypeId == activity.getString(R.string.student_id)) {
-//                navigateToSelectOOIActivity(activity, progress)
-//            } else {
-//                navigateToOnboardingGenderActivity(activity, progress)
-//            }
-//        } else if (activity is OnboardingEthnicityActivity) {
-//
-//            if (userTypeId == activity.getString(R.string.recruiter_id) || userTypeId == activity.getString(
-//                    R.string.hiring_manager_id
-//                )
-//            )
-//                navigateToSelectGroupActivity(activity, progress)
-//            else
-//                navigateToSelectBirthdayActivity(activity, progress)
-//        } else if (activity is OnboardingGenderActivity) {
-//
-//            navigateToOnboardingEthnicityActivity(activity, progress)
-//        } else if (activity is SelectSchoolActivity) {
-//
-//            navigateToSelectMajorActivity(activity, progress)
-//        } else if (activity is SelectMajorActivity) {
-//
-//            navigateToOnboardingLocationActivity(activity, progress)
-//        } else if (activity is SelectOccupationActivity) {
-//
-//            if (userTypeId == activity.getString(R.string.professional_id) || userTypeId == activity.getString(
-//                    R.string.job_seeker_id
-//                )
-//            )
-//                navigateToOnboardingLocationActivity(activity, progress)
-//            else
-//                navigateToOnboardingGenderActivity(activity, progress)
-//        } else if (activity is SelectInterestsActivity) {
-//
-//            if (userTypeId == activity.getString(R.string.student_id))
-//                navigateToSelectGroupActivity(activity, progress)
-//            else
-//                navigateToOnboardingGenderActivity(activity, progress)
-//        } else if (activity is OnboardingAgeActivity) {
-//
-//            navigateToSelectGroupActivity(activity, progress)
-//        } else if (activity is SelectOOIActivity) {
-//
-//            if (userTypeId == activity.getString(R.string.student_id))
-//                navigateToOnboardingGenderActivity(activity, progress)
-//        } else if (activity is SelectIndustryOnboardingActivity) {
-//            navigateToOnboardingLocationActivity(activity, progress)
-//        }
     }
 }

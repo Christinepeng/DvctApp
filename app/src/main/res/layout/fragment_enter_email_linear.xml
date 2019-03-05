@@ -31,7 +31,7 @@
         android:textColor="#87cbff"
         android:textSize="20sp" />
 
-    <android.support.v4.view.ViewPager
+    <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
         android:layout_height="0dp"

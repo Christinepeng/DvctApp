@@ -1,6 +1,6 @@
 package com.divercity.android.features.profile.settings.interests
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.interests.InterestsResponse

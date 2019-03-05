@@ -1,6 +1,6 @@
 package com.divercity.android.db.converter
 
-import android.arch.persistence.room.TypeConverter
+import androidx.room.TypeConverter
 import com.divercity.android.data.entity.group.answer.response.AuthorInfo
 import com.google.gson.Gson
 

@@ -1,6 +1,6 @@
 package com.divercity.android.features.groups.groupdetail
 
-import android.arch.lifecycle.MutableLiveData
+import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.Event
 import com.divercity.android.core.utils.SingleLiveEvent

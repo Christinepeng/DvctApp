@@ -1,16 +1,15 @@
 package com.divercity.android.features.onboarding.uploadresume
 
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.IOnBackPressed
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.features.jobs.jobposting.skills.adapter.SkillsAdapter
-import kotlinx.android.synthetic.main.fragment_job_skills.*
-import kotlinx.android.synthetic.main.view_toolbar.view.*
+import kotlinx.android.synthetic.main.fragment_onboarding_upload_resume.*
+import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject
 
 class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
@@ -19,6 +18,8 @@ class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
 
     @Inject
     lateinit var adapter: SkillsAdapter
+
+    var currentProgress: Int = 0
 
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
@@ -37,10 +38,12 @@ class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[UploadResumeViewModel::class.java]
+        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupHeader()
 //        viewModel.fetchSkills(null)
 //        setupAdapter()
 //        subscribeToPaginatedLiveData()
@@ -54,12 +57,30 @@ class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
 //        list.adapter = adapter
     }
 
-    private fun setupToolbar() {
-        (activity as AppCompatActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
-            supportActionBar?.let {
-                it.setTitle(R.string.select_skills)
-                it.setDisplayHomeAsUpEnabled(true)
+    private fun setupHeader() {
+
+        include_header.apply {
+
+            progress_bar.apply {
+                max = 100
+                progress = 0
+                setProgressWithAnim(currentProgress)
+            }
+            txt_title.setText(R.string.upload_your_resume)
+
+            txt_progress.text = currentProgress.toString().plus("%")
+
+            btn_close.setOnClickListener {
+                navigator.navigateToHomeActivity(activity!!)
+            }
+
+            btn_skip.setOnClickListener {
+                navigator.navigateToNextOnboarding(
+                    activity!!,
+                    viewModel.accountType,
+                    currentProgress,
+                    false
+                )
             }
         }
     }

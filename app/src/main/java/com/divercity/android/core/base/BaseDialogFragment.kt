@@ -1,8 +1,8 @@
 package com.divercity.android.core.base
 
-import android.arch.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
+import androidx.fragment.app.DialogFragment
 import com.divercity.android.core.navigation.Navigator
 import dagger.android.support.AndroidSupportInjection
 import javax.inject.Inject

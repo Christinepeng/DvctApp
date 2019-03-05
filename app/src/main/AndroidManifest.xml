@@ -46,7 +46,7 @@
         </activity>
 
         <provider
-            android:name="android.support.v4.content.FileProvider"
+            android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -347,6 +347,11 @@
 
         <activity
             android:name=".features.onboarding.selectskill.SelectSkillActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.onboarding.uploadresume.UploadResumeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

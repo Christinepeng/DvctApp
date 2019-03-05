@@ -1,8 +1,8 @@
 package com.divercity.android.features.activity
 
-import android.arch.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment

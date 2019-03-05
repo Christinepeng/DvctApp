@@ -24,7 +24,7 @@ interface SessionRepository {
 
     fun isUserLogged(): Boolean
 
-    fun clearUserData()
+    suspend fun clearUserData()
 
     fun saveUserHeaderData(response: Response<DataObject<UserResponse>>)
 
@@ -42,11 +42,11 @@ interface SessionRepository {
 
     fun getUserId(): String
 
-    fun setUserId(id : String)
+    fun setUserId(id: String)
 
     fun getUserName(): String
 
-    fun getEmail() : String?
+    fun getEmail(): String?
 
     fun getUserAvatarUrl(): String?
 
@@ -62,9 +62,9 @@ interface SessionRepository {
 
     fun getLocation(): String?
 
-    fun getInterests() : List<Int>?
+    fun getInterests(): List<Int>?
 
-    fun getSkills() : List<String>?
+    fun getSkills(): List<String>?
 
-    fun getUserType() : String?
+    fun getUserType(): String?
 }

@@ -1,6 +1,6 @@
 package com.divercity.android.repository.chat
 
-import android.arch.paging.DataSource
+import androidx.paging.DataSource
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse

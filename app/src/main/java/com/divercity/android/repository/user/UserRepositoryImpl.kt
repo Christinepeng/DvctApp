@@ -9,7 +9,7 @@ import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBod
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
 import com.divercity.android.data.entity.profile.profile.UserProfileBody
-import com.divercity.android.data.entity.user.followuser.FollowUserResponse
+import com.divercity.android.data.entity.user.connectuser.ConnectUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.UserService
 import com.divercity.android.repository.session.SessionRepository
@@ -128,9 +128,9 @@ constructor(
         }
     }
 
-    override fun followUser(userId: String): Observable<FollowUserResponse> {
+    override fun connectUser(userId: String): Observable<ConnectUserResponse> {
         val partUserId = RequestBody.create(MediaType.parse("text/plain"), userId)
-        return userService.followUser(partUserId).map { response ->
+        return userService.connectUser(partUserId).map { response ->
             checkResponse(response)
             response.body()!!.data
         }

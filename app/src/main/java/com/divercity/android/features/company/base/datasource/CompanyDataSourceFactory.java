@@ -1,9 +1,9 @@
 package com.divercity.android.features.company.base.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.divercity.android.data.entity.company.response.CompanyResponse;
 import com.divercity.android.features.company.base.usecase.FetchCompaniesUseCase;
 import io.reactivex.disposables.CompositeDisposable;

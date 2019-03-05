@@ -1,7 +1,7 @@
 package com.divercity.android.features.groups.groupdetail.conversation.datasource
-import android.arch.lifecycle.Transformations
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.Transformations
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.features.groups.groupdetail.conversation.usecase.FetchGroupConversationsCase

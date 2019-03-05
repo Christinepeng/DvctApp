@@ -1,6 +1,6 @@
 package com.divercity.android.core.base;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.divercity.android.core.utils.Listing;
 
 /**

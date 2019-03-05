@@ -1,9 +1,9 @@
 package com.divercity.android.features.jobs
 
 import android.content.Context
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentManager
-import android.support.v4.app.FragmentStatePagerAdapter
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import androidx.fragment.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.divercity.android.R
@@ -20,9 +20,9 @@ import javax.inject.Inject
 
 class TabJobsViewPagerAdapter
 @Inject constructor(
-        val context: Context,
-        fm: FragmentManager,
-        private val sessionRepository: SessionRepository
+    val context: Context,
+    fm: FragmentManager,
+    private val sessionRepository: SessionRepository
 ) : FragmentStatePagerAdapter(fm) {
 
     private val PAGE_COUNT = 3

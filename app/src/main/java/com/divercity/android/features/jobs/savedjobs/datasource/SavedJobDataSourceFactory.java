@@ -1,10 +1,10 @@
 package com.divercity.android.features.jobs.savedjobs.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
-import android.support.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
+import androidx.annotation.NonNull;
 
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.divercity.android.data.entity.job.response.JobResponse;
 import com.divercity.android.features.jobs.savedjobs.usecase.FetchSavedJobsUseCase;
 

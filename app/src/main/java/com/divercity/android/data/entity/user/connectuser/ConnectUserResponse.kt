@@ -1,9 +1,10 @@
-package com.divercity.android.data.entity.user.followuser
+package com.divercity.android.data.entity.user.connectuser
 
 import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-data class FollowUserResponse(
+@Generated("com.robohorse.robopojogenerator")
+data class ConnectUserResponse(
 
 	@field:SerializedName("attributes")
 	val attributes: Attributes? = null,

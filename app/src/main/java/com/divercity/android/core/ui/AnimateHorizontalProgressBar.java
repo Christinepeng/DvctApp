@@ -6,13 +6,19 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Color;
-import android.graphics.drawable.*;
-import android.support.annotation.NonNull;
+import android.graphics.drawable.ClipDrawable;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.ProgressBar;
+
 import com.divercity.android.R;
+
+import androidx.annotation.NonNull;
 
 public class AnimateHorizontalProgressBar extends ProgressBar {
 

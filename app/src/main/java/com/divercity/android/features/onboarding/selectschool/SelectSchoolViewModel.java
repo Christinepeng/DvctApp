@@ -1,18 +1,12 @@
 package com.divercity.android.features.onboarding.selectschool;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PagedList;
-import android.support.annotation.Nullable;
-
 import com.divercity.android.core.base.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;
-import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.entity.profile.profile.User;
 import com.divercity.android.data.entity.school.SchoolResponse;
+import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.onboarding.selectschool.school.SchoolPaginatedRepositoryImpl;
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase;
@@ -21,6 +15,12 @@ import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
 import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PagedList;
 
 /**
  * Created by lucas on 17/10/2018.

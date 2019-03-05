@@ -1,10 +1,10 @@
 package com.divercity.android.features.industry.onboarding;
 
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.LiveData;
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PagedList;
-import android.support.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PagedList;
+import androidx.annotation.Nullable;
 
 import com.divercity.android.core.base.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;

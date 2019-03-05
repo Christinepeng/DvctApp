@@ -1,15 +1,15 @@
 package com.divercity.android.features.profile
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import android.support.v7.app.AppCompatActivity
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -83,13 +83,6 @@ class ProfileFragment : BaseFragment() {
         txt_name.text = attr?.name
         txt_user_type.text =
             Util.getUserTypeMap(context!!)[userResponse.userAttributes?.accountType]
-
-//        txt_user_track.text = attr?.followersCount.toString()
-//            .plus(" Followers \u00B7 ")
-//            .plus(attr?.followingCount)
-//            .plus(" Following \u00B7 ")
-//            .plus(attr?.groupOfInterestFollowingCount)
-//            .plus(" Groups")
     }
 
     private fun setupView() {

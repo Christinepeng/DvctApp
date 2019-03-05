@@ -2,6 +2,8 @@ package com.divercity.android.data.entity.profile.profile;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.List;
+
 public class User {
 
     @SerializedName("country")
@@ -33,6 +35,9 @@ public class User {
 
     @SerializedName("job_employer_id")
     private String jobEmployerId;
+
+    @SerializedName("skills")
+    private List<String> skillList;
 
     public void setCountry(String country) {
         this.country = country;
@@ -114,6 +119,14 @@ public class User {
         this.city = city;
     }
 
+    public List<String> getSkillList() {
+        return skillList;
+    }
+
+    public void setSkillList(List<String> skillList) {
+        this.skillList = skillList;
+    }
+
     @Override
     public String toString() {
         return
@@ -128,6 +141,7 @@ public class User {
                         ",age_range = '" + ageRange + '\'' +
                         ",job_employer_id = '" + jobEmployerId + '\'' +
                         ",city = '" + city + '\'' +
+                        ",skills = '" + skillList + '\'' +
                         "}";
     }
 }

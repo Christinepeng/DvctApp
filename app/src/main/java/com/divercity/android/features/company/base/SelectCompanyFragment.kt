@@ -1,7 +1,5 @@
 package com.divercity.android.features.company.base
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
@@ -9,6 +7,8 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -17,7 +17,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.company.base.adapter.CompanyAdapter
 import com.divercity.android.features.company.base.adapter.CompanyViewHolder
-import kotlinx.android.synthetic.main.fragment_list_search.*
+import kotlinx.android.synthetic.main.fragment_base_company.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import javax.inject.Inject
 
@@ -41,7 +41,7 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_list_search
+    override fun layoutId(): Int = R.layout.fragment_base_company
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +74,6 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
         img_action.setImageResource(R.drawable.icon_briefcase)
         txt_action_title.setText(R.string.create_new_company)
 
-        lay_action2.visibility = View.VISIBLE
         lay_action2.setOnClickListener {
             fragListener?.onNoCurrentCompany()
         }
@@ -127,6 +126,7 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
         })
 
         viewModel.networkState.observe(this, Observer {
+            txt_search_company.visibility = View.GONE
             adapter.setNetworkState(it)
         })
 
@@ -135,8 +135,9 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
                 adapter.currentList?.let { list ->
                     if (networkState.status == Status.SUCCESS && list.size == 0)
                         txt_no_results.visibility = View.VISIBLE
-                    else
+                    else {
                         txt_no_results.visibility = View.GONE
+                    }
                 }
             }
         })

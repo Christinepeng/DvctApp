@@ -1,11 +1,15 @@
 package com.divercity.android.features.jobs.jobposting.sharetogroup
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
+import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
@@ -28,6 +32,8 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
     @Inject
     lateinit var adapter: ShareJobGroupAdapter
 
+    private var handlerSearch = Handler()
+
     companion object {
         private const val PARAM_JOB_ID = "paramJobId"
 
@@ -42,19 +48,16 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
 
     override fun layoutId(): Int = R.layout.fragment_share_job_group
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    fun initViewModel(){
         viewModel = ViewModelProviders.of(this, viewModelFactory)[ShareJobGroupViewModel::class.java]
         viewModel.jobId = arguments?.getString(PARAM_JOB_ID)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        initViewModel()
         setupView()
-        subscribeToPaginatedLiveData()
-        subscribeToShareJobGroupsLiveData()
-        setupHeader()
-        setupToolbar()
+        subscribeToLiveData()
     }
 
     private fun setupView() {
@@ -67,6 +70,9 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
             else
                 showToast("Select at least one group")
         }
+
+        setupHeader()
+        setupToolbar()
     }
 
     private fun setupToolbar() {
@@ -84,20 +90,29 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
     }
 
     private fun setupHeader() {
+        include_search.edtxt_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                search(p0.toString())
+            }
+        })
+
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-
-                val toSearch: String? = include_search.edtxt_search.text.toString()
-
-                viewModel.fetchFollowedGroups(toSearch)
-                subscribeToPaginatedLiveData()
+                search(include_search.edtxt_search.text.toString())
                 true
             } else
                 false
         }
     }
 
-    private fun subscribeToShareJobGroupsLiveData() {
+    private fun subscribeToLiveData() {
         viewModel.shareJobGroupsResponse.observe(this, Observer { school ->
             when (school?.status) {
                 Status.LOADING -> showProgress()
@@ -112,6 +127,17 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
                 }
             }
         })
+
+        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+            subscribeToPaginatedLiveData()
+        })
+    }
+
+    private fun search(query: String?) {
+        handlerSearch.removeCallbacksAndMessages(null)
+        handlerSearch.postDelayed({
+            fetchFollowedGroups(query)
+        }, AppConstants.SEARCH_DELAY)
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -133,6 +159,15 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
                 }
             }
         })
+    }
+
+    private fun fetchFollowedGroups(searchQuery: String?) {
+        viewModel.fetchFollowedGroups(viewLifecycleOwner, searchQuery)
+    }
+
+    override fun onDestroyView() {
+        handlerSearch.removeCallbacksAndMessages(null)
+        super.onDestroyView()
     }
 
     override fun retry() {

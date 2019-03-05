@@ -1,14 +1,16 @@
 package com.divercity.android.core.ui;
 
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.divercity.android.R;
 import com.divercity.android.data.Status;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public class NetworkStateViewHolder extends RecyclerView.ViewHolder {
 
@@ -29,7 +31,8 @@ public class NetworkStateViewHolder extends RecyclerView.ViewHolder {
         });
     }
 
-    public void bindTo(NetworkState networkState) {
+    public void
+    bindTo(NetworkState networkState) {
         //error message
 //        errorMessageTextView.setVisibility(networkState.getMessage() != null ? View.VISIBLE : View.GONE);
 //        if (networkState.getMessage() != null) {

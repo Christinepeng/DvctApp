@@ -33,6 +33,10 @@
     <string name="no_notifications">You have no activity yet; post or respond/react to a question or comment so we can get this show on the road</string>
     <string name="no_connection_requests">No Requests Yet</string>
     <string name="me">Me</string>
+    <string name="add_skills">Add a Skill</string>
+    <string name="add">ADD</string>
+    <string name="search_company">Please, search to show results</string>
+    <string name="upload_your_resume">Upload your resume</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -89,13 +93,14 @@
     <string name="select_your_ethnicity">Select your Ethnicity</string>
     <string name="select_your_occupation">Select your Occupation</string>
     <string name="select_your_gender">Select your Gender</string>
+    <string name="select_your_skills">Select your Skills</string>
     <string name="select_your_interests">Select 3 or more Areas of Interests</string>
     <string name="select_your_agerange">Select your Age Range</string>
     <string name="select_your_school">Select your School</string>
     <string name="select_group">Choose some groups you would like to join</string>
     <string name="profile_prompt_title">Let\'s Set Up For Success</string>
-    <string name="profile_prompt_subtitle_recruiter">For the best experience and to find the best candidates and the right connections please provide some basic information to complete you profile.</string>
-    <string name="profile_prompt_subtitle_nonrecruiter">For the best experience and to find the best opportunities and the right connections please provide some basic information to complete you profile.</string>
+    <string name="profile_prompt_subtitle_recruiter">%1$s, for the best experience, please tell us a little about yourself and your interests so we can customize your group, connection, or candidate suggestions.</string>
+    <string name="profile_prompt_subtitle_nonrecruiter">%1$s, for the best experience, please tell us a little about yourself and your interests so we can customize your group, connection, or job suggestions.</string>
 
     <!-- What describes you best?-->
     <string name="job_seeker">Job Seeker</string>

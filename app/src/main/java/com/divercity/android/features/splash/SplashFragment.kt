@@ -1,9 +1,9 @@
 package com.divercity.android.features.splash
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
@@ -38,34 +38,34 @@ class SplashFragment : BaseFragment() {
     }
 
     private fun start() {
-            //   navigator.navigateToProfilePromptActivity(activity!!)
+        //   navigator.navigateToProfilePromptActivity(activity!!)
 //                        navigator.navigateToSignUpActivity(activity!!, "test@test.com")
 //                        navigator.navigateToSelectSchoolActivity(activity!!, 50)
 //                            navigator.navigateToShareJobGroupActivity(this,"21")
 //                navigator.navigateToShareJobGroupActivity(this,"31")
 //                navigator.navigateToHomeActivity(activity!!)
-            //                       navigator.navigateToProfilePromptActivity(activity!!)
+        //                       navigator.navigateToProfilePromptActivity(activity!!)
 //                navigator.navigateToSelectUserTypeActivity(activity!!)
 //                navigator.navigateToSelectUserTypeActivity(activity!!)
 //                navigator.navigateToSelectGroupActivity(activity!!, 90)
 
 //            navigator.navigateToOnboardingLocationActivity(activity!!, 40)
 
-            if (viewModel.isUserLogged)
-//                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
-                navigator.navigateToSelectSkillActivity(activity!!, 40)
+        if (viewModel.isUserLogged)
+                viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
+//                navigator.navigateToSelectSkillActivity(activity!!, 40)
 //                navigator.navigateToChatActivity(this,"Joseph Student","6")
 //                navigator.navigateToSelectInterestsActivity(activity!!, 20)
-//                navigator.navigateToSelectUserTypeActivity(activity!!)
+//            navigator.navigateToSelectUserTypeActivity(activity!!)
 //                navigator.navigateToSelectOccupationActivity(activity!!, 20)
 //                navigator.navigateToOnboardingIndustryActivity(activity!!, 30)
 //            navigator.navigateToSelectSingleIndustryActivityForResult(this, 30)
 //            navigator.navigateToOnboardingGenderActivity(activity!!, 30)
 //            navigator.navigateToOnboardingLocationActivity(activity!!, 76)
-            else {
-                navigator.navigateToEnterEmailActivity(activity!!)
-                activity!!.finish()
-            }
+        else {
+            navigator.navigateToEnterEmailActivity(activity!!)
+            activity!!.finish()
+        }
     }
 
     fun subscribeToLiveData() {
@@ -97,9 +97,9 @@ class SplashFragment : BaseFragment() {
 
     private fun showErrorDialog(msg: String) {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
-                "Ups!",
-                msg,
-                getString(R.string.retry)
+            "Ups!",
+            msg,
+            getString(R.string.retry)
         )
         customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserDataToCheckUserTypeDefined() }
         customOneBtnDialogFragment.isCancelable = false

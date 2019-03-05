@@ -1,16 +1,19 @@
 package com.divercity.android.features.chat.chat.chatadapter
 
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.company.response.Photos
 import com.divercity.android.features.apollo.FetchJobFromViewHolderUseCase
 import com.divercity.android.features.apollo.FetchJobReloadedUseCase
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.item_chat.view.*
 import kotlinx.android.synthetic.main.item_job_chat.view.*
 import kotlinx.coroutines.CoroutineScope
@@ -78,12 +81,11 @@ private constructor(
                 }
 
                 if (it.embeddedAttachmentType == "Job") {
-                    lay_job.visibility = View.VISIBLE
                     cardview_msg_picture.visibility = View.GONE
 
-                    itemView.lay_job.item_jobs_txt_title.setText("")
-                    itemView.lay_job.item_jobs_txt_company.setText("")
-                    itemView.lay_job.item_jobs_txt_place.setText("")
+                    itemView.lay_job.item_jobs_txt_title.text = ""
+                    itemView.lay_job.item_jobs_txt_company.text = ""
+                    itemView.lay_job.item_jobs_txt_place.text = ""
 
                     val job = adapterListener.getJobFetched(it.embeddedAttachmentId!!)
                     if (job == null) {
@@ -98,66 +100,39 @@ private constructor(
                             it.either({
 
                             }, { my_data ->
-                                //                            my_data.lay.item_jobs_txt_title.setText(my_data.job.Job().id())
-//                            my_data.lay.item_jobs_txt_company.text = my_data.job.Job().title()
-//                            my_data.lay.item_jobs_txt_place.text = my_data.chat.embeddedAttachmentId
-//                            my_data.chat.attachment = my_data.job.Job()
-                                adapterListener?.onJobFetched(my_data.position, my_data.job.Job())
+                                adapterListener.onJobFetched(my_data.position, my_data.job.Job())
                             })
                         }
                     } else {
+                        lay_job.visibility = View.VISIBLE
                         itemView.lay_job.item_jobs_txt_title.text = job.title()
-                        itemView.lay_job.item_jobs_txt_company.text = "Hello"
+                        val photos = Gson().fromJson(
+                            job.employer()?.employer_photos() as String,
+                            Photos::class.java)
+
+                        GlideApp.with(itemView)
+                            .load(photos.medium)
+                            .into(item_jobs_img)
+
+                        itemView.lay_job.item_jobs_txt_company.text = job.employer()?.name()
+                        itemView.lay_job.item_jobs_txt_place.text = job.location_display_name()
+
+                        job.is_applied_by_current?.also { isApplied ->
+                            if (!isApplied) {
+                                btn_job_action.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.btn_apply))
+                                btn_job_action.setOnClickListener {
+                                    listener?.onJobApply(job.id())
+                                }
+                            } else {
+                                btn_job_action.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.btn_applied))
+                                btn_job_action.setOnClickListener(null)
+                            }
+                        }
+
+                        itemView.lay_job.setOnClickListener {
+                            listener?.onJobClick(job.id())
+                        }
                     }
-
-//                    scope.launch {
-//                        val pol = itemView.lay_job
-//                        val mydata = data
-//                        pol.item_jobs_txt_title.setText("")
-//                        pol.item_jobs_txt_company.setText("")
-//                        pol.item_jobs_txt_place.setText("")
-//                        fetchJobFromViewHolderUseCase.invoke(FetchJobFromViewHolderUseCase.Params.forJob(it.embeddedAttachmentId!!)) {
-//                            it.either({
-//
-//                            }, {
-//                                pol.item_jobs_txt_title.setText(it.Job().id())
-//                                pol.item_jobs_txt_company.setText(
-//                                    Integer.toHexString(
-//                                        System.identityHashCode(
-//                                            pol
-//                                        )
-//                                    ))
-//                                pol.item_jobs_txt_place.setText(mydata.embeddedAttachmentId)
-//
-//                            })
-//                        }
-//                    }
-
-//                    val pol = itemView.lay_job
-//                    val mydata = data
-//                    pol.item_jobs_txt_title.setText("")
-//                    pol.item_jobs_txt_company.setText("")
-//                    pol.item_jobs_txt_place.setText("")
-//                    fetchJobFromViewHolderUseCase.invoke(
-//                        FetchJobFromViewHolderUseCase.Params.forJob(
-//                            it.embeddedAttachmentId!!
-//                        )
-//                    ) {
-//                        it.either({
-//
-//                        }, {
-//                            pol.item_jobs_txt_title.setText(it.Job().id())
-//                            pol.item_jobs_txt_company.setText(
-//                                Integer.toHexString(
-//                                    System.identityHashCode(
-//                                        pol
-//                                    )
-//                                )
-//                            )
-//                            pol.item_jobs_txt_place.setText(mydata.embeddedAttachmentId)
-//
-//                        })
-//                    }
                 } else {
                     lay_job.visibility = View.GONE
 
@@ -202,5 +177,9 @@ private constructor(
     interface Listener {
 
         fun onImageTap(imageUrl: String)
+
+        fun onJobClick(jobId : String)
+
+        fun onJobApply(jobId : String)
     }
 }

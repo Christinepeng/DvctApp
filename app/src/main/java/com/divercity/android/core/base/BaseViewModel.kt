@@ -1,6 +1,6 @@
 package com.divercity.android.core.base
 
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.ViewModel
 
 /**
  * Created by lucas on 24/10/2018.

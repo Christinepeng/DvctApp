@@ -7,6 +7,7 @@ query Job ($id : ID!){
         employer{
             name
             id
+            employer_photos
         }
         recruiter{
             name

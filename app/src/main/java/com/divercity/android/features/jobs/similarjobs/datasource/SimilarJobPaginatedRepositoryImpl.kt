@@ -1,8 +1,8 @@
 package com.divercity.android.features.jobs.similarjobs.datasource
 
-import android.arch.lifecycle.Transformations
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.Transformations
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.jobs.similarjobs.usecase.FetchSimilarJobsUseCase

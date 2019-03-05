@@ -1,13 +1,13 @@
 package com.divercity.android.features.onboarding.selectskill.datasource
 
-import android.arch.lifecycle.Transformations
-import android.arch.paging.LivePagedListBuilder
-import android.arch.paging.PagedList
+import androidx.lifecycle.Transformations
+import androidx.paging.LivePagedListBuilder
+import androidx.paging.PagedList
 import com.divercity.android.core.base.PaginatedQueryRepository
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.features.jobs.jobposting.skills.datasource.SkillDataSourceFactory
-import com.divercity.android.features.jobs.jobposting.skills.usecase.FetchSkillsUseCase
+import com.divercity.android.features.onboarding.selectskill.usecase.FetchSkillsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
 import javax.inject.Inject

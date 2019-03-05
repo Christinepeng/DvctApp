@@ -1,12 +1,11 @@
 package com.divercity.android.features.activity.connectionrequests.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
-import android.support.annotation.NonNull;
-
 import com.divercity.android.data.entity.group.ConnectionItem;
 import com.divercity.android.features.activity.connectionrequests.usecase.FetchConnectionRequestsUseCase;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class ConnectionRequestsDataSourceFactory extends DataSource.Factory<Long, ConnectionItem> {

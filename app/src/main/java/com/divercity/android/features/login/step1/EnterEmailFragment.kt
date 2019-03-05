@@ -1,15 +1,14 @@
 package com.divercity.android.features.login.step1
 
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.support.design.widget.Snackbar
-import android.support.v4.view.ViewPager
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -17,6 +16,7 @@ import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.divercity.android.data.Status
 import com.divercity.android.features.login.step1.usecase.ConnectFacebookApiHelper
 import com.facebook.internal.CallbackManagerImpl
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
@@ -107,11 +107,11 @@ class EnterEmailFragment : BaseFragment() {
         })
 
         viewModel.navigateToLogin.observe(this, Observer {
-            navigator.navigateToLoginActivity(activity!!, user_email.text.toString().trim())
+            navigator.navigateToLoginActivity(activity!!, getEdTxtEmail())
         })
 
         viewModel.navigateToSignUp.observe(this, Observer {
-            navigator.navigateToSignUpActivity(activity!!, user_email.text.toString().trim())
+            navigator.navigateToSignUpActivity(activity!!, getEdTxtEmail())
         })
     }
 
@@ -135,17 +135,21 @@ class EnterEmailFragment : BaseFragment() {
         }
 
         btn_send.setOnClickListener {
-            viewModel.checkIfEmailRegistered(user_email.text.toString())
+            viewModel.checkIfEmailRegistered(getEdTxtEmail())
         }
 
         user_email.setOnEditorActionListener { _, i, _ ->
             var handled = false
             if (i == EditorInfo.IME_ACTION_DONE) {
-                viewModel.checkIfEmailRegistered(user_email.text.toString())
+                viewModel.checkIfEmailRegistered(getEdTxtEmail())
                 handled = true
             }
             handled
         }
+    }
+
+    fun getEdTxtEmail() : String {
+        return user_email.text.toString().trim()
     }
 
     private fun showToast(msg: String?) {

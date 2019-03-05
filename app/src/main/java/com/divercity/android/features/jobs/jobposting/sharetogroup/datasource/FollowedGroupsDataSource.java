@@ -1,9 +1,5 @@
 package com.divercity.android.features.jobs.jobposting.sharetogroup.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.PageKeyedDataSource;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
@@ -11,43 +7,44 @@ import com.divercity.android.data.entity.base.DataArray;
 import com.divercity.android.data.entity.group.GroupResponse;
 import com.divercity.android.features.jobs.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class ShareJobGroupDataSource extends PageKeyedDataSource<Long, GroupResponse> {
+public class FollowedGroupsDataSource extends PageKeyedDataSource<Long, GroupResponse> {
 
-    private static final String TAG = ShareJobGroupDataSource.class.getSimpleName();
+    private static final String TAG = FollowedGroupsDataSource.class.getSimpleName();
 
     private MutableLiveData<NetworkState> networkState = new MutableLiveData<>();
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
     private FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase;
-    private CompositeDisposable compositeDisposable;
     private String query;
     /**
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
+    private Disposable disposableRetry;
 
-    public ShareJobGroupDataSource(CompositeDisposable compositeDisposable,
-                                   FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase,
-                                   @Nullable String query) {
-        this.compositeDisposable = compositeDisposable;
+    public FollowedGroupsDataSource(FetchFollowedGroupsUseCase fetchFollowedGroupsUseCase,
+                                    String query) {
         this.fetchFollowedGroupsUseCase = fetchFollowedGroupsUseCase;
         this.query = query;
     }
 
     public void retry() {
         if (retryCompletable != null) {
-            compositeDisposable.add(retryCompletable
+            disposableRetry = retryCompletable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                    }, throwable -> Log.e(TAG, throwable.getMessage())));
+                    }, throwable -> Log.e(TAG, throwable.getMessage()));
         }
     }
 
@@ -91,7 +88,6 @@ public class ShareJobGroupDataSource extends PageKeyedDataSource<Long, GroupResp
 
             }
         };
-        compositeDisposable.add(disposableObserver);
         fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(0, params.requestedLoadSize, query));
     }
 
@@ -129,7 +125,6 @@ public class ShareJobGroupDataSource extends PageKeyedDataSource<Long, GroupResp
             }
         };
 
-        compositeDisposable.add(disposableObserver);
         fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(params.key.intValue(), params.requestedLoadSize, query));
     }
 
@@ -151,4 +146,9 @@ public class ShareJobGroupDataSource extends PageKeyedDataSource<Long, GroupResp
         }
     }
 
+    public void dispose(){
+        fetchFollowedGroupsUseCase.getCompositeDisposable().clear();
+        if(disposableRetry != null)
+            disposableRetry.dispose();
+    }
 }

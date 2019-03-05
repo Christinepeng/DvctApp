@@ -1,13 +1,12 @@
 package com.divercity.android.features.home.home.datasource;
 
-import android.arch.lifecycle.MutableLiveData;
-import android.arch.paging.DataSource;
-import android.support.annotation.NonNull;
-
 import com.divercity.android.data.entity.home.HomeItem;
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase;
 import com.divercity.android.features.home.home.usecase.FetchQuestionsJobsUseCase;
 
+import androidx.annotation.NonNull;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class GroupsInterestsDataSourceFactory extends DataSource.Factory<Long, HomeItem> {

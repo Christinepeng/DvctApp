@@ -25,7 +25,7 @@ import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
 import com.divercity.android.features.jobs.TabJobsFragment
-import com.divercity.android.features.profile.ProfileFragment
+import com.divercity.android.features.profile.currentuser.CurrentUserProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.Disposable
@@ -84,7 +84,7 @@ class HomeActivity : DaggerAppCompatActivity() {
             1 -> selectedFragment = TabGroupsFragment.newInstance()
             2 -> selectedFragment = TabJobsFragment.newInstance()
             3 -> selectedFragment = ActivityFragment.newInstance()
-            4 -> selectedFragment = ProfileFragment.newInstance()
+            4 -> selectedFragment = CurrentUserProfileFragment.newInstance()
         }
         val transaction = supportFragmentManager.beginTransaction()
         transaction.replace(R.id.container, selectedFragment)

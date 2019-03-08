@@ -118,4 +118,8 @@ data class UserAttributes(
     @Ignore
     @field:SerializedName("connected")
     var connected: String? = ""
+
+    fun getFullLocation() : String{
+        return city.plus(", ").plus(country)
+    }
 }

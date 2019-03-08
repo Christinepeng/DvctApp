@@ -62,18 +62,20 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorViewMode
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationViewModel
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIViewModel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
-import com.divercity.android.features.onboarding.selectskill.SelectSkillViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
-import com.divercity.android.features.profile.ProfileViewModel
+import com.divercity.android.features.profile.currentuser.CurrentUserProfileViewModel
+import com.divercity.android.features.profile.currentuser.tabprofile.TabProfileViewModel
+import com.divercity.android.features.profile.editpersonal.PersonalSettingsViewModel
 import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsViewModel
-import com.divercity.android.features.profile.settings.interests.InterestsViewModel
-import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsViewModel
+import com.divercity.android.features.profile.editinterests.InterestsViewModel
 import com.divercity.android.features.profile.tabconnections.ConnectionsViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
-import com.divercity.android.features.profile.tabprofile.TabProfileViewModel
 import com.divercity.android.features.signup.SignUpViewModel
+import com.divercity.android.features.skill.base.SelectSkillViewModel
+import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
+import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
 import com.divercity.android.features.splash.SplashViewModel
 import dagger.Binds
 import dagger.Module
@@ -313,8 +315,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ProfileViewModel::class)
-    abstract fun bindsProfileViewModel(viewModel: ProfileViewModel): ViewModel
+    @ViewModelKey(CurrentUserProfileViewModel::class)
+    abstract fun bindsProfileViewModel(viewModel: CurrentUserProfileViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -455,4 +457,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(UploadResumeViewModel::class)
     abstract fun bindsUploadResumeViewModel(viewModel: UploadResumeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OnboardingSkillViewModel::class)
+    abstract fun bindsOnboardingSkillViewModel(viewModel: OnboardingSkillViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditUserSkillViewModel::class)
+    abstract fun bindsToolbarSkillViewModel(viewModel: EditUserSkillViewModel): ViewModel
 }

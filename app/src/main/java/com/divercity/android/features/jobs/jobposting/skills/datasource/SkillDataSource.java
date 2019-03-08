@@ -5,7 +5,7 @@ import android.util.Log;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.base.DataArray;
 import com.divercity.android.data.entity.skills.SkillResponse;
-import com.divercity.android.features.onboarding.selectskill.usecase.FetchSkillsUseCase;
+import com.divercity.android.features.skill.base.usecase.FetchSkillsUseCase;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

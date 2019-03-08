@@ -12,6 +12,7 @@ import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.profile.tabconnections.datasource.FollowersPaginatedRepositoryImpl
 import com.divercity.android.features.profile.usecase.ConnectUserUseCase
+import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -21,16 +22,17 @@ import javax.inject.Inject
 
 class ConnectionsViewModel @Inject
 constructor(private val repository: FollowersPaginatedRepositoryImpl,
+            private val sessionRepository: SessionRepository,
             private val connectUserUseCase: ConnectUserUseCase) : BaseViewModel() {
 
     lateinit var pagedApplicantsList: LiveData<PagedList<UserResponse>>
     private lateinit var listingPaginatedJob: Listing<UserResponse>
     var connectUserResponse = MutableLiveData<Resource<ConnectUserResponse>>()
+    lateinit var currentUserId : String
 
     init {
         fetchFollowers()
     }
-
 
     fun connectToUser(userId : String) {
         connectUserResponse.postValue(Resource.loading(null))
@@ -54,7 +56,7 @@ constructor(private val repository: FollowersPaginatedRepositoryImpl,
     }
 
     private fun fetchFollowers() {
-        listingPaginatedJob = repository.fetchData()
+        listingPaginatedJob = repository.fetchData(sessionRepository.getUserId())
         pagedApplicantsList = listingPaginatedJob.pagedList
     }
 

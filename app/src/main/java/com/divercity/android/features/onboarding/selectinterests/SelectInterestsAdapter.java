@@ -1,9 +1,6 @@
 package com.divercity.android.features.onboarding.selectinterests;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +14,10 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by lucas on 17/10/2018.
@@ -48,6 +49,13 @@ public class SelectInterestsAdapter extends RecyclerView.Adapter<SelectInterests
 
     public void setList(List<InterestsResponse> list) {
         this.list = list;
+        notifyDataSetChanged();
+    }
+
+    public void updatedSelectedInterests(List<Integer> selected) {
+        for (InterestsResponse i : list) {
+            i.setSelected(selected.contains(Integer.parseInt(i.getId())));
+        }
         notifyDataSetChanged();
     }
 

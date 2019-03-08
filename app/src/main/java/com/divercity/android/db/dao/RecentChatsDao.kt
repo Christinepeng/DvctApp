@@ -20,7 +20,7 @@ interface RecentChatsDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @JvmSuppressWildcards
-    fun insertChatMessages(list: List<ExistingUsersChatListItem>)
+    suspend fun insertChatMessages(list: List<ExistingUsersChatListItem>)
 
     @Query("SELECT * FROM recentChat ORDER BY lastMessageDate DESC")
     fun getPagedRecentChats(): DataSource.Factory<Int, ExistingUsersChatListItem>

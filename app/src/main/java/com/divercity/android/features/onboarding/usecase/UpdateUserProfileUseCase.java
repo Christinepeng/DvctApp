@@ -29,7 +29,7 @@ public class UpdateUserProfileUseCase extends UseCase<UserResponse, UpdateUserPr
 
     @Override
     protected Observable<UserResponse> createObservableUseCase(UpdateUserProfileUseCase.Params params) {
-        return userRepository.updateUserProfile(params.user);
+        return userRepository.updateLoggedUserProfile(params.user);
     }
 
     public static final class Params {

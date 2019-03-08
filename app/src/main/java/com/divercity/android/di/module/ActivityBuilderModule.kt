@@ -45,14 +45,15 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIActivity
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
-import com.divercity.android.features.onboarding.selectskill.SelectSkillActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
+import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
-import com.divercity.android.features.profile.settings.interests.InterestsActivity
-import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsActivity
+import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.signup.SignUpActivity
+import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
+import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -221,8 +222,11 @@ abstract class ActivityBuilderModule {
     abstract fun bindLoadUrlActivity(): LoadUrlActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectSkillActivity(): SelectSkillActivity
+    abstract fun bindOnboardingSkillActivity(): OnboardingSkillActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindUploadResumeActivity(): UploadResumeActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindToolbarSkillsActivity(): EditUserSkillActivity
 }

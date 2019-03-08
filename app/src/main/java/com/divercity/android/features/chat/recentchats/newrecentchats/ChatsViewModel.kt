@@ -34,7 +34,6 @@ constructor(
     var pagedChatsList: LiveData<PagedList<ExistingUsersChatListItem>>? = null
 
     private val viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     var pageFetchList = ArrayList<Int>()
 
@@ -104,7 +103,7 @@ constructor(
             }
 
             override fun onSuccess(o: List<ExistingUsersChatListItem>) {
-                uiScope.launch {
+                CoroutineScope(Dispatchers.IO + viewModelJob).launch {
                     repository.saveRecentChats(o)
                 }
 
@@ -124,5 +123,6 @@ constructor(
     override fun onCleared() {
         super.onCleared()
         fetchCurrentChatsUseCase.dispose()
+        viewModelJob.cancel()
     }
 }

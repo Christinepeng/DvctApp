@@ -1,5 +1,6 @@
 package com.divercity.android.repository.session
 
+import androidx.lifecycle.LiveData
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.user.response.UserResponse
 import retrofit2.Response
@@ -25,6 +26,8 @@ interface SessionRepository {
     fun isUserLogged(): Boolean
 
     suspend fun clearUserData()
+
+    fun getUserDB() : LiveData<UserResponse>
 
     fun saveUserHeaderData(response: Response<DataObject<UserResponse>>)
 

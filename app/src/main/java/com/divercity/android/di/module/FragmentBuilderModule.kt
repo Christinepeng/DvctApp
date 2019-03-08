@@ -79,19 +79,21 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorFragment
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationFragment
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIFragment
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragment
-import com.divercity.android.features.onboarding.selectskill.SelectSkillFragment
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeFragment
-import com.divercity.android.features.profile.ProfileFragment
+import com.divercity.android.features.profile.currentuser.CurrentUserProfileFragment
+import com.divercity.android.features.profile.currentuser.tabprofile.TabProfileFragment
+import com.divercity.android.features.profile.editpersonal.PersonalSettingsFragment
 import com.divercity.android.features.profile.module.ProfileModule
 import com.divercity.android.features.profile.settings.ProfileSettingsFragment
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsFragment
-import com.divercity.android.features.profile.settings.interests.InterestsFragment
-import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsFragment
+import com.divercity.android.features.profile.editinterests.InterestsFragment
 import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
-import com.divercity.android.features.profile.tabprofile.TabProfileFragment
 import com.divercity.android.features.signup.SignUpFragment
+import com.divercity.android.features.skill.base.SelectSkillFragment
+import com.divercity.android.features.skill.onboarding.OnboardingSkillFragment
+import com.divercity.android.features.skill.editskills.EditUserSkillFragment
 import com.divercity.android.features.splash.SplashFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -128,7 +130,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindActivityFragment (): ActivityFragment
 
     @ContributesAndroidInjector(modules = [ProfileModule::class])
-    abstract fun bindProfileFragment (): ProfileFragment
+    abstract fun bindProfileFragment (): CurrentUserProfileFragment
 
     @ContributesAndroidInjector
     abstract fun bindSettingsFragment (): SettingsFragment
@@ -363,4 +365,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindUploadResumeFragment(): UploadResumeFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindOnboardingSkillFragment(): OnboardingSkillFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindToolbarSkillFragment(): EditUserSkillFragment
 }

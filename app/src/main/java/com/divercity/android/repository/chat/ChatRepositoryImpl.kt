@@ -101,9 +101,7 @@ constructor(
     }
 
     override suspend fun saveRecentChats(list: List<ExistingUsersChatListItem>) {
-        return withContext(Dispatchers.IO) {
-            recentChatsDao.insertChatMessages(list)
-        }
+        recentChatsDao.insertChatMessages(list)
     }
 
     override suspend fun deleteRecentChatsDB() {

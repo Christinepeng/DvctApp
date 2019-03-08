@@ -55,14 +55,15 @@ import com.divercity.android.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIActivity
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
-import com.divercity.android.features.onboarding.selectskill.SelectSkillActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
+import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
-import com.divercity.android.features.profile.settings.interests.InterestsActivity
-import com.divercity.android.features.profile.settings.personalsettings.PersonalSettingsActivity
+import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.signup.SignUpActivity
+import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
+import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -170,8 +171,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(SelectMajorActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectSkillActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectSkillActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingSkillActivity(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(OnboardingSkillActivity.getCallingIntent(activity, progress))
     }
 
     fun navigateToSelectOOIActivity(activity: FragmentActivity, progress: Int) {
@@ -192,6 +193,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToNewChatActivity(fragment: Fragment) {
         fragment.startActivity(NewChatActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToToolbarSkillsActivity(fragment: Fragment, prevSkills : ArrayList<String>?) {
+        fragment.startActivity(EditUserSkillActivity.getCallingIntent(fragment.context, prevSkills))
     }
 
     fun navigateToChatActivity(fragment: Fragment, userName: String, userId: String, chatId: Int?) {
@@ -434,10 +439,10 @@ class Navigator @Inject constructor() {
                     is SelectOccupationActivity ->
                         navigateToOnboardingLocationActivity(activity, progress)
                     is OnboardingLocationActivity ->
-//                        navigateToUploadResumeActivity(activity, progress)
-//                    is UploadResumeActivity ->
-                        navigateToSelectSkillActivity(activity, progress)
-                    is SelectSkillActivity ->
+                        navigateToUploadResumeActivity(activity, progress)
+                    is UploadResumeActivity ->
+                        navigateToOnboardingSkillActivity(activity, progress)
+                    is OnboardingSkillActivity ->
                         navigateToOnboardingGenderActivity(activity, progress)
                     is OnboardingGenderActivity ->
                         navigateToOnboardingEthnicityActivity(activity, progress)
@@ -458,8 +463,8 @@ class Navigator @Inject constructor() {
                     is OnboardingLocationActivity ->
                         navigateToSelectOOIActivity(activity, progress)
                     is SelectOOIActivity ->
-                        navigateToSelectSkillActivity(activity, progress)
-                    is SelectSkillActivity ->
+                        navigateToOnboardingSkillActivity(activity, progress)
+                    is OnboardingSkillActivity ->
                         navigateToOnboardingGenderActivity(activity, progress)
                     is OnboardingGenderActivity ->
                         navigateToOnboardingEthnicityActivity(activity, progress)

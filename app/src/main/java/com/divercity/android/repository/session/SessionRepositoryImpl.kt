@@ -1,6 +1,7 @@
 package com.divercity.android.repository.session
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import com.divercity.android.R
 import com.divercity.android.core.sharedpref.SharedPreferencesManager
 import com.divercity.android.data.entity.base.DataObject
@@ -9,7 +10,6 @@ import com.divercity.android.db.dao.UserDao
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import retrofit2.Response
 
 /**
@@ -23,7 +23,6 @@ constructor(
 ) : SessionRepository {
 
     private val USER_PREF_NAME = "USER_PREF_NAME"
-    private val uiScope = CoroutineScope(Dispatchers.Main)
     private var currentLoggedUser: UserResponse? = null
 
     enum class Key {
@@ -145,10 +144,8 @@ constructor(
     override fun saveUserData(user: UserResponse) {
         this.currentLoggedUser = user
         setUserId(user.id)
-        uiScope.launch {
-            withContext(Dispatchers.IO) {
-                userDao.insertUser(user)
-            }
+        CoroutineScope(Dispatchers.IO).launch {
+            userDao.insertUser(user)
         }
     }
 
@@ -170,5 +167,9 @@ constructor(
 
     override fun getSkills(): List<String>? {
         return currentLoggedUser?.userAttributes?.skills
+    }
+
+    override fun getUserDB(): LiveData<UserResponse> {
+        return userDao.getUser()
     }
 }

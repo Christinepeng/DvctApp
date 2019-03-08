@@ -9,10 +9,10 @@ import com.divercity.android.R
 
 object OnboardingProgression {
 
-    private var COUNT_RECRUITER = Math.ceil(100 / 5.0).toInt()
-    private var COUNT_HR = Math.ceil(100 / 6.0).toInt()
-    private var COUNT_PROF_ENTREPNR_JOBSK = Math.ceil(100 / 9.0).toInt()
-    private var COUNT_STUDENT = Math.ceil(100 / 8.0).toInt()
+    private var COUNT_RECRUITER = Math.ceil(100 / 6.0).toInt()
+    private var COUNT_HR = Math.ceil(100 / 7.0).toInt()
+    private var COUNT_PROF_ENTREPNR_JOBSK = Math.ceil(100 / 10.0).toInt()
+    private var COUNT_STUDENT = Math.ceil(100 / 9.0).toInt()
 
     fun getNextNavigationProgressOnboarding(
         activity: Activity,

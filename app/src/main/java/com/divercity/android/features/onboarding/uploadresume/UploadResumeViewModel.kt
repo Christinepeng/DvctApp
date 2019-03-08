@@ -1,17 +1,18 @@
 package com.divercity.android.features.onboarding.uploadresume
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-
+import android.app.Application
+import android.net.Uri
+import com.divercity.android.R
 import com.divercity.android.core.base.BaseViewModel
-import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Listing
+import com.divercity.android.core.utils.FileUtils
 import com.divercity.android.core.utils.SingleLiveEvent
-import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.company.base.company.CompanyPaginatedRepositoryImpl
+import com.divercity.android.data.Resource
+import com.divercity.android.data.entity.document.DocumentResponse
+import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.dialogs.jobapply.usecase.UploadDocumentUseCase
 import com.divercity.android.repository.session.SessionRepository
-
+import com.google.gson.JsonElement
+import java.io.File
 import javax.inject.Inject
 
 /**
@@ -20,52 +21,68 @@ import javax.inject.Inject
 
 class UploadResumeViewModel @Inject
 constructor(
-    private val repository: CompanyPaginatedRepositoryImpl,
+    private val context: Application,
+    private val uploadDocumentUseCase: UploadDocumentUseCase,
     private val sessionRepository: SessionRepository
 ) : BaseViewModel() {
 
-    lateinit var pagedCompanyList: LiveData<PagedList<CompanyResponse>>
-    lateinit var listingPaginatedCompany: Listing<CompanyResponse>
-    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var lastSearch: String? = null
+    var uploadDocumentResponse = SingleLiveEvent<Resource<DocumentResponse>>()
 
     val accountType: String
         get() = sessionRepository.getAccountType()
 
-    val networkState: LiveData<NetworkState>
-        get() = listingPaginatedCompany.networkState
-
-    val refreshState: LiveData<NetworkState>
-        get() = listingPaginatedCompany.refreshState
-
-    fun retry() {
-        repository.retry()
-    }
-
-    fun refresh() {
-        repository.refresh()
-    }
-
-    fun fetchCompanies(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        if (searchQuery != lastSearch) {
-            lastSearch = searchQuery
-            fetchData(lifecycleOwner, searchQuery)
+    fun checkDocumentAndUploadIt(uri: Uri) {
+        val mimeType = FileUtils.getMimeType(context, uri)
+        val file: File?
+        if (mimeType == null) {
+            file = File(uri.path)
+            val fileType = FileUtils.getFileExtension(file)
+            if (fileType.contains("pdf")) {
+                uploadDocument(file)
+            } else {
+                uploadDocumentResponse.postValue(
+                    Resource.error(
+                        context.getString(R.string.select_valid_file),
+                        null
+                    )
+                )
+            }
+        } else if (mimeType.contains("pdf")) {
+            file = FileUtils.getFileFromContentResolver(context, uri)
+            if (file != null)
+                uploadDocument(file)
+            else
+                uploadDocumentResponse.postValue(
+                    Resource.error(
+                        context.getString(R.string.select_valid_file),
+                        null
+                    )
+                )
+        } else {
+            uploadDocumentResponse.postValue(
+                Resource.error(
+                    context.getString(R.string.select_valid_file),
+                    null
+                )
+            )
         }
     }
 
-    private fun fetchData(lifecycleOwner: LifecycleOwner?, query: String?) {
-        listingPaginatedCompany = repository.fetchData(query)
-        pagedCompanyList = listingPaginatedCompany.pagedList
+    private fun uploadDocument(file: File) {
+        uploadDocumentResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<DocumentResponse>() {
+            override fun onFail(error: String) {
+                uploadDocumentResponse.postValue(Resource.error(error, null))
+            }
 
-        lifecycleOwner?.let {
-            removeObservers(it)
-            subscribeToPaginatedLiveData.call()
+            override fun onHttpException(error: JsonElement) {
+                uploadDocumentResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: DocumentResponse) {
+                uploadDocumentResponse.postValue(Resource.success(o))
+            }
         }
-    }
-
-    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState.removeObservers(lifecycleOwner)
-        refreshState.removeObservers(lifecycleOwner)
-        pagedCompanyList.removeObservers(lifecycleOwner)
+        uploadDocumentUseCase.execute(callback, UploadDocumentUseCase.Params.forDoc(file))
     }
 }

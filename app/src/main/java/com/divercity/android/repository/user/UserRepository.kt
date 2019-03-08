@@ -17,7 +17,7 @@ interface UserRepository {
 
     fun fetchRemoteUserData(userId: String): Observable<UserResponse>
 
-    fun updateUserProfile(user: User): Observable<UserResponse>
+    fun updateLoggedUserProfile(user: User): Observable<UserResponse>
 
     fun joinGroup(idGroup: String): Observable<Boolean>
 

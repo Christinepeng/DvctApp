@@ -58,7 +58,7 @@ constructor(
         }
     }
 
-    override fun updateUserProfile(user: User): Observable<UserResponse> {
+    override fun updateLoggedUserProfile(user: User): Observable<UserResponse> {
         val userProfileBody = UserProfileBody()
         userProfileBody.user = user
         return userService.updateUserProfile(sessionRepository.getUserId(), userProfileBody)

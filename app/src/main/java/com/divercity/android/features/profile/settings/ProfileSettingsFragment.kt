@@ -1,19 +1,19 @@
 package com.divercity.android.features.profile.settings
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomTwoBtnDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile_settings.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
@@ -82,13 +82,13 @@ class ProfileSettingsFragment : BaseFragment() {
             navigator.navigateToAccountSettingsActivity(this)
         }
 
-        lay_personal_settings.setOnClickListener {
-            navigator.navigateToPersonalSettingsActivity(this)
-        }
-
-        lay_interests.setOnClickListener {
-            navigator.navigateToInterestsActivity(this)
-        }
+//        lay_personal_settings.setOnClickListener {
+//            navigator.navigateToPersonalSettingsActivity(this)
+//        }
+//
+//        lay_interests.setOnClickListener {
+//            navigator.navigateToInterestsActivity(this)
+//        }
 
         enableSwitchListener()
     }
@@ -243,7 +243,7 @@ class ProfileSettingsFragment : BaseFragment() {
 
 //    TODO hanlde if photo uploading fails
     private fun showDialogErrorProfilePictureUpload() {
-        var dialog = CustomTwoBtnDialogFragment.newInstance(
+        val dialog = CustomTwoBtnDialogFragment.newInstance(
             getString(R.string.ups),
             getString(R.string.error_picture_upload),
             getString(R.string.ok),

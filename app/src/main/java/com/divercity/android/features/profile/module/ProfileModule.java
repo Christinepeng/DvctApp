@@ -1,9 +1,8 @@
 package com.divercity.android.features.profile.module;
 
+import com.divercity.android.features.profile.currentuser.CurrentUserProfileFragment;
+
 import androidx.fragment.app.FragmentManager;
-
-import com.divercity.android.features.profile.ProfileFragment;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -15,7 +14,7 @@ import dagger.Provides;
 public abstract class ProfileModule {
 
     @Provides
-    static FragmentManager provideFragmentManager(ProfileFragment profileFragment) {
-        return profileFragment.getChildFragmentManager();
+    static FragmentManager provideFragmentManager(CurrentUserProfileFragment currentUserProfileFragment) {
+        return currentUserProfileFragment.getChildFragmentManager();
     }
 }

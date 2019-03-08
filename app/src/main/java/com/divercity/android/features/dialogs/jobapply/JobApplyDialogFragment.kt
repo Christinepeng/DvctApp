@@ -198,7 +198,6 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
 
     private fun openDocSelector() {
         val mimeTypes = arrayOf(
-//                "application/msword", "application/vnd.openxmlformats-officedocument.wordprocessingml.document", // .doc & .docx
             "application/pdf"
         )
         val intent = Intent(Intent.ACTION_GET_CONTENT)

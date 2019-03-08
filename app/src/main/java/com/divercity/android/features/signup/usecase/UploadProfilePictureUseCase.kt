@@ -1,8 +1,8 @@
 package com.divercity.android.features.signup.usecase
 
 import com.divercity.android.core.base.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
+import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler

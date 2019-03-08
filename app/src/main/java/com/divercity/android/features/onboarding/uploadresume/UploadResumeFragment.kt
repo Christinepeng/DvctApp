@@ -1,18 +1,22 @@
 package com.divercity.android.features.onboarding.uploadresume
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.core.ui.IOnBackPressed
-import com.divercity.android.core.ui.RetryCallback
+import com.divercity.android.data.Status
+import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.jobs.jobposting.skills.adapter.SkillsAdapter
 import kotlinx.android.synthetic.main.fragment_onboarding_upload_resume.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject
 
-class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
+class UploadResumeFragment : BaseFragment() {
 
     lateinit var viewModel: UploadResumeViewModel
 
@@ -22,6 +26,7 @@ class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
     var currentProgress: Int = 0
 
     companion object {
+        const val REQUEST_CODE_DOC = 150
         private const val PARAM_PROGRESS = "paramProgress"
 
         fun newInstance(progress: Int): UploadResumeFragment {
@@ -44,17 +49,39 @@ class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupHeader()
-//        viewModel.fetchSkills(null)
-//        setupAdapter()
-//        subscribeToPaginatedLiveData()
-//        setupToolbar()
-//        setupSearch()
+        setupView()
+        subscribeToLiveData()
     }
 
-    private fun setupAdapter() {
-//        adapter.setRetryCallback(this)
-//        adapter.skillsPreviousSelected = arguments?.getParcelableArrayList(PARAM_SKILLS) ?: ArrayList()
-//        list.adapter = adapter
+    private fun subscribeToLiveData() {
+        viewModel.uploadDocumentResponse.observe(this, Observer { document ->
+            when (document?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(document.message ?: "Error")
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    showToast(R.string.file_upload_success)
+                    navigator.navigateToNextOnboarding(
+                        activity!!,
+                        viewModel.accountType,
+                        currentProgress,
+                        true
+                    )
+                }
+            }
+        })
+    }
+
+    private fun setupView(){
+        btn_upload_resume.setOnClickListener {
+            openDocSelector()
+        }
     }
 
     private fun setupHeader() {
@@ -85,50 +112,38 @@ class UploadResumeFragment : BaseFragment(), RetryCallback, IOnBackPressed {
         }
     }
 
-    private fun setupSearch() {
-//        include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
-//            if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-//                val toSearch: String? = include_search.edtxt_search.text.toString()
-//                viewModel.fetchSkills(if (toSearch == "") null else toSearch)
-//                subscribeToPaginatedLiveData()
-//                true
-//            } else
-//                false
-//        }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_DOC && resultCode == Activity.RESULT_OK) {
+            handleDocSelectorActivityResult(data)
+        }
     }
 
-    private fun subscribeToPaginatedLiveData() {
-//        viewModel.pagedSkillsList.observe(this, Observer {
-//            adapter.submitList(it)
-//        })
-//
-//        viewModel.networkState().observe(this, Observer {
-//            adapter.setNetworkState(it)
-//        })
-//
-//        viewModel.refreshState().observe(this, Observer { networkState ->
-//            networkState?.let {
-//                adapter.currentList?.let { list ->
-//                    if (networkState.status == Status.SUCCESS && list.size == 0)
-//                        txt_no_results.visibility = View.VISIBLE
-//                    else
-//                        txt_no_results.visibility = View.GONE
-//                }
-//            }
-//        })
+    private fun openDocSelector() {
+        val mimeTypes = arrayOf(
+            "application/pdf"
+        )
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        startActivityForResult(intent, JobApplyDialogFragment.REQUEST_CODE_DOC)
     }
 
-    override fun retry() {
-        viewModel.retry()
+    private fun handleDocSelectorActivityResult(data: Intent?) {
+        val fileUri = data?.data
+        if (fileUri != null) {
+            viewModel.checkDocumentAndUploadIt(fileUri)
+        } else
+            showToast(R.string.select_valid_file)
     }
 
-    override fun onBackPressed(): Boolean {
-//        hideKeyboard()
-//        val intent = Intent()
-//        intent.putExtra(SKILLS_TITLE, adapter.getMergeListSelected())
-//        activity?.apply {
-//            setResult(Activity.RESULT_OK, intent)
-//        }
-        return false
+    private fun showToast(resId: Int) {
+        Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
     }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(context!!, msg, Toast.LENGTH_SHORT).show()
+    }
+
 }

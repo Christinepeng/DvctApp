@@ -29,9 +29,14 @@ class ConnectionsFragment : BaseFragment(), RetryCallback {
     private var isListRefreshing = false
 
     companion object {
+        private const val PARAM_USER_ID = "paramUserId"
 
-        fun newInstance(): ConnectionsFragment {
-            return ConnectionsFragment()
+        fun newInstance(userId: String): ConnectionsFragment {
+            val fragment = ConnectionsFragment()
+            val arguments = Bundle()
+            arguments.putString(PARAM_USER_ID, userId)
+            fragment.arguments = arguments
+            return fragment
         }
     }
 

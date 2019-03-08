@@ -52,7 +52,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:hint="@string/add_skills" />
+            android:hint="@string/add_your_skills" />
 
         <Button
             android:id="@+id/btn_add_skill"

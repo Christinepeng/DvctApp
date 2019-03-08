@@ -6,7 +6,7 @@ import androidx.paging.PagedList
 import com.divercity.android.core.base.PaginatedQueryRepository
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.skills.SkillResponse
-import com.divercity.android.features.onboarding.selectskill.usecase.FetchSkillsUseCase
+import com.divercity.android.features.skill.base.usecase.FetchSkillsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
 import javax.inject.Inject

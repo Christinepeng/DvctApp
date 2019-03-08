@@ -296,12 +296,12 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.settings.personalsettings.PersonalSettingsActivity"
+            android:name=".features.profile.editpersonal.PersonalSettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.settings.interests.InterestsActivity"
+            android:name="com.divercity.android.features.profile.editinterests.InterestsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -346,12 +346,17 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectskill.SelectSkillActivity"
+            android:name=".features.skill.onboarding.OnboardingSkillActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".features.onboarding.uploadresume.UploadResumeActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.skill.editskills.EditUserSkillActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

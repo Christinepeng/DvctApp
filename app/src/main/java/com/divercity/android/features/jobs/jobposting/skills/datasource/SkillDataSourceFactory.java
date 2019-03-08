@@ -1,7 +1,7 @@
 package com.divercity.android.features.jobs.jobposting.skills.datasource;
 
 import com.divercity.android.data.entity.skills.SkillResponse;
-import com.divercity.android.features.onboarding.selectskill.usecase.FetchSkillsUseCase;
+import com.divercity.android.features.skill.base.usecase.FetchSkillsUseCase;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

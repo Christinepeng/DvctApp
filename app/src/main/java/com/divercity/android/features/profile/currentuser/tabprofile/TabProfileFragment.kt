@@ -17,7 +17,6 @@ import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
 import com.divercity.android.features.profile.ProfileUtils
-import com.divercity.android.features.profile.currentuser.CurrentUserProfileViewModel
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
 import javax.inject.Inject
@@ -29,8 +28,6 @@ import javax.inject.Inject
 class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
 
     private lateinit var viewModel: TabProfileViewModel
-
-    private lateinit var sharedViewModel: CurrentUserProfileViewModel
 
     @Inject
     lateinit var interestAdapter: SelectInterestsAdapter
@@ -48,12 +45,8 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
         super.onCreate(savedInstanceState)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(TabProfileViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
-
-        sharedViewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)
-                .get(CurrentUserProfileViewModel::class.java)
+                .get(TabProfileViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 

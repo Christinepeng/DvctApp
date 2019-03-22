@@ -281,12 +281,12 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.groups.creategroup.step1.CreateGroupActivity"
+            android:name=".features.groups.createeditgroup.step1.CreateEditGroupStep1Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.groups.creategroup.step3.GroupDescriptionActivity"
+            android:name=".features.groups.createeditgroup.step3.CreateEditGroupStep3Activity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -359,6 +359,12 @@
             android:name=".features.skill.editskills.EditUserSkillActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.profile.otheruser.OtherUserProfileActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
 
     </application>
 

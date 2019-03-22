@@ -1,23 +1,23 @@
 package com.divercity.android.features.groups.groupdetail
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.contacts.InvitePhoneContactsActivity
 import com.divercity.android.features.dialogs.groupaction.GroupAdminActionsDialogFragment
@@ -58,15 +58,16 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[GroupDetailViewModel::class.java]
         setHasOptionsMenu(true)
         group = arguments?.getParcelable(PARAM_GROUP)!!
-
-        viewModel.fetchGroupMembers(group, 0, 5, null)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[GroupDetailViewModel::class.java]
+        viewModel.fetchGroupMembers(group, 0, 5, null)
+        viewModel.fetchGroupById(group.id)
+
         setupToolbar()
         setupView(group)
         subscribeToLiveData()
@@ -89,7 +90,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
         tab_layout.setupWithViewPager(viewPager)
 
         item_txt_name.text = group.attributes?.title
-        if (group.isPublic)
+        if (group.isPublic())
             item_txt_detail.text =
                 "Public Group · ".plus(group.attributes?.followersCount).plus(" Members")
         else
@@ -100,26 +101,26 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             .load(group.attributes.pictureMain)
             .into(img_default_group)
 
-        if (group.attributes.isIsCurrentUserAdmin) {
+        if (group.attributes.isCurrentUserAdmin) {
             btn_member_pending.setText(R.string.admin)
             btn_member_pending.visibility = View.VISIBLE
             btn_conversation.visibility = View.VISIBLE
-        } else if (group.attributes.isIsFollowedByCurrent) {
+        } else if (group.attributes.isFollowedByCurrent) {
             btn_member_pending.setText(R.string.member)
             btn_member_pending.visibility = View.VISIBLE
             btn_conversation.visibility = View.VISIBLE
-        } else if (group.isPublic) {
+        } else if (group.isPublic()) {
             btn_join.visibility = View.VISIBLE
             btn_join.setOnClickListener {
                 viewModel.joinGroup(group)
             }
-        } else if (group.isJoinRequestNotSend) {
+        } else if (group.isJoinRequestNotSend()) {
             btn_join.setText(R.string.request_to_join)
             btn_join.visibility = View.VISIBLE
             btn_join.setOnClickListener {
                 viewModel.requestToJoinGroup(group)
             }
-        } else if (group.isJoinRequestPending) {
+        } else if (group.isJoinRequestPending()) {
             btn_member_pending.setText(R.string.pending)
             btn_member_pending.visibility = View.VISIBLE
         }
@@ -137,6 +138,20 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                 Status.SUCCESS -> {
                     hideProgress()
                     showMemberPictures(response.data!!)
+                }
+            }
+        })
+
+        viewModel.fetchGroupByIdResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    setupView(response.data!!)
                 }
             }
         })
@@ -201,9 +216,9 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action -> {
-                if (group.attributes.isIsCurrentUserAdmin)
+                if (group.attributes.isCurrentUserAdmin)
                     showGroupAdminActionsDialog()
-                 else if (group.attributes.isIsFollowedByCurrent)
+                 else if (group.attributes.isFollowedByCurrent)
                     showGroupMemberActionsDialog()
                 true
             }
@@ -223,6 +238,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             }
 
             override fun onEditGroup() {
+                navigator.navigateToEditGroupStep1(this@GroupDetailFragment, group)
             }
 
             override fun onAddAdmin() {

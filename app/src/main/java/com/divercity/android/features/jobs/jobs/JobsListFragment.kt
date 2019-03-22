@@ -144,7 +144,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
         }
 
         override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
         }
     }
 

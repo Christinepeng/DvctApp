@@ -2,7 +2,6 @@ package com.divercity.android.core.utils;
 
 import android.content.Context;
 import android.os.Build;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.webkit.CookieManager;
 import android.webkit.CookieSyncManager;
@@ -17,6 +16,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+
+import androidx.annotation.Nullable;
 
 public final class Util {
 

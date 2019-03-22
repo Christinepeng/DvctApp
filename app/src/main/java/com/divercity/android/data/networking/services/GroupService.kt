@@ -2,12 +2,12 @@ package com.divercity.android.data.networking.services
 
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
-import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInviteBody
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
@@ -15,7 +15,6 @@ import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import io.reactivex.Observable
-import okhttp3.RequestBody
 import retrofit2.Response
 import retrofit2.http.*
 
@@ -78,6 +77,17 @@ interface GroupService {
     @POST("group_of_interests")
     fun createGroup(@Body body: CreateGroupBody): Observable<Response<DataObject<GroupResponse>>>
 
+    @DELETE("group_of_interests/{groupId}")
+    fun deleteGroup(
+        @Path("groupId") groupId: String
+    ): Observable<Response<Void>>
+
+    @PUT("group_of_interests/{groupId}")
+    fun editGroup(
+        @Path("groupId") groupId: String,
+        @Body body: CreateGroupBody
+    ): Observable<Response<DataObject<GroupResponse>>>
+
     @GET("questions")
     fun fetchQuestions(
         @Query("group_id") groupId: String,
@@ -92,15 +102,6 @@ interface GroupService {
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
     ): Observable<Response<DataArray<GroupResponse>>>
-
-    @Multipart
-    @PUT("api/group_of_interests")
-    fun createGroup(
-        @Part("group_of_interest[title]") title: RequestBody,
-        @Part("group_of_interest[description]") description: RequestBody,
-        @Part("group_of_interest[group_type]") groupType: RequestBody,
-        @Part("group_of_interest[picture]") picture: RequestBody
-    ): Observable<Response<DataObject<GroupResponse>>>
 
     @GET("recommenders/group_of_interests")
     fun fetchRecommendedGroups(
@@ -140,6 +141,6 @@ interface GroupService {
 
     @POST("answers")
     fun sendNewAnswer(
-        @Body body : AnswerBody
+        @Body body: AnswerBody
     ): Observable<Response<DataObject<AnswerResponse>>>
 }

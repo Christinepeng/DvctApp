@@ -1,24 +1,24 @@
 package com.divercity.android.features.groups.followedgroups
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.followedgroups.adapter.GroupsSimpleAdapter
 import com.divercity.android.features.groups.followedgroups.adapter.GroupsSimpleViewHolder
 import kotlinx.android.synthetic.main.fragment_following_groups.*
@@ -98,7 +98,7 @@ class FollowingGroupsFragment : BaseFragment(), RetryCallback {
                     hideProgress()
                     // Updating join btn state
                     adapter.currentList?.get(positionJoinClicked)
-                        ?.attributes?.isIsFollowedByCurrent = true
+                        ?.attributes?.isFollowedByCurrent = true
                     adapter.notifyItemChanged(positionJoinClicked)
                 }
             }

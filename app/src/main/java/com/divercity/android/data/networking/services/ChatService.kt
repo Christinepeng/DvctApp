@@ -73,5 +73,8 @@ interface ChatService {
         @Part("message[content]") message: RequestBody,
         @Part("message[chat_id]") chatId: RequestBody,
         @Part("message[picture]") image: RequestBody
+//        ,
+//        @Part("message[embedded_attachment_type]") attchmntType: RequestBody,
+//        @Part("message[embedded_attachment_id]") attchmntId: RequestBody
     ): Observable<ChatMessageResponse>
 }

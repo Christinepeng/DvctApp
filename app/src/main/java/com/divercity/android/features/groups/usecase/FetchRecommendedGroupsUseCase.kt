@@ -1,7 +1,7 @@
 package com.divercity.android.features.groups.usecase
 
 import com.divercity.android.core.base.UseCase
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.repository.group.GroupRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler

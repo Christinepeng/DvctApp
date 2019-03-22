@@ -46,7 +46,6 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
             android:fontFamily="@font/avenir_book"
-            android:lineSpacingExtra="-2sp"
             android:textColor="#80333241"
             android:textSize="14sp"
             tools:text="Dropbox" />

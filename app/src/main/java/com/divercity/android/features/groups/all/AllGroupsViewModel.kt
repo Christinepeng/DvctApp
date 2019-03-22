@@ -2,18 +2,17 @@ package com.divercity.android.features.groups.all
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Event
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.all.datasource.AllGroupsPaginatedRepositoryImpl
+import com.divercity.android.features.groups.all.model.GroupPositionModel
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.google.gson.JsonElement
@@ -25,20 +24,19 @@ import javax.inject.Inject
 
 class AllGroupsViewModel @Inject
 constructor(
-        private val repository: AllGroupsPaginatedRepositoryImpl,
-        private val joinGroupUseCase: JoinGroupUseCase,
-        private val requestToJoinUseCase : RequestJoinGroupUseCase
+    private val repository: AllGroupsPaginatedRepositoryImpl,
+    private val joinGroupUseCase: JoinGroupUseCase,
+    private val requestToJoinUseCase: RequestJoinGroupUseCase
 ) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
-    var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
-    private var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
-    private var lastSearch: String? = null
 
-    val onJoinGroupResponse: LiveData<Event<Resource<Any>>>
-        get() = joinGroupResponse
+    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
+    var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
+
+    private var lastSearch: String? = null
 
     init {
         fetchGroups(null, "")
@@ -56,7 +54,7 @@ constructor(
         searchQuery?.let {
             if (it != lastSearch) {
                 lastSearch = it
-                repository.compositeDisposable.clear()
+                repository.clear()
                 listingPaginatedGroup = repository.fetchData(it)
                 pagedGroupList = listingPaginatedGroup.pagedList
 
@@ -74,43 +72,45 @@ constructor(
         pagedGroupList.removeObservers(lifecycleOwner)
     }
 
-    fun joinGroup(group: GroupResponse) {
-        joinGroupResponse.postValue(Event(Resource.loading(null)))
+    fun joinGroup(group: GroupPositionModel) {
+        joinPublicGroupResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<Boolean>() {
             override fun onSuccess(t: Boolean) {
-                joinGroupResponse.postValue(Event(Resource.success(t)))
+                joinPublicGroupResponse.postValue(Resource.success(group))
             }
 
             override fun onFail(error: String) {
-                joinGroupResponse.postValue(Event(Resource.error(error, null)))
+                joinPublicGroupResponse.postValue(Resource.error(error, group))
             }
 
             override fun onHttpException(error: JsonElement) {
-                joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
+                joinPublicGroupResponse.postValue(Resource.error(error.toString(), group))
             }
         }
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
+        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group.group.id))
     }
 
-    fun requestToJoinGroup(group: GroupResponse) {
-        requestToJoinResponse.postValue(Resource.loading(null))
+    fun requestToJoinGroup(group: GroupPositionModel) {
+        requestToJoinPrivateGroupResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<MessageResponse>() {
             override fun onFail(error: String) {
-                requestToJoinResponse.postValue(Resource.error(error, null))
+                requestToJoinPrivateGroupResponse.postValue(Resource.error(error, group))
             }
 
             override fun onHttpException(error: JsonElement) {
-                requestToJoinResponse.postValue(Resource.error(error.toString(), null))
+                requestToJoinPrivateGroupResponse.postValue(Resource.error(error.toString(), group))
             }
 
             override fun onSuccess(o: MessageResponse) {
-                requestToJoinResponse.postValue(Resource.success(o))
+                requestToJoinPrivateGroupResponse.postValue(Resource.success(group))
             }
         }
-        requestToJoinUseCase.execute(callback,
-            RequestJoinGroupUseCase.Params.toJoin(group.id))
+        requestToJoinUseCase.execute(
+            callback,
+            RequestJoinGroupUseCase.Params.toJoin(group.group.id)
+        )
     }
 
     override fun onCleared() {

@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.Event
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.usecase.FetchRecommendedGroupsUseCase
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
@@ -44,7 +44,7 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
         fetchRecommendedGroupsUseCase.execute(callback, FetchRecommendedGroupsUseCase.Params.forGroups(0,5))
     }
 
-    fun joinGroup(jobId : String?) {
+    fun joinGroup(groupId : String) {
         joinGroupResponse.postValue(Event(Resource.loading(null)))
         val callback = object : DisposableObserverWrapper<Boolean>() {
             override fun onFail(error: String) {
@@ -59,7 +59,7 @@ constructor(private val fetchRecommendedGroupsUseCase: FetchRecommendedGroupsUse
                 joinGroupResponse.postValue(Event(Resource.success(o)))
             }
         }
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(GroupResponse(jobId)))
+        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(groupId))
     }
 
     override fun onCleared() {

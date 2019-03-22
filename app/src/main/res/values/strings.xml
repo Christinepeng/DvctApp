@@ -35,6 +35,7 @@
     <string name="me">Me</string>
     <string name="add">ADD</string>
     <string name="search_company">Please, search to show results</string>
+    <string name="change_photo">Change Photo</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -79,6 +80,7 @@
     <string name="company_successfully_created">Company successfully created</string>
     <string name="select_industry">Select Industry</string>
     <string name="select_company_size">Select Company Size</string>
+    <string name="companies">Companies</string>
 
     <!-- Location-->
     <string name="use_my_location">Use My Location</string>
@@ -181,6 +183,7 @@
     <string name="activity">Activity</string>
     <string name="profile">Profile</string>
     <string name="job_board">Job Board</string>
+    <string name="people">People</string>
 
     <!-- Home-->
     <string name="logout">Logout</string>
@@ -241,6 +244,10 @@
     <string name="no_job_posting">You haven\'t posted any job yet</string>
     <string name="no_saved_job">You haven\'t saved any job yet</string>
     <string name="no_job_application">You haven\'t applied to any job yet</string>
+    <string name="accept">Accept</string>
+    <string name="decline">Decline</string>
+    <string name="accepted">Accepted</string>
+    <string name="declined">Declined</string>
 
     <string name="cancel_application">Cancel Application</string>
     <string name="cancel_application_warning">Are you sure you want to cancel your application? (Note that they may have already viewed your application)</string>
@@ -281,6 +288,8 @@
     <string name="start_topic">Start a Topic</string>
     <string name="change_group">Change Group</string>
     <string name="be_first_comment">Be the first to comment</string>
+    <string name="delete_group">Delete Group</string>
+    <string name="delete_group_warning">Are you sure you want to delete this group?</string>
 
     <!-- Delete Job-->
     <string name="delete_job">Delete Job Posting</string>
@@ -335,6 +344,8 @@
     <string name="group_dm_name">Group DM Name</string>
 
     <string name="unauthorized_user">Unauthorized user</string>
+
+    <string name="noti_channel_general">General</string>
 
     <!-- Facebook-->
     <string name="facebook_app_id">1497808533858953</string>

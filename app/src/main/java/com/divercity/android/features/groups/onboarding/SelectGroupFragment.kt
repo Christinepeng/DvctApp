@@ -1,24 +1,26 @@
 package com.divercity.android.features.groups.onboarding
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.core.utils.OnboardingProgression
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
+import com.divercity.android.features.groups.all.model.GroupPositionModel
+import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import kotlinx.android.synthetic.main.view_search.view.*
@@ -33,11 +35,10 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
     lateinit var viewModel: SelectGroupViewModel
 
+    lateinit var groupViewModel : GroupViewModel
+
     @Inject
     lateinit var adapter: GroupsAdapter
-
-    private var positionJoinClicked: Int = -1
-    private var positionJoinRequest: Int = -1
 
     private var countJoin = 0
     private var currentProgress: Int = 0
@@ -62,6 +63,8 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectGroupViewModel::class.java]
+        groupViewModel = ViewModelProviders.of(this, viewModelFactory)[GroupViewModel::class.java]
+
         currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
@@ -134,22 +137,46 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToJoinLiveData() {
-        viewModel.joinGroupResponse.observe(this, Observer { school ->
-            when (school?.status) {
-                Status.LOADING -> showProgress()
+
+        groupViewModel.joinPublicGroupResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response.status) {
+                Status.LOADING -> {
+                }
 
                 Status.ERROR -> {
-                    hideProgress()
-                    Toast.makeText(activity, school.message, Toast.LENGTH_SHORT).show()
+                    adapter.reloadPosition(response.data!!.position)
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    hideProgress()
-                    // Updating join btn state
-                    adapter.updatePositionOnJoinGroup(positionJoinClicked)
-
+                    adapter.updatePositionOnJoinPublicGroup(response.data!!)
                     if (++countJoin == 3) {
                         btn_continue.background =
-                                ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
+                            ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
+                        btn_continue.setOnClickListener {
+                            val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
+                                activity!!, viewModel.accountType, currentProgress
+                            )
+                            navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
+                        }
+                    }
+                }
+            }
+        })
+
+        groupViewModel.requestToJoinPrivateGroupResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+
+                Status.ERROR -> {
+                    adapter.reloadPosition(response.data!!.position)
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    adapter.updatePositionOnJoinRequest(response.data!!)
+                    if (++countJoin == 3) {
+                        btn_continue.background =
+                            ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
                         btn_continue.setOnClickListener {
                             val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
                                 activity!!, viewModel.accountType, currentProgress
@@ -187,20 +214,20 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
         viewModel.retry()
     }
 
-    private val listener: GroupsViewHolder.Listener = object : GroupsViewHolder.Listener {
+    private val listener = object : GroupsViewHolder.Listener {
 
-        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
-            positionJoinRequest = position
-            viewModel.requestToJoinGroup(group)
+        override fun onGroupRequestJoinClick(groupPosition: GroupPositionModel) {
+            groupViewModel.requestToJoinGroup(groupPosition)
+        }
+
+        override fun onGroupJoinClick(groupPosition: GroupPositionModel) {
+            groupViewModel.joinGroup(groupPosition)
         }
 
         override fun onGroupClick(group: GroupResponse) {
+            navigator.navigateToGroupDetailForResult(this@SelectGroupFragment, group)
         }
 
-        override fun onGroupJoinClick(position: Int, group: GroupResponse) {
-            positionJoinClicked = position
-            viewModel.joinGroup(group)
-        }
     }
 
     override fun onDestroyView() {

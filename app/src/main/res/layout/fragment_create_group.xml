@@ -41,11 +41,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
         android:orientation="vertical"
-        app:layout_constraintBottom_toTopOf="@+id/et_group_name"
+        app:layout_constraintBottom_toBottomOf="@+id/img_default_group"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/img_default_group">
@@ -62,10 +60,26 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textColor="@color/white"
-            android:text="@string/add_photo" />
+            android:text="@string/add_photo"
+            android:textColor="@color/white" />
 
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/btn_change_photo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/avenir_medium"
+        android:padding="16dp"
+        android:text="@string/change_photo"
+        android:textColor="#3198e5"
+        android:textSize="12sp"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img_default_group" />
 
     <EditText
         android:id="@+id/et_group_name"
@@ -80,7 +94,24 @@
         android:textColor="#333241"
         android:textSize="15sp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_default_group" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_change_photo" />
+
+    <TextView
+        android:id="@+id/btn_delete_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/avenir_light"
+        android:padding="10dp"
+        android:text="@string/delete_group"
+        android:visibility="gone"
+        android:textColor="#a4a4b3"
+        android:textSize="13sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/et_group_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

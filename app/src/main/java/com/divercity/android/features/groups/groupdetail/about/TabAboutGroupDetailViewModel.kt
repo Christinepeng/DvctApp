@@ -3,7 +3,7 @@ package com.divercity.android.features.groups.groupdetail.about
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.groupdetail.about.usecase.FetchGroupAdminsUseCase

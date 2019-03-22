@@ -1,10 +1,10 @@
 package com.divercity.android.features.jobs.savedjobs
 
+import android.os.Bundle
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.core.content.ContextCompat
-import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
@@ -69,7 +69,7 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialo
 
         viewModel.navigateToJobSeekerDescription.observe(viewLifecycleOwner, Observer {
             it?.let { job ->
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
             }
         })
 
@@ -148,7 +148,7 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialo
         }
 
         override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
         }
     }
 

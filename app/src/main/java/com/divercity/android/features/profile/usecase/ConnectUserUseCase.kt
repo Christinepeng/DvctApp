@@ -1,7 +1,7 @@
 package com.divercity.android.features.profile.usecase
 
 import com.divercity.android.core.base.UseCase
-import com.divercity.android.data.entity.user.connectuser.ConnectUserResponse
+import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler

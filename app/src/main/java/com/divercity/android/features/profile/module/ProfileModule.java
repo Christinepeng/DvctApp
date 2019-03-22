@@ -17,4 +17,9 @@ public abstract class ProfileModule {
     static FragmentManager provideFragmentManager(CurrentUserProfileFragment currentUserProfileFragment) {
         return currentUserProfileFragment.getChildFragmentManager();
     }
+
+//    @Provides
+//    static FragmentManager provideFragmentManager(OtherUserProfileFragment otherUserProfileFragment) {
+//        return otherUserProfileFragment.getChildFragmentManager();
+//    }
 }

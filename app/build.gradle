@@ -65,6 +65,7 @@ android {
             }
         }
     }
+
     buildTypes {
         release {
             minifyEnabled false
@@ -79,8 +80,8 @@ android {
             minifyEnabled false
             debuggable true
             manifestPlaceholders = [enableCrashReporting:"false"]
-            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig getSigningConfig()
         }
@@ -91,9 +92,14 @@ android {
             }
         }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    androidExtensions {
+        experimental = true
     }
 }
 
@@ -115,7 +121,7 @@ dependencies {
     def rxandroid_version = "2.1.0"
 
     def glide_version = "4.8.0"
-    def lifecycle_version = '2.1.0-alpha02'
+    def lifecycle_version = '2.1.0-alpha03'
     def dagger_version = "2.21"
 
     def timber_version = "4.7.1"
@@ -124,6 +130,7 @@ dependencies {
 
     def kotlinCoroutines_version = "1.1.1"
 
+    def room_version_runtime = '2.1.0-alpha05'
     def room_version = '2.1.0-alpha04'
 
     def firebase_messaging_version = "17.4.0"
@@ -206,7 +213,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinCoroutines_version"
 
     // Room
-    implementation "androidx.room:room-runtime:$room_version"
+    implementation "androidx.room:room-runtime:$room_version_runtime"
     implementation "androidx.room:room-coroutines:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
 
@@ -222,8 +229,8 @@ dependencies {
     implementation "co.lujun:androidtagview:$tagview_version"
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.2-alpha01'
+    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
 }
 
 repositories {

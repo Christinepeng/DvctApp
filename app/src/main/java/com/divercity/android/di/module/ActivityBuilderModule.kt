@@ -17,8 +17,8 @@ import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActi
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.android.features.groups.answers.AnswerActivity
-import com.divercity.android.features.groups.creategroup.step1.CreateGroupActivity
-import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionActivity
+import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Activity
+import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Activity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
@@ -47,13 +47,14 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
+import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
+import com.divercity.android.features.profile.otheruser.OtherUserProfileActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
-import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.signup.SignUpActivity
-import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
+import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import com.divercity.android.features.splash.SplashActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -183,10 +184,10 @@ abstract class ActivityBuilderModule {
     abstract fun bindChatActivity(): ChatActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindCreateGroupActivity(): CreateGroupActivity
+    abstract fun bindCreateGroupActivity(): CreateEditGroupStep1Activity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindGroupDescriptionActivity(): GroupDescriptionActivity
+    abstract fun bindGroupDescriptionActivity(): CreateEditGroupStep3Activity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindProfileSettingsActivity(): ProfileSettingsActivity
@@ -229,4 +230,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindToolbarSkillsActivity(): EditUserSkillActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindOtherUserProfileActivity(): OtherUserProfileActivity
 }

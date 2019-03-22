@@ -15,7 +15,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
@@ -113,7 +113,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
 
             override fun onGroupClick(group: GroupResponse) {
-                navigator.navigateToGroupDetailActivity(this@HomeFragment, group)
+                navigator.navigateToGroupDetailForResult(this@HomeFragment, group)
             }
 
             override fun onGroupJoinClick(position: Int, group: GroupResponse) {
@@ -125,7 +125,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         recommendedAdapter.jobListener = object : RecommendedJobViewHolder.Listener {
 
             override fun onJobClick(job: JobResponse) {
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
             }
 
             override fun onApplyClick(position: Int, job: JobResponse) {
@@ -143,7 +143,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
 
             override fun onJobClick(job: JobResponse) {
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
             }
         }
 
@@ -158,12 +158,12 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     private fun subscribeToLiveData() {
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState.observe(viewLifecycleOwner, Observer {
             if (!mIsRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 homeAdapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState.observe(viewLifecycleOwner, Observer { networkState ->
 
             homeAdapter.currentList?.let { pagedList ->
 
@@ -189,7 +189,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             homeAdapter.submitList(it)
         })
 
-        viewModel.fetchRecommendedJobsGroupsResponse.observe(this, Observer { response ->
+        viewModel.fetchRecommendedJobsGroupsResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
 
@@ -235,7 +235,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         })
 
-        viewModel.fetchUnreadMessagesCountResponse.observe(this, Observer { resource ->
+        viewModel.fetchUnreadMessagesCountResponse.observe(viewLifecycleOwner, Observer { resource ->
             when (resource?.status) {
                 Status.LOADING -> {
 
@@ -312,7 +312,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         btn_fab.setOnClickListener {
             showHomeTabActionDialog()
         }
-        btn_create_group.setOnClickListener {
+        btn_create_edit_group.setOnClickListener {
             showToast()
         }
         btn_explore_groups.setOnClickListener {
@@ -343,7 +343,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         dialog.listener = object : HomeTabActionDialogFragment.Listener {
 
             override fun onNewGroup() {
-                navigator.navigateToCreateGroupActivity(this@HomeFragment)
+                navigator.navigateToCreateGroupStep1(this@HomeFragment)
             }
 
             override fun onNewTopic() {

@@ -48,8 +48,9 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
 
     override fun layoutId(): Int = R.layout.fragment_share_job_group
 
-    fun initViewModel(){
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[ShareJobGroupViewModel::class.java]
+    fun initViewModel() {
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[ShareJobGroupViewModel::class.java]
         viewModel.jobId = arguments?.getString(PARAM_JOB_ID)
     }
 
@@ -65,8 +66,9 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
         list.adapter = adapter
 
         btn_share.setOnClickListener {
-            if(adapter.jobsIds.size != 0)
-                viewModel.shareJobs(adapter.jobsIds)
+            val selectedGroupsIds = adapter.selectedGroupIdsAsArray
+            if (selectedGroupsIds.size != 0)
+                viewModel.shareJobs(selectedGroupsIds)
             else
                 showToast("Select at least one group")
         }

@@ -26,7 +26,7 @@ interface ChatRepository {
     fun addGroupMember(
         currentUserId: String,
         chatId: String,
-        usersIds : List<String>
+        usersIds: List<String>
     ): Observable<Boolean>
 
     fun fetchMessages(
@@ -50,6 +50,13 @@ interface ChatRepository {
         chatId: String,
         image: String
     ): Observable<ChatMessageResponse>
+
+//    fun sendMessageAttachment(
+//        message: String,
+//        chatId: String,
+//        attchmntType: String,
+//        attchmntId: String
+//    ): Observable<ChatMessageResponse>
 
     fun fetchChatMembers(
         currentUserId: String,

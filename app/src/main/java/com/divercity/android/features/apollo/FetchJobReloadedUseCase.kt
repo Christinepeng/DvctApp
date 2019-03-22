@@ -22,7 +22,7 @@ constructor(private val apolloRepository: ApolloRepository) {
     private var calls = ArrayList<ApolloQueryCall<JobQuery.Data>>()
     private var scopes = ArrayList<CoroutineScope>()
 
-    operator fun invoke(params: Params, onResult: (Either<String, JobDataView>) -> Unit = {}) {
+    operator fun invoke(params: Params, onResult: (Either<JobDataView, JobDataView>) -> Unit = {}) {
 
         val job = SupervisorJob()
         val scope = CoroutineScope(Dispatchers.Main + job)
@@ -35,19 +35,29 @@ constructor(private val apolloRepository: ApolloRepository) {
                 val callback = object : ApolloCall.Callback<JobQuery.Data>() {
 
                     override fun onFailure(e: ApolloException) {
-                        if (continuation.isActive)
-                            continuation.resume(Either.Left(e.cause?.message ?: "Server error"))
+                        if (continuation.isActive) {
+                            val r = JobDataView(
+                                null,
+                                e.cause?.message ?: "Server error",
+                                params.position
+                            )
+                            continuation.resume(Either.Left(r))
+                        }
                     }
 
                     override fun onResponse(response: Response<JobQuery.Data>) {
                         if (continuation.isActive)
-                            if (response.hasErrors())
-                                continuation.resume(Either.Left("Has errors"))
-                            else {
+                            if (response.hasErrors()) {
+                                val r = JobDataView(
+                                    null,
+                                    "Error getting job",
+                                    params.position
+                                )
+                                continuation.resume(Either.Left(r))
+                            } else {
                                 val r = JobDataView(
                                     response.data()!!,
-                                    params.view,
-                                    params.chatMessageResponse,
+                                    null,
                                     params.position
                                 )
                                 continuation.resume(Either.Right(r))
@@ -72,7 +82,7 @@ constructor(private val apolloRepository: ApolloRepository) {
 
     class Params private constructor(
         val jobId: String,
-        val position : Int,
+        val position: Int,
         val view: View,
         val chatMessageResponse: ChatMessageResponse
     ) {
@@ -90,5 +100,5 @@ constructor(private val apolloRepository: ApolloRepository) {
         }
     }
 
-    data class JobDataView(var job: JobQuery.Data, var lay: View, var chat: ChatMessageResponse, var position : Int)
+    data class JobDataView(var job: JobQuery.Data?, var errors: String?, var position: Int)
 }

@@ -1,39 +1,47 @@
 package com.divercity.android.features.jobs.jobposting.sharetogroup.adapter;
 
-import androidx.paging.PagedList;
-import androidx.paging.PagedListAdapter;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.view.ViewGroup;
+
 import com.divercity.android.R;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.ui.NetworkStateViewHolder;
 import com.divercity.android.core.ui.RetryCallback;
-import com.divercity.android.data.entity.group.GroupResponse;
-import org.jetbrains.annotations.NotNull;
+import com.divercity.android.data.entity.group.group.GroupResponse;
 
-import javax.inject.Inject;
+import org.jetbrains.annotations.Nullable;
+
 import java.util.ArrayList;
 import java.util.Objects;
+
+import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, RecyclerView.ViewHolder> {
 
     private NetworkState networkState;
     private RetryCallback retryCallback;
 
-    private ArrayList<String> jobsIds = new ArrayList<>();
+    private ArrayMap<Integer, String> selectedGroupIds = new ArrayMap<>();
 
     private ShareJobGroupViewHolder.Listener listener = new ShareJobGroupViewHolder.Listener() {
         @Override
-        public void onGroupShareClick(@NotNull GroupResponse group, boolean isSelected) {
-            if (isSelected)
-                jobsIds.add(group.getId());
+        public void onGroupShareClick(int position, @Nullable String groupId) {
+            if(groupId == null)
+                selectedGroupIds.remove(position);
             else
-                jobsIds.remove(group.getId());
+                selectedGroupIds.put(position, groupId);
         }
     };
+
+    public ArrayList<String> getSelectedGroupIdsAsArray() {
+        return new ArrayList<String>(selectedGroupIds.values());
+    }
 
     @Inject
     public ShareJobGroupAdapter() {
@@ -61,7 +69,10 @@ public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, Recycl
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case R.layout.item_group_share:
-                ((ShareJobGroupViewHolder) holder).bindTo(getItem(position));
+                ((ShareJobGroupViewHolder) holder).bindTo(
+                        position,
+                        selectedGroupIds.get(position) != null,
+                        getItem(position));
                 break;
             case R.layout.view_network_state:
                 ((NetworkStateViewHolder) holder).bindTo(networkState);
@@ -108,16 +119,11 @@ public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, Recycl
         super.submitList(pagedList);
     }
 
-    @Override
-    public void onCurrentListChanged(@Nullable PagedList<GroupResponse> currentList) {
-        super.onCurrentListChanged(currentList);
-    }
-
     private static DiffUtil.ItemCallback<GroupResponse> UserDiffCallback = new DiffUtil.ItemCallback<GroupResponse>() {
 
         @Override
         public boolean areItemsTheSame(GroupResponse oldItem, GroupResponse newItem) {
-            return oldItem.getId() == newItem.getId();
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @Override
@@ -125,8 +131,4 @@ public class ShareJobGroupAdapter extends PagedListAdapter<GroupResponse, Recycl
             return Objects.equals(oldItem, newItem);
         }
     };
-
-    public ArrayList<String> getJobsIds() {
-        return jobsIds;
-    }
 }

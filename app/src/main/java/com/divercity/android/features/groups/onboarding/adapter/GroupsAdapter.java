@@ -1,22 +1,23 @@
 package com.divercity.android.features.groups.onboarding.adapter;
 
-import androidx.paging.PagedList;
-import androidx.paging.PagedListAdapter;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.divercity.android.R;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.ui.NetworkStateViewHolder;
 import com.divercity.android.core.ui.RetryCallback;
-import com.divercity.android.data.entity.group.GroupResponse;
+import com.divercity.android.data.entity.group.group.GroupResponse;
 
 import java.util.Objects;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class GroupsAdapter extends PagedListAdapter<GroupResponse, RecyclerView.ViewHolder> {
 

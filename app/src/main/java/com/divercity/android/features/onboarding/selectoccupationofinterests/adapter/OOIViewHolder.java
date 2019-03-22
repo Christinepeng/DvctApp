@@ -19,7 +19,7 @@ public class OOIViewHolder extends RecyclerView.ViewHolder {
     private OOIViewHolder(View itemView, Listener listener) {
         super(itemView);
         txtTitle = itemView.findViewById(R.id.txt_title);
-        imgBtn = itemView.findViewById(R.id.btn_public_private);
+        imgBtn = itemView.findViewById(R.id.btn_select_unselect);
         this.listener = listener;
     }
 

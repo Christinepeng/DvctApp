@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <androidx.appcompat.widget.AppCompatImageButton
-        android:id="@+id/btn_public_private"
+        android:id="@+id/btn_select_unselect"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@null"
@@ -26,7 +26,7 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btn_public_private"
+        app:layout_constraintStart_toEndOf="@+id/btn_select_unselect"
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView

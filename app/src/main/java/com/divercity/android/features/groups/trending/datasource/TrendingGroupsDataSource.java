@@ -1,16 +1,16 @@
 package com.divercity.android.features.groups.trending.datasource;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PageKeyedDataSource;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.base.DataArray;
-import com.divercity.android.data.entity.group.GroupResponse;
+import com.divercity.android.data.entity.group.group.GroupResponse;
 import com.divercity.android.features.groups.trending.usecase.FetchTrendingGroupsUseCase;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;

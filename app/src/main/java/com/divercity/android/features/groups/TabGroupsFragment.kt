@@ -1,22 +1,22 @@
 package com.divercity.android.features.groups
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.home.HomeActivity
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_groups.*
@@ -74,8 +74,8 @@ class TabGroupsFragment : BaseFragment() {
     }
 
     private fun initView() {
-        btn_create_group.setOnClickListener {
-            navigator.navigateToCreateGroupActivity(this)
+        btn_create_edit_group.setOnClickListener {
+            navigator.navigateToCreateGroupStep1(this)
         }
     }
 
@@ -115,10 +115,10 @@ class TabGroupsFragment : BaseFragment() {
 
             recommendedGroupsAdapter.listener = object : TabGroupsPanelViewPagerAdapter.Listener {
 
-                override fun onBtnJoinClicked(jobId: String?, position: Int) {
-                    jobId?.let {
+                override fun onBtnJoinClicked(groupId: String?, position: Int) {
+                    groupId?.let {
                         lastPositionJoinClick = position
-                        viewModelTab.joinGroup(jobId)
+                        viewModelTab.joinGroup(groupId)
                     }
                 }
             }

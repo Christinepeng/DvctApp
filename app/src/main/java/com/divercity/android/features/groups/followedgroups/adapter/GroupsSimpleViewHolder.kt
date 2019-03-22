@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.divercity.android.R
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import kotlinx.android.synthetic.main.item_text_black.view.*
 
 class GroupsSimpleViewHolder

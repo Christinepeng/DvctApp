@@ -15,15 +15,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.divercity.android.R
-import com.divercity.android.Session
+import com.divercity.android.features.usecase.LogoutUseCase
 import com.divercity.android.core.bus.RxBus
 import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.navigation.Navigator
-import com.divercity.android.features.activity.ActivityFragment
+import com.divercity.android.features.activity.TabActivityFragment
 import com.divercity.android.features.dialogs.CompletedProfileDialogFragment
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
-import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
+import com.divercity.android.features.home.people.TabPeopleFragment
 import com.divercity.android.features.jobs.TabJobsFragment
 import com.divercity.android.features.profile.currentuser.CurrentUserProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -41,7 +41,7 @@ class HomeActivity : DaggerAppCompatActivity() {
     private lateinit var logoutDisposable: Disposable
 
     @Inject
-    lateinit var session: Session
+    lateinit var session: LogoutUseCase
 
     @Inject
     lateinit var navigator: Navigator
@@ -81,9 +81,9 @@ class HomeActivity : DaggerAppCompatActivity() {
         var selectedFragment: Fragment = HomeFragment.newInstance()
         when (position) {
             0 -> selectedFragment = HomeFragment.newInstance()
-            1 -> selectedFragment = TabGroupsFragment.newInstance()
+            1 -> selectedFragment = TabPeopleFragment.newInstance()
             2 -> selectedFragment = TabJobsFragment.newInstance()
-            3 -> selectedFragment = ActivityFragment.newInstance()
+            3 -> selectedFragment = TabActivityFragment.newInstance()
             4 -> selectedFragment = CurrentUserProfileFragment.newInstance()
         }
         val transaction = supportFragmentManager.beginTransaction()
@@ -95,7 +95,7 @@ class HomeActivity : DaggerAppCompatActivity() {
         BottomNavigationView.OnNavigationItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.menu_item_home -> selectItem(0)
-                R.id.menu_item_groups -> selectItem(1)
+                R.id.menu_item_people -> selectItem(1)
                 R.id.menu_item_jobs -> selectItem(2)
                 R.id.menu_item_activity -> selectItem(3)
                 R.id.menu_item_profile -> selectItem(4)
@@ -167,7 +167,7 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     fun logout(){
         include_loading.visibility = View.VISIBLE
-        session.logout(::onFinish)
+        session.execute(::onFinish)
     }
 
     private fun onFinish(){

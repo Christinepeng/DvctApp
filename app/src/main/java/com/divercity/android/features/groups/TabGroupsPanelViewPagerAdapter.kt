@@ -1,15 +1,15 @@
 package com.divercity.android.features.groups
 
-import androidx.core.content.ContextCompat
-import androidx.viewpager.widget.PagerAdapter
-import androidx.viewpager.widget.ViewPager
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.viewpager.widget.PagerAdapter
+import androidx.viewpager.widget.ViewPager
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import kotlinx.android.synthetic.main.view_pager_panel_group.view.*
 import javax.inject.Inject
 
@@ -55,7 +55,7 @@ constructor() : PagerAdapter() {
                 view.txt_members.text = it.followersCount.toString().plus(" Members")
 
 //                TODO: check if group is private
-                if (it.isIsFollowedByCurrent) {
+                if (it.isFollowedByCurrent) {
                     view.btn_join.setOnClickListener(null)
                     view.btn_join.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                     view.btn_join.setTextColor(ContextCompat.getColor(container.context, R.color.appBlue))
@@ -84,7 +84,7 @@ constructor() : PagerAdapter() {
 
         list?.get(position)?.apply {
             attributes?.also {
-                it.isIsFollowedByCurrent = true
+                it.isFollowedByCurrent = true
                 it.followersCount = it.followersCount?.plus(1)
 
                 view.txt_members.text = it.followersCount.toString().plus(" Members")
@@ -107,6 +107,6 @@ constructor() : PagerAdapter() {
     }
 
     interface Listener {
-        fun onBtnJoinClicked(jobId: String?, position: Int)
+        fun onBtnJoinClicked(groupId: String?, position: Int)
     }
 }

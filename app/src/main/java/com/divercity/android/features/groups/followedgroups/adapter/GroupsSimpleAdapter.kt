@@ -1,14 +1,14 @@
 package com.divercity.android.features.groups.followedgroups.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import javax.inject.Inject
 
 class GroupsSimpleAdapter @Inject
@@ -77,7 +77,7 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         // TODO: update with response group data
         currentList?.get(position)?.attributes?.apply {
             followersCount += 1
-            isIsFollowedByCurrent = true
+            isFollowedByCurrent = true
             notifyItemChanged(position)
         }
     }

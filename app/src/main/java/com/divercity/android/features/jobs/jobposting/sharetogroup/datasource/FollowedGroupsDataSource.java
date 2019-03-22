@@ -4,7 +4,7 @@ import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.base.DataArray;
-import com.divercity.android.data.entity.group.GroupResponse;
+import com.divercity.android.data.entity.group.group.GroupResponse;
 import com.divercity.android.features.jobs.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
 
 import androidx.annotation.NonNull;

@@ -2,7 +2,7 @@ package com.divercity.android.di.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.divercity.android.features.activity.ActivityViewModel
+import com.divercity.android.features.activity.TabActivityViewModel
 import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsViewModel
 import com.divercity.android.features.activity.notifications.NotificationsViewModel
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeViewModel
@@ -24,8 +24,8 @@ import com.divercity.android.features.gender.onboarding.OnboardingGenderViewMode
 import com.divercity.android.features.groups.TabGroupsViewModel
 import com.divercity.android.features.groups.all.AllGroupsViewModel
 import com.divercity.android.features.groups.answers.AnswerViewModel
-import com.divercity.android.features.groups.creategroup.step1.CreateGroupViewModel
-import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionViewModel
+import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1ViewModel
+import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3ViewModel
 import com.divercity.android.features.groups.createtopic.CreateTopicViewModel
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsViewModel
 import com.divercity.android.features.groups.groupdetail.GroupDetailViewModel
@@ -36,6 +36,8 @@ import com.divercity.android.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.android.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.features.home.home.HomeViewModel
+import com.divercity.android.features.home.people.companies.CompaniesViewModel
+import com.divercity.android.features.home.people.connections.AllConnectionsViewModel
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingViewModel
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
 import com.divercity.android.features.jobs.TabJobsViewModel
@@ -65,17 +67,19 @@ import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewMo
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
 import com.divercity.android.features.profile.currentuser.CurrentUserProfileViewModel
+import com.divercity.android.features.profile.currentuser.tabconnections.ConnectionsViewModel
 import com.divercity.android.features.profile.currentuser.tabprofile.TabProfileViewModel
+import com.divercity.android.features.profile.editinterests.InterestsViewModel
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsViewModel
+import com.divercity.android.features.profile.otheruser.OtherUserProfileViewModel
+import com.divercity.android.features.profile.otheruser.tabprofile.TabOtherUserProfileViewModel
 import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsViewModel
-import com.divercity.android.features.profile.editinterests.InterestsViewModel
-import com.divercity.android.features.profile.tabconnections.ConnectionsViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
 import com.divercity.android.features.signup.SignUpViewModel
 import com.divercity.android.features.skill.base.SelectSkillViewModel
-import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
 import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
+import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
 import com.divercity.android.features.splash.SplashViewModel
 import dagger.Binds
 import dagger.Module
@@ -360,11 +364,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(CreateGroupViewModel::class)
-    abstract fun bindsCreateGroupViewModel(viewModel: CreateGroupViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(GroupDetailViewModel::class)
     abstract fun bindsGroupDetailViewModel(viewModel: GroupDetailViewModel): ViewModel
 
@@ -380,8 +379,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(GroupDescriptionViewModel::class)
-    abstract fun bindsGroupDescriptionViewModel(viewModel: GroupDescriptionViewModel): ViewModel
+    @ViewModelKey(CreateEditGroupStep3ViewModel::class)
+    abstract fun bindsGroupDescriptionViewModel(viewModel: CreateEditGroupStep3ViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -397,11 +396,6 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(InterestsViewModel::class)
     abstract fun bindsInterestsViewModel(viewModel: InterestsViewModel): ViewModel
-
-//    @Binds
-//    @IntoMap
-//    @ViewModelKey(ChatsViewModel::class)
-//    abstract fun bindsChatsViewModel(viewModel: ChatsViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -425,8 +419,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(ActivityViewModel::class)
-    abstract fun bindsActivityViewModel(viewModel: ActivityViewModel): ViewModel
+    @ViewModelKey(TabActivityViewModel::class)
+    abstract fun bindsActivityViewModel(viewModel: TabActivityViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -467,4 +461,29 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(EditUserSkillViewModel::class)
     abstract fun bindsToolbarSkillViewModel(viewModel: EditUserSkillViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OtherUserProfileViewModel::class)
+    abstract fun bindsOtherUserProfileViewModel(viewModel: OtherUserProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TabOtherUserProfileViewModel::class)
+    abstract fun bindsTabOtherUserProfileViewModel(viewModel: TabOtherUserProfileViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompaniesViewModel::class)
+    abstract fun bindsCompaniesViewModel(viewModel: CompaniesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateEditGroupStep1ViewModel::class)
+    abstract fun bindsCreateEditGroupStep1ViewModel(viewModel: CreateEditGroupStep1ViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AllConnectionsViewModel::class)
+    abstract fun bindsAllConnectionsViewModel(viewModel: AllConnectionsViewModel): ViewModel
 }

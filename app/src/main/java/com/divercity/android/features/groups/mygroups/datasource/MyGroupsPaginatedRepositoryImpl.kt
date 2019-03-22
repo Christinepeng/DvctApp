@@ -5,7 +5,7 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.divercity.android.core.base.PaginatedQueryRepository
 import com.divercity.android.core.utils.Listing
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.mygroups.usecase.FetchMyGroupsUseCase
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors

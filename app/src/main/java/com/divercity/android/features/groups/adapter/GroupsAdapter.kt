@@ -1,14 +1,15 @@
 package com.divercity.android.features.groups.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.features.groups.all.model.GroupPositionModel
 import javax.inject.Inject
 
 class GroupsAdapter @Inject
@@ -17,6 +18,8 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
     private var listener: GroupsViewHolder.Listener? = null
+
+    private var removedGroups = ArrayList<Int>()
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
@@ -30,6 +33,7 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         return when (viewType) {
             R.layout.item_group -> GroupsViewHolder.create(parent, listener)
             R.layout.view_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
+            R.layout.view_empty -> EmptyViewHolder.create(parent)
             else -> throw IllegalArgumentException("unknown view type")
         }
     }
@@ -42,13 +46,17 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
     }
 
     private fun hasExtraRow(): Boolean {
-        return networkState != null && networkState !== NetworkState.LOADED
+        return networkState != null && networkState != NetworkState.LOADED
     }
 
     override fun getItemViewType(position: Int): Int {
         return if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
-        } else {
+        } else
+//            if(removedGroups.contains(position)) {
+//            R.layout.view_empty
+//        } else
+        {
             R.layout.item_group
         }
     }
@@ -73,20 +81,28 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         }
     }
 
-    fun updatePositionOnJoinGroup(position: Int){
-        // TODO: update with response group data
-        currentList?.get(position)?.attributes?.apply {
+    fun updatePositionOnJoinPublicGroup(groupPosition: GroupPositionModel){
+//      We are not receiving the whole group when I get the response, so I have to do this.
+//      I think it is not a good idea, but the backend engineer refused to return the group
+
+        currentList?.get(groupPosition.position)?.attributes?.apply {
             followersCount += 1
-            isIsFollowedByCurrent = true
-            notifyItemChanged(position)
+            isFollowedByCurrent = true
+            notifyItemChanged(groupPosition.position)
         }
     }
 
-    fun updatePositionOnJoinRequest(position: Int){
-        // TODO: update with response group data
-        currentList?.get(position)?.attributes?.apply {
+    fun reloadPosition(position: Int){
+        notifyItemChanged(position)
+    }
+
+    fun updatePositionOnJoinRequest(groupPosition: GroupPositionModel){
+//      We are not receiving the whole group when I get the response, so I have to do this.
+//      I think it is not a good idea, but the backend engineer refused to return the group
+
+       currentList?.get(groupPosition.position)?.attributes?.apply {
             requestToJoinStatus = "pending"
-            notifyItemChanged(position)
+            notifyItemChanged(groupPosition.position)
         }
     }
 
@@ -95,7 +111,7 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         private val userDiffCallback = object : DiffUtil.ItemCallback<GroupResponse>() {
 
             override fun areItemsTheSame(oldItem: GroupResponse, newItem: GroupResponse): Boolean {
-                return oldItem.id === newItem.id
+                return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(oldItem: GroupResponse, newItem: GroupResponse): Boolean {

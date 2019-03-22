@@ -5,10 +5,11 @@ import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.Event
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.groups.groupdetail.usecase.FetchGroupByIdUseCase
 import com.divercity.android.features.groups.groupdetail.usecase.FetchGroupMembersUseCase
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
@@ -23,12 +24,14 @@ class GroupDetailViewModel @Inject
 constructor(
         private val fetchGroupMembersUseCase: FetchGroupMembersUseCase,
         private val joinGroupUseCase: JoinGroupUseCase,
-        private val requestToJoinUseCase : RequestJoinGroupUseCase
+        private val requestToJoinUseCase : RequestJoinGroupUseCase,
+        private val fetchGroupByIdUseCase: FetchGroupByIdUseCase
 ) : BaseViewModel() {
 
     var fetchGroupMembersResponse = SingleLiveEvent<Resource<List<UserResponse>>>()
     var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
+    var fetchGroupByIdResponse = MutableLiveData<Resource<GroupResponse>>()
 
     fun fetchGroupMembers(group: GroupResponse, page : Int, size: Int, query : String?) {
         fetchGroupMembersResponse.postValue(Resource.loading(null))
@@ -50,6 +53,26 @@ constructor(
                 FetchGroupMembersUseCase.Params.forGroups(group.id, page, size, query))
     }
 
+    fun fetchGroupById(groupId: String) {
+        fetchGroupByIdResponse.postValue(Resource.loading(null))
+
+        val callback = object : DisposableObserverWrapper<GroupResponse>() {
+            override fun onFail(error: String) {
+                fetchGroupByIdResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                fetchGroupByIdResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: GroupResponse) {
+                fetchGroupByIdResponse.postValue(Resource.success(o))
+            }
+        }
+        fetchGroupByIdUseCase.execute(callback,
+            FetchGroupByIdUseCase.Params.forGroups(groupId))
+    }
+
     fun joinGroup(group: GroupResponse) {
         joinGroupResponse.postValue(Event(Resource.loading(null)))
 
@@ -66,7 +89,7 @@ constructor(
                 joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
             }
         }
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
+        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group.id))
     }
 
     fun requestToJoinGroup(group: GroupResponse) {

@@ -1,12 +1,12 @@
 package com.divercity.android.features.groups.followedgroups.datasource;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.DataSource;
+import com.divercity.android.data.entity.group.group.GroupResponse;
+import com.divercity.android.features.jobs.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.divercity.android.data.entity.group.GroupResponse;
-import com.divercity.android.features.jobs.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
 
 public class FollowingGroupsDataSourceFactory extends DataSource.Factory<Long, GroupResponse> {
 

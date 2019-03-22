@@ -15,10 +15,10 @@ private constructor(itemView: View, private val listener: Listener) : RecyclerVi
 
         data?.let {
             itemView.txt_title.text = data.attributes?.name
-            itemView.btn_public_private.isSelected = data.isSelected
-            itemView.btn_public_private.setOnClickListener {
-                itemView.btn_public_private.isSelected = !itemView.btn_public_private.isSelected
-                data.isSelected = itemView.btn_public_private.isSelected
+            itemView.btn_select_unselect.isSelected = data.isSelected
+            itemView.btn_select_unselect.setOnClickListener {
+                itemView.btn_select_unselect.isSelected = !itemView.btn_select_unselect.isSelected
+                data.isSelected = itemView.btn_select_unselect.isSelected
                 listener.onSkillSelectUnselect(data)
             }
         }

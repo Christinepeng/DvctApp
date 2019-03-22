@@ -1,8 +1,7 @@
 package com.divercity.android.di.module
 
-import com.divercity.android.features.activity.ActivityFragment
+import com.divercity.android.features.activity.TabActivityFragment
 import com.divercity.android.features.activity.connectionrequests.ConnectionRequestsFragment
-import com.divercity.android.features.activity.module.NotificationsModule
 import com.divercity.android.features.activity.notifications.NotificationsFragment
 import com.divercity.android.features.agerange.base.SelectAgeFragment
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeFragment
@@ -31,8 +30,8 @@ import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.groups.all.AllGroupsFragment
 import com.divercity.android.features.groups.answers.AnswerFragment
-import com.divercity.android.features.groups.creategroup.step1.CreateGroupFragment
-import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionFragment
+import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Fragment
+import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Fragment
 import com.divercity.android.features.groups.createtopic.CreateTopicFragment
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
 import com.divercity.android.features.groups.groupdetail.GroupDetailFragment
@@ -44,6 +43,9 @@ import com.divercity.android.features.groups.mygroups.MyGroupsFragment
 import com.divercity.android.features.groups.onboarding.SelectGroupFragment
 import com.divercity.android.features.groups.trending.TrendingGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
+import com.divercity.android.features.home.people.TabPeopleFragment
+import com.divercity.android.features.home.people.companies.CompaniesFragment
+import com.divercity.android.features.home.people.connections.AllConnectionsFragment
 import com.divercity.android.features.home.settings.SettingsFragment
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingFragment
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryFragment
@@ -82,18 +84,19 @@ import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragme
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeFragment
 import com.divercity.android.features.profile.currentuser.CurrentUserProfileFragment
+import com.divercity.android.features.profile.currentuser.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.currentuser.tabprofile.TabProfileFragment
+import com.divercity.android.features.profile.editinterests.InterestsFragment
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsFragment
-import com.divercity.android.features.profile.module.ProfileModule
+import com.divercity.android.features.profile.otheruser.OtherUserProfileFragment
+import com.divercity.android.features.profile.otheruser.tabprofile.TabOtherUserProfileFragment
 import com.divercity.android.features.profile.settings.ProfileSettingsFragment
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsFragment
-import com.divercity.android.features.profile.editinterests.InterestsFragment
-import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
 import com.divercity.android.features.signup.SignUpFragment
 import com.divercity.android.features.skill.base.SelectSkillFragment
-import com.divercity.android.features.skill.onboarding.OnboardingSkillFragment
 import com.divercity.android.features.skill.editskills.EditUserSkillFragment
+import com.divercity.android.features.skill.onboarding.OnboardingSkillFragment
 import com.divercity.android.features.splash.SplashFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
@@ -106,244 +109,244 @@ import dagger.android.ContributesAndroidInjector
 abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
-    abstract fun bindSplashFragment (): SplashFragment
+    abstract fun bindSplashFragment(): SplashFragment
 
     @ContributesAndroidInjector
-    abstract fun bindLoginFragment (): LoginFragment
+    abstract fun bindLoginFragment(): LoginFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSignUpFragment (): SignUpFragment
+    abstract fun bindSignUpFragment(): SignUpFragment
 
     @ContributesAndroidInjector
-    abstract fun bindEnterEmailFragment (): EnterEmailFragment
+    abstract fun bindEnterEmailFragment(): EnterEmailFragment
 
     @ContributesAndroidInjector(modules = [GroupsModule::class])
-    abstract fun bindGroupsFragment (): TabGroupsFragment
+    abstract fun bindGroupsFragment(): TabGroupsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindHomeFragment (): HomeFragment
+    abstract fun bindHomeFragment(): HomeFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTabActivityFragment(): TabActivityFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTabPeopleFragment(): TabPeopleFragment
 
     @ContributesAndroidInjector(modules = [JobsModule::class])
-    abstract fun bindJobsFragment (): TabJobsFragment
-
-    @ContributesAndroidInjector(modules = [NotificationsModule::class])
-    abstract fun bindActivityFragment (): ActivityFragment
-
-    @ContributesAndroidInjector(modules = [ProfileModule::class])
-    abstract fun bindProfileFragment (): CurrentUserProfileFragment
+    abstract fun bindJobsFragment(): TabJobsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSettingsFragment (): SettingsFragment
+    abstract fun bindProfileFragment(): CurrentUserProfileFragment
 
     @ContributesAndroidInjector
-    abstract fun bindProfilePromptFragment (): ProfilePromptFragment
+    abstract fun bindSettingsFragment(): SettingsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectUserTypeFragment (): SelectUserTypeFragment
+    abstract fun bindProfilePromptFragment(): ProfilePromptFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectSchoolFragment (): SelectSchoolFragment
+    abstract fun bindSelectUserTypeFragment(): SelectUserTypeFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectBirthdayFragment (): SelectAgeFragment
+    abstract fun bindSelectSchoolFragment(): SelectSchoolFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectCompanyFragment (): SelectCompanyFragment
+    abstract fun bindSelectBirthdayFragment(): SelectAgeFragment
 
     @ContributesAndroidInjector
-    abstract fun bindOnboardingLocationFragment (): OnboardingLocationFragment
+    abstract fun bindSelectCompanyFragment(): SelectCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectEthnicityFragment (): SelectEthnicityFragment
+    abstract fun bindOnboardingLocationFragment(): OnboardingLocationFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectGenderFragment (): SelectGenderFragment
+    abstract fun bindSelectEthnicityFragment(): SelectEthnicityFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectSingleIndustryFragment (): SelectSingleIndustryFragment
+    abstract fun bindSelectGenderFragment(): SelectGenderFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectMajorFragment (): SelectMajorFragment
+    abstract fun bindSelectSingleIndustryFragment(): SelectSingleIndustryFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectGroupFragment (): SelectGroupFragment
+    abstract fun bindSelectMajorFragment(): SelectMajorFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobsListFragment (): JobsListFragment
+    abstract fun bindSelectGroupFragment(): SelectGroupFragment
 
     @ContributesAndroidInjector
-    abstract fun bindMyPostingsFragment (): MyJobsPostingsFragment
+    abstract fun bindJobsListFragment(): JobsListFragment
 
     @ContributesAndroidInjector
-    abstract fun bindLinkedinFragment (): LinkedinFragment
+    abstract fun bindMyPostingsFragment(): MyJobsPostingsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobsSavedFragment (): SavedJobsFragment
+    abstract fun bindLinkedinFragment(): LinkedinFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobPostingFragment (): JobPostingFragment
+    abstract fun bindJobsSavedFragment(): SavedJobsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectLocationFragment (): SelectLocationFragment
+    abstract fun bindJobPostingFragment(): JobPostingFragment
 
     @ContributesAndroidInjector
-    abstract fun bindToolbarLocationFragment (): ToolbarLocationFragment
+    abstract fun bindSelectLocationFragment(): SelectLocationFragment
 
     @ContributesAndroidInjector
-    abstract fun bindToolbarCompanyFragment (): ToolbarCompanyFragment
+    abstract fun bindToolbarLocationFragment(): ToolbarLocationFragment
 
     @ContributesAndroidInjector
-    abstract fun bindOnboardingCompanyFragment (): OnboardingCompanyFragment
+    abstract fun bindToolbarCompanyFragment(): ToolbarCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobTypeFragment (): JobTypeFragment
+    abstract fun bindOnboardingCompanyFragment(): OnboardingCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindShareJobGroupFragment (): ShareJobGroupFragment
+    abstract fun bindJobTypeFragment(): JobTypeFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobSkillsFragment (): JobSkillsFragment
+    abstract fun bindShareJobGroupFragment(): ShareJobGroupFragment
 
     @ContributesAndroidInjector
-    abstract fun bindAllGroupsFragment (): AllGroupsFragment
+    abstract fun bindJobSkillsFragment(): JobSkillsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindTrendingGroupsFragment (): TrendingGroupsFragment
+    abstract fun bindAllGroupsFragment(): AllGroupsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindMyGroupsFragment (): MyGroupsFragment
+    abstract fun bindTrendingGroupsFragment(): TrendingGroupsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindMyGroupsFragment(): MyGroupsFragment
 
     @ContributesAndroidInjector(modules = [JobDetailModule::class])
-    abstract fun bindJobDescriptionSeekerFragment (): JobDetailFragment
+    abstract fun bindJobDescriptionSeekerFragment(): JobDetailFragment
 
     @ContributesAndroidInjector(modules = [JobDescriptionPosterModule::class])
-    abstract fun bindJobDescriptionPosterFragment (): JobDescriptionPosterFragment
+    abstract fun bindJobDescriptionPosterFragment(): JobDescriptionPosterFragment
 
     @ContributesAndroidInjector
-    abstract fun bindTabJobDescriptionFragment (): TabJobDescriptionFragment
+    abstract fun bindTabJobDescriptionFragment(): TabJobDescriptionFragment
 
     @ContributesAndroidInjector
-    abstract fun bindTabAboutCompanyFragment (): TabAboutCompanyFragment
+    abstract fun bindTabAboutCompanyFragment(): TabAboutCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSimilarJobListFragment (): SimilarJobListFragment
+    abstract fun bindSimilarJobListFragment(): SimilarJobListFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobApplyDialogFragment (): JobApplyDialogFragment
+    abstract fun bindJobApplyDialogFragment(): JobApplyDialogFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobsApplicationsFragment (): JobsApplicationsFragment
+    abstract fun bindJobsApplicationsFragment(): JobsApplicationsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobApplicantsFragment (): JobApplicantsFragment
+    abstract fun bindJobApplicantsFragment(): JobApplicantsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindRecentDocsDialogFragment (): RecentDocsDialogFragment
+    abstract fun bindRecentDocsDialogFragment(): RecentDocsDialogFragment
 
     @ContributesAndroidInjector
-    abstract fun bindCreateCompanyFragment (): CreateCompanyFragment
+    abstract fun bindCreateCompanyFragment(): CreateCompanyFragment
 
     @ContributesAndroidInjector
-    abstract fun bindOnboardingIndustryFragment (): SelectIndustryOnboardingFragment
+    abstract fun bindOnboardingIndustryFragment(): SelectIndustryOnboardingFragment
 
     @ContributesAndroidInjector
-    abstract fun bindCompanySizesFragment (): CompanySizesFragment
+    abstract fun bindCompanySizesFragment(): CompanySizesFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSimilarJobsFragment (): SimilarJobsFragment
+    abstract fun bindSimilarJobsFragment(): SimilarJobsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobApplySuccessDialogFragment (): JobApplySuccessDialogFragment
+    abstract fun bindJobApplySuccessDialogFragment(): JobApplySuccessDialogFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectOccupationFragment (): SelectOccupationFragment
+    abstract fun bindSelectOccupationFragment(): SelectOccupationFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectOOIFragment (): SelectOOIFragment
+    abstract fun bindSelectOOIFragment(): SelectOOIFragment
 
     @ContributesAndroidInjector
-    abstract fun bindSelectInterestsFragment (): SelectInterestsFragment
+    abstract fun bindSelectInterestsFragment(): SelectInterestsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindTabProfileFragment (): TabProfileFragment
+    abstract fun bindTabProfileFragment(): TabProfileFragment
 
     @ContributesAndroidInjector
-    abstract fun bindFollowerFragment (): ConnectionsFragment
+    abstract fun bindFollowerFragment(): ConnectionsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindToolbarEthnicityFragment (): ToolbarEthnicityFragment
+    abstract fun bindToolbarEthnicityFragment(): ToolbarEthnicityFragment
 
     @ContributesAndroidInjector
-    abstract fun bindToolbarGenderFragment (): ToolbarGenderFragment
+    abstract fun bindToolbarGenderFragment(): ToolbarGenderFragment
 
     @ContributesAndroidInjector
-    abstract fun bindOnboardingEthnicityFragment (): OnboardingEthnicityFragment
+    abstract fun bindOnboardingEthnicityFragment(): OnboardingEthnicityFragment
 
     @ContributesAndroidInjector
-    abstract fun bindOnboardingGenderFragment (): OnboardingGenderFragment
+    abstract fun bindOnboardingGenderFragment(): OnboardingGenderFragment
 
     @ContributesAndroidInjector
-    abstract fun bindFollowingFragment (): FollowingFragment
+    abstract fun bindFollowingFragment(): FollowingFragment
 
     @ContributesAndroidInjector
-    abstract fun bindFollowingGroupsFragment (): FollowingGroupsFragment
+    abstract fun bindFollowingGroupsFragment(): FollowingGroupsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindOnboardingAgeFragment (): OnboardingAgeFragment
+    abstract fun bindOnboardingAgeFragment(): OnboardingAgeFragment
 
     @ContributesAndroidInjector
-    abstract fun bindToolbarAgeFragment (): ToolbarAgeFragment
-
-//    @ContributesAndroidInjector
-//    abstract fun bindDirectMessagesFragment (): ChatsFragment
+    abstract fun bindToolbarAgeFragment(): ToolbarAgeFragment
 
     @ContributesAndroidInjector
-    abstract fun bindNewChatFragment (): NewChatFragment
+    abstract fun bindNewChatFragment(): NewChatFragment
 
     @ContributesAndroidInjector(modules = [GroupDetailModule::class])
-    abstract fun bindGroupDetailFragment (): GroupDetailFragment
+    abstract fun bindGroupDetailFragment(): GroupDetailFragment
 
     @ContributesAndroidInjector
-    abstract fun bindJobApplicationDialogFragment (): JobApplicationDialogFragment
+    abstract fun bindJobApplicationDialogFragment(): JobApplicationDialogFragment
 
     @ContributesAndroidInjector
-    abstract fun bindCreateGroupFragment (): CreateGroupFragment
+    abstract fun bindCreateGroupFragment(): CreateEditGroupStep1Fragment
 
     @ContributesAndroidInjector
-    abstract fun bindChatFragment (): ChatFragment
+    abstract fun bindChatFragment(): ChatFragment
 
     @ContributesAndroidInjector
-    abstract fun bindTabAboutGroupDetailFragment (): TabAboutGroupDetailFragment
+    abstract fun bindTabAboutGroupDetailFragment(): TabAboutGroupDetailFragment
 
     @ContributesAndroidInjector
-    abstract fun bindGroupConversationFragment (): GroupConversationFragment
+    abstract fun bindGroupConversationFragment(): GroupConversationFragment
 
     @ContributesAndroidInjector
-    abstract fun bindGroupDescriptionFragment (): GroupDescriptionFragment
+    abstract fun bindGroupDescriptionFragment(): CreateEditGroupStep3Fragment
 
     @ContributesAndroidInjector
-    abstract fun bindProfileSettingsFragment (): ProfileSettingsFragment
+    abstract fun bindProfileSettingsFragment(): ProfileSettingsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindPersonalSettingsFragment (): PersonalSettingsFragment
+    abstract fun bindPersonalSettingsFragment(): PersonalSettingsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindInterestsFragment (): InterestsFragment
+    abstract fun bindInterestsFragment(): InterestsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindChatsFragment (): ChatsFragment
+    abstract fun bindChatsFragment(): ChatsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindNewGroupChatFragment (): NewGroupChatFragment
+    abstract fun bindNewGroupChatFragment(): NewGroupChatFragment
 
     @ContributesAndroidInjector
-    abstract fun bindCreateGroupChatFragment (): CreateGroupChatFragment
+    abstract fun bindCreateGroupChatFragment(): CreateGroupChatFragment
 
     @ContributesAndroidInjector
-    abstract fun bindAccountSettingsFragment (): AccountSettingsFragment
+    abstract fun bindAccountSettingsFragment(): AccountSettingsFragment
 
     @ContributesAndroidInjector
-    abstract fun bindPhoneContactsFragment (): InvitePhoneContactsFragment
+    abstract fun bindPhoneContactsFragment(): InvitePhoneContactsFragment
 
     @ContributesAndroidInjector
     abstract fun bindConnectionRequestsFragment(): ConnectionRequestsFragment
@@ -371,4 +374,16 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindToolbarSkillFragment(): EditUserSkillFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindOtherUserProfileFragment(): OtherUserProfileFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindTabOtherUserProfileFragment(): TabOtherUserProfileFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCompaniesFragment(): CompaniesFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindAllConnectionsFragment(): AllConnectionsFragment
 }

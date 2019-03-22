@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
 import com.divercity.android.R
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.conversation.GroupConversationFragment
 import javax.inject.Inject

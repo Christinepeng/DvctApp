@@ -3,14 +3,11 @@ package com.divercity.android.di.module;
 import android.content.Context;
 
 import com.apollographql.apollo.ApolloClient;
-import com.divercity.android.Session;
 import com.divercity.android.db.dao.UserDao;
 import com.divercity.android.features.apollo.ApolloRepository;
-import com.divercity.android.features.usecase.UpdateFCMTokenUseCase;
 import com.divercity.android.helpers.NotificationHelper;
 import com.divercity.android.repository.appstate.AppStateRepository;
 import com.divercity.android.repository.appstate.AppStateRepositoryImpl;
-import com.divercity.android.repository.chat.ChatRepository;
 import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.session.SessionRepositoryImpl;
 
@@ -62,13 +59,13 @@ public abstract class AppProvidesModule {
         return new ApolloRepository(client);
     }
 
-    @Provides
-    @Singleton
-    static Session provideSession(ChatRepository chatRepository,
-                                  SessionRepository sessionRepository,
-                                  UpdateFCMTokenUseCase updateFCMTokenUseCase) {
-        return new Session(chatRepository, sessionRepository, updateFCMTokenUseCase);
-    }
+//    @Provides
+//    @Singleton
+//    static Session provideSession(ChatRepository chatRepository,
+//                                  SessionRepository sessionRepository,
+//                                  UpdateFCMTokenUseCase updateFCMTokenUseCase) {
+//        return new Session(chatRepository, sessionRepository, updateFCMTokenUseCase);
+//    }
 
     @Provides
     @Singleton

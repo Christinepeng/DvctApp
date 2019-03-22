@@ -1,40 +1,41 @@
 package com.divercity.android.features.jobs.jobposting.sharetogroup.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import kotlinx.android.synthetic.main.item_group_share.view.*
 
-class ShareJobGroupViewHolder private constructor(itemView: View, private val listener: Listener) : RecyclerView.ViewHolder(itemView) {
+class ShareJobGroupViewHolder private constructor(itemView: View, private val listener: Listener) :
+    RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(data: GroupResponse) {
-        try {
-            itemView.item_group_img.visibility = View.VISIBLE
+    fun bindTo(position: Int, isSelected: Boolean, data: GroupResponse) {
+        itemView.apply {
+
             val urlMain = data.attributes.pictureMain
             GlideApp.with(itemView)
-                    .load(urlMain).into(itemView.item_group_img)
-        } catch (e: NullPointerException) {
-            itemView.item_group_img.visibility = View.GONE
+                .load(urlMain).into(itemView.item_group_img)
+
+            item_group_txt_title.text = data.attributes.title
+            item_group_txt_members.text =
+                data.attributes.followersCount.toString().plus(" Members")
+
+            btn_select_unselect.isSelected = isSelected
+            btn_select_unselect.setOnClickListener {
+                btn_select_unselect.isSelected = !itemView.btn_select_unselect.isSelected
+                listener.onGroupShareClick(
+                    position,
+                    if (btn_select_unselect.isSelected) data.id else null
+                )
+            }
         }
-
-        itemView.item_group_txt_title.text = data.attributes.title
-        itemView.item_group_txt_members.text = data.attributes.followersCount.toString().plus(" Members")
-
-        itemView.btn_public_private.isSelected = data.selected
-        itemView.btn_public_private.setOnClickListener {
-            itemView.btn_public_private.isSelected = !itemView.btn_public_private.isSelected
-            data.selected = itemView.btn_public_private.isSelected
-            listener.onGroupShareClick(data, itemView.btn_public_private.isSelected)
-        }
-
     }
 
     interface Listener {
-        fun onGroupShareClick(group: GroupResponse, isSelected : Boolean)
+        fun onGroupShareClick(position: Int, groupId: String?)
     }
 
     companion object {

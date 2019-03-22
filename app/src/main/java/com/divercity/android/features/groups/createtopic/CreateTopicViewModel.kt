@@ -3,7 +3,7 @@ package com.divercity.android.features.groups.createtopic
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.createtopic.usecase.CreateTopicUseCase

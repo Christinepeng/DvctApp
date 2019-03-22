@@ -16,21 +16,21 @@ import javax.inject.Inject
 class ConnectionRequestsViewModel @Inject
 constructor(private val repository: ConnectionRequestsPaginatedRepositoryImpl) : BaseViewModel() {
 
-    var pagedApplicantsList: LiveData<PagedList<ConnectionItem>> ?= null
-    private lateinit var listingPaginatedJob: Listing<ConnectionItem>
+    lateinit var pagedConnectionList: LiveData<PagedList<ConnectionItem>>
+    private lateinit var listingConnections: Listing<ConnectionItem>
 
     init {
         fetchConnectionRequests()
     }
 
     private fun fetchConnectionRequests() {
-        listingPaginatedJob = repository.fetchData()
-        pagedApplicantsList = listingPaginatedJob.pagedList
+        listingConnections = repository.fetchData()
+        pagedConnectionList = listingConnections.pagedList
     }
 
-    fun networkState(): LiveData<NetworkState> = listingPaginatedJob.networkState
+    fun networkState(): LiveData<NetworkState> = listingConnections.networkState
 
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedJob.refreshState
+    fun refreshState(): LiveData<NetworkState> = listingConnections.refreshState
 
     fun retry() = repository.retry()
 

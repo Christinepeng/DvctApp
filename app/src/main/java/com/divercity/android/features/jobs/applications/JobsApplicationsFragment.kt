@@ -1,10 +1,10 @@
 package com.divercity.android.features.jobs.applications
 
+import android.os.Bundle
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.core.content.ContextCompat
-import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
@@ -85,7 +85,7 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
 
         viewModel.navigateToJobSeekerDescription.observe(viewLifecycleOwner, Observer {
             it?.let { job ->
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
             }
         })
 

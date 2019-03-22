@@ -2,12 +2,12 @@ package com.divercity.android.repository.group
 
 import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
-import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
@@ -50,13 +50,6 @@ interface GroupRepository {
         invitations: GroupInvite
     ): Observable<GroupInviteResponse>
 
-    fun createGroup(
-        title: String,
-        description: String,
-        groupType: String,
-        picture: String
-    ): Observable<GroupResponse>
-
     fun fetchQuestions(
         groupId: String,
         page: Int,
@@ -72,6 +65,11 @@ interface GroupRepository {
     ): Observable<List<UserResponse>>
 
     fun createGroup(group: GroupOfInterest): Observable<GroupResponse>
+
+    fun editGroup(
+        groupId: String,
+        group: GroupOfInterest
+    ): Observable<GroupResponse>
 
     fun requestToJoinGroup(groupId: String): Observable<MessageResponse>
 
@@ -91,21 +89,25 @@ interface GroupRepository {
     ): Observable<List<JoinGroupRequestResponse>>
 
     fun createNewTopic(
-        question : String, groupId : String, image : String?
+        question: String, groupId: String, image: String?
     ): Observable<QuestionResponse>
 
     fun fetchAnswers(
-       questionId: String,
-       pageNumber: Int,
-       size: Int,
-       query: String?
+        questionId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
     ): Observable<List<AnswerResponse>>
 
-    fun getPagedAnswersByQuestionId(questionId : Int): DataSource.Factory<Int, AnswerResponse>
+    fun deleteGroup(groupId: String): Observable<Boolean>
 
-    suspend fun insertAnswers(list : List<AnswerResponse>)
+    fun fetchGroupById(groupId: String): Observable<GroupResponse>
 
-    suspend fun insertAnswer(answer : AnswerResponse)
+    fun getPagedAnswersByQuestionId(questionId: Int): DataSource.Factory<Int, AnswerResponse>
 
-    fun sendNewAnswer(body : AnswerBody): Observable<AnswerResponse>
+    suspend fun insertAnswers(answers: List<AnswerResponse>)
+
+    suspend fun insertAnswer(answer: AnswerResponse)
+
+    fun sendNewAnswer(body: AnswerBody): Observable<AnswerResponse>
 }

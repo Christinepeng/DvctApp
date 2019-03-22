@@ -1,15 +1,15 @@
 package com.divercity.android.features.home.home.adapter.recommended
 
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import kotlinx.android.synthetic.main.item_recommended.view.*
 
 class RecommendedGroupViewHolder
@@ -26,18 +26,18 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
             itemView.txt_subtitle.text = it.attributes?.followersCount.toString().plus(" Members")
 
             itemView.btn_action.apply {
-                text = if (data.attributes.isIsFollowedByCurrent) {
+                text = if (data.attributes.isFollowedByCurrent) {
                     setOnClickListener(null)
                     setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                     setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
                     "Member"
-                } else if (data.isJoinRequestPending) {
+                } else if (data.isJoinRequestPending()) {
                     setOnClickListener(null)
                     setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                     setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
                     "Pending"
                 } else {
-                    if (data.isPublic)
+                    if (data.isPublic())
                         setOnClickListener { listener?.onGroupJoinClick(position, data) }
                     else
                         setOnClickListener { listener?.onGroupRequestJoinClick(position, data) }

@@ -4,8 +4,8 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import com.divercity.android.R
 import kotlinx.android.synthetic.main.dialog_group_admin_actions.view.*
 
@@ -38,6 +38,11 @@ class GroupAdminActionsDialogFragment : DialogFragment() {
 
             btn_invite.setOnClickListener {
                 listener?.onInvite()
+                dismiss()
+            }
+
+            btn_edit_group.setOnClickListener {
+                listener?.onEditGroup()
                 dismiss()
             }
         }

@@ -28,6 +28,8 @@ class DivercityMessagingService : FirebaseMessagingService() {
 
     companion object {
         const val NEW_DIRECT_MESSAGE = "NEW_DIRECT_MESSAGE"
+        const val NEW_CONNECTION_REQUEST = "NEW_CONNECTION_REQUEST"
+        const val NEW_CONNECTION_ACCEPT = "NEW_CONNECTION_ACCEPT"
         const val GROUP_INVITE = "GROUP_INVITE"
     }
 
@@ -50,6 +52,28 @@ class DivercityMessagingService : FirebaseMessagingService() {
                                     data.data["sender_id"],
                                     data.data["chat_id"]!!.toInt(),
                                     data.data["display_name"]
+                                )
+                        )
+                    }
+                    NEW_CONNECTION_REQUEST -> {
+                        notificationHelper.notify(
+                            Math.random().toInt(),
+                            notificationHelper
+                                .getRequestNotification(
+                                    "New connection request",
+                                    data.data["alert"]!!,
+                                    data.data["follower_id"]
+                                )
+                        )
+                    }
+                    NEW_CONNECTION_ACCEPT -> {
+                        notificationHelper.notify(
+                            Math.random().toInt(),
+                            notificationHelper
+                                .getRequestNotification(
+                                    "Connection request accepted",
+                                    data.data["alert"]!!,
+                                    data.data["accepted_by"]
                                 )
                         )
                     }

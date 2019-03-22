@@ -9,7 +9,8 @@ import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBod
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
 import com.divercity.android.data.entity.profile.profile.UserProfileBody
-import com.divercity.android.data.entity.user.connectuser.ConnectUserResponse
+import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBody
+import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.UserService
 import com.divercity.android.repository.session.SessionRepository
@@ -43,8 +44,8 @@ constructor(
             }
     }
 
-    override fun joinGroup(idGroup: String): Observable<Boolean> {
-        return userService.joinGroup(idGroup).map { response ->
+    override fun joinGroup(groupId: String): Observable<Boolean> {
+        return userService.joinGroup(groupId).map { response ->
             checkResponse(response)
             true
         }
@@ -173,5 +174,45 @@ constructor(
             checkResponse(response)
             response.body()!!.data
         }
+    }
+
+    override fun fetchRecommendedUsers(
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>> {
+        return userService.fetchRecommendedUsers(pageNumber, size, query).map { response ->
+            checkResponse(response)
+            response.body()!!.data
+        }
+    }
+
+    override fun fetchConnectionRequests(
+        userId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>> {
+        return userService.fetchConnectionRequests(userId, pageNumber, size, query)
+            .map { response ->
+                checkResponse(response)
+                response.body()!!.data
+            }
+    }
+
+    override fun acceptConnectionRequest(userId: String): Observable<ConnectUserResponse> {
+        return userService.acceptConnectionRequest(UserConnectionBody(userId))
+            .map { response ->
+                checkResponse(response)
+                response.body()!!.data
+            }
+    }
+
+    override fun declineConnectionRequest(userId: String): Observable<ConnectUserResponse> {
+        return userService.cancelConnectionRequest(UserConnectionBody(userId))
+            .map { response ->
+                checkResponse(response)
+                response.body()!!.data
+            }
     }
 }

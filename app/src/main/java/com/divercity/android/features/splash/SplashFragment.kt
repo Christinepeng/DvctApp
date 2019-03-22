@@ -73,14 +73,14 @@ class SplashFragment : BaseFragment() {
         viewModel.userData.observe(this, Observer { listResource ->
             when (listResource?.status) {
                 Status.LOADING -> {
-                    showProgress()
+//                    showProgress()
                 }
                 Status.ERROR -> {
-                    hideProgress()
+//                    hideProgress()
                     showErrorDialog(listResource.message ?: "Error")
                 }
                 Status.SUCCESS -> {
-                    hideProgress()
+//                    hideProgress()
                 }
             }
         })

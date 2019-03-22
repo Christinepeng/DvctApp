@@ -1,14 +1,8 @@
 package com.divercity.android.features.groups.onboarding.group;
 
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.Transformations;
-import androidx.paging.LivePagedListBuilder;
-import androidx.paging.PagedList;
-import androidx.annotation.Nullable;
-
 import com.divercity.android.core.base.PaginatedQueryRepository;
 import com.divercity.android.core.utils.Listing;
-import com.divercity.android.data.entity.group.GroupResponse;
+import com.divercity.android.data.entity.group.group.GroupResponse;
 import com.divercity.android.features.groups.onboarding.datasource.GroupDataSource;
 import com.divercity.android.features.groups.onboarding.datasource.GroupDataSourceFactory;
 import com.divercity.android.features.groups.usecase.FetchGroupsUseCase;
@@ -18,6 +12,11 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.Transformations;
+import androidx.paging.LivePagedListBuilder;
+import androidx.paging.PagedList;
 import io.reactivex.disposables.CompositeDisposable;
 
 /**

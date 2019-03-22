@@ -5,7 +5,7 @@ import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
-import com.divercity.android.data.entity.user.connectuser.ConnectUserResponse
+import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import io.reactivex.Observable
 
@@ -19,7 +19,7 @@ interface UserRepository {
 
     fun updateLoggedUserProfile(user: User): Observable<UserResponse>
 
-    fun joinGroup(idGroup: String): Observable<Boolean>
+    fun joinGroup(groupId: String): Observable<Boolean>
 
     fun uploadUserPhoto(body: ProfilePictureBody): Observable<UserResponse>
 
@@ -39,27 +39,45 @@ interface UserRepository {
 
     fun fetchUnreadMessagesCount(userId: String): Observable<Int>
 
+    fun acceptConnectionRequest(userId: String): Observable<ConnectUserResponse>
+
+    fun declineConnectionRequest(userId: String): Observable<ConnectUserResponse>
+
     fun fetchFollowersByUser(
-            userId: String,
-            pageNumber: Int,
-            size: Int,
-            query: String?
+        userId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
     ): Observable<List<UserResponse>>
 
     fun fetchFollowingByUser(
-            userId: String,
-            pageNumber: Int,
-            size: Int,
-            query: String?
+        userId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
     ): Observable<List<UserResponse>>
 
-    fun fetchUsers(pageNumber: Int,
-                   size: Int,
-                   query: String?
+    fun fetchUsers(
+        pageNumber: Int,
+        size: Int,
+        query: String?
     ): Observable<List<UserResponse>>
 
     fun fetchNotifications(
         pageNumber: Int,
         size: Int
     ): Observable<List<NotificationResponse>>
+
+    fun fetchRecommendedUsers(
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>>
+
+    fun fetchConnectionRequests(
+        userId: String,
+        pageNumber: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<UserResponse>>
 }

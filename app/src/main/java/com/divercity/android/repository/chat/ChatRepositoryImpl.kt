@@ -80,10 +80,16 @@ constructor(
             throw HttpException(response)
     }
 
-    override fun sendMessage(message: String, chatId: String, image : String): Observable<ChatMessageResponse> {
+    override fun sendMessage(
+        message: String,
+        chatId: String,
+        image: String
+    ): Observable<ChatMessageResponse> {
         val partMessage = RequestBody.create(MediaType.parse("text/plain"), message)
         val partChatId = RequestBody.create(MediaType.parse("text/plain"), chatId)
         val partImage = RequestBody.create(MediaType.parse("text/plain"), image)
+//        val partAttchmntType = RequestBody.create(MediaType.parse("text/plain"), attchmntType)
+//        val partAttchmntId = RequestBody.create(MediaType.parse("text/plain"), attchmntId)
 
         return chatService.sendMessage(partMessage, partChatId, partImage)
     }
@@ -152,11 +158,20 @@ constructor(
     override fun addGroupMember(
         currentUserId: String,
         chatId: String,
-        usersIds : List<String>
+        usersIds: List<String>
     ): Observable<Boolean> {
         return chatService.addGroupMember(currentUserId, chatId, AddChatMemberBody(usersIds)).map {
             checkResponse(it)
             true
         }
     }
+
+//    override fun sendMessageAttachment(
+//        message: String,
+//        chatId: String,
+//        attchmntType: String,
+//        attchmntId: String
+//    ): Observable<ChatMessageResponse> {
+//
+//    }
 }

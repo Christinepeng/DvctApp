@@ -1,13 +1,12 @@
 package com.divercity.android.features.groups.onboarding.datasource;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.DataSource;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.divercity.android.data.entity.group.GroupResponse;
+import com.divercity.android.data.entity.group.group.GroupResponse;
 import com.divercity.android.features.groups.usecase.FetchGroupsUseCase;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.DataSource;
 import io.reactivex.disposables.CompositeDisposable;
 
 public class GroupDataSourceFactory extends DataSource.Factory<Long, GroupResponse> {

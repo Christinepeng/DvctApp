@@ -1,26 +1,26 @@
 package com.divercity.android.features.groups.all
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.ITabsGroups
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
+import com.divercity.android.features.groups.all.model.GroupPositionModel
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
 /**
  * Created by lucas on 25/10/2018.
  */
-
 
 class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
@@ -29,11 +29,11 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     @Inject
     lateinit var adapter: GroupsAdapter
 
-    private var positionJoinClicked: Int = -1
-    private var positionJoinRequest: Int = -1
     private var isListRefreshing = false
 
     companion object {
+
+        const val REQUEST_CODE_GROUP = 200
 
         fun newInstance(): AllGroupsFragment {
             return AllGroupsFragment()
@@ -60,34 +60,32 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     }
 
     private fun subscribeToLiveData() {
-        viewModel.onJoinGroupResponse.observe(viewLifecycleOwner, Observer {
-            it?.getContentIfNotHandled()?.let { group ->
-                when (group.status) {
-                    Status.LOADING -> showProgress()
+        viewModel.joinPublicGroupResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response.status) {
+                Status.LOADING -> {
+                }
 
-                    Status.ERROR -> {
-                        hideProgress()
-                        Toast.makeText(activity, group.message, Toast.LENGTH_SHORT).show()
-                    }
-                    Status.SUCCESS -> {
-                        hideProgress()
-                        adapter.updatePositionOnJoinGroup(positionJoinClicked)
-                    }
+                Status.ERROR -> {
+                    adapter.reloadPosition(response.data!!.position)
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    adapter.updatePositionOnJoinPublicGroup(response.data!!)
                 }
             }
         })
 
-        viewModel.requestToJoinResponse.observe(viewLifecycleOwner, Observer {response ->
+        viewModel.requestToJoinPrivateGroupResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                 }
 
                 Status.ERROR -> {
+                    adapter.reloadPosition(response.data!!.position)
                     Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    hideProgress()
-                    adapter.updatePositionOnJoinRequest(positionJoinRequest)
+                    adapter.updatePositionOnJoinRequest(response.data!!)
                 }
             }
         })
@@ -135,9 +133,9 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
@@ -148,19 +146,18 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
     private val listener = object : GroupsViewHolder.Listener {
 
-        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
-            positionJoinRequest = position
-            viewModel.requestToJoinGroup(group)
+        override fun onGroupRequestJoinClick(groupPosition: GroupPositionModel) {
+            viewModel.requestToJoinGroup(groupPosition)
+        }
+
+        override fun onGroupJoinClick(groupPosition: GroupPositionModel) {
+            viewModel.joinGroup(groupPosition)
         }
 
         override fun onGroupClick(group: GroupResponse) {
-            navigator.navigateToGroupDetailActivity(this@AllGroupsFragment, group)
+            navigator.navigateToGroupDetailForResult(this@AllGroupsFragment, group)
         }
 
-        override fun onGroupJoinClick(position: Int, group: GroupResponse) {
-            positionJoinClicked = position
-            viewModel.joinGroup(group)
-        }
     }
 
     override fun fetchGroups(searchQuery: String?) {

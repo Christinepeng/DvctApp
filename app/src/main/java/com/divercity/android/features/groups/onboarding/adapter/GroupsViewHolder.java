@@ -1,8 +1,6 @@
 package com.divercity.android.features.groups.onboarding.adapter;
 
 import android.annotation.SuppressLint;
-import androidx.appcompat.widget.AppCompatButton;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,7 +12,10 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.divercity.android.R;
 import com.divercity.android.core.utils.GlideApp;
-import com.divercity.android.data.entity.group.GroupResponse;
+import com.divercity.android.data.entity.group.group.GroupResponse;
+
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class GroupsViewHolder extends RecyclerView.ViewHolder {
 
@@ -48,7 +49,7 @@ public class GroupsViewHolder extends RecyclerView.ViewHolder {
         txtName.setText(data.getAttributes().getTitle());
         txtMember.setText(data.getAttributes().getFollowersCount() + " Members");
 
-        if(data.getAttributes().isIsFollowedByCurrent()){
+        if(data.getAttributes().isFollowedByCurrent()){
             btnJoin.setOnClickListener(null);
             btnJoin.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded);
             btnJoin.setTextColor(itemView.getContext().getResources().getColor(R.color.appBlue));

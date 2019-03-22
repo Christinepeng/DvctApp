@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.divercity.android.core.base.BaseActivity
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 
 class CreateTopicActivity : BaseActivity() {
 

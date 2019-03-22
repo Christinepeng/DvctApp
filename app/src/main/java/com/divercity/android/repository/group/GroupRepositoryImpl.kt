@@ -2,7 +2,6 @@ package com.divercity.android.repository.group
 
 import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
-import com.divercity.android.data.entity.group.GroupResponse
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
@@ -10,6 +9,7 @@ import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvit
 import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.question.Question
@@ -22,8 +22,6 @@ import com.divercity.android.db.dao.GroupDao
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject
@@ -65,6 +63,13 @@ constructor(
 
     override fun createGroup(group: GroupOfInterest): Observable<GroupResponse> {
         return service.createGroup(CreateGroupBody(group)).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun editGroup(groupId: String, group: GroupOfInterest): Observable<GroupResponse> {
+        return service.editGroup(groupId, CreateGroupBody(group)).map {
             checkResponse(it)
             it.body()?.data
         }
@@ -135,23 +140,6 @@ constructor(
         return service.fetchMyGroups(page, size, query).map {
             checkResponse(it)
             it.body()
-        }
-    }
-
-    override fun createGroup(
-        title: String,
-        description: String,
-        groupType: String,
-        picture: String
-    ): Observable<GroupResponse> {
-        val partTitle = RequestBody.create(MediaType.parse("text/plain"), title)
-        val partDescription = RequestBody.create(MediaType.parse("text/plain"), description)
-        val partGroupType = RequestBody.create(MediaType.parse("text/plain"), groupType)
-        val partPicture = RequestBody.create(MediaType.parse("text/plain"), picture)
-
-        return service.createGroup(partTitle, partDescription, partGroupType, partPicture).map {
-            checkResponse(it)
-            it.body()?.data
         }
     }
 
@@ -231,9 +219,9 @@ constructor(
         return groupDao.getPagedAnswersByQuestionId(questionId)
     }
 
-    override suspend fun insertAnswers(list: List<AnswerResponse>) {
+    override suspend fun insertAnswers(answers: List<AnswerResponse>) {
         return withContext(Dispatchers.IO) {
-            groupDao.insertAnswers(list)
+            groupDao.insertAnswers(answers)
         }
     }
 
@@ -247,6 +235,20 @@ constructor(
         return service.sendNewAnswer(body).map {
             checkResponse(it)
             it.body()?.data
+        }
+    }
+
+    override fun fetchGroupById(groupId: String): Observable<GroupResponse> {
+        return service.fetchGroupById(groupId).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun deleteGroup(groupId: String): Observable<Boolean> {
+        return service.deleteGroup(groupId).map {
+            checkResponse(it)
+            true
         }
     }
 }

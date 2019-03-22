@@ -1,17 +1,17 @@
 package com.divercity.android.features.profile.tabfollowing
 
+import android.os.Bundle
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.core.content.ContextCompat
-import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.tabconnections.adapter.UserAdapter
-import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserAdapter
+import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -107,7 +107,8 @@ class FollowingFragment : BaseFragment(), RetryCallback {
     private
     val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
 
-        override fun onConnectUser(user: UserResponse) {
+        override fun onConnectUser(user: UserResponse, position: Int) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
         override fun onUserDirectMessage(user: UserResponse) {

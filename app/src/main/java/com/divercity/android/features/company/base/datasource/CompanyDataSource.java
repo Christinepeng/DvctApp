@@ -1,9 +1,5 @@
 package com.divercity.android.features.company.base.datasource;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PageKeyedDataSource;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
@@ -12,9 +8,13 @@ import com.divercity.android.features.company.base.usecase.FetchCompaniesUseCase
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -27,28 +27,26 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
     private FetchCompaniesUseCase fetchCompaniesUseCase;
-    private CompositeDisposable compositeDisposable;
     private String query;
     /**
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
+    private Disposable disposableRetry;
 
-    public CompanyDataSource(CompositeDisposable compositeDisposable,
-                             FetchCompaniesUseCase fetchCompaniesUseCase,
+    public CompanyDataSource(FetchCompaniesUseCase fetchCompaniesUseCase,
                              @Nullable String query) {
-        this.compositeDisposable = compositeDisposable;
         this.fetchCompaniesUseCase = fetchCompaniesUseCase;
         this.query = query;
     }
 
     public void retry() {
         if (retryCompletable != null) {
-            compositeDisposable.add(retryCompletable
+            disposableRetry = retryCompletable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                    }, throwable -> Log.e(TAG, throwable.getMessage())));
+                    }, throwable -> Log.e(TAG, throwable.getMessage()));
         }
     }
 
@@ -88,8 +86,7 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
 
             }
         };
-        compositeDisposable.add(disposableObserver);
-        fetchCompaniesUseCase.execute(disposableObserver, FetchCompaniesUseCase.Params.forCompanies(0, params.requestedLoadSize, query));
+        fetchCompaniesUseCase.execute(disposableObserver, FetchCompaniesUseCase.Params.Companion.forCompanies(0, params.requestedLoadSize, query));
     }
 
     @Override
@@ -125,9 +122,7 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
 
             }
         };
-
-        compositeDisposable.add(disposableObserver);
-        fetchCompaniesUseCase.execute(disposableObserver, FetchCompaniesUseCase.Params.forCompanies(params.key.intValue(), params.requestedLoadSize, query));
+        fetchCompaniesUseCase.execute(disposableObserver, FetchCompaniesUseCase.Params.Companion.forCompanies(params.key.intValue(), params.requestedLoadSize, query));
     }
 
     @NonNull
@@ -148,4 +143,9 @@ public class CompanyDataSource extends PageKeyedDataSource<Long, CompanyResponse
         }
     }
 
+    public void dispose(){
+        fetchCompaniesUseCase.getCompositeDisposable().clear();
+        if(disposableRetry != null)
+            disposableRetry.dispose();
+    }
 }

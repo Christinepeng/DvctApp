@@ -1,16 +1,17 @@
 package com.divercity.android.features.groups.adapter
 
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.features.groups.all.model.GroupPositionModel
 import kotlinx.android.synthetic.main.item_group.view.*
 
 class GroupsViewHolder
@@ -30,37 +31,48 @@ private constructor(itemView: View, private val listener: Listener?) :
                     data.attributes.followersCount.toString().plus(" Members")
 
                 item_group_btn_join_member.apply {
-                    if (data.attributes.isIsCurrentUserAdmin) {
-                        visibility = View.GONE
+                    isEnabled = true
+                    text = if (data.attributes.isCurrentUserAdmin) {
+                        setOnClickListener(null)
+                        setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+                        "Admin"
+                    } else if (data.attributes.isFollowedByCurrent) {
+                        setOnClickListener(null)
+                        setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+                        "Member"
+                    } else if (data.isJoinRequestPending()) {
+                        setOnClickListener(null)
+                        setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
+                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+                        "Pending"
                     } else {
-                        visibility = View.VISIBLE
-
-                        text = if (data.attributes.isIsFollowedByCurrent) {
-                            setOnClickListener(null)
-                            setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                            setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-                            "Member"
-                        } else if (data.isJoinRequestPending) {
-                            setOnClickListener(null)
-                            setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                            setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-                            "Pending"
-                        } else {
-                            if (data.isPublic)
-                                setOnClickListener { listener?.onGroupJoinClick(position, data) }
-                            else
-                                setOnClickListener { listener?.onGroupRequestJoinClick(position, data) }
-                            setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-                            setTextColor(
-                                ContextCompat.getColor(
-                                    itemView.context,
-                                    android.R.color.white
+                        if (data.isPublic())
+                            setOnClickListener {
+                                isEnabled = false
+                                listener?.onGroupJoinClick(GroupPositionModel(position, data))
+                            }
+                        else
+                            setOnClickListener {
+                                isEnabled = false
+                                listener?.onGroupRequestJoinClick(
+                                    GroupPositionModel(
+                                        position,
+                                        data
+                                    )
                                 )
+                            }
+                        setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
+                        setTextColor(
+                            ContextCompat.getColor(
+                                itemView.context,
+                                android.R.color.white
                             )
-                            "Join"
-                        }
-                        setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+                        )
+                        "Join"
                     }
+                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                 }
 
                 setOnClickListener {
@@ -72,9 +84,9 @@ private constructor(itemView: View, private val listener: Listener?) :
 
     interface Listener {
 
-        fun onGroupRequestJoinClick(position: Int, group: GroupResponse)
+        fun onGroupRequestJoinClick(groupPosition: GroupPositionModel)
 
-        fun onGroupJoinClick(position: Int, group: GroupResponse)
+        fun onGroupJoinClick(groupPosition: GroupPositionModel)
 
         fun onGroupClick(group: GroupResponse)
     }

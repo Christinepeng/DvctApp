@@ -4,11 +4,10 @@ import android.content.Context
 import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
+import com.divercity.android.features.profile.currentuser.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.currentuser.tabprofile.TabProfileFragment
-import com.divercity.android.features.profile.tabconnections.ConnectionsFragment
 import javax.inject.Inject
 
 /**
@@ -18,8 +17,8 @@ import javax.inject.Inject
 class ProfileViewPagerAdapter
 @Inject constructor(
     val context: Context,
-    fm: FragmentManager
-) : FragmentStatePagerAdapter(fm) {
+    fragment: CurrentUserProfileFragment
+) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
 
     private var registeredFragments = SparseArray<Fragment>()
     lateinit var userId: String

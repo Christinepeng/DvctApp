@@ -1,8 +1,8 @@
 package com.divercity.android.features.home.home.adapter.recommended
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
-import com.divercity.android.data.entity.group.GroupResponse
+import androidx.recyclerview.widget.RecyclerView
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.home.RecommendedItem
 import com.divercity.android.data.entity.job.response.JobResponse
 import javax.inject.Inject
@@ -48,7 +48,7 @@ constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     fun updatePositionOnJoinGroup(position: Int){
         (data?.get(position) as GroupResponse).attributes?.apply {
             followersCount += 1
-            isIsFollowedByCurrent = true
+            isFollowedByCurrent = true
             notifyItemChanged(position)
         }
     }

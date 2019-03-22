@@ -6,9 +6,9 @@
         android:icon="@drawable/selector_tab_home"
         android:title="@string/home" />
     <item
-        android:id="@+id/menu_item_groups"
+        android:id="@+id/menu_item_people"
         android:icon="@drawable/selector_tab_communities"
-        android:title="@string/groups" />
+        android:title="@string/people" />
     <item
         android:id="@+id/menu_item_jobs"
         android:icon="@drawable/selector_tab_jobs"

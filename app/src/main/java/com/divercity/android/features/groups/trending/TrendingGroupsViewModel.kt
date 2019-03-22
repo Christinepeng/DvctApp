@@ -8,13 +8,11 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
-import com.divercity.android.data.entity.message.MessageResponse
-import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.features.groups.all.model.GroupPositionModel
 import com.divercity.android.features.groups.trending.datasource.TrendingGroupsPaginatedRepositoryImpl
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
-import com.google.gson.JsonElement
 import javax.inject.Inject
 
 /**
@@ -28,10 +26,12 @@ constructor(
     private val requestToJoinUseCase : RequestJoinGroupUseCase) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var joinGroupResponse = SingleLiveEvent<Resource<Any>>()
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
-    var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
+
+    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
+    var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
+
     private var lastSearch: String? = null
 
     init {
@@ -68,43 +68,43 @@ constructor(
         pagedGroupList.removeObservers(lifecycleOwner)
     }
 
-    fun joinGroup(group: GroupResponse) {
-        joinGroupResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<Boolean>() {
-            override fun onFail(error: String) {
-                joinGroupResponse.postValue(Resource.error(error, null))
-            }
-
-            override fun onHttpException(error: JsonElement) {
-                joinGroupResponse.postValue(Resource.error(error.toString(), null))
-            }
-
-            override fun onSuccess(o: Boolean) {
-                joinGroupResponse.postValue(Resource.success(o))
-            }
-        }
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
-    }
-
-    fun requestToJoinGroup(group: GroupResponse) {
-        requestToJoinResponse.postValue(Resource.loading(null))
-
-        val callback = object : DisposableObserverWrapper<MessageResponse>() {
-            override fun onFail(error: String) {
-                requestToJoinResponse.postValue(Resource.error(error, null))
-            }
-
-            override fun onHttpException(error: JsonElement) {
-                requestToJoinResponse.postValue(Resource.error(error.toString(), null))
-            }
-
-            override fun onSuccess(o: MessageResponse) {
-                requestToJoinResponse.postValue(Resource.success(o))
-            }
-        }
-        requestToJoinUseCase.execute(callback,
-            RequestJoinGroupUseCase.Params.toJoin(group.id))
-    }
+//    fun joinGroup(group: GroupResponse) {
+//        joinPublicGroupResponse.postValue(Resource.loading(null))
+//        val callback = object : DisposableObserverWrapper<Boolean>() {
+//            override fun onFail(error: String) {
+//                joinPublicGroupResponse.postValue(Resource.error(error, null))
+//            }
+//
+//            override fun onHttpException(error: JsonElement) {
+//                joinGroupResponse.postValue(Resource.error(error.toString(), null))
+//            }
+//
+//            override fun onSuccess(o: Boolean) {
+//                joinGroupResponse.postValue(Resource.success(o))
+//            }
+//        }
+//        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group.id))
+//    }
+//
+//    fun requestToJoinGroup(group: GroupResponse) {
+//        requestToJoinResponse.postValue(Resource.loading(null))
+//
+//        val callback = object : DisposableObserverWrapper<MessageResponse>() {
+//            override fun onFail(error: String) {
+//                requestToJoinResponse.postValue(Resource.error(error, null))
+//            }
+//
+//            override fun onHttpException(error: JsonElement) {
+//                requestToJoinResponse.postValue(Resource.error(error.toString(), null))
+//            }
+//
+//            override fun onSuccess(o: MessageResponse) {
+//                requestToJoinResponse.postValue(Resource.success(o))
+//            }
+//        }
+//        requestToJoinUseCase.execute(callback,
+//            RequestJoinGroupUseCase.Params.toJoin(group.id))
+//    }
 
     override fun onCleared() {
         super.onCleared()

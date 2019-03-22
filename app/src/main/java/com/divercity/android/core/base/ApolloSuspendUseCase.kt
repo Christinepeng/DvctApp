@@ -18,7 +18,7 @@ abstract class ApolloSuspendUseCase<T, Params> {
 
     protected abstract fun buildQuery(params: Params): ApolloQueryCall<T>
 
-    operator suspend fun invoke(params: Params, onResult: (Either<String, T>) -> Unit = {}) {
+    suspend operator fun invoke(params: Params, onResult: (Either<String, T>) -> Unit = {}) {
         onResult(suspendCancellableCoroutine { continuation ->
 
             val callback = object : ApolloCall.Callback<T>() {

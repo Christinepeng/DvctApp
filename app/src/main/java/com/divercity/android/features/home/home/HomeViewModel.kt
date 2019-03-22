@@ -4,14 +4,14 @@ import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
-import com.divercity.android.Session
+import com.divercity.android.features.usecase.LogoutUseCase
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Event
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.data.entity.home.RecommendedItem
 import com.divercity.android.data.entity.message.MessageResponse
@@ -41,7 +41,7 @@ constructor(
     private val fetchFeedRecommendedJobsGroupsUseCase: FetchFeedRecommendedJobsGroupsUseCase,
     private val joinGroupUseCase: JoinGroupUseCase,
     private val requestToJoinUseCase: RequestJoinGroupUseCase,
-    private val session: Session,
+    private val session: LogoutUseCase,
     private val notificationHelper: NotificationHelper,
     private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase,
     private val fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase
@@ -151,7 +151,7 @@ constructor(
                 joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
             }
         }
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group))
+        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group.id))
     }
 
     fun requestToJoinGroup(group: GroupResponse) {
@@ -204,6 +204,6 @@ constructor(
     }
 
     fun onDestroyView(){
-        fetchUnreadMessagesCountUseCase.dispose()
+        fetchUnreadMessagesCountUseCase.compositeDisposable.clear()
     }
 }

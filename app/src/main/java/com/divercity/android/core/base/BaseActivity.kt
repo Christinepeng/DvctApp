@@ -3,7 +3,7 @@ package com.divercity.android.core.base
 import android.os.Bundle
 import android.view.View
 import com.divercity.android.R
-import com.divercity.android.Session
+import com.divercity.android.features.usecase.LogoutUseCase
 import com.divercity.android.core.bus.RxBus
 import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.navigation.Navigator
@@ -24,7 +24,7 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
     private lateinit var unauthorizedDisposable: Disposable
 
     @Inject
-    lateinit var session: Session
+    lateinit var session: LogoutUseCase
 
     @Inject
     lateinit var navigator: Navigator
@@ -82,7 +82,7 @@ abstract class BaseActivity : DaggerAppCompatActivity() {
 
     fun logout(){
         include_loading.visibility = View.VISIBLE
-        session.logout(::onFinish)
+        session.execute(::onFinish)
     }
 
     private fun onFinish(){

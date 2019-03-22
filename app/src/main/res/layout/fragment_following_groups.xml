@@ -95,7 +95,7 @@
             android:textSize="15sp" />
 
         <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_create_group"
+            android:id="@+id/btn_create_edit_group"
             style="@style/AppText"
             android:layout_width="match_parent"
             android:layout_height="31dp"

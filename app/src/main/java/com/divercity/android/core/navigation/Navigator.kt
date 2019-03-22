@@ -6,9 +6,10 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.divercity.android.R
 import com.divercity.android.core.utils.OnboardingProgression
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.skills.SkillResponse
+import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeActivity
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.android.features.chat.chat.ChatActivity
@@ -27,8 +28,8 @@ import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.android.features.groups.answers.AnswerActivity
 import com.divercity.android.features.groups.answers.model.Question
-import com.divercity.android.features.groups.creategroup.step1.CreateGroupActivity
-import com.divercity.android.features.groups.creategroup.step3.GroupDescriptionActivity
+import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Activity
+import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Activity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
@@ -57,13 +58,14 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
+import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
+import com.divercity.android.features.profile.otheruser.OtherUserProfileActivity
 import com.divercity.android.features.profile.settings.ProfileSettingsActivity
 import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
-import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.signup.SignUpActivity
-import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
+import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -98,8 +100,12 @@ class Navigator @Inject constructor() {
         activity.startActivity(intent)
     }
 
-    fun navigateToJobDescriptionSeekerActivity(activity: FragmentActivity, jobId: String?) {
-        activity.startActivity(JobDetailActivity.getCallingIntent(activity, jobId))
+    fun navigateToJobDescriptionSeekerActivity(
+        activity: FragmentActivity,
+        jobId: String?,
+        job: JobResponse?
+    ) {
+        activity.startActivity(JobDetailActivity.getCallingIntent(activity, jobId, job))
     }
 
     fun navigateToSignUpActivity(activity: FragmentActivity, email: String) {
@@ -195,7 +201,7 @@ class Navigator @Inject constructor() {
         fragment.startActivity(NewChatActivity.getCallingIntent(fragment.context))
     }
 
-    fun navigateToToolbarSkillsActivity(fragment: Fragment, prevSkills : ArrayList<String>?) {
+    fun navigateToToolbarSkillsActivity(fragment: Fragment, prevSkills: ArrayList<String>?) {
         fragment.startActivity(EditUserSkillActivity.getCallingIntent(fragment.context, prevSkills))
     }
 
@@ -210,22 +216,53 @@ class Navigator @Inject constructor() {
         )
     }
 
-    fun navigateToGroupDetailActivity(fragment: Fragment, group: GroupResponse) {
-        fragment.startActivity(GroupDetailActivity.getCallingIntent(fragment.context, group))
+    fun navigateToGroupDetailForResult(fragment: Fragment, group: GroupResponse) {
+        fragment.startActivity(
+            GroupDetailActivity.getCallingIntent(
+                fragment.context,
+                group
+            )
+        )
     }
 
-    fun navigateToCreateGroupActivity(fragment: Fragment) {
-        fragment.startActivity(CreateGroupActivity.getCallingIntent(fragment.context))
+    fun navigateToCreateGroupStep1(fragment: Fragment) {
+        fragment.startActivity(
+            CreateEditGroupStep1Activity.getCallingIntent(
+                fragment.context,
+                null
+            )
+        )
     }
 
-    fun navigateToGroupDescriptionActivity(
+    fun navigateToEditGroupStep1(fragment: Fragment, group: GroupResponse?) {
+        fragment.startActivity(
+            CreateEditGroupStep1Activity.getCallingIntent(
+                fragment.context,
+                group
+            )
+        )
+    }
+
+    fun navigateToCreateGroupStep3(
         fragment: Fragment,
         groupName: String,
         photoPath: String?
     ) {
         fragment.startActivity(
-            GroupDescriptionActivity.getCallingIntent
-                (fragment.context, groupName, photoPath)
+            CreateEditGroupStep3Activity.getCallingIntent
+                (fragment.context, groupName, photoPath, null)
+        )
+    }
+
+    fun navigateToEditGroupStep3(
+        fragment: Fragment,
+        groupName: String,
+        photoPath: String?,
+        group: GroupResponse?
+    ) {
+        fragment.startActivity(
+            CreateEditGroupStep3Activity.getCallingIntent
+                (fragment.context, groupName, photoPath, group)
         )
     }
 
@@ -344,6 +381,20 @@ class Navigator @Inject constructor() {
 
     fun navigateToInterestsActivity(fragment: Fragment) {
         fragment.startActivity(InterestsActivity.getCallingIntent(fragment.context))
+    }
+
+    fun navigateToOtherUserProfileActivity(
+        fragment: Fragment,
+        userId: String?,
+        user: UserResponse?
+    ) {
+        fragment.startActivity(
+            OtherUserProfileActivity.getCallingIntent(
+                fragment.context,
+                userId,
+                user
+            )
+        )
     }
 
     fun navigateToLoadUrlActivity(fragment: Fragment, url: String) {

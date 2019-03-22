@@ -9,7 +9,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.features.groups.followedgroups.datasource.FollowingGroupsPaginatedRepositoryImpl
 import javax.inject.Inject

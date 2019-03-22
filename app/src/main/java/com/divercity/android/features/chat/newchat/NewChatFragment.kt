@@ -1,17 +1,17 @@
 package com.divercity.android.features.chat.newchat
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -19,7 +19,7 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.newchat.adapter.UserSortedByFirstCharAdapter
-import com.divercity.android.features.profile.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_new_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -169,8 +169,10 @@ class NewChatFragment : BaseFragment(), RetryCallback {
     }
 
     private val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
-        override fun onConnectUser(user: UserResponse) {
+        override fun onConnectUser(user: UserResponse, position: Int) {
+            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
+
 
         override fun onUserDirectMessage(user: UserResponse) {
         }

@@ -1,11 +1,5 @@
 package com.divercity.android.features.company.base.adapter;
 
-import androidx.paging.PagedList;
-import androidx.paging.PagedListAdapter;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.divercity.android.R;
@@ -17,6 +11,12 @@ import com.divercity.android.data.entity.company.response.CompanyResponse;
 import java.util.Objects;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.paging.PagedList;
+import androidx.paging.PagedListAdapter;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class CompanyAdapter extends PagedListAdapter<CompanyResponse, RecyclerView.ViewHolder> {
 
@@ -101,16 +101,11 @@ public class CompanyAdapter extends PagedListAdapter<CompanyResponse, RecyclerVi
         super.submitList(pagedList);
     }
 
-    @Override
-    public void onCurrentListChanged(@Nullable PagedList<CompanyResponse> currentList) {
-        super.onCurrentListChanged(currentList);
-    }
-
     private static DiffUtil.ItemCallback<CompanyResponse> UserDiffCallback = new DiffUtil.ItemCallback<CompanyResponse>() {
 
         @Override
         public boolean areItemsTheSame(CompanyResponse oldItem, CompanyResponse newItem) {
-            return oldItem.getId() == newItem.getId();
+            return oldItem.getId().equals(newItem.getId());
         }
 
         @Override

@@ -24,15 +24,38 @@ constructor(
             params.message,
             params.chatId,
             params.image
+//            ,
+//            params.attchmntType,
+//            params.attachmntId
         )
     }
 
-    class Params private constructor(val message: String, val chatId: String, val image: String) {
+    class Params private constructor(
+        val message: String,
+        val chatId: String,
+        val image: String
+//        ,
+//        val attchmntType: String,
+//        val attachmntId: String
+    ) {
 
         companion object {
 
-            fun forMsg(message: String, chatId: String, image: String): Params {
-                return Params(message, chatId, image)
+            fun forMsg(message: String,
+                       chatId: String,
+                       image: String
+//                       ,
+//                       attchmntType: String,
+//                       attachmntId: String
+            ): Params {
+                return Params(
+                    message,
+                    chatId,
+                    image
+//                    ,
+//                    attchmntType,
+//                    attachmntId
+                )
             }
         }
     }

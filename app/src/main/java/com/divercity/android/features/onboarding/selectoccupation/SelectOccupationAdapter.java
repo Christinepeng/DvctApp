@@ -116,7 +116,7 @@ public class SelectOccupationAdapter extends RecyclerView.Adapter<SelectOccupati
         Holder(View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.txt_title);
-            imgBtn = itemView.findViewById(R.id.btn_public_private);
+            imgBtn = itemView.findViewById(R.id.btn_select_unselect);
         }
     }
 

@@ -1,11 +1,11 @@
 package com.divercity.android.features.jobs.similarjobs
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
@@ -150,7 +150,7 @@ class SimilarJobListFragment : BaseFragment(), RetryCallback, JobApplyDialogFrag
         }
 
         override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id)
+            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
         }
     }
 

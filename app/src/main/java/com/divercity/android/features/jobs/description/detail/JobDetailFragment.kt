@@ -50,6 +50,29 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         }
     }
 
+    enum class DataHolder {
+        INSTANCE;
+
+        private var job: JobResponse? = null
+
+        companion object {
+
+            fun hasData(): Boolean {
+                return INSTANCE.job != null
+            }
+
+            var data: JobResponse?
+                get() {
+                    val jobResponse = INSTANCE.job
+                    INSTANCE.job = null
+                    return jobResponse
+                }
+                set(objectList) {
+                    INSTANCE.job = objectList
+                }
+        }
+    }
+
     override fun layoutId(): Int = R.layout.fragment_job_detail
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -57,7 +80,6 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(JobDetailViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-        fetchJobData()
     }
 
     private fun fetchJobData() {
@@ -72,6 +94,12 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        if (DataHolder.hasData()) {
+            job = DataHolder.data
+            showJob(job)
+        } else {
+            fetchJobData()
+        }
         subscribeToLiveData()
         setupToolbar()
     }
@@ -103,8 +131,11 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         }
     }
 
-    private fun initView(job: JobResponse?) {
+    private fun showJob(job: JobResponse?) {
         job?.also {
+            setupTabs(job)
+            root_layout.visibility = View.VISIBLE
+
             GlideApp.with(this)
                 .load(it.attributes?.employer?.photos?.original)
                 .into(inc_job_desc.img_company)
@@ -120,10 +151,8 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
                     .apply(RequestOptions().circleCrop())
                     .into(include_img_desc.img)
 
-                //TODO : Remove hardcoded
                 include_img_desc.txt_name.text = it.attributes?.recruiter?.name
-                include_img_desc.txt_school.text = "Hardvard University"
-                include_img_desc.txt_type.text = "Tech Recruiter"
+                include_img_desc.txt_type.text = it.attributes?.recruiter?.occupation
             }
 
             if (viewModel.isLoggedUserJobSeeker()) {
@@ -164,9 +193,7 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
             if (job?.status == Status.SUCCESS) {
                 hideProgress()
                 this.job = job.data
-                setupTabs(job.data)
-                initView(job.data)
-                root_layout.visibility = View.VISIBLE
+                showJob(job.data)
             }
         })
     }

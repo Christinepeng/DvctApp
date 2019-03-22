@@ -14,7 +14,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.GroupResponse
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
 import kotlinx.android.synthetic.main.fragment_create_topic.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -93,7 +93,7 @@ class CreateTopicFragment : BaseFragment() {
 
         btn_choose_group.setOnClickListener {
             if (currentGroup != null)
-                navigator.navigateToGroupDetailActivity(this, currentGroup!!)
+                navigator.navigateToGroupDetailForResult(this, currentGroup!!)
             else
                 navigator.navigateToFollowingGroupsActivityForResult(this, REQUEST_CODE_GROUP)
         }

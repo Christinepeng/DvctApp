@@ -2,6 +2,7 @@ package com.divercity.android.features.activity.notifications
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -9,9 +10,9 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.features.activity.notifications.adapter.NotificationsAdapter
 import com.divercity.android.features.activity.notifications.adapter.NotificationsViewHolder
+import com.divercity.android.features.activity.notifications.model.NotificationPositionModel
 import kotlinx.android.synthetic.main.fragment_notifications.*
 import javax.inject.Inject
 
@@ -41,7 +42,7 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)
-                .get(NotificationsViewModel::class.java)
+                    .get(NotificationsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
@@ -52,7 +53,24 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
         subscribeToPaginatedLiveData()
     }
 
-    private fun subscribeToLiveData(){
+    private fun subscribeToLiveData() {
+
+        viewModel.markNotificationReadResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    adapter.updateNotification(response.data!!)
+                }
+            }
+        })
+
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
         })
@@ -70,9 +88,9 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
             }
             isEnabled = false
             setColorSchemeColors(
-                ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                ContextCompat.getColor(context, R.color.colorPrimary),
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                    ContextCompat.getColor(context, R.color.colorPrimary),
+                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
 
@@ -116,8 +134,8 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
     private
     val listener: NotificationsViewHolder.Listener = object : NotificationsViewHolder.Listener {
 
-        override fun onNotificationClick(notification: NotificationResponse) {
-
+        override fun onNotificationClick(notification: NotificationPositionModel) {
+            viewModel.markNotificationRead(notification)
         }
     }
 }

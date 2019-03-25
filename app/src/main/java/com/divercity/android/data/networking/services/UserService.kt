@@ -1,6 +1,7 @@
 package com.divercity.android.data.networking.services
 
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
+import com.divercity.android.data.entity.activity.notificationread.NotificationReadBody
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.device.body.DeviceBody
@@ -98,8 +99,8 @@ interface UserService {
         @Query("page[size]") size: Int
     ): Observable<Response<DataArray<NotificationResponse>>>
 
-    @POST("activity_records/mark_read")
-    fun markNotificationRead(@Body body: FollowIndustryBody): Observable<Response<DataObject<UserResponse>>>
+    @PUT("activity_records/mark_read")
+    fun markNotificationRead(@Body body: NotificationReadBody): Observable<Response<Unit>>
 
     @GET("recommenders/users")
     fun fetchRecommendedUsers(

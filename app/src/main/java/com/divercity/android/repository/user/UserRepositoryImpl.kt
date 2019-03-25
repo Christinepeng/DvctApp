@@ -1,6 +1,8 @@
 package com.divercity.android.repository.user
 
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
+import com.divercity.android.data.entity.activity.notificationread.DataItem
+import com.divercity.android.data.entity.activity.notificationread.NotificationReadBody
 import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
@@ -27,8 +29,8 @@ import javax.inject.Inject
 
 class UserRepositoryImpl @Inject
 constructor(
-    private val userService: UserService,
-    private val sessionRepository: SessionRepository
+        private val userService: UserService,
+        private val sessionRepository: SessionRepository
 ) : UserRepository {
 
     private fun checkResponse(response: Response<*>) {
@@ -38,10 +40,10 @@ constructor(
 
     override fun fetchRemoteUserData(userId: String): Observable<UserResponse> {
         return userService.fetchUserData(userId)
-            .map { response ->
-                checkResponse(response)
-                response.body()!!.data
-            }
+                .map { response ->
+                    checkResponse(response)
+                    response.body()!!.data
+                }
     }
 
     override fun joinGroup(groupId: String): Observable<Boolean> {
@@ -63,19 +65,19 @@ constructor(
         val userProfileBody = UserProfileBody()
         userProfileBody.user = user
         return userService.updateUserProfile(sessionRepository.getUserId(), userProfileBody)
-            .map { response ->
-                checkResponse(response)
-                sessionRepository.saveUserData(response.body()!!.data)
-                response.body()!!.data
-            }
+                .map { response ->
+                    checkResponse(response)
+                    sessionRepository.saveUserData(response.body()!!.data)
+                    response.body()!!.data
+                }
     }
 
     override fun followOccupationOfInterests(occupationIds: List<String>): Observable<UserResponse> {
         return userService.followOccupationOfInterests(FollowOOIBody(occupationIds))
-            .map { response ->
-                checkResponse(response)
-                response.body()!!.data
-            }
+                .map { response ->
+                    checkResponse(response)
+                    response.body()!!.data
+                }
     }
 
     override fun followInterests(interestsIds: List<String>): Observable<UserResponse> {
@@ -95,10 +97,10 @@ constructor(
     }
 
     override fun fetchFollowersByUser(
-        userId: String,
-        pageNumber: Int,
-        size: Int,
-        query: String?
+            userId: String,
+            pageNumber: Int,
+            size: Int,
+            query: String?
     ): Observable<List<UserResponse>> {
         return userService.fetchFollowersByUser(userId, pageNumber, size, query).map { response ->
             checkResponse(response)
@@ -107,10 +109,10 @@ constructor(
     }
 
     override fun fetchFollowingByUser(
-        userId: String,
-        pageNumber: Int,
-        size: Int,
-        query: String?
+            userId: String,
+            pageNumber: Int,
+            size: Int,
+            query: String?
     ): Observable<List<UserResponse>> {
         return userService.fetchFollowingByUser(userId, pageNumber, size, query).map { response ->
             checkResponse(response)
@@ -119,9 +121,9 @@ constructor(
     }
 
     override fun fetchUsers(
-        pageNumber: Int,
-        size: Int,
-        query: String?
+            pageNumber: Int,
+            size: Int,
+            query: String?
     ): Observable<List<UserResponse>> {
         return userService.fetchUsers(pageNumber, size, query).map { response ->
             checkResponse(response)
@@ -167,8 +169,8 @@ constructor(
     }
 
     override fun fetchNotifications(
-        pageNumber: Int,
-        size: Int
+            pageNumber: Int,
+            size: Int
     ): Observable<List<NotificationResponse>> {
         return userService.fetchNotifications(pageNumber, size).map { response ->
             checkResponse(response)
@@ -177,9 +179,9 @@ constructor(
     }
 
     override fun fetchRecommendedUsers(
-        pageNumber: Int,
-        size: Int,
-        query: String?
+            pageNumber: Int,
+            size: Int,
+            query: String?
     ): Observable<List<UserResponse>> {
         return userService.fetchRecommendedUsers(pageNumber, size, query).map { response ->
             checkResponse(response)
@@ -188,31 +190,45 @@ constructor(
     }
 
     override fun fetchConnectionRequests(
-        userId: String,
-        pageNumber: Int,
-        size: Int,
-        query: String?
+            userId: String,
+            pageNumber: Int,
+            size: Int,
+            query: String?
     ): Observable<List<UserResponse>> {
         return userService.fetchConnectionRequests(userId, pageNumber, size, query)
-            .map { response ->
-                checkResponse(response)
-                response.body()!!.data
-            }
+                .map { response ->
+                    checkResponse(response)
+                    response.body()!!.data
+                }
     }
 
     override fun acceptConnectionRequest(userId: String): Observable<ConnectUserResponse> {
         return userService.acceptConnectionRequest(UserConnectionBody(userId))
-            .map { response ->
-                checkResponse(response)
-                response.body()!!.data
-            }
+                .map { response ->
+                    checkResponse(response)
+                    response.body()!!.data
+                }
     }
 
     override fun declineConnectionRequest(userId: String): Observable<ConnectUserResponse> {
         return userService.cancelConnectionRequest(UserConnectionBody(userId))
-            .map { response ->
-                checkResponse(response)
-                response.body()!!.data
-            }
+                .map { response ->
+                    checkResponse(response)
+                    response.body()!!.data
+                }
+    }
+
+    override fun markNotificationRead(notificationId: String): Observable<Unit> {
+        val notificationReadBody =
+                NotificationReadBody(
+                        listOf(DataItem(
+                                type = "activity_records",
+                                recordIds = listOf(notificationId)
+                        )))
+
+        return userService.markNotificationRead(notificationReadBody)
+                .map { response ->
+                    checkResponse(response)
+                }
     }
 }

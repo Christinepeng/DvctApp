@@ -6,6 +6,9 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.data.entity.group.ConnectionItem
+import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
+import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
+import kotlinx.android.synthetic.main.item_connection_request.view.*
 
 class ConnectionRequestViewHolder
 private constructor(
@@ -16,6 +19,17 @@ private constructor(
     fun bindTo(position: Int, data: ConnectionItem?) {
         data?.let {
             itemView.apply {
+
+                when(data){
+                    is GroupInvitationNotificationResponse -> {
+                        val groupInvitation = data as GroupInvitationNotificationResponse
+                        txt_notification.text = groupInvitation.attributes?.body
+                    }
+                    is JoinGroupRequestResponse -> {
+                        val joinGroup = data as JoinGroupRequestResponse
+                        txt_notification.text = "This is a join group request"
+                    }
+                }
 
 //                GlideApp.with(this)
 //                    .load(it.attributes?.lastActiveUserInfo?.avatarThumb)
@@ -47,7 +61,7 @@ private constructor(
             listener: Listener?
         ): ConnectionRequestViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(R.layout.item_notification, parent, false)
+            val view = layoutInflater.inflate(R.layout.item_connection_request, parent, false)
             return ConnectionRequestViewHolder(view, listener)
         }
     }

@@ -43,6 +43,8 @@ interface UserRepository {
 
     fun declineConnectionRequest(userId: String): Observable<ConnectUserResponse>
 
+    fun markNotificationRead(notificationId: String): Observable<Unit>
+
     fun fetchFollowersByUser(
         userId: String,
         pageNumber: Int,

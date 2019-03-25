@@ -1,16 +1,17 @@
 package com.divercity.android.features.activity.notifications.adapter
 
 import android.os.Build
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
+import com.divercity.android.features.activity.notifications.model.NotificationPositionModel
 import kotlinx.android.synthetic.main.item_notification.view.*
 
 class NotificationsViewHolder
@@ -51,13 +52,17 @@ private constructor(
 
 
                 txt_date.text = data.attributes?.updatedAgoInWords
+
+                setOnClickListener {
+                    listener?.onNotificationClick(NotificationPositionModel(position, data))
+                }
             }
         }
     }
 
     interface Listener {
 
-        fun onNotificationClick(notification: NotificationResponse)
+        fun onNotificationClick(notification: NotificationPositionModel)
     }
 
     companion object {

@@ -6,7 +6,6 @@ import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.functions.Function3
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -27,36 +26,10 @@ constructor(
 
     override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
 
-        val fetchRecommendedUsers = userRepository.fetchRecommendedUsers(
-            0,
-            5,
-            if (params.query == "") null else params.query
-        )
-
-        val fetchConnectionRequests = userRepository.fetchConnectionRequests(
-            sessionRepository.getUserId(),
-            0,
-            5,
-            null
-        )
-
-        val fetchUsers = userRepository.fetchUsers(
+        return userRepository.fetchRecommendedUsers(
             params.page,
             params.size,
             if (params.query == "") null else params.query
-        )
-
-        return Observable.zip(
-            fetchRecommendedUsers,
-            fetchConnectionRequests,
-            fetchUsers,
-            Function3 { t1, t2, t3 ->
-                val connections = ArrayList<UserResponse>()
-                connections.addAll(t1)
-                connections.addAll(t2)
-                connections.addAll(t3)
-                return@Function3 connections
-            }
         )
     }
 

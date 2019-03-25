@@ -1,31 +1,24 @@
 package com.divercity.android.features.activity.notifications.datasource;
 
+import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.DataSource;
-import androidx.annotation.NonNull;
-
 import com.divercity.android.data.entity.activity.notification.NotificationResponse;
 import com.divercity.android.features.activity.notifications.usecase.FetchNotificationsUseCase;
 
-import io.reactivex.disposables.CompositeDisposable;
-
 public class NotificationsDataSourceFactory extends DataSource.Factory<Long, NotificationResponse> {
 
-    private CompositeDisposable compositeDisposable;
     private FetchNotificationsUseCase fetchNotificationsUseCase;
 
     private MutableLiveData<NotificationsDataSource> notificationsDataSourceMutableLiveData = new MutableLiveData<>();
 
-    public NotificationsDataSourceFactory(CompositeDisposable compositeDisposable,
-                                          FetchNotificationsUseCase fetchNotificationsUseCase) {
-        this.compositeDisposable = compositeDisposable;
+    public NotificationsDataSourceFactory(FetchNotificationsUseCase fetchNotificationsUseCase) {
         this.fetchNotificationsUseCase = fetchNotificationsUseCase;
     }
 
     @Override
     public DataSource<Long, NotificationResponse> create() {
         NotificationsDataSource followersDataSource = new NotificationsDataSource(
-                compositeDisposable,
                 fetchNotificationsUseCase);
         notificationsDataSourceMutableLiveData.postValue(followersDataSource);
         return followersDataSource;

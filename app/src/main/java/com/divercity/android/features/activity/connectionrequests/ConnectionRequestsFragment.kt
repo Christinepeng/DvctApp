@@ -12,7 +12,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.activity.connectionrequests.adapter.ConnectionRequestAdapter
 import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserViewHolder
-import kotlinx.android.synthetic.main.fragment_list_refresh.*
+import kotlinx.android.synthetic.main.fragment_connection_requests.*
 import javax.inject.Inject
 
 /**
@@ -39,14 +39,14 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        viewModel = activity?.run {
-            viewModel = ViewModelProviders.of(this, viewModelFactory).get(ConnectionRequestsViewModel::class.java)
-//        } ?: throw Exception("Invalid Fragment")
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(ConnectionRequestsViewModel::class.java)
+        } ?: throw Exception("Invalid Fragment")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        initList()
+        initList()
         subscribeToPaginatedLiveData()
     }
 
@@ -67,8 +67,6 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
                     ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
-
-        txt_empty_array.setText(R.string.no_following)
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -83,20 +81,15 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
 
         viewModel.refreshState().observe(this, Observer { networkState ->
 
-//            adapter.currentList?.let { pagedList ->
-//                if (networkState?.status != Status.LOADING)
-//                    isListRefreshing = false
-//
-//                if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
-//                    lay_no_followers.visibility = View.VISIBLE
-//                else
-//                    lay_no_followers.visibility = View.GONE
-//
-//                swipe_list_main.isRefreshing = isListRefreshing
-//            }
-//
-//            if (!isListRefreshing)
-//                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
+            adapter.currentList?.let { pagedList ->
+                if (networkState?.status != Status.LOADING)
+                    isListRefreshing = false
+
+                swipe_list_main.isRefreshing = isListRefreshing
+            }
+
+            if (!isListRefreshing)
+                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
     }
 
@@ -107,7 +100,7 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
     private
     val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
 
-        override fun onConnectUser(user: UserResponse, position : Int) {
+        override fun onConnectUser(user: UserResponse, position: Int) {
         }
 
         override fun onUserDirectMessage(user: UserResponse) {

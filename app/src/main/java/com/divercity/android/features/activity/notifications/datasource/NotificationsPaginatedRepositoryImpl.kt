@@ -6,7 +6,6 @@ import androidx.paging.PagedList
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.features.activity.notifications.usecase.FetchNotificationsUseCase
-import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -18,7 +17,6 @@ class NotificationsPaginatedRepositoryImpl @Inject
 internal constructor(private val fetchNotificationsUseCase: FetchNotificationsUseCase) {
 
     private lateinit var notificationsDataSourceFactory: NotificationsDataSourceFactory
-    private val compositeDisposable = CompositeDisposable()
 
     companion object {
 
@@ -31,7 +29,6 @@ internal constructor(private val fetchNotificationsUseCase: FetchNotificationsUs
 
         notificationsDataSourceFactory =
             NotificationsDataSourceFactory(
-                compositeDisposable,
                 fetchNotificationsUseCase
             )
 
@@ -59,5 +56,5 @@ internal constructor(private val fetchNotificationsUseCase: FetchNotificationsUs
     fun refresh() = notificationsDataSourceFactory.groupsInterestsDataSource.value!!.invalidate()
 
 
-    fun clear() = compositeDisposable.dispose()
+    fun clear() = notificationsDataSourceFactory.groupsInterestsDataSource.value!!.dispose()
 }

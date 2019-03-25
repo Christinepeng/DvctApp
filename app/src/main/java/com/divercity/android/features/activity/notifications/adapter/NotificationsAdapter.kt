@@ -9,6 +9,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
+import com.divercity.android.features.activity.notifications.model.NotificationPositionModel
 import javax.inject.Inject
 
 class NotificationsAdapter @Inject
@@ -70,6 +71,13 @@ constructor() : PagedListAdapter<NotificationResponse, RecyclerView.ViewHolder>(
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
             notifyItemChanged(itemCount - 1)
+        }
+    }
+
+    fun updateNotification(notification: NotificationPositionModel) {
+        currentList?.get(notification.position)?.attributes?.apply {
+            read = notification.notificationResponse.attributes?.read
+            notifyItemChanged(notification.position)
         }
     }
 

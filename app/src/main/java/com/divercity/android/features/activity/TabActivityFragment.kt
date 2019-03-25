@@ -55,7 +55,7 @@ class TabActivityFragment : BaseFragment() {
         viewPager.adapter = adapter
         tab_layout.setupWithViewPager(viewPager)
     }
-//
+
 //    fun subscribeToLiveData() {
 //        viewModelJobs.isEmailRegistered.observe(this, Observer { response ->
 //            when (response?.status) {

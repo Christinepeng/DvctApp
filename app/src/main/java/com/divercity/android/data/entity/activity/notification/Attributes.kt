@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class Attributes(
 
     @field:SerializedName("read")
-	val read: Boolean? = null,
+	var read: Boolean? = null,
 
     @field:SerializedName("updated_at")
 	val updatedAt: String? = null,

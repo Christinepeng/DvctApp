@@ -224,8 +224,8 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
             groupViewModel.joinGroup(groupPosition)
         }
 
-        override fun onGroupClick(group: GroupResponse) {
-            navigator.navigateToGroupDetailForResult(this@SelectGroupFragment, group)
+        override fun onGroupClick(position: Int, group: GroupResponse) {
+            navigator.navigateToGroupDetail(this@SelectGroupFragment, group)
         }
 
     }

@@ -1,5 +1,6 @@
 package com.divercity.android.features.groups.all
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -30,6 +31,7 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
     lateinit var adapter: GroupsAdapter
 
     private var isListRefreshing = false
+    private var lastGroupPositionTap = 0
 
     companion object {
 
@@ -75,20 +77,22 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
             }
         })
 
-        viewModel.requestToJoinPrivateGroupResponse.observe(viewLifecycleOwner, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-                }
+        viewModel.requestToJoinPrivateGroupResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response?.status) {
+                    Status.LOADING -> {
+                    }
 
-                Status.ERROR -> {
-                    adapter.reloadPosition(response.data!!.position)
-                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                    Status.ERROR -> {
+                        adapter.reloadPosition(response.data!!.position)
+                        Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        adapter.updatePositionOnJoinRequest(response.data!!)
+                    }
                 }
-                Status.SUCCESS -> {
-                    adapter.updatePositionOnJoinRequest(response.data!!)
-                }
-            }
-        })
+            })
 
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
@@ -154,13 +158,21 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
             viewModel.joinGroup(groupPosition)
         }
 
-        override fun onGroupClick(group: GroupResponse) {
-            navigator.navigateToGroupDetailForResult(this@AllGroupsFragment, group)
+        override fun onGroupClick(position: Int, group: GroupResponse) {
+            lastGroupPositionTap = position
+            navigator.navigateToGroupDetailForResult(this@AllGroupsFragment, group, REQUEST_CODE_GROUP)
         }
 
     }
 
     override fun fetchGroups(searchQuery: String?) {
         viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_GROUP) {
+            adapter.notifyItemChanged(lastGroupPositionTap)
+        }
     }
 }

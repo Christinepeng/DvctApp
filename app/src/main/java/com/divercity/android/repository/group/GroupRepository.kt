@@ -4,10 +4,11 @@ import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
-import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
-import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
+import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContact
+import com.divercity.android.data.entity.group.invitation.user.GroupInviteUser
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
@@ -47,7 +48,11 @@ interface GroupRepository {
     ): Observable<List<UserResponse>>
 
     fun inviteContact(
-        invitations: GroupInvite
+        invitations: GroupInviteContact
+    ): Observable<GroupInviteResponse>
+
+    fun inviteUser(
+        invitations: GroupInviteUser
     ): Observable<GroupInviteResponse>
 
     fun fetchQuestions(
@@ -110,4 +115,18 @@ interface GroupRepository {
     suspend fun insertAnswer(answer: AnswerResponse)
 
     fun sendNewAnswer(body: AnswerBody): Observable<AnswerResponse>
+
+    fun acceptGroupInvite(inviteId: String): Observable<Unit>
+
+    fun declineGroupInvite(inviteId: String): Observable<Unit>
+
+    fun acceptJoinGroupRequest(
+        groupId: String,
+        userId: String
+    ): Observable<Unit>
+
+    fun declineJoinGroupRequest(
+        groupId: String,
+        userId: String
+    ): Observable<Unit>
 }

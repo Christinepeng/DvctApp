@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.divercity.android.BuildConfig
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import com.divercity.android.core.bus.RxBus
+import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
@@ -28,6 +30,7 @@ import com.divercity.android.features.home.home.adapter.recommended.RecommendedG
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedJobViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -52,6 +55,8 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     private var positionJoinRequest: Int = 0
     private var positionJoinClicked: Int = 0
 
+    private lateinit var newMessageDisposable : Disposable
+
     companion object {
 
         fun newInstance(): HomeFragment {
@@ -71,6 +76,10 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        newMessageDisposable = RxBus.listen(RxEvent.OnNewMessageReceived::class.java).subscribe {
+            viewModel.fetchUnreadMessagesCount()
+        }
         setupToolbar()
         setupEvents()
         initAdapters()
@@ -113,7 +122,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
 
             override fun onGroupClick(group: GroupResponse) {
-                navigator.navigateToGroupDetailForResult(this@HomeFragment, group)
+                navigator.navigateToGroupDetail(this@HomeFragment, group)
             }
 
             override fun onGroupJoinClick(position: Int, group: GroupResponse) {
@@ -361,6 +370,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         super.onDestroyView()
         viewModel.listState.value = list_main.layoutManager?.onSaveInstanceState()
         viewModel.onDestroyView()
+        if (!newMessageDisposable.isDisposed) newMessageDisposable.dispose()
     }
 
     override fun onResume() {

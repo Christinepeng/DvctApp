@@ -1,8 +1,8 @@
-package com.divercity.android.data.entity.group.contactinvitation.body
+package com.divercity.android.data.entity.group.invitation.contact
 
 import com.google.gson.annotations.SerializedName
 
-data class GroupInvite(
+data class GroupInviteContact(
 
 	@field:SerializedName("invite_type")
 	val inviteType: String = "sms_invite",

@@ -4,12 +4,14 @@ import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
-import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
-import com.divercity.android.data.entity.group.contactinvitation.body.GroupInviteBody
-import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
+import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContact
+import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContactBody
+import com.divercity.android.data.entity.group.invitation.user.GroupInviteUser
+import com.divercity.android.data.entity.group.invitation.user.GroupInviteUserBody
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.question.Question
@@ -22,6 +24,8 @@ import com.divercity.android.db.dao.GroupDao
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import retrofit2.HttpException
 import retrofit2.Response
 import javax.inject.Inject
@@ -160,8 +164,12 @@ constructor(
             throw HttpException(response)
     }
 
-    override fun inviteContact(invitations: GroupInvite): Observable<GroupInviteResponse> {
-        return service.inviteContact(GroupInviteBody(invitations))
+    override fun inviteContact(invitations: GroupInviteContact): Observable<GroupInviteResponse> {
+        return service.inviteContact(GroupInviteContactBody(invitations))
+    }
+
+    override fun inviteUser(invitations: GroupInviteUser): Observable<GroupInviteResponse> {
+        return service.inviteUsers(GroupInviteUserBody(invitations))
     }
 
     override fun fetchGroupInvitations(
@@ -249,6 +257,38 @@ constructor(
         return service.deleteGroup(groupId).map {
             checkResponse(it)
             true
+        }
+    }
+
+    override fun acceptGroupInvite(inviteId: String): Observable<Unit> {
+        val partInviteId = RequestBody.create(MediaType.parse("text/plain"), inviteId)
+        return service.acceptGroupInvite(partInviteId).map {
+            checkResponse(it)
+        }
+    }
+
+    override fun declineGroupInvite(inviteId: String): Observable<Unit> {
+        val partInviteId = RequestBody.create(MediaType.parse("text/plain"), inviteId)
+        return service.declineGroupInvite(partInviteId).map {
+            checkResponse(it)
+        }
+    }
+
+    override fun acceptJoinGroupRequest(
+        groupId: String,
+        userId: String
+    ): Observable<Unit> {
+        return service.acceptJoinGroupRequest(groupId, userId).map {
+            checkResponse(it)
+        }
+    }
+
+    override fun declineJoinGroupRequest(
+        groupId: String,
+        userId: String
+    ): Observable<Unit> {
+        return service.declineJoinGroupRequest(groupId, userId).map {
+            checkResponse(it)
         }
     }
 }

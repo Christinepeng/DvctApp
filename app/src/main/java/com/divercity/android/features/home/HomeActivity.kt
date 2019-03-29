@@ -15,7 +15,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.divercity.android.R
-import com.divercity.android.features.usecase.LogoutUseCase
 import com.divercity.android.core.bus.RxBus
 import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.navigation.Navigator
@@ -26,6 +25,7 @@ import com.divercity.android.features.home.home.HomeFragment
 import com.divercity.android.features.home.people.TabPeopleFragment
 import com.divercity.android.features.jobs.TabJobsFragment
 import com.divercity.android.features.profile.currentuser.CurrentUserProfileFragment
+import com.divercity.android.features.usecase.LogoutUseCase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.Disposable

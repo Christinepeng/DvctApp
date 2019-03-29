@@ -70,6 +70,9 @@
     <string name="add_a_skill">Add a Skill</string>
     <string name="add_your_skills">Add your skills</string>
     <string name="add_your_education">Add your education</string>
+    <string name="view_groups">View Groups</string>
+    <string name="view_interests">View Interests</string>
+    <string name="view_companies">View Companies</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>

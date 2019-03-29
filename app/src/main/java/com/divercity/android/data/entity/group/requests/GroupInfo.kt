@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 data class GroupInfo(
 
 	@field:SerializedName("id")
-	val id: Int? = null,
+	val id: String? = null,
 
 	@field:SerializedName("group_type")
 	val groupType: String? = null,

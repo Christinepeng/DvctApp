@@ -1,6 +1,5 @@
 package com.divercity.android.data.entity.group.requests
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
 data class Attributes(
@@ -12,7 +11,7 @@ data class Attributes(
 	val read: Boolean? = null,
 
 	@field:SerializedName("user_id")
-	val userId: Int? = null,
+	val userId: String? = null,
 
 	@field:SerializedName("user_info")
 	val userInfo: UserInfo? = null,
@@ -24,5 +23,5 @@ data class Attributes(
 	val createdAt: String? = null,
 
 	@field:SerializedName("state")
-	val state: String? = null
+	var state: String? = null
 )

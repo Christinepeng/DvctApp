@@ -76,7 +76,7 @@ private constructor(itemView: View, private val listener: Listener?) :
                 }
 
                 setOnClickListener {
-                    listener?.onGroupClick(data)
+                    listener?.onGroupClick(position, data)
                 }
             }
         }
@@ -88,7 +88,7 @@ private constructor(itemView: View, private val listener: Listener?) :
 
         fun onGroupJoinClick(groupPosition: GroupPositionModel)
 
-        fun onGroupClick(group: GroupResponse)
+        fun onGroupClick(position: Int, group: GroupResponse)
     }
 
     companion object {

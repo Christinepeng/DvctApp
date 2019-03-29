@@ -21,6 +21,7 @@ constructor(
 ) : BaseViewModel() {
 
     var fetchUserDataResponse = MutableLiveData<Resource<UserResponse>>()
+    var adapterPosition: Int? = null
 
     fun fetchProfileData() {
         fetchUserDataResponse.postValue(Resource.loading(null))

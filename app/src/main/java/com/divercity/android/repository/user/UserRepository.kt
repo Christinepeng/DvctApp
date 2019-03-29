@@ -31,8 +31,6 @@ interface UserRepository {
 
     fun connectUser(userId: String): Observable<ConnectUserResponse>
 
-    fun unfollowUser(userId: String): Observable<Void>
-
     fun saveDevice(body: DeviceBody): Observable<DeviceResponse>
 
     fun updateDevice(deviceId: String, body: DeviceBody): Observable<Boolean>
@@ -41,7 +39,7 @@ interface UserRepository {
 
     fun acceptConnectionRequest(userId: String): Observable<ConnectUserResponse>
 
-    fun declineConnectionRequest(userId: String): Observable<ConnectUserResponse>
+    fun declineConnectionRequest(userId: String): Observable<Unit>
 
     fun markNotificationRead(notificationId: String): Observable<Unit>
 

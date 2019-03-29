@@ -80,7 +80,7 @@ constructor(
 
     fun declineConnectionRequest(userId : String) {
         acceptDeclineConnectionRequestResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<ConnectUserResponse>() {
+        val callback = object : DisposableObserverWrapper<Unit>() {
             override fun onFail(error: String) {
                 acceptDeclineConnectionRequestResponse.postValue(Resource.error(error, null))
             }
@@ -89,8 +89,8 @@ constructor(
                 acceptDeclineConnectionRequestResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: ConnectUserResponse) {
-                acceptDeclineConnectionRequestResponse.postValue(Resource.success(o))
+            override fun onSuccess(o: Unit) {
+                acceptDeclineConnectionRequestResponse.postValue(Resource.success(ConnectUserResponse()))
             }
         }
         declineConnectionRequestUseCase.execute(
@@ -102,5 +102,7 @@ constructor(
     override fun onCleared() {
         super.onCleared()
         fetchUserDataUseCase.dispose()
+        acceptConnectionRequestUseCase.dispose()
+        declineConnectionRequestUseCase.dispose()
     }
 }

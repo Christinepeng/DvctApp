@@ -1,5 +1,7 @@
 package com.divercity.android.services
 
+import com.divercity.android.core.bus.RxBus
+import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.usecase.UpdateFCMTokenUseCase
 import com.divercity.android.helpers.NotificationHelper
@@ -30,7 +32,8 @@ class DivercityMessagingService : FirebaseMessagingService() {
         const val NEW_DIRECT_MESSAGE = "NEW_DIRECT_MESSAGE"
         const val NEW_CONNECTION_REQUEST = "NEW_CONNECTION_REQUEST"
         const val NEW_CONNECTION_ACCEPT = "NEW_CONNECTION_ACCEPT"
-        const val GROUP_INVITE = "GROUP_INVITE"
+        const val NEW_GROUP_INVITE_PN = "NEW_GROUP_INVITE_PN"
+        const val GROUP_JOIN_REQUEST = "GROUP_JOIN_REQUEST"
     }
 
     override fun onCreate() {
@@ -43,6 +46,7 @@ class DivercityMessagingService : FirebaseMessagingService() {
             if (data.data.isNotEmpty()) {
                 when (data.data["category"]) {
                     NEW_DIRECT_MESSAGE -> {
+                        RxBus.publish(RxEvent.OnNewMessageReceived(true))
                         notificationHelper.notify(
                             data.data["chat_id"]!!.toInt(),
                             notificationHelper
@@ -74,6 +78,28 @@ class DivercityMessagingService : FirebaseMessagingService() {
                                     "Connection request accepted",
                                     data.data["alert"]!!,
                                     data.data["accepted_by"]
+                                )
+                        )
+                    }
+                    NEW_GROUP_INVITE_PN -> {
+                        notificationHelper.notify(
+                            Math.random().toInt(),
+                            notificationHelper
+                                .getGroupInviteJoinRequestNotification(
+                                    "Group invitation",
+                                    data.data["alert"]!!,
+                                    data.data["goi_id"]!!
+                                )
+                        )
+                    }
+                    GROUP_JOIN_REQUEST -> {
+                        notificationHelper.notify(
+                            Math.random().toInt(),
+                            notificationHelper
+                                .getGroupInviteJoinRequestNotification(
+                                    "Group join request",
+                                    data.data["alert"]!!,
+                                    data.data["goi_id"]!!
                                 )
                         )
                     }

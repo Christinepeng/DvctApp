@@ -1,4 +1,4 @@
-package com.divercity.android.features.contacts.model
+package com.divercity.android.features.invitations.contacts.model
 
 data class PhoneContact(
 

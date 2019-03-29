@@ -1,9 +1,5 @@
 package com.divercity.android.features.jobs.jobs.datasource;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PageKeyedDataSource;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
@@ -12,9 +8,13 @@ import com.divercity.android.features.jobs.jobs.usecase.FetchJobsUseCase;
 
 import java.util.List;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
@@ -27,29 +27,27 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
     private FetchJobsUseCase fetchJobsUseCase;
-    private CompositeDisposable compositeDisposable;
     private String query;
 
     /**
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
+    private Disposable retryDisposable;
 
-    public JobDataSource(CompositeDisposable compositeDisposable,
-                         FetchJobsUseCase fetchJobsUseCase,
+    public JobDataSource(FetchJobsUseCase fetchJobsUseCase,
                          @Nullable String query) {
-        this.compositeDisposable = compositeDisposable;
         this.fetchJobsUseCase = fetchJobsUseCase;
         this.query = query;
     }
 
     public void retry() {
         if (retryCompletable != null) {
-            compositeDisposable.add(retryCompletable
+            retryDisposable = retryCompletable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                    }, throwable -> Log.e(TAG, throwable.getMessage())));
+                    }, throwable -> Log.e(TAG, throwable.getMessage()));
         }
     }
 
@@ -93,7 +91,6 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
 
             }
         };
-        compositeDisposable.add(disposableObserver);
         fetchJobsUseCase.execute(disposableObserver, FetchJobsUseCase.Params.Companion.forJobs(0, params.requestedLoadSize, query));
     }
 
@@ -133,8 +130,6 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
 
             }
         };
-
-        compositeDisposable.add(disposableObserver);
         fetchJobsUseCase.execute(disposableObserver, FetchJobsUseCase.Params.Companion.forJobs(params.key.intValue(), params.requestedLoadSize, query));
     }
 
@@ -156,4 +151,9 @@ public class JobDataSource extends PageKeyedDataSource<Long, JobResponse> {
         }
     }
 
+    public void dispose(){
+        fetchJobsUseCase.getCompositeDisposable().clear();
+        if(retryDisposable != null)
+            retryDisposable.dispose();
+    }
 }

@@ -139,14 +139,6 @@ constructor(
         }
     }
 
-    override fun unfollowUser(userId: String): Observable<Void> {
-        val partUserId = RequestBody.create(MediaType.parse("text/plain"), userId)
-        return userService.unfollowUser(partUserId).map { response ->
-            checkResponse(response)
-            response.body()
-        }
-    }
-
     override fun saveDevice(body: DeviceBody): Observable<DeviceResponse> {
         return userService.saveDevice(body).map { response ->
             checkResponse(response)
@@ -210,11 +202,10 @@ constructor(
                 }
     }
 
-    override fun declineConnectionRequest(userId: String): Observable<ConnectUserResponse> {
+    override fun declineConnectionRequest(userId: String): Observable<Unit> {
         return userService.cancelConnectionRequest(UserConnectionBody(userId))
                 .map { response ->
                     checkResponse(response)
-                    response.body()!!.data
                 }
     }
 

@@ -11,7 +11,6 @@ import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
 import com.divercity.android.features.company.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.withtoolbar.ToolbarCompanyActivity
-import com.divercity.android.features.contacts.InvitePhoneContactsActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
@@ -26,6 +25,8 @@ import com.divercity.android.features.groups.onboarding.SelectGroupActivity
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingActivity
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryActivity
+import com.divercity.android.features.invitations.contacts.InvitePhoneContactsActivity
+import com.divercity.android.features.invitations.users.InviteUsersActivity
 import com.divercity.android.features.jobs.applicants.JobApplicantsActivity
 import com.divercity.android.features.jobs.description.detail.JobDetailActivity
 import com.divercity.android.features.jobs.description.poster.JobDescriptionPosterActivity
@@ -233,4 +234,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindOtherUserProfileActivity(): OtherUserProfileActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindInviteUsersActivity(): InviteUsersActivity
 }

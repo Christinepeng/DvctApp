@@ -1,15 +1,15 @@
-package com.divercity.android.features.contacts
+package com.divercity.android.features.invitations.contacts
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -17,9 +17,9 @@ import com.divercity.android.core.contactfetcher.Contact
 import com.divercity.android.core.contactfetcher.ContactFetcher
 import com.divercity.android.core.contactfetcher.ContactListener
 import com.divercity.android.data.Status
-import com.divercity.android.features.contacts.InvitePhoneContactsActivity.Companion.PARAM_INVITATION_TYPE
-import com.divercity.android.features.contacts.adapter.PhoneContactAdapter
-import com.divercity.android.features.contacts.model.PhoneContact
+import com.divercity.android.features.invitations.contacts.InvitePhoneContactsActivity.Companion.PARAM_INVITATION_TYPE
+import com.divercity.android.features.invitations.contacts.adapter.PhoneContactAdapter
+import com.divercity.android.features.invitations.contacts.model.PhoneContact
 import kotlinx.android.synthetic.main.fragment_phone_contacts.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -132,7 +132,8 @@ class InvitePhoneContactsFragment : BaseFragment() {
             override fun onNext(contact: Contact) {
                 if (contact.phoneNumbers.isNotEmpty()) {
                     contact.phoneNumbers.forEach {
-                        val phoneContact = PhoneContact(contact.displayName, it)
+                        val phoneContact =
+                            PhoneContact(contact.displayName, it)
                         contactLists.add(phoneContact)
                     }
                 }

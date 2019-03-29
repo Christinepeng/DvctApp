@@ -1,13 +1,13 @@
 package com.divercity.android.features.groups.createtopic
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -93,7 +93,7 @@ class CreateTopicFragment : BaseFragment() {
 
         btn_choose_group.setOnClickListener {
             if (currentGroup != null)
-                navigator.navigateToGroupDetailForResult(this, currentGroup!!)
+                navigator.navigateToGroupDetail(this, currentGroup!!)
             else
                 navigator.navigateToFollowingGroupsActivityForResult(this, REQUEST_CODE_GROUP)
         }

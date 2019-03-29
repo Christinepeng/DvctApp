@@ -1,6 +1,6 @@
 package com.divercity.android.features.usecase
 
-import com.divercity.android.repository.chat.ChatRepository
+import com.divercity.android.db.AppDatabase
 import com.divercity.android.repository.session.SessionRepository
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
@@ -15,7 +15,7 @@ import javax.inject.Inject
 
 class LogoutUseCase @Inject
 constructor(
-    private val chatRepository: ChatRepository,
+    private val appDatabase: AppDatabase,
     private val sessionRepository: SessionRepository,
     private val updateFCMTokenUseCase: UpdateFCMTokenUseCase
 ) {
@@ -28,9 +28,7 @@ constructor(
 
         ioScope.launch {
             Timber.e("En logout 2")
-
-            chatRepository.deleteRecentChatsDB()
-            chatRepository.deleteChatMessagesDB()
+            appDatabase.clearAllTables()
             FirebaseInstanceId.getInstance().deleteInstanceId()
 
             if (!sessionRepository.getDeviceId().isNullOrEmpty() &&

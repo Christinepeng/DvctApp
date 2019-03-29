@@ -2,6 +2,7 @@ package com.divercity.android.features.activity.connectionrequests
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -9,9 +10,11 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.activity.connectionrequests.adapter.ConnectionRequestAdapter
-import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.activity.connectionrequests.adapter.ConnectionRequestViewHolder
+import com.divercity.android.features.activity.connectionrequests.model.GroupInvitationNotificationPosition
+import com.divercity.android.features.activity.connectionrequests.model.JoinGroupRequestPosition
+import com.divercity.android.features.activity.connectionrequests.model.UserPosition
 import kotlinx.android.synthetic.main.fragment_connection_requests.*
 import javax.inject.Inject
 
@@ -40,7 +43,8 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(ConnectionRequestsViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(ConnectionRequestsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
@@ -48,11 +52,12 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
         super.onViewCreated(view, savedInstanceState)
         initList()
         subscribeToPaginatedLiveData()
+        subscribeToLiveData()
     }
 
     private fun initList() {
         adapter.setRetryCallback(this)
-//        adapter.setListener(listener)
+        adapter.setListener(listener)
         list.adapter = adapter
 
         swipe_list_main.apply {
@@ -62,9 +67,9 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
@@ -93,20 +98,92 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
         })
     }
 
+    private fun subscribeToLiveData() {
+        viewModel.acceptDeclineConnectionRequestResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+
+                Status.SUCCESS -> {
+                    adapter.notifyItemChanged(response.data!!.position)
+                    hideProgress()
+                }
+            }
+        })
+
+        viewModel.acceptDeclineGroupInviteResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+
+                Status.SUCCESS -> {
+                    adapter.notifyItemChanged(response.data!!.position)
+                    hideProgress()
+                }
+            }
+        })
+
+        viewModel.acceptDeclineJoinGroupRequest.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+
+                Status.SUCCESS -> {
+                    adapter.notifyItemChanged(response.data!!.position)
+                    hideProgress()
+                }
+            }
+        })
+    }
+
     override fun retry() {
         viewModel.retry()
     }
 
     private
-    val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
+    val listener: ConnectionRequestViewHolder.Listener =
+        object : ConnectionRequestViewHolder.Listener {
 
-        override fun onConnectUser(user: UserResponse, position: Int) {
-        }
+            override fun acceptGroupInvitation(invitation: GroupInvitationNotificationPosition) {
+                viewModel.acceptGroupInvitation(invitation)
+            }
 
-        override fun onUserDirectMessage(user: UserResponse) {
-        }
+            override fun declineGroupInvitation(invitation: GroupInvitationNotificationPosition) {
+                viewModel.declineGroupInvitation(invitation)
+            }
 
-        override fun onUserClick(user: UserResponse) {
+            override fun acceptJoinGroupRequest(request: JoinGroupRequestPosition) {
+                viewModel.acceptJoinGroupRequest(request)
+            }
+
+            override fun declineJoinGroupRequest(request: JoinGroupRequestPosition) {
+                viewModel.declineJoinGroupRequest(request)
+            }
+
+            override fun acceptUserConnectionRequest(user: UserPosition) {
+                viewModel.acceptConnectionRequest(user)
+            }
+
+            override fun declineUserConnectionRequest(user: UserPosition) {
+                viewModel.declineConnectionRequest(user)
+            }
         }
-    }
 }

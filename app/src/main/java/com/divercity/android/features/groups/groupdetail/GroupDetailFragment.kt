@@ -19,10 +19,11 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.contacts.InvitePhoneContactsActivity
 import com.divercity.android.features.dialogs.groupaction.GroupAdminActionsDialogFragment
 import com.divercity.android.features.dialogs.groupaction.GroupMemberActionsDialogFragment
 import com.divercity.android.features.dialogs.invitegroup.InviteGroupDialogFragment
+import com.divercity.android.features.invitations.contacts.InvitePhoneContactsActivity
+import com.divercity.android.features.invitations.users.InviteUsersActivity
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 import kotlinx.android.synthetic.main.view_image_with_foreground.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -39,18 +40,42 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     @Inject
     lateinit var adapter: GroupDetailViewPagerAdapter
 
-    private lateinit var group: GroupResponse
+    private var group: GroupResponse? = null
+    private lateinit var groupId: String
 
     companion object {
 
-        private const val PARAM_GROUP = "paramGroup"
+        private const val PARAM_GROUP_ID = "paramGroupId"
 
-        fun newInstance(group: GroupResponse): GroupDetailFragment {
+        fun newInstance(groupId: String): GroupDetailFragment {
             val fragment = GroupDetailFragment()
             val arguments = Bundle()
-            arguments.putParcelable(PARAM_GROUP, group)
+            arguments.putString(PARAM_GROUP_ID, groupId)
             fragment.arguments = arguments
             return fragment
+        }
+    }
+
+    enum class DataHolder {
+        INSTANCE;
+
+        private var group: GroupResponse? = null
+
+        companion object {
+
+            fun hasData(): Boolean {
+                return INSTANCE.group != null
+            }
+
+            var data: GroupResponse?
+                get() {
+                    val groupResponse = INSTANCE.group
+                    INSTANCE.group = null
+                    return groupResponse
+                }
+                set(objectList) {
+                    INSTANCE.group = objectList
+                }
         }
     }
 
@@ -59,18 +84,19 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        group = arguments?.getParcelable(PARAM_GROUP)!!
+        groupId = arguments?.getString(PARAM_GROUP_ID)!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[GroupDetailViewModel::class.java]
-        viewModel.fetchGroupMembers(group, 0, 5, null)
-        viewModel.fetchGroupById(group.id)
-
         setupToolbar()
-        setupView(group)
         subscribeToLiveData()
+
+        if (DataHolder.hasData())
+            viewModel.group.postValue(DataHolder.data)
+        else
+            viewModel.fetchGroupById(groupId)
     }
 
     private fun setupToolbar() {
@@ -84,18 +110,21 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     }
 
     private fun setupView(group: GroupResponse) {
+        this.group = group
+
+        viewModel.fetchGroupMembers(groupId, 0, 5, null)
 
         adapter.group = group
         viewPager.adapter = adapter
         tab_layout.setupWithViewPager(viewPager)
 
-        item_txt_name.text = group.attributes?.title
+        item_txt_name.text = group.attributes.title
         if (group.isPublic())
             item_txt_detail.text =
-                "Public Group · ".plus(group.attributes?.followersCount).plus(" Members")
+                "Public Group · ".plus(group.attributes.followersCount).plus(" Members")
         else
             item_txt_detail.text =
-                "Private Group · ".plus(group.attributes?.followersCount).plus(" Members")
+                "Private Group · ".plus(group.attributes.followersCount).plus(" Members")
 
         GlideApp.with(this)
             .load(group.attributes.pictureMain)
@@ -122,12 +151,17 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             }
         } else if (group.isJoinRequestPending()) {
             btn_member_pending.setText(R.string.pending)
+            btn_join.visibility = View.GONE
             btn_member_pending.visibility = View.VISIBLE
         }
     }
 
     private fun subscribeToLiveData() {
-        viewModel.fetchGroupMembersResponse.observe(this, Observer { response ->
+        viewModel.group.observe(viewLifecycleOwner, Observer { group ->
+            setupView(group)
+        })
+
+        viewModel.fetchGroupMembersResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                 }
@@ -142,7 +176,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             }
         })
 
-        viewModel.fetchGroupByIdResponse.observe(this, Observer { response ->
+        viewModel.fetchGroupByIdResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                 }
@@ -151,7 +185,6 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                     Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    setupView(response.data!!)
                 }
             }
         })
@@ -167,6 +200,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                     }
                     Status.SUCCESS -> {
                         hideProgress()
+                        this.group?.attributes?.isFollowedByCurrent = true
                         btn_join.visibility = View.GONE
                         btn_member_pending.setText(R.string.member)
                         btn_member_pending.visibility = View.VISIBLE
@@ -186,6 +220,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
+                    this.group?.attributes?.requestToJoinStatus = "pending"
                     btn_join.visibility = View.GONE
                     btn_member_pending.setText(R.string.pending)
                     btn_member_pending.visibility = View.VISIBLE
@@ -207,7 +242,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                 .apply(RequestOptions().circleCrop())
                 .into(imgViews[i].img)
 
-            if (i == members.size - 1 && i != group.attributes?.followersCount!! - 1)
+            if (i == members.size - 1 && i != group?.attributes?.followersCount!! - 1)
                 (imgViews[i] as FrameLayout).foreground =
                     ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
         }
@@ -216,11 +251,14 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action -> {
-                if (group.attributes.isCurrentUserAdmin)
-                    showGroupAdminActionsDialog()
-                 else if (group.attributes.isFollowedByCurrent)
-                    showGroupMemberActionsDialog()
+                if (group != null) {
+                    if (group!!.attributes.isCurrentUserAdmin)
+                        showGroupAdminActionsDialog()
+                    else if (group!!.attributes.isFollowedByCurrent)
+                        showGroupMemberActionsDialog()
+                }
                 true
+
             }
             else -> super.onOptionsItemSelected(item)
         }
@@ -254,7 +292,10 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
         val fragment = GroupMemberActionsDialogFragment.newInstance()
         fragment.listener = object : GroupMemberActionsDialogFragment.Listener {
             override fun onWriteNewPost() {
-                navigator.navigateToCreateTopicActivity(this@GroupDetailFragment, group)
+                navigator.navigateToCreateTopicActivity(
+                    this@GroupDetailFragment,
+                    group
+                )
             }
 
             override fun onInvite() {
@@ -268,7 +309,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     }
 
     private fun showInviteGroupDialog() {
-        val dialog = InviteGroupDialogFragment.newInstance(group)
+        val dialog = InviteGroupDialogFragment.newInstance(group!!)
         dialog.show(childFragmentManager, null)
     }
 
@@ -314,9 +355,14 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     override fun onInviteContact() {
         navigator.navigateToPhoneContactsActivity(
             activity!!,
-            InvitePhoneContactsActivity.getGroupInviteBundle(group.id))
+            InvitePhoneContactsActivity.getGroupInviteBundle(groupId)
+        )
     }
 
     override fun onInviteDivercity() {
+        navigator.navigateToInviteUsers(
+            activity!!,
+            InviteUsersActivity.getGroupInviteBundle(groupId)
+        )
     }
 }

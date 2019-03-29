@@ -1,4 +1,4 @@
-package com.divercity.android.features.contacts
+package com.divercity.android.features.invitations.contacts
 
 import android.content.Context
 import android.content.Intent
@@ -22,7 +22,10 @@ class InvitePhoneContactsActivity : BaseActivity() {
 
         fun getGroupInviteBundle(groupId : String) : Bundle {
             val bundle = Bundle()
-            bundle.putInt(PARAM_INVITATION_TYPE, TYPE_GROUP_INVITE)
+            bundle.putInt(
+                PARAM_INVITATION_TYPE,
+                TYPE_GROUP_INVITE
+            )
             bundle.putString(PARAM_GROUP_ID, groupId)
             return bundle
         }
@@ -37,5 +40,6 @@ class InvitePhoneContactsActivity : BaseActivity() {
         }
     }
 
-    override fun fragment(): BaseFragment = InvitePhoneContactsFragment.newInstance(intent.extras)
+    override fun fragment(): BaseFragment =
+        InvitePhoneContactsFragment.newInstance(intent.extras)
 }

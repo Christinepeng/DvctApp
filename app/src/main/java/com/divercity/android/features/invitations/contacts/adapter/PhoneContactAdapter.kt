@@ -1,8 +1,8 @@
-package com.divercity.android.features.contacts.adapter
+package com.divercity.android.features.invitations.contacts.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
-import com.divercity.android.features.contacts.model.PhoneContact
+import androidx.recyclerview.widget.RecyclerView
+import com.divercity.android.features.invitations.contacts.model.PhoneContact
 import javax.inject.Inject
 
 class PhoneContactAdapter @Inject
@@ -52,7 +52,10 @@ constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return PhoneContactViewHolder.create(parent, listener)
+        return PhoneContactViewHolder.create(
+            parent,
+            listener
+        )
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {

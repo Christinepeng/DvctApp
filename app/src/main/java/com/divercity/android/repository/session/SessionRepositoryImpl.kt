@@ -2,7 +2,6 @@ package com.divercity.android.repository.session
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import com.divercity.android.R
 import com.divercity.android.core.sharedpref.SharedPreferencesManager
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.user.response.UserResponse
@@ -18,8 +17,8 @@ import retrofit2.Response
 
 class SessionRepositoryImpl
 constructor(
-    val context: Context,
-    val userDao: UserDao
+    private val context: Context,
+    private val userDao: UserDao
 ) : SessionRepository {
 
     private val USER_PREF_NAME = "USER_PREF_NAME"
@@ -113,7 +112,7 @@ constructor(
     }
 
     override fun getIndustries(): String? {
-//        TODO LUCAS
+//        TODO
         return ""
     }
 
@@ -154,11 +153,7 @@ constructor(
     }
 
     override fun isLoggedUserJobSeeker(): Boolean {
-        val accountType = currentLoggedUser?.userAttributes?.accountType
-        return accountType != null &&
-                (accountType == context.getString(R.string.job_seeker_id) ||
-                        accountType == context.getString(R.string.student_id) ||
-                        accountType == context.getString(R.string.professional_id))
+        return currentLoggedUser?.isUserJobSeeker(context) ?: false
     }
 
     override fun getUserType(): String? {

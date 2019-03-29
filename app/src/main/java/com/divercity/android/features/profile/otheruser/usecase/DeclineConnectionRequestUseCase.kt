@@ -1,7 +1,6 @@
 package com.divercity.android.features.profile.otheruser.usecase
 
 import com.divercity.android.core.base.UseCase
-import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -16,9 +15,9 @@ class DeclineConnectionRequestUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: UserRepository
-) : UseCase<ConnectUserResponse, DeclineConnectionRequestUseCase.Params>(executorThread, uiThread) {
+) : UseCase<Unit, DeclineConnectionRequestUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<ConnectUserResponse> {
+    override fun createObservableUseCase(params: Params): Observable<Unit> {
         return repository.declineConnectionRequest(params.userId)
     }
 

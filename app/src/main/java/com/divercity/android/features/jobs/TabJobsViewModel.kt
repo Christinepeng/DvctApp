@@ -1,8 +1,8 @@
 package com.divercity.android.features.jobs
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
 import android.view.View
+import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepositoryImpl
@@ -18,6 +18,7 @@ constructor(val userRepository: UserRepositoryImpl,
             val application: Application) : BaseViewModel() {
 
     val showBtnAddJob = MutableLiveData<Int>()
+    var adapterPosition: Int? = null
 
     init {
 

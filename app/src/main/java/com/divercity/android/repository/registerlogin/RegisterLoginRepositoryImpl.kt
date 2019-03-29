@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 class RegisterLoginRepositoryImpl @Inject
 constructor(
-    private val loggedUserRepository: SessionRepository,
+    private val sessionRepository: SessionRepository,
     private val registerLoginService: RegisterLoginService
 ) : RegisterLoginRepository {
 
@@ -29,7 +29,7 @@ constructor(
         return registerLoginService.login(LoginBody(email, password))
             .map { response ->
                 checkResponse(response)
-                loggedUserRepository.saveUserHeaderData(response)
+                sessionRepository.saveUserHeaderData(response)
                 response.body()!!.data
             }
     }
@@ -49,7 +49,7 @@ constructor(
             )
         ).map { response ->
             checkResponse(response)
-            loggedUserRepository.saveUserHeaderData(response)
+            sessionRepository.saveUserHeaderData(response)
             response.body()!!.data
         }
     }
@@ -57,7 +57,7 @@ constructor(
     override fun loginLinkedin(code: String, state: String): Observable<UserResponse> {
         return registerLoginService.loginLinkedin(code, state).map { response ->
             checkResponse(response)
-            loggedUserRepository.saveUserHeaderData(response)
+            sessionRepository.saveUserHeaderData(response)
             response.body()!!.data
         }
     }
@@ -70,7 +70,7 @@ constructor(
             )
         ).map { response ->
             checkResponse(response)
-            loggedUserRepository.saveUserHeaderData(response)
+            sessionRepository.saveUserHeaderData(response)
             response.body()!!.data
         }
     }

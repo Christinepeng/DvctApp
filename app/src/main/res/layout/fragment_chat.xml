@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- This wraps is because of a bug with recyclerview within constraintlayout-->
+    <!-- This wrap is because of a bug with recyclerview within constraintlayout-->
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"

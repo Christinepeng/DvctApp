@@ -20,39 +20,47 @@ constructor(private val repository : UserPaginatedRepositoryImpl): BaseViewModel
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     lateinit var pagedUserList: LiveData<PagedList<Any>>
     private lateinit var listingPaginatedJob: Listing<Any>
-    private var lastSearch: String? = null
+    private lateinit var lastSearch: String
 
     init {
-        fetchUsers(null, "")
+        fetchUsers(null, null)
     }
 
-    fun networkState(): LiveData<NetworkState> = listingPaginatedJob.networkState
+    val networkState: LiveData<NetworkState>
+        get() = listingPaginatedJob.networkState
 
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedJob.refreshState
+    val refreshState: LiveData<NetworkState>
+        get() = listingPaginatedJob.refreshState
 
     fun retry() = repository.retry()
 
     fun refresh() = repository.refresh()
 
     fun fetchUsers(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        searchQuery?.let {
-            if (it != lastSearch) {
-                repository.compositeDisposable.clear()
-                lastSearch = it
-                listingPaginatedJob = repository.fetchData(searchQuery)
-                pagedUserList = listingPaginatedJob.pagedList
+        if (searchQuery == null) {
+            lastSearch = ""
+            fetchData(lifecycleOwner, lastSearch)
+        } else if (searchQuery != lastSearch) {
+            lastSearch = searchQuery
+            fetchData(lifecycleOwner, lastSearch)
+        }
+    }
 
-                lifecycleOwner?.let { lifecycleOwner ->
-                    removeObservers(lifecycleOwner)
-                    subscribeToPaginatedLiveData.call()
-                }
-            }
+    private fun fetchData(lifecycleOwner: LifecycleOwner?, searchQuery: String) {
+        repository.clear()
+
+        listingPaginatedJob = repository.fetchData(searchQuery)
+        pagedUserList = listingPaginatedJob.pagedList
+
+        lifecycleOwner?.let {
+            removeObservers(it)
+            subscribeToPaginatedLiveData.call()
         }
     }
 
     private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState().removeObservers(lifecycleOwner)
-        refreshState().removeObservers(lifecycleOwner)
+        networkState.removeObservers(lifecycleOwner)
+        refreshState.removeObservers(lifecycleOwner)
         pagedUserList.removeObservers(lifecycleOwner)
     }
 }

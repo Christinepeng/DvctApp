@@ -16,7 +16,6 @@ import com.divercity.android.features.company.companysize.CompanySizesFragment
 import com.divercity.android.features.company.createcompany.CreateCompanyFragment
 import com.divercity.android.features.company.onboarding.OnboardingCompanyFragment
 import com.divercity.android.features.company.withtoolbar.ToolbarCompanyFragment
-import com.divercity.android.features.contacts.InvitePhoneContactsFragment
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
@@ -49,6 +48,8 @@ import com.divercity.android.features.home.people.connections.AllConnectionsFrag
 import com.divercity.android.features.home.settings.SettingsFragment
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingFragment
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryFragment
+import com.divercity.android.features.invitations.contacts.InvitePhoneContactsFragment
+import com.divercity.android.features.invitations.users.InviteUsersFragment
 import com.divercity.android.features.jobs.TabJobsFragment
 import com.divercity.android.features.jobs.applicants.JobApplicantsFragment
 import com.divercity.android.features.jobs.applications.JobsApplicationsFragment
@@ -386,4 +387,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindAllConnectionsFragment(): AllConnectionsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindInviteUsersFragment(): InviteUsersFragment
 }

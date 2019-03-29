@@ -60,12 +60,8 @@ interface UserService {
     @POST("users/accept_connection")
     fun acceptConnectionRequest(@Body body: UserConnectionBody): Observable<Response<DataObject<ConnectUserResponse>>>
 
-    @DELETE("users/remove_connection")
+    @HTTP(method = "DELETE", path = "users/remove_connection", hasBody = true)
     fun cancelConnectionRequest(@Body body: UserConnectionBody): Observable<Response<DataObject<ConnectUserResponse>>>
-
-    @Multipart
-    @DELETE("users/unfollow")
-    fun unfollowUser(@Part("user_id") userId: RequestBody): Observable<Response<Void>>
 
     @POST("data/follow_industry")
     fun followIndustries(@Body body: FollowIndustryBody): Observable<Response<DataObject<UserResponse>>>

@@ -3,9 +3,11 @@ package com.divercity.android.features.activity.connectionrequests.usecase
 import com.divercity.android.core.base.UseCase
 import com.divercity.android.data.entity.group.ConnectionItem
 import com.divercity.android.repository.group.GroupRepository
+import com.divercity.android.repository.session.SessionRepository
+import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.functions.BiFunction
+import io.reactivex.functions.Function3
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -16,7 +18,9 @@ import javax.inject.Named
 class FetchConnectionRequestsUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
-            private val repository: GroupRepository
+            private val repository: GroupRepository,
+            private val userRepository: UserRepository,
+            private val sessionRepository: SessionRepository
 ) : UseCase<@JvmSuppressWildcards List<ConnectionItem>, FetchConnectionRequestsUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<List<ConnectionItem>> {
@@ -30,17 +34,36 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
             params.size
         )
 
+        val fetchConnectionRequests = userRepository.fetchConnectionRequests(
+            sessionRepository.getUserId(),
+            params.page,
+            params.size,
+            null
+        )
+
         return Observable.zip(
             fetchGroupInvitations,
             fetchGroupJoinRequests,
-            BiFunction {groupInvitations, groupJoinRequests ->
+            fetchConnectionRequests,
+            Function3 {groupInvitations, groupJoinRequests, connectionRequests ->
 
                 val shuffledGroupInvitationsAndJoinRequests = ArrayList<ConnectionItem>()
                 var startLimitGroupInvitations = 0
                 var startLimitJoinRequests = 0
+                var startLimitConnectionRequest = 0
 
                 while(groupInvitations.isNotEmpty() && startLimitGroupInvitations < groupInvitations.size ||
-                    groupJoinRequests.isNotEmpty() && startLimitJoinRequests < groupJoinRequests.size){
+                    groupJoinRequests.isNotEmpty() && startLimitJoinRequests < groupJoinRequests.size ||
+                    connectionRequests.isNotEmpty() && startLimitConnectionRequest < connectionRequests.size){
+
+                    if(startLimitConnectionRequest < connectionRequests.size){
+                        val randConnections = (1..2).random()
+                        var endLimitConnectionRequests = startLimitConnectionRequest + randConnections
+                        if(endLimitConnectionRequests > connectionRequests.size) endLimitConnectionRequests = connectionRequests.size
+                        for(i in startLimitConnectionRequest..(endLimitConnectionRequests - 1))
+                            shuffledGroupInvitationsAndJoinRequests.add(connectionRequests[i])
+                        startLimitConnectionRequest += randConnections
+                    }
 
                     if(startLimitGroupInvitations < groupInvitations.size){
                         val randJobs = (1..2).random()
@@ -61,7 +84,7 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
                     }
                 }
 
-                return@BiFunction shuffledGroupInvitationsAndJoinRequests
+                return@Function3 shuffledGroupInvitationsAndJoinRequests
             }
         )
     }

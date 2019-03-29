@@ -1,11 +1,11 @@
-package com.divercity.android.features.contacts.adapter
+package com.divercity.android.features.invitations.contacts.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
-import com.divercity.android.features.contacts.model.PhoneContact
+import com.divercity.android.features.invitations.contacts.model.PhoneContact
 import kotlinx.android.synthetic.main.item_phone_contact.view.*
 
 class PhoneContactViewHolder

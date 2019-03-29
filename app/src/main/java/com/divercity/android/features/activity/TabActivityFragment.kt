@@ -53,7 +53,15 @@ class TabActivityFragment : BaseFragment() {
 
     private fun setupView() {
         viewPager.adapter = adapter
+        viewModel.adapterPosition?.apply {
+            viewPager.currentItem = this
+        }
         tab_layout.setupWithViewPager(viewPager)
+    }
+
+    override fun onDestroyView() {
+        viewModel.adapterPosition = viewPager.currentItem
+        super.onDestroyView()
     }
 
 //    fun subscribeToLiveData() {

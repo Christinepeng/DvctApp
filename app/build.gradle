@@ -55,7 +55,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 6
-        versionName "B-1.5"
+        versionName "D-1.18"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -80,8 +80,8 @@ android {
             minifyEnabled false
             debuggable true
             manifestPlaceholders = [enableCrashReporting:"false"]
-            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig getSigningConfig()
         }
@@ -227,6 +227,8 @@ dependencies {
     implementation 'net.yslibrary.keyboardvisibilityevent:keyboardvisibilityevent:2.2.1'
 
     implementation "co.lujun:androidtagview:$tagview_version"
+
+    implementation 'io.branch.sdk.android:library:3.1.0'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'

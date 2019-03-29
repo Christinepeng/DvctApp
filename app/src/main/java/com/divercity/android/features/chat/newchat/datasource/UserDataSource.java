@@ -1,24 +1,22 @@
 package com.divercity.android.features.chat.newchat.datasource;
 
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PageKeyedDataSource;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import android.util.Log;
-
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PageKeyedDataSource;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.features.chat.usecase.FetchUsersUseCase;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
+import timber.log.Timber;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UserDataSource extends PageKeyedDataSource<Long, Object> {
 
@@ -28,7 +26,6 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
     private MutableLiveData<NetworkState> initialLoading = new MutableLiveData<>();
 
     private FetchUsersUseCase fetchUsersUseCase;
-    private CompositeDisposable compositeDisposable;
     private String query;
     
     private ArrayList<Character> firstChars = new ArrayList<>();
@@ -37,22 +34,21 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
      * Keep Completable reference for the retry event
      */
     private Completable retryCompletable;
+    private Disposable retryDisposable;
 
-    public UserDataSource(CompositeDisposable compositeDisposable,
-                          FetchUsersUseCase fetchUsersUseCase,
+    public UserDataSource(FetchUsersUseCase fetchUsersUseCase,
                           @Nullable String query) {
-        this.compositeDisposable = compositeDisposable;
         this.fetchUsersUseCase = fetchUsersUseCase;
         this.query = query;
     }
 
     public void retry() {
         if (retryCompletable != null) {
-            compositeDisposable.add(retryCompletable
+            retryDisposable = retryCompletable
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(() -> {
-                    }, throwable -> Log.e(TAG, throwable.getMessage())));
+                    }, throwable -> Timber.e(throwable));
         }
     }
 
@@ -96,7 +92,6 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
 
             }
         };
-        compositeDisposable.add(disposableObserver);
         fetchUsersUseCase.execute(disposableObserver, FetchUsersUseCase.Params.Companion.forUser(0, params.requestedLoadSize, query));
     }
 
@@ -133,8 +128,6 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
 
             }
         };
-
-        compositeDisposable.add(disposableObserver);
         fetchUsersUseCase.execute(disposableObserver, FetchUsersUseCase.Params.Companion.forUser(params.key.intValue(), params.requestedLoadSize, query));
     }
 
@@ -169,5 +162,11 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
         }
 
         return result;
+    }
+
+    public void dispose(){
+        fetchUsersUseCase.getCompositeDisposable().clear();
+        if(retryDisposable != null)
+            retryDisposable.dispose();
     }
 }

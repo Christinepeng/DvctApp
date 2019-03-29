@@ -6,4 +6,5 @@ package com.divercity.android.core.bus
 
 class RxEvent {
     data class EventUnauthorizedUser(val message: String)
+    data class OnNewMessageReceived(val boolean: Boolean)
 }

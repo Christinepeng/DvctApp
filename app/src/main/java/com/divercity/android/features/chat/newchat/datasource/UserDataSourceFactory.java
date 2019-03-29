@@ -11,16 +11,13 @@ import io.reactivex.disposables.CompositeDisposable;
 
 public class UserDataSourceFactory extends DataSource.Factory<Long, Object> {
 
-    private CompositeDisposable compositeDisposable;
     private FetchUsersUseCase fetchUsersUseCase;
     private String query;
 
     private MutableLiveData<UserDataSource> mGroupsInterestsDataSourceMutableLiveData = new MutableLiveData<>();
 
-    public UserDataSourceFactory(CompositeDisposable compositeDisposable,
-                                 FetchUsersUseCase fetchUsersUseCase,
+    public UserDataSourceFactory(FetchUsersUseCase fetchUsersUseCase,
                                  @Nullable String query) {
-        this.compositeDisposable = compositeDisposable;
         this.fetchUsersUseCase = fetchUsersUseCase;
         this.query = query;
     }
@@ -28,7 +25,6 @@ public class UserDataSourceFactory extends DataSource.Factory<Long, Object> {
     @Override
     public DataSource<Long, Object> create() {
         UserDataSource userDataSource = new UserDataSource(
-                compositeDisposable,
                 fetchUsersUseCase,
                 query);
         mGroupsInterestsDataSourceMutableLiveData.postValue(userDataSource);

@@ -8,6 +8,9 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
+import io.branch.referral.Branch
+import timber.log.Timber
+
 
 /**
  * Created by lucas on 24/10/2018.
@@ -26,63 +29,45 @@ class SplashFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_splash
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SplashViewModel::class.java]
         subscribeToLiveData()
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        start()
+    override fun onStart() {
+        super.onStart()
+        initBranch()
     }
 
-    private fun start() {
-        //   navigator.navigateToProfilePromptActivity(activity!!)
-//                        navigator.navigateToSignUpActivity(activity!!, "test@test.com")
-//                        navigator.navigateToSelectSchoolActivity(activity!!, 50)
-//                            navigator.navigateToShareJobGroupActivity(this,"21")
-//                navigator.navigateToShareJobGroupActivity(this,"31")
-//                navigator.navigateToHomeActivity(activity!!)
-        //                       navigator.navigateToProfilePromptActivity(activity!!)
-//                navigator.navigateToSelectUserTypeActivity(activity!!)
-//                navigator.navigateToSelectUserTypeActivity(activity!!)
-//                navigator.navigateToSelectGroupActivity(activity!!, 90)
+    private fun initBranch() {
+        //        Deep link routing
+        Branch.getInstance().initSession({ referringParams, error ->
+            if (error == null) {
+                Timber.e("BRANCH SDK $referringParams")
 
-//            navigator.navigateToOnboardingLocationActivity(activity!!, 40)
-
-        if (viewModel.isUserLogged)
-            viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
-//            navigator.navigateToUploadResumeActivity(activity!!, 40)
-//                navigator.navigateToSelectSkillActivity(activity!!, 40)
-//                navigator.navigateToChatActivity(this,"Joseph Student","6")
-//                navigator.navigateToSelectInterestsActivity(activity!!, 20)
-//            navigator.navigateToSelectUserTypeActivity(activity!!)
-//                navigator.navigateToSelectOccupationActivity(activity!!, 20)
-//                navigator.navigateToOnboardingIndustryActivity(activity!!, 30)
-//            navigator.navigateToSelectSingleIndustryActivityForResult(this, 30)
-//            navigator.navigateToOnboardingGenderActivity(activity!!, 30)
-//            navigator.navigateToOnboardingLocationActivity(activity!!, 76)
-        else {
-            navigator.navigateToEnterEmailActivity(activity!!)
-            activity!!.finish()
-        }
-    }
-
-    fun subscribeToLiveData() {
-        viewModel.userData.observe(this, Observer { listResource ->
-            when (listResource?.status) {
-                Status.LOADING -> {
-//                    showProgress()
+                if (referringParams.getBoolean("+clicked_branch_link")) {
+                    viewModel.checkRouteDeepLink(referringParams)
+                } else {
+                    viewModel.checkRouteNoDeepLink()
                 }
-                Status.ERROR -> {
-//                    hideProgress()
-                    showErrorDialog(listResource.message ?: "Error")
-                }
-                Status.SUCCESS -> {
-//                    hideProgress()
-                }
+            } else {
+                Timber.e("BRANCH SDK ${error.message}")
+                showErrorDialog(
+                    "Network error",
+                    ::initBranch
+                )
             }
+        }, activity?.intent?.data, activity)
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.fetchUserDataResponse.observe(this, Observer { listResource ->
+            if (Status.ERROR == listResource?.status)
+                showErrorDialog(
+                    listResource.message ?: "Error",
+                    ::fetchCurrentUserDataToCheckUserTypeDefined
+                )
         })
 
         viewModel.navigateToHome.observe(this, Observer {
@@ -94,16 +79,30 @@ class SplashFragment : BaseFragment() {
             navigator.navigateToSelectUserTypeActivity(activity!!)
             activity!!.finish()
         })
+
+        viewModel.navigateToEnterEmail.observe(this, Observer {
+            navigator.navigateToEnterEmailActivity(activity!!)
+            activity!!.finish()
+        })
+
+        viewModel.navigateToGroupDetail.observe(this, Observer {
+            navigator.navigateToGroupDetail(this, it.toString())
+            activity!!.finish()
+        })
     }
 
-    private fun showErrorDialog(msg: String) {
+    private fun showErrorDialog(msg: String, action: () -> Unit) {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
             "Ups!",
             msg,
             getString(R.string.retry)
         )
-        customOneBtnDialogFragment.setListener { viewModel.fetchCurrentUserDataToCheckUserTypeDefined() }
+        customOneBtnDialogFragment.setListener { action() }
         customOneBtnDialogFragment.isCancelable = false
         customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    private fun fetchCurrentUserDataToCheckUserTypeDefined() {
+        viewModel.fetchCurrentUserDataToCheckUserTypeDefined()
     }
 }

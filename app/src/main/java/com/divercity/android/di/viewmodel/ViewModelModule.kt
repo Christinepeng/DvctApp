@@ -15,7 +15,6 @@ import com.divercity.android.features.company.base.SelectCompanyViewModel
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
 import com.divercity.android.features.company.onboarding.OnboardingCompanyViewModel
-import com.divercity.android.features.contacts.InvitePhoneContactsViewModel
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogViewModel
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogViewModel
@@ -36,10 +35,13 @@ import com.divercity.android.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.android.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.features.home.home.HomeViewModel
+import com.divercity.android.features.home.people.TabPeopleViewModel
 import com.divercity.android.features.home.people.companies.CompaniesViewModel
 import com.divercity.android.features.home.people.connections.AllConnectionsViewModel
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingViewModel
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
+import com.divercity.android.features.invitations.contacts.InvitePhoneContactsViewModel
+import com.divercity.android.features.invitations.users.InviteUsersViewModel
 import com.divercity.android.features.jobs.TabJobsViewModel
 import com.divercity.android.features.jobs.applicants.JobApplicantsViewModel
 import com.divercity.android.features.jobs.applications.JobsApplicationsViewModel
@@ -486,4 +488,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AllConnectionsViewModel::class)
     abstract fun bindsAllConnectionsViewModel(viewModel: AllConnectionsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(InviteUsersViewModel::class)
+    abstract fun bindsInviteUsersViewModel(viewModel: InviteUsersViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(TabPeopleViewModel::class)
+    abstract fun bindsTabPeopleViewModel(viewModel: TabPeopleViewModel): ViewModel
 }

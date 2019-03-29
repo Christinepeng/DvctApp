@@ -1,6 +1,5 @@
 package com.divercity.android.data.entity.group.invitationnotification
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
 data class Attributes(
@@ -21,8 +20,8 @@ data class Attributes(
 	val createdAt: String? = null,
 
 	@field:SerializedName("body")
-	val body: String? = null,
+	var body: String? = null,
 
 	@field:SerializedName("status")
-	val status: String? = null
+	var status: String? = null
 )

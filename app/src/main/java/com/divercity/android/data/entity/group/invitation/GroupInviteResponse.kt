@@ -1,6 +1,5 @@
-package com.divercity.android.data.entity.group.contactinvitation.response
+package com.divercity.android.data.entity.group.invitation
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
 data class GroupInviteResponse(

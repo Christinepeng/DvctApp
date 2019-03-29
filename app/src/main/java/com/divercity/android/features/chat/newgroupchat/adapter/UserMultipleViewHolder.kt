@@ -1,9 +1,9 @@
 package com.divercity.android.features.chat.newgroupchat.adapter
 
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
@@ -30,8 +30,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 }
 
                 include_img_desc.txt_name.text = it.userAttributes?.name
-                include_img_desc.txt_type.text = "@".plus(it.userAttributes?.nickname)
-//                txt_school.text = "Need data"
+                include_img_desc.txt_type.text = it.userAttributes?.occupation
             }
         }
     }

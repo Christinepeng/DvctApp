@@ -23,6 +23,8 @@ class TabPeopleViewPagerAdapter
 
     private var registeredFragments = SparseArray<Fragment>()
 
+    var currentPosition = 0
+
     companion object {
 
         private const val PAGE_COUNT = 3

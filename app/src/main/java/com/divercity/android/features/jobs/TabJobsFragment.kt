@@ -1,15 +1,15 @@
 package com.divercity.android.features.jobs
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import androidx.viewpager.widget.ViewPager
-import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -25,7 +25,7 @@ import javax.inject.Inject
 
 class TabJobsFragment : BaseFragment() {
 
-    lateinit var viewModelTab: TabJobsViewModel
+    private lateinit var viewModel: TabJobsViewModel
 
     @Inject
     lateinit var adapterTab: TabJobsViewPagerAdapter
@@ -53,7 +53,7 @@ class TabJobsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModelTab = activity?.run {
+        viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(TabJobsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
 
@@ -63,7 +63,7 @@ class TabJobsFragment : BaseFragment() {
     }
 
     private fun subscribeToLiveData() {
-        viewModelTab.showBtnAddJob.observe(this, Observer { data ->
+        viewModel.showBtnAddJob.observe(this, Observer { data ->
             data?.let {
                 (btn_add as View).visibility = data
                 btn_add.setOnClickListener {
@@ -84,6 +84,12 @@ class TabJobsFragment : BaseFragment() {
     }
 
     private fun setupAdapterViewPager() {
+        viewpager.adapter = adapterTab
+        viewModel.adapterPosition?.apply {
+            viewpager.currentItem = this
+        }
+        tab_layout.setupWithViewPager(viewpager)
+
         val onPageListener = object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(p0: Int) {
@@ -98,13 +104,6 @@ class TabJobsFragment : BaseFragment() {
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)
-        viewpager.adapter = adapterTab
-        tab_layout.setupWithViewPager(viewpager)
-
-
-//        viewpager.post {
-//            onPageListener.onPageSelected(0)
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -144,6 +143,8 @@ class TabJobsFragment : BaseFragment() {
         searchView?.setOnQueryTextListener(null)
         searchItem?.setOnActionExpandListener(null)
         searchItem = null
+
+        viewModel.adapterPosition = viewpager.currentItem
 
         lastSearchQuery = ""
         super.onDestroyView()

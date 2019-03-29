@@ -11,6 +11,7 @@ import dagger.android.AndroidInjector
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import dagger.android.HasServiceInjector
+import io.branch.referral.Branch
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -40,6 +41,11 @@ class DivercityApp : Application(), HasActivityInjector, HasServiceInjector {
 
     override fun onCreate() {
         super.onCreate()
+
+        // Branch logging for debugging
+        Branch.enableDebugMode()
+        // Branch object initialization
+        Branch.getAutoInstance(this)
 
 //        LeakCanary.install(this)
 

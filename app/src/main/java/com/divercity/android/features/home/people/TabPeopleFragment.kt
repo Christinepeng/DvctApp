@@ -7,6 +7,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.widget.SearchView
+import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -20,6 +21,8 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 class TabPeopleFragment : BaseFragment() {
+
+    lateinit var viewModel: TabPeopleViewModel
 
     @Inject
     lateinit var adapterTab: TabPeopleViewPagerAdapter
@@ -41,6 +44,10 @@ class TabPeopleFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(TabPeopleViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
         setHasOptionsMenu(true)
     }
 
@@ -89,6 +96,9 @@ class TabPeopleFragment : BaseFragment() {
         }
         viewpager.addOnPageChangeListener(onPageListener)
         viewpager.adapter = adapterTab
+        viewModel.adapterPosition?.apply {
+            viewpager.currentItem = this
+        }
         tab_layout.setupWithViewPager(viewpager)
     }
 
@@ -142,6 +152,8 @@ class TabPeopleFragment : BaseFragment() {
         searchView?.setOnQueryTextListener(null)
         searchItem?.setOnActionExpandListener(null)
         searchItem = null
+
+        viewModel.adapterPosition = viewpager.currentItem
 
         lastSearchQuery = ""
         super.onDestroyView()

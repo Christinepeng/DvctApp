@@ -24,6 +24,7 @@
         <activity
             android:name=".features.splash.SplashActivity"
             android:configChanges="orientation"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.Launcher">
             <intent-filter>
@@ -34,13 +35,18 @@
 
             <!-- Branch URI scheme -->
             <intent-filter>
-                <data
-                    android:host="open"
-                    android:scheme="diverqa" />
+                <data android:scheme="diverqa" android:host="open" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+            </intent-filter>
+
+            <!-- Branch App Links -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="divercity.app.link" />
             </intent-filter>
 
         </activity>
@@ -77,9 +83,21 @@
             android:name="firebase_crashlytics_collection_enabled"
             android:value="${enableCrashReporting}" />
 
-        <!--<meta-data-->
-        <!--android:name="io.fabric.ApiKey"-->
-        <!--android:value="c89b5c70f080c86af29acf814d51cac090ea41f5" />-->
+        <!-- Branch init -->
+        <meta-data android:name="io.branch.sdk.BranchKey" android:value="key_live_keA3IM7wgh8U91d2QrdYSfkpuAbWIFY5" />
+        <meta-data android:name="io.branch.sdk.BranchKey.test" android:value="key_test_mnz9VV7tghZHZ1bWJvfXKcolyBaWJGij" />
+
+        <!-- Branch testing (TestMode "true" to simulate fresh installs on dev environment) -->
+        <meta-data android:name="io.branch.sdk.TestMode" android:value="false" />
+
+        <!-- Branch install referrer tracking -->
+        <receiver android:name="io.branch.referral.InstallListener" android:exported="true">
+            <intent-filter>
+                <action android:name="com.android.vending.INSTALL_REFERRER" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Activities-->
 
         <activity
             android:name=".features.home.HomeActivity"
@@ -321,7 +339,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.contacts.InvitePhoneContactsActivity"
+            android:name=".features.invitations.contacts.InvitePhoneContactsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -365,6 +383,10 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".features.invitations.users.InviteUsersActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
 
     </application>
 

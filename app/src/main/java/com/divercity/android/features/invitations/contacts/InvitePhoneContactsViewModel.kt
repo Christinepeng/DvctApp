@@ -1,12 +1,12 @@
-package com.divercity.android.features.contacts
+package com.divercity.android.features.invitations.contacts
 
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.contactinvitation.body.GroupInvite
-import com.divercity.android.data.entity.group.contactinvitation.response.GroupInviteResponse
+import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
+import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContact
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.contacts.usecase.InviteContactToGroupUseCase
+import com.divercity.android.features.invitations.contacts.usecase.InviteContactToGroupUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -39,7 +39,7 @@ constructor(private val inviteContactToGroupUseCase: InviteContactToGroupUseCase
 
         inviteContactToGroupUseCase.execute(callback,
             InviteContactToGroupUseCase.Params.forGroups(
-                GroupInvite(groupId = groupId,
+                GroupInviteContact(groupId = groupId,
                     phoneNumbers = contacts)
             ))
     }

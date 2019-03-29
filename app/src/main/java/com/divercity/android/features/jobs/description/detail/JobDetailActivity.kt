@@ -14,7 +14,8 @@ class JobDetailActivity : BaseActivity() {
         fun getCallingIntent(
             context: Context,
             jobId: String?,
-            job: JobResponse?): Intent {
+            job: JobResponse?
+        ): Intent {
             JobDetailFragment.DataHolder.data = job
             val intent = Intent(context, JobDetailActivity::class.java)
             intent.putExtra(INTENT_EXTRA_PARAM_JOB_ID, jobId)

@@ -4,7 +4,6 @@ import android.os.Parcelable
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
-import com.divercity.android.features.usecase.LogoutUseCase
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Event
@@ -17,17 +16,14 @@ import com.divercity.android.data.entity.home.RecommendedItem
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.storiesfeatured.StoriesFeaturedResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.apollo.FetchJobFromViewHolderUseCase
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.divercity.android.features.home.home.datasource.QuestionsPaginatedRepositoryImpl
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase
 import com.divercity.android.features.home.home.usecase.FetchUnreadMessagesCountUseCase
 import com.divercity.android.features.home.home.usecase.GetStoriesFeatured
-import com.divercity.android.helpers.NotificationHelper
-import com.divercity.android.repository.user.UserRepositoryImpl
+import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
-import io.reactivex.observers.DisposableObserver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -37,14 +33,11 @@ class HomeViewModel @Inject
 constructor(
     private val questionsRepository: QuestionsPaginatedRepositoryImpl,
     private val getStoriesFeatured: GetStoriesFeatured,
-    private val userRepositoryImpl: UserRepositoryImpl,
     private val fetchFeedRecommendedJobsGroupsUseCase: FetchFeedRecommendedJobsGroupsUseCase,
     private val joinGroupUseCase: JoinGroupUseCase,
     private val requestToJoinUseCase: RequestJoinGroupUseCase,
-    private val session: LogoutUseCase,
-    private val notificationHelper: NotificationHelper,
-    private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase,
-    private val fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase
+    private val session: SessionRepository,
+    private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase
 ) : BaseViewModel() {
 
     var featuredList = MutableLiveData<Resource<List<StoriesFeaturedResponse>>>()
@@ -69,8 +62,6 @@ constructor(
     init {
         questionList = questionListing.pagedList
         fetchUnreadMessagesCount()
-//        fetchRecommendedGroupsJobs()
-        getJob()
     }
 
     fun retry() {
@@ -79,60 +70,6 @@ constructor(
 
     fun refresh() {
         questionsRepository.refresh()
-    }
-
-    fun getJob() {
-//        uiScope.launch {
-//            val user = se.getSavedUser()
-//            val test = user
-//        }
-
-//        fetchJobFromViewHolderUseCase.invoke(FetchJobFromViewHolderUseCase.Params.forJob("1181")) {
-//            it.either({
-//
-//            }, {
-//
-//            })
-//        }
-
-    }
-
-//    fun fetchRecommendedGroupsJobs() {
-//        fetchRecommendedJobsGroupsResponse.postValue(Resource.loading(null))
-//        val callback = object : DisposableObserverWrapper<List<RecommendedItem>>() {
-//            override fun onFail(error: String) {
-//                fetchRecommendedJobsGroupsResponse.postValue(Resource.error(error, null))
-//            }
-//
-//            override fun onHttpException(error: JsonElement) {
-//                fetchRecommendedJobsGroupsResponse.postValue(Resource.error(error.toString(), null))
-//            }
-//
-//            override fun onSuccess(o: List<RecommendedItem>) {
-//                fetchRecommendedJobsGroupsResponse.postValue(Resource.success(o))
-//            }
-//        }
-//        compositeDisposable.add(callback)
-//        fetchFeedRecommendedJobsGroupsUseCase.execute(
-//                callback,
-//                FetchFeedRecommendedJobsGroupsUseCase.Params.forJobs(0,5,null))
-//    }
-
-    fun getFeatured() {
-        val disposable = object : DisposableObserver<List<StoriesFeaturedResponse>>() {
-            override fun onNext(storiesFeaturedResponses: List<StoriesFeaturedResponse>) {
-                featuredList.postValue(Resource.success(storiesFeaturedResponses))
-            }
-
-            override fun onError(e: Throwable) {
-
-            }
-
-            override fun onComplete() {
-
-            }
-        }
-        getStoriesFeatured.execute(disposable, null)
     }
 
     fun joinGroup(group: GroupResponse) {
@@ -203,7 +140,7 @@ constructor(
         requestToJoinUseCase.dispose()
     }
 
-    fun onDestroyView(){
+    fun onDestroyView() {
         fetchUnreadMessagesCountUseCase.compositeDisposable.clear()
     }
 }

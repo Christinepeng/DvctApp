@@ -1,10 +1,10 @@
-package com.divercity.android.features.company.base.datasource;
+package com.divercity.android.features.company.selectcompany.base.datasource;
 
 import android.util.Log;
 
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.data.entity.company.response.CompanyResponse;
-import com.divercity.android.features.company.base.usecase.FetchCompaniesUseCase;
+import com.divercity.android.features.company.selectcompany.base.usecase.FetchCompaniesUseCase;
 
 import java.util.List;
 

@@ -264,7 +264,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         })
 
-        viewModel.listState.observe(this, Observer { parcelable ->
+        viewModel.listState.observe(viewLifecycleOwner, Observer { parcelable ->
             list_main.layoutManager?.onRestoreInstanceState(parcelable)
         })
     }
@@ -360,10 +360,6 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         }
         dialog.show(childFragmentManager, null)
-    }
-
-    override fun onViewStateRestored(savedInstanceState: Bundle?) {
-        super.onViewStateRestored(savedInstanceState)
     }
 
     override fun onDestroyView() {

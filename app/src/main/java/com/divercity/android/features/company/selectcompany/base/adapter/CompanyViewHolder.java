@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.base.adapter;
+package com.divercity.android.features.company.selectcompany.base.adapter;
 
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;

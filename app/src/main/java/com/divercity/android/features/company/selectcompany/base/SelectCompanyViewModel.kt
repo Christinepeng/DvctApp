@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.base
+package com.divercity.android.features.company.selectcompany.base
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
@@ -9,7 +9,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.company.base.datasource.CompanyPaginatedRepositoryImpl
+import com.divercity.android.features.company.selectcompany.base.datasource.CompanyPaginatedRepositoryImpl
 
 import javax.inject.Inject
 

@@ -36,11 +36,18 @@ internal constructor(
                 fetchUserDataResponse.value = Resource.success(response)
                 session.saveUserData(response)
 
-                if (response.userAttributes?.accountType == null)
-                    navigateToSelectUserType.call()
-                else {
+                if (response.userAttributes?.accountType == null) {
+
+                    /* Check if user opens the app with a deeplink*/
                     if (deepLinkData != null) {
-                        checkRoute(deepLinkData)
+                        setPendingRoute()
+                    }
+                    navigateToSelectUserType.call()
+                } else {
+
+                    /* Check if user opens the app with a deeplink*/
+                    if (deepLinkData != null) {
+                        checkRoute()
                     } else {
                         navigateToHome.call()
                     }
@@ -67,19 +74,32 @@ internal constructor(
 //            If the app is already open and user is logged it won't be null. If the app is closed
 //            and user is logged it will be null and we have to check data on the server.
             if (session.getUserType() != null) {
-                checkRoute(data)
+                checkRoute()
             } else {
                 fetchCurrentUserDataToCheckUserTypeDefined()
             }
         } else {
+            setPendingRoute()
             navigateToEnterEmail.call()
         }
     }
 
-    fun checkRoute(data: JSONObject?) {
-        when (data?.getString("type")) {
+    fun checkRoute() {
+        when (deepLinkData?.getString("type")) {
             "group_invite" -> {
-                navigateToGroupDetail.postValue(data.getInt("id"))
+                navigateToGroupDetail.postValue(deepLinkData?.getInt("id"))
+            }
+        }
+    }
+
+    fun setPendingRoute() {
+        /* To open group detail when user gets to HomeActivity*/
+        when (deepLinkData?.getString("type")) {
+            "group_invite" -> {
+                session.setDeepLinkType("group_invite")
+                session.setDeepLinkGroupId(
+                    deepLinkData?.getInt("id").toString()
+                )
             }
         }
     }

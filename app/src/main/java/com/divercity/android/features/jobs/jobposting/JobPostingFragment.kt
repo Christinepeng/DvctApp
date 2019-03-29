@@ -18,7 +18,7 @@ import com.divercity.android.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.data.entity.skills.SkillResponse
-import com.divercity.android.features.company.withtoolbar.ToolbarCompanyFragment
+import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
 import com.divercity.android.features.dialogs.JobPostedDialogFragment
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeFragment
 import com.divercity.android.features.jobs.jobposting.skills.JobSkillsFragment

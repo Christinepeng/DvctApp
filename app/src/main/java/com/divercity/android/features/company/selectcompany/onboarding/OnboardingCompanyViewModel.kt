@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.onboarding
+package com.divercity.android.features.company.selectcompany.onboarding
 
 import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.BaseViewModel

@@ -30,7 +30,9 @@ constructor(
         UID,
         DEVICE_ID,
         USER_ID,
-        FCM_TOKEN
+        FCM_TOKEN,
+        DEEP_LINK_TYPE,
+        DEEP_LINK_GROUP_INVITE
     }
 
     private val sharedPreferencesManager: SharedPreferencesManager<Key> =
@@ -89,6 +91,27 @@ constructor(
 
     override fun getUserId(): String {
         return sharedPreferencesManager.getString(Key.USER_ID)!!
+    }
+
+    override fun setDeepLinkType(type: String?) {
+        sharedPreferencesManager.put(Key.DEEP_LINK_TYPE, type)
+    }
+
+    override fun getDeepLinkType(): String? {
+        return sharedPreferencesManager.getString(Key.DEEP_LINK_TYPE)
+    }
+
+    override fun setDeepLinkGroupId(groupId: String?) {
+        sharedPreferencesManager.put(Key.DEEP_LINK_GROUP_INVITE, groupId)
+    }
+
+    override fun getDeepLinkGroupId(): String? {
+        return sharedPreferencesManager.getString(Key.DEEP_LINK_GROUP_INVITE)
+    }
+
+    override fun clearDeepLinkData() {
+        sharedPreferencesManager.put(Key.DEEP_LINK_TYPE, null)
+        sharedPreferencesManager.put(Key.DEEP_LINK_GROUP_INVITE, null)
     }
 
     override fun getAccountType(): String {

@@ -2,12 +2,12 @@ package com.divercity.android.features.activity.connectionrequests
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
+import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.ConnectionItem
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
@@ -44,9 +44,9 @@ constructor(
     lateinit var pagedConnectionList: LiveData<PagedList<ConnectionItem>>
     private lateinit var listingConnections: Listing<ConnectionItem>
 
-    var acceptDeclineConnectionRequestResponse = MutableLiveData<Resource<UserPosition>>()
-    var acceptDeclineGroupInviteResponse = MutableLiveData<Resource<GroupInvitationNotificationPosition>>()
-    var acceptDeclineJoinGroupRequest = MutableLiveData<Resource<JoinGroupRequestPosition>>()
+    var acceptDeclineConnectionRequestResponse = SingleLiveEvent<Resource<UserPosition>>()
+    var acceptDeclineGroupInviteResponse = SingleLiveEvent<Resource<GroupInvitationNotificationPosition>>()
+    var acceptDeclineJoinGroupRequest = SingleLiveEvent<Resource<JoinGroupRequestPosition>>()
 
     init {
         fetchConnectionRequests()

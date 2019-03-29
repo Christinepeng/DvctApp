@@ -150,7 +150,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.company.onboarding.OnboardingCompanyActivity"
+            android:name="com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -200,7 +200,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.company.withtoolbar.ToolbarCompanyActivity"
+            android:name="com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

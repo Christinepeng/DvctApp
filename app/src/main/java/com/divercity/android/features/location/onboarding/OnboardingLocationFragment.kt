@@ -9,7 +9,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.location.LocationResponse
-import com.divercity.android.features.company.base.adapter.CompanyAdapter
+import com.divercity.android.features.company.selectcompany.base.adapter.CompanyAdapter
 import com.divercity.android.features.location.base.SelectLocationFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*

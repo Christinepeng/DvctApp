@@ -61,6 +61,7 @@ object ProfileUtils {
                 personalView.lay_resume.visibility = View.GONE
                 personalView.lay_school.visibility = View.GONE
                 personalView.lay_age_range.visibility = View.GONE
+//                personalView.lay_companies.visibility = View.VISIBLE
             }
         }
     }

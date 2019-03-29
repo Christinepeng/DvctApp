@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.base.usecase
+package com.divercity.android.features.company.selectcompany.base.usecase
 
 import com.divercity.android.core.base.UseCase
 import com.divercity.android.data.entity.company.response.CompanyResponse

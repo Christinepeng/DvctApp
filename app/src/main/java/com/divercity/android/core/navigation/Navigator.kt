@@ -1,5 +1,6 @@
 package com.divercity.android.core.navigation
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -19,8 +20,8 @@ import com.divercity.android.features.chat.newgroupchat.NewGroupChatActivity
 import com.divercity.android.features.chat.recentchats.ChatsActivity
 import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
-import com.divercity.android.features.company.onboarding.OnboardingCompanyActivity
-import com.divercity.android.features.company.withtoolbar.ToolbarCompanyActivity
+import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyActivity
+import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
@@ -228,6 +229,16 @@ class Navigator @Inject constructor() {
                 group.id,
                 group
             ), code
+        )
+    }
+
+    fun navigateToGroupDetail(activity: Activity, groupId: String) {
+        activity.startActivity(
+            GroupDetailActivity.getCallingIntent(
+                activity,
+                groupId,
+                null
+            )
         )
     }
 

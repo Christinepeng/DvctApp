@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.onboarding
+package com.divercity.android.features.company.selectcompany.onboarding
 
 
 import android.os.Bundle
@@ -10,8 +10,8 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.company.base.SelectCompanyFragment
-import com.divercity.android.features.company.base.adapter.CompanyAdapter
+import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
+import com.divercity.android.features.company.selectcompany.base.adapter.CompanyAdapter
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject

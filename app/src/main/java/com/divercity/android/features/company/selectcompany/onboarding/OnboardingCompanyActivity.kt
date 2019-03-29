@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.onboarding
+package com.divercity.android.features.company.selectcompany.onboarding
 
 import android.content.Context
 import android.content.Intent

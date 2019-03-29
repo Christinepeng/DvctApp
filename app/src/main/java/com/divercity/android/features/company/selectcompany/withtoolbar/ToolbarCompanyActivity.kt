@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.withtoolbar
+package com.divercity.android.features.company.selectcompany.withtoolbar
 
 import android.content.Context
 import android.content.Intent

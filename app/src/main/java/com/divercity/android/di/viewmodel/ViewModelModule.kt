@@ -11,10 +11,10 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatViewMo
 import com.divercity.android.features.chat.newchat.NewChatViewModel
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatViewModel
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel
-import com.divercity.android.features.company.base.SelectCompanyViewModel
+import com.divercity.android.features.company.selectcompany.base.SelectCompanyViewModel
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
-import com.divercity.android.features.company.onboarding.OnboardingCompanyViewModel
+import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyViewModel
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogViewModel
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogViewModel

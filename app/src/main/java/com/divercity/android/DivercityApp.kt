@@ -42,8 +42,6 @@ class DivercityApp : Application(), HasActivityInjector, HasServiceInjector {
     override fun onCreate() {
         super.onCreate()
 
-        // Branch logging for debugging
-        Branch.enableDebugMode()
         // Branch object initialization
         Branch.getAutoInstance(this)
 
@@ -51,6 +49,9 @@ class DivercityApp : Application(), HasActivityInjector, HasServiceInjector {
 
         if (BuildConfig.DEBUG) {
             Timber.plant(Timber.DebugTree())
+
+            // Branch logging for debugging
+            Branch.enableDebugMode()
         }
 
         DaggerAppComponent

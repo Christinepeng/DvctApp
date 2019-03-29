@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.base
+package com.divercity.android.features.company.selectcompany.base
 
 import android.content.Context
 import android.os.Bundle
@@ -15,8 +15,8 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.company.base.adapter.CompanyAdapter
-import com.divercity.android.features.company.base.adapter.CompanyViewHolder
+import com.divercity.android.features.company.selectcompany.base.adapter.CompanyAdapter
+import com.divercity.android.features.company.selectcompany.base.adapter.CompanyViewHolder
 import kotlinx.android.synthetic.main.fragment_base_company.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import javax.inject.Inject

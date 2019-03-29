@@ -1,4 +1,4 @@
-package com.divercity.android.features.company.withtoolbar
+package com.divercity.android.features.company.selectcompany.withtoolbar
 
 import android.app.Activity
 import android.content.Intent
@@ -7,7 +7,7 @@ import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.company.base.SelectCompanyFragment
+import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import kotlinx.android.synthetic.main.fragment_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 

@@ -70,4 +70,14 @@ interface SessionRepository {
     fun getSkills(): List<String>?
 
     fun getUserType(): String?
+
+    fun setDeepLinkGroupId(groupId: String?)
+
+    fun getDeepLinkGroupId(): String?
+
+    fun setDeepLinkType(type: String?)
+
+    fun getDeepLinkType(): String?
+
+    fun clearDeepLinkData()
 }

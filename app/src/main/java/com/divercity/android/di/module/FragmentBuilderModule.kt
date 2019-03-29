@@ -11,11 +11,11 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatFragme
 import com.divercity.android.features.chat.newchat.NewChatFragment
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatFragment
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsFragment
-import com.divercity.android.features.company.base.SelectCompanyFragment
+import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import com.divercity.android.features.company.companysize.CompanySizesFragment
 import com.divercity.android.features.company.createcompany.CreateCompanyFragment
-import com.divercity.android.features.company.onboarding.OnboardingCompanyFragment
-import com.divercity.android.features.company.withtoolbar.ToolbarCompanyFragment
+import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyFragment
+import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment

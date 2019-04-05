@@ -76,7 +76,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                     R.drawable.img_unlock
                 )
             )
-            txt_type.text = getString(R.string.public_group)
+            txt_subtitle1.text = getString(R.string.public_group)
         } else {
             img_lock_unlock.setImageDrawable(
                 ContextCompat.getDrawable(
@@ -84,7 +84,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                     R.drawable.img_lock
                 )
             )
-            txt_type.text = getString(R.string.private_group)
+            txt_subtitle1.text = getString(R.string.private_group)
         }
 
         txt_members.hint = (group?.attributes?.followersCount).toString().plus(" Members")

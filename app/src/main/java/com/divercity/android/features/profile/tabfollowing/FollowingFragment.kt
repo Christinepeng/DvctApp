@@ -10,8 +10,8 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserAdapter
-import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserAdapter
+import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -88,9 +88,9 @@ class FollowingFragment : BaseFragment(), RetryCallback {
                     isListRefreshing = false
 
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
-                    lay_no_followers.visibility = View.VISIBLE
+                    lay_no_data.visibility = View.VISIBLE
                 else
-                    lay_no_followers.visibility = View.GONE
+                    lay_no_data.visibility = View.GONE
 
                 swipe_list_main.isRefreshing = isListRefreshing
             }

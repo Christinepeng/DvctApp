@@ -16,7 +16,6 @@ import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
-import com.divercity.android.features.profile.ProfileUtils
 import kotlinx.android.synthetic.main.fragment_personal_settings.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
@@ -71,9 +70,9 @@ class PersonalSettingsFragment : BaseFragment() {
     private fun setupView(){
         lay_personal.lbl_personal.visibility = View.GONE
         lay_personal.btn_edit_personal.visibility = View.GONE
-        lay_personal.txt_resume.hint = getString(R.string.upload_your_resume)
+        lay_personal.txt_resume.setHint(R.string.upload_your_resume)
 
-        ProfileUtils.setupPersonalLayout(viewModel.getUserType(),context!!, lay_personal)
+//        ProfileUtils.setupPersonalLayout(viewModel.getUserType(),context!!, lay_personal)
 
         lay_personal.lay_resume.setOnClickListener {
             openDocSelector()
@@ -93,6 +92,27 @@ class PersonalSettingsFragment : BaseFragment() {
 
         lay_personal.lay_location.setOnClickListener {
             navigator.navigateToToolbarLocationActivityForResult(this, REQUEST_CODE_LOCATION)
+        }
+
+        lay_personal.lay_school.setOnClickListener {
+
+        }
+
+        lay_personal.lay_occupation.setOnClickListener {
+
+        }
+
+        lay_personal.txt_view_interests.setHint(R.string.edit_interests)
+        lay_personal.lay_interests.setOnClickListener {
+            navigator.navigateToInterestsActivity(this, true)
+        }
+
+        lay_personal.lay_companies.setOnClickListener {
+            navigator.navigateToMyCompanies(activity!!)
+        }
+
+        lay_personal.lay_groups.setOnClickListener {
+            navigator.navigateToMyGroups(this)
         }
     }
 
@@ -164,7 +184,7 @@ class PersonalSettingsFragment : BaseFragment() {
         lay_personal.txt_ethnicity.text = user?.userAttributes?.ethnicity
         lay_personal.txt_gender.text = user?.userAttributes?.gender
         lay_personal.txt_age_range.text = user?.userAttributes?.ageRange
-        lay_personal.txt_school.text = user?.userAttributes?.schoolName
+        lay_personal.txt_subtitle2.text = user?.userAttributes?.schoolName
         lay_personal.txt_occupation.text = user?.userAttributes?.occupation
         lay_personal.txt_location.text =
             user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)

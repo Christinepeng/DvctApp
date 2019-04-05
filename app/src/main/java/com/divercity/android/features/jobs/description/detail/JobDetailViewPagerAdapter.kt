@@ -1,11 +1,10 @@
 package com.divercity.android.features.jobs.description.detail
 
 import android.content.Context
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentStatePagerAdapter
 import android.util.SparseArray
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.jobs.description.aboutcompany.TabAboutCompanyFragment
@@ -21,9 +20,9 @@ import javax.inject.Inject
 class JobDetailViewPagerAdapter
 @Inject constructor(
     val context: Context,
-    fm: FragmentManager,
+    fragment: JobDetailFragment,
     val userRepository: UserRepository
-) : FragmentStatePagerAdapter(fm) {
+) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
 
     var registeredFragments = SparseArray<Fragment>()
     lateinit var job : JobResponse

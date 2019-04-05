@@ -10,6 +10,7 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.Meta
 import com.divercity.android.data.entity.createchat.CreateChatResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
@@ -48,7 +49,7 @@ constructor(
     var chatMembers: List<UserResponse>? = null
 
     var fetchCreateChatResponse = SingleLiveEvent<Resource<CreateChatResponse>>()
-    var fetchMessagesResponse = SingleLiveEvent<Resource<List<ChatMessageResponse>>>()
+    var fetchMessagesResponse = SingleLiveEvent<Resource<DataChatMessageResponse>>()
     var fetchChatMembersResponse = SingleLiveEvent<Resource<List<UserResponse>>>()
     var sendMessageResponse = SingleLiveEvent<Resource<ChatMessageResponse>>()
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
@@ -148,7 +149,6 @@ constructor(
         val callback = object : DisposableObserverWrapper<CreateChatResponse>() {
             override fun onFail(error: String) {
                 hasFetchChatError = true
-                fetchCreateChatResponse.postValue(Resource.error(error, null))
 
                 if (reconnectingAttempts != RECONNECTING_ATTEMPTS) {
                     Timber.d("fetchOrCreateChat: attemp: ".plus(reconnectingAttempts))
@@ -156,6 +156,8 @@ constructor(
                     handlerReconnect.postDelayed({
                         fetchOrCreateChat(otherUserId)
                     }, 3000)
+                } else {
+                    fetchCreateChatResponse.postValue(Resource.error(error, null))
                 }
             }
 
@@ -185,19 +187,36 @@ constructor(
         fetchMessagesResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<DataChatMessageResponse>() {
             override fun onFail(error: String) {
+                hasFetchChatError = true
+
                 pageFetchList.remove(page)
-                fetchMessagesResponse.postValue(Resource.error(error, null))
+                fetchMessagesResponse.postValue(
+                    Resource.error
+                        (
+                        error,
+                        DataChatMessageResponse(meta = Meta(page = page))
+                    )
+                )
             }
 
             override fun onHttpException(error: JsonElement) {
-                fetchMessagesResponse.postValue(Resource.error(error.toString(), null))
+                hasFetchChatError = true
+
+                fetchMessagesResponse.postValue(
+                    Resource.error(
+                        error.toString(),
+                        DataChatMessageResponse(meta = Meta(page = page))
+                    )
+                )
             }
 
             override fun onSuccess(o: DataChatMessageResponse) {
-                fetchMessagesResponse.postValue(Resource.success(o.data?.chats!!))
+                hasFetchChatError = false
+
+                fetchMessagesResponse.postValue(Resource.success(o))
 
                 uiScope.launch {
-                    chatMessageRepository.insertChatMessagesOnDB(o.data.chats)
+                    chatMessageRepository.insertChatMessagesOnDB(o.data!!.chats!!)
                 }
             }
         }
@@ -211,6 +230,7 @@ constructor(
                     null
                 )
         )
+
     }
 
     fun sendMessage(message: String, image: String?) {
@@ -283,18 +303,25 @@ constructor(
     }
 
     private fun connectToChatWebSocket(chatId: Int) {
-        chatWebSocket.addOnChatMessageReceivedListener(object :
-            ChatWebSocket.OnChatMessageReceived {
+
+        chatWebSocket.listener = object : ChatWebSocket.Listener {
+            override fun onSocketOpen() {
+                fetchMessages(userId!!, 0, PAGE_SIZE)
+            }
+
             override fun onChatMessageReceived(chat: ChatMessageResponse) {
                 insertChatDb(chat)
             }
-        })
+        }
 
         chatWebSocket.connect(chatId.toString())
     }
 
     fun checkIfReconnectionIsNeeded() {
-        if (chatId != null && chatId != -1 && chatWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR) {
+        if (chatId != null && chatId != -1 &&
+            (chatWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR ||
+                    chatWebSocket.getSocketState() == MySocket.State.RECONNECT_ATTEMPT)
+        ) {
             chatWebSocket.stopTryingToReconnect()
             connectToChatWebSocket(chatId!!)
         }
@@ -317,10 +344,10 @@ constructor(
     }
 
     fun onResume() {
-
+        sessionRepository.setCurrentChatId(chatId.toString())
     }
 
     fun onPause() {
-
+        sessionRepository.setCurrentChatId(null)
     }
 }

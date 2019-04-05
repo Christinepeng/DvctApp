@@ -64,7 +64,7 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
         Holder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.img_type);
-            textView = itemView.findViewById(R.id.txt_type);
+            textView = itemView.findViewById(R.id.txt_subtitle1);
         }
     }
 

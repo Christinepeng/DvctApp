@@ -30,7 +30,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                 }
 
                 include_img_desc.txt_name.text = it.userAttributes?.name
-                include_img_desc.txt_type.text = it.userAttributes?.occupation
+                include_img_desc.txt_subtitle1.text = it.userAttributes?.occupation
             }
         }
     }

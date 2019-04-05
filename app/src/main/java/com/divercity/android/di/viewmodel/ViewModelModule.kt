@@ -11,9 +11,15 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatViewMo
 import com.divercity.android.features.chat.newchat.NewChatViewModel
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatViewModel
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel
-import com.divercity.android.features.company.selectcompany.base.SelectCompanyViewModel
+import com.divercity.android.features.company.companyadmin.CompanyAdminViewModel
+import com.divercity.android.features.company.companyadminadd.CompanyAdminAddViewModel
+import com.divercity.android.features.company.companydetail.CompanyDetailViewModel
+import com.divercity.android.features.company.companydetail.employees.EmployeesViewModel
+import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyViewModel
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
+import com.divercity.android.features.company.mycompanies.MyCompaniesViewModel
+import com.divercity.android.features.company.selectcompany.base.SelectCompanyViewModel
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyViewModel
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogViewModel
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogViewModel
@@ -68,16 +74,16 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
-import com.divercity.android.features.profile.currentuser.CurrentUserProfileViewModel
-import com.divercity.android.features.profile.currentuser.tabconnections.ConnectionsViewModel
-import com.divercity.android.features.profile.currentuser.tabprofile.TabProfileViewModel
-import com.divercity.android.features.profile.editinterests.InterestsViewModel
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsViewModel
-import com.divercity.android.features.profile.otheruser.OtherUserProfileViewModel
-import com.divercity.android.features.profile.otheruser.tabprofile.TabOtherUserProfileViewModel
-import com.divercity.android.features.profile.settings.ProfileSettingsViewModel
-import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsViewModel
+import com.divercity.android.features.profile.myinterests.InterestsViewModel
+import com.divercity.android.features.profile.pcurrentuser.CurrentUserProfileViewModel
+import com.divercity.android.features.profile.pcurrentuser.tabconnections.ConnectionsViewModel
+import com.divercity.android.features.profile.pcurrentuser.tabprofile.TabProfileViewModel
+import com.divercity.android.features.profile.potheruser.OtherUserProfileViewModel
+import com.divercity.android.features.profile.potheruser.tabprofile.TabOtherUserProfileViewModel
 import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
+import com.divercity.android.features.settings.ProfileSettingsViewModel
+import com.divercity.android.features.settings.accountsettings.AccountSettingsViewModel
 import com.divercity.android.features.signup.SignUpViewModel
 import com.divercity.android.features.skill.base.SelectSkillViewModel
 import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
@@ -498,4 +504,34 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(TabPeopleViewModel::class)
     abstract fun bindsTabPeopleViewModel(viewModel: TabPeopleViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MyCompaniesViewModel::class)
+    abstract fun bindsMyCompaniesViewModel(viewModel: MyCompaniesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompanyDetailViewModel::class)
+    abstract fun bindsCompanyDetailViewModel(viewModel: CompanyDetailViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EmployeesViewModel::class)
+    abstract fun bindsEmployeesViewModel(viewModel: EmployeesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobPostingsByCompanyViewModel::class)
+    abstract fun bindsJobPostingsByCompanyViewModel(viewModel: JobPostingsByCompanyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompanyAdminViewModel::class)
+    abstract fun bindsCompanyAdminViewModel(viewModel: CompanyAdminViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompanyAdminAddViewModel::class)
+    abstract fun bindsCompanyAdminAddViewModel(viewModel: CompanyAdminAddViewModel): ViewModel
 }

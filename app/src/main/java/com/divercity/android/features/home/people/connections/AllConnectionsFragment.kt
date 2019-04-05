@@ -7,14 +7,14 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserAdapter
-import com.divercity.android.features.profile.currentuser.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.home.people.ITabPeople
+import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserAdapter
+import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_connections.*
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ import javax.inject.Inject
  */
 
 
-class AllConnectionsFragment : BaseFragment(), RetryCallback {
+class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabPeople {
 
     lateinit var viewModel: AllConnectionsViewModel
 
@@ -91,11 +91,8 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback {
         })
     }
 
-    private fun search(query: String?) {
-        handlerSearch.removeCallbacksAndMessages(null)
-        handlerSearch.postDelayed({
-            fetchConnections(query)
-        }, AppConstants.SEARCH_DELAY)
+    override fun search(query: String?) {
+        fetchConnections(query)
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -157,12 +154,18 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback {
 
     private val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
 
-        override fun onConnectUser(user: UserResponse, position : Int) {
+        override fun onConnectUser(user: UserResponse, position: Int) {
             lastConnectUserPosition = position
             viewModel.connectToUser(user.id)
         }
 
         override fun onUserDirectMessage(user: UserResponse) {
+            navigator.navigateToChatActivity(
+                this@AllConnectionsFragment,
+                user.userAttributes!!.name!!,
+                user.id,
+                null
+            )
         }
 
         override fun onUserClick(user: UserResponse) {

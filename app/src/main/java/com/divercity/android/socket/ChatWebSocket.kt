@@ -19,11 +19,7 @@ constructor(private val socket: MySocket) {
         const val EVENT_TYPING = "rtm_typing"
     }
 
-    private var chatMessageListener: OnChatMessageReceived? = null
-
-    fun addOnChatMessageReceivedListener(listener: OnChatMessageReceived) {
-        chatMessageListener = listener
-    }
+    var listener: Listener? = null
 
     fun connect(chatId: String) {
 
@@ -38,6 +34,13 @@ constructor(private val socket: MySocket) {
             }
         })
 
+        socket.onEvent(MySocket.EVENT_RECONNECT_ATTEMPT, object : MySocket.OnEventListener() {
+
+            override fun onMessage(event: String?) {
+
+            }
+        })
+
         socket.setMessageListener(object : MySocket.OnMessageListener() {
 
             override fun onMessage(data: String?) {
@@ -46,14 +49,15 @@ constructor(private val socket: MySocket) {
                     val parser = JsonParser()
                     val response = parser.parse(data).asJsonObject
 
-                    if(response.has("identifier") && response.has("message")) {
+                    if (response.has("identifier") && response.has("message")) {
                         val message = response.getAsJsonObject("message")
 
-                        if (message.has("event_type")){
-                            when(message.get("event_type").asString) {
+                        if (message.has("event_type")) {
+                            when (message.get("event_type").asString) {
                                 EVENT_CHAT_NEW_MESSAGE -> {
-                                    val chat = Gson().fromJson(message, ChatMessageResponse::class.java)
-                                    chatMessageListener?.onChatMessageReceived(chat)
+                                    val chat =
+                                        Gson().fromJson(message, ChatMessageResponse::class.java)
+                                    listener?.onChatMessageReceived(chat)
                                 }
                                 EVENT_TYPING -> {
 
@@ -61,7 +65,7 @@ constructor(private val socket: MySocket) {
                             }
                         }
                     }
-                } catch (e : Exception){
+                } catch (e: Exception) {
                     Timber.v("Unknown message format.")
                 }
             }
@@ -71,20 +75,22 @@ constructor(private val socket: MySocket) {
         socket.connect()
     }
 
-    fun getSocketState() : MySocket.State {
+    fun getSocketState(): MySocket.State {
         return socket.state
     }
 
-    fun close(){
+    fun close() {
         socket.close()
-        socket.terminate()
     }
 
-    fun stopTryingToReconnect(){
+    fun stopTryingToReconnect() {
         socket.stopTryingToReconnect()
     }
 
-    interface OnChatMessageReceived {
+    interface Listener {
+
         fun onChatMessageReceived(chat: ChatMessageResponse)
+
+        fun onSocketOpen()
     }
 }

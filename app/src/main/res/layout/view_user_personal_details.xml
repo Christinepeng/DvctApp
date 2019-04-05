@@ -75,7 +75,7 @@
             android:src="@drawable/icon_hat" />
 
         <TextView
-            android:id="@+id/txt_school"
+            android:id="@+id/txt_subtitle2"
             style="@style/AppText2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -217,7 +217,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="1dp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:background="@android:color/white"
         android:orientation="horizontal"
         android:padding="16dp">
@@ -238,56 +238,56 @@
 
     </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/lay_interests"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="1dp"-->
-        <!--android:visibility="gone"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:padding="16dp">-->
+    <LinearLayout
+        android:id="@+id/lay_interests"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:visibility="visible"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="16dp">
 
-        <!--<ImageView-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@drawable/icon_heart" />-->
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_heart" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/txt_view_interests"-->
-            <!--style="@style/AppText2"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="20dp"-->
-            <!--android:hint="@string/view_interests" />-->
+        <TextView
+            android:id="@+id/txt_view_interests"
+            style="@style/AppText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:hint="@string/view_interests" />
 
-    <!--</LinearLayout>-->
+    </LinearLayout>
 
-    <!--<LinearLayout-->
-        <!--android:id="@+id/lay_companies"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_marginTop="1dp"-->
-        <!--android:background="@android:color/white"-->
-        <!--android:orientation="horizontal"-->
-        <!--android:padding="16dp"-->
-        <!--android:visibility="gone">-->
+    <LinearLayout
+        android:id="@+id/lay_companies"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:visibility="visible">
 
-        <!--<ImageView-->
-            <!--android:layout_width="30dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:src="@drawable/icon_briefcase_grey" />-->
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_briefcase_grey" />
 
-        <!--<TextView-->
-            <!--android:id="@+id/txt_view_companies"-->
-            <!--style="@style/AppText2"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginStart="20dp"-->
-            <!--android:hint="@string/view_companies" />-->
+        <TextView
+            android:id="@+id/txt_view_companies"
+            style="@style/AppText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:hint="@string/view_companies" />
 
-    <!--</LinearLayout>-->
+    </LinearLayout>
 
 </LinearLayout>

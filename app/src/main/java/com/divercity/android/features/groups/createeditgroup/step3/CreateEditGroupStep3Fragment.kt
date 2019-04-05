@@ -182,13 +182,13 @@ class CreateEditGroupStep3Fragment : BaseFragment() {
                 R.drawable.img_unlock
             )
         )
-        txt_type.setText(R.string.public_group)
+        txt_subtitle1.setText(R.string.public_group)
         txt_type_description.setText(R.string.public_group_desc)
     }
 
     private fun showPrivate() {
         img_lock_unlock.setImageDrawable(ContextCompat.getDrawable(context!!, R.drawable.img_lock))
-        txt_type.setText(R.string.private_group)
+        txt_subtitle1.setText(R.string.private_group)
         txt_type_description.setText(R.string.private_group_desc)
     }
 }

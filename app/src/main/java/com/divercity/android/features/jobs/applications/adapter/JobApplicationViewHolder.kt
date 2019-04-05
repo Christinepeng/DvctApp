@@ -36,9 +36,9 @@ private constructor(itemView: View, private val listener: Listener?, private val
 
     interface Listener {
 
-//        fun onApplyClick(position: Int, job: JobApplicationResponse)
+//        fun onApplyClick(position: Int, company: JobApplicationResponse)
 //
-//        fun onJobClick(job: JobApplicationResponse)
+//        fun onJobClick(company: JobApplicationResponse)
     }
 
     companion object {

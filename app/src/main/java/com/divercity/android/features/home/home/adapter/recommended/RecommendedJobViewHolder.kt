@@ -22,7 +22,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                     .into(itemView.img)
 
             itemView.txt_title.text = it.attributes?.title
-            itemView.txt_subtitle.text = it.attributes?.employer?.name.plus("\n").plus(it.attributes?.locationDisplayName)
+            itemView.txt_subtitle1.text = it.attributes?.employer?.name.plus("\n").plus(it.attributes?.locationDisplayName)
             itemView.btn_action.setText(R.string.apply)
 
             it.attributes?.isAppliedByCurrent?.let {

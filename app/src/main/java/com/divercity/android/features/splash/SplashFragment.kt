@@ -46,7 +46,7 @@ class SplashFragment : BaseFragment() {
             if (error == null) {
                 Timber.e("BRANCH SDK $referringParams")
 
-                if (referringParams.getBoolean("+clicked_branch_link")) {
+                if (referringParams.optBoolean("+clicked_branch_link", false)) {
                     viewModel.checkRouteDeepLink(referringParams)
                 } else {
                     viewModel.checkRouteNoDeepLink()

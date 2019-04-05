@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class JobBody(
 
-	@field:SerializedName("job")
+	@field:SerializedName("company")
 	val job: Job? = null
 )

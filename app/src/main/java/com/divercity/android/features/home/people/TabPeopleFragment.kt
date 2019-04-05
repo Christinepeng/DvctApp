@@ -9,6 +9,7 @@ import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
+import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.home.HomeActivity
@@ -28,7 +29,6 @@ class TabPeopleFragment : BaseFragment() {
     lateinit var adapterTab: TabPeopleViewPagerAdapter
 
     private var handlerSearch = Handler()
-    private var lastSearchQuery: String? = ""
 
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
@@ -81,6 +81,13 @@ class TabPeopleFragment : BaseFragment() {
     }
 
     private fun setupAdapterViewPager() {
+
+        viewpager.adapter = adapterTab
+        viewModel.adapterPosition?.apply {
+            viewpager.currentItem = this
+        }
+        tab_layout.setupWithViewPager(viewpager)
+
         val onPageListener = object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(p0: Int) {
@@ -90,16 +97,11 @@ class TabPeopleFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
-//                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
-//                        ?.fetchGroups(lastSearchQuery)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabPeople)
+                    ?.search(viewModel.lastSearchQuery)
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)
-        viewpager.adapter = adapterTab
-        viewModel.adapterPosition?.apply {
-            viewpager.currentItem = this
-        }
-        tab_layout.setupWithViewPager(viewpager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -107,7 +109,14 @@ class TabPeopleFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_search, menu)
         searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem?.actionView as SearchView
-        searchView?.queryHint = getString(R.string.search)
+
+        if (viewModel.lastSearchQuery == "")
+            searchView?.queryHint = getString(R.string.search)
+        else {
+            searchItem?.expandActionView()
+            searchView?.setQuery(viewModel.lastSearchQuery, true)
+            searchView?.clearFocus()
+        }
 
         searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
@@ -125,20 +134,20 @@ class TabPeopleFragment : BaseFragment() {
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-//                handlerSearch.removeCallbacksAndMessages(null)
-//                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
-//                        ?.fetchGroups(query)
-//                lastSearchQuery = query
+                handlerSearch.removeCallbacksAndMessages(null)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabPeople)
+                    ?.search(query)
+                viewModel.lastSearchQuery = query ?: ""
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-//                handlerSearch.removeCallbacksAndMessages(null)
-//                handlerSearch.postDelayed({
-//                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
-//                            ?.fetchGroups(newText)
-//                    lastSearchQuery = newText
-//                }, AppConstants.SEARCH_DELAY)
+                handlerSearch.removeCallbacksAndMessages(null)
+                handlerSearch.postDelayed({
+                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabPeople)
+                        ?.search(newText)
+                    viewModel.lastSearchQuery = newText ?: ""
+                }, AppConstants.SEARCH_DELAY)
                 return true
             }
         })
@@ -155,7 +164,6 @@ class TabPeopleFragment : BaseFragment() {
 
         viewModel.adapterPosition = viewpager.currentItem
 
-        lastSearchQuery = ""
         super.onDestroyView()
     }
 }

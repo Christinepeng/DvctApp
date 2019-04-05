@@ -32,7 +32,8 @@ constructor(
         USER_ID,
         FCM_TOKEN,
         DEEP_LINK_TYPE,
-        DEEP_LINK_GROUP_INVITE
+        DEEP_LINK_GROUP_INVITE,
+        CURRENT_CHAT_ID
     }
 
     private val sharedPreferencesManager: SharedPreferencesManager<Key> =
@@ -91,6 +92,14 @@ constructor(
 
     override fun getUserId(): String {
         return sharedPreferencesManager.getString(Key.USER_ID)!!
+    }
+
+    override fun getCurrentChatId(): String? {
+        return sharedPreferencesManager.getString(Key.CURRENT_CHAT_ID)
+    }
+
+    override fun setCurrentChatId(chatId: String?) {
+        sharedPreferencesManager.put(Key.CURRENT_CHAT_ID, chatId)
     }
 
     override fun setDeepLinkType(type: String?) {

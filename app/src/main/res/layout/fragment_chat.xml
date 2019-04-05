@@ -51,10 +51,10 @@
     <include
         android:id="@+id/lay_image"
         layout="@layout/view_image_btn_small"
-        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/view7"/>
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@+id/view7" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_users"
@@ -140,5 +140,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_start_conversation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:fontFamily="@font/avenir_medium"
+        android:text="@string/start_new_conversation"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

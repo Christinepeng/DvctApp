@@ -75,7 +75,7 @@ constructor(private val postJobUseCase: PostJobUseCase,
     }
 
     fun setJobData(jobResponse: JobResponse){
-        company = CompanyResponse(jobResponse.id)
+        company = CompanyResponse(id = jobResponse.id)
         jobType = JobTypeResponse(id = "1")
         jobResponse.attributes?.skillsTag?.let {
 

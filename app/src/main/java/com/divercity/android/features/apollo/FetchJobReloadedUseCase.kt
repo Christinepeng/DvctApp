@@ -50,7 +50,7 @@ constructor(private val apolloRepository: ApolloRepository) {
                             if (response.hasErrors()) {
                                 val r = JobDataView(
                                     null,
-                                    "Error getting job",
+                                    "Error getting company",
                                     params.position
                                 )
                                 continuation.resume(Either.Left(r))

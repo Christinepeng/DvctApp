@@ -23,7 +23,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                     .into(itemView.img)
 
             itemView.txt_title.text = it.attributes?.title
-            itemView.txt_subtitle.text = it.attributes?.followersCount.toString().plus(" Members")
+            itemView.txt_subtitle1.text = it.attributes?.followersCount.toString().plus(" Members")
 
             itemView.btn_action.apply {
                 text = if (data.attributes.isFollowedByCurrent) {

@@ -124,4 +124,11 @@ interface JobService {
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
     ): Observable<Response<DataArray<JobResponse>>>
+
+    @GET("jobs")
+    fun fetchJobsByCompany(
+        @Query("company_id") companyId: String,
+        @Query("page[number]") page: Int,
+        @Query("page[size]") size: Int
+    ): Observable<Response<DataArray<JobResponse>>>
 }

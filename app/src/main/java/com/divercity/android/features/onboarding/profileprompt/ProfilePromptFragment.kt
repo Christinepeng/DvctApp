@@ -34,9 +34,9 @@ class ProfilePromptFragment : BaseFragment() {
         viewModel.showRecruiterText.observe(this, Observer {
             it?.let { data ->
                 if (data)
-                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_recruiter, viewModel.userName)
+                    txt_subtitle1.text = this.getString(R.string.profile_prompt_subtitle_recruiter, viewModel.userName)
                 else
-                    txt_subtitle.text = this.getString(R.string.profile_prompt_subtitle_nonrecruiter, viewModel.userName)
+                    txt_subtitle1.text = this.getString(R.string.profile_prompt_subtitle_nonrecruiter, viewModel.userName)
             }
         })
     }

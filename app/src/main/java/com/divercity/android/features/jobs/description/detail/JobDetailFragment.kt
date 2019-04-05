@@ -152,7 +152,7 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
                     .into(include_img_desc.img)
 
                 include_img_desc.txt_name.text = it.attributes?.recruiter?.name
-                include_img_desc.txt_type.text = it.attributes?.recruiter?.occupation
+                include_img_desc.txt_subtitle1.text = it.attributes?.recruiter?.occupation
             }
 
             if (viewModel.isLoggedUserJobSeeker()) {

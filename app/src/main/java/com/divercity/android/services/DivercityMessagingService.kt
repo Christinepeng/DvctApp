@@ -46,18 +46,22 @@ class DivercityMessagingService : FirebaseMessagingService() {
             if (data.data.isNotEmpty()) {
                 when (data.data["category"]) {
                     NEW_DIRECT_MESSAGE -> {
-                        RxBus.publish(RxEvent.OnNewMessageReceived(true))
-                        notificationHelper.notify(
-                            data.data["chat_id"]!!.toInt(),
-                            notificationHelper
-                                .getChatMessageNotification(
-                                    "New message",
-                                    data.data["alert"]!!,
-                                    data.data["sender_id"],
-                                    data.data["chat_id"]!!.toInt(),
-                                    data.data["display_name"]
-                                )
-                        )
+                        /* This is to not show notification when user is on the chat screen*/
+
+                        if (sessionRepository.getCurrentChatId() != data.data["chat_id"]) {
+                            RxBus.publish(RxEvent.OnNewMessageReceived(true))
+                            notificationHelper.notify(
+                                data.data["chat_id"]!!.toInt(),
+                                notificationHelper
+                                    .getChatMessageNotification(
+                                        "New message",
+                                        data.data["alert"]!!,
+                                        data.data["sender_id"],
+                                        data.data["chat_id"]!!.toInt(),
+                                        data.data["display_name"]
+                                    )
+                            )
+                        }
                     }
                     NEW_CONNECTION_REQUEST -> {
                         notificationHelper.notify(
@@ -123,7 +127,10 @@ class DivercityMessagingService : FirebaseMessagingService() {
                     override fun onSuccess(o: Boolean) {
                     }
                 }
-                updateFCMTokenUseCase.execute(callback, UpdateFCMTokenUseCase.Params.forDevice(deviceId, token, true))
+                updateFCMTokenUseCase.execute(
+                    callback,
+                    UpdateFCMTokenUseCase.Params.forDevice(deviceId, token, true)
+                )
             }
         }
     }

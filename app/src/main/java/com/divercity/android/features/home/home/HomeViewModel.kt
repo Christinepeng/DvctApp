@@ -14,7 +14,6 @@ import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.data.entity.home.RecommendedItem
 import com.divercity.android.data.entity.message.MessageResponse
-import com.divercity.android.data.entity.storiesfeatured.StoriesFeaturedResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
@@ -40,7 +39,6 @@ constructor(
     private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase
 ) : BaseViewModel() {
 
-    var featuredList = MutableLiveData<Resource<List<StoriesFeaturedResponse>>>()
     var questionList: LiveData<PagedList<HomeItem>>
     var fetchRecommendedJobsGroupsResponse = MutableLiveData<Resource<List<RecommendedItem>>>()
     var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()

@@ -43,6 +43,10 @@ interface SessionRepository {
 
     fun setFCMToken(token: String?)
 
+    fun getCurrentChatId(): String?
+
+    fun setCurrentChatId(chatId: String?)
+
     fun getUserId(): String
 
     fun setUserId(id: String)

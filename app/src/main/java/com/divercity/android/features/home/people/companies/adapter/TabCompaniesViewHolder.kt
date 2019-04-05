@@ -14,14 +14,33 @@ class TabCompaniesViewHolder private constructor(itemView: View, private val lis
 
     fun bindTo(data: CompanyResponse?) {
         itemView.apply {
-            data?.let {
+            data?.attributes?.let {
                 GlideApp.with(this)
-                    .load(it.attributes.photos.medium)
+                    .load(it.photos?.medium)
                     .into(item_img)
 
-                item_txt_title.text = it.attributes.name
-                item_txt_subtitle1.visibility = View.GONE
-                item_txt_subtitle2.visibility = View.GONE
+                item_txt_title.text = it.name
+
+                if (it.industry != null) {
+                    item_txt_subtitle1.visibility = View.VISIBLE
+                    item_txt_subtitle1.text = it.industry
+                } else {
+                    item_txt_subtitle1.visibility = View.GONE
+                }
+
+                if(it.headquarters != null){
+                    item_txt_subtitle2.visibility = View.VISIBLE
+                    item_txt_subtitle2.text = it.headquarters
+                } else {
+                    item_txt_subtitle2.visibility = View.GONE
+                }
+
+                if(it.companySize != null){
+                    item_txt_subtitle3.visibility = View.VISIBLE
+                    item_txt_subtitle3.text = it.companySize
+                } else {
+                    item_txt_subtitle3.visibility = View.GONE
+                }
 
                 setOnClickListener { listener.onCompanyClick(data) }
             }

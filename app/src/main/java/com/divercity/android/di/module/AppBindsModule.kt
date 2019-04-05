@@ -4,6 +4,8 @@ import android.app.Application
 import android.content.Context
 import com.divercity.android.repository.chat.ChatRepository
 import com.divercity.android.repository.chat.ChatRepositoryImpl
+import com.divercity.android.repository.company.CompanyRepository
+import com.divercity.android.repository.company.CompanyRepositoryImpl
 import com.divercity.android.repository.data.DataRepository
 import com.divercity.android.repository.data.DataRepositoryImpl
 import com.divercity.android.repository.document.DocumentRepository
@@ -56,4 +58,7 @@ abstract class AppBindsModule {
 
     @Binds
     abstract fun bindGroupRepository(repository: GroupRepositoryImpl): GroupRepository
+
+    @Binds
+    abstract fun bindCompanyRepository(repository: CompanyRepositoryImpl): CompanyRepository
 }

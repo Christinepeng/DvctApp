@@ -102,11 +102,14 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
             }
         }
 
-        subscribeToLiveData()
         setupView()
+        subscribeToLiveData()
     }
 
     private fun setupView() {
+
+        showProgressNoBk()
+
         lay_image.btn_remove_img.setOnClickListener {
             photoFile = null
             lay_image.visibility = View.GONE
@@ -244,11 +247,6 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
         )
         viewModel.mentions.add(user)
         val bss = StyleSpan(Typeface.BOLD)
-//        et_msg.text.setSpan(user.toChatMember(),
-//            lastIndexOfAT,
-//            lastIndexOfAT + textToInsert.length,
-//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//        )
 
         et_msg.text.setSpan(
             bss,
@@ -289,7 +287,8 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
     }
 
     private fun subscribeToLiveData() {
-        viewModel.sendMessageResponse.observe(this, Observer { response ->
+
+        viewModel.sendMessageResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     btn_send.visibility = View.GONE
@@ -312,7 +311,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
             }
         })
 
-        viewModel.fetchChatMembersResponse.observe(this, Observer { response ->
+        viewModel.fetchChatMembersResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
 
@@ -327,13 +326,49 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
             }
         })
 
+        viewModel.fetchMessagesResponse.observe(viewLifecycleOwner, Observer {response ->
+            when (response?.status) {
+                Status.LOADING -> {
+
+                }
+                Status.ERROR -> {
+                    if(response.data!!.meta!!.page == 0)
+                        Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    if(response.data!!.data!!.chats!!.isEmpty() && response.data.meta!!.page == 0) {
+                        hideProgressNoBk()
+                        txt_start_conversation.visibility = View.VISIBLE
+                    }
+                }
+            }
+        })
+
+        viewModel.fetchCreateChatResponse.observe(viewLifecycleOwner, Observer {response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgressNoBk()
+                }
+                Status.ERROR -> {
+                    hideProgressNoBk()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                }
+            }
+        })
+
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPagedListLiveData()
         })
     }
 
     private fun subscribeToPagedListLiveData() {
-        viewModel.pagedListLiveData!!.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedListLiveData?.observe(viewLifecycleOwner, Observer {
+            if(it.isNotEmpty()) {
+                txt_start_conversation.visibility = View.GONE
+                hideProgressNoBk()
+            }
             adapter.submitList(it)
         })
     }

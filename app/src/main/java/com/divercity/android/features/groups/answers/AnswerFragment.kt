@@ -1,22 +1,22 @@
 package com.divercity.android.features.groups.answers
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.graphics.Typeface
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import android.text.Spannable
 import android.text.style.StyleSpan
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
@@ -58,7 +58,7 @@ class AnswerFragment : BaseFragment() {
 
     var isReplacing = false
 
-    var question : Question? = null
+    var question: Question? = null
     private var photoFile: File? = null
 
     companion object {
@@ -84,11 +84,11 @@ class AnswerFragment : BaseFragment() {
         viewModel.question = question
         viewModel.start()
 
-        KeyboardVisibilityEvent.setEventListener(activity!!){
-            if(it) {
+        KeyboardVisibilityEvent.setEventListener(activity!!) {
+            if (it) {
                 group_header.visibility = View.GONE
                 item_quest_cardview_pic_main.visibility = View.GONE
-            }else {
+            } else {
                 group_header.visibility = View.VISIBLE
                 if (question?.questionPicUrl != null) {
                     item_quest_cardview_pic_main.visibility = View.VISIBLE
@@ -123,7 +123,7 @@ class AnswerFragment : BaseFragment() {
 
         txt_date.text = Util.getTimeAgoWithStringServerDate(question?.createdAt)
 
-        if(question?.questionPicUrl != null){
+        if (question?.questionPicUrl != null) {
             Glide
                 .with(this)
                 .load(question?.questionPicUrl)
@@ -143,7 +143,10 @@ class AnswerFragment : BaseFragment() {
 
         btn_send.setOnClickListener {
             if (et_msg.text.toString() != "" || photoFile != null) {
-                viewModel.sendNewAnswer(et_msg.text.toString(), ImageUtils.getStringBase64(photoFile, 600, 600))
+                viewModel.sendNewAnswer(
+                    et_msg.text.toString(),
+                    ImageUtils.getStringBase64(photoFile, 600, 600)
+                )
             }
         }
 
@@ -290,7 +293,7 @@ class AnswerFragment : BaseFragment() {
     }
 
     private fun subscribeToLiveData() {
-        viewModel.sendNewAnswerResponse.observe(this, Observer { response ->
+        viewModel.sendNewAnswerResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     btn_send.visibility = View.GONE
@@ -313,7 +316,7 @@ class AnswerFragment : BaseFragment() {
             }
         })
 
-        viewModel.fetchChatMembersResponse.observe(this, Observer { response ->
+        viewModel.fetchChatMembersResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
 
@@ -328,6 +331,18 @@ class AnswerFragment : BaseFragment() {
             }
         })
 
+        viewModel.fetchAnswersResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                }
+            }
+        })
+
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPagedListLiveData()
         })
@@ -336,7 +351,7 @@ class AnswerFragment : BaseFragment() {
     private fun subscribeToPagedListLiveData() {
         viewModel.pagedListLiveData!!.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
-            if(it.isNullOrEmpty())
+            if (it.isNullOrEmpty())
                 txt_first_comment.visibility = View.VISIBLE
             else
                 txt_first_comment.visibility = View.GONE

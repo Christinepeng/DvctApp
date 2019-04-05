@@ -106,7 +106,7 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
     }
 
     override fun onCompanyChosen(company: CompanyResponse) {
-        viewModel.updateUserProfile(company.id)
+        viewModel.updateUserProfile(company.id!!)
     }
 
     override fun onNoCurrentCompany() {

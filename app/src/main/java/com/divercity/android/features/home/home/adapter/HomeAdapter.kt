@@ -1,9 +1,9 @@
 package com.divercity.android.features.home.home.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
@@ -22,15 +22,15 @@ import javax.inject.Inject
 
 class HomeAdapter @Inject
 constructor(val sessionRepository: SessionRepository) :
-    PagedListAdapter<HomeItem, RecyclerView.ViewHolder>(
-        userDiffCallback
-    ) {
+    PagedListAdapter<HomeItem, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
     lateinit var recommendedAdapter: RecommendedAdapter
-    var feedJobListener : JobsViewHolder.Listener? = null
-    var questionListener : QuestionsViewHolder.Listener? = null
+    var feedJobListener: JobsViewHolder.Listener? = null
+    var questionListener: QuestionsViewHolder.Listener? = null
+
+    var adapterProxy: AdapterDataObserverProxy? = null
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
@@ -38,30 +38,40 @@ constructor(val sessionRepository: SessionRepository) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_question -> QuestionsViewHolder.create(parent, sessionRepository, questionListener)
+            R.layout.item_question -> QuestionsViewHolder.create(
+                parent,
+                sessionRepository,
+                questionListener
+            )
             R.layout.view_network_state -> NetworkStateViewHolder.create(
                 parent,
                 retryCallback
             )
             R.layout.item_list_recommended -> RecommendedViewHolder.create(parent)
-            R.layout.item_feed_job -> JobFeedViewHolder.create(parent, feedJobListener, sessionRepository.isLoggedUserJobSeeker())
+            R.layout.item_feed_job -> JobFeedViewHolder.create(
+                parent,
+                feedJobListener,
+                sessionRepository.isLoggedUserJobSeeker()
+            )
             else -> throw IllegalArgumentException("unknown view type")
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_question -> (holder as QuestionsViewHolder).bindTo(getItem(position) as QuestionResponse)
-            R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
-            R.layout.item_list_recommended -> (holder as RecommendedViewHolder).bindTo(
-                getItem(position) as Recommended?, recommendedAdapter
-            )
-            R.layout.item_feed_job -> (holder as JobFeedViewHolder).bindTo(position, getItem(position) as JobResponse)
+            R.layout.item_question -> (holder as QuestionsViewHolder)
+                .bindTo(getItem(position) as QuestionResponse)
+            R.layout.view_network_state -> (holder as NetworkStateViewHolder)
+                .bindTo(networkState)
+            R.layout.item_list_recommended -> (holder as RecommendedViewHolder)
+                .bindTo(getItem(position) as Recommended?, recommendedAdapter)
+            R.layout.item_feed_job -> (holder as JobFeedViewHolder)
+                .bindTo(position, getItem(position) as JobResponse)
         }
     }
 
     private fun hasExtraRow(): Boolean {
-        return networkState != null && networkState !== NetworkState.LOADED
+        return networkState != null && networkState != NetworkState.LOADED
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -87,10 +97,12 @@ constructor(val sessionRepository: SessionRepository) :
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
                 notifyItemRemoved(super.getItemCount())
+                adapterProxy?.headerCount = 0
             } else {
                 notifyItemInserted(super.getItemCount())
+                adapterProxy?.headerCount = 1
             }
-        } else if (hasExtraRow && previousState !== newNetworkState) {
+        } else if (hasExtraRow && previousState != newNetworkState) {
             notifyItemChanged(itemCount - 1)
         }
     }
@@ -107,5 +119,10 @@ constructor(val sessionRepository: SessionRepository) :
                 return oldItem == newItem
             }
         }
+    }
+
+    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
+        adapterProxy = AdapterDataObserverProxy(observer)
+        super.registerAdapterDataObserver(adapterProxy!!)
     }
 }

@@ -309,7 +309,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.settings.ProfileSettingsActivity"
+            android:name="com.divercity.android.features.settings.ProfileSettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -319,7 +319,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.divercity.android.features.profile.editinterests.InterestsActivity"
+            android:name="com.divercity.android.features.profile.myinterests.InterestsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -334,7 +334,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.settings.accountsettings.AccountSettingsActivity"
+            android:name="com.divercity.android.features.settings.accountsettings.AccountSettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -379,12 +379,37 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.otheruser.OtherUserProfileActivity"
+            android:name=".features.profile.potheruser.OtherUserProfileActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
             android:name=".features.invitations.users.InviteUsersActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.divercity.android.features.company.mycompanies.MyCompaniesActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.divercity.android.features.groups.mygroups.MyGroupsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.companydetail.CompanyDetailActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.companyadmin.CompanyAdminActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.companyadminadd.CompanyAdminAddActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

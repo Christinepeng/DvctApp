@@ -21,7 +21,6 @@ class SelectOccupationActivity : BaseActivity() {
         }
     }
 
-//    TODO Create fragment select occupation of interests
     override fun fragment(): BaseFragment = SelectOccupationFragment.newInstance(
             intent.getIntExtra(INTENT_EXTRA_PARAM_PROGRESS, 0))
 }

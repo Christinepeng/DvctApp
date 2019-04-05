@@ -6,18 +6,18 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
+import com.divercity.android.features.home.people.ITabPeople
 import com.divercity.android.features.home.people.companies.adapter.TabCompaniesAdapter
 import com.divercity.android.features.home.people.companies.adapter.TabCompaniesViewHolder
 import kotlinx.android.synthetic.main.fragment_companies.*
 import javax.inject.Inject
 
-class CompaniesFragment : BaseFragment(), RetryCallback {
+class CompaniesFragment : BaseFragment(), RetryCallback, ITabPeople {
 
     lateinit var viewModel: CompaniesViewModel
 
@@ -59,12 +59,8 @@ class CompaniesFragment : BaseFragment(), RetryCallback {
         list.adapter = adapter
     }
 
-    private fun search(query: String?) {
-        handlerSearch.removeCallbacksAndMessages(null)
-        handlerSearch.postDelayed({
-            viewModel.fetchCompanies(viewLifecycleOwner, if (query == "") null else query)
-
-        }, AppConstants.SEARCH_DELAY)
+    override fun search(query: String?) {
+        viewModel.fetchCompanies(viewLifecycleOwner, query)
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -123,6 +119,7 @@ class CompaniesFragment : BaseFragment(), RetryCallback {
     private val listener = object : TabCompaniesViewHolder.Listener {
 
         override fun onCompanyClick(company: CompanyResponse) {
+            navigator.navigateToCompanyDetail(this@CompaniesFragment, company)
         }
     }
 }

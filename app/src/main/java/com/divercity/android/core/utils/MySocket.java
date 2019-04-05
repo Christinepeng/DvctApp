@@ -2,19 +2,25 @@ package com.divercity.android.core.utils;
 
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.NonNull;
 import android.util.Log;
+
 import com.google.gson.JsonObject;
-import okhttp3.*;
-import okhttp3.internal.ws.RealWebSocket;
-import okhttp3.logging.HttpLoggingInterceptor;
-import okio.ByteString;
-import timber.log.Timber;
 
 import java.net.ProtocolException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
+
+import androidx.annotation.NonNull;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.WebSocket;
+import okhttp3.WebSocketListener;
+import okhttp3.internal.ws.RealWebSocket;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okio.ByteString;
+import timber.log.Timber;
 
 /**
  * Websocket class based on OkHttp3 with {event->data} message format to make your life easier.
@@ -307,8 +313,6 @@ public class MySocket {
         if (state != State.CONNECT_ERROR) // connection not closed !!
             return;
 
-        changeState(State.RECONNECT_ATTEMPT);
-
         if (realWebSocket != null) {
             // Cancel websocket connection
             realWebSocket.cancel();
@@ -316,15 +320,18 @@ public class MySocket {
             realWebSocket = null;
         }
 
-        if (eventListener.get(EVENT_RECONNECT_ATTEMPT) != null) {
-            eventListener.get(EVENT_RECONNECT_ATTEMPT).onMessage(MySocket.this, EVENT_RECONNECT_ATTEMPT);
-        }
-
 //        // Calculate delay time
 //        int collision = reconnectionAttempts > MAX_COLLISION ? MAX_COLLISION : reconnectionAttempts;
 //        long delayTime = Math.round((Math.pow(2, collision) - 1) / 2) * 1000;
 
         if(reconnectionAttempts != MAX_COLLISION) {
+
+            changeState(State.RECONNECT_ATTEMPT);
+
+            if (eventListener.get(EVENT_RECONNECT_ATTEMPT) != null) {
+                eventListener.get(EVENT_RECONNECT_ATTEMPT).onMessage(MySocket.this, EVENT_RECONNECT_ATTEMPT);
+            }
+
             // Remove any pending posts of callbacks
             delayedReconnection.removeCallbacksAndMessages(null);
             // Start new post delay

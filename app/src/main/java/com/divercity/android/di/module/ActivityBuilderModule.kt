@@ -7,8 +7,12 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatActivi
 import com.divercity.android.features.chat.newchat.NewChatActivity
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatActivity
 import com.divercity.android.features.chat.recentchats.ChatsActivity
+import com.divercity.android.features.company.companyadmin.CompanyAdminActivity
+import com.divercity.android.features.company.companyadminadd.CompanyAdminAddActivity
+import com.divercity.android.features.company.companydetail.CompanyDetailActivity
 import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
+import com.divercity.android.features.company.mycompanies.MyCompaniesActivity
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
@@ -21,6 +25,7 @@ import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGro
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
+import com.divercity.android.features.groups.mygroups.MyGroupsActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingActivity
@@ -48,11 +53,11 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
-import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
-import com.divercity.android.features.profile.otheruser.OtherUserProfileActivity
-import com.divercity.android.features.profile.settings.ProfileSettingsActivity
-import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
+import com.divercity.android.features.profile.myinterests.InterestsActivity
+import com.divercity.android.features.profile.potheruser.OtherUserProfileActivity
+import com.divercity.android.features.settings.ProfileSettingsActivity
+import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
@@ -237,4 +242,19 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindInviteUsersActivity(): InviteUsersActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindMyCompaniesActivity(): MyCompaniesActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindMyGroupsActivity(): MyGroupsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCompanyDetailActivity(): CompanyDetailActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCompanyAdminActivity(): CompanyAdminActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCompanyAdminAddActivity(): CompanyAdminAddActivity
 }

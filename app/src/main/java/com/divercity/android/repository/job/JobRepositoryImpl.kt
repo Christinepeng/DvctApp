@@ -21,14 +21,22 @@ import javax.inject.Inject
 class JobRepositoryImpl @Inject
 constructor(private val jobService: JobService) : JobRepository {
 
-    override fun fetchRecommendedJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>> {
+    override fun fetchRecommendedJobs(
+        page: Int,
+        size: Int,
+        query: String?
+    ): Observable<List<JobResponse>> {
         return jobService.fetchRecommendedJobs(page, size, query).map {
             checkResponse(it)
             it.body()?.data
         }
     }
 
-    override fun fetchSimilarJobs(pageNumber: Int, size: Int, jobId: String?): Observable<List<JobResponse>> {
+    override fun fetchSimilarJobs(
+        pageNumber: Int,
+        size: Int,
+        jobId: String?
+    ): Observable<List<JobResponse>> {
         return jobService.fetchSimilarJobs(pageNumber, size, jobId).map {
             checkResponse(it)
             it.body()?.data
@@ -44,14 +52,22 @@ constructor(private val jobService: JobService) : JobRepository {
         }
     }
 
-    override fun fetchApplicants(jobId: String, pageNumber: Int, size: Int): Observable<List<JobApplicationResponse>> {
+    override fun fetchApplicants(
+        jobId: String,
+        pageNumber: Int,
+        size: Int
+    ): Observable<List<JobApplicationResponse>> {
         return jobService.fetchApplicants(jobId, pageNumber, size).map {
             checkResponse(it)
             it.body()?.data
         }
     }
 
-    override fun applyJob(jobId: String, userDocId: String, coverLetter: String): Observable<JobApplicationResponse> {
+    override fun applyJob(
+        jobId: String,
+        userDocId: String,
+        coverLetter: String
+    ): Observable<JobApplicationResponse> {
         val partJobId = RequestBody.create(MediaType.parse("text/plain"), jobId)
         val partDocId = RequestBody.create(MediaType.parse("text/plain"), userDocId)
         val partCL = RequestBody.create(MediaType.parse("text/plain"), coverLetter)
@@ -70,10 +86,10 @@ constructor(private val jobService: JobService) : JobRepository {
     }
 
     override fun fetchJobPostingsByUser(
-            userId: String,
-            page: Int,
-            size: Int,
-            query: String?
+        userId: String,
+        page: Int,
+        size: Int,
+        query: String?
     ): Observable<List<JobResponse>> {
         return jobService.fetchJobPostingsByUser(userId, page, size, query).map {
             checkResponse(it)
@@ -82,9 +98,9 @@ constructor(private val jobService: JobService) : JobRepository {
     }
 
     override fun fetchMyJobApplications(
-            page: Int,
-            size: Int,
-            query: String?
+        page: Int,
+        size: Int,
+        query: String?
     ): Observable<List<JobApplicationResponse>> {
         return jobService.fetchMyJobApplications(page, size, query).map {
             checkResponse(it)
@@ -106,7 +122,11 @@ constructor(private val jobService: JobService) : JobRepository {
         }
     }
 
-    override fun fetchSavedJobs(page: Int, size: Int, query: String?): Observable<IncludedArray<JobResponse>> {
+    override fun fetchSavedJobs(
+        page: Int,
+        size: Int,
+        query: String?
+    ): Observable<IncludedArray<JobResponse>> {
         return jobService.fetchSavedJobs(page, size, query)
     }
 
@@ -158,9 +178,9 @@ constructor(private val jobService: JobService) : JobRepository {
     }
 
     override fun editJobApplication(
-            jobId: String,
-            userDocId: String,
-            coverLetter: String
+        jobId: String,
+        userDocId: String,
+        coverLetter: String
     ): Observable<JobApplicationResponse> {
         val partDocId = RequestBody.create(MediaType.parse("text/plain"), userDocId)
         val partCL = RequestBody.create(MediaType.parse("text/plain"), coverLetter)
@@ -175,6 +195,17 @@ constructor(private val jobService: JobService) : JobRepository {
         val partCanceled = RequestBody.create(MediaType.parse("text/plain"), "true")
 
         return jobService.cancelJobApplication(jobId, partCanceled).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun fetchJobsByCompany(
+        companyId: String,
+        page: Int,
+        size: Int
+    ): Observable<List<JobResponse>> {
+        return jobService.fetchJobsByCompany(companyId, page, size).map {
             checkResponse(it)
             it.body()?.data
         }

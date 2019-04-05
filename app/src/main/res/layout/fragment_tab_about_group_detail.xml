@@ -54,7 +54,7 @@
                         android:src="@drawable/img_lock" />
 
                     <TextView
-                        android:id="@+id/txt_type"
+                        android:id="@+id/txt_subtitle1"
                         style="@style/AppText2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

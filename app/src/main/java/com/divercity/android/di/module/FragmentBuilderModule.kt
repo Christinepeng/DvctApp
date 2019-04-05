@@ -11,9 +11,16 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatFragme
 import com.divercity.android.features.chat.newchat.NewChatFragment
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatFragment
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsFragment
-import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
+import com.divercity.android.features.company.companyadmin.CompanyAdminFragment
+import com.divercity.android.features.company.companyadminadd.CompanyAdminAddFragment
+import com.divercity.android.features.company.companydetail.CompanyDetailFragment
+import com.divercity.android.features.company.companydetail.about.CompanyDetailAboutFragment
+import com.divercity.android.features.company.companydetail.employees.EmployeesFragment
+import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyFragment
 import com.divercity.android.features.company.companysize.CompanySizesFragment
 import com.divercity.android.features.company.createcompany.CreateCompanyFragment
+import com.divercity.android.features.company.mycompanies.MyCompaniesFragment
+import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyFragment
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogFragment
@@ -55,7 +62,6 @@ import com.divercity.android.features.jobs.applicants.JobApplicantsFragment
 import com.divercity.android.features.jobs.applications.JobsApplicationsFragment
 import com.divercity.android.features.jobs.description.aboutcompany.TabAboutCompanyFragment
 import com.divercity.android.features.jobs.description.detail.JobDetailFragment
-import com.divercity.android.features.jobs.description.detail.module.JobDetailModule
 import com.divercity.android.features.jobs.description.jobdescription.TabJobDescriptionFragment
 import com.divercity.android.features.jobs.description.poster.JobDescriptionPosterFragment
 import com.divercity.android.features.jobs.description.poster.module.JobDescriptionPosterModule
@@ -84,16 +90,16 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragment
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeFragment
-import com.divercity.android.features.profile.currentuser.CurrentUserProfileFragment
-import com.divercity.android.features.profile.currentuser.tabconnections.ConnectionsFragment
-import com.divercity.android.features.profile.currentuser.tabprofile.TabProfileFragment
-import com.divercity.android.features.profile.editinterests.InterestsFragment
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsFragment
-import com.divercity.android.features.profile.otheruser.OtherUserProfileFragment
-import com.divercity.android.features.profile.otheruser.tabprofile.TabOtherUserProfileFragment
-import com.divercity.android.features.profile.settings.ProfileSettingsFragment
-import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsFragment
+import com.divercity.android.features.profile.myinterests.InterestsFragment
+import com.divercity.android.features.profile.pcurrentuser.CurrentUserProfileFragment
+import com.divercity.android.features.profile.pcurrentuser.tabconnections.ConnectionsFragment
+import com.divercity.android.features.profile.pcurrentuser.tabprofile.TabProfileFragment
+import com.divercity.android.features.profile.potheruser.OtherUserProfileFragment
+import com.divercity.android.features.profile.potheruser.tabprofile.TabOtherUserProfileFragment
 import com.divercity.android.features.profile.tabfollowing.FollowingFragment
+import com.divercity.android.features.settings.ProfileSettingsFragment
+import com.divercity.android.features.settings.accountsettings.AccountSettingsFragment
 import com.divercity.android.features.signup.SignUpFragment
 import com.divercity.android.features.skill.base.SelectSkillFragment
 import com.divercity.android.features.skill.editskills.EditUserSkillFragment
@@ -220,7 +226,7 @@ abstract class FragmentBuilderModule {
     @ContributesAndroidInjector
     abstract fun bindMyGroupsFragment(): MyGroupsFragment
 
-    @ContributesAndroidInjector(modules = [JobDetailModule::class])
+    @ContributesAndroidInjector
     abstract fun bindJobDescriptionSeekerFragment(): JobDetailFragment
 
     @ContributesAndroidInjector(modules = [JobDescriptionPosterModule::class])
@@ -390,4 +396,25 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindInviteUsersFragment(): InviteUsersFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindMyCompaniesFragment(): MyCompaniesFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCompanyDetailFragment(): CompanyDetailFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindEmployeesFragment(): EmployeesFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCompanyDetailAboutFragment(): CompanyDetailAboutFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobPostingsByCompanyFragment(): JobPostingsByCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCompanyAdminFragment(): CompanyAdminFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCompanyAdminAddFragment(): CompanyAdminAddFragment
 }

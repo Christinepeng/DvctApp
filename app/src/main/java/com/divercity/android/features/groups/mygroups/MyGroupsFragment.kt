@@ -1,7 +1,9 @@
 package com.divercity.android.features.groups.mygroups
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -9,10 +11,14 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
+import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.ITabsGroups
 import com.divercity.android.features.groups.adapter.GroupsAdapter
-import com.divercity.android.features.groups.viewmodel.GroupViewModel
+import com.divercity.android.features.groups.adapter.GroupsViewHolder
+import com.divercity.android.features.groups.all.AllGroupsFragment
+import com.divercity.android.features.groups.all.model.GroupPositionModel
 import kotlinx.android.synthetic.main.fragment_my_groups.*
+import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
 /**
@@ -23,15 +29,16 @@ import javax.inject.Inject
 class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 
     lateinit var viewModel: MyGroupsViewModel
-    lateinit var groupViewModel : GroupViewModel
 
     @Inject
     lateinit var adapter: GroupsAdapter
 
-    private var positionJoinClicked: Int = 0
     private var isListRefreshing = false
+    private var lastGroupPositionTap = 0
 
     companion object {
+
+        const val REQUEST_CODE_GROUP = 200
 
         fun newInstance(): MyGroupsFragment {
             return MyGroupsFragment()
@@ -45,20 +52,27 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)[MyGroupsViewModel::class.java]
         } ?: throw Exception("Invalid Fragment")
-
-        groupViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)[GroupViewModel::class.java]
-        } ?: throw Exception("Invalid Fragment")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         adapter.setRetryCallback(this)
-//        adapter.setListener(listener)
+        adapter.setListener(listener)
         list.adapter = adapter
         initSwipeToRefresh()
         subscribeToPaginatedLiveData()
         subscribeToLiveData()
+    }
+
+    private fun setupToolbar() {
+        (activity as AppCompatActivity).apply {
+            setSupportActionBar(include_toolbar.toolbar)
+            supportActionBar?.let {
+                it.setTitle(R.string.my_groups)
+                it.setDisplayHomeAsUpEnabled(true)
+            }
+        }
     }
 
     private fun subscribeToLiveData() {
@@ -124,20 +138,29 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         viewModel.retry()
     }
 
-//    private val listener = object : GroupsViewHolder.Listener {
-//        override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
-//            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-//        }
-//
-//        override fun onGroupClick(group: GroupResponse) {
-//            navigator.navigateToGroupDetailForResult(this@MyGroupsFragment, group)
-//        }
-//
-//        override fun onGroupJoinClick(position: Int, group: GroupResponse) {
-//            positionJoinClicked = position
-//            viewModel.joinGroup(group)
-//        }
-//    }
+    private val listener = object : GroupsViewHolder.Listener {
+
+        override fun onGroupRequestJoinClick(groupPosition: GroupPositionModel) {
+        }
+
+        override fun onGroupJoinClick(groupPosition: GroupPositionModel) {
+        }
+
+        override fun onGroupClick(position: Int, group: GroupResponse) {
+            lastGroupPositionTap = position
+            navigator.navigateToGroupDetailForResult(
+                this@MyGroupsFragment, group,
+                REQUEST_CODE_GROUP
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == AllGroupsFragment.REQUEST_CODE_GROUP) {
+            adapter.notifyItemChanged(lastGroupPositionTap)
+        }
+    }
 
     override fun fetchGroups(searchQuery: String?) {
         viewModel.fetchGroups(viewLifecycleOwner, searchQuery)

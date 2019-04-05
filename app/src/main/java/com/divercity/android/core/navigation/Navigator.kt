@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.divercity.android.R
 import com.divercity.android.core.utils.OnboardingProgression
+import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.skills.SkillResponse
@@ -18,8 +19,12 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatActivi
 import com.divercity.android.features.chat.newchat.NewChatActivity
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatActivity
 import com.divercity.android.features.chat.recentchats.ChatsActivity
+import com.divercity.android.features.company.companyadmin.CompanyAdminActivity
+import com.divercity.android.features.company.companyadminadd.CompanyAdminAddActivity
+import com.divercity.android.features.company.companydetail.CompanyDetailActivity
 import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
+import com.divercity.android.features.company.mycompanies.MyCompaniesActivity
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
@@ -33,6 +38,7 @@ import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGro
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
+import com.divercity.android.features.groups.mygroups.MyGroupsActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingActivity
@@ -60,11 +66,11 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
-import com.divercity.android.features.profile.editinterests.InterestsActivity
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
-import com.divercity.android.features.profile.otheruser.OtherUserProfileActivity
-import com.divercity.android.features.profile.settings.ProfileSettingsActivity
-import com.divercity.android.features.profile.settings.accountsettings.AccountSettingsActivity
+import com.divercity.android.features.profile.myinterests.InterestsActivity
+import com.divercity.android.features.profile.potheruser.OtherUserProfileActivity
+import com.divercity.android.features.settings.ProfileSettingsActivity
+import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
@@ -201,6 +207,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToChatsActivity(activity: FragmentActivity) {
         activity.startActivity(ChatsActivity.getCallingIntent(activity))
+    }
+
+    fun navigateToMyCompanies(activity: FragmentActivity) {
+        activity.startActivity(MyCompaniesActivity.getCallingIntent(activity))
     }
 
     fun navigateToNewChatActivity(fragment: Fragment) {
@@ -396,6 +406,10 @@ class Navigator @Inject constructor() {
         fragment.startActivity(ShareJobGroupActivity.getCallingIntent(fragment.context, jobId))
     }
 
+    fun navigateToMyGroups(fragment: Fragment) {
+        fragment.startActivity(MyGroupsActivity.getCallingIntent(fragment.context))
+    }
+
     fun navigateToJobDescriptionPosterForResultActivity(
         fragment: Fragment,
         code: Int,
@@ -417,8 +431,8 @@ class Navigator @Inject constructor() {
         fragment.startActivity(PersonalSettingsActivity.getCallingIntent(fragment.context))
     }
 
-    fun navigateToInterestsActivity(fragment: Fragment) {
-        fragment.startActivity(InterestsActivity.getCallingIntent(fragment.context))
+    fun navigateToInterestsActivity(fragment: Fragment, isEdition: Boolean) {
+        fragment.startActivity(InterestsActivity.getCallingIntent(fragment.context, isEdition))
     }
 
     fun navigateToOtherUserProfileActivity(
@@ -459,6 +473,44 @@ class Navigator @Inject constructor() {
 
     fun navigateToCreateTopicActivity(fragment: Fragment, group: GroupResponse?) {
         fragment.startActivity(CreateTopicActivity.getCallingIntent(fragment.context, group))
+    }
+
+    fun navigateToCompanyDetail(fragment: Fragment, company: CompanyResponse) {
+        fragment.startActivity(
+            CompanyDetailActivity.getCallingIntent(
+                fragment.context!!,
+                company.id,
+                company
+            )
+        )
+    }
+
+    fun navigateToCompanyDetail(fragment: Fragment, companyId: String) {
+        fragment.startActivity(
+            CompanyDetailActivity.getCallingIntent(
+                fragment.context!!,
+                companyId,
+                null
+            )
+        )
+    }
+
+    fun navigateToCompanyAdmins(fragment: Fragment, companyId: String) {
+        fragment.startActivity(
+            CompanyAdminActivity.getCallingIntent(
+                fragment.context!!,
+                companyId
+            )
+        )
+    }
+
+    fun navigateToCompanyAdminAdd(fragment: Fragment, companyId: String) {
+        fragment.startActivity(
+            CompanyAdminAddActivity.getCallingIntent(
+                fragment.context!!,
+                companyId
+            )
+        )
     }
 
     fun navigateToAnswerActivity(fragment: Fragment, question: Question) {

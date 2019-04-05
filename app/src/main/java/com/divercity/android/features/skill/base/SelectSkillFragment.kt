@@ -7,6 +7,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import co.lujun.androidtagview.TagView
@@ -21,6 +22,7 @@ import com.divercity.android.features.skill.base.adapter.SkillsOnboardingViewHol
 import kotlinx.android.synthetic.main.fragment_base_skill.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import javax.inject.Inject
+
 
 class SelectSkillFragment : BaseFragment(), RetryCallback {
 
@@ -107,6 +109,9 @@ class SelectSkillFragment : BaseFragment(), RetryCallback {
     }
 
     private fun setupView() {
+        val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_medium)
+        tagview_skills.tagTypeface = typeface
+
         val prevSkills = arguments?.getStringArrayList(PARAM_PREV_SKILLS)
         if (prevSkills != null) tagview_skills.tags = prevSkills
 

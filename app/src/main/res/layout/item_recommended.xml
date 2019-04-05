@@ -42,7 +42,7 @@
         tools:text="Blacks in Tdfg dfg dfg dfg ech sdfs df sdf sdffg d dfggfdgs dfsdfsdfsdfsdfsd" />
 
     <TextView
-        android:id="@+id/txt_subtitle"
+        android:id="@+id/txt_subtitle1"
         style="@style/AppText5"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

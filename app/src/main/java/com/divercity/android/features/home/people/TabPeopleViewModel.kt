@@ -7,4 +7,5 @@ class TabPeopleViewModel @Inject
 constructor() : BaseViewModel() {
 
     var adapterPosition: Int? = null
+    var lastSearchQuery: String = ""
 }

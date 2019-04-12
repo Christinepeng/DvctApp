@@ -8,8 +8,6 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
 import android.text.style.StyleSpan
-import android.view.Menu
-import android.view.MenuInflater
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -75,11 +73,6 @@ class AnswerFragment : BaseFragment() {
     }
 
     override fun layoutId(): Int = R.layout.fragment_answers
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -372,11 +365,11 @@ class AnswerFragment : BaseFragment() {
         })
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu_search, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
+//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+//        menu.clear()
+//        inflater.inflate(R.menu.menu_search, menu)
+//        super.onCreateOptionsMenu(menu, inflater)
+//    }
 
     override fun onResume() {
         super.onResume()

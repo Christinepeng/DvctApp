@@ -5,6 +5,7 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.repository.paginated.SkillPaginatedRepository
 import javax.inject.Inject
 
 /**

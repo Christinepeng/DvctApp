@@ -1,14 +1,8 @@
 package com.divercity.android.features.chat.recentchats.oldrecentchats
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import com.divercity.android.core.base.viewmodel.BaseViewModel
-import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Listing
-import com.divercity.android.core.utils.SingleLiveEvent
+import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
-import com.divercity.android.features.chat.recentchats.oldrecentchats.datasource.ChatsPaginatedRepositoryImpl
+import com.divercity.android.features.chat.recentchats.RecentChatsPaginatedRepository
 import javax.inject.Inject
 
 /**
@@ -16,48 +10,10 @@ import javax.inject.Inject
  */
  
 class ChatsViewModel @Inject
-constructor(private val repository: ChatsPaginatedRepositoryImpl): BaseViewModel(){
-
-    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    lateinit var pagedChatsList: LiveData<PagedList<ExistingUsersChatListItem>>
-    private lateinit var listingPaginatedChats: Listing<ExistingUsersChatListItem>
-    var lastSearch: String? = null
+constructor(repository: RecentChatsPaginatedRepository)
+    : BaseViewModelPagination<ExistingUsersChatListItem>(repository){
 
     init {
-        fetchChats(null, null)
-    }
-
-    fun networkState(): LiveData<NetworkState> = listingPaginatedChats.networkState
-
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedChats.refreshState
-
-    fun retry() = repository.retry()
-
-    fun refresh() = repository.refresh()
-
-    fun fetchChats(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        if (searchQuery == null) {
-            lastSearch = ""
-            fetchData(lifecycleOwner, searchQuery)
-        } else if (searchQuery != lastSearch) {
-            lastSearch = searchQuery
-            fetchData(lifecycleOwner, searchQuery)
-        }
-    }
-
-    fun fetchData(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        listingPaginatedChats = repository.fetchData(searchQuery)
-        pagedChatsList = listingPaginatedChats.pagedList
-
-        lifecycleOwner?.let { lifecycleOwner ->
-            removeObservers(lifecycleOwner)
-            subscribeToPaginatedLiveData.call()
-        }
-    }
-
-    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState().removeObservers(lifecycleOwner)
-        refreshState().removeObservers(lifecycleOwner)
-        pagedChatsList.removeObservers(lifecycleOwner)
+        fetchData(null, "")
     }
 }

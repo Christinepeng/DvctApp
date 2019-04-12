@@ -126,9 +126,12 @@ class CompanyAddAdminFragment : BaseFragment(), RetryCallback {
         })
 
         btn_add.setOnClickListener {
-            if (companyId != null)
-                viewModel.addCompanyAdmins(companyId!!, adapterAdmin.getAdminsIds())
-            else
+            if (companyId != null) {
+                if (adapterAdmin.getAdminsIds().isNotEmpty())
+                    viewModel.addCompanyAdmins(companyId!!, adapterAdmin.getAdminsIds())
+                else
+                    showToast(getString(R.string.select_at_least_one))
+            } else
                 showToast("Error")
         }
     }
@@ -140,7 +143,7 @@ class CompanyAddAdminFragment : BaseFragment(), RetryCallback {
     private fun search(query: String?) {
         handlerSearch.removeCallbacksAndMessages(null)
         handlerSearch.postDelayed({
-            viewModel.fetchUsers(viewLifecycleOwner, query)
+            viewModel.fetchData(viewLifecycleOwner, query)
         }, AppConstants.SEARCH_DELAY)
     }
 
@@ -170,15 +173,15 @@ class CompanyAddAdminFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedUserList.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapterUsers.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(this, Observer {
             adapterUsers.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(this, Observer { networkState ->
             adapterUsers.currentList?.let { pagedList ->
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
                     txt_no_results.visibility = View.VISIBLE

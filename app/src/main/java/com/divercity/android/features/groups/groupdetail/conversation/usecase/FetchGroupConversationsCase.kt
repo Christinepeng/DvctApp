@@ -1,5 +1,6 @@
 package com.divercity.android.features.groups.groupdetail.conversation.usecase
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.repository.group.GroupRepository
@@ -16,21 +17,11 @@ class FetchGroupConversationsCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: GroupRepository
-) : UseCase<@JvmSuppressWildcards List<QuestionResponse>, FetchGroupConversationsCase.Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<QuestionResponse>, Params>(executorThread, uiThread) {
 
     lateinit var groupId: String
 
     override fun createObservableUseCase(params: Params): Observable<List<QuestionResponse>> {
         return repository.fetchQuestions(groupId, params.page, params.size, params.query)
-    }
-
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
-
-        companion object {
-
-            fun forQuestions(page: Int, size: Int, query: String?): Params {
-                return Params(page, size, query)
-            }
-        }
     }
 }

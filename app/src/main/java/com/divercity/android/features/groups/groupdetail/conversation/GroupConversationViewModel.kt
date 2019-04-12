@@ -1,14 +1,7 @@
 package com.divercity.android.features.groups.groupdetail.conversation
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import com.divercity.android.core.base.viewmodel.BaseViewModel
-import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Listing
-import com.divercity.android.core.utils.SingleLiveEvent
+import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.data.entity.questions.QuestionResponse
-import com.divercity.android.features.groups.groupdetail.conversation.datasource.GroupConversationPaginatedRepositoryImpl
 import javax.inject.Inject
 
 /**
@@ -17,44 +10,16 @@ import javax.inject.Inject
 
 class GroupConversationViewModel @Inject
 constructor(
-        private val repository: GroupConversationPaginatedRepositoryImpl) : BaseViewModel() {
+    repository: GroupConversationPaginatedRepository
+) : BaseViewModelPagination<QuestionResponse>(repository) {
 
-    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    lateinit var pagedConversationList: LiveData<PagedList<QuestionResponse>>
-    private lateinit var listingPaginatedConversation: Listing<QuestionResponse>
-    private var lastSearch: String? = null
+    private var groupId: String? = null
 
-    fun networkState(): LiveData<NetworkState> = listingPaginatedConversation.networkState
-
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedConversation.refreshState
-
-    fun retry() = repository.retry()
-
-    fun refresh() = repository.refresh()
-
-    fun fetchConversations(lifecycleOwner: LifecycleOwner?, groupId : String, searchQuery: String?) {
-        if (searchQuery == null) {
-            lastSearch = ""
-            fetchData(lifecycleOwner,groupId, searchQuery)
-        } else if (searchQuery != lastSearch) {
-            lastSearch = searchQuery
-            fetchData(lifecycleOwner,groupId, searchQuery)
+    fun fetchConversations(groupId : String) {
+        if(this.groupId == null) {
+            this.groupId = groupId
+            (repository as GroupConversationPaginatedRepository).setGroupId(groupId)
+            fetchData()
         }
-    }
-
-    private fun fetchData(lifecycleOwner: LifecycleOwner?, groupId : String, searchQuery: String?) {
-        listingPaginatedConversation = repository.fetchData(groupId, searchQuery)
-        pagedConversationList = listingPaginatedConversation.pagedList
-
-        lifecycleOwner?.let { lifecycleOwner ->
-            removeObservers(lifecycleOwner)
-            subscribeToPaginatedLiveData.call()
-        }
-    }
-
-    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState().removeObservers(lifecycleOwner)
-        refreshState().removeObservers(lifecycleOwner)
-        pagedConversationList.removeObservers(lifecycleOwner)
     }
 }

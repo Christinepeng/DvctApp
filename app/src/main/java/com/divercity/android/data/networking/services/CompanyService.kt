@@ -2,6 +2,7 @@ package com.divercity.android.data.networking.services
 
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
+import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.user.response.UserResponse
@@ -38,6 +39,11 @@ interface CompanyService {
     @POST("job_employers/{companyId}/create_admin")
     fun addCompanyAdmin(
         @Path("companyId") companyId: String,
-        @Body admins : AddAdminCompanyBody
+        @Body admins: AddAdminCompanyBody
+    ): Observable<Response<DataArray<CompanyAdminResponse>>>
+
+    @HTTP(method = "DELETE", path = "job_employers/{companyId}/remove_admin", hasBody = true)
+    fun deleteCompanyAdmin(
+        @Body deleteCompanyAdminBody: DeleteCompanyAdminBody
     ): Observable<Response<DataArray<CompanyAdminResponse>>>
 }

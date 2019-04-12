@@ -140,7 +140,7 @@ class SingleUserActionFragment : BaseFragment(), RetryCallback {
     private fun search(query: String?) {
         handlerSearch.removeCallbacksAndMessages(null)
         handlerSearch.postDelayed({
-            viewModel.fetchUsers(viewLifecycleOwner, query)
+            viewModel.fetchData(viewLifecycleOwner, query)
         }, AppConstants.SEARCH_DELAY)
     }
 
@@ -168,16 +168,16 @@ class SingleUserActionFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedUserList.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapter.lastPositionSelected = null
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(this, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(this, Observer { networkState ->
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
                     txt_no_results.visibility = View.VISIBLE

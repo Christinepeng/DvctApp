@@ -1,10 +1,10 @@
 package com.divercity.android.features.groups.groupdetail.conversation
 
+import android.os.Bundle
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.core.content.ContextCompat
-import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
@@ -29,8 +29,6 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
 
     private var isListRefreshing = false
 
-    private var groupId: String? = null
-
     companion object {
 
         private const val PARAM_GROUP_ID = "paramGroupId"
@@ -49,11 +47,12 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(GroupConversationViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(GroupConversationViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-        groupId = arguments?.getString(PARAM_GROUP_ID)
-        groupId?.let {
-            viewModel.fetchConversations(this, it, null)
+
+        arguments?.getString(PARAM_GROUP_ID)?.let {
+            viewModel.fetchConversations(it)
         }
     }
 
@@ -77,12 +76,15 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
                         authorName = question.attributes.authorInfo.name,
                         createdAt = question.attributes.createdAt,
                         question = question.attributes.text,
-                        groupTitle =  question.attributes.group[0].title,
+                        groupTitle = question.attributes.group[0].title,
                         questionPicUrl = question.attributes.pictureMain
                     )
-                )            }
+                )
+            }
         })
         list.adapter = adapter
+
+        txt_no_results.setText(R.string.no_group_conversation)
     }
 
     private fun subscribeToLiveData() {
@@ -93,7 +95,7 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedConversationList.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapter.submitList(it)
         })
 
@@ -130,9 +132,9 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }

@@ -2,6 +2,7 @@ package com.divercity.android.features.home.people.connections.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.usecase.FetchUsersUseCase
@@ -110,7 +111,7 @@ class ConnectionsDataSource(
 
         fetchUsersUseCase.execute(
             disposableObserver,
-            FetchUsersUseCase.Params.forUser(
+            Params(
                 params.key.toInt(),
                 params.requestedLoadSize,
                 query

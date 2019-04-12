@@ -1,4 +1,4 @@
-package com.divercity.android.features.skill.base
+package com.divercity.android.repository.paginated
 
 import com.divercity.android.core.base.datasource.BaseDataSourceRepository
 import com.divercity.android.core.base.usecase.Params

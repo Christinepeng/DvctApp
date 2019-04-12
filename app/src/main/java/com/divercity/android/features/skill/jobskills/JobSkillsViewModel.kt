@@ -2,7 +2,7 @@ package com.divercity.android.features.skill.jobskills
 
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.data.entity.skills.SkillResponse
-import com.divercity.android.features.skill.base.SkillPaginatedRepository
+import com.divercity.android.repository.paginated.SkillPaginatedRepository
 import javax.inject.Inject
 
 /**

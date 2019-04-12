@@ -75,6 +75,8 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
 //            navigator.navigateToNewGroupChatActivityForResult(this, REQUEST_CODE_GROUP_CREATED)
 //        }
 
+        btn_edit.visibility = View.GONE
+
         initView()
         subscribeToLiveData()
         subscribeToPaginatedLiveData()
@@ -118,16 +120,16 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedUserList.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(this, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(this, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)

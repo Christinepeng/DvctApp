@@ -1,16 +1,16 @@
 package com.divercity.android.features.chat.recentchats.oldrecentchats
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -106,16 +106,16 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedChatsList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
@@ -169,14 +169,14 @@ class ChatsFragment : BaseFragment(), RetryCallback {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
-                viewModel.fetchChats(this@ChatsFragment, query)
+                viewModel.fetchData(viewLifecycleOwner, query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
                 handlerSearch.postDelayed({
-                    viewModel.fetchChats(this@ChatsFragment, newText)
+                    viewModel.fetchData(viewLifecycleOwner, newText)
                 }, AppConstants.SEARCH_DELAY)
                 return true
             }

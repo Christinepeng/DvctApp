@@ -115,15 +115,15 @@ class InviteUsersFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedUserList.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(this, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(this, Observer { networkState ->
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
                     txt_no_results.visibility = View.VISIBLE
@@ -154,14 +154,14 @@ class InviteUsersFragment : BaseFragment(), RetryCallback {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
-                viewModel.fetchUsers(viewLifecycleOwner, query)
+                viewModel.fetchData(viewLifecycleOwner, query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
                 handlerSearch.postDelayed({
-                    viewModel.fetchUsers(viewLifecycleOwner, newText)
+                    viewModel.fetchData(viewLifecycleOwner, newText)
                 }, AppConstants.SEARCH_DELAY)
                 return true
             }

@@ -14,11 +14,10 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
-import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
 import com.divercity.android.features.profile.potheruser.OtherUserProfileViewModel
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
+import kotlinx.android.synthetic.main.view_user_personal_details.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
-import javax.inject.Inject
 
 /**
  * Created by lucas on 16/11/2018.
@@ -29,9 +28,6 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
     private lateinit var viewModel: TabOtherUserProfileViewModel
 
     private lateinit var sharedViewModel: OtherUserProfileViewModel
-
-    @Inject
-    lateinit var interestAdapter: SelectInterestsAdapter
 
     companion object {
 
@@ -67,14 +63,18 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
         btn_edit_education.visibility = View.GONE
         btn_edit_skills.visibility = View.GONE
         lay_personal.btn_edit_personal.visibility = View.GONE
-//        btn_edit_interests.visibility = View.GONE
+
+        lay_skills.visibility = View.GONE
+        lay_education.visibility = View.GONE
+        lay_experience.visibility = View.GONE
+        lay_interests.visibility = View.GONE
+        lay_companies.visibility = View.GONE
+        lay_groups.visibility = View.GONE
 
         txt_add_skills.visibility = View.GONE
         txt_add_experience.visibility = View.GONE
         txt_add_education.visibility = View.GONE
-//
-//        list_interest.layoutManager = StaggeredGridLayoutManager(2, 1)
-//        list_interest.adapter = interestAdapter
+
 
         tagview_skills.setOnTagClickListener(object : TagView.OnTagClickListener {
 
@@ -119,23 +119,10 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
             user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
 
         if (user?.userAttributes?.skills.isNullOrEmpty()) {
-            txt_add_skills.visibility = View.VISIBLE
+            lay_skills.visibility = View.GONE
         } else {
-            txt_add_skills.visibility = View.GONE
+            lay_skills.visibility = View.VISIBLE
             tagview_skills.tags = user?.userAttributes?.skills
-        }
-
-        interestAdapter.updatedSelectedInterests(user?.userAttributes?.interestIds)
-
-        btn_edit_skills.setOnClickListener {
-
-            if (!user?.userAttributes?.skills.isNullOrEmpty()) {
-                val skills = ArrayList<String>()
-                skills.addAll(user?.userAttributes?.skills!!)
-                navigator.navigateToEditUserSkills(this, skills)
-            } else {
-                navigator.navigateToEditUserSkills(this, null)
-            }
         }
     }
 
@@ -159,18 +146,6 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
                 Status.SUCCESS -> {
                     hideProgress()
                     setData(response.data)
-                }
-            }
-        })
-
-        viewModel.fetchInterestsResponse.observe(viewLifecycleOwner, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-                }
-                Status.ERROR -> {
-                }
-                Status.SUCCESS -> {
-                    interestAdapter.list = response.data
                 }
             }
         })

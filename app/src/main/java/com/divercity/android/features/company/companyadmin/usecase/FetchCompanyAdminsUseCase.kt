@@ -1,5 +1,6 @@
 package com.divercity.android.features.company.companyadmin.usecase
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.repository.company.CompanyRepository
@@ -17,26 +18,18 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: CompanyRepository
-) : UseCase<@JvmSuppressWildcards List<CompanyAdminResponse>, FetchCompanyAdminsUseCase.Params>(
+) : UseCase<@JvmSuppressWildcards List<CompanyAdminResponse>, Params>(
     executorThread,
     uiThread
 ) {
 
+    lateinit var companyId: String
+
     override fun createObservableUseCase(params: Params): Observable<List<CompanyAdminResponse>> {
         return repository.fetchCompanyAdmins(
-            params.companyId,
+            companyId,
             params.page,
             params.size
         )
-    }
-
-    class Params private constructor(val companyId: String, val page: Int, val size: Int) {
-
-        companion object {
-
-            fun forAdmin(companyId: String, page: Int, size: Int): Params {
-                return Params(companyId, page, size)
-            }
-        }
     }
 }

@@ -1,5 +1,6 @@
 package com.divercity.android.features.chat.recentchats.usecase
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.repository.chat.ChatRepository
@@ -18,23 +19,14 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: ChatRepository,
             private val sessionRepository: SessionRepository
-) : UseCase<@JvmSuppressWildcards List<ExistingUsersChatListItem>, FetchCurrentChatsUseCase.Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<ExistingUsersChatListItem>, Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<List<ExistingUsersChatListItem>> {
         return repository.fetchCurrentChats(
                 sessionRepository.getUserId(),
                 params.page,
                 params.size,
-                if (params.query != null && params.query == "") null else params.query)
+                params.query)
     }
 
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
-
-        companion object {
-
-            fun forChat(page: Int, size: Int, query: String?): Params {
-                return Params(page, size, query)
-            }
-        }
-    }
 }

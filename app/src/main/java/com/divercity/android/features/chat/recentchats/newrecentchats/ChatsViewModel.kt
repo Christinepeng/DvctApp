@@ -3,6 +3,7 @@ package com.divercity.android.features.chat.recentchats.newrecentchats
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
@@ -116,7 +117,7 @@ constructor(
             }
         }
         fetchCurrentChatsUseCase.execute(
-            callback, FetchCurrentChatsUseCase.Params.forChat(page, PAGE_SIZE, null)
+            callback, Params(page, PAGE_SIZE, null)
         )
     }
 

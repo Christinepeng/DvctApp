@@ -132,9 +132,9 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
             if (!user?.userAttributes?.skills.isNullOrEmpty()) {
                 val skills = ArrayList<String>()
                 skills.addAll(user?.userAttributes?.skills!!)
-                navigator.navigateToToolbarSkillsActivity(this, skills)
+                navigator.navigateToEditUserSkills(this, skills)
             } else {
-                navigator.navigateToToolbarSkillsActivity(this, null)
+                navigator.navigateToEditUserSkills(this, null)
             }
         }
     }

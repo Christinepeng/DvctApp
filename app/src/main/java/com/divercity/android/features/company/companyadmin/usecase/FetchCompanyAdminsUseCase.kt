@@ -1,7 +1,7 @@
 package com.divercity.android.features.company.companyadmin.usecase
 
-import com.divercity.android.core.base.UseCase
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.core.base.usecase.UseCase
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.repository.company.CompanyRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler

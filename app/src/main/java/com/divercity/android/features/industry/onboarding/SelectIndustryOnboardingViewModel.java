@@ -1,12 +1,6 @@
 package com.divercity.android.features.industry.onboarding;
 
-import androidx.lifecycle.LifecycleOwner;
-import androidx.lifecycle.LiveData;
-import androidx.lifecycle.MutableLiveData;
-import androidx.paging.PagedList;
-import androidx.annotation.Nullable;
-
-import com.divercity.android.core.base.BaseViewModel;
+import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;
@@ -22,6 +16,12 @@ import com.google.gson.JsonElement;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.Nullable;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.LiveData;
+import androidx.lifecycle.MutableLiveData;
+import androidx.paging.PagedList;
 
 /**
  * Created by lucas on 17/10/2018.

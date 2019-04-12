@@ -1,6 +1,6 @@
 package com.divercity.android.features.chat.creategroupchat.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.createchat.CreateChatResponse
 import com.divercity.android.repository.chat.ChatRepository

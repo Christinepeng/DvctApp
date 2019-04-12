@@ -8,7 +8,7 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 

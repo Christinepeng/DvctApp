@@ -1,6 +1,5 @@
 package com.divercity.android.repository.job
 
-import com.divercity.android.data.entity.base.IncludedArray
 import com.divercity.android.data.entity.job.jobpostingbody.JobBody
 import com.divercity.android.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.android.data.entity.job.jobtype.JobTypeResponse
@@ -30,7 +29,7 @@ interface JobRepository {
 
     fun fetchJobById(jobId: String): Observable<JobResponse>
 
-    fun fetchSavedJobs(page: Int, size: Int, query: String?): Observable<IncludedArray<JobResponse>>
+    fun fetchSavedJobs(page: Int, size: Int, query: String?): Observable<List<JobResponse>>
 
     fun fetchMyJobApplications(
         page: Int,

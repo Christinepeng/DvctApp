@@ -2,16 +2,18 @@ package com.divercity.android.features.profile.pcurrentuser.tabprofile
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.profile.profile.User
 import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
 import com.divercity.android.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
+import com.divercity.android.features.profile.usecase.FetchWorkExperiencesUseCase
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -25,17 +27,19 @@ constructor(
     private val updateUserProfileUseCase: UpdateUserProfileUseCase,
     private val sessionRepository: SessionRepository,
     private val fetchInterestsUseCase: FetchInterestsUseCase,
-    private val followInterestsUseCase: FollowInterestsUseCase
+    private val followInterestsUseCase: FollowInterestsUseCase,
+    private val fetchWorkExperiencesUseCase: FetchWorkExperiencesUseCase
 ) : BaseViewModel() {
 
     var fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
     val updateUserProfileResponse = SingleLiveEvent<Resource<UserResponse>>()
+    var fetchWorkExperiencesResponse = MutableLiveData<Resource<List<WorkExperienceResponse>>>()
 
-    fun getUserType() : String?{
+    fun getUserType(): String? {
         return sessionRepository.getUserType()
     }
 
-    fun getCurrentUser() : LiveData<UserResponse> {
+    fun getCurrentUser(): LiveData<UserResponse> {
         return sessionRepository.getUserDB()
     }
 
@@ -54,8 +58,8 @@ constructor(
                 val interests = sessionRepository.getInterests()
                 interests?.let {
 
-                    for(i in o){
-                        if(interests.contains(i.id?.toInt())){
+                    for (i in o) {
+                        if (interests.contains(i.id?.toInt())) {
                             i.isSelected = true
                         }
                     }
@@ -64,6 +68,27 @@ constructor(
             }
         }
         fetchInterestsUseCase.execute(callback, null)
+    }
+
+    fun fetchWorkExperiences() {
+        fetchWorkExperiencesResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<List<WorkExperienceResponse>>() {
+            override fun onFail(error: String) {
+                fetchWorkExperiencesResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                fetchWorkExperiencesResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: List<WorkExperienceResponse>) {
+                fetchWorkExperiencesResponse.postValue(Resource.success(o))
+            }
+        }
+        fetchWorkExperiencesUseCase.execute(
+            callback,
+            FetchWorkExperiencesUseCase.Params.to(sessionRepository.getUserId())
+        )
     }
 
     fun updateUserProfile(user: User) {

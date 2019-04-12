@@ -1,12 +1,16 @@
 package com.divercity.android.features.chat.newchat.datasource;
 
+import com.divercity.android.core.ui.NetworkState;
+import com.divercity.android.data.entity.user.response.UserResponse;
+import com.divercity.android.features.chat.usecase.FetchUsersUseCase;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.lifecycle.MutableLiveData;
 import androidx.paging.PageKeyedDataSource;
-import com.divercity.android.core.ui.NetworkState;
-import com.divercity.android.data.entity.user.response.UserResponse;
-import com.divercity.android.features.chat.usecase.FetchUsersUseCase;
 import io.reactivex.Completable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
@@ -14,9 +18,6 @@ import io.reactivex.functions.Action;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import timber.log.Timber;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class UserDataSource extends PageKeyedDataSource<Long, Object> {
 
@@ -27,7 +28,7 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
 
     private FetchUsersUseCase fetchUsersUseCase;
     private String query;
-    
+
     private ArrayList<Character> firstChars = new ArrayList<>();
 
     /**
@@ -67,7 +68,7 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
                 if (data != null) {
                     firstChars.clear();
                     networkState.postValue(NetworkState.LOADED);
-                    if(data.size() < params.requestedLoadSize)
+                    if (data.size() < params.requestedLoadSize)
                         callback.onResult(getSegmentedList(data), null, null);
                     else
                         callback.onResult(getSegmentedList(data), null, 2L);
@@ -109,7 +110,10 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
             public void onNext(List<UserResponse> data) {
                 if (data != null) {
                     setRetry(null);
-                    callback.onResult(getSegmentedList(data), params.key + 1);
+                    if (data.size() < params.requestedLoadSize)
+                        callback.onResult(getSegmentedList(data), null);
+                    else
+                        callback.onResult(getSegmentedList(data), params.key + 1);
                     networkState.postValue(NetworkState.LOADED);
                 } else {
                     setRetry(() -> loadAfter(params, callback));                // publish the error
@@ -149,12 +153,12 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
         }
     }
 
-    private ArrayList<Object> getSegmentedList(List<UserResponse> data){
+    private ArrayList<Object> getSegmentedList(List<UserResponse> data) {
         ArrayList<Object> result = new ArrayList<>();
 
-        for(UserResponse r : data){
+        for (UserResponse r : data) {
             char firstChar = Character.toUpperCase(r.getUserAttributes().getName().charAt(0));
-            if(!firstChars.contains(firstChar)){
+            if (!firstChars.contains(firstChar)) {
                 firstChars.add(firstChar);
                 result.add(firstChar);
             }
@@ -164,9 +168,9 @@ public class UserDataSource extends PageKeyedDataSource<Long, Object> {
         return result;
     }
 
-    public void dispose(){
+    public void dispose() {
         fetchUsersUseCase.getCompositeDisposable().clear();
-        if(retryDisposable != null)
+        if (retryDisposable != null)
             retryDisposable.dispose();
     }
 }

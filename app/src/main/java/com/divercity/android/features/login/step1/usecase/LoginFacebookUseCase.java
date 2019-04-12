@@ -1,6 +1,6 @@
 package com.divercity.android.features.login.step1.usecase;
 
-import com.divercity.android.core.base.UseCase;
+import com.divercity.android.core.base.usecase.UseCase;
 import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.repository.registerlogin.RegisterLoginRepository;
 

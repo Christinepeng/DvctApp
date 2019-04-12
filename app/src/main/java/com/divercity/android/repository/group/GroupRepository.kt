@@ -36,7 +36,7 @@ interface GroupRepository {
         query: String?
     ): Observable<DataArray<GroupResponse>>
 
-    fun fetchAllGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
+    fun fetchAllGroups(page: Int, size: Int, query: String?): Observable<List<GroupResponse>>
 
     fun fetchMyGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
 

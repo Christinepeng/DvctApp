@@ -4,7 +4,7 @@ import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.divercity.android.core.utils.Listing
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.features.company.companyadmin.usecase.FetchCompanyAdminsUseCase
 import java.util.concurrent.Executors
 import javax.inject.Inject

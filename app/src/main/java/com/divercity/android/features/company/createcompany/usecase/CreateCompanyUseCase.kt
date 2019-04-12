@@ -1,6 +1,6 @@
 package com.divercity.android.features.company.createcompany.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.company.createcompanybody.Company
 import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.repository.data.DataRepository

@@ -47,7 +47,6 @@
     <string name="age_range">Age Range</string>
     <string name="occupation">Occupation</string>
     <string name="no_followers">You don’t seem to have any Followers yet :(</string>
-    <string name="no_connection">You don’t seem to have any connections yet :(</string>
     <string name="no_following">You don’t seem to be Following anyone yet :(</string>
     <string name="no_groups_following">You haven’t joined any Group yet :(</string>
     <string name="change_profile_picture">Change Profile Picture</string>
@@ -75,6 +74,9 @@
     <string name="view_interests">View Interests</string>
     <string name="view_companies">View Companies</string>
     <string name="edit_interests">Edit Interests</string>
+    <string name="add_work_experience">Add Work Experience</string>
+    <string name="current_no_connections">You don’t seem to have any Connections yet :(</string>
+    <string name="other_no_connections">This user doesn\'t seem to have any Connections yet :(</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -93,6 +95,7 @@
     <string name="edit_admins">Edit Admins</string>
     <string name="company_no_description">This company hasn\'t added description yet</string>
     <string name="company_no_jobs">This company hasn\'t had any job posting</string>
+    <string name="company">Company</string>
 
     <!-- Location-->
     <string name="use_my_location">Use My Location</string>
@@ -261,6 +264,10 @@
     <string name="decline">Decline</string>
     <string name="accepted">Accepted</string>
     <string name="declined">Declined</string>
+    <string name="start_date">Start Date</string>
+    <string name="end_date">End Date</string>
+    <string name="currently_work_here">I currently work here</string>
+    <string name="experience_details">Experience details</string>
 
     <string name="cancel_application">Cancel Application</string>
     <string name="cancel_application_warning">Are you sure you want to cancel your application? (Note that they may have already viewed your application)</string>

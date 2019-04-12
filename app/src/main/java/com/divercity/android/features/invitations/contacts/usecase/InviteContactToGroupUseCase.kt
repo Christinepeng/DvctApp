@@ -1,6 +1,6 @@
 package com.divercity.android.features.invitations.contacts.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContact
 import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
 import com.divercity.android.repository.group.GroupRepository

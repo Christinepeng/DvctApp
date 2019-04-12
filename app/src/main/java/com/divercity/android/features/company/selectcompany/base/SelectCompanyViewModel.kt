@@ -3,14 +3,11 @@ package com.divercity.android.features.company.selectcompany.base
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.company.selectcompany.base.datasource.CompanyPaginatedRepositoryImpl
-
 import javax.inject.Inject
 
 /**
@@ -18,7 +15,8 @@ import javax.inject.Inject
  */
 
 class SelectCompanyViewModel @Inject
-constructor(private val repository: CompanyPaginatedRepositoryImpl) : BaseViewModel() {
+constructor(val repository: CompanyPaginatedRepository)
+    : BaseViewModel() {
 
     lateinit var pagedCompanyList: LiveData<PagedList<CompanyResponse>>
     lateinit var listingPaginatedCompany: Listing<CompanyResponse>

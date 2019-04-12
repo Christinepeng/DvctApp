@@ -1,6 +1,6 @@
 package com.divercity.android.features.groups.createeditgroup.step3.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.repository.group.GroupRepository

@@ -3,7 +3,7 @@ package com.divercity.android.features.jobs
 import android.app.Application
 import android.view.View
 import androidx.lifecycle.MutableLiveData
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepositoryImpl
 import javax.inject.Inject

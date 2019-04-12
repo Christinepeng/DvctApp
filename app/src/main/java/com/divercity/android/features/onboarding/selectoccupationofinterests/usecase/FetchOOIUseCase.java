@@ -1,6 +1,6 @@
 package com.divercity.android.features.onboarding.selectoccupationofinterests.usecase;
 
-import com.divercity.android.core.base.UseCase;
+import com.divercity.android.core.base.usecase.UseCase;
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse;
 import com.divercity.android.repository.data.DataRepository;
 

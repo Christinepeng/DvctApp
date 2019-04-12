@@ -4,7 +4,7 @@ import android.app.Application;
 import androidx.lifecycle.MutableLiveData;
 
 import com.divercity.android.R;
-import com.divercity.android.core.base.BaseViewModel;
+import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.utils.SingleLiveEvent;
 import com.divercity.android.core.utils.Util;
 import com.divercity.android.data.Resource;

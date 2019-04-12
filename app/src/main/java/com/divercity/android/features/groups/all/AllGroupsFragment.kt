@@ -100,7 +100,7 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabPeople {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedGroupList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
@@ -166,7 +166,7 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabPeople {
     }
 
     override fun search(search: String?) {
-        viewModel.fetchGroups(viewLifecycleOwner, search)
+        viewModel.fetchData(viewLifecycleOwner, search)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

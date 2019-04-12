@@ -1,6 +1,6 @@
 package com.divercity.android.features.groups.createeditgroup.step1
 
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.group.GroupResponse

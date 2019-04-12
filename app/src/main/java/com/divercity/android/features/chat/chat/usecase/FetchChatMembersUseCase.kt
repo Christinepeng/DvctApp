@@ -1,6 +1,6 @@
 package com.divercity.android.features.chat.chat.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.repository.chat.ChatRepository
 import com.divercity.android.repository.session.SessionRepository

@@ -88,7 +88,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedJobsList.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapter.submitList(it)
         })
 
@@ -154,7 +154,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
     }
 
     override fun fetchJobs(searchQuery: String?) {
-        viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
+        viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 
     override fun onSuccessJobApply() {

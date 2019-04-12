@@ -2,11 +2,11 @@ package com.divercity.android.features.company.companyadmin
 
 import androidx.lifecycle.LiveData
 import androidx.paging.PagedList
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.features.company.companyadmin.datasource.CompanyAdminRepositoryImpl
 import javax.inject.Inject
 

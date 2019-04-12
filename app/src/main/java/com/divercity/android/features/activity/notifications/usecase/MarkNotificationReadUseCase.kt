@@ -1,6 +1,6 @@
 package com.divercity.android.features.activity.notifications.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler

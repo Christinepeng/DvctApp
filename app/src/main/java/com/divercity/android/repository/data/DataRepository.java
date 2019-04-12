@@ -32,7 +32,7 @@ public interface DataRepository {
 
     Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query);
 
-    Observable<DataArray<SkillResponse>> fetchSkills(int page, int size, String query);
+    Observable<List<SkillResponse>> fetchSkills(int page, int size, String query);
 
     Observable<Boolean> createCompany(CreateCompanyBody body);
 

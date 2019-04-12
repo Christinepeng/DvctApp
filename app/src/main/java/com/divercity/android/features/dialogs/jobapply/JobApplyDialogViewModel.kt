@@ -3,7 +3,7 @@ package com.divercity.android.features.dialogs.jobapply
 import android.app.Application
 import android.net.Uri
 import com.divercity.android.R
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.FileUtils
 import com.divercity.android.core.utils.NetworkErrorsUtil
 import com.divercity.android.core.utils.SingleLiveEvent

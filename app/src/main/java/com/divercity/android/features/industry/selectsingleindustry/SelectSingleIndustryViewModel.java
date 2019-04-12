@@ -5,7 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.paging.PagedList;
 import androidx.annotation.Nullable;
 
-import com.divercity.android.core.base.BaseViewModel;
+import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.entity.industry.IndustryResponse;

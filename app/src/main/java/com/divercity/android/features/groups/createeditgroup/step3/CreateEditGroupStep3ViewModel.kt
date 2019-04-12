@@ -1,6 +1,6 @@
 package com.divercity.android.features.groups.createeditgroup.step3
 
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource

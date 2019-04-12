@@ -3,7 +3,7 @@ package com.divercity.android.features.profile.pcurrentuser.tabconnections
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.PagedList
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.Resource
@@ -12,6 +12,7 @@ import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.profile.pcurrentuser.tabconnections.datasource.FollowersPaginatedRepositoryImpl
 import com.divercity.android.features.profile.usecase.ConnectUserUseCase
+import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -22,12 +23,18 @@ import javax.inject.Inject
 class ConnectionsViewModel @Inject
 constructor(
     private val repository: FollowersPaginatedRepositoryImpl,
+    private val sessionRepository: SessionRepository,
     private val connectUserUseCase: ConnectUserUseCase
 ) : BaseViewModel() {
 
     lateinit var pagedListConnections: LiveData<PagedList<UserResponse>>
     private var listingConnections: Listing<UserResponse>? = null
     var connectUserResponse = MutableLiveData<Resource<ConnectUserResponse>>()
+    var userId: String? = null
+
+    fun isCurrentUser(): Boolean {
+        return sessionRepository.getUserId() == userId
+    }
 
     fun connectToUser(userId: String) {
         connectUserResponse.postValue(Resource.loading(null))
@@ -52,6 +59,7 @@ constructor(
 
     fun fetchFollowers(userId: String) {
         // To call it once
+        this.userId = userId
         if (listingConnections == null) {
             listingConnections = repository.fetchData(userId)
             pagedListConnections = listingConnections!!.pagedList

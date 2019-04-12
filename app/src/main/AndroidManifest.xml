@@ -215,17 +215,17 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.divercity.android.features.jobs.jobposting.skills.JobSkillsActivity"
+            android:name="com.divercity.android.features.skill.jobskills.JobSkillsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.jobs.description.detail.JobDetailActivity"
+            android:name=".features.jobs.detail.detail.JobDetailActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.jobs.description.poster.JobDescriptionPosterActivity"
+            android:name=".features.jobs.detail.poster.JobDescriptionPosterActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -409,7 +409,17 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.company.companyadminadd.CompanyAdminAddActivity"
+            android:name=".features.singleuseraction.SingleUserActionActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.profile.experience.AddWorkExperienceActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.companyaddadmin.CompanyAddAdminActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

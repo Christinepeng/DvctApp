@@ -78,11 +78,15 @@ class AnswerFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AnswerViewModel::class.java)
         setHasOptionsMenu(true)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory).get(AnswerViewModel::class.java)
         question = arguments?.getParcelable(PARAM_QUESTION)
-        viewModel.question = question
-        viewModel.start()
+        viewModel.start(question)
 
         KeyboardVisibilityEvent.setEventListener(activity!!) {
             if (it) {
@@ -95,10 +99,6 @@ class AnswerFragment : BaseFragment() {
                 }
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
 
         (activity as AppCompatActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
@@ -113,6 +113,8 @@ class AnswerFragment : BaseFragment() {
     }
 
     private fun setupView() {
+        showProgressNoBk()
+
         Glide
             .with(this)
             .load(question?.authorProfilePicUrl)
@@ -128,6 +130,13 @@ class AnswerFragment : BaseFragment() {
                 .with(this)
                 .load(question?.questionPicUrl)
                 .into(item_quest_img_main)
+
+            item_quest_img_main.setOnClickListener {
+                lay_image_full_screen.visibility = View.VISIBLE
+                GlideApp.with(this)
+                    .load(question?.questionPicUrl)
+                    .into(lay_image_full_screen.img_full_screen)
+            }
         } else {
             item_quest_cardview_pic_main.visibility = View.GONE
         }
@@ -336,9 +345,14 @@ class AnswerFragment : BaseFragment() {
                 Status.LOADING -> {
                 }
                 Status.ERROR -> {
-                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                    if(response.data!!.page == 0)
+                        Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
+                    if(response.data!!.answers.isEmpty() && response.data.page == 0) {
+                        hideProgressNoBk()
+                        txt_first_comment.visibility = View.VISIBLE
+                    }
                 }
             }
         })
@@ -350,11 +364,11 @@ class AnswerFragment : BaseFragment() {
 
     private fun subscribeToPagedListLiveData() {
         viewModel.pagedListLiveData!!.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
-            if (it.isNullOrEmpty())
-                txt_first_comment.visibility = View.VISIBLE
-            else
+            if(it.isNotEmpty()) {
                 txt_first_comment.visibility = View.GONE
+                hideProgressNoBk()
+            }
+            adapter.submitList(it)
         })
     }
 

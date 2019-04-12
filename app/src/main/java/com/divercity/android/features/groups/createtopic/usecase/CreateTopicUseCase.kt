@@ -1,6 +1,6 @@
 package com.divercity.android.features.groups.createtopic.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.repository.group.GroupRepository
 import io.reactivex.Observable

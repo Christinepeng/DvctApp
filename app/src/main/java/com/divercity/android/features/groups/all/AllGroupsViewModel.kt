@@ -1,17 +1,11 @@
 package com.divercity.android.features.groups.all
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
-import androidx.paging.PagedList
-import com.divercity.android.core.base.BaseViewModel
-import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Listing
+import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.groups.all.datasource.AllGroupsPaginatedRepositoryImpl
 import com.divercity.android.features.groups.all.model.GroupPositionModel
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
@@ -24,52 +18,16 @@ import javax.inject.Inject
 
 class AllGroupsViewModel @Inject
 constructor(
-    private val repository: AllGroupsPaginatedRepositoryImpl,
+    repository: AllGroupsPaginatedRepository,
     private val joinGroupUseCase: JoinGroupUseCase,
     private val requestToJoinUseCase: RequestJoinGroupUseCase
-) : BaseViewModel() {
-
-    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
-    private lateinit var listingPaginatedGroup: Listing<GroupResponse>
+) : BaseViewModelPagination<GroupResponse>(repository) {
 
     var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
     var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
 
-    private var lastSearch: String? = null
-
     init {
-        fetchGroups(null, "")
-    }
-
-    fun networkState(): LiveData<NetworkState> = listingPaginatedGroup.networkState
-
-    fun refreshState(): LiveData<NetworkState> = listingPaginatedGroup.refreshState
-
-    fun retry() = repository.retry()
-
-    fun refresh() = repository.refresh()
-
-    fun fetchGroups(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        searchQuery?.let {
-            if (it != lastSearch) {
-                lastSearch = it
-                repository.clear()
-                listingPaginatedGroup = repository.fetchData(it)
-                pagedGroupList = listingPaginatedGroup.pagedList
-
-                lifecycleOwner?.let { lifecycleOwner ->
-                    removeObservers(lifecycleOwner)
-                    subscribeToPaginatedLiveData.call()
-                }
-            }
-        }
-    }
-
-    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState().removeObservers(lifecycleOwner)
-        refreshState().removeObservers(lifecycleOwner)
-        pagedGroupList.removeObservers(lifecycleOwner)
+        fetchData(null, "")
     }
 
     fun joinGroup(group: GroupPositionModel) {

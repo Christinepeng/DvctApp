@@ -11,8 +11,8 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatViewMo
 import com.divercity.android.features.chat.newchat.NewChatViewModel
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatViewModel
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel
+import com.divercity.android.features.company.companyaddadmin.CompanyAddAdminViewModel
 import com.divercity.android.features.company.companyadmin.CompanyAdminViewModel
-import com.divercity.android.features.company.companyadminadd.CompanyAdminAddViewModel
 import com.divercity.android.features.company.companydetail.CompanyDetailViewModel
 import com.divercity.android.features.company.companydetail.employees.EmployeesViewModel
 import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyViewModel
@@ -39,10 +39,11 @@ import com.divercity.android.features.groups.groupdetail.conversation.GroupConve
 import com.divercity.android.features.groups.mygroups.MyGroupsViewModel
 import com.divercity.android.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.android.features.groups.trending.TrendingGroupsViewModel
+import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.features.home.home.HomeViewModel
 import com.divercity.android.features.home.people.TabPeopleViewModel
-import com.divercity.android.features.home.people.companies.CompaniesViewModel
+import com.divercity.android.features.company.companies.CompaniesViewModel
 import com.divercity.android.features.home.people.connections.AllConnectionsViewModel
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingViewModel
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
@@ -51,12 +52,12 @@ import com.divercity.android.features.invitations.users.InviteUsersViewModel
 import com.divercity.android.features.jobs.TabJobsViewModel
 import com.divercity.android.features.jobs.applicants.JobApplicantsViewModel
 import com.divercity.android.features.jobs.applications.JobsApplicationsViewModel
-import com.divercity.android.features.jobs.description.detail.JobDetailViewModel
-import com.divercity.android.features.jobs.description.poster.JobDescriptionPosterViewModel
+import com.divercity.android.features.jobs.detail.detail.JobDetailViewModel
+import com.divercity.android.features.jobs.detail.poster.JobDescriptionPosterViewModel
 import com.divercity.android.features.jobs.jobposting.JobPostingViewModel
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeViewModel
 import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupViewModel
-import com.divercity.android.features.jobs.jobposting.skills.JobSkillsViewModel
+import com.divercity.android.features.skill.jobskills.JobSkillsViewModel
 import com.divercity.android.features.jobs.jobs.JobsListViewModel
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.android.features.jobs.savedjobs.SavedJobsViewModel
@@ -75,6 +76,7 @@ import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewMo
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
 import com.divercity.android.features.profile.editpersonal.PersonalSettingsViewModel
+import com.divercity.android.features.profile.experience.AddWorkExperienceViewModel
 import com.divercity.android.features.profile.myinterests.InterestsViewModel
 import com.divercity.android.features.profile.pcurrentuser.CurrentUserProfileViewModel
 import com.divercity.android.features.profile.pcurrentuser.tabconnections.ConnectionsViewModel
@@ -85,6 +87,7 @@ import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
 import com.divercity.android.features.settings.ProfileSettingsViewModel
 import com.divercity.android.features.settings.accountsettings.AccountSettingsViewModel
 import com.divercity.android.features.signup.SignUpViewModel
+import com.divercity.android.features.singleuseraction.SingleUserActionViewModel
 import com.divercity.android.features.skill.base.SelectSkillViewModel
 import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
 import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
@@ -532,6 +535,21 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(CompanyAdminAddViewModel::class)
-    abstract fun bindsCompanyAdminAddViewModel(viewModel: CompanyAdminAddViewModel): ViewModel
+    @ViewModelKey(SingleUserActionViewModel::class)
+    abstract fun bindsCompanyAdminAddViewModel(viewModel: SingleUserActionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddWorkExperienceViewModel::class)
+    abstract fun bindsAddWorkExperienceViewModel(viewModel: AddWorkExperienceViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompanyAddAdminViewModel::class)
+    abstract fun bindsCompanyAddAdminViewModel(viewModel: CompanyAddAdminViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(GroupViewModel::class)
+    abstract fun bindsGroupViewModel(viewModel: GroupViewModel): ViewModel
 }

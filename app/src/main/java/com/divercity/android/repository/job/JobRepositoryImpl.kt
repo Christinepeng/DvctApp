@@ -1,6 +1,5 @@
 package com.divercity.android.repository.job
 
-import com.divercity.android.data.entity.base.IncludedArray
 import com.divercity.android.data.entity.job.jobpostingbody.JobBody
 import com.divercity.android.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.android.data.entity.job.jobtype.JobTypeResponse
@@ -126,8 +125,11 @@ constructor(private val jobService: JobService) : JobRepository {
         page: Int,
         size: Int,
         query: String?
-    ): Observable<IncludedArray<JobResponse>> {
-        return jobService.fetchSavedJobs(page, size, query)
+    ): Observable<List<JobResponse>> {
+        return jobService.fetchSavedJobs(page, size, query).map {
+            checkResponse(it)
+            it.body()?.data
+        }
     }
 
     override fun saveJob(jobId: String): Observable<JobResponse> {

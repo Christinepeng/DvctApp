@@ -75,10 +75,10 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Observable<DataArray<SkillResponse>> fetchSkills(int page, int size, String query) {
+    public Observable<List<SkillResponse>> fetchSkills(int page, int size, String query) {
         return service.fetchSkills(page, size, query).map(response -> {
             checkResponse(response);
-            return response.body();
+            return response.body().getData();
         });
     }
 

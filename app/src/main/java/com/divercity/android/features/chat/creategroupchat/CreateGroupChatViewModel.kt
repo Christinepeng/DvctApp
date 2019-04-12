@@ -1,6 +1,6 @@
 package com.divercity.android.features.chat.creategroupchat
 
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource

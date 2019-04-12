@@ -1,15 +1,15 @@
 package com.divercity.android.features.jobs.jobposting
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
@@ -21,8 +21,8 @@ import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
 import com.divercity.android.features.dialogs.JobPostedDialogFragment
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeFragment
-import com.divercity.android.features.jobs.jobposting.skills.JobSkillsFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
+import com.divercity.android.features.skill.jobskills.JobSkillsFragment
 import kotlinx.android.synthetic.main.fragment_job_posting.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import java.util.*

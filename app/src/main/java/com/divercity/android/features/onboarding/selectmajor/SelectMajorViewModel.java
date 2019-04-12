@@ -1,6 +1,6 @@
 package com.divercity.android.features.onboarding.selectmajor;
 
-import com.divercity.android.core.base.BaseViewModel;
+import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.entity.major.MajorResponse;

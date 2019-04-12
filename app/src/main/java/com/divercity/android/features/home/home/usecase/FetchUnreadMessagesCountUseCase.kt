@@ -1,6 +1,6 @@
 package com.divercity.android.features.home.home.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable

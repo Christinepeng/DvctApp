@@ -1,6 +1,6 @@
 package com.divercity.android.features.chat.recentchats.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.repository.chat.ChatRepository
 import com.divercity.android.repository.session.SessionRepository

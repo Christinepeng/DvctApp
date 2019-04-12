@@ -15,6 +15,8 @@ import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountRe
 import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBody
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
+import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
 import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -112,4 +114,15 @@ interface UserService {
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
     ): Observable<Response<DataArray<UserResponse>>>
+
+    @GET("users/{userId}/experiences")
+    fun fetchWorkExperiences(
+        @Path("userId") userId: String
+    ): Observable<Response<DataArray<WorkExperienceResponse>>>
+
+    @POST("users/{userId}/experiences")
+    fun addNewExperience(
+        @Path("userId") userId: String,
+        @Body experience : WorkExperienceBody
+    ): Observable<Response<DataObject<WorkExperienceResponse>>>
 }

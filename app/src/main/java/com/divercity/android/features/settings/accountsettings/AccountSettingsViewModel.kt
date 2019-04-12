@@ -1,6 +1,6 @@
 package com.divercity.android.features.settings.accountsettings
 
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 

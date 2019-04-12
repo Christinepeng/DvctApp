@@ -1,6 +1,7 @@
 package com.divercity.android.repository.company
 
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.CompanyService
@@ -46,6 +47,16 @@ constructor(
         size: Int
     ): Observable<List<CompanyAdminResponse>> {
         return service.fetchCompanyAdmins(companyId, page, size).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun addCompanyAdmin(
+        companyId: String,
+        admins: AddAdminCompanyBody
+    ): Observable<List<CompanyAdminResponse>> {
+        return service.addCompanyAdmin(companyId, admins).map {
             checkResponse(it)
             it.body()?.data
         }

@@ -77,4 +77,13 @@ interface ChatService {
 //        @Part("message[embedded_attachment_type]") attchmntType: RequestBody,
 //        @Part("message[embedded_attachment_id]") attchmntId: RequestBody
     ): Observable<ChatMessageResponse>
+
+    @Multipart
+    @POST("messages")
+    fun sendMessageAttachment(
+        @Part("message[content]") message: RequestBody,
+        @Part("message[chat_id]") chatId: RequestBody,
+        @Part("message[embedded_attachment_type]") attchmntType: RequestBody,
+        @Part("message[embedded_attachment_id]") attchmntId: RequestBody
+    ): Observable<ChatMessageResponse>
 }

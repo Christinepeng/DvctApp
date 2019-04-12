@@ -1,10 +1,10 @@
 package com.divercity.android.features.groups.answers
 
+import android.os.Handler
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import android.os.Handler
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.MySocket
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
@@ -14,6 +14,7 @@ import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.chat.chat.usecase.FetchChatMembersUseCase
+import com.divercity.android.features.groups.answers.model.AnswersPageModel
 import com.divercity.android.features.groups.answers.model.Question
 import com.divercity.android.features.groups.answers.usecase.FetchAnswersUseCase
 import com.divercity.android.features.groups.answers.usecase.SendNewAnswerUseCase
@@ -44,7 +45,7 @@ constructor(
     var pageFetchList = ArrayList<Int>()
     var chatMembers: List<UserResponse>? = null
 
-    var fetchAnswersResponse = SingleLiveEvent<Resource<List<AnswerResponse>>>()
+    var fetchAnswersResponse = SingleLiveEvent<Resource<AnswersPageModel>>()
     var sendNewAnswerResponse = SingleLiveEvent<Resource<AnswerResponse>>()
 
     var fetchCreateChatResponse = SingleLiveEvent<Resource<CreateChatResponse>>()
@@ -62,7 +63,7 @@ constructor(
     var question: Question? = null
     var questionId: Int = -1
 
-    var hasFetchChatError = false
+    var hasFetchQuestionsError = false
     var hasFetchGroupMembersError = false
 
     var mentions = HashSet<UserResponse>()
@@ -73,11 +74,12 @@ constructor(
         private const val THRESHOLD = 10
     }
 
-    fun start() {
+    fun start(question: Question?) {
+        this.question = question
         questionId = question!!.id!!.toInt()
         initializePagedList(questionId)
         connectToAnswersWebSocket(questionId)
-        fetchAnswers(question!!.id!!, 0, PAGE_SIZE, "")
+        fetchAnswers(question.id!!, 0, PAGE_SIZE, "")
     }
 
     fun initializePagedList(questionId: Int) {
@@ -105,16 +107,22 @@ constructor(
         fetchAnswersResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<List<AnswerResponse>>() {
             override fun onFail(error: String) {
+                hasFetchQuestionsError = true
+
                 pageFetchList.remove(page)
                 fetchAnswersResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
+                hasFetchQuestionsError = true
+
                 fetchAnswersResponse.postValue(Resource.error(error.toString(), null))
             }
 
             override fun onSuccess(o: List<AnswerResponse>) {
-                fetchAnswersResponse.postValue(Resource.success(o))
+                hasFetchQuestionsError = false
+
+                fetchAnswersResponse.postValue(Resource.success(AnswersPageModel(o, page)))
 
                 uiScope.launch {
                     groupRepository.insertAnswers(o)
@@ -218,19 +226,22 @@ constructor(
     }
 
     fun checkIfReconnectionIsNeeded() {
-        if (questionId != -1 && answersWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR) {
+        if (questionId != -1 &&
+            (answersWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR ||
+                    answersWebSocket.getSocketState() == MySocket.State.RECONNECT_ATTEMPT)
+        ) {
             answersWebSocket.stopTryingToReconnect()
             connectToAnswersWebSocket(questionId)
         }
     }
 
     fun checkErrorsToReconnect() {
-//        if (hasFetchChatError) {
-//            fetchOrCreateChat(userId!!)
-//        } else {
-//            checkIfReconnectionIsNeeded()
-//        }
-//
+        if (hasFetchQuestionsError) {
+            fetchAnswers(question?.id!!, 0, PAGE_SIZE, "")
+        } else {
+            checkIfReconnectionIsNeeded()
+        }
+
 //        if (hasFetchGroupMembersError && chatId != null && chatId != -1) {
 //            fetchChatMembers(chatId!!.toString(), 0, 100)
 //        }

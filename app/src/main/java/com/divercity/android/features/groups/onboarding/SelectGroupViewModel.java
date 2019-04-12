@@ -1,11 +1,11 @@
 package com.divercity.android.features.groups.onboarding;
 
-import com.divercity.android.core.base.BaseViewModel;
+import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;
 import com.divercity.android.data.entity.group.group.GroupResponse;
-import com.divercity.android.features.groups.onboarding.group.GroupPaginatedRepositoryImpl;
+import com.divercity.android.features.groups.onboarding.datasource.GroupPaginatedRepositoryImpl;
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase;
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase;
 import com.divercity.android.repository.session.SessionRepository;

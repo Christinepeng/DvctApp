@@ -1,7 +1,7 @@
 package com.divercity.android.features.skill.base.usecase
 
-import com.divercity.android.core.base.UseCase
-import com.divercity.android.data.entity.base.DataArray
+import com.divercity.android.core.base.usecase.UseCase
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.repository.data.DataRepository
 import io.reactivex.Observable
@@ -14,29 +14,17 @@ import javax.inject.Named
  */
 
 class FetchSkillsUseCase @Inject
-constructor(@Named("executor_thread") executorThread: Scheduler,
-            @Named("ui_thread") uiThread: Scheduler,
-            private val repository: DataRepository
-) : UseCase<DataArray<SkillResponse>, FetchSkillsUseCase.Params>(executorThread, uiThread) {
+constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
+    private val repository: DataRepository
+) : UseCase<List<SkillResponse>, Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<DataArray<SkillResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<SkillResponse>> {
         return repository.fetchSkills(
             params.page,
             params.size,
-            params.query)
-    }
-
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
-
-        companion object {
-
-            fun forSkills(page: Int, size: Int, query: String?): Params {
-                return Params(
-                    page,
-                    size,
-                    query
-                )
-            }
-        }
+            params.query
+        )
     }
 }

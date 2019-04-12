@@ -12,8 +12,8 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.features.home.people.companies.adapter.TabCompaniesAdapter
-import com.divercity.android.features.home.people.companies.adapter.TabCompaniesViewHolder
+import com.divercity.android.features.company.companies.adapter.TabCompaniesAdapter
+import com.divercity.android.features.company.companies.adapter.TabCompaniesViewHolder
 import kotlinx.android.synthetic.main.fragment_my_companies.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject

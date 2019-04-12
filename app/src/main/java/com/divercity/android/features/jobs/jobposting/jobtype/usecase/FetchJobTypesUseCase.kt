@@ -1,6 +1,6 @@
 package com.divercity.android.features.jobs.jobposting.jobtype.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.job.jobtype.JobTypeResponse
 import com.divercity.android.repository.job.JobRepository
 import io.reactivex.Observable

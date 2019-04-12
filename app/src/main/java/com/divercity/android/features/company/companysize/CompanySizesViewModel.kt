@@ -1,7 +1,7 @@
 package com.divercity.android.features.company.companysize
 
 import androidx.lifecycle.MutableLiveData
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper

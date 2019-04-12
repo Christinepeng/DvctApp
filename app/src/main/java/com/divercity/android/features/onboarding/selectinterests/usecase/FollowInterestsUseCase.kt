@@ -1,6 +1,6 @@
 package com.divercity.android.features.onboarding.selectinterests.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable

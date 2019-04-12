@@ -1,6 +1,6 @@
 package com.divercity.android.features.onboarding.selectschool;
 
-import com.divercity.android.core.base.BaseViewModel;
+import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;

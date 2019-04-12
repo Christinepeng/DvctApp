@@ -63,23 +63,13 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialo
 
     private fun subscribeToLiveData() {
 
-        viewModel.navigateToJobRecruiterDescription.observe(viewLifecycleOwner, Observer {
-
-        })
-
-        viewModel.navigateToJobSeekerDescription.observe(viewLifecycleOwner, Observer {
-            it?.let { job ->
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
-            }
-        })
-
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
         })
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedJobsList.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapter.submitList(it)
         })
 
@@ -153,10 +143,10 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialo
     }
 
     override fun fetchJobs(searchQuery: String?) {
-        viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
+        viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 
     override fun onSuccessJobApply() {
-        viewModel.fetchJobsForced(viewLifecycleOwner)
+        viewModel.fetchData(viewLifecycleOwner, null)
     }
 }

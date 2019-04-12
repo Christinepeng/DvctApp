@@ -2,7 +2,7 @@ package com.divercity.android.features.company.companyadmin.datasource
 
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.DataSource
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.features.company.companyadmin.usecase.FetchCompanyAdminsUseCase
 
 class CompanyAdminSourceFactory(

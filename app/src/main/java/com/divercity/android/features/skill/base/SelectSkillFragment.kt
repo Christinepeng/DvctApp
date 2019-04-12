@@ -17,8 +17,8 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.skills.SkillResponse
-import com.divercity.android.features.skill.base.adapter.SkillsOnboardingAdapter
-import com.divercity.android.features.skill.base.adapter.SkillsOnboardingViewHolder
+import com.divercity.android.features.skill.base.adapter.SkillsAdapter
+import com.divercity.android.features.skill.base.adapter.SkillsViewHolder
 import kotlinx.android.synthetic.main.fragment_base_skill.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import javax.inject.Inject
@@ -29,7 +29,7 @@ class SelectSkillFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: SelectSkillViewModel
 
     @Inject
-    lateinit var adapter: SkillsOnboardingAdapter
+    lateinit var adapter: SkillsAdapter
 
     var currentProgress: Int = 0
     private var handlerSearch = Handler()
@@ -71,7 +71,7 @@ class SelectSkillFragment : BaseFragment(), RetryCallback {
     }
 
     private fun fetchSkills(searchQuery: String?) {
-        viewModel.fetchSkills(viewLifecycleOwner, searchQuery)
+        viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 
     private fun setupHeader() {
@@ -140,7 +140,7 @@ class SelectSkillFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedSkillsList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
@@ -187,7 +187,7 @@ class SelectSkillFragment : BaseFragment(), RetryCallback {
         return tagview_skills.tags
     }
 
-    val listener = object : SkillsOnboardingViewHolder.Listener {
+    val listener = object : SkillsViewHolder.Listener {
 
         override fun onSkillSelect(skill: SkillResponse) {
             tagview_skills.addTag(skill.attributes?.name)

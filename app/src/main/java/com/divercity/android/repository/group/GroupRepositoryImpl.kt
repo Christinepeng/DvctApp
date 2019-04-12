@@ -54,10 +54,10 @@ constructor(
         page: Int,
         size: Int,
         query: String?
-    ): Observable<DataArray<GroupResponse>> {
+    ): Observable<List<GroupResponse>> {
         return service.fetchAllGroups(page, size, query).map {
             checkResponse(it)
-            it.body()
+            it.body()?.data
         }
     }
 

@@ -51,12 +51,12 @@ interface ChatRepository {
         image: String
     ): Observable<ChatMessageResponse>
 
-//    fun sendMessageAttachment(
-//        message: String,
-//        chatId: String,
-//        attchmntType: String,
-//        attchmntId: String
-//    ): Observable<ChatMessageResponse>
+    fun sendMessageAttachment(
+        message: String,
+        chatId: String,
+        attchmntType: String,
+        attchmntId: String
+    ): Observable<ChatMessageResponse>
 
     fun fetchChatMembers(
         currentUserId: String,

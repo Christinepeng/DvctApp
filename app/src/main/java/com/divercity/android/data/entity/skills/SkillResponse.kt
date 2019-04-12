@@ -6,27 +6,24 @@ import com.google.gson.annotations.SerializedName
 
 data class SkillResponse(
 
-        @field:SerializedName("attributes")
-        val attributes: Attributes? = null,
+    @field:SerializedName("attributes")
+    val attributes: Attributes? = null,
 
-        @field:SerializedName("id")
-        val id: String? = null,
+    @field:SerializedName("id")
+    val id: String? = null,
 
-        @field:SerializedName("type")
-        val type: String? = null,
+    @field:SerializedName("type")
+    val type: String? = null
 
-// For ViewHolder
-        var isSelected: Boolean = false
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readParcelable(Attributes::class.java.classLoader),
-            parcel.readString(),
-            isSelected = parcel.readByte() != 0.toByte())
+        parcel.readParcelable(Attributes::class.java.classLoader),
+        parcel.readString()
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(attributes, flags)
         parcel.writeString(id)
-        parcel.writeByte(if (isSelected) 1 else 0)
     }
 
     override fun describeContents(): Int {

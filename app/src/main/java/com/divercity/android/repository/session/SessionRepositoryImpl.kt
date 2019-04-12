@@ -2,6 +2,8 @@ package com.divercity.android.repository.session
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import com.crashlytics.android.Crashlytics
+import com.divercity.android.BuildConfig
 import com.divercity.android.core.sharedpref.SharedPreferencesManager
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.user.response.UserResponse
@@ -124,11 +126,11 @@ constructor(
     }
 
     override fun getAccountType(): String {
-        return currentLoggedUser?.userAttributes?.accountType!!
+        return currentLoggedUser?.userAttributes?.accountType ?: "error"
     }
 
-    override fun getUserName(): String {
-        return currentLoggedUser?.userAttributes?.name!!
+    override fun getUserName(): String? {
+        return currentLoggedUser?.userAttributes?.name
     }
 
     override fun getUserAvatarUrl(): String? {
@@ -175,6 +177,15 @@ constructor(
     override fun saveUserData(user: UserResponse) {
         this.currentLoggedUser = user
         setUserId(user.id)
+
+        // Crashlytics additional data
+        if (!BuildConfig.DEBUG) {
+            Crashlytics.setUserEmail(user.userAttributes?.email)
+            Crashlytics.setUserName(user.userAttributes?.name)
+            Crashlytics.setUserIdentifier(user.id)
+            Crashlytics.setString("ACCOUNT_TYPE", user.userAttributes?.accountType)
+        }
+
         CoroutineScope(Dispatchers.IO).launch {
             userDao.insertUser(user)
         }

@@ -1,5 +1,6 @@
 package com.divercity.android.features.profile.pcurrentuser.tabprofile
 
+import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
@@ -16,6 +17,7 @@ import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
+import com.divercity.android.features.profile.experience.adapter.WorkExperienceAdapter
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
 import javax.inject.Inject
@@ -31,7 +33,12 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
     @Inject
     lateinit var interestAdapter: SelectInterestsAdapter
 
+    @Inject
+    lateinit var workExperienceAdapter : WorkExperienceAdapter
+
     companion object {
+
+        const val REQUEST_CODE_NEW_EXPERIENCE = 200
 
         fun newInstance(): TabProfileFragment {
             return TabProfileFragment()
@@ -51,7 +58,6 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//        viewModel.fetchInterests()
         setupView()
         subscribeToLiveData()
     }
@@ -71,8 +77,15 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
             showUploadedResumesDialog()
         }
 
+        workExperienceAdapter.listener = {
+
+        }
+        list_experience.adapter = workExperienceAdapter
+
 //        list_interest.layoutManager = StaggeredGridLayoutManager(2, 1)
 //        list_interest.adapter = interestAdapter
+
+
 
         val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_medium)
         tagview_skills.tagTypeface = typeface
@@ -107,9 +120,15 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
         lay_personal.lay_interests.setOnClickListener {
             navigator.navigateToInterestsActivity(this, false)
         }
+
+        btn_edit_experience.setOnClickListener {
+            navigator.navigateToAddWorkExperienceForResult(this, REQUEST_CODE_NEW_EXPERIENCE)
+        }
     }
 
     private fun setData(user: UserResponse?) {
+        viewModel.fetchWorkExperiences()
+
         lay_personal.txt_ethnicity.text = user?.userAttributes?.ethnicity
         lay_personal.txt_gender.text = user?.userAttributes?.gender
         lay_personal.txt_age_range.text = user?.userAttributes?.ageRange
@@ -134,9 +153,9 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
             if (!user?.userAttributes?.skills.isNullOrEmpty()) {
                 val skills = ArrayList<String>()
                 skills.addAll(user?.userAttributes?.skills!!)
-                navigator.navigateToToolbarSkillsActivity(this, skills)
+                navigator.navigateToEditUserSkills(this, skills)
             } else {
-                navigator.navigateToToolbarSkillsActivity(this, null)
+                navigator.navigateToEditUserSkills(this, null)
             }
         }
     }
@@ -146,6 +165,7 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
     }
 
     private fun subscribeToLiveData() {
+
         viewModel.updateUserProfileResponse.observe(this, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
@@ -179,6 +199,16 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
                 }
             }
         })
+
+        viewModel.fetchWorkExperiencesResponse.observe(this, Observer { response ->
+            if(response.status == Status.SUCCESS){
+                if(response?.data!!.isNotEmpty())
+                    txt_add_experience.visibility = View.GONE
+                else
+                    txt_add_experience.visibility = View.VISIBLE
+                workExperienceAdapter.list = response.data
+            }
+        })
     }
 
     private fun showUploadedResumesDialog() {
@@ -190,5 +220,12 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
         val i = Intent(Intent.ACTION_VIEW)
         i.data = Uri.parse(doc.attributes?.document)
         startActivity(i)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_NEW_EXPERIENCE && Activity.RESULT_OK == resultCode) {
+            viewModel.fetchWorkExperiences()
+        }
     }
 }

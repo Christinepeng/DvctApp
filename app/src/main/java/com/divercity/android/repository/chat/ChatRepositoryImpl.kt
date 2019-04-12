@@ -94,6 +94,25 @@ constructor(
         return chatService.sendMessage(partMessage, partChatId, partImage)
     }
 
+    override fun sendMessageAttachment(
+        message: String,
+        chatId: String,
+        attchmntType: String,
+        attchmntId: String
+    ): Observable<ChatMessageResponse> {
+        val partMessage = RequestBody.create(MediaType.parse("text/plain"), message)
+        val partChatId = RequestBody.create(MediaType.parse("text/plain"), chatId)
+        val partAttchmntType = RequestBody.create(MediaType.parse("text/plain"), attchmntType)
+        val partAttchmntId = RequestBody.create(MediaType.parse("text/plain"), attchmntId)
+
+        return chatService.sendMessageAttachment(
+            partMessage,
+            partChatId,
+            partAttchmntType,
+            partAttchmntId
+        )
+    }
+
     override suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageResponse) {
         withContext(Dispatchers.IO) {
             chatMessageDao.insertChatMessage(chatMessageResponse)

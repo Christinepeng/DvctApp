@@ -7,6 +7,8 @@ import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.User
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
+import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
 import io.reactivex.Observable
 
 /**
@@ -42,6 +44,13 @@ interface UserRepository {
     fun declineConnectionRequest(userId: String): Observable<Unit>
 
     fun markNotificationRead(notificationId: String): Observable<Unit>
+
+    fun fetchWorkExperiences(userId: String): Observable<List<WorkExperienceResponse>>
+
+    fun addNewExperience(
+        userId: String,
+        experience : WorkExperienceBody
+    ): Observable<WorkExperienceResponse>
 
     fun fetchFollowersByUser(
         userId: String,

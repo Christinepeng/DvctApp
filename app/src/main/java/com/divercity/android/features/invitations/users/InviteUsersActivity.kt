@@ -14,11 +14,11 @@ class InviteUsersActivity : BaseActivity() {
 
     companion object {
 
-        public const val PARAM_INVITATION_TYPE = "paramInvitationType"
+        const val PARAM_INVITATION_TYPE = "paramInvitationType"
 
         // GROUP
-        public const val TYPE_GROUP_INVITE = 109
-        public const val PARAM_GROUP_ID = "paramGroupId"
+        const val TYPE_GROUP_INVITE = 109
+        const val PARAM_GROUP_ID = "paramGroupId"
 
         fun getGroupInviteBundle(groupId : String) : Bundle {
             val bundle = Bundle()

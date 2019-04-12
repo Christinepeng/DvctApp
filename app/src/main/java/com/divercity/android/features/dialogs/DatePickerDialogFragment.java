@@ -6,10 +6,11 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import androidx.fragment.app.DialogFragment;
 import android.widget.DatePicker;
 
 import java.util.Calendar;
+
+import androidx.fragment.app.DialogFragment;
 
 /**
  * Created by lucas on 26/02/2018.

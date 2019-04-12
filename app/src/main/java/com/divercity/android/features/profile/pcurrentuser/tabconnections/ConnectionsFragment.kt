@@ -57,12 +57,12 @@ class ConnectionsFragment : BaseFragment(), RetryCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.fetchFollowers(arguments!!.getString(PARAM_USER_ID)!!)
-        initList()
+        initView()
         subscribeToPaginatedLiveData()
         subscribeToLiveData()
     }
 
-    private fun initList() {
+    private fun initView() {
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
@@ -80,7 +80,10 @@ class ConnectionsFragment : BaseFragment(), RetryCallback {
             )
         }
 
-        txt_empty_array.setText(R.string.no_connection)
+        if (viewModel.isCurrentUser())
+            txt_empty_array.setText(R.string.current_no_connections)
+        else
+            txt_empty_array.setText(R.string.other_no_connections)
     }
 
     private fun subscribeToPaginatedLiveData() {

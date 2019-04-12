@@ -1,7 +1,7 @@
 package com.divercity.android.features.company.companydetail
 
 import androidx.lifecycle.MutableLiveData
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.job.response.JobResponse

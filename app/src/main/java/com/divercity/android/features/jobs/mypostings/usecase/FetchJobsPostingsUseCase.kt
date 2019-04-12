@@ -1,6 +1,6 @@
 package com.divercity.android.features.jobs.mypostings.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.repository.job.JobRepository
 import com.divercity.android.repository.session.SessionRepository

@@ -1,5 +1,7 @@
 package com.divercity.android.features.company.companyadmin
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -10,7 +12,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.features.company.companyadmin.adapter.CompanyAdminAdapter
 import com.divercity.android.features.company.companyadmin.adapter.CompanyAdminViewHolder
 import kotlinx.android.synthetic.main.fragment_company_admin.*
@@ -33,6 +35,8 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
     private lateinit var companyId: String
 
     companion object {
+
+        const val REQUEST_CODE_ADMIN = 200
 
         private const val PARAM_COMPANY_ID = "paramCompanyId"
 
@@ -79,7 +83,11 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
     private fun initView() {
         initAdapter()
         lay_add_admin.setOnClickListener {
-//            navigator.navigateToCompanyAdminAdd(this@CompanyAdminFragment, companyId)
+            navigator.navigateToCompanyAddAdminForResult(
+                this@CompanyAdminFragment,
+                companyId,
+                REQUEST_CODE_ADMIN
+            )
         }
     }
 
@@ -149,4 +157,11 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
             override fun onUserDirectMessage(admin: CompanyAdminResponse) {
             }
         }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_ADMIN && Activity.RESULT_OK == resultCode) {
+            viewModel.refresh()
+        }
+    }
 }

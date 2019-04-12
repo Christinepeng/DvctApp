@@ -1,6 +1,6 @@
 package com.divercity.android.features.onboarding.selectmajor.usecase;
 
-import com.divercity.android.core.base.UseCase;
+import com.divercity.android.core.base.usecase.UseCase;
 import com.divercity.android.data.entity.base.DataArray;
 import com.divercity.android.data.entity.major.MajorResponse;
 import com.divercity.android.repository.data.DataRepository;

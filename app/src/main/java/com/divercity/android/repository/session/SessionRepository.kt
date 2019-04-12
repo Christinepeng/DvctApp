@@ -51,7 +51,7 @@ interface SessionRepository {
 
     fun setUserId(id: String)
 
-    fun getUserName(): String
+    fun getUserName(): String?
 
     fun getEmail(): String?
 

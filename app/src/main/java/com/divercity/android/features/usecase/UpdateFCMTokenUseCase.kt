@@ -1,6 +1,6 @@
 package com.divercity.android.features.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.device.body.Device
 import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.repository.user.UserRepository

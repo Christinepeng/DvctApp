@@ -1,6 +1,6 @@
 package com.divercity.android.features.signup.usecase;
 
-import com.divercity.android.core.base.UseCase;
+import com.divercity.android.core.base.usecase.UseCase;
 import com.divercity.android.repository.registerlogin.RegisterLoginRepository;
 
 import javax.inject.Inject;

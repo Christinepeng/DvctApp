@@ -44,7 +44,7 @@ interface JobService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<IncludedArray<JobResponse>>
+    ): Observable<Response<IncludedArray<JobResponse>>>
 
     @GET("jobs/applications")
     fun fetchMyJobApplications(
@@ -72,10 +72,10 @@ interface JobService {
     ): Observable<Response<DataArray<JobResponse>>>
 
     @POST("jobs")
-    fun postJob(@Body() body: JobBody): Observable<Response<DataObject<JobResponse>>>
+    fun postJob(@Body body: JobBody): Observable<Response<DataObject<JobResponse>>>
 
     @POST("jobs/{jobId}/share")
-    fun shareJob(@Path("jobId") jobId: String, @Body() body: JobShareGroupBody): Observable<Response<DataObject<JobResponse>>>
+    fun shareJob(@Path("jobId") jobId: String, @Body body: JobShareGroupBody): Observable<Response<DataObject<JobResponse>>>
 
     @Multipart
     @POST("jobs/apply")
@@ -101,7 +101,7 @@ interface JobService {
     ): Observable<Response<DataObject<JobResponse>>>
 
     @PUT("jobs/{jobId}")
-    fun editJob(@Path("jobId") jobId: String, @Body() body: JobBody): Observable<Response<DataObject<JobResponse>>>
+    fun editJob(@Path("jobId") jobId: String, @Body body: JobBody): Observable<Response<DataObject<JobResponse>>>
 
     @Multipart
     @PUT("jobs/{jobId}/apply_edit")

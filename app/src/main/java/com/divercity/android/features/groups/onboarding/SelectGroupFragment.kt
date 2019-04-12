@@ -1,5 +1,6 @@
 package com.divercity.android.features.groups.onboarding
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -35,7 +36,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
     lateinit var viewModel: SelectGroupViewModel
 
-    lateinit var groupViewModel : GroupViewModel
+    lateinit var groupViewModel: GroupViewModel
 
     @Inject
     lateinit var adapter: GroupsAdapter
@@ -46,7 +47,11 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     private var handlerSearch = Handler()
     private var lastSearch: String? = null
 
+    private var lastGroupPositionTap = 0
+
     companion object {
+
+        const val REQUEST_CODE_GROUP = 200
         private const val PARAM_PROGRESS = "paramProgress"
 
         fun newInstance(progress: Int): SelectGroupFragment {
@@ -151,11 +156,15 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                     adapter.updatePositionOnJoinPublicGroup(response.data!!)
                     if (++countJoin == 3) {
                         btn_continue.background =
-                            ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
-                        btn_continue.setOnClickListener {
-                            val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
-                                activity!!, viewModel.accountType, currentProgress
+                            ContextCompat.getDrawable(
+                                activity!!,
+                                R.drawable.shape_backgrd_round_blue2
                             )
+                        btn_continue.setOnClickListener {
+                            val nextProgress =
+                                OnboardingProgression.getNextNavigationProgressOnboarding(
+                                    activity!!, viewModel.accountType, currentProgress
+                                )
                             navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
                         }
                     }
@@ -163,30 +172,37 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
             }
         })
 
-        groupViewModel.requestToJoinPrivateGroupResponse.observe(viewLifecycleOwner, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-                }
+        groupViewModel.requestToJoinPrivateGroupResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response?.status) {
+                    Status.LOADING -> {
+                    }
 
-                Status.ERROR -> {
-                    adapter.reloadPosition(response.data!!.position)
-                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.SUCCESS -> {
-                    adapter.updatePositionOnJoinRequest(response.data!!)
-                    if (++countJoin == 3) {
-                        btn_continue.background =
-                            ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
-                        btn_continue.setOnClickListener {
-                            val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
-                                activity!!, viewModel.accountType, currentProgress
-                            )
-                            navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
-                        }
+                    Status.ERROR -> {
+                        adapter.reloadPosition(response.data!!.position)
+                        Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        adapter.updatePositionOnJoinRequest(response.data!!)
+                        countJoin++
+                        checkContinueBtnState()
                     }
                 }
+            })
+    }
+
+    private fun checkContinueBtnState() {
+        if (countJoin >= 3) {
+            btn_continue.background =
+                ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
+            btn_continue.setOnClickListener {
+                val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
+                    activity!!, viewModel.accountType, currentProgress
+                )
+                navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
             }
-        })
+        }
     }
 
     private fun subscribeToPaginatedLiveData() {
@@ -225,7 +241,12 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
         }
 
         override fun onGroupClick(position: Int, group: GroupResponse) {
-            navigator.navigateToGroupDetail(this@SelectGroupFragment, group)
+            lastGroupPositionTap = position
+            navigator.navigateToGroupDetailForResult(
+                this@SelectGroupFragment,
+                group,
+                REQUEST_CODE_GROUP
+            )
         }
 
     }
@@ -233,5 +254,17 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     override fun onDestroyView() {
         handlerSearch.removeCallbacksAndMessages(null)
         super.onDestroyView()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_GROUP) {
+            val group = adapter.currentList?.get(lastGroupPositionTap)
+            if (group?.attributes?.isFollowedByCurrent == true || group?.isJoinRequestPending() == true) {
+                countJoin++
+                checkContinueBtnState()
+            }
+            adapter.notifyItemChanged(lastGroupPositionTap)
+        }
     }
 }

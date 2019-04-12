@@ -82,7 +82,6 @@ constructor(private val socket: MySocket) {
 
     fun close() {
         socket.close()
-        socket.terminate()
     }
 
     fun stopTryingToReconnect() {

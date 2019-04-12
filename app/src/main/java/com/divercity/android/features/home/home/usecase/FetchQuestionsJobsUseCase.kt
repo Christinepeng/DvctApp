@@ -1,6 +1,6 @@
 package com.divercity.android.features.home.home.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.repository.feed.FeedRepository
 import com.divercity.android.repository.job.JobRepository

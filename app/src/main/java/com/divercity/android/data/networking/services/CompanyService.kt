@@ -1,14 +1,13 @@
 package com.divercity.android.data.networking.services
 
 import com.divercity.android.data.entity.base.DataArray
-import com.divercity.android.data.entity.company.companyadmin.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import io.reactivex.Observable
 import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 
 /**
  * Created by lucas on 29/10/2018.
@@ -36,5 +35,9 @@ interface CompanyService {
         @Query("page[size]") size: Int
     ): Observable<Response<DataArray<CompanyAdminResponse>>>
 
-
+    @POST("job_employers/{companyId}/create_admin")
+    fun addCompanyAdmin(
+        @Path("companyId") companyId: String,
+        @Body admins : AddAdminCompanyBody
+    ): Observable<Response<DataArray<CompanyAdminResponse>>>
 }

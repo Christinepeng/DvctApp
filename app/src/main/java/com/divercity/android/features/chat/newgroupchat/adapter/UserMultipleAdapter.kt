@@ -1,9 +1,9 @@
 package com.divercity.android.features.chat.newgroupchat.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
@@ -18,6 +18,7 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
     var selectedUsers = HashSet<UserResponse>()
+    var onSelectUnselectUser: ((ArrayList<UserResponse>) -> Unit)? = null
 
     private var listener = object : UserMultipleViewHolder.Listener {
 
@@ -26,6 +27,7 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
                 selectedUsers.add(user)
             else
                 selectedUsers.remove(user)
+            onSelectUnselectUser?.invoke(ArrayList(selectedUsers))
         }
     }
 
@@ -49,7 +51,11 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
                 getItem(position) as UserResponse
             )
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
-            R.layout.item_contact_character -> (holder as CharacterViewHolder).bindTo(getItem(position) as Char)
+            R.layout.item_contact_character -> (holder as CharacterViewHolder).bindTo(
+                getItem(
+                    position
+                ) as Char
+            )
         }
     }
 

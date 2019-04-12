@@ -20,7 +20,7 @@ internal constructor(private val fetchUsersUseCase: FetchUsersUseCase) : Paginat
 
     companion object {
 
-        const val pageSize = 20
+        const val pageSize = 40
     }
 
     override fun fetchData(query: String?): Listing<Any> {

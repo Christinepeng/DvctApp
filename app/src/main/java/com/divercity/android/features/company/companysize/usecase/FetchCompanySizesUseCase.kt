@@ -1,6 +1,6 @@
 package com.divercity.android.features.company.companysize.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.android.repository.data.DataRepository
 import io.reactivex.Observable

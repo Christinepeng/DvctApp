@@ -1,6 +1,6 @@
 package com.divercity.android.features.dialogs.jobapply.usecase
 
-import com.divercity.android.core.base.UseCase
+import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.repository.document.DocumentRepository
 import io.reactivex.Observable

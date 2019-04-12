@@ -11,7 +11,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
-import com.divercity.android.features.jobs.jobposting.skills.adapter.SkillsAdapter
+import com.divercity.android.features.skill.jobskills.adapter.JobSkillsAdapter
 import kotlinx.android.synthetic.main.fragment_onboarding_upload_resume.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject
@@ -21,7 +21,7 @@ class UploadResumeFragment : BaseFragment() {
     lateinit var viewModel: UploadResumeViewModel
 
     @Inject
-    lateinit var adapter: SkillsAdapter
+    lateinit var adapter: JobSkillsAdapter
 
     var currentProgress: Int = 0
 

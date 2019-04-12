@@ -43,7 +43,6 @@ class CurrentUserProfileFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        setupToolbar()
 
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(CurrentUserProfileViewModel::class.java)
@@ -52,6 +51,7 @@ class CurrentUserProfileFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupToolbar()
         setupView()
         subscribeToLiveData()
     }

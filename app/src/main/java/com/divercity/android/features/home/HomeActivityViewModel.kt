@@ -1,6 +1,6 @@
 package com.divercity.android.features.home
 
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper

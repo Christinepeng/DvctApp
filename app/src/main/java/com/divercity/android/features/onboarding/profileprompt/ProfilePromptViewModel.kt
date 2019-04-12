@@ -2,7 +2,7 @@ package com.divercity.android.features.onboarding.profileprompt
 
 import android.app.Application
 import com.divercity.android.R
-import com.divercity.android.core.base.BaseViewModel
+import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository

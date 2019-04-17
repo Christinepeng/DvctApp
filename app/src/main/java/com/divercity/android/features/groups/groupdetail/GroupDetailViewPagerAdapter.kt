@@ -1,11 +1,11 @@
 package com.divercity.android.features.groups.groupdetail
 
 import android.content.Context
+import android.util.SparseArray
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import android.util.SparseArray
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailFragment
@@ -65,7 +65,7 @@ class GroupDetailViewPagerAdapter
         super.destroyItem(container, position, `object`)
     }
 
-    fun getRegisteredFragment(position: Int): Fragment {
+    fun getRegisteredFragment(position: Int): Fragment? {
         return registeredFragments.get(position)
     }
 }

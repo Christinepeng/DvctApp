@@ -1,11 +1,11 @@
 package com.divercity.android.features.jobs
 
 import android.content.Context
+import android.util.SparseArray
+import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
-import android.util.SparseArray
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.features.jobs.applications.JobsApplicationsFragment
 import com.divercity.android.features.jobs.jobs.JobsListFragment
@@ -89,7 +89,7 @@ class TabJobsViewPagerAdapter
         super.destroyItem(container, position, `object`)
     }
 
-    fun getRegisteredFragment(position: Int): Fragment {
+    fun getRegisteredFragment(position: Int): Fragment? {
         return registeredFragments.get(position)
     }
 }

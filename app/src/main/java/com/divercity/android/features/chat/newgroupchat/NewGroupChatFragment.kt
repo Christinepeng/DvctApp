@@ -4,12 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
-import android.view.MenuInflater
+import android.text.Editable
+import android.text.TextWatcher
+import android.view.KeyEvent
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.SearchView
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
@@ -18,8 +18,9 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.features.chat.creategroupchat.CreateGroupChatFragment
-import com.divercity.android.features.chat.newgroupchat.adapter.UserMultipleAdapter
+import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
 import kotlinx.android.synthetic.main.fragment_new_group_chat.*
+import kotlinx.android.synthetic.main.view_search.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
@@ -32,9 +33,7 @@ class NewGroupChatFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: NewGroupChatViewModel
 
     @Inject
-    lateinit var adapter: UserMultipleAdapter
-
-    private var isListRefreshing = false
+    lateinit var adapter: UserCharPagMultiSelAdapter
 
     private var handlerSearch = Handler()
 
@@ -52,7 +51,6 @@ class NewGroupChatFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(NewGroupChatViewModel::class.java)
-        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,34 +63,47 @@ class NewGroupChatFragment : BaseFragment(), RetryCallback {
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
-        initAdapter()
+        initView()
         subscribeToLiveData()
         subscribeToPaginatedLiveData()
     }
 
-    private fun initAdapter() {
+    private fun initView() {
         adapter.setRetryCallback(this)
         list.adapter = adapter
 
-        swipe_list_main.apply {
-            setOnRefreshListener {
-                isListRefreshing = true
-                viewModel.refresh()
-            }
-            isEnabled = false
-            setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
-        }
-
-        btn_continue.setOnClickListener {
+        btn_action.setOnClickListener {
             if(adapter.selectedUsers.isNotEmpty()) {
                 CreateGroupChatFragment.selectedUsers = adapter.selectedUsers
                 navigator.navigateToCreateGroupChatActivityForResult(this, REQUEST_CODE_GROUP_CREATED)
+            } else {
+                showToast("Choose at least one")
             }
         }
+
+        include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
+            if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
+
+                val toSearch: String? = include_search.edtxt_search.text.toString()
+
+                search(toSearch)
+                true
+            } else
+                false
+        }
+
+        include_search.edtxt_search.addTextChangedListener(object : TextWatcher {
+
+            override fun afterTextChanged(p0: Editable?) {
+            }
+
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+                search(p0.toString())
+            }
+        })
     }
 
     private fun subscribeToLiveData() {
@@ -108,59 +119,33 @@ class NewGroupChatFragment : BaseFragment(), RetryCallback {
         })
 
         viewModel.networkState().observe(this, Observer {
-            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
-                adapter.setNetworkState(it)
+            adapter.setNetworkState(it)
         })
 
         viewModel.refreshState().observe(this, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
-                if (networkState?.status != Status.LOADING)
-                    isListRefreshing = false
-
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
                     txt_no_results.visibility = View.VISIBLE
                 else
                     txt_no_results.visibility = View.GONE
-
-                swipe_list_main.isRefreshing = isListRefreshing
             }
-
-            if (!isListRefreshing)
-                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
+    }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun retry() {
         viewModel.retry()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu_search, menu)
-
-        val searchItem = menu.findItem(R.id.action_search)
-        val searchView = searchItem?.actionView as SearchView
-        searchView.queryHint = getString(R.string.search)
-
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                handlerSearch.removeCallbacksAndMessages(null)
-                viewModel.fetchData(viewLifecycleOwner, query)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                handlerSearch.removeCallbacksAndMessages(null)
-                handlerSearch.postDelayed({
-                    viewModel.fetchData(viewLifecycleOwner, newText)
-                }, AppConstants.SEARCH_DELAY)
-                return true
-            }
-        })
-
-        super.onCreateOptionsMenu(menu, inflater)
+    private fun search(query: String?) {
+        handlerSearch.removeCallbacksAndMessages(null)
+        handlerSearch.postDelayed({
+            viewModel.fetchData(viewLifecycleOwner, query)
+        }, AppConstants.SEARCH_DELAY)
     }
 
     override fun onDestroyView() {
@@ -171,6 +156,7 @@ class NewGroupChatFragment : BaseFragment(), RetryCallback {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if(resultCode == Activity.RESULT_OK) {
             if (requestCode == REQUEST_CODE_GROUP_CREATED){
+//              To remove activity from the stack
                 activity?.apply {
                     setResult(Activity.RESULT_OK, intent)
                     activity!!.finish ()

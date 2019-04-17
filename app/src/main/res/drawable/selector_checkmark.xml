@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/img_checkmark_small" android:state_selected="true"/>
-    <item android:drawable="@drawable/img_checkmark_small" android:state_pressed="true" />
+    <item android:drawable="@drawable/checkmark_xsmall" android:state_selected="true"/>
+    <item android:drawable="@drawable/checkmark_xsmall" android:state_pressed="true" />
     <item android:drawable="@drawable/shape_backgrd_ring_30dp" />
 </selector>

@@ -107,6 +107,10 @@ constructor(val sessionRepository: SessionRepository) :
         }
     }
 
+    fun onRefresh(){
+        adapterProxy?.headerCount = 0
+    }
+
     companion object {
 
         private val userDiffCallback = object : DiffUtil.ItemCallback<HomeItem>() {

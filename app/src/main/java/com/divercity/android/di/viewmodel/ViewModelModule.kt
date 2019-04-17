@@ -11,6 +11,7 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatViewMo
 import com.divercity.android.features.chat.newchat.NewChatViewModel
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatViewModel
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel
+import com.divercity.android.features.company.companies.CompaniesViewModel
 import com.divercity.android.features.company.companyaddadmin.CompanyAddAdminViewModel
 import com.divercity.android.features.company.companyadmin.CompanyAdminViewModel
 import com.divercity.android.features.company.companydetail.CompanyDetailViewModel
@@ -32,6 +33,7 @@ import com.divercity.android.features.groups.answers.AnswerViewModel
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1ViewModel
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3ViewModel
 import com.divercity.android.features.groups.createtopic.CreateTopicViewModel
+import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminViewModel
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsViewModel
 import com.divercity.android.features.groups.groupdetail.GroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailViewModel
@@ -43,7 +45,6 @@ import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.features.home.home.HomeViewModel
 import com.divercity.android.features.home.people.TabPeopleViewModel
-import com.divercity.android.features.company.companies.CompaniesViewModel
 import com.divercity.android.features.home.people.connections.AllConnectionsViewModel
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingViewModel
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
@@ -57,7 +58,6 @@ import com.divercity.android.features.jobs.detail.poster.JobDescriptionPosterVie
 import com.divercity.android.features.jobs.jobposting.JobPostingViewModel
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeViewModel
 import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupViewModel
-import com.divercity.android.features.skill.jobskills.JobSkillsViewModel
 import com.divercity.android.features.jobs.jobs.JobsListViewModel
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.android.features.jobs.savedjobs.SavedJobsViewModel
@@ -67,6 +67,7 @@ import com.divercity.android.features.location.base.SelectLocationViewModel
 import com.divercity.android.features.location.onboarding.OnboardingLocationViewModel
 import com.divercity.android.features.login.step1.EnterEmailViewModel
 import com.divercity.android.features.login.step2.LoginViewModel
+import com.divercity.android.features.multipleuseraction.MultipleUserActionViewModel
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptViewModel
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsViewModel
 import com.divercity.android.features.onboarding.selectmajor.SelectMajorViewModel
@@ -90,6 +91,7 @@ import com.divercity.android.features.signup.SignUpViewModel
 import com.divercity.android.features.singleuseraction.SingleUserActionViewModel
 import com.divercity.android.features.skill.base.SelectSkillViewModel
 import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
+import com.divercity.android.features.skill.jobskills.JobSkillsViewModel
 import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
 import com.divercity.android.features.splash.SplashViewModel
 import dagger.Binds
@@ -552,4 +554,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(GroupViewModel::class)
     abstract fun bindsGroupViewModel(viewModel: GroupViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(MultipleUserActionViewModel::class)
+    abstract fun bindsMultipleUserActionViewModel(viewModel: MultipleUserActionViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DeleteGroupAdminViewModel::class)
+    abstract fun bindsDeleteGroupAdminViewModel(viewModel: DeleteGroupAdminViewModel): ViewModel
 }

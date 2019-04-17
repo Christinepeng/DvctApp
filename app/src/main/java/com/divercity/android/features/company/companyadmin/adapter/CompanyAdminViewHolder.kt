@@ -9,7 +9,7 @@ import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.repository.session.SessionRepository
-import kotlinx.android.synthetic.main.item_user.view.*
+import kotlinx.android.synthetic.main.item_user_action.view.*
 import kotlinx.android.synthetic.main.view_user_image_desc.view.*
 
 class CompanyAdminViewHolder
@@ -91,7 +91,7 @@ private constructor(itemView: View,
 
         fun create(parent: ViewGroup, listener: Listener?, sessionRepository: SessionRepository): CompanyAdminViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(R.layout.item_user, parent, false)
+            val view = layoutInflater.inflate(R.layout.item_user_action, parent, false)
             return CompanyAdminViewHolder(view, listener, sessionRepository)
         }
     }

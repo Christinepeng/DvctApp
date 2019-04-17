@@ -6,6 +6,7 @@ import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.data.entity.group.groupadmin.AddGroupAdminsBody
 import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
 import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContact
 import com.divercity.android.data.entity.group.invitation.user.GroupInviteUser
@@ -128,5 +129,17 @@ interface GroupRepository {
     fun declineJoinGroupRequest(
         groupId: String,
         userId: String
+    ): Observable<Unit>
+
+    fun addGroupAdmins(
+        body: AddGroupAdminsBody
+    ): Observable<String>
+
+    fun acceptGroupAdminInvite(inviteId: String): Observable<Unit>
+
+    fun declineGroupAdminInvite(inviteId: String): Observable<Unit>
+
+    fun deleteGroupAdmins(
+        adminsId: List<String>
     ): Observable<Unit>
 }

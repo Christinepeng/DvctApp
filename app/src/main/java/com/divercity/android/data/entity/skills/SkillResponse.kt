@@ -50,4 +50,8 @@ data class SkillResponse(
     override fun toString(): String {
         return attributes?.name ?: ""
     }
+
+    override fun hashCode(): Int {
+        return id!!.toInt()
+    }
 }

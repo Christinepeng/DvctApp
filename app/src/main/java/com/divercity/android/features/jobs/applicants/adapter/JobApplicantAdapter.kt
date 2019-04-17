@@ -1,9 +1,9 @@
 package com.divercity.android.features.jobs.applicants.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
@@ -28,7 +28,7 @@ constructor() : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_user -> JobApplicantViewHolder.create(parent, listener)
+            R.layout.item_user_action -> JobApplicantViewHolder.create(parent, listener)
             R.layout.view_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type")
         }
@@ -36,7 +36,7 @@ constructor() : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_user -> (holder as JobApplicantViewHolder).bindTo(position, getItem(position))
+            R.layout.item_user_action -> (holder as JobApplicantViewHolder).bindTo(position, getItem(position))
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
     }
@@ -49,7 +49,7 @@ constructor() : PagedListAdapter<JobApplicationResponse, RecyclerView.ViewHolder
         return if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
         } else {
-            R.layout.item_user
+            R.layout.item_user_action
         }
     }
 

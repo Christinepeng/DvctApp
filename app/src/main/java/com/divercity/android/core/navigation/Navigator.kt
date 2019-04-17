@@ -36,6 +36,7 @@ import com.divercity.android.features.groups.answers.model.Question
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Activity
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Activity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
+import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.groups.mygroups.MyGroupsActivity
@@ -51,13 +52,13 @@ import com.divercity.android.features.jobs.detail.poster.JobDescriptionPosterAct
 import com.divercity.android.features.jobs.jobposting.JobPostingActivity
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeActivity
 import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupActivity
-import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.linkedin.LinkedinActivity
 import com.divercity.android.features.loadurl.LoadUrlActivity
 import com.divercity.android.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.android.features.login.step1.EnterEmailActivity
 import com.divercity.android.features.login.step2.LoginActivity
+import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.android.features.onboarding.selectmajor.SelectMajorActivity
@@ -75,6 +76,7 @@ import com.divercity.android.features.settings.accountsettings.AccountSettingsAc
 import com.divercity.android.features.signup.SignUpActivity
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
+import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -460,7 +462,10 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToAddWorkExperienceForResult(fragment: Fragment, code: Int) {
-        fragment.startActivityForResult(AddWorkExperienceActivity.getCallingIntent(fragment.context), code)
+        fragment.startActivityForResult(
+            AddWorkExperienceActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToNewGroupChatActivityForResult(fragment: Fragment, code: Int) {
@@ -514,7 +519,7 @@ class Navigator @Inject constructor() {
 //        fragment.startActivity(
 //            SingleUserActionActivity.getCallingIntent(
 //                fragment.context!!,
-//                SingleUserActionActivity.getAddAdminBundle(companyId)
+//                SingleUserActionActivity.getAddGroupAdminBundle(companyId)
 //            )
 //        )
 //    }
@@ -533,6 +538,24 @@ class Navigator @Inject constructor() {
             SingleUserActionActivity.getCallingIntent(
                 fragment.context!!,
                 SingleUserActionActivity.getShareJobViaMessageBundle(jobId)
+            )
+        )
+    }
+
+    fun navigateToDeleteGroupAdmin(fragment: Fragment, groupId: String, ownerId: String) {
+        fragment.startActivity(
+            DeleteGroupAdminActivity.getCallingIntent(
+                fragment.context!!,
+                DeleteGroupAdminActivity.getEditGroupAdminBundle(groupId, ownerId)
+            )
+        )
+    }
+
+    fun navigateToAddGroupAdmins(fragment: Fragment, groupId: String) {
+        fragment.startActivity(
+            MultipleUserActionActivity.getCallingIntent(
+                fragment.context!!,
+                MultipleUserActionActivity.getAddGroupAdminBundle(groupId)
             )
         )
     }

@@ -68,7 +68,7 @@ class JobDescriptionPosterViewPagerAdapter
         super.destroyItem(container, position, `object`)
     }
 
-    fun getRegisteredFragment(position: Int): Fragment {
+    fun getRegisteredFragment(position: Int): Fragment? {
         return registeredFragments.get(position)
     }
 }

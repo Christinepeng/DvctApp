@@ -41,7 +41,7 @@ class SplashFragment : BaseFragment() {
     }
 
     private fun initBranch() {
-        //        Deep link routing
+//        Deep link routing
         Branch.getInstance().initSession({ referringParams, error ->
             if (error == null) {
                 Timber.e("BRANCH SDK $referringParams")
@@ -53,12 +53,9 @@ class SplashFragment : BaseFragment() {
                 }
             } else {
                 Timber.e("BRANCH SDK ${error.message}")
-                showErrorDialog(
-                    "Network error",
-                    ::initBranch
-                )
+                viewModel.showBranIOErrorDialog.call()
             }
-        }, activity?.intent?.data, activity)
+        }, requireActivity().intent?.data, requireActivity())
     }
 
     private fun subscribeToLiveData() {
@@ -74,6 +71,13 @@ class SplashFragment : BaseFragment() {
             navigator.navigateToHomeActivity(activity!!)
 //            navigator.navigateToSelectGroupActivity(requireActivity(), 25)
             activity!!.finish()
+        })
+
+        viewModel.showBranIOErrorDialog.observe(this, Observer {
+            showErrorDialog(
+                "Network error",
+                ::initBranch
+            )
         })
 
         viewModel.navigateToSelectUserType.observe(this, Observer {

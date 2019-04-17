@@ -19,8 +19,8 @@ import com.divercity.android.features.singleuseraction.SingleUserActionActivity.
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.PARAM_ACTION_TYPE
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.TYPE_ADD_ADMIN
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.TYPE_SHARE_JOB
-import com.divercity.android.features.singleuseraction.adapter.UserSingleSelectionAdapter
-import kotlinx.android.synthetic.main.fragment_single_user_action.*
+import com.divercity.android.features.profile.useradapter.charpaginationsinglesel.UserCharPagSingleSelAdapter
+import kotlinx.android.synthetic.main.fragment_user_action.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -34,7 +34,7 @@ class SingleUserActionFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: SingleUserActionViewModel
 
     @Inject
-    lateinit var adapter: UserSingleSelectionAdapter
+    lateinit var adapter: UserCharPagSingleSelAdapter
 
     private var handlerSearch = Handler()
 
@@ -47,7 +47,7 @@ class SingleUserActionFragment : BaseFragment(), RetryCallback {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_single_user_action
+    override fun layoutId(): Int = R.layout.fragment_user_action
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

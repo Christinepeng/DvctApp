@@ -128,7 +128,7 @@ constructor(val context: Context) {
             .setAutoCancel(true)
     }
 
-    fun getGroupInviteJoinRequestNotification(
+    fun getGroupNotification(
         title: String,
         body: String,
         groupId: String

@@ -38,13 +38,11 @@ data class UserResponse(
                         accountType == context.getString(R.string.professional_id))
     }
 
-     fun getUserType(): String? {
-        return userAttributes?.accountType
-    }
-
-     fun getSkills(): List<String>? {
-        return userAttributes?.skills
-    }
-
-
+//     fun getUserType(): String? {
+//        return userAttributes?.accountType
+//    }
+//
+//     fun getSkills(): List<String>? {
+//        return userAttributes?.skills
+//    }
 }

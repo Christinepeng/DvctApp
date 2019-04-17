@@ -18,9 +18,9 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.chat.newgroupchat.adapter.UserMultipleAdapter
 import com.divercity.android.features.company.companyaddadmin.adapter.AdminSelectedAdapter
 import com.divercity.android.features.company.companyaddadmin.adapter.AdminSelectedViewHolder
+import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
 import kotlinx.android.synthetic.main.fragment_company_add_admin.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -35,7 +35,7 @@ class CompanyAddAdminFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: CompanyAddAdminViewModel
 
     @Inject
-    lateinit var adapterUsers: UserMultipleAdapter
+    lateinit var adapterUsers: UserCharPagMultiSelAdapter
 
     @Inject
     lateinit var adapterAdmin: AdminSelectedAdapter

@@ -4,6 +4,7 @@ import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.entity.device.response.DeviceResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
 import com.divercity.android.features.usecase.SaveFCMTokenUseCase
 import com.divercity.android.repository.session.SessionRepository
 import com.google.firebase.iid.FirebaseInstanceId
@@ -17,12 +18,11 @@ import javax.inject.Inject
 
 class HomeActivityViewModel @Inject
 constructor(var sessionRepository: SessionRepository,
+            private val fetchUserDataUseCase: FetchUserDataUseCase,
             private var saveFCMTokenUseCase: SaveFCMTokenUseCase) : BaseViewModel() {
 
     fun getProfilePictureUrl(): String? = sessionRepository.getUserAvatarUrl()
     val navigateToGroupDetail = SingleLiveEvent<String>()
-
-
 
     fun checkFCMDevice(){
         FirebaseMessaging.getInstance().isAutoInitEnabled = true

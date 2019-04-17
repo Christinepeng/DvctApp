@@ -8,7 +8,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.chat.newchat.adapter.CharacterViewHolder
+import com.divercity.android.features.profile.useradapter.charpagination.CharacterViewHolder
 import javax.inject.Inject
 
 class UserSelectionAdapter @Inject

@@ -23,8 +23,8 @@ data class AuthorInfo(
 
     @field:SerializedName("present")
     val present: Boolean? = null
-
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),

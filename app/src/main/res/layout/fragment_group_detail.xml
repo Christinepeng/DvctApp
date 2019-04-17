@@ -13,6 +13,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/coordinatorLayout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -38,6 +39,17 @@
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:paddingBottom="16dp">
+
+                    <include
+                        android:id="@+id/include_accept_decline"
+                        layout="@layout/view_accept_decline"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/include_toolbar"
+                        tools:visibility="visible" />
 
                     <ImageView
                         android:id="@+id/img_default_group"
@@ -233,5 +245,19 @@
         </LinearLayout>
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="33dp"
+        android:layout_marginBottom="33dp"
+        android:src="@drawable/ic_add_24dp"
+        android:visibility="gone"
+        app:backgroundTint="@color/appBlue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/coordinatorLayout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

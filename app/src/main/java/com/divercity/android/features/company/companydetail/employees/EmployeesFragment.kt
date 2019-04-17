@@ -11,8 +11,8 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserAdapter
-import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.useradapter.pagination.UserPaginationAdapter
+import com.divercity.android.features.profile.useradapter.pagination.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_employees.*
 import javax.inject.Inject
 
@@ -25,7 +25,7 @@ class EmployeesFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: EmployeesViewModel
 
     @Inject
-    lateinit var adapter: UserAdapter
+    lateinit var adapter: UserPaginationAdapter
 
     private var isListRefreshing = false
     private var lastConnectUserPosition = 0

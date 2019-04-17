@@ -13,8 +13,8 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.home.people.ITabPeople
-import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserAdapter
-import com.divercity.android.features.profile.pcurrentuser.tabconnections.adapter.UserViewHolder
+import com.divercity.android.features.profile.useradapter.pagination.UserPaginationAdapter
+import com.divercity.android.features.profile.useradapter.pagination.UserViewHolder
 import kotlinx.android.synthetic.main.fragment_connections.*
 import javax.inject.Inject
 
@@ -28,7 +28,7 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabPeople {
     lateinit var viewModel: AllConnectionsViewModel
 
     @Inject
-    lateinit var adapter: UserAdapter
+    lateinit var adapter: UserPaginationAdapter
 
     private var handlerSearch = Handler()
     private var isListRefreshing = false
@@ -70,7 +70,7 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabPeople {
     }
 
     private fun subscribeToLiveData() {
-        viewModel.connectUserResponse.observe(this, Observer { response ->
+        viewModel.connectUserResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                 }
@@ -96,16 +96,16 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabPeople {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedUserList.observe(this, Observer {
+        viewModel.pagedUserList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState.observe(viewLifecycleOwner, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState.observe(viewLifecycleOwner, Observer { networkState ->
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
                     isListRefreshing = false

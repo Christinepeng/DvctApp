@@ -7,20 +7,12 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/btn_write_new_post"
-        style="@style/AppText3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/write_new_post" />
-
-    <TextView
         android:id="@+id/btn_invite"
         style="@style/AppText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/invite" />
+        android:text="@string/invite_users" />
 
     <TextView
         android:id="@+id/btn_edit_group"
@@ -39,11 +31,19 @@
         android:text="@string/add_admin" />
 
     <TextView
-        android:id="@+id/btn_view_members"
+        android:id="@+id/btn_edit_admin"
         style="@style/AppText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/view_members" />
+        android:text="@string/edit_admins" />
+
+    <TextView
+        android:id="@+id/btn_edit_members"
+        style="@style/AppText3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/edit_members" />
 
 </LinearLayout>

@@ -26,6 +26,7 @@
     <string name="error_notifications">Error setting up notifications, try to restart the app</string>
     <string name="invitations">Invitations</string>
     <string name="invite">Invite</string>
+    <string name="invite_users">Invite Users</string>
     <string name="invite_friends">Invite friends</string>
     <string name="invite_friends_subtitle">Your group is better with friends</string>
     <string name="not_now">Not Now</string>
@@ -303,6 +304,7 @@
     <string name="edit_group">Edit Group</string>
     <string name="add_admin">Add Admin</string>
     <string name="view_members">View Members</string>
+    <string name="edit_members">Edit Members</string>
     <string name="invite_from_divercity">Invite From Divercity</string>
     <string name="invite_from_contact_list">Invite From Contact List</string>
     <string name="create_new_topic">Create New Topic</string>
@@ -313,6 +315,7 @@
     <string name="be_first_comment">Be the first to comment</string>
     <string name="delete_group">Delete Group</string>
     <string name="delete_group_warning">Are you sure you want to delete this group?</string>
+    <string name="add_admins">Add Admins</string>
 
     <!-- Delete Job-->
     <string name="delete_job">Delete Job Posting</string>

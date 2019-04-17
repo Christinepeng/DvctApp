@@ -61,15 +61,19 @@ class HomeActivity : DaggerAppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(HomeActivityViewModel::class.java)
+
+        viewModel = ViewModelProviders.of(this, viewModelFactory)
+            .get(HomeActivityViewModel::class.java)
+
         setContentView(R.layout.activity_home)
+
         showDialogProfileComplete(
             intent.getBooleanExtra(
                 INTENT_EXTRA_PARAM_SHOW_DIALOG_PROFILE,
                 false
             )
         )
+
         setupBottomNavigationView()
         savedInstanceState ?: selectItem(0)
         setSupportActionBar(include_toolbar.toolbar)

@@ -14,7 +14,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.chat.creategroupchat.adapter.UserGroupMemberAdapter
+import com.divercity.android.features.profile.useradapter.nopagmultisel.UserMultiSelAdapter
 import kotlinx.android.synthetic.main.fragment_create_group_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
@@ -32,7 +32,7 @@ class CreateGroupChatFragment : BaseFragment() {
     lateinit var viewModel: CreateGroupChatViewModel
 
     @Inject
-    lateinit var adapter: UserGroupMemberAdapter
+    lateinit var adapter: UserMultiSelAdapter
 
     companion object {
 

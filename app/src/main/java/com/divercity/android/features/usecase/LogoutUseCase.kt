@@ -46,10 +46,7 @@ constructor(
                         Timber.e("En logout 5")
 
                         ioScope.launch {
-                            sessionRepository.clearUserData()
-                            withContext(Dispatchers.Main) {
-                                onFinish()
-                            }
+                            end(onFinish)
                         }
                     }
 
@@ -57,10 +54,7 @@ constructor(
                         Timber.e("En logout 6")
 
                         ioScope.launch {
-                            sessionRepository.clearUserData()
-                            withContext(Dispatchers.Main) {
-                                onFinish()
-                            }
+                            end(onFinish)
                         }
                     }
                 }
@@ -73,12 +67,15 @@ constructor(
                 )
             } else {
                 Timber.e("En logout 4")
-
-                sessionRepository.clearUserData()
-                withContext(Dispatchers.Main) {
-                    onFinish()
-                }
+                end(onFinish)
             }
+        }
+    }
+
+    private suspend fun end(onFinish: () -> Unit) {
+        sessionRepository.clearUserData()
+        withContext(Dispatchers.Main) {
+            onFinish()
         }
     }
 

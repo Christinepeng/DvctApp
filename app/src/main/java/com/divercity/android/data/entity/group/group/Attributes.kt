@@ -49,9 +49,13 @@ data class Attributes(
     var authorInfo: AuthorInfo? = null,
 
     @field:SerializedName("request_to_join_status")
-    var requestToJoinStatus: String? = null
+    var requestToJoinStatus: String? = null,
+
+    @field:SerializedName("group_admin_invite")
+    var groupAdminInvite: GroupAdminInvite? = null
 
 ) : Parcelable {
+
     constructor(parcel: Parcel) : this(
         parcel.readString(),
         parcel.readString(),
@@ -67,7 +71,8 @@ data class Attributes(
         parcel.readByte() != 0.toByte(),
         parcel.readString(),
         parcel.readParcelable(AuthorInfo::class.java.classLoader),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readParcelable(GroupAdminInvite::class.java.classLoader)
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -86,6 +91,7 @@ data class Attributes(
         parcel.writeString(pictureMain)
         parcel.writeParcelable(authorInfo, flags)
         parcel.writeString(requestToJoinStatus)
+        parcel.writeParcelable(groupAdminInvite, flags)
     }
 
     override fun describeContents(): Int {

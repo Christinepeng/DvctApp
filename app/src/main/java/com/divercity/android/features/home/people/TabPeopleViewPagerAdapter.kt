@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
-import com.divercity.android.features.groups.all.AllGroupsFragment
 import com.divercity.android.features.company.companies.CompaniesFragment
+import com.divercity.android.features.groups.all.AllGroupsFragment
 import com.divercity.android.features.home.people.connections.AllConnectionsFragment
 import javax.inject.Inject
 
@@ -66,7 +66,7 @@ class TabPeopleViewPagerAdapter
         super.destroyItem(container, position, `object`)
     }
 
-    fun getRegisteredFragment(position: Int): Fragment {
+    fun getRegisteredFragment(position: Int): Fragment? {
         return registeredFragments.get(position)
     }
 }

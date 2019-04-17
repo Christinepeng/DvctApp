@@ -278,6 +278,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         swipe_list_main.apply {
             setOnRefreshListener {
                 mIsRefreshing = true
+                homeAdapter.onRefresh()
                 viewModel.refresh()
             }
 

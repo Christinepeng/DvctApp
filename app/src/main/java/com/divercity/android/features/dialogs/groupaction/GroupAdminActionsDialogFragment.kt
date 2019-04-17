@@ -32,18 +32,28 @@ class GroupAdminActionsDialogFragment : DialogFragment() {
 
         dialogView.apply {
 
-            btn_write_new_post.setOnClickListener {
-                listener?.onWriteNewPost()
-                dismiss()
-            }
-
             btn_invite.setOnClickListener {
                 listener?.onInvite()
                 dismiss()
             }
 
+            btn_add_admin.setOnClickListener {
+                listener?.onAddAdmin()
+                dismiss()
+            }
+
+            btn_edit_admin.setOnClickListener {
+                listener?.onEditAdmin()
+                dismiss()
+            }
+
             btn_edit_group.setOnClickListener {
                 listener?.onEditGroup()
+                dismiss()
+            }
+
+            btn_edit_members.setOnClickListener {
+                listener?.onEditMembers()
                 dismiss()
             }
         }
@@ -61,14 +71,14 @@ class GroupAdminActionsDialogFragment : DialogFragment() {
 
     interface Listener {
 
-        fun onWriteNewPost()
-
         fun onInvite()
-
-        fun onEditGroup()
 
         fun onAddAdmin()
 
-        fun onViewMembers()
+        fun onEditAdmin()
+
+        fun onEditGroup()
+
+        fun onEditMembers()
     }
 }

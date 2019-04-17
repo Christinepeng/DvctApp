@@ -14,7 +14,7 @@ import javax.inject.Inject
 
 class TabJobsViewModel @Inject
 constructor(val userRepository: UserRepositoryImpl,
-            private val sessionRepository: SessionRepository,
+            sessionRepository: SessionRepository,
             val application: Application) : BaseViewModel() {
 
     val showBtnAddJob = MutableLiveData<Int>()
@@ -28,7 +28,7 @@ constructor(val userRepository: UserRepositoryImpl,
             showBtnAddJob.value = View.VISIBLE
     }
 
-    fun getAccountType(): String? {
-        return sessionRepository.getAccountType()
-    }
+//    fun getAccountType(): String? {
+//        return sessionRepository.getAccountType()
+//    }
 }

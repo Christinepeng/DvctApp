@@ -46,7 +46,8 @@ constructor(
             chatListener,
             adapterListener,
             fetchJobFromViewHolderUseCase,
-            fetchJobReloadedUseCase
+            fetchJobReloadedUseCase,
+            sessionRepository.isLoggedUserJobSeeker()
         )
     }
 

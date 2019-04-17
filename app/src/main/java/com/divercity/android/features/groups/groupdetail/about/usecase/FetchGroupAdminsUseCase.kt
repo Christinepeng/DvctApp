@@ -1,5 +1,6 @@
 package com.divercity.android.features.groups.groupdetail.about.usecase
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.repository.group.GroupRepository
@@ -13,22 +14,15 @@ import javax.inject.Named
  */
 
 class FetchGroupAdminsUseCase @Inject
-constructor(@Named("executor_thread") executorThread: Scheduler,
-            @Named("ui_thread") uiThread: Scheduler,
-            private val repository: GroupRepository
-) : UseCase<List<UserResponse>, FetchGroupAdminsUseCase.Params>(executorThread, uiThread) {
+constructor(
+    @Named("executor_thread") executorThread: Scheduler,
+    @Named("ui_thread") uiThread: Scheduler,
+    private val repository: GroupRepository
+) : UseCase<List<UserResponse>, Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: FetchGroupAdminsUseCase.Params): Observable<List<UserResponse>> {
-        return repository.fetchGroupAdmins(params.groupId!!, params.page, params.size, params.query)
-    }
+    lateinit var groupId: String
 
-    class Params private constructor(val groupId: String?, val page: Int, val size: Int, val query: String?) {
-
-        companion object {
-
-            fun forGroups(groupId: String?, page: Int, size: Int, query: String?): FetchGroupAdminsUseCase.Params {
-                return FetchGroupAdminsUseCase.Params(groupId, page, size, query)
-            }
-        }
+    override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
+        return repository.fetchGroupAdmins(groupId, params.page, params.size, params.query)
     }
 }

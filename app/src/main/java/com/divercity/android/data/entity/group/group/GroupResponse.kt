@@ -20,18 +20,6 @@ data class GroupResponse(
         parcel.readString()
     )
 
-    fun isPublic(): Boolean {
-        return attributes.groupType?.toLowerCase() == "public"
-    }
-
-    fun isJoinRequestPending(): Boolean {
-        return attributes.requestToJoinStatus == "pending"
-    }
-
-    fun isJoinRequestNotSend(): Boolean {
-        return attributes.requestToJoinStatus == "none"
-    }
-
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeParcelable(attributes, flags)
         parcel.writeString(id)
@@ -49,5 +37,17 @@ data class GroupResponse(
         override fun newArray(size: Int): Array<GroupResponse?> {
             return arrayOfNulls(size)
         }
+    }
+
+    fun isPublic(): Boolean {
+        return attributes.groupType?.toLowerCase() == "public"
+    }
+
+    fun isJoinRequestPending(): Boolean {
+        return attributes.requestToJoinStatus == "pending"
+    }
+
+    fun isJoinRequestNotSend(): Boolean {
+        return attributes.requestToJoinStatus == "none"
     }
 }

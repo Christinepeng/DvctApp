@@ -1,5 +1,6 @@
 package com.divercity.android.features.groups.groupdetail.about
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
@@ -59,8 +60,10 @@ constructor(private val fetchGroupMembersUseCase: FetchGroupMembersUseCase,
                 fetchGroupAdminsResponse.postValue(Resource.success(o))
             }
         }
+        fetchGroupAdminsUseCase.groupId = group.id
         fetchGroupAdminsUseCase.execute(callback,
-                FetchGroupAdminsUseCase.Params.forGroups(group.id, page, size, query))
+                Params(page, size, query)
+        )
     }
 
     override fun onCleared() {

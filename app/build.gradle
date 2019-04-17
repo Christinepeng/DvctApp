@@ -55,7 +55,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 8
-        versionName "B-1.7"
+        versionName "D-1.19"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -102,6 +102,17 @@ android {
         experimental = true
     }
 }
+
+//configurations.all {
+//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+//        def requested = details.requested
+//        if (requested.group == "androidx") {
+//            if (!requested.name.startsWith("multidex")) {
+//                details.useVersion "28.+"
+//            }
+//        }
+//    }
+//}
 
 dependencies {
 

@@ -25,6 +25,7 @@ import com.divercity.android.features.dialogs.invitegroup.InviteGroupDialogFragm
 import com.divercity.android.features.invitations.contacts.InvitePhoneContactsActivity
 import com.divercity.android.features.invitations.users.InviteUsersActivity
 import kotlinx.android.synthetic.main.fragment_group_detail.*
+import kotlinx.android.synthetic.main.view_accept_decline.*
 import kotlinx.android.synthetic.main.view_image_with_foreground.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -40,7 +41,6 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     @Inject
     lateinit var adapter: GroupDetailViewPagerAdapter
 
-    private var group: GroupResponse? = null
     private lateinit var groupId: String
 
     companion object {
@@ -93,9 +93,9 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
         setupToolbar()
         subscribeToLiveData()
 
-        if (DataHolder.hasData())
-            viewModel.group.postValue(DataHolder.data)
-        else
+        if (DataHolder.hasData()) {
+            viewModel.groupLiveData.postValue(DataHolder.data)
+        } else if (viewModel.groupLiveData.value == null)
             viewModel.fetchGroupById(groupId)
     }
 
@@ -109,55 +109,84 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
         }
     }
 
-    private fun setupView(group: GroupResponse) {
-        this.group = group
+    private fun setupView(group: GroupResponse?) {
+        if (group != null) {
+            viewModel.fetchGroupMembers(groupId, 0, 5, null)
 
-        viewModel.fetchGroupMembers(groupId, 0, 5, null)
+            adapter.group = group
+            viewPager.adapter = adapter
+            tab_layout.setupWithViewPager(viewPager)
 
-        adapter.group = group
-        viewPager.adapter = adapter
-        tab_layout.setupWithViewPager(viewPager)
+            item_txt_name.text = group.attributes.title
+            if (group.isPublic())
+                item_txt_detail.text =
+                    "Public Group · ".plus(group.attributes.followersCount).plus(" Members")
+            else
+                item_txt_detail.text =
+                    "Private Group · ".plus(group.attributes.followersCount).plus(" Members")
 
-        item_txt_name.text = group.attributes.title
-        if (group.isPublic())
-            item_txt_detail.text =
-                "Public Group · ".plus(group.attributes.followersCount).plus(" Members")
-        else
-            item_txt_detail.text =
-                "Private Group · ".plus(group.attributes.followersCount).plus(" Members")
+            GlideApp.with(this)
+                .load(group.attributes.pictureMain)
+                .into(img_default_group)
 
-        GlideApp.with(this)
-            .load(group.attributes.pictureMain)
-            .into(img_default_group)
-
-        if (group.attributes.isCurrentUserAdmin) {
-            btn_member_pending.setText(R.string.admin)
-            btn_member_pending.visibility = View.VISIBLE
-            btn_conversation.visibility = View.VISIBLE
-        } else if (group.attributes.isFollowedByCurrent) {
-            btn_member_pending.setText(R.string.member)
-            btn_member_pending.visibility = View.VISIBLE
-            btn_conversation.visibility = View.VISIBLE
-        } else if (group.isPublic()) {
-            btn_join.visibility = View.VISIBLE
-            btn_join.setOnClickListener {
-                viewModel.joinGroup(group)
+            btn_fab.setOnClickListener {
+                navigator.navigateToCreateTopicActivity(this@GroupDetailFragment, group)
+//                viewModel.fetchGroupById(groupId)
             }
-        } else if (group.isJoinRequestNotSend()) {
-            btn_join.setText(R.string.request_to_join)
-            btn_join.visibility = View.VISIBLE
-            btn_join.setOnClickListener {
-                viewModel.requestToJoinGroup(group)
+
+            if (group.attributes.groupAdminInvite?.inviteId != null) {
+                include_accept_decline.visibility = View.VISIBLE
+
+                txt_notification.text = "You have been added as an admin to this group"
+                btn_close.setOnClickListener {
+                    include_accept_decline.visibility = View.GONE
+                }
+                btn_accept.setOnClickListener {
+                    viewModel.acceptGroupAdminInvite(group.attributes.groupAdminInvite?.inviteId!!)
+                }
+                btn_decline.setOnClickListener {
+                    viewModel.declineGroupAdminInvite(group.attributes.groupAdminInvite?.inviteId!!)
+                }
+
+            } else {
+                include_accept_decline.visibility = View.GONE
             }
-        } else if (group.isJoinRequestPending()) {
-            btn_member_pending.setText(R.string.pending)
-            btn_join.visibility = View.GONE
-            btn_member_pending.visibility = View.VISIBLE
+
+            if (group.attributes.isCurrentUserAdmin) {
+                btn_member_pending.setText(R.string.admin)
+                btn_member_pending.visibility = View.VISIBLE
+                btn_conversation.visibility = View.VISIBLE
+                (btn_fab as View).visibility = View.VISIBLE
+                btn_join.visibility = View.GONE
+            } else if (group.attributes.isFollowedByCurrent) {
+                btn_member_pending.setText(R.string.member)
+                btn_member_pending.visibility = View.VISIBLE
+                btn_conversation.visibility = View.VISIBLE
+                (btn_fab as View).visibility = View.VISIBLE
+                btn_join.visibility = View.GONE
+            } else if (group.isPublic()) {
+                btn_join.visibility = View.VISIBLE
+                btn_join.setOnClickListener { viewModel.joinGroup(group) }
+                (btn_fab as View).visibility = View.GONE
+            } else if (group.isJoinRequestNotSend()) {
+                btn_member_pending.visibility = View.GONE
+                btn_conversation.visibility = View.GONE
+                btn_join.setText(R.string.request_to_join)
+                btn_join.visibility = View.VISIBLE
+                btn_join.setOnClickListener { viewModel.requestToJoinGroup(group) }
+                (btn_fab as View).visibility = View.GONE
+            } else if (group.isJoinRequestPending()) {
+                btn_member_pending.setText(R.string.pending)
+                btn_member_pending.visibility = View.VISIBLE
+                btn_conversation.visibility = View.GONE
+                btn_join.visibility = View.GONE
+                (btn_fab as View).visibility = View.GONE
+            }
         }
     }
 
     private fun subscribeToLiveData() {
-        viewModel.group.observe(viewLifecycleOwner, Observer { group ->
+        viewModel.groupLiveData.observe(viewLifecycleOwner, Observer { group ->
             setupView(group)
         })
 
@@ -189,6 +218,23 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             }
         })
 
+        viewModel.groupAdminInviteResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+
+                Status.SUCCESS -> {
+                    hideProgress()
+                }
+            }
+        })
+
         viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer {
             it?.getContentIfNotHandled()?.let { group ->
                 when (group.status) {
@@ -200,11 +246,6 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                     }
                     Status.SUCCESS -> {
                         hideProgress()
-                        this.group?.attributes?.isFollowedByCurrent = true
-                        btn_join.visibility = View.GONE
-                        btn_member_pending.setText(R.string.member)
-                        btn_member_pending.visibility = View.VISIBLE
-                        btn_conversation.visibility = View.VISIBLE
                     }
                 }
             }
@@ -220,11 +261,6 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    this.group?.attributes?.requestToJoinStatus = "pending"
-                    btn_join.visibility = View.GONE
-                    btn_member_pending.setText(R.string.pending)
-                    btn_member_pending.visibility = View.VISIBLE
-                    btn_conversation.visibility = View.GONE
                 }
             }
         })
@@ -242,7 +278,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
                 .apply(RequestOptions().circleCrop())
                 .into(imgViews[i].img)
 
-            if (i == members.size - 1 && i != group?.attributes?.followersCount!! - 1)
+            if (i == members.size - 1 && i != viewModel.getGroup()?.attributes?.followersCount!! - 1)
                 (imgViews[i] as FrameLayout).foreground =
                     ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
         }
@@ -251,10 +287,11 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.action -> {
+                val group = viewModel.getGroup()
                 if (group != null) {
-                    if (group!!.attributes.isCurrentUserAdmin)
+                    if (group.attributes.isCurrentUserAdmin)
                         showGroupAdminActionsDialog()
-                    else if (group!!.attributes.isFollowedByCurrent)
+                    else if (group.attributes.isFollowedByCurrent)
                         showGroupMemberActionsDialog()
                 }
                 true
@@ -267,8 +304,17 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     private fun showGroupAdminActionsDialog() {
         val fragment = GroupAdminActionsDialogFragment.newInstance()
         fragment.listener = object : GroupAdminActionsDialogFragment.Listener {
-            override fun onWriteNewPost() {
-                navigator.navigateToCreateTopicActivity(this@GroupDetailFragment, group)
+
+            override fun onEditAdmin() {
+                navigator.navigateToDeleteGroupAdmin(
+                    this@GroupDetailFragment,
+                    groupId,
+                    viewModel.getGroup()?.attributes?.authorInfo?.id!!.toString()
+                )
+            }
+
+            override fun onEditMembers() {
+
             }
 
             override fun onInvite() {
@@ -276,14 +322,16 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             }
 
             override fun onEditGroup() {
-                navigator.navigateToEditGroupStep1(this@GroupDetailFragment, group)
+                navigator.navigateToEditGroupStep1(this@GroupDetailFragment, viewModel.getGroup())
             }
 
             override fun onAddAdmin() {
+                navigator.navigateToAddGroupAdmins(
+                    this@GroupDetailFragment,
+                    viewModel.getGroup()?.id!!
+                )
             }
 
-            override fun onViewMembers() {
-            }
         }
         fragment.show(childFragmentManager, null)
     }
@@ -294,7 +342,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             override fun onWriteNewPost() {
                 navigator.navigateToCreateTopicActivity(
                     this@GroupDetailFragment,
-                    group
+                    viewModel.getGroup()
                 )
             }
 
@@ -309,7 +357,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
     }
 
     private fun showInviteGroupDialog() {
-        val dialog = InviteGroupDialogFragment.newInstance(group!!)
+        val dialog = InviteGroupDialogFragment.newInstance(viewModel.getGroup()!!)
         dialog.show(childFragmentManager, null)
     }
 

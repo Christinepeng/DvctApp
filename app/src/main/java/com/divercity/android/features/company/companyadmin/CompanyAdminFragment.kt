@@ -70,13 +70,7 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
-
-//        lay_new_group.setOnClickListener {
-//            navigator.navigateToNewGroupChatActivityForResult(this, REQUEST_CODE_GROUP_CREATED)
-//        }
-
-        btn_edit.visibility = View.GONE
-
+        
         initView()
         subscribeToLiveData()
         subscribeToPaginatedLiveData()

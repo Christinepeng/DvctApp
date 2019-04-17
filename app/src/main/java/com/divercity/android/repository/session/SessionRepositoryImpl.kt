@@ -85,7 +85,6 @@ constructor(
 
     override fun getFCMToken(): String? {
         return sharedPreferencesManager.getString(Key.FCM_TOKEN)
-
     }
 
     override fun setFCMToken(token: String?) {

@@ -18,7 +18,7 @@ import com.divercity.android.features.dialogs.JobSeekerActionsDialogFragment
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import kotlinx.android.synthetic.main.fragment_job_detail.*
-import kotlinx.android.synthetic.main.item_user.view.*
+import kotlinx.android.synthetic.main.item_user_action.view.*
 import kotlinx.android.synthetic.main.view_job_desc.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kotlinx.android.synthetic.main.view_user_image_desc.view.*

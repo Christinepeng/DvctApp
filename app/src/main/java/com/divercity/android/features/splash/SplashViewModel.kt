@@ -19,6 +19,7 @@ internal constructor(
     val navigateToSelectUserType = SingleLiveEvent<Any>()
     val navigateToHome = SingleLiveEvent<Any>()
     val navigateToEnterEmail = SingleLiveEvent<Any>()
+    val showBranIOErrorDialog = SingleLiveEvent<Unit>()
     val navigateToGroupDetail = SingleLiveEvent<Int>()
 
     var deepLinkData: JSONObject? = null

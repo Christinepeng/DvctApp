@@ -2,11 +2,13 @@ package com.divercity.android.repository.group
 
 import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
+import com.divercity.android.data.entity.company.companyadmin.body.Admin
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.data.entity.group.groupadmin.AddGroupAdminsBody
 import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
 import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContact
 import com.divercity.android.data.entity.group.invitation.contact.GroupInviteContactBody
@@ -288,6 +290,35 @@ constructor(
         userId: String
     ): Observable<Unit> {
         return service.declineJoinGroupRequest(groupId, userId).map {
+            checkResponse(it)
+        }
+    }
+
+    override fun addGroupAdmins(
+        body: AddGroupAdminsBody
+    ): Observable<String> {
+        return service.addGroupAdmins(body).map {
+            checkResponse(it)
+            it.body()?.message
+        }
+    }
+
+    override fun acceptGroupAdminInvite(inviteId: String): Observable<Unit> {
+        val partInviteId = RequestBody.create(MediaType.parse("text/plain"), inviteId)
+        return service.acceptGroupAdminInvite(partInviteId).map {
+            checkResponse(it)
+        }
+    }
+
+    override fun declineGroupAdminInvite(inviteId: String): Observable<Unit> {
+        val partInviteId = RequestBody.create(MediaType.parse("text/plain"), inviteId)
+        return service.declineGroupAdminInvite(partInviteId).map {
+            checkResponse(it)
+        }
+    }
+
+    override fun deleteGroupAdmins(adminsId: List<String>): Observable<Unit> {
+        return service.deleteGroupAdmins(Admin(adminsId)).map {
             checkResponse(it)
         }
     }

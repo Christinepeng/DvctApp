@@ -19,6 +19,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import kotlinx.android.synthetic.main.fragment_other_user_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
+import kotlinx.android.synthetic.main.view_accept_decline.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
@@ -127,7 +128,7 @@ class OtherUserProfileFragment : BaseFragment() {
 
                 Status.SUCCESS -> {
                     hideProgress()
-                    lay_connection.visibility = View.GONE
+                    include_accept_decline.visibility = View.GONE
                 }
             }
         })
@@ -145,10 +146,10 @@ class OtherUserProfileFragment : BaseFragment() {
             Util.getUserTypeMap(context!!)[userResponse.userAttributes?.accountType]
 
         if (attr?.connected == "pending_approval") {
-            lay_connection.visibility = View.VISIBLE
+            include_accept_decline.visibility = View.VISIBLE
             txt_notification.text = attr.name.plus(" wants to connect with you")
             btn_close.setOnClickListener {
-                lay_connection.visibility = View.GONE
+                include_accept_decline.visibility = View.GONE
             }
             btn_accept.setOnClickListener {
                 viewModel.acceptConnectionRequest(userResponse.id)
@@ -157,7 +158,7 @@ class OtherUserProfileFragment : BaseFragment() {
                 viewModel.declineConnectionRequest(userResponse.id)
             }
         } else {
-            lay_connection.visibility = View.GONE
+            include_accept_decline.visibility = View.GONE
         }
     }
 

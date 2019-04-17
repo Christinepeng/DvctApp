@@ -24,7 +24,8 @@ private constructor(
     val listener: Listener?,
     val adapterListener: ChatAdapter.Listener,
     private val fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase,
-    private val fetchJobReloadedUseCase: FetchJobReloadedUseCase
+    private val fetchJobReloadedUseCase: FetchJobReloadedUseCase,
+    private val isLoggedUserJobSeeker : Boolean
 ) :
     RecyclerView.ViewHolder(itemView) {
 
@@ -99,22 +100,23 @@ private constructor(
                                 adapterListener.onJobFetched(my_data.position, my_data)
                             })
                         }
-                    } else {
-                        if (jobDataView.errors.isNullOrEmpty()) {
-                            val job = jobDataView.job!!.Job()
-                            lay_job.item_jobs_txt_title.text = job.title()
-                            val photos = Gson().fromJson(
-                                job.employer()?.employer_photos() as String,
-                                Photos::class.java
-                            )
+                    } else if (jobDataView.errors.isNullOrEmpty()) {
+                        val job = jobDataView.job!!.Job()
+                        lay_job.item_jobs_txt_title.text = job.title()
+                        val photos = Gson().fromJson(
+                            job.employer()?.employer_photos() as String,
+                            Photos::class.java
+                        )
 
-                            GlideApp.with(itemView)
-                                .load(photos.medium)
-                                .into(item_jobs_img)
+                        GlideApp.with(itemView)
+                            .load(photos.medium)
+                            .into(item_jobs_img)
 
-                            lay_job.item_jobs_txt_company.text = job.employer()?.name()
-                            lay_job.item_jobs_txt_place.text = job.location_display_name()
+                        lay_job.item_jobs_txt_company.text = job.employer()?.name()
+                        lay_job.item_jobs_txt_place.text = job.location_display_name()
 
+                        if(isLoggedUserJobSeeker) {
+                            btn_job_action.visibility = View.VISIBLE
                             job.is_applied_by_current?.also { isApplied ->
                                 if (!isApplied) {
                                     btn_job_action.setImageDrawable(
@@ -136,25 +138,27 @@ private constructor(
                                     btn_job_action.setOnClickListener(null)
                                 }
                             }
-
-                            lay_job.setOnClickListener {
-                                listener?.onJobClick(job.id())
-                            }
-
-                            lay_job.txt_errors.visibility = View.GONE
-                            lay_job.loading.visibility = View.GONE
-                            lay_job.card_view.visibility = View.VISIBLE
-                            lay_job.lay_desc.visibility = View.VISIBLE
-                            lay_job.btn_job_action.visibility = View.VISIBLE
                         } else {
-                            lay_job.loading.visibility = View.GONE
-                            lay_job.card_view.visibility = View.INVISIBLE
-                            lay_job.lay_desc.visibility = View.GONE
-                            lay_job.btn_job_action.visibility = View.GONE
-                            lay_job.txt_errors.visibility = View.VISIBLE
-                            lay_job.txt_errors.text = jobDataView.errors
-                            lay_job.setOnClickListener(null)
+                            btn_job_action.visibility = View.GONE
                         }
+
+                        lay_job.setOnClickListener {
+                            listener?.onJobClick(job.id())
+                        }
+
+                        lay_job.txt_errors.visibility = View.GONE
+                        lay_job.loading.visibility = View.GONE
+                        lay_job.card_view.visibility = View.VISIBLE
+                        lay_job.lay_desc.visibility = View.VISIBLE
+//                        lay_job.btn_job_action.visibility = View.VISIBLE
+                    } else {
+                        lay_job.loading.visibility = View.GONE
+                        lay_job.card_view.visibility = View.INVISIBLE
+                        lay_job.lay_desc.visibility = View.GONE
+                        lay_job.btn_job_action.visibility = View.GONE
+                        lay_job.txt_errors.visibility = View.VISIBLE
+                        lay_job.txt_errors.text = jobDataView.errors
+                        lay_job.setOnClickListener(null)
                     }
                 } else {
                     lay_job.visibility = View.GONE
@@ -183,7 +187,8 @@ private constructor(
             listener: Listener?,
             adapterListener: ChatAdapter.Listener,
             fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase,
-            fetchJobReloadedUseCase: FetchJobReloadedUseCase
+            fetchJobReloadedUseCase: FetchJobReloadedUseCase,
+            isLoggedUserJobSeeker : Boolean
         ): ChatViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_chat, parent, false)
@@ -192,7 +197,8 @@ private constructor(
                 listener,
                 adapterListener,
                 fetchJobFromViewHolderUseCase,
-                fetchJobReloadedUseCase
+                fetchJobReloadedUseCase,
+                isLoggedUserJobSeeker
             )
         }
     }

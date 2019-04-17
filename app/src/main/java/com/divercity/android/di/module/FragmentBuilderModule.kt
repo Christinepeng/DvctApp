@@ -11,6 +11,7 @@ import com.divercity.android.features.chat.creategroupchat.CreateGroupChatFragme
 import com.divercity.android.features.chat.newchat.NewChatFragment
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatFragment
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsFragment
+import com.divercity.android.features.company.companies.CompaniesFragment
 import com.divercity.android.features.company.companyaddadmin.CompanyAddAdminFragment
 import com.divercity.android.features.company.companyadmin.CompanyAdminFragment
 import com.divercity.android.features.company.companydetail.CompanyDetailFragment
@@ -39,6 +40,7 @@ import com.divercity.android.features.groups.answers.AnswerFragment
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Fragment
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Fragment
 import com.divercity.android.features.groups.createtopic.CreateTopicFragment
+import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminFragment
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
 import com.divercity.android.features.groups.groupdetail.GroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailFragment
@@ -50,9 +52,7 @@ import com.divercity.android.features.groups.onboarding.SelectGroupFragment
 import com.divercity.android.features.groups.trending.TrendingGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
 import com.divercity.android.features.home.people.TabPeopleFragment
-import com.divercity.android.features.company.companies.CompaniesFragment
 import com.divercity.android.features.home.people.connections.AllConnectionsFragment
-import com.divercity.android.features.home.settings.SettingsFragment
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingFragment
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryFragment
 import com.divercity.android.features.invitations.contacts.InvitePhoneContactsFragment
@@ -68,7 +68,6 @@ import com.divercity.android.features.jobs.detail.poster.similarjobs.SimilarJobs
 import com.divercity.android.features.jobs.jobposting.JobPostingFragment
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeFragment
 import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupFragment
-import com.divercity.android.features.skill.jobskills.JobSkillsFragment
 import com.divercity.android.features.jobs.jobs.JobsListFragment
 import com.divercity.android.features.jobs.module.JobsModule
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsFragment
@@ -81,6 +80,7 @@ import com.divercity.android.features.location.onboarding.OnboardingLocationFrag
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
 import com.divercity.android.features.login.step1.EnterEmailFragment
 import com.divercity.android.features.login.step2.LoginFragment
+import com.divercity.android.features.multipleuseraction.MultipleUserActionFragment
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsFragment
 import com.divercity.android.features.onboarding.selectmajor.SelectMajorFragment
@@ -104,6 +104,7 @@ import com.divercity.android.features.signup.SignUpFragment
 import com.divercity.android.features.singleuseraction.SingleUserActionFragment
 import com.divercity.android.features.skill.base.SelectSkillFragment
 import com.divercity.android.features.skill.editskills.EditUserSkillFragment
+import com.divercity.android.features.skill.jobskills.JobSkillsFragment
 import com.divercity.android.features.skill.onboarding.OnboardingSkillFragment
 import com.divercity.android.features.splash.SplashFragment
 import dagger.Module
@@ -145,9 +146,6 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindProfileFragment(): CurrentUserProfileFragment
-
-    @ContributesAndroidInjector
-    abstract fun bindSettingsFragment(): SettingsFragment
 
     @ContributesAndroidInjector
     abstract fun bindProfilePromptFragment(): ProfilePromptFragment
@@ -424,4 +422,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindCompanyAddAdminFragment(): CompanyAddAdminFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindMultipleUserActionFragment(): MultipleUserActionFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindDeleteGroupAdminFragment(): DeleteGroupAdminFragment
 }

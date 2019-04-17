@@ -34,6 +34,7 @@ class DivercityMessagingService : FirebaseMessagingService() {
         const val NEW_CONNECTION_ACCEPT = "NEW_CONNECTION_ACCEPT"
         const val NEW_GROUP_INVITE_PN = "NEW_GROUP_INVITE_PN"
         const val GROUP_JOIN_REQUEST = "GROUP_JOIN_REQUEST"
+        const val GROUP_CREATE_ADMIN_PN = "GROUP_CREATE_ADMIN_PN"
     }
 
     override fun onCreate() {
@@ -89,7 +90,7 @@ class DivercityMessagingService : FirebaseMessagingService() {
                         notificationHelper.notify(
                             Math.random().toInt(),
                             notificationHelper
-                                .getGroupInviteJoinRequestNotification(
+                                .getGroupNotification(
                                     "Group invitation",
                                     data.data["alert"]!!,
                                     data.data["goi_id"]!!
@@ -100,8 +101,19 @@ class DivercityMessagingService : FirebaseMessagingService() {
                         notificationHelper.notify(
                             Math.random().toInt(),
                             notificationHelper
-                                .getGroupInviteJoinRequestNotification(
+                                .getGroupNotification(
                                     "Group join request",
+                                    data.data["alert"]!!,
+                                    data.data["goi_id"]!!
+                                )
+                        )
+                    }
+                    GROUP_CREATE_ADMIN_PN -> {
+                        notificationHelper.notify(
+                            Math.random().toInt(),
+                            notificationHelper
+                                .getGroupNotification(
+                                    "Group admin invitation",
                                     data.data["alert"]!!,
                                     data.data["goi_id"]!!
                                 )

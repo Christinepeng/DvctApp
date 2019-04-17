@@ -8,7 +8,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.user.response.UserResponse
-import kotlinx.android.synthetic.main.item_user_group_chat.view.*
+import kotlinx.android.synthetic.main.item_user_left_selection.view.*
 import kotlinx.android.synthetic.main.view_user_image_desc.view.*
 
 class UserSelectionViewHolder

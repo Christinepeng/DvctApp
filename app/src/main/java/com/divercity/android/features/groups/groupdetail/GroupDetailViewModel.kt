@@ -9,6 +9,8 @@ import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.groups.groupdetail.usecase.AcceptGroupAdminInviteUseCase
+import com.divercity.android.features.groups.groupdetail.usecase.DeclineGroupAdminInviteUseCase
 import com.divercity.android.features.groups.groupdetail.usecase.FetchGroupByIdUseCase
 import com.divercity.android.features.groups.groupdetail.usecase.FetchGroupMembersUseCase
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
@@ -22,20 +24,23 @@ import javax.inject.Inject
 
 class GroupDetailViewModel @Inject
 constructor(
-        private val fetchGroupMembersUseCase: FetchGroupMembersUseCase,
-        private val joinGroupUseCase: JoinGroupUseCase,
-        private val requestToJoinUseCase : RequestJoinGroupUseCase,
-        private val fetchGroupByIdUseCase: FetchGroupByIdUseCase
+    private val fetchGroupMembersUseCase: FetchGroupMembersUseCase,
+    private val joinGroupUseCase: JoinGroupUseCase,
+    private val requestToJoinUseCase: RequestJoinGroupUseCase,
+    private val fetchGroupByIdUseCase: FetchGroupByIdUseCase,
+    private val acceptGroupAdminInviteUseCase: AcceptGroupAdminInviteUseCase,
+    private val declineGroupAdminInviteUseCase: DeclineGroupAdminInviteUseCase
 ) : BaseViewModel() {
 
     var fetchGroupMembersResponse = SingleLiveEvent<Resource<List<UserResponse>>>()
+    var groupAdminInviteResponse = SingleLiveEvent<Resource<Unit>>()
     var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     var fetchGroupByIdResponse = MutableLiveData<Resource<GroupResponse>>()
 
-    var group = MutableLiveData<GroupResponse>()
+    var groupLiveData = MutableLiveData<GroupResponse?>()
 
-    fun fetchGroupMembers(groupId: String, page : Int, size: Int, query : String?) {
+    fun fetchGroupMembers(groupId: String, page: Int, size: Int, query: String?) {
         fetchGroupMembersResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<List<UserResponse>>() {
@@ -51,8 +56,10 @@ constructor(
                 fetchGroupMembersResponse.postValue(Resource.success(o))
             }
         }
-        fetchGroupMembersUseCase.execute(callback,
-                FetchGroupMembersUseCase.Params.forGroups(groupId, page, size, query))
+        fetchGroupMembersUseCase.execute(
+            callback,
+            FetchGroupMembersUseCase.Params.forGroups(groupId, page, size, query)
+        )
     }
 
     fun fetchGroupById(groupId: String) {
@@ -68,12 +75,13 @@ constructor(
             }
 
             override fun onSuccess(o: GroupResponse) {
-                group.postValue(o)
-                fetchGroupByIdResponse.postValue(Resource.success(o))
+                groupLiveData.postValue(o)
             }
         }
-        fetchGroupByIdUseCase.execute(callback,
-            FetchGroupByIdUseCase.Params.forGroups(groupId))
+        fetchGroupByIdUseCase.execute(
+            callback,
+            FetchGroupByIdUseCase.Params.forGroups(groupId)
+        )
     }
 
     fun joinGroup(group: GroupResponse) {
@@ -89,6 +97,7 @@ constructor(
             }
 
             override fun onHttpException(error: JsonElement) {
+                onGroupJoinSuccess()
                 joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
             }
         }
@@ -108,11 +117,60 @@ constructor(
             }
 
             override fun onSuccess(o: MessageResponse) {
+                onRequestToJoinGroupSuccess()
                 requestToJoinResponse.postValue(Resource.success(o))
             }
         }
-        requestToJoinUseCase.execute(callback,
-                RequestJoinGroupUseCase.Params.toJoin(group.id))
+        requestToJoinUseCase.execute(
+            callback,
+            RequestJoinGroupUseCase.Params.toJoin(group.id)
+        )
+    }
+
+    fun acceptGroupAdminInvite(inviteId: Int) {
+        groupAdminInviteResponse.postValue(Resource.loading(null))
+
+        val callback = object : DisposableObserverWrapper<Unit>() {
+            override fun onFail(error: String) {
+                groupAdminInviteResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                groupAdminInviteResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: Unit) {
+                onAcceptGroupAdminInvite()
+                groupAdminInviteResponse.postValue(Resource.success(o))
+            }
+        }
+        acceptGroupAdminInviteUseCase.execute(
+            callback,
+            AcceptGroupAdminInviteUseCase.Params(inviteId.toString())
+        )
+    }
+
+    fun declineGroupAdminInvite(inviteId: Int) {
+        groupAdminInviteResponse.postValue(Resource.loading(null))
+
+        val callback = object : DisposableObserverWrapper<Unit>() {
+            override fun onFail(error: String) {
+                groupAdminInviteResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                groupAdminInviteResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: Unit) {
+                onDeclineGroupAdminInvite()
+                groupAdminInviteResponse.postValue(Resource.success(o))
+            }
+        }
+        declineGroupAdminInviteUseCase.execute(
+            callback,
+            DeclineGroupAdminInviteUseCase.Params(inviteId.toString())
+        )
     }
 
     override fun onCleared() {
@@ -120,5 +178,34 @@ constructor(
         fetchGroupMembersUseCase.dispose()
         requestToJoinUseCase.dispose()
         joinGroupUseCase.dispose()
+    }
+
+    private fun onGroupJoinSuccess() {
+        val group = groupLiveData.value
+        group?.attributes?.isFollowedByCurrent = true
+        groupLiveData.postValue(group)
+    }
+
+    private fun onAcceptGroupAdminInvite() {
+        val group = groupLiveData.value
+        group?.attributes?.groupAdminInvite = null
+        group?.attributes?.isCurrentUserAdmin = true
+        groupLiveData.postValue(group)
+    }
+
+    private fun onDeclineGroupAdminInvite() {
+        val group = groupLiveData.value
+        group?.attributes?.groupAdminInvite = null
+        groupLiveData.postValue(group)
+    }
+
+    private fun onRequestToJoinGroupSuccess() {
+        val group = groupLiveData.value
+        group?.attributes?.requestToJoinStatus = "pending"
+        groupLiveData.postValue(group)
+    }
+
+    fun getGroup(): GroupResponse? {
+        return groupLiveData.value
     }
 }

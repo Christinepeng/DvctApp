@@ -182,8 +182,9 @@ interface GroupService {
         @Body body: AddGroupAdminsBody
     ): Observable<Response<MessageResponse>>
 
-    @DELETE("group_of_interests/{groupId}/remove_group_admin")
+    @HTTP(method = "DELETE", path = "group_of_interests/{groupId}/remove_group_admin", hasBody = true)
     fun deleteGroupAdmins(
+        @Path("groupId") groupId: String,
         @Body body: Admin
     ): Observable<Response<Unit>>
 

@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.answers.usecase
+package com.divercity.android.features.groups.groupanswers.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.group.answer.body.Answer

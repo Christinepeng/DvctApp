@@ -44,6 +44,7 @@ interface CompanyService {
 
     @HTTP(method = "DELETE", path = "job_employers/{companyId}/remove_admin", hasBody = true)
     fun deleteCompanyAdmin(
+        @Path("companyId") companyId: String,
         @Body deleteCompanyAdminBody: DeleteCompanyAdminBody
-    ): Observable<Response<DataArray<CompanyAdminResponse>>>
+    ): Observable<Response<Unit>>
 }

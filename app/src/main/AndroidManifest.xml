@@ -354,7 +354,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.groups.answers.AnswerActivity"
+            android:name=".features.groups.groupanswers.AnswerActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -430,6 +430,11 @@
 
         <activity
             android:name=".features.groups.deletegroupadmin.DeleteGroupAdminActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.company.deleteadmincompany.DeleteCompanyAdminActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

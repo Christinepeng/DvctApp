@@ -88,6 +88,7 @@
         android:fontFamily="@font/avenir_book"
         android:textColor="#333241"
         android:textSize="15sp"
+        android:autoLink="web"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"

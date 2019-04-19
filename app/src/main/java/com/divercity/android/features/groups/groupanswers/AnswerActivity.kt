@@ -1,10 +1,10 @@
-package com.divercity.android.features.groups.answers
+package com.divercity.android.features.groups.groupanswers
 
 import android.content.Context
 import android.content.Intent
 import com.divercity.android.core.base.BaseActivity
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.features.groups.answers.model.Question
+import com.divercity.android.features.groups.groupanswers.model.Question
 
 /**
  * Created by lucas on 24/12/2018.

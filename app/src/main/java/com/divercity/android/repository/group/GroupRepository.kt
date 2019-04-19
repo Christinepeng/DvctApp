@@ -140,6 +140,7 @@ interface GroupRepository {
     fun declineGroupAdminInvite(inviteId: String): Observable<Unit>
 
     fun deleteGroupAdmins(
+        groupId: String,
         adminsId: List<String>
     ): Observable<Unit>
 }

@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.answers
+package com.divercity.android.features.groups.groupanswers
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -27,9 +27,9 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
-import com.divercity.android.features.groups.answers.answeradapter.AnswerAdapter
-import com.divercity.android.features.groups.answers.answeradapter.AnswerViewHolder
-import com.divercity.android.features.groups.answers.model.Question
+import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerAdapter
+import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerViewHolder
+import com.divercity.android.features.groups.groupanswers.model.Question
 import kotlinx.android.synthetic.main.fragment_answers.*
 import kotlinx.android.synthetic.main.view_image_btn_full.view.*
 import kotlinx.android.synthetic.main.view_image_btn_small.view.*

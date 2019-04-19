@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.all.usecase
+package com.divercity.android.features.groups.allgroups.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.core.base.usecase.Params

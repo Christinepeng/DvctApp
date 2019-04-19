@@ -59,6 +59,11 @@ constructor(
             updateFCMTokenResponse.postValue(Resource.error(context.resources.getString(R.string.error_notifications), null))
         }
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        updateFCMTokenUseCase.dispose()
+    }
 //
 //    fun checkUsernameRegistered(username: String) {
 //

@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.answers
+package com.divercity.android.features.groups.groupanswers
 
 import android.os.Handler
 import androidx.lifecycle.LiveData
@@ -14,10 +14,10 @@ import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.chat.chat.usecase.FetchChatMembersUseCase
-import com.divercity.android.features.groups.answers.model.AnswersPageModel
-import com.divercity.android.features.groups.answers.model.Question
-import com.divercity.android.features.groups.answers.usecase.FetchAnswersUseCase
-import com.divercity.android.features.groups.answers.usecase.SendNewAnswerUseCase
+import com.divercity.android.features.groups.groupanswers.model.AnswersPageModel
+import com.divercity.android.features.groups.groupanswers.model.Question
+import com.divercity.android.features.groups.groupanswers.usecase.FetchAnswersUseCase
+import com.divercity.android.features.groups.groupanswers.usecase.SendNewAnswerUseCase
 import com.divercity.android.repository.group.GroupRepository
 import com.divercity.android.socket.AnswersWebSocket
 import com.google.gson.JsonElement

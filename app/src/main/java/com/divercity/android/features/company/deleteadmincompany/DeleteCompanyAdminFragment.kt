@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.deletegroupadmin
+package com.divercity.android.features.company.deleteadmincompany
 
 import android.os.Bundle
 import android.os.Handler
@@ -12,9 +12,9 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity.Companion.INTENT_EXTRA_PARAM_GROUP_ID
-import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity.Companion.INTENT_EXTRA_PARAM_GROUP_OWNER_ID
-import com.divercity.android.features.profile.useradapter.groupadmin.GroupAdminAdapter
+import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminActivity.Companion.INTENT_EXTRA_PARAM_COMPANY_ID
+import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminActivity.Companion.INTENT_EXTRA_PARAM_COMPANY_OWNER_ID
+import com.divercity.android.features.company.deleteadmincompany.adapter.DeleteCompanyAdminAdapter
 import kotlinx.android.synthetic.main.fragment_delete_group_admin.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -23,19 +23,19 @@ import javax.inject.Inject
  * Created by lucas on 24/12/2018.
  */
 
-class DeleteGroupAdminFragment : BaseFragment(), RetryCallback {
+class DeleteCompanyAdminFragment : BaseFragment(), RetryCallback {
 
-    lateinit var viewModel: DeleteGroupAdminViewModel
+    lateinit var viewModel: DeleteCompanyAdminViewModel
 
     @Inject
-    lateinit var adapter: GroupAdminAdapter
+    lateinit var adapter: DeleteCompanyAdminAdapter
 
     private var handlerSearch = Handler()
 
     companion object {
 
-        fun newInstance(data: Bundle?): DeleteGroupAdminFragment {
-            val fragment = DeleteGroupAdminFragment()
+        fun newInstance(data: Bundle?): DeleteCompanyAdminFragment {
+            val fragment = DeleteCompanyAdminFragment()
             fragment.arguments = data
             return fragment
         }
@@ -46,8 +46,9 @@ class DeleteGroupAdminFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(DeleteGroupAdminViewModel::class.java)
-        viewModel.groupId = arguments?.getString(INTENT_EXTRA_PARAM_GROUP_ID) ?: ""
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(DeleteCompanyAdminViewModel::class.java)
+        viewModel.companyId = arguments?.getString(INTENT_EXTRA_PARAM_COMPANY_ID) ?: ""
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,7 +62,7 @@ class DeleteGroupAdminFragment : BaseFragment(), RetryCallback {
             }
         }
 
-        viewModel.fetchData(null, "")
+        viewModel.fetchData()
 
         initView()
         subscribeToLiveData()
@@ -76,8 +77,7 @@ class DeleteGroupAdminFragment : BaseFragment(), RetryCallback {
         btn_action.setOnClickListener {
             val selected = adapter.getSelectedUsersIds()
             if (selected.isNotEmpty()) {
-                viewModel.deleteGroupAdmin(
-                    arguments?.getString(INTENT_EXTRA_PARAM_GROUP_ID)!!,
+                viewModel.deleteCompanyAdmins(
                     adapter.getSelectedUsersIds()
                 )
             } else {
@@ -115,7 +115,7 @@ class DeleteGroupAdminFragment : BaseFragment(), RetryCallback {
     }
 
     private fun initAdapter() {
-        adapter.ownerId = arguments?.getString(INTENT_EXTRA_PARAM_GROUP_OWNER_ID)!!
+        adapter.ownerId = arguments?.getString(INTENT_EXTRA_PARAM_COMPANY_OWNER_ID)!!
         adapter.setRetryCallback(this)
         list.adapter = adapter
     }
@@ -133,7 +133,7 @@ class DeleteGroupAdminFragment : BaseFragment(), RetryCallback {
             subscribeToPaginatedLiveData()
         })
 
-        viewModel.deleteGroupAdminResponse.observe(viewLifecycleOwner, Observer { response ->
+        viewModel.deleteCompanyAdminResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     showProgress()

@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.all
+package com.divercity.android.features.groups.allgroups
 
 import android.content.Intent
 import android.os.Bundle
@@ -14,7 +14,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
-import com.divercity.android.features.groups.all.model.GroupPositionModel
+import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
 import com.divercity.android.features.home.people.ITabPeople
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject

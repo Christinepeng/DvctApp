@@ -160,6 +160,40 @@ constructor(val context: Context) {
             .setAutoCancel(true)
     }
 
+//    fun getTestNotification(
+//        title: String,
+//        body: String,
+//        groupId: String
+//    ): NotificationCompat.Builder {
+//
+//        val requestID = System.currentTimeMillis().toInt()
+//
+//        val resultIntent = Intent(context, SplashActivity::class.java)
+//        resultIntent.putExtra("branch", "http://xxxx.app.link/testlink")
+//        resultIntent.putExtra("branch_force_new_session", true)
+//
+//        val resultPendingIntent = PendingIntent.getActivity(
+//            getApplicationContext(),
+//            requestID,
+//            resultIntent,
+//            PendingIntent.FLAG_UPDATE_CURRENT
+//        )
+//
+//        return NotificationCompat.Builder(context, GENERAL_NOTIFICATIONS)
+//            .setContentTitle(title)
+//            .setStyle(
+//                NotificationCompat.BigTextStyle()
+//                    .bigText(body)
+//                    .setBigContentTitle(title)
+//            )
+//            .setContentIntent(resultPendingIntent)
+//            .setContentText(body)
+//            .setDefaults(NotificationCompat.DEFAULT_ALL)
+//            .setPriority(NotificationCompat.PRIORITY_HIGH)
+//            .setSmallIcon(getSmallIcon())
+//            .setAutoCancel(true)
+//    }
+
     fun notify(id: Int, notification: NotificationCompat.Builder) {
         getManager().notify(id, notification.build())
     }

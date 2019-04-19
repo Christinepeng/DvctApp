@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.answers.model
+package com.divercity.android.features.groups.groupanswers.model
 
 import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 

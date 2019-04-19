@@ -89,7 +89,7 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     }
 
     private fun showDialogMoreActions() {
-        if(company != null) {
+        if (company != null) {
             val dialog =
                 CompanyActionsDialogFragment
                     .newInstance(company?.attributes?.currentUserAdmin ?: false)
@@ -125,25 +125,25 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
 
             txt_name.text = it.attributes?.name
 
-            if(it.attributes?.industry == null && it.attributes?.headquarters == null){
+            if (it.attributes?.industry == null && it.attributes?.headquarters == null) {
                 txt_subtitle1.visibility = View.GONE
             } else {
                 txt_subtitle1.visibility = View.VISIBLE
 
                 var subtitle = ""
-                if(it.attributes.industry != null)
+                if (it.attributes.industry != null)
                     subtitle = it.attributes.industry
 
-                if(it.attributes.industry != null && it.attributes.headquarters != null)
+                if (it.attributes.industry != null && it.attributes.headquarters != null)
                     subtitle.plus(" · ")
 
-                if(it.attributes.headquarters != null)
+                if (it.attributes.headquarters != null)
                     subtitle.plus(it.attributes.headquarters)
 
                 txt_subtitle1.text = subtitle
             }
 
-            if(it.attributes?.companySize == null)
+            if (it.attributes?.companySize == null)
                 txt_size.visibility = View.GONE
             else
                 txt_size.text = it.attributes.companySize
@@ -190,6 +190,14 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     }
 
     override fun onEditAdmins() {
+        navigator.navigateToDeleteCompanyAdmin(
+            this@CompanyDetailFragment,
+            companyId,
+            ""
+        )
+    }
+
+    override fun onAddAdmins() {
         navigator.navigateToCompanyAdmins(this@CompanyDetailFragment, companyId)
     }
 }

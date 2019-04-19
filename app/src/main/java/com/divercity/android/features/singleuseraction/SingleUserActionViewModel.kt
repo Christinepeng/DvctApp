@@ -46,4 +46,9 @@ constructor(
             ShareJobViaMessageUseCase.Params.forJob(otherUserId, jobId)
         )
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        shareJobViaMessageUseCase.dispose()
+    }
 }

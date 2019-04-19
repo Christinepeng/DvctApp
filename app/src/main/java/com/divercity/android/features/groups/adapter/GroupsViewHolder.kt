@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.features.groups.all.model.GroupPositionModel
+import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
 import kotlinx.android.synthetic.main.item_group.view.*
 
 class GroupsViewHolder

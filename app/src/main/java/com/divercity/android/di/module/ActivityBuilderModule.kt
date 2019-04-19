@@ -12,6 +12,7 @@ import com.divercity.android.features.company.companyadmin.CompanyAdminActivity
 import com.divercity.android.features.company.companydetail.CompanyDetailActivity
 import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
+import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminActivity
 import com.divercity.android.features.company.mycompanies.MyCompaniesActivity
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyActivity
@@ -19,12 +20,12 @@ import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityAc
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
-import com.divercity.android.features.groups.answers.AnswerActivity
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Activity
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Activity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
+import com.divercity.android.features.groups.groupanswers.AnswerActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.groups.mygroups.MyGroupsActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
@@ -273,4 +274,7 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindDeleteGroupAdminActivity(): DeleteGroupAdminActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindDeleteCompanyAdminActivity(): DeleteCompanyAdminActivity
 }

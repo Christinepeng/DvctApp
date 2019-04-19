@@ -19,6 +19,7 @@ import com.divercity.android.features.company.companydetail.employees.EmployeesV
 import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyViewModel
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
+import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminViewModel
 import com.divercity.android.features.company.mycompanies.MyCompaniesViewModel
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyViewModel
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyViewModel
@@ -28,13 +29,13 @@ import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogVi
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityViewModel
 import com.divercity.android.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.android.features.groups.TabGroupsViewModel
-import com.divercity.android.features.groups.all.AllGroupsViewModel
-import com.divercity.android.features.groups.answers.AnswerViewModel
+import com.divercity.android.features.groups.allgroups.AllGroupsViewModel
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1ViewModel
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3ViewModel
 import com.divercity.android.features.groups.createtopic.CreateTopicViewModel
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminViewModel
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsViewModel
+import com.divercity.android.features.groups.groupanswers.AnswerViewModel
 import com.divercity.android.features.groups.groupdetail.GroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.conversation.GroupConversationViewModel
@@ -564,4 +565,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DeleteGroupAdminViewModel::class)
     abstract fun bindsDeleteGroupAdminViewModel(viewModel: DeleteGroupAdminViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DeleteCompanyAdminViewModel::class)
+    abstract fun bindsDeleteCompanyAdminViewModel(viewModel: DeleteCompanyAdminViewModel): ViewModel
 }

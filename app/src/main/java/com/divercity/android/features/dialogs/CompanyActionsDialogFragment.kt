@@ -51,27 +51,34 @@ class CompanyActionsDialogFragment : DialogFragment() {
         val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_company_actions, null)
 
         if(arguments!!.getBoolean(PARAM_COMPANY_IS_ADMIN, false)){
-            dialogView.btn_edit_admins.setOnClickListener {
-                dismiss()
+            dialogView.btn_edit_admins.visibility = View.VISIBLE
+            dialogView.btn_add_admins.visibility = View.VISIBLE
+            dialogView.btn_edit_admins.setOnClickListener{
                 listener?.onEditAdmins()
+                dismiss()
+            }
+            dialogView.btn_add_admins.setOnClickListener {
+                listener?.onAddAdmins()
+                dismiss()
             }
         } else {
             dialogView.btn_edit_admins.visibility = View.GONE
+            dialogView.btn_add_admins.visibility = View.GONE
         }
 
         dialogView.btn_share_via_message.setOnClickListener {
-            dismiss()
             listener?.onShareJobViaMessage()
+            dismiss()
         }
 
         dialogView.btn_share_to_groups.setOnClickListener {
-            dismiss()
             listener?.onShareJobToGroups()
+            dismiss()
         }
 
         dialogView.btn_report_company.setOnClickListener {
-            dismiss()
             listener?.onReportCompany()
+            dismiss()
         }
 
         builder.setView(dialogView)
@@ -94,5 +101,7 @@ class CompanyActionsDialogFragment : DialogFragment() {
         fun onReportCompany()
 
         fun onEditAdmins()
+
+        fun onAddAdmins()
     }
 }

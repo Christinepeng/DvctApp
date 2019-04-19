@@ -70,7 +70,7 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
-        
+
         initView()
         subscribeToLiveData()
         subscribeToPaginatedLiveData()

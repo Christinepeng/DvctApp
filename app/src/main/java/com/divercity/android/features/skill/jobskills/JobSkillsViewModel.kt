@@ -16,5 +16,4 @@ constructor(repository: SkillPaginatedRepository) :
     init {
         fetchData(null,"")
     }
-
 }

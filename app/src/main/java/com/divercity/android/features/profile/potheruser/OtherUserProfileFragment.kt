@@ -1,9 +1,6 @@
 package com.divercity.android.features.profile.potheruser
 
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -74,10 +71,10 @@ class OtherUserProfileFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(OtherUserProfileViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
-        setHasOptionsMenu(true)
 
         if (DataHolder.hasData())
             viewModel.setUser(DataHolder.data!!)
@@ -186,22 +183,6 @@ class OtherUserProfileFragment : BaseFragment() {
                 it.setTitle(R.string.profile)
                 it.setDisplayHomeAsUpEnabled(true)
             }
-        }
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        menu.clear()
-//        inflater.inflate(R.menu.menu_settings, menu)
-        super.onCreateOptionsMenu(menu, inflater)
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.action_setting -> {
-                navigator.navigateToProfileSettingsActivity(this)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
         }
     }
 }

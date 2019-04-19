@@ -317,8 +317,8 @@ constructor(
         }
     }
 
-    override fun deleteGroupAdmins(adminsId: List<String>): Observable<Unit> {
-        return service.deleteGroupAdmins(Admin(adminsId)).map {
+    override fun deleteGroupAdmins(groupId: String, adminsId: List<String>): Observable<Unit> {
+        return service.deleteGroupAdmins(groupId, Admin(adminsId)).map {
             checkResponse(it)
         }
     }

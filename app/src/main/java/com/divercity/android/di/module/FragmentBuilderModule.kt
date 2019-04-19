@@ -20,6 +20,7 @@ import com.divercity.android.features.company.companydetail.employees.EmployeesF
 import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyFragment
 import com.divercity.android.features.company.companysize.CompanySizesFragment
 import com.divercity.android.features.company.createcompany.CreateCompanyFragment
+import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminFragment
 import com.divercity.android.features.company.mycompanies.MyCompaniesFragment
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyFragment
@@ -35,13 +36,13 @@ import com.divercity.android.features.gender.base.SelectGenderFragment
 import com.divercity.android.features.gender.onboarding.OnboardingGenderFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.groups.TabGroupsFragment
-import com.divercity.android.features.groups.all.AllGroupsFragment
-import com.divercity.android.features.groups.answers.AnswerFragment
+import com.divercity.android.features.groups.allgroups.AllGroupsFragment
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Fragment
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Fragment
 import com.divercity.android.features.groups.createtopic.CreateTopicFragment
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminFragment
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
+import com.divercity.android.features.groups.groupanswers.AnswerFragment
 import com.divercity.android.features.groups.groupdetail.GroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.conversation.GroupConversationFragment
@@ -428,4 +429,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindDeleteGroupAdminFragment(): DeleteGroupAdminFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindDeleteCompanyAdminFragment(): DeleteCompanyAdminFragment
 }

@@ -33,4 +33,9 @@ interface CompanyRepository {
         companyId: String,
         admins : AddAdminCompanyBody
     ): Observable<List<CompanyAdminResponse>>
+
+    fun deleteCompanyAdmins(
+        companyId: String,
+        adminsId: List<String>
+    ): Observable<Unit>
 }

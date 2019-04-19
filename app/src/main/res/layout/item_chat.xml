@@ -64,6 +64,7 @@
         android:layout_marginStart="59dp"
         android:fontFamily="@font/avenir_book"
         android:textColor="#333241"
+        android:autoLink="web"
         android:textSize="15sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/img_user"

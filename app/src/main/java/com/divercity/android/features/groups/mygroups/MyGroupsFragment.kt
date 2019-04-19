@@ -15,8 +15,8 @@ import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.ITabsGroups
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
-import com.divercity.android.features.groups.all.AllGroupsFragment
-import com.divercity.android.features.groups.all.model.GroupPositionModel
+import com.divercity.android.features.groups.allgroups.AllGroupsFragment
+import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
 import kotlinx.android.synthetic.main.fragment_my_groups.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject

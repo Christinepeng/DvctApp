@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.answers.model
+package com.divercity.android.features.groups.groupanswers.model
 
 import android.os.Parcel
 import android.os.Parcelable

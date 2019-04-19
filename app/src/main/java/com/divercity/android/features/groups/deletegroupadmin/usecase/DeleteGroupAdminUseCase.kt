@@ -19,8 +19,8 @@ constructor(
 ) : UseCase<Unit, DeleteGroupAdminUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<Unit> {
-        return repository.deleteGroupAdmins(params.adminsId)
+        return repository.deleteGroupAdmins(params.groupId, params.adminsId)
     }
 
-    class Params constructor(val adminsId: List<String>)
+    class Params constructor(val groupId: String, val adminsId: List<String>)
 }

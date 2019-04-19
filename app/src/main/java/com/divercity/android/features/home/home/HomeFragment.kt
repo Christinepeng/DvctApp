@@ -22,7 +22,7 @@ import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
-import com.divercity.android.features.groups.answers.model.Question
+import com.divercity.android.features.groups.groupanswers.model.Question
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.home.home.adapter.HomeAdapter
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedAdapter

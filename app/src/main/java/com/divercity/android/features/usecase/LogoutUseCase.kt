@@ -1,6 +1,7 @@
 package com.divercity.android.features.usecase
 
 import com.divercity.android.db.AppDatabase
+import com.divercity.android.helpers.NotificationHelper
 import com.divercity.android.repository.session.SessionRepository
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
@@ -17,7 +18,8 @@ class LogoutUseCase @Inject
 constructor(
     private val appDatabase: AppDatabase,
     private val sessionRepository: SessionRepository,
-    private val updateFCMTokenUseCase: UpdateFCMTokenUseCase
+    private val updateFCMTokenUseCase: UpdateFCMTokenUseCase,
+    private val notificationHelper: NotificationHelper
 ) {
 
     private val ioScope = CoroutineScope(Dispatchers.IO)
@@ -74,6 +76,7 @@ constructor(
 
     private suspend fun end(onFinish: () -> Unit) {
         sessionRepository.clearUserData()
+        notificationHelper.cancellAllNotifications()
         withContext(Dispatchers.Main) {
             onFinish()
         }

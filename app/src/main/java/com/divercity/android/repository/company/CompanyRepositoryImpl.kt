@@ -1,6 +1,7 @@
 package com.divercity.android.repository.company
 
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
+import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.user.response.UserResponse
@@ -59,6 +60,15 @@ constructor(
         return service.addCompanyAdmin(companyId, admins).map {
             checkResponse(it)
             it.body()?.data
+        }
+    }
+
+    override fun deleteCompanyAdmins(
+        companyId: String,
+        adminsId: List<String>
+    ): Observable<Unit> {
+        return service.deleteCompanyAdmin(companyId, DeleteCompanyAdminBody(adminsId)).map {
+            checkResponse(it)
         }
     }
 

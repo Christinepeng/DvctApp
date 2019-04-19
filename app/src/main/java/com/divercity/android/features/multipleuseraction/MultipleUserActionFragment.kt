@@ -15,9 +15,9 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity.Companion.INTENT_EXTRA_PARAM_GROUP_ID
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity.Companion.TYPE_ADD_ADMIN_GROUP
+import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.PARAM_ACTION_TYPE
 import kotlinx.android.synthetic.main.fragment_user_action.*
 import kotlinx.android.synthetic.main.view_search.view.*
@@ -106,10 +106,15 @@ class MultipleUserActionFragment : BaseFragment(), RetryCallback {
             TYPE_ADD_ADMIN_GROUP -> {
                 btn_action.setText(R.string.invite)
                 btn_action.setOnClickListener {
-                    viewModel.addGroupAdmin(
-                        arguments?.getString(INTENT_EXTRA_PARAM_GROUP_ID)!!,
-                        adapter.getSelectedUsersIds()
-                    )
+                    val selected = adapter.getSelectedUsersIds()
+                    if (selected.isNotEmpty()) {
+                        viewModel.addGroupAdmin(
+                            arguments?.getString(INTENT_EXTRA_PARAM_GROUP_ID)!!,
+                            adapter.getSelectedUsersIds()
+                        )
+                    } else {
+                        showToast("Select at least one")
+                    }
                 }
             }
         }

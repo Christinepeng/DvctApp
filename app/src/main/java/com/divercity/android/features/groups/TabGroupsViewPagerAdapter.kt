@@ -7,7 +7,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
-import com.divercity.android.features.groups.all.AllGroupsFragment
+import com.divercity.android.features.groups.allgroups.AllGroupsFragment
 import com.divercity.android.features.groups.mygroups.MyGroupsFragment
 import com.divercity.android.features.groups.trending.TrendingGroupsFragment
 import javax.inject.Inject

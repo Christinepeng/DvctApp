@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.all
+package com.divercity.android.features.groups.allgroups
 
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.core.utils.SingleLiveEvent
@@ -6,7 +6,7 @@ import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.groups.all.model.GroupPositionModel
+import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.google.gson.JsonElement

@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.answers.answeradapter
+package com.divercity.android.features.groups.groupanswers.answeradapter
 
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil

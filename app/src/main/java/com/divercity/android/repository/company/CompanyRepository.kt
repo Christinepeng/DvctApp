@@ -2,7 +2,9 @@ package com.divercity.android.repository.company
 
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.response.CompanyResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import io.reactivex.Observable
 
@@ -31,11 +33,26 @@ interface CompanyRepository {
 
     fun addCompanyAdmin(
         companyId: String,
-        admins : AddAdminCompanyBody
+        admins: AddAdminCompanyBody
     ): Observable<List<CompanyAdminResponse>>
 
     fun deleteCompanyAdmins(
         companyId: String,
         adminsId: List<String>
     ): Observable<Unit>
+
+    fun fetchCompany(
+        companyId: String
+    ): Observable<CompanyResponse>
+
+    fun fetchCompanyDiversityReviews(
+        companyId: String,
+        page: Int,
+        size: Int
+    ): Observable<List<CompanyDiversityReviewResponse>>
+
+    fun rateCompany(
+        companyId: String,
+        rating: Rating
+    ): Observable<CompanyDiversityReviewResponse>
 }

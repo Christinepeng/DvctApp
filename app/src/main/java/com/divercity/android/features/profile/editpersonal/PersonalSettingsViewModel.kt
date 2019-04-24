@@ -68,6 +68,12 @@ constructor(
         updateUserProfile(user)
     }
 
+    fun updateCompany(companyId : String?){
+        val user = User()
+        user.jobEmployerId = companyId
+        updateUserProfile(user)
+    }
+
     fun updateUserProfile(user: User) {
         updateUserProfileResponse.postValue(Resource.loading<UserResponse>(null))
 

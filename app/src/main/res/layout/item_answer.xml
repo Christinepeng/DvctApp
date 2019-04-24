@@ -66,6 +66,7 @@
         android:fontFamily="@font/avenir_book"
         android:textColor="#333241"
         android:autoLink="web"
+        android:textColorLink="@color/appBlue"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/cardview_msg_picture"
         app:layout_constraintEnd_toStartOf="@+id/txt_time"

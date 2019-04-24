@@ -370,6 +370,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
 
     override fun onPrepareOptionsMenu(menu: Menu?) {
         val searchItem = menu?.findItem(R.id.action_search)
+        searchItem?.isVisible = false
         val searchView = searchItem?.actionView as SearchView
         searchView.queryHint = getString(R.string.search)
 

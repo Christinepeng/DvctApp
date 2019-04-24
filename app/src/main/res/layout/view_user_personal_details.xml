@@ -60,6 +60,31 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/lay_company"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="1dp"
+        android:background="@android:color/white"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/icon_briefcase_grey" />
+
+        <TextView
+            android:id="@+id/txt_company"
+            style="@style/AppText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp"
+            android:hint="@string/company" />
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/lay_school"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

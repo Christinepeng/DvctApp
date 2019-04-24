@@ -3,7 +3,10 @@ package com.divercity.android.repository.company
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.rating.Rating
+import com.divercity.android.data.entity.company.rating.RatingBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.CompanyService
 import io.reactivex.Observable
@@ -69,6 +72,34 @@ constructor(
     ): Observable<Unit> {
         return service.deleteCompanyAdmin(companyId, DeleteCompanyAdminBody(adminsId)).map {
             checkResponse(it)
+        }
+    }
+
+    override fun fetchCompany(companyId: String): Observable<CompanyResponse> {
+        return service.fetchCompany(companyId).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun fetchCompanyDiversityReviews(
+        companyId: String,
+        page: Int,
+        size: Int
+    ): Observable<List<CompanyDiversityReviewResponse>> {
+        return service.fetchCompanyDiversityReviews(companyId, page, size).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun rateCompany(
+        companyId: String,
+        rating: Rating
+    ): Observable<CompanyDiversityReviewResponse> {
+        return service.rateCompany(companyId, RatingBody(rating)).map {
+            checkResponse(it)
+            it.body()?.data
         }
     }
 

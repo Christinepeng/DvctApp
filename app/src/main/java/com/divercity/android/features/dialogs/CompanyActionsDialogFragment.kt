@@ -67,12 +67,12 @@ class CompanyActionsDialogFragment : DialogFragment() {
         }
 
         dialogView.btn_share_via_message.setOnClickListener {
-            listener?.onShareJobViaMessage()
+            listener?.onShareViaMessage()
             dismiss()
         }
 
         dialogView.btn_share_to_groups.setOnClickListener {
-            listener?.onShareJobToGroups()
+            listener?.onShareToGroups()
             dismiss()
         }
 
@@ -94,9 +94,9 @@ class CompanyActionsDialogFragment : DialogFragment() {
 
     interface Listener {
 
-        fun onShareJobViaMessage()
+        fun onShareViaMessage()
 
-        fun onShareJobToGroups()
+        fun onShareToGroups()
 
         fun onReportCompany()
 

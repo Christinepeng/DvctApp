@@ -71,7 +71,6 @@ constructor(
 
     override suspend fun clearUserData() {
         currentLoggedUser = null
-        userDao.deleteUser()
         sharedPreferencesManager.clearAllData()
     }
 
@@ -195,7 +194,7 @@ constructor(
     }
 
     override fun isLoggedUserJobSeeker(): Boolean {
-        return currentLoggedUser?.isUserJobSeeker(context) ?: false
+        return currentLoggedUser?.isUserJobSeeker(context) ?: true
     }
 
     override fun getUserType(): String? {

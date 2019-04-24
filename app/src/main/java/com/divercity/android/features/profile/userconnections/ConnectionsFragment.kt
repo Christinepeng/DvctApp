@@ -1,4 +1,4 @@
-package com.divercity.android.features.profile.pcurrentuser.tabconnections
+package com.divercity.android.features.profile.userconnections
 
 import android.os.Bundle
 import android.view.View
@@ -56,7 +56,7 @@ class ConnectionsFragment : BaseFragment(), RetryCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.fetchFollowers(arguments!!.getString(PARAM_USER_ID)!!)
+        viewModel.fetchConnections(arguments!!.getString(PARAM_USER_ID)!!)
         initView()
         subscribeToPaginatedLiveData()
         subscribeToLiveData()
@@ -87,7 +87,7 @@ class ConnectionsFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedListConnections.observe(this, Observer {
+        viewModel.pagedList.observe(this, Observer {
             adapter.submitList(it)
         })
 

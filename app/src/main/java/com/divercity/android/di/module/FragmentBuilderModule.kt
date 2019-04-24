@@ -21,7 +21,9 @@ import com.divercity.android.features.company.companydetail.jobpostings.JobPosti
 import com.divercity.android.features.company.companysize.CompanySizesFragment
 import com.divercity.android.features.company.createcompany.CreateCompanyFragment
 import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminFragment
+import com.divercity.android.features.company.diversityrating.DiversityRatingFragment
 import com.divercity.android.features.company.mycompanies.MyCompaniesFragment
+import com.divercity.android.features.company.ratecompany.RateCompanyFragment
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyFragment
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
@@ -94,11 +96,10 @@ import com.divercity.android.features.profile.editpersonal.PersonalSettingsFragm
 import com.divercity.android.features.profile.experience.AddWorkExperienceFragment
 import com.divercity.android.features.profile.myinterests.InterestsFragment
 import com.divercity.android.features.profile.pcurrentuser.CurrentUserProfileFragment
-import com.divercity.android.features.profile.pcurrentuser.tabconnections.ConnectionsFragment
 import com.divercity.android.features.profile.pcurrentuser.tabprofile.TabProfileFragment
 import com.divercity.android.features.profile.potheruser.OtherUserProfileFragment
 import com.divercity.android.features.profile.potheruser.tabprofile.TabOtherUserProfileFragment
-import com.divercity.android.features.profile.tabfollowing.FollowingFragment
+import com.divercity.android.features.profile.userconnections.ConnectionsFragment
 import com.divercity.android.features.settings.ProfileSettingsFragment
 import com.divercity.android.features.settings.accountsettings.AccountSettingsFragment
 import com.divercity.android.features.signup.SignUpFragment
@@ -296,9 +297,6 @@ abstract class FragmentBuilderModule {
     abstract fun bindOnboardingGenderFragment(): OnboardingGenderFragment
 
     @ContributesAndroidInjector
-    abstract fun bindFollowingFragment(): FollowingFragment
-
-    @ContributesAndroidInjector
     abstract fun bindFollowingGroupsFragment(): FollowingGroupsFragment
 
     @ContributesAndroidInjector
@@ -432,4 +430,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindDeleteCompanyAdminFragment(): DeleteCompanyAdminFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindDiversityRatingFragment(): DiversityRatingFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindRateCompanyFragment(): RateCompanyFragment
 }

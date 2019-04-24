@@ -20,7 +20,9 @@ import com.divercity.android.features.company.companydetail.jobpostings.JobPosti
 import com.divercity.android.features.company.companysize.CompanySizesViewModel
 import com.divercity.android.features.company.createcompany.CreateCompanyViewModel
 import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminViewModel
+import com.divercity.android.features.company.diversityrating.DiversityRatingViewModel
 import com.divercity.android.features.company.mycompanies.MyCompaniesViewModel
+import com.divercity.android.features.company.ratecompany.RateCompanyViewModel
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyViewModel
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyViewModel
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogViewModel
@@ -81,11 +83,10 @@ import com.divercity.android.features.profile.editpersonal.PersonalSettingsViewM
 import com.divercity.android.features.profile.experience.AddWorkExperienceViewModel
 import com.divercity.android.features.profile.myinterests.InterestsViewModel
 import com.divercity.android.features.profile.pcurrentuser.CurrentUserProfileViewModel
-import com.divercity.android.features.profile.pcurrentuser.tabconnections.ConnectionsViewModel
 import com.divercity.android.features.profile.pcurrentuser.tabprofile.TabProfileViewModel
 import com.divercity.android.features.profile.potheruser.OtherUserProfileViewModel
 import com.divercity.android.features.profile.potheruser.tabprofile.TabOtherUserProfileViewModel
-import com.divercity.android.features.profile.tabfollowing.FollowingViewModel
+import com.divercity.android.features.profile.userconnections.ConnectionsViewModel
 import com.divercity.android.features.settings.ProfileSettingsViewModel
 import com.divercity.android.features.settings.accountsettings.AccountSettingsViewModel
 import com.divercity.android.features.signup.SignUpViewModel
@@ -348,11 +349,6 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FollowingViewModel::class)
-    abstract fun bindsFollowingViewModel(viewModel: FollowingViewModel): ViewModel
-
-    @Binds
-    @IntoMap
     @ViewModelKey(FollowingGroupsViewModel::class)
     abstract fun bindsFollowingGroupsViewModel(viewModel: FollowingGroupsViewModel): ViewModel
 
@@ -570,4 +566,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(DeleteCompanyAdminViewModel::class)
     abstract fun bindsDeleteCompanyAdminViewModel(viewModel: DeleteCompanyAdminViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DiversityRatingViewModel::class)
+    abstract fun bindsDiversityRatingViewModel(viewModel: DiversityRatingViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RateCompanyViewModel::class)
+    abstract fun bindsRateCompanyViewModel(viewModel: RateCompanyViewModel): ViewModel
 }

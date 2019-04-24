@@ -4,12 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.job.response.JobResponse
+import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.jobs.jobs.usecase.RemoveSavedJobUseCase
-import com.divercity.android.features.jobs.jobs.usecase.SaveJobUseCase
-import com.divercity.android.features.jobs.usecase.FetchJobByIdUseCase
-import com.divercity.android.repository.session.SessionRepository
+import com.divercity.android.features.company.companydetail.usecase.FetchCompanyUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -18,77 +15,45 @@ import javax.inject.Inject
  */
 
 class CompanyDetailViewModel @Inject
-constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
-            private val saveJobUseCase: SaveJobUseCase,
-            private val fetchJobByIdUseCase: FetchJobByIdUseCase,
-            val sessionRepository: SessionRepository) : BaseViewModel() {
+constructor(private val fetchCompanyUseCase: FetchCompanyUseCase) : BaseViewModel() {
 
-    var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
-    var fetchJobByIdResponse = MutableLiveData<Resource<JobResponse>>()
-    var showJobData = MutableLiveData<Resource<JobResponse>>()
+    var companyResponse: CompanyResponse? = null
+        set(value) {
+            companyLiveData.value = value
+            field = value
+        }
 
-    fun saveJob(jobData: JobResponse) {
-        jobSaveUnsaveResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<JobResponse>() {
+    var companyLiveData = MutableLiveData<CompanyResponse?>()
+
+    var fetchCompanyResponse = SingleLiveEvent<Resource<CompanyResponse>>()
+
+    lateinit var companyId: String
+
+    fun fetchCompany() {
+        fetchCompanyResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<CompanyResponse>() {
             override fun onFail(error: String) {
-                jobSaveUnsaveResponse.postValue(Resource.error(error, null))
+                fetchCompanyResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-                jobSaveUnsaveResponse.postValue(Resource.error(error.toString(), null))
+                fetchCompanyResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: JobResponse) {
-                showJobData.postValue(Resource.success(o))
-            }
-        }
-        saveJobUseCase.execute(callback, SaveJobUseCase.Params.forJobs(jobData.id!!))
-    }
+            override fun onSuccess(o: CompanyResponse) {
+                /*As I am sending the reference we need to update the current reference, so when
+                user press back, the reference is updated*/
 
-    fun removeSavedJob(jobData: JobResponse) {
-        jobSaveUnsaveResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<JobResponse>() {
-            override fun onFail(error: String) {
-                jobSaveUnsaveResponse.postValue(Resource.error(error, null))
-            }
-
-            override fun onHttpException(error: JsonElement) {
-                jobSaveUnsaveResponse.postValue(Resource.error(error.toString(), null))
-            }
-
-            override fun onSuccess(o: JobResponse) {
-                showJobData.postValue(Resource.success(o))
+                companyResponse?.attributes = o.attributes
+                companyLiveData.value = companyResponse
+                fetchCompanyResponse.postValue(Resource.success(o))
             }
         }
-        removeSavedJobUseCase.execute(callback, RemoveSavedJobUseCase.Params.forJobs(jobData.id!!))
-    }
-
-    fun fetchJobById(jobId: String) {
-        fetchJobByIdResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<JobResponse>() {
-            override fun onFail(error: String) {
-                fetchJobByIdResponse.postValue(Resource.error(error, JobResponse(id = jobId)))
-            }
-
-            override fun onHttpException(error: JsonElement) {
-                fetchJobByIdResponse.postValue(Resource.error(error.toString(), JobResponse(id = jobId)))
-            }
-
-            override fun onSuccess(o: JobResponse) {
-                showJobData.postValue(Resource.success(o))
-            }
-        }
-        fetchJobByIdUseCase.execute(callback, FetchJobByIdUseCase.Params.forJob(jobId))
-    }
-
-    fun isLoggedUserJobSeeker() : Boolean{
-        return sessionRepository.isLoggedUserJobSeeker()
+        fetchCompanyUseCase.execute(callback, FetchCompanyUseCase.Params(companyId))
     }
 
     override fun onCleared() {
         super.onCleared()
-        removeSavedJobUseCase.dispose()
-        fetchJobByIdUseCase.dispose()
-        saveJobUseCase.dispose()
+        fetchCompanyUseCase.dispose()
     }
 }

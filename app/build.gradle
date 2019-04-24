@@ -55,7 +55,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 9
-        versionName "B-1.8"
+        versionName "D-1.19"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -129,10 +129,10 @@ dependencies {
     def retrofit_version = "2.5.0"
     def okhttp3_version = "3.9.1"
     def rxjava_version = "2.2.4"
-    def rxandroid_version = "2.1.0"
+    def rxandroid_version = "2.1.1"
 
     def glide_version = "4.8.0"
-    def lifecycle_version = '2.1.0-alpha03'
+    def lifecycle_version = '2.1.0-alpha04'
     def dagger_version = "2.21"
 
     def timber_version = "4.7.1"
@@ -141,11 +141,11 @@ dependencies {
 
     def kotlinCoroutines_version = "1.1.1"
 
-    def room_version_runtime = '2.1.0-alpha05'
+    def room_version_runtime = '2.1.0-alpha06'
     def room_version = '2.1.0-alpha04'
 
-    def firebase_messaging_version = "17.4.0"
-    def firebas_core_version = "16.0.7"
+    def firebase_messaging_version = "17.6.0"
+    def firebas_core_version = "16.0.8"
     def crashlytics_version = "2.9.9"
 
     def spyglass_version = "1.5.0"
@@ -242,8 +242,8 @@ dependencies {
     implementation 'io.branch.sdk.android:library:3.1.0'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.1.2-alpha02'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha02'
+    androidTestImplementation 'androidx.test:runner:1.2.0-alpha03'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-alpha03'
 }
 
 repositories {

@@ -10,9 +10,11 @@ import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
+import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
+import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
@@ -37,6 +39,7 @@ class PersonalSettingsFragment : BaseFragment() {
         const val REQUEST_CODE_LOCATION = 200
         const val REQUEST_CODE_SCHOOL = 220
         const val REQUEST_CODE_OCCUPATION = 240
+        const val REQUEST_CODE_COMPANY = 300
 
         fun newInstance(): PersonalSettingsFragment {
             return PersonalSettingsFragment()
@@ -47,7 +50,8 @@ class PersonalSettingsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[PersonalSettingsViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[PersonalSettingsViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -67,7 +71,7 @@ class PersonalSettingsFragment : BaseFragment() {
         }
     }
 
-    private fun setupView(){
+    private fun setupView() {
         lay_personal.lbl_personal.visibility = View.GONE
         lay_personal.btn_edit_personal.visibility = View.GONE
         lay_personal.txt_resume.setHint(R.string.upload_your_resume)
@@ -98,7 +102,7 @@ class PersonalSettingsFragment : BaseFragment() {
 
         }
 
-        lay_personal.lay_occupation.setOnClickListener {
+        lay_personal.lay_company.setOnClickListener {
 
         }
 
@@ -113,6 +117,10 @@ class PersonalSettingsFragment : BaseFragment() {
 
         lay_personal.lay_groups.setOnClickListener {
             navigator.navigateToMyGroups(this)
+        }
+
+        lay_personal.lay_company.setOnClickListener {
+            navigator.navigateToToolbarCompanyActivityForResult(this, REQUEST_CODE_COMPANY)
         }
     }
 
@@ -188,6 +196,7 @@ class PersonalSettingsFragment : BaseFragment() {
         lay_personal.txt_occupation.text = user?.userAttributes?.occupation
         lay_personal.txt_location.text =
             user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
+        lay_personal.txt_company.text = user?.userAttributes?.company?.name
     }
 
     private fun showToast(msg: String?) {
@@ -220,8 +229,15 @@ class PersonalSettingsFragment : BaseFragment() {
                         viewModel.updateLocation(location)
                     }
                 }
-                REQUEST_CODE_RESUME ->{
+                REQUEST_CODE_RESUME -> {
                     handleDocSelectorActivityResult(data)
+                }
+                REQUEST_CODE_COMPANY -> {
+                    val company =
+                        data?.extras?.getParcelable<CompanyResponse>(ToolbarCompanyFragment.COMPANY_PICKED)
+                    company?.id.apply {
+                        viewModel.updateCompany(this)
+                    }
                 }
             }
         }

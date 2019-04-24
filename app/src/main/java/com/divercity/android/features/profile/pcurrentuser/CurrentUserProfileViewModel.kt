@@ -2,14 +2,10 @@ package com.divercity.android.features.profile.pcurrentuser
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
 import com.divercity.android.core.base.viewmodel.BaseViewModel
-import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Listing
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.profile.pcurrentuser.tabconnections.datasource.FollowersPaginatedRepositoryImpl
 import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
@@ -22,30 +18,8 @@ import javax.inject.Inject
 class CurrentUserProfileViewModel @Inject
 constructor(
     private val fetchUserDataUseCase: FetchUserDataUseCase,
-    private val sessionRepository: SessionRepository,
-    private val connectionsRepository: FollowersPaginatedRepositoryImpl
-    ) : BaseViewModel() {
-
-    init {
-        fetchFollowers()
-    }
-
-    // ConnectionsFragment
-    lateinit var pagedListConnections: LiveData<PagedList<UserResponse>>
-    private lateinit var listingConnections: Listing<UserResponse>
-
-    private fun fetchFollowers() {
-        listingConnections = connectionsRepository.fetchData(sessionRepository.getUserId())
-        pagedListConnections = listingConnections.pagedList
-    }
-
-    fun networkState(): LiveData<NetworkState> = listingConnections.networkState
-
-    fun refreshState(): LiveData<NetworkState> = listingConnections.refreshState
-
-    fun retry() = connectionsRepository.retry()
-
-    fun refresh() = connectionsRepository.refresh()
+    private val sessionRepository: SessionRepository
+) : BaseViewModel() {
 
     // CurrentUserProfileFragment
     var fetchUserDataResponse = MutableLiveData<Resource<UserResponse>>()
@@ -72,11 +46,11 @@ constructor(
         )
     }
 
-    fun getCurrentUser() : LiveData<UserResponse> {
+    fun getCurrentUser(): LiveData<UserResponse> {
         return sessionRepository.getUserDB()
     }
 
-    fun getCurrentUserId() : String {
+    fun getCurrentUserId(): String {
         return sessionRepository.getUserId()
     }
 

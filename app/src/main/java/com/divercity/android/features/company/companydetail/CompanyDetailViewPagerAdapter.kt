@@ -6,10 +6,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
-import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.company.companydetail.about.CompanyDetailAboutFragment
 import com.divercity.android.features.company.companydetail.employees.EmployeesFragment
 import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyFragment
+import com.divercity.android.features.company.diversityrating.DiversityRatingFragment
 import javax.inject.Inject
 
 /**
@@ -23,18 +23,19 @@ class CompanyDetailViewPagerAdapter
 ) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
 
     var registeredFragments = SparseArray<Fragment>()
-    lateinit var company: CompanyResponse
+    lateinit var companyId: String
 
     companion object {
 
-        private const val PAGE_COUNT = 3
+        private const val PAGE_COUNT = 4
     }
 
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
-        context.getString(R.string.about_company),
-        context.getString(R.string.job_postings),
-        context.getString(R.string.employees)
+        context.getString(R.string.about),
+        context.getString(R.string.jobs),
+        context.getString(R.string.employees),
+        context.getString(R.string.diversity_rating)
     )
 
     override fun getItem(position: Int): Fragment {
@@ -43,9 +44,10 @@ class CompanyDetailViewPagerAdapter
 
     private fun getFragments(position: Int): Fragment {
         return when (position) {
-            0 -> CompanyDetailAboutFragment.newInstance(company.attributes?.description)
-            1 -> JobPostingsByCompanyFragment.newInstance(company.id!!)
-            else -> EmployeesFragment.newInstance(company.id!!)
+            0 -> CompanyDetailAboutFragment.newInstance()
+            1 -> JobPostingsByCompanyFragment.newInstance(companyId)
+            2 -> EmployeesFragment.newInstance(companyId)
+            else -> DiversityRatingFragment.newInstance()
         }
     }
 

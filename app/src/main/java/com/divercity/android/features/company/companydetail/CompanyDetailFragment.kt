@@ -4,14 +4,16 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
+import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.dialogs.CompanyActionsDialogFragment
-import com.divercity.android.features.dialogs.CustomTwoBtnDialogFragment
 import kotlinx.android.synthetic.main.fragment_company_detail.*
+import kotlinx.android.synthetic.main.view_company_header.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
@@ -26,10 +28,8 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     @Inject
     lateinit var adapter: CompanyDetailViewPagerAdapter
 
-    var company: CompanyResponse? = null
-    lateinit var companyId: String
-
     companion object {
+
         private const val PARAM_COMPANY_ID = "paramCompanyId"
 
         fun newInstance(companyId: String): CompanyDetailFragment {
@@ -69,30 +69,31 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
-        companyId = arguments?.getString(PARAM_COMPANY_ID)!!
+        viewModel.companyId = arguments?.getString(PARAM_COMPANY_ID)!!
         if (DataHolder.hasData()) {
-            company = DataHolder.data
-            showData(company)
+//            viewModel.companyLiveData.postValue(DataHolder.data)
+            viewModel.companyResponse = DataHolder.data
         } else {
-            fetchJobData()
+            viewModel.fetchCompany()
         }
+        initView()
+        subscribeToLiveData()
         setupToolbar()
     }
 
     private fun initViewModel() {
-        viewModel =
+        viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(CompanyDetailViewModel::class.java)
-    }
-
-    private fun fetchJobData() {
-        viewModel.fetchJobById(companyId)
+        } ?: throw Exception("Invalid Activity")
     }
 
     private fun showDialogMoreActions() {
-        if (company != null) {
+        if (viewModel.companyLiveData.value != null) {
             val dialog =
                 CompanyActionsDialogFragment
-                    .newInstance(company?.attributes?.currentUserAdmin ?: false)
+                    .newInstance(
+                        viewModel.companyLiveData.value?.attributes?.currentUserAdmin ?: false
+                    )
             dialog.show(childFragmentManager, null)
         }
     }
@@ -101,7 +102,7 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
         (activity as AppCompatActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
-                it.setTitle(R.string.jobs)
+                it.setTitle(R.string.company)
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
@@ -111,11 +112,14 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
         }
     }
 
+    private fun initView(){
+        adapter.companyId = viewModel.companyId
+        viewpager.adapter = adapter
+        tab_layout.setupWithViewPager(viewpager)
+    }
+
     private fun showData(company: CompanyResponse?) {
         company?.also {
-            adapter.company = it
-            viewpager.adapter = adapter
-            tab_layout.setupWithViewPager(viewpager)
 
             root_layout.visibility = View.VISIBLE
 
@@ -125,20 +129,29 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
 
             txt_name.text = it.attributes?.name
 
+            val rating = it.attributes?.divercityRating
+            if(rating != null){
+                lay_rating.visibility = View.VISIBLE
+                rating_bar_header.rating = rating.toFloat()
+                txt_rating.text = rating.toString()
+            } else {
+                lay_rating.visibility = View.GONE
+            }
+
             if (it.attributes?.industry == null && it.attributes?.headquarters == null) {
                 txt_subtitle1.visibility = View.GONE
             } else {
                 txt_subtitle1.visibility = View.VISIBLE
 
                 var subtitle = ""
-                if (it.attributes.industry != null)
-                    subtitle = it.attributes.industry
+                if (it.attributes?.industry != null)
+                    subtitle = subtitle.plus(it.attributes?.industry)
 
-                if (it.attributes.industry != null && it.attributes.headquarters != null)
+                if (it.attributes?.industry != null && it.attributes?.headquarters != null)
                     subtitle.plus(" · ")
 
-                if (it.attributes.headquarters != null)
-                    subtitle.plus(it.attributes.headquarters)
+                if (it.attributes?.headquarters != null)
+                    subtitle.plus(it.attributes?.headquarters)
 
                 txt_subtitle1.text = subtitle
             }
@@ -146,42 +159,46 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
             if (it.attributes?.companySize == null)
                 txt_size.visibility = View.GONE
             else
-                txt_size.text = it.attributes.companySize
+                txt_size.text = it.attributes?.companySize
         }
     }
 
-    private fun showDialogConnectionError(jobId: String) {
-        val dialog = CustomTwoBtnDialogFragment.newInstance(
-            getString(R.string.ups),
-            getString(R.string.error_connection),
-            getString(R.string.cancel),
-            getString(R.string.retry)
-        )
+    private fun subscribeToLiveData() {
+        viewModel.companyLiveData.observe(viewLifecycleOwner, Observer { group ->
+            showData(group)
+        })
 
-        dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
+        viewModel.fetchCompanyResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+//                    showProgress()
+                }
 
-            override fun onNegativeBtnClick() {
-                viewModel.fetchJobById(jobId)
-            }
+                Status.ERROR -> {
+//                    hideProgress()
+                    showToast(response.message)
+                }
 
-            override fun onPositiveBtnClick() {
-                activity!!.finish()
+                Status.SUCCESS -> {
+//                    hideProgress()
+                }
             }
         })
-        dialog.isCancelable = false
-        dialog.show(childFragmentManager, null)
     }
-
 
     private fun showToast(resId: Int) {
         Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
     }
 
-    override fun onShareJobViaMessage() {
+    private fun showToast(message: String?) {
+        Toast.makeText(context!!, message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onShareViaMessage() {
 
     }
 
-    override fun onShareJobToGroups() {
+    override fun onShareToGroups() {
 
     }
 
@@ -192,12 +209,12 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     override fun onEditAdmins() {
         navigator.navigateToDeleteCompanyAdmin(
             this@CompanyDetailFragment,
-            companyId,
+            viewModel.companyId,
             ""
         )
     }
 
     override fun onAddAdmins() {
-        navigator.navigateToCompanyAdmins(this@CompanyDetailFragment, companyId)
+        navigator.navigateToCompanyAdmins(this@CompanyDetailFragment, viewModel.companyId)
     }
 }

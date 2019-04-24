@@ -2,8 +2,12 @@ package com.divercity.android.features.company.companydetail.about
 
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import com.divercity.android.data.entity.company.response.CompanyResponse
+import com.divercity.android.features.company.companydetail.CompanyDetailViewModel
 import kotlinx.android.synthetic.main.fragment_company_detail_about.*
 
 /**
@@ -12,16 +16,12 @@ import kotlinx.android.synthetic.main.fragment_company_detail_about.*
 
 class CompanyDetailAboutFragment : BaseFragment() {
 
+    lateinit var sharedViewModel: CompanyDetailViewModel
+
     companion object {
 
-        private const val PARAM_COMPANY_DESC = "paramCompanyDesc"
-
-        fun newInstance(description: String?): CompanyDetailAboutFragment {
-            val fragment = CompanyDetailAboutFragment()
-            val arguments = Bundle()
-            arguments.putString(PARAM_COMPANY_DESC, description)
-            fragment.arguments = arguments
-            return fragment
+        fun newInstance(): CompanyDetailAboutFragment {
+            return CompanyDetailAboutFragment()
         }
     }
 
@@ -29,11 +29,22 @@ class CompanyDetailAboutFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
+
+        sharedViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(CompanyDetailViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        subscribeToLiveData()
     }
 
-    private fun initView() {
-        val desc = arguments?.getString(PARAM_COMPANY_DESC)
+    private fun subscribeToLiveData() {
+        sharedViewModel.companyLiveData.observe(viewLifecycleOwner, Observer { company ->
+            showData(company)
+        })
+    }
+
+    private fun showData(company: CompanyResponse?) {
+        val desc = company?.attributes?.description
         if (desc != null && desc != "") {
             txt_company_desc.text = desc
         } else {

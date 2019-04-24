@@ -26,6 +26,7 @@ import com.divercity.android.features.company.companysize.CompanySizesActivity
 import com.divercity.android.features.company.createcompany.CreateCompanyActivity
 import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminActivity
 import com.divercity.android.features.company.mycompanies.MyCompaniesActivity
+import com.divercity.android.features.company.ratecompany.RateCompanyActivity
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
@@ -496,6 +497,17 @@ class Navigator @Inject constructor() {
             )
         )
     }
+
+    fun navigateToRateCompany(fragment: Fragment, company: CompanyResponse, code: Int) {
+        fragment.startActivityForResult(
+            RateCompanyActivity.getCallingIntent(
+                fragment.context!!,
+                company.id,
+                company
+            ), code
+        )
+    }
+
 
     fun navigateToCompanyDetail(fragment: Fragment, companyId: String) {
         fragment.startActivity(

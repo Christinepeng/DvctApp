@@ -137,6 +137,8 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
         lay_personal.txt_location.text =
             user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
 
+        lay_personal.txt_company.text = user?.userAttributes?.company?.name
+
         if (user?.userAttributes?.skills.isNullOrEmpty()) {
             tagview_skills.visibility = View.GONE
             txt_add_skills.visibility = View.VISIBLE

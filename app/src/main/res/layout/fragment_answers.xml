@@ -89,6 +89,7 @@
         android:textColor="#333241"
         android:textSize="15sp"
         android:autoLink="web"
+        android:textColorLink="@color/appBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import com.divercity.android.data.entity.company.response.Attributes
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import kotlinx.android.synthetic.main.fragment_toolbar.*
@@ -51,6 +52,11 @@ class ToolbarCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener {
     }
 
     override fun onNoCurrentCompany() {
-        activity?.finish()
+        val intent = Intent()
+        intent.putExtra(COMPANY_PICKED, CompanyResponse(id = null, attributes = Attributes()))
+        activity?.apply {
+            setResult(Activity.RESULT_OK, intent)
+            finish()
+        }
     }
 }

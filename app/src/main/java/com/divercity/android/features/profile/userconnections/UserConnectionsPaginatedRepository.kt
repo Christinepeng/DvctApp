@@ -3,8 +3,8 @@ package com.divercity.android.features.profile.userconnections
 import com.divercity.android.core.base.datasource.BaseDataSourceRepository
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.profile.userconnections.usecase.FetchFollowersUseCase
+import com.divercity.android.model.user.User
 import javax.inject.Inject
 
 /**
@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 class UserConnectionsPaginatedRepository @Inject
 constructor(private val fetchFollowersUseCase: FetchFollowersUseCase) :
-    BaseDataSourceRepository<UserResponse>() {
+    BaseDataSourceRepository<User>() {
 
-    override fun getUseCase(): UseCase<List<UserResponse>, Params> {
+    override fun getUseCase(): UseCase<List<User>, Params> {
         return fetchFollowersUseCase
     }
 

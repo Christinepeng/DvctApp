@@ -10,11 +10,11 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.data.entity.location.LocationResponse
-import com.divercity.android.data.entity.profile.profile.User
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.dialogs.jobapply.usecase.UploadDocumentUseCase
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import java.io.File
@@ -32,10 +32,10 @@ constructor(
     private val updateUserProfileUseCase: UpdateUserProfileUseCase
 ) : BaseViewModel() {
 
-    val updateUserProfileResponse = SingleLiveEvent<Resource<UserResponse>>()
+    val updateUserProfileResponse = SingleLiveEvent<Resource<User>>()
     var uploadDocumentResponse = SingleLiveEvent<Resource<DocumentResponse>>()
 
-    fun getCurrentUser() : LiveData<UserResponse> {
+    fun getCurrentUser() : LiveData<User> {
         return sessionRepository.getUserDB()
     }
 
@@ -44,54 +44,54 @@ constructor(
     }
 
     fun updateEthnicity(ethnicity: String?) {
-        val user = User()
+        val user = UserProfileEntity()
         user.ethnicity = ethnicity
         updateUserProfile(user)
     }
 
     fun updateGender(gender: String?) {
-        val user = User()
+        val user = UserProfileEntity()
         user.gender = gender
         updateUserProfile(user)
     }
 
     fun updateAgeRange(ageRange: String?) {
-        val user = User()
+        val user = UserProfileEntity()
         user.ageRange = ageRange
         updateUserProfile(user)
     }
 
     fun updateLocation(location: LocationResponse) {
-        val user = User()
+        val user = UserProfileEntity()
         user.city = location.attributes?.name
         user.country = location.attributes?.countryName
         updateUserProfile(user)
     }
 
     fun updateCompany(companyId : String?){
-        val user = User()
+        val user = UserProfileEntity()
         user.jobEmployerId = companyId
         updateUserProfile(user)
     }
 
-    fun updateUserProfile(user: User) {
-        updateUserProfileResponse.postValue(Resource.loading<UserResponse>(null))
+    fun updateUserProfile(user: UserProfileEntity) {
+        updateUserProfileResponse.postValue(Resource.loading<User>(null))
 
-        val callback = object : DisposableObserverWrapper<UserResponse>() {
+        val callback = object : DisposableObserverWrapper<User>() {
             override fun onFail(error: String) {
-                updateUserProfileResponse.postValue(Resource.error<UserResponse>(error, null))
+                updateUserProfileResponse.postValue(Resource.error<User>(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
                 updateUserProfileResponse.postValue(
-                    Resource.error<UserResponse>(
+                    Resource.error<User>(
                         error.toString(),
                         null
                     )
                 )
             }
 
-            override fun onSuccess(o: UserResponse) {
+            override fun onSuccess(o: User) {
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }

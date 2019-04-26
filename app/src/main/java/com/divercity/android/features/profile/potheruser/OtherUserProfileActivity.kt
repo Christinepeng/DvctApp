@@ -4,7 +4,7 @@ import android.content.Context
 import android.content.Intent
 import com.divercity.android.core.base.BaseActivity
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 
 class OtherUserProfileActivity : BaseActivity() {
 
@@ -14,7 +14,7 @@ class OtherUserProfileActivity : BaseActivity() {
         fun getCallingIntent(
             context: Context?,
             userId: String?,
-            user : UserResponse?
+            user : User?
         ): Intent {
             OtherUserProfileFragment.DataHolder.data = user
             val intent = Intent(context, OtherUserProfileActivity::class.java)

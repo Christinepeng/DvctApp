@@ -14,10 +14,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
 import com.divercity.android.features.profile.experience.adapter.WorkExperienceAdapter
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
 import javax.inject.Inject
@@ -126,38 +126,38 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
         }
     }
 
-    private fun setData(user: UserResponse?) {
-        viewModel.fetchWorkExperiences()
+    private fun setData(user: User?) {
+        user?.let {usr ->
+            viewModel.fetchWorkExperiences()
 
-        lay_personal.txt_ethnicity.text = user?.userAttributes?.ethnicity
-        lay_personal.txt_gender.text = user?.userAttributes?.gender
-        lay_personal.txt_age_range.text = user?.userAttributes?.ageRange
-        lay_personal.txt_subtitle2.text = user?.userAttributes?.schoolName
-        lay_personal.txt_occupation.text = user?.userAttributes?.occupation
-        lay_personal.txt_location.text =
-            user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
+            lay_personal.txt_ethnicity.text = usr.ethnicity
+            lay_personal.txt_gender.text = usr.gender
+            lay_personal.txt_age_range.text = usr.ageRange
+            lay_personal.txt_subtitle2.text = usr.schoolName
+            lay_personal.txt_occupation.text = usr.occupation
+            lay_personal.txt_location.text = usr.city.plus(", ").plus(usr.country)
+            lay_personal.txt_company.text = usr.company?.name
 
-        lay_personal.txt_company.text = user?.userAttributes?.company?.name
-
-        if (user?.userAttributes?.skills.isNullOrEmpty()) {
-            tagview_skills.visibility = View.GONE
-            txt_add_skills.visibility = View.VISIBLE
-        } else {
-            tagview_skills.visibility = View.VISIBLE
-            txt_add_skills.visibility = View.GONE
-            tagview_skills.tags = user?.userAttributes?.skills
-        }
-
-        interestAdapter.updatedSelectedInterests(user?.userAttributes?.interestIds)
-
-        btn_edit_skills.setOnClickListener {
-
-            if (!user?.userAttributes?.skills.isNullOrEmpty()) {
-                val skills = ArrayList<String>()
-                skills.addAll(user?.userAttributes?.skills!!)
-                navigator.navigateToEditUserSkills(this, skills)
+            if (usr.skills.isNullOrEmpty()) {
+                tagview_skills.visibility = View.GONE
+                txt_add_skills.visibility = View.VISIBLE
             } else {
-                navigator.navigateToEditUserSkills(this, null)
+                tagview_skills.visibility = View.VISIBLE
+                txt_add_skills.visibility = View.GONE
+                tagview_skills.tags = usr.skills
+            }
+
+            interestAdapter.updatedSelectedInterests(usr.interestIds)
+
+            btn_edit_skills.setOnClickListener {
+
+                if (!usr.skills.isNullOrEmpty()) {
+                    val skills = ArrayList<String>()
+                    skills.addAll(usr.skills!!)
+                    navigator.navigateToEditUserSkills(this, skills)
+                } else {
+                    navigator.navigateToEditUserSkills(this, null)
+                }
             }
         }
     }

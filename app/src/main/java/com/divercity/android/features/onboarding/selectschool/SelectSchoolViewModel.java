@@ -4,9 +4,9 @@ import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;
-import com.divercity.android.data.entity.profile.profile.User;
+import com.divercity.android.data.entity.profile.profile.UserProfileEntity;
 import com.divercity.android.data.entity.school.SchoolResponse;
-import com.divercity.android.data.entity.user.response.UserResponse;
+import com.divercity.android.data.entity.user.response.UserEntityResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.onboarding.selectschool.school.SchoolPaginatedRepositoryImpl;
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase;
@@ -34,7 +34,7 @@ public class SelectSchoolViewModel extends BaseViewModel {
     private UserRepository userRepository;
     private SessionRepository sessionRepository;
 
-    private MutableLiveData<Resource<UserResponse>> updateUserProfileResponse = new MutableLiveData<>();
+    private MutableLiveData<Resource<UserEntityResponse>> updateUserProfileResponse = new MutableLiveData<>();
     private UpdateUserProfileUseCase updateUserProfileUseCase;
 
     @Inject
@@ -76,7 +76,7 @@ public class SelectSchoolViewModel extends BaseViewModel {
 
     public void updateUserProfile(SchoolResponse schoolResponse){
         updateUserProfileResponse.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserEntityResponse>() {
             @Override
             protected void onFail(String error) {
                 updateUserProfileResponse.postValue(Resource.Companion.error(error,null));
@@ -88,11 +88,11 @@ public class SelectSchoolViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(UserResponse o) {
+            protected void onSuccess(UserEntityResponse o) {
                 updateUserProfileResponse.postValue(Resource.Companion.success(o));
             }
         };
-        User user = new User();
+        UserProfileEntity user = new UserProfileEntity();
         user.setSchoolId(schoolResponse.getId());
         updateUserProfileUseCase.execute(callback,UpdateUserProfileUseCase.Params.forUser(user));
     }
@@ -101,7 +101,7 @@ public class SelectSchoolViewModel extends BaseViewModel {
         return sessionRepository.getAccountType();
     }
 
-    public MutableLiveData<Resource<UserResponse>> getUpdateUserProfileResponse() {
+    public MutableLiveData<Resource<UserEntityResponse>> getUpdateUserProfileResponse() {
         return updateUserProfileResponse;
     }
 

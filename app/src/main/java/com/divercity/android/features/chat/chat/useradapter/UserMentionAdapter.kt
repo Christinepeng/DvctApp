@@ -2,13 +2,13 @@ package com.divercity.android.features.chat.chat.useradapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import javax.inject.Inject
 
 class UserMentionAdapter @Inject
 constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var data: List<UserResponse>? = null
+    var data: List<User>? = null
         set(value) {
             field = value
             notifyDataSetChanged()

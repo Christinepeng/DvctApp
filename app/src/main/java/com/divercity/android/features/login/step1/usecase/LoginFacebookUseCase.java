@@ -1,7 +1,7 @@
 package com.divercity.android.features.login.step1.usecase;
 
 import com.divercity.android.core.base.usecase.UseCase;
-import com.divercity.android.data.entity.user.response.UserResponse;
+import com.divercity.android.model.user.User;
 import com.divercity.android.repository.registerlogin.RegisterLoginRepository;
 
 import javax.inject.Inject;
@@ -14,7 +14,7 @@ import io.reactivex.Scheduler;
  * Created by lucas on 26/09/2018.
  */
 
-public class LoginFacebookUseCase extends UseCase<UserResponse, LoginFacebookUseCase.Params> {
+public class LoginFacebookUseCase extends UseCase<User, LoginFacebookUseCase.Params> {
 
     private RegisterLoginRepository mRegisterLoginRepository;
 
@@ -27,7 +27,7 @@ public class LoginFacebookUseCase extends UseCase<UserResponse, LoginFacebookUse
     }
 
     @Override
-    protected Observable<UserResponse> createObservableUseCase(Params params) {
+    protected Observable<User> createObservableUseCase(Params params) {
         return mRegisterLoginRepository.loginFacebook(params.token);
     }
 

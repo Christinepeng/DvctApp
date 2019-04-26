@@ -2,7 +2,7 @@ package com.divercity.android.features.profile.userconnections.usecase
 
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -17,11 +17,11 @@ class FetchFollowersUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: UserRepository
-) : UseCase<@JvmSuppressWildcards List<UserResponse>, Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<User>, Params>(executorThread, uiThread) {
 
     lateinit var userId: String
 
-    override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<User>> {
         return repository.fetchFollowersByUser(userId, params.page, params.size, params.query)
     }
 }

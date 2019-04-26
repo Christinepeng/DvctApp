@@ -1,8 +1,8 @@
 package com.divercity.android.features.signup.usecase;
 
 import com.divercity.android.core.base.usecase.UseCase;
-import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
+import com.divercity.android.model.user.User;
 import com.divercity.android.repository.registerlogin.RegisterLoginRepository;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -17,7 +17,7 @@ import io.reactivex.Scheduler;
  * Created by lucas on 02/10/2018.
  */
 
-public class SignUpUseCase extends UseCase<UserResponse, SignUpUseCase.Params> {
+public class SignUpUseCase extends UseCase<User, SignUpUseCase.Params> {
 
     private RegisterLoginRepository registerLoginRepository;
 
@@ -30,7 +30,7 @@ public class SignUpUseCase extends UseCase<UserResponse, SignUpUseCase.Params> {
     }
 
     @Override
-    protected Observable<UserResponse> createObservableUseCase(Params params) {
+    protected Observable<User> createObservableUseCase(Params params) {
         return registerLoginRepository.signUp(params.name, params.email, params.password, params.confirmPassword);
     }
 
@@ -55,7 +55,7 @@ public class SignUpUseCase extends UseCase<UserResponse, SignUpUseCase.Params> {
         }
     }
 
-    public static abstract class Callback extends DisposableObserverWrapper<UserResponse> {
+    public static abstract class Callback extends DisposableObserverWrapper<User> {
 
         @Override
         protected void onHttpException(JsonElement error) {

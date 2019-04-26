@@ -12,7 +12,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.features.company.companyadmin.adapter.CompanyAdminAdapter
 import com.divercity.android.features.company.companyadmin.adapter.CompanyAdminViewHolder
 import kotlinx.android.synthetic.main.fragment_company_admin.*
@@ -147,10 +147,10 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
             override fun onUserClick(userId: String) {
             }
 
-            override fun onConnectUser(admin: CompanyAdminResponse, position: Int) {
+            override fun onConnectUser(admin: CompanyAdminEntityResponse, position: Int) {
             }
 
-            override fun onUserDirectMessage(admin: CompanyAdminResponse) {
+            override fun onUserDirectMessage(admin: CompanyAdminEntityResponse) {
             }
         }
 

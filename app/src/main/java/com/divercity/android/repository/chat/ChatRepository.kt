@@ -3,10 +3,10 @@ package com.divercity.android.repository.chat
 import androidx.paging.DataSource
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.android.data.entity.createchat.CreateChatResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
 /**
@@ -49,14 +49,14 @@ interface ChatRepository {
         message: String,
         chatId: String,
         image: String
-    ): Observable<ChatMessageResponse>
+    ): Observable<ChatMessageEntityResponse>
 
     fun sendMessageAttachment(
         message: String,
         chatId: String,
         attchmntType: String,
         attchmntId: String
-    ): Observable<ChatMessageResponse>
+    ): Observable<ChatMessageEntityResponse>
 
     fun fetchChatMembers(
         currentUserId: String,
@@ -64,9 +64,9 @@ interface ChatRepository {
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
-    fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageResponse>
+    fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageEntityResponse>
 
     fun getRecentChats(): DataSource.Factory<Int, ExistingUsersChatListItem>
 
@@ -78,7 +78,7 @@ interface ChatRepository {
 
     suspend fun saveRecentChats(list: List<ExistingUsersChatListItem>)
 
-    suspend fun insertChatMessagesOnDB(list: List<ChatMessageResponse>)
+    suspend fun insertChatMessagesOnDB(list: List<ChatMessageEntityResponse>)
 
-    suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageResponse)
+    suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageEntityResponse)
 }

@@ -25,12 +25,12 @@ import com.divercity.android.core.extension.networkInfo
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.chat.chatadapter.ChatAdapter
 import com.divercity.android.features.chat.chat.chatadapter.ChatViewHolder
 import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
 import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.view_image_btn_full.view.*
 import kotlinx.android.synthetic.main.view_image_btn_small.view.*
@@ -208,7 +208,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
 
         userAdapter.listener = object : UserMentionViewHolder.Listener {
 
-            override fun onUserClick(data: UserResponse) {
+            override fun onUserClick(data: User) {
                 replaceMention(data)
             }
         }
@@ -233,17 +233,17 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
     }
 
 
-    private fun replaceMention(user: UserResponse) {
+    private fun replaceMention(user: User) {
         isReplacing = true
 
         val fullTextTillCursor = et_msg.text.toString().substring(0, et_msg.selectionStart)
         val lastIndexOfAT = fullTextTillCursor.lastIndexOf("@")
-        val textToInsert = "@".plus(user.userAttributes?.name!!)
+        val textToInsert = "@".plus(user.name!!)
 
         et_msg.text.replace(
             lastIndexOfAT,
             et_msg.selectionStart,
-            "@".plus(user.userAttributes?.name)
+            "@".plus(user.name)
         )
         viewModel.mentions.add(user)
         val bss = StyleSpan(Typeface.BOLD)

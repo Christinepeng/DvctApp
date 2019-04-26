@@ -2,16 +2,16 @@ package com.divercity.android.data.entity.profile.profile;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UserProfileBody {
+public class UserProfileEntityBody {
 
 	@SerializedName("user")
-	private User user;
+	private UserProfileEntity user;
 
-	public void setUser(User user){
+	public void setUser(UserProfileEntity user){
 		this.user = user;
 	}
 
-	public User getUser(){
+	public UserProfileEntity getUser(){
 		return user;
 	}
 

@@ -1,9 +1,8 @@
 package com.divercity.android.data.entity.device.response
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-data class Attributes(
+data class AttributesEntity(
 
 	@field:SerializedName("pn_count")
 	val pnCount: Int? = null,

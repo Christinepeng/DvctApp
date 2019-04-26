@@ -2,18 +2,18 @@ package com.divercity.android.features.profile.useradapter.nopagmultisel
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserMultipleSelViewHolder
+import com.divercity.android.model.user.User
 import javax.inject.Inject
 
 class UserMultiSelAdapter @Inject
 constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var data: List<UserResponse>? = null
+    var data: List<User>? = null
 
-    var selectedUsers = HashSet<UserResponse>()
+    var selectedUsers = HashSet<User>()
 
-    fun setData(list : HashSet<UserResponse>) {
+    fun setData(list : HashSet<User>) {
         selectedUsers = list
         data = ArrayList(list)
         notifyDataSetChanged()
@@ -21,7 +21,7 @@ constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var listener = object : UserMultipleSelViewHolder.Listener {
 
-        override fun onSelectUnselectUser(user: UserResponse, isSelected: Boolean) {
+        override fun onSelectUnselectUser(user: User, isSelected: Boolean) {
             if (isSelected)
                 selectedUsers.add(user)
             else

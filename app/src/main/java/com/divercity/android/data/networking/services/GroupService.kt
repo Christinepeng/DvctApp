@@ -16,7 +16,7 @@ import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -65,7 +65,7 @@ interface GroupService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @GET("group_of_interests/{groupId}/admins")
     fun fetchGroupAdmins(
@@ -73,7 +73,7 @@ interface GroupService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @POST("group_of_interests/{groupId}/join")
     fun requestToJoinGroup(@Path("groupId") groupId: String): Observable<MessageResponse>

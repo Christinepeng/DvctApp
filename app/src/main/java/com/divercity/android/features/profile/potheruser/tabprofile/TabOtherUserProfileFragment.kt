@@ -10,11 +10,10 @@ import androidx.lifecycle.ViewModelProviders
 import co.lujun.androidtagview.TagView
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.profile.potheruser.OtherUserProfileViewModel
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
 import kotlinx.android.synthetic.main.view_user_personal_details.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
@@ -93,7 +92,7 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
 
     }
 
-    private fun setData(user: UserResponse?) {
+    private fun setData(user: User?) {
 //        ProfileUtils.setupProfileLayout(
 //            user?.userAttributes?.accountType,
 //            context!!,
@@ -106,23 +105,25 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
 
 //        viewModel.fetchInterests(user)
 
-        lay_personal.lay_resume.setOnClickListener {
-//            showUploadedResumesDialog()
-        }
+        user?.let {
+            lay_personal.lay_resume.setOnClickListener {
+                //            showUploadedResumesDialog()
+            }
 
-        lay_personal.txt_ethnicity.text = user?.userAttributes?.ethnicity
-        lay_personal.txt_gender.text = user?.userAttributes?.gender
-        lay_personal.txt_age_range.text = user?.userAttributes?.ageRange
-        lay_personal.txt_subtitle2.text = user?.userAttributes?.schoolName
-        lay_personal.txt_occupation.text = user?.userAttributes?.occupation
-        lay_personal.txt_location.text =
-            user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
+            lay_personal.txt_ethnicity.text = it.ethnicity
+            lay_personal.txt_gender.text = it.gender
+            lay_personal.txt_age_range.text = it.ageRange
+            lay_personal.txt_subtitle2.text = it.schoolName
+            lay_personal.txt_occupation.text = it.occupation
+            lay_personal.txt_location.text =
+                it.city.plus(", ").plus(it.country)
 
-        if (user?.userAttributes?.skills.isNullOrEmpty()) {
-            lay_skills.visibility = View.GONE
-        } else {
-            lay_skills.visibility = View.VISIBLE
-            tagview_skills.tags = user?.userAttributes?.skills
+            if (it.skills.isNullOrEmpty()) {
+                lay_skills.visibility = View.GONE
+            } else {
+                lay_skills.visibility = View.VISIBLE
+                tagview_skills.tags = it.skills
+            }
         }
     }
 
@@ -131,24 +132,6 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
     }
 
     private fun subscribeToLiveData() {
-
-        viewModel.updateUserProfileResponse.observe(viewLifecycleOwner, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-                    showProgress()
-                }
-
-                Status.ERROR -> {
-                    hideProgress()
-                    showToast(response.message)
-                }
-
-                Status.SUCCESS -> {
-                    hideProgress()
-                    setData(response.data)
-                }
-            }
-        })
 
         sharedViewModel.user.observe(viewLifecycleOwner, Observer {
             setData(it)

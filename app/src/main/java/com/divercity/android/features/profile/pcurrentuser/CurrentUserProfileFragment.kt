@@ -16,7 +16,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
 import javax.inject.Inject
@@ -45,7 +45,8 @@ class CurrentUserProfileFragment : BaseFragment() {
         setHasOptionsMenu(true)
 
         viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(CurrentUserProfileViewModel::class.java)
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(CurrentUserProfileViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
@@ -78,16 +79,15 @@ class CurrentUserProfileFragment : BaseFragment() {
         })
     }
 
-    private fun showData(userResponse: UserResponse) {
-        val attr = userResponse.userAttributes
+    private fun showData(user: User) {
         GlideApp.with(this)
-            .load(attr?.avatarMedium)
+            .load(user.avatarMedium)
             .apply(RequestOptions().circleCrop())
             .into(img_profile)
 
-        txt_name.text = attr?.name
+        txt_name.text = user.name
         txt_user_type.text =
-            Util.getUserTypeMap(context!!)[userResponse.userAttributes?.accountType]
+            Util.getUserTypeMap(requireContext())[user.accountType]
     }
 
     private fun setupView() {

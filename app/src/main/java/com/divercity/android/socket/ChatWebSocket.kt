@@ -1,7 +1,7 @@
 package com.divercity.android.socket
 
 import com.divercity.android.core.utils.MySocket
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import timber.log.Timber
@@ -56,7 +56,7 @@ constructor(private val socket: MySocket) {
                             when (message.get("event_type").asString) {
                                 EVENT_CHAT_NEW_MESSAGE -> {
                                     val chat =
-                                        Gson().fromJson(message, ChatMessageResponse::class.java)
+                                        Gson().fromJson(message, ChatMessageEntityResponse::class.java)
                                     listener?.onChatMessageReceived(chat)
                                 }
                                 EVENT_TYPING -> {
@@ -89,7 +89,7 @@ constructor(private val socket: MySocket) {
 
     interface Listener {
 
-        fun onChatMessageReceived(chat: ChatMessageResponse)
+        fun onChatMessageReceived(chat: ChatMessageEntityResponse)
 
         fun onSocketOpen()
     }

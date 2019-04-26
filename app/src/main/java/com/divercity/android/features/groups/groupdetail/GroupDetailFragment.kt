@@ -18,12 +18,12 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.dialogs.groupaction.GroupAdminActionsDialogFragment
 import com.divercity.android.features.dialogs.groupaction.GroupMemberActionsDialogFragment
 import com.divercity.android.features.dialogs.invitegroup.InviteGroupDialogFragment
 import com.divercity.android.features.invitations.contacts.InvitePhoneContactsActivity
 import com.divercity.android.features.invitations.users.InviteUsersActivity
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_group_detail.*
 import kotlinx.android.synthetic.main.view_accept_decline.*
 import kotlinx.android.synthetic.main.view_image_with_foreground.view.*
@@ -266,7 +266,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
         })
     }
 
-    private fun showMemberPictures(members: List<UserResponse>) {
+    private fun showMemberPictures(members: List<User>) {
         val imgViews: Array<View> =
             arrayOf(lay_img1, lay_img2, lay_img3, lay_img4, lay_img5)
 
@@ -274,7 +274,7 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             imgViews[i].visibility = View.VISIBLE
 
             GlideApp.with(this)
-                .load(members[i].userAttributes?.avatarThumb)
+                .load(members[i].avatarThumb)
                 .apply(RequestOptions().circleCrop())
                 .into(imgViews[i].img)
 

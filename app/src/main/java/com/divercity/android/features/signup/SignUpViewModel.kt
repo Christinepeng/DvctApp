@@ -3,11 +3,11 @@ package com.divercity.android.features.signup
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.signup.usecase.CheckIsUsernameRegisteredUseCase
 import com.divercity.android.features.signup.usecase.SignUpUseCase
 import com.divercity.android.features.signup.usecase.UploadProfilePictureUseCase
+import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
 
     val signUpResponse = SingleLiveEvent<Resource<Any>>()
     val usernameRegisteredResponse = SingleLiveEvent<Resource<Boolean>>()
-    val uploadProfilePictureResponse = SingleLiveEvent<Resource<UserResponse>>()
+    val uploadProfilePictureResponse = SingleLiveEvent<Resource<User>>()
     val navigateToSelectUserType = SingleLiveEvent<Boolean>()
 
     fun signUp(name: String, email: String, password: String, confirmPassword: String) {
@@ -33,7 +33,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
                 signUpResponse.value = Resource.error(msg, null)
             }
 
-            override fun onSuccess(response: UserResponse) {
+            override fun onSuccess(response: User) {
                 signUpResponse.value = Resource.success(response)
             }
         }
@@ -65,7 +65,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
         if (pictureBase64 == "")
             navigateToSelectUserType.call()
         else {
-            val callback = object : DisposableObserverWrapper<UserResponse>() {
+            val callback = object : DisposableObserverWrapper<User>() {
 
                 override fun onFail(error: String) {
                     uploadProfilePictureResponse.value = Resource.error(error, null)
@@ -75,7 +75,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
 
                 }
 
-                override fun onSuccess(t: UserResponse) {
+                override fun onSuccess(t: User) {
                     uploadProfilePictureResponse.value = Resource.success(t)
                 }
             }

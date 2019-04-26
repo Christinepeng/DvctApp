@@ -1,26 +1,25 @@
 package com.divercity.android.features.chat.creategroupchat
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.profile.useradapter.nopagmultisel.UserMultiSelAdapter
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_create_group_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
-
 import javax.inject.Inject
 
 /**
@@ -38,7 +37,7 @@ class CreateGroupChatFragment : BaseFragment() {
 
         const val SAVE_PARAM_FILEPATH = "saveParamFilepath"
 
-        var selectedUsers: HashSet<UserResponse>? = null
+        var selectedUsers: HashSet<User>? = null
 
         fun newInstance(): CreateGroupChatFragment {
             return CreateGroupChatFragment()

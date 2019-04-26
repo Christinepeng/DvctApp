@@ -1,10 +1,9 @@
 package com.divercity.android.data.entity.company.companyadmin.response
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
+import javax.annotation.Generated
 
-@Generated("com.robohorse.robopojogenerator")
-data class Employer(
+data class EmployerEntity(
 
 	@field:SerializedName("name")
 	val name: String? = null,

@@ -1,7 +1,7 @@
 package com.divercity.android.features.onboarding.selectoccupationofinterests.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -17,9 +17,9 @@ constructor(
         @Named("executor_thread") executorThread: Scheduler,
         @Named("ui_thread") uiThread: Scheduler,
         private val repository: UserRepository
-) : UseCase<UserResponse, FollowOOIUseCase.Params>(executorThread, uiThread) {
+) : UseCase<User, FollowOOIUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<UserResponse> {
+    override fun createObservableUseCase(params: Params): Observable<User> {
         return repository.followOccupationOfInterests(params.ooiIds)
     }
 

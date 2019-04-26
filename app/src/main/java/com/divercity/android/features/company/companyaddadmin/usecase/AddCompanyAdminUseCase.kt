@@ -3,7 +3,7 @@ package com.divercity.android.features.company.companyaddadmin.usecase
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.body.Admin
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.repository.company.CompanyRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -19,12 +19,12 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: CompanyRepository
-) : UseCase<@JvmSuppressWildcards List<CompanyAdminResponse>, AddCompanyAdminUseCase.Params>(
+) : UseCase<@JvmSuppressWildcards List<CompanyAdminEntityResponse>, AddCompanyAdminUseCase.Params>(
     executorThread,
     uiThread
 ) {
 
-    override fun createObservableUseCase(params: Params): Observable<List<CompanyAdminResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<CompanyAdminEntityResponse>> {
         return repository.addCompanyAdmin(
             params.companyId,
             AddAdminCompanyBody(Admin(params.userIds))

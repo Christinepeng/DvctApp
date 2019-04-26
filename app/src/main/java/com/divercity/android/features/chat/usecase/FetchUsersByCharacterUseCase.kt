@@ -2,7 +2,7 @@ package com.divercity.android.features.chat.usecase
 
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -35,11 +35,11 @@ constructor(
         }
     }
 
-    private fun getSegmentedList(data: List<UserResponse>): ArrayList<Any> {
+    private fun getSegmentedList(data: List<User>): ArrayList<Any> {
         val result = ArrayList<Any>()
 
         for (r in data) {
-            val firstChar = Character.toUpperCase(r.userAttributes!!.name!![0])
+            val firstChar = Character.toUpperCase(r.name!![0])
             if (!firstChars.contains(firstChar)) {
                 firstChars.add(firstChar)
                 result.add(firstChar)

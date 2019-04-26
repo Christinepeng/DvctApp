@@ -2,13 +2,13 @@ package com.divercity.android.features.company.companyaddadmin.adapter
 
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import javax.inject.Inject
 
 class AdminSelectedAdapter @Inject
 constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    var admins: ArrayList<UserResponse>? = null
+    var admins: ArrayList<User>? = null
         set(value) {
             field = value
             notifyDataSetChanged()

@@ -3,19 +3,20 @@ package com.divercity.android.features.splash
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.features.profile.usecase.FetchLoggedUserDataUseCase
 import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import org.json.JSONObject
 import javax.inject.Inject
 
 class SplashViewModel @Inject
 internal constructor(
-    private val fetchUserDataUseCase: FetchUserDataUseCase,
+    private val fetchLoggedUserDataUseCase: FetchLoggedUserDataUseCase,
     private val session: SessionRepository
 ) : BaseViewModel() {
 
-    val fetchUserDataResponse = SingleLiveEvent<Resource<UserResponse>>()
+    val fetchUserDataResponse = SingleLiveEvent<Resource<User>>()
     val navigateToSelectUserType = SingleLiveEvent<Any>()
     val navigateToHome = SingleLiveEvent<Any>()
     val navigateToEnterEmail = SingleLiveEvent<Any>()
@@ -33,11 +34,10 @@ internal constructor(
                 fetchUserDataResponse.value = Resource.error(error, null)
             }
 
-            override fun onSuccess(response: UserResponse) {
+            override fun onSuccess(response: User) {
                 fetchUserDataResponse.value = Resource.success(response)
-                session.saveUserData(response)
 
-                if (response.userAttributes?.accountType == null) {
+                if (response.accountType == null) {
 
                     /* Check if user opens the app with a deeplink*/
                     if (deepLinkData != null) {
@@ -55,9 +55,9 @@ internal constructor(
                 }
             }
         }
-        fetchUserDataUseCase.execute(
+        fetchLoggedUserDataUseCase.execute(
             callback,
-            FetchUserDataUseCase.Params.forUserData(session.getUserId())
+            null
         )
     }
 
@@ -107,6 +107,6 @@ internal constructor(
 
     override fun onCleared() {
         super.onCleared()
-        fetchUserDataUseCase.dispose()
+        fetchLoggedUserDataUseCase.dispose()
     }
 }

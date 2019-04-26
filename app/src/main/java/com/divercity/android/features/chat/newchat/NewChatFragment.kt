@@ -17,9 +17,9 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.profile.useradapter.charpagination.UserCharPagAdapter
 import com.divercity.android.features.profile.useradapter.pagination.UserViewHolder
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_new_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -169,16 +169,16 @@ class NewChatFragment : BaseFragment(), RetryCallback {
     }
 
     private val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
-        override fun onConnectUser(user: UserResponse, position: Int) {
+        override fun onConnectUser(user: User, position: Int) {
             TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
         }
 
 
-        override fun onUserDirectMessage(user: UserResponse) {
+        override fun onUserDirectMessage(user: User) {
         }
 
-        override fun onUserClick(user: UserResponse) {
-            navigator.navigateToChatActivity(this@NewChatFragment, user.userAttributes?.name!!, user.id, -1)
+        override fun onUserClick(user: User) {
+            navigator.navigateToChatActivity(this@NewChatFragment, user.name!!, user.id, -1)
         }
     }
 

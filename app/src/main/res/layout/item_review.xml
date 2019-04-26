@@ -39,7 +39,7 @@
         android:layout_marginTop="2dp"
         android:fontFamily="@font/avenir_heavy"
         android:gravity="center_horizontal"
-        android:textColor="@color/appBlue"
+        android:textColor="@color/yellow"
         android:textSize="15sp"
         app:layout_constraintBottom_toBottomOf="@+id/imageView6"
         app:layout_constraintStart_toEndOf="@+id/imageView6"

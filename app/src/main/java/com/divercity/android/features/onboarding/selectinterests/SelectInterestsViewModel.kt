@@ -4,10 +4,10 @@ import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.interests.InterestsResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
 import com.divercity.android.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.repository.user.UserRepository
 import com.google.gson.JsonElement
@@ -24,7 +24,7 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
             val userRepository: UserRepository) : BaseViewModel() {
 
     var fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
-    var followInterestsResponse = MutableLiveData<Resource<UserResponse>>()
+    var followInterestsResponse = MutableLiveData<Resource<User>>()
 
     init {
         fetchInterests()
@@ -50,7 +50,7 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
 
     fun followInterests(interestsIds: List<String>) {
         followInterestsResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<UserResponse>() {
+        val callback = object : DisposableObserverWrapper<User>() {
             override fun onFail(error: String) {
                 followInterestsResponse.postValue(Resource.error(error, null))
             }
@@ -59,7 +59,7 @@ constructor(private val fetchInterestsUseCase: FetchInterestsUseCase,
                 followInterestsResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: UserResponse) {
+            override fun onSuccess(o: User) {
                 followInterestsResponse.postValue(Resource.success(o))
             }
         }

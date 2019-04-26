@@ -12,12 +12,12 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.location.LocationResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_personal_settings.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
@@ -188,15 +188,17 @@ class PersonalSettingsFragment : BaseFragment() {
         Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
     }
 
-    private fun setData(user: UserResponse?) {
-        lay_personal.txt_ethnicity.text = user?.userAttributes?.ethnicity
-        lay_personal.txt_gender.text = user?.userAttributes?.gender
-        lay_personal.txt_age_range.text = user?.userAttributes?.ageRange
-        lay_personal.txt_subtitle2.text = user?.userAttributes?.schoolName
-        lay_personal.txt_occupation.text = user?.userAttributes?.occupation
-        lay_personal.txt_location.text =
-            user?.userAttributes?.city.plus(", ").plus(user?.userAttributes?.country)
-        lay_personal.txt_company.text = user?.userAttributes?.company?.name
+    private fun setData(user: User?) {
+        user?.let {
+            lay_personal.txt_ethnicity.text = it.ethnicity
+            lay_personal.txt_gender.text = it.gender
+            lay_personal.txt_age_range.text = it.ageRange
+            lay_personal.txt_subtitle2.text = it.schoolName
+            lay_personal.txt_occupation.text = it.occupation
+            lay_personal.txt_location.text =
+                it.city.plus(", ").plus(it.country)
+            lay_personal.txt_company.text = it.company?.name
+        }
     }
 
     private fun showToast(msg: String?) {

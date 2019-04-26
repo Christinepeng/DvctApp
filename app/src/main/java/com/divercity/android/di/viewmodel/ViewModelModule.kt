@@ -27,6 +27,7 @@ import com.divercity.android.features.company.selectcompany.base.SelectCompanyVi
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyViewModel
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogViewModel
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogViewModel
+import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogViewModel
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogViewModel
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityViewModel
 import com.divercity.android.features.gender.onboarding.OnboardingGenderViewModel
@@ -576,4 +577,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RateCompanyViewModel::class)
     abstract fun bindsRateCompanyViewModel(viewModel: RateCompanyViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(RateCompanyDiversityDialogViewModel::class)
+    abstract fun bindsRateCompanyDiversityDialogViewModel(viewModel: RateCompanyDiversityDialogViewModel): ViewModel
 }

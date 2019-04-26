@@ -2,13 +2,13 @@ package com.divercity.android.repository.user
 
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.data.entity.device.body.DeviceBody
-import com.divercity.android.data.entity.device.response.DeviceResponse
+import com.divercity.android.data.entity.device.response.DeviceEntityResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
-import com.divercity.android.data.entity.profile.profile.User
+import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
 import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
 /**
@@ -17,23 +17,25 @@ import io.reactivex.Observable
 
 interface UserRepository {
 
-    fun fetchRemoteUserData(userId: String): Observable<UserResponse>
+    fun fetchRemoteUserData(userId: String): Observable<User>
 
-    fun updateLoggedUserProfile(user: User): Observable<UserResponse>
+    fun updateLoggedUserProfile(user: UserProfileEntity): Observable<User>
+
+    fun fetchLoggedUserData(): Observable<User>
 
     fun joinGroup(groupId: String): Observable<Boolean>
 
-    fun uploadUserPhoto(body: ProfilePictureBody): Observable<UserResponse>
+    fun uploadUserPhoto(body: ProfilePictureBody): Observable<User>
 
-    fun followOccupationOfInterests(occupationIds: List<String>): Observable<UserResponse>
+    fun followOccupationOfInterests(occupationIds: List<String>): Observable<User>
 
-    fun followInterests(interestsIds: List<String>): Observable<UserResponse>
+    fun followInterests(interestsIds: List<String>): Observable<User>
 
-    fun followIndustries(industriesIds: List<String>): Observable<UserResponse>
+    fun followIndustries(industriesIds: List<String>): Observable<User>
 
     fun connectUser(userId: String): Observable<ConnectUserResponse>
 
-    fun saveDevice(body: DeviceBody): Observable<DeviceResponse>
+    fun saveDevice(body: DeviceBody): Observable<DeviceEntityResponse>
 
     fun updateDevice(deviceId: String, body: DeviceBody): Observable<Boolean>
 
@@ -57,20 +59,20 @@ interface UserRepository {
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
     fun fetchFollowingByUser(
         userId: String,
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
     fun fetchUsers(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
     fun fetchNotifications(
         pageNumber: Int,
@@ -81,12 +83,12 @@ interface UserRepository {
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
     fun fetchConnectionRequests(
         userId: String,
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 }

@@ -5,8 +5,8 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import com.divercity.android.R
 import kotlinx.android.synthetic.main.dialog_job_posted.view.*
 
@@ -57,8 +57,8 @@ class JobPostedDialogFragment : DialogFragment() {
         }
 
         dialogView.btn_close.setOnClickListener {
-            dismiss()
             listener?.onBtnCloseClick()
+            dismiss()
         }
 
         builder.setView(dialogView)

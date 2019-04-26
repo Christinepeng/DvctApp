@@ -2,7 +2,7 @@ package com.divercity.android.features.groups.groupdetail.about.usecase
 
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.group.GroupRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -18,11 +18,11 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: GroupRepository
-) : UseCase<List<UserResponse>, Params>(executorThread, uiThread) {
+) : UseCase<List<User>, Params>(executorThread, uiThread) {
 
     lateinit var groupId: String
 
-    override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<User>> {
         return repository.fetchGroupAdmins(groupId, params.page, params.size, params.query)
     }
 }

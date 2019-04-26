@@ -8,7 +8,9 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.Spannable
 import android.text.style.StyleSpan
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -21,16 +23,23 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.extension.networkInfo
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.features.chat.chat.useradapter.UserMentionAdapter
-import com.divercity.android.features.chat.chat.useradapter.UserMentionViewHolder
 import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerAdapter
 import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerViewHolder
 import com.divercity.android.features.groups.groupanswers.model.Question
+import com.divercity.android.model.UserMentionable
+import com.divercity.android.model.user.User
+import com.linkedin.android.spyglass.suggestions.SuggestionsResult
+import com.linkedin.android.spyglass.suggestions.interfaces.Suggestible
+import com.linkedin.android.spyglass.suggestions.interfaces.SuggestionsResultListener
+import com.linkedin.android.spyglass.suggestions.interfaces.SuggestionsVisibilityManager
+import com.linkedin.android.spyglass.tokenization.QueryToken
+import com.linkedin.android.spyglass.tokenization.impl.WordTokenizer
+import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig
+import com.linkedin.android.spyglass.tokenization.interfaces.QueryTokenReceiver
 import kotlinx.android.synthetic.main.fragment_answers.*
+import kotlinx.android.synthetic.main.item_user_mention.view.*
 import kotlinx.android.synthetic.main.view_image_btn_full.view.*
 import kotlinx.android.synthetic.main.view_image_btn_small.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -38,20 +47,21 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
+import java.util.*
 import javax.inject.Inject
 
 /**
  * Created by lucas on 24/12/2018.
  */
 
-class AnswerFragment : BaseFragment() {
+class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultListener,
+    SuggestionsVisibilityManager {
 
     lateinit var viewModel: AnswerViewModel
 
     @Inject
     lateinit var adapter: AnswerAdapter
 
-    @Inject
     lateinit var userAdapter: UserMentionAdapter
 
     var isReplacing = false
@@ -62,6 +72,14 @@ class AnswerFragment : BaseFragment() {
     companion object {
 
         private const val PARAM_QUESTION = "paramQuestionId"
+        private const val BUCKET = "people-network"
+        private val tokenizerConfig = WordTokenizerConfig
+            .Builder()
+            .setMaxNumKeywords(2)
+            .setWordBreakChars(", ")
+            .setExplicitChars("@")
+            .setThreshold(1)
+            .build()
 
         fun newInstance(question: Question): AnswerFragment {
             val fragment = AnswerFragment()
@@ -108,6 +126,10 @@ class AnswerFragment : BaseFragment() {
     private fun setupView() {
         showProgressNoBk()
 
+        et_msg.tokenizer = WordTokenizer(tokenizerConfig)
+        et_msg.setQueryTokenReceiver(this)
+        et_msg.setSuggestionsVisibilityManager(this)
+
         Glide
             .with(this)
             .load(question?.authorProfilePicUrl)
@@ -144,12 +166,14 @@ class AnswerFragment : BaseFragment() {
         }
 
         btn_send.setOnClickListener {
-            if (et_msg.text.toString() != "" || photoFile != null) {
-                viewModel.sendNewAnswer(
-                    et_msg.text.toString(),
-                    ImageUtils.getStringBase64(photoFile, 600, 600)
-                )
-            }
+            //            if (et_msg.text.toString() != "" || photoFile != null) {
+//                viewModel.sendNewAnswer(
+//                    et_msg.text.toString(),
+//                    ImageUtils.getStringBase64(photoFile, 600, 600)
+//                )
+//            }
+
+            getData()
         }
 
         lay_image_full_screen.btn_close_full_screen_image.setOnClickListener {
@@ -225,28 +249,64 @@ class AnswerFragment : BaseFragment() {
             }
         })
 
-        userAdapter.listener = object : UserMentionViewHolder.Listener {
 
-            override fun onUserClick(data: UserResponse) {
-                replaceMention(data)
-            }
-        }
-
-        list_users.adapter = userAdapter
+//        list_users.adapter = userAdapter
     }
 
+    private fun getData() {
+        val text = et_msg.mentionsText
+        val mentionsSpan = text.mentionSpans
+        var stringTxt = et_msg.text.toString()
 
-    private fun replaceMention(user: UserResponse) {
+        var amount = 0
+
+        mentionsSpan.sortBy {
+            text.getSpanStart(it)
+        }
+
+        mentionsSpan.forEach {
+            val start = text.getSpanStart(it)
+            val end = text.getSpanEnd(it)
+
+            val name = text.subSequence(start, end).toString()
+            val replacement = "<@U-" + (it.mention as UserMentionable).userId + ">"
+
+            stringTxt = stringTxt.replaceRange(
+                start - amount,
+                end - amount,
+                replacement
+            )
+
+            amount += name.length - replacement.length
+        }
+
+
+//        mentionsSpan.map { (it.mention as UserMentionable).fullName = "<@U-" + (it.mention as UserMentionable).userId + ">"  }
+
+
+        Toast.makeText(requireContext(), stringTxt, Toast.LENGTH_SHORT).show()
+
+
+//        val editable = MentionsEditable(et_msg.text.toString())
+//        mentionsSpan.forEachIndexed { pos, data ->
+//            editable.setSpan(data, text.getSpanStart(data), text.getSpanEnd(data), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+//            (editable.mentionSpans[pos].mention as UserMentionable).fullName = "<@U-" + (data.mention as UserMentionable).userId + ">"
+//        }
+//        val res = editable.toString()
+//        Toast.makeText(requireContext(), res, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun replaceMention(user: User) {
         isReplacing = true
 
         val fullTextTillCursor = et_msg.text.toString().substring(0, et_msg.selectionStart)
         val lastIndexOfAT = fullTextTillCursor.lastIndexOf("@")
-        val textToInsert = "@".plus(user.userAttributes?.name!!)
+        val textToInsert = "@".plus(user.name!!)
 
         et_msg.text.replace(
             lastIndexOfAT,
             et_msg.selectionStart,
-            "@".plus(user.userAttributes?.name)
+            "@".plus(user.name)
         )
         viewModel.mentions.add(user)
         val bss = StyleSpan(Typeface.BOLD)
@@ -318,31 +378,31 @@ class AnswerFragment : BaseFragment() {
             }
         })
 
-        viewModel.fetchChatMembersResponse.observe(viewLifecycleOwner, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-
-                }
-                Status.ERROR -> {
-                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.SUCCESS -> {
-                    userAdapter.data = response.data!!
-                    userAdapter.notifyDataSetChanged()
-                }
-            }
-        })
+//        viewModel.fetchChatMembersResponse.observe(viewLifecycleOwner, Observer { response ->
+//            when (response?.status) {
+//                Status.LOADING -> {
+//
+//                }
+//                Status.ERROR -> {
+//                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+//                }
+//                Status.SUCCESS -> {
+//                    userAdapter.data = response.data!!
+//                    userAdapter.notifyDataSetChanged()
+//                }
+//            }
+//        })
 
         viewModel.fetchAnswersResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                 }
                 Status.ERROR -> {
-                    if(response.data!!.page == 0)
+                    if (response.data!!.page == 0)
                         Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    if(response.data!!.answers.isEmpty() && response.data.page == 0) {
+                    if (response.data!!.answers.isEmpty() && response.data.page == 0) {
                         hideProgressNoBk()
                         txt_first_comment.visibility = View.VISIBLE
                     }
@@ -353,23 +413,33 @@ class AnswerFragment : BaseFragment() {
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPagedListLiveData()
         })
+
+        viewModel.fetchGroupMembersResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
+
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    val result =
+                        SuggestionsResult(response.data?.queryToken, response.data?.users)
+                    onReceiveSuggestionsResult(result, BUCKET)
+                }
+            }
+        })
     }
 
     private fun subscribeToPagedListLiveData() {
         viewModel.pagedListLiveData!!.observe(viewLifecycleOwner, Observer {
-            if(it.isNotEmpty()) {
+            if (it.isNotEmpty()) {
                 txt_first_comment.visibility = View.GONE
                 hideProgressNoBk()
             }
             adapter.submitList(it)
         })
     }
-
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        menu.clear()
-//        inflater.inflate(R.menu.menu_search, menu)
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
 
     override fun onResume() {
         super.onResume()
@@ -387,13 +457,6 @@ class AnswerFragment : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.onDestroy()
-    }
-
-    private fun showList(active: Boolean) {
-        if (active)
-            list_users.visibility = View.VISIBLE
-        else
-            list_users.visibility = View.GONE
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -451,6 +514,84 @@ class AnswerFragment : BaseFragment() {
             val netInfo = context!!.networkInfo
             if (netInfo != null && netInfo.isConnected) {
                 viewModel.checkErrorsToReconnect()
+            }
+        }
+    }
+
+    override fun onQueryReceived(queryToken: QueryToken): MutableList<String> {
+        val buckets = Arrays.asList<String>(BUCKET)
+        if (queryToken.tokenString.startsWith("@")) {
+            viewModel.fetchGroupMembers(
+                question!!.groupId.toString(),
+                0,
+                10,
+                queryToken.tokenString.substring(1),
+                queryToken
+            )
+        } else {
+            displaySuggestions(false)
+        }
+        return buckets
+    }
+
+    override fun onReceiveSuggestionsResult(result: SuggestionsResult, bucket: String) {
+        val suggestions = result.suggestions
+        userAdapter = UserMentionAdapter(result.suggestions)
+        list_users.swapAdapter(userAdapter, true)
+        val display = suggestions != null && suggestions.size > 0
+        displaySuggestions(display)
+    }
+
+    override fun displaySuggestions(display: Boolean) {
+        if (display) {
+            list_users.visibility = View.VISIBLE
+        } else {
+            list_users.visibility = View.GONE
+        }
+    }
+
+    override fun isDisplayingSuggestions(): Boolean {
+        return list_users.visibility == View.VISIBLE
+    }
+
+
+    inner class UserMentionAdapter
+    constructor(var users: List<Suggestible>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+        override fun getItemCount(): Int {
+            return users.size
+        }
+
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+            val layoutInflater = LayoutInflater.from(parent.context)
+            val view = layoutInflater.inflate(R.layout.item_user_mention, parent, false)
+            return UserMentionViewHolder(view)
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            (holder as UserMentionViewHolder).bindTo(users[position] as UserMentionable)
+        }
+    }
+
+    inner class UserMentionViewHolder
+    constructor(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+
+        fun bindTo(data: UserMentionable?) {
+            data?.let {
+                GlideApp.with(itemView)
+                    .load(data.pictureUrl)
+                    .apply(RequestOptions().circleCrop())
+                    .into(itemView.img)
+
+                itemView.txt_name.text = data.fullName
+
+                itemView.setOnClickListener {
+                    et_msg.insertMention(data)
+                    list_users.swapAdapter(UserMentionAdapter(ArrayList()), true)
+                    displaySuggestions(false)
+                    et_msg.requestFocus()
+                }
             }
         }
     }

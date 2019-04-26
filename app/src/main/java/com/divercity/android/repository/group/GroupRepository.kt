@@ -14,7 +14,7 @@ import com.divercity.android.data.entity.group.invitationnotification.GroupInvit
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
 /**
@@ -46,7 +46,7 @@ interface GroupRepository {
         page: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
     fun inviteContact(
         invitations: GroupInviteContact
@@ -68,7 +68,7 @@ interface GroupRepository {
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
     fun createGroup(group: GroupOfInterest): Observable<GroupResponse>
 

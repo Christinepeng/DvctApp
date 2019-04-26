@@ -8,24 +8,24 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 class DeleteCompanyAdminAdapter @Inject
 constructor(val sessionRepository: SessionRepository) :
-    PagedListAdapter<CompanyAdminResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+    PagedListAdapter<CompanyAdminEntityResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
-    var selectedUsers = HashSet<CompanyAdminResponse>()
-    var onSelectUnselectUser: ((ArrayList<CompanyAdminResponse>) -> Unit)? = null
+    var selectedUsers = HashSet<CompanyAdminEntityResponse>()
+    var onSelectUnselectUser: ((ArrayList<CompanyAdminEntityResponse>) -> Unit)? = null
 
     lateinit var ownerId: String
 
     private var listener = object : DeleteCompanyAdminViewHolder.Listener {
 
-        override fun onSelectUnselectUser(user: CompanyAdminResponse, isSelected: Boolean) {
+        override fun onSelectUnselectUser(user: CompanyAdminEntityResponse, isSelected: Boolean) {
             if (isSelected)
                 selectedUsers.add(user)
             else
@@ -37,7 +37,7 @@ constructor(val sessionRepository: SessionRepository) :
     fun getSelectedUsersIds(): List<String> {
         val usersId = ArrayList<String>()
         selectedUsers.forEach {
-            usersId.add(it.id)
+            usersId.add(it.attributes?.user?.id.toString())
         }
         return usersId
     }
@@ -63,7 +63,7 @@ constructor(val sessionRepository: SessionRepository) :
         when (getItemViewType(position)) {
             R.layout.item_user_action -> (holder as DeleteCompanyAdminViewHolder).bindTo(
                 selectedUsers.contains(getItem(position)),
-                getItem(position) as CompanyAdminResponse
+                getItem(position) as CompanyAdminEntityResponse
             )
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
@@ -103,18 +103,18 @@ constructor(val sessionRepository: SessionRepository) :
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<CompanyAdminResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<CompanyAdminEntityResponse>() {
 
             override fun areItemsTheSame(
-                oldItem: CompanyAdminResponse,
-                newItem: CompanyAdminResponse
+                oldItem: CompanyAdminEntityResponse,
+                newItem: CompanyAdminEntityResponse
             ): Boolean {
                 return oldItem == newItem
             }
 
             override fun areContentsTheSame(
-                oldItem: CompanyAdminResponse,
-                newItem: CompanyAdminResponse
+                oldItem: CompanyAdminEntityResponse,
+                newItem: CompanyAdminEntityResponse
             ): Boolean {
                 return oldItem == newItem
             }

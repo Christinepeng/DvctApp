@@ -9,11 +9,11 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import javax.inject.Inject
 
 class UserPaginationAdapter @Inject
-constructor() : PagedListAdapter<UserResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+constructor() : PagedListAdapter<User, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -75,7 +75,7 @@ constructor() : PagedListAdapter<UserResponse, RecyclerView.ViewHolder>(userDiff
     }
 
     fun updateRowOnRequestUserConnection(position: Int, data : ConnectUserResponse?){
-        currentList?.get(position)?.userAttributes?.apply {
+        currentList?.get(position)?.apply {
             data?.attributes?.let {
                 connected = it.status
             }
@@ -85,13 +85,13 @@ constructor() : PagedListAdapter<UserResponse, RecyclerView.ViewHolder>(userDiff
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<UserResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<User>() {
 
-            override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
                 return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+            override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
                 return oldItem == newItem
             }
         }

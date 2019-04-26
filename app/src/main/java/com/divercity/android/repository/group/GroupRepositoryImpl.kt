@@ -20,9 +20,9 @@ import com.divercity.android.data.entity.group.question.Question
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.entity.questions.QuestionResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.GroupService
 import com.divercity.android.db.dao.GroupDao
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -86,10 +86,10 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
-        return service.fetchGroupAdmins(groupId, pageNumber, size, query).map {
-            checkResponse(it)
-            it.body()?.data
+    ): Observable<List<User>> {
+        return service.fetchGroupAdmins(groupId, pageNumber, size, query).map { response ->
+            checkResponse(response)
+            response.body()?.data?.map { it.toUser() }
         }
     }
 
@@ -154,10 +154,10 @@ constructor(
         page: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
-        return service.fetchGroupMembers(groupId, page, size, query).map {
-            checkResponse(it)
-            it.body()?.data
+    ): Observable<List<User>> {
+        return service.fetchGroupMembers(groupId, page, size, query).map { response ->
+            checkResponse(response)
+            response.body()?.data?.map { it.toUser() }
         }
     }
 

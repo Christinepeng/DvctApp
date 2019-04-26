@@ -2,12 +2,14 @@ package com.divercity.android.repository.session
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
 import com.crashlytics.android.Crashlytics
 import com.divercity.android.BuildConfig
 import com.divercity.android.core.sharedpref.SharedPreferencesManager
 import com.divercity.android.data.entity.base.DataObject
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.db.dao.UserDao
+import com.divercity.android.model.user.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -24,7 +26,7 @@ constructor(
 ) : SessionRepository {
 
     private val USER_PREF_NAME = "USER_PREF_NAME"
-    private var currentLoggedUser: UserResponse? = null
+    private var currentLoggedUser: UserEntityResponse? = null
 
     enum class Key {
         ACCESS_TOKEN,
@@ -165,14 +167,14 @@ constructor(
         return currentLoggedUser?.userAttributes?.email
     }
 
-    override fun saveUserHeaderData(response: Response<DataObject<UserResponse>>) {
+    override fun saveUserHeaderData(response: Response<DataObject<UserEntityResponse>>) {
         setClient(response.headers().get("client"))
         setUid(response.headers().get("uid"))
         setAccessToken(response.headers().get("access-token"))
         saveUserData(response.body()!!.data)
     }
 
-    override fun saveUserData(user: UserResponse) {
+    override fun saveUserData(user: UserEntityResponse) {
         this.currentLoggedUser = user
         setUserId(user.id)
 
@@ -205,7 +207,9 @@ constructor(
         return currentLoggedUser?.userAttributes?.skills
     }
 
-    override fun getUserDB(): LiveData<UserResponse> {
-        return userDao.getUser()
+    override fun getUserDB(): LiveData<User> {
+        return Transformations.map(userDao.getUser()) {
+            it.toUser()
+        }
     }
 }

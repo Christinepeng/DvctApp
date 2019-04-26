@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.repository.session.SessionRepository
 import kotlinx.android.synthetic.main.item_user_action.view.*
 import kotlinx.android.synthetic.main.view_user_image_desc.view.*
@@ -18,7 +18,7 @@ private constructor(itemView: View,
                     val sessionRepository: SessionRepository) :
     RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(position: Int, data: CompanyAdminResponse?) {
+    fun bindTo(position: Int, data: CompanyAdminEntityResponse?) {
         data?.attributes?.user?.let {
             itemView.apply {
                 GlideApp.with(this)
@@ -82,9 +82,9 @@ private constructor(itemView: View,
 
         fun onUserClick(userId: String)
 
-        fun onConnectUser(admin: CompanyAdminResponse, position: Int)
+        fun onConnectUser(admin: CompanyAdminEntityResponse, position: Int)
 
-        fun onUserDirectMessage(admin: CompanyAdminResponse)
+        fun onUserDirectMessage(admin: CompanyAdminEntityResponse)
     }
 
     companion object {

@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 
 /**
  * Created by lucas on 30/12/2018.
@@ -15,13 +15,13 @@ import com.divercity.android.data.entity.user.response.UserResponse
 interface UserDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertUser(user: UserResponse)
+    suspend fun insertUser(user: UserEntityResponse)
 
     @Query("SELECT * FROM user")
-    fun getUser(): LiveData<UserResponse>
+    fun getUser(): LiveData<UserEntityResponse>
 
     @Query("SELECT * FROM user")
-    fun getUserSync(): UserResponse
+    fun getUserSync(): UserEntityResponse
 
     @Query("DELETE FROM user")
     suspend fun deleteUser()

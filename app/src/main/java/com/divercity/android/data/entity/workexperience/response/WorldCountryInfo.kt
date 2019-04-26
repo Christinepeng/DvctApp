@@ -3,7 +3,6 @@ package com.divercity.android.data.entity.workexperience.response
 import com.google.gson.annotations.SerializedName
 import javax.annotation.Generated
 
-@Generated("com.robohorse.robopojogenerator")
 data class WorldCountryInfo(
 
 	@field:SerializedName("name")

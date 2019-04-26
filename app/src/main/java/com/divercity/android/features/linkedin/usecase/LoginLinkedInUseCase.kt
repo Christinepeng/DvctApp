@@ -1,8 +1,8 @@
 package com.divercity.android.features.linkedin.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.registerlogin.RegisterLoginRepository
 import com.google.gson.JsonElement
 import io.reactivex.Observable
@@ -14,13 +14,13 @@ class LoginLinkedInUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val registerLoginRepository: RegisterLoginRepository
-) : UseCase<UserResponse, LoginLinkedInUseCase.Params>(executorThread, uiThread) {
+) : UseCase<User, LoginLinkedInUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<UserResponse> {
+    override fun createObservableUseCase(params: Params): Observable<User> {
         return registerLoginRepository.loginLinkedin(params.code, params.state)
     }
 
-    abstract class Callback : DisposableObserverWrapper<UserResponse>() {
+    abstract class Callback : DisposableObserverWrapper<User>() {
 
         override fun onHttpException(error: JsonElement) {
             onFail(error.asJsonObject.getAsJsonArray("errors").get(0).asString)

@@ -4,11 +4,11 @@ import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.data.entity.company.rating.RatingBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 import io.reactivex.Observable
 import retrofit2.Response
 import retrofit2.http.*
@@ -30,20 +30,20 @@ interface CompanyService {
         @Path("companyId") companyId: String,
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @GET("job_employers/{companyId}/view_admins")
     fun fetchCompanyAdmins(
         @Path("companyId") companyId: String,
         @Query("page[number]") page: Int,
         @Query("page[size]") size: Int
-    ): Observable<Response<DataArray<CompanyAdminResponse>>>
+    ): Observable<Response<DataArray<CompanyAdminEntityResponse>>>
 
     @POST("job_employers/{companyId}/create_admin")
     fun addCompanyAdmin(
         @Path("companyId") companyId: String,
         @Body admins: AddAdminCompanyBody
-    ): Observable<Response<DataArray<CompanyAdminResponse>>>
+    ): Observable<Response<DataArray<CompanyAdminEntityResponse>>>
 
     @HTTP(method = "DELETE", path = "job_employers/{companyId}/remove_admin", hasBody = true)
     fun deleteCompanyAdmin(

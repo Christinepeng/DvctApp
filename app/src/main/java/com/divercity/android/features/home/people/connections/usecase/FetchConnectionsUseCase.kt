@@ -1,8 +1,7 @@
 package com.divercity.android.features.home.people.connections.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
-import com.divercity.android.repository.session.SessionRepository
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -17,14 +16,13 @@ class FetchConnectionsUseCase @Inject
 constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
-    private val userRepository: UserRepository,
-    private val sessionRepository: SessionRepository
-) : UseCase<@JvmSuppressWildcards List<UserResponse>, FetchConnectionsUseCase.Params>(
+    private val userRepository: UserRepository
+) : UseCase<@JvmSuppressWildcards List<User>, FetchConnectionsUseCase.Params>(
     executorThread,
     uiThread
 ) {
 
-    override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<User>> {
 
         return userRepository.fetchRecommendedUsers(
             params.page,

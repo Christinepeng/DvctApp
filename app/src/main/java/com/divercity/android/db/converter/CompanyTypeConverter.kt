@@ -1,7 +1,7 @@
 package com.divercity.android.db.converter
 
 import androidx.room.TypeConverter
-import com.divercity.android.data.entity.user.response.Company
+import com.divercity.android.data.entity.user.response.CompanyEntity
 import com.google.gson.Gson
 
 /**
@@ -12,13 +12,13 @@ object CompanyTypeConverter {
 
     @TypeConverter
     @JvmStatic
-    fun companyToString(value: Company): String {
+    fun companyToString(value: CompanyEntity): String {
         return Gson().toJson(value)
     }
 
     @TypeConverter
     @JvmStatic
-    fun stringToCompany(value: String): Company {
-        return  Gson().fromJson(value, Company::class.java) as Company
+    fun stringToCompany(value: String): CompanyEntity {
+        return  Gson().fromJson(value, CompanyEntity::class.java) as CompanyEntity
     }
 }

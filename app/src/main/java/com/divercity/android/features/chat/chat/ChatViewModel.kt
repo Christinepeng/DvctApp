@@ -8,16 +8,16 @@ import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.MySocket
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.android.data.entity.chat.messages.Meta
 import com.divercity.android.data.entity.createchat.CreateChatResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.chat.chat.usecase.FetchChatMembersUseCase
 import com.divercity.android.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.android.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.android.features.chat.chat.usecase.SendMessagesUseCase
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.chat.ChatRepository
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.socket.ChatWebSocket
@@ -46,14 +46,14 @@ constructor(
 ) : BaseViewModel() {
 
     var pageFetchList = ArrayList<Int>()
-    var chatMembers: List<UserResponse>? = null
+    var chatMembers: List<User>? = null
 
     var fetchCreateChatResponse = SingleLiveEvent<Resource<CreateChatResponse>>()
     var fetchMessagesResponse = SingleLiveEvent<Resource<DataChatMessageResponse>>()
-    var fetchChatMembersResponse = SingleLiveEvent<Resource<List<UserResponse>>>()
-    var sendMessageResponse = SingleLiveEvent<Resource<ChatMessageResponse>>()
+    var fetchChatMembersResponse = SingleLiveEvent<Resource<List<User>>>()
+    var sendMessageResponse = SingleLiveEvent<Resource<ChatMessageEntityResponse>>()
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var pagedListLiveData: LiveData<PagedList<ChatMessageResponse>>? = null
+    var pagedListLiveData: LiveData<PagedList<ChatMessageEntityResponse>>? = null
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -67,7 +67,7 @@ constructor(
     var hasFetchChatError = false
     var hasFetchGroupMembersError = false
 
-    var mentions = HashSet<UserResponse>()
+    var mentions = HashSet<User>()
 
     companion object {
         const val RECONNECTING_ATTEMPTS = 4
@@ -109,7 +109,7 @@ constructor(
 
     fun fetchChatMembers(chatId: String, page: Int, size: Int) {
         fetchChatMembersResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<List<UserResponse>>() {
+        val callback = object : DisposableObserverWrapper<List<User>>() {
             override fun onFail(error: String) {
                 hasFetchGroupMembersError = true
                 fetchChatMembersResponse.postValue(Resource.error(error, null))
@@ -119,7 +119,7 @@ constructor(
                 fetchChatMembersResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: List<UserResponse>) {
+            override fun onSuccess(o: List<User>) {
                 hasFetchGroupMembersError = false
                 chatMembers = o.filter {
                     it.id != sessionRepository.getUserId()
@@ -138,7 +138,7 @@ constructor(
             fetchChatMembersResponse.postValue(
                 Resource.success(
                     chatMembers?.filter {
-                        it.userAttributes?.name!!.toLowerCase().contains(filter.toLowerCase())
+                        it.name!!.toLowerCase().contains(filter.toLowerCase())
                     })
             )
     }
@@ -237,14 +237,14 @@ constructor(
         var parsedMessage = message
         if (mentions.size != 0) {
             for (user in mentions) {
-                val mention = "@".plus(user.userAttributes?.name)
+                val mention = "@".plus(user.name)
                 val replace = "<@U-".plus(user.id).plus(">")
                 parsedMessage = parsedMessage.replace(mention, replace)
             }
         }
 
         sendMessageResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<ChatMessageResponse>() {
+        val callback = object : DisposableObserverWrapper<ChatMessageEntityResponse>() {
             override fun onFail(error: String) {
                 sendMessageResponse.postValue(Resource.error(error, null))
             }
@@ -253,7 +253,7 @@ constructor(
                 sendMessageResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: ChatMessageResponse) {
+            override fun onSuccess(o: ChatMessageEntityResponse) {
                 mentions.clear()
                 sendMessageResponse.postValue(Resource.success(null))
             }
@@ -264,7 +264,7 @@ constructor(
         )
     }
 
-    fun insertChatDb(chatMessageResponse: ChatMessageResponse) {
+    fun insertChatDb(chatMessageResponse: ChatMessageEntityResponse) {
         uiScope.launch {
             chatMessageRepository.insertChatMessageOnDB(chatMessageResponse)
         }
@@ -309,7 +309,7 @@ constructor(
                 fetchMessages(userId!!, 0, PAGE_SIZE)
             }
 
-            override fun onChatMessageReceived(chat: ChatMessageResponse) {
+            override fun onChatMessageReceived(chat: ChatMessageEntityResponse) {
                 insertChatDb(chat)
             }
         }

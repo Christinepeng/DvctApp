@@ -4,13 +4,13 @@ import androidx.paging.DataSource
 import com.divercity.android.data.entity.chat.addchatmemberbody.AddChatMemberBody
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.android.data.entity.createchat.CreateChatResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.ChatService
 import com.divercity.android.db.dao.ChatMessageDao
 import com.divercity.android.db.dao.RecentChatsDao
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -37,11 +37,12 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
-        return chatService.fetchChatMembers(currentUserId, chatId, pageNumber, size, query).map {
-            checkResponse(it)
-            it.body()?.data
-        }
+    ): Observable<List<User>> {
+        return chatService.fetchChatMembers(currentUserId, chatId, pageNumber, size, query)
+            .map { response ->
+                checkResponse(response)
+                response.body()?.data?.map { it.toUser() }
+            }
     }
 
     override fun fetchMessages(
@@ -84,7 +85,7 @@ constructor(
         message: String,
         chatId: String,
         image: String
-    ): Observable<ChatMessageResponse> {
+    ): Observable<ChatMessageEntityResponse> {
         val partMessage = RequestBody.create(MediaType.parse("text/plain"), message)
         val partChatId = RequestBody.create(MediaType.parse("text/plain"), chatId)
         val partImage = RequestBody.create(MediaType.parse("text/plain"), image)
@@ -99,7 +100,7 @@ constructor(
         chatId: String,
         attchmntType: String,
         attchmntId: String
-    ): Observable<ChatMessageResponse> {
+    ): Observable<ChatMessageEntityResponse> {
         val partMessage = RequestBody.create(MediaType.parse("text/plain"), message)
         val partChatId = RequestBody.create(MediaType.parse("text/plain"), chatId)
         val partAttchmntType = RequestBody.create(MediaType.parse("text/plain"), attchmntType)
@@ -113,13 +114,13 @@ constructor(
         )
     }
 
-    override suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageResponse) {
+    override suspend fun insertChatMessageOnDB(chatMessageResponse: ChatMessageEntityResponse) {
         withContext(Dispatchers.IO) {
             chatMessageDao.insertChatMessage(chatMessageResponse)
         }
     }
 
-    override suspend fun insertChatMessagesOnDB(list: List<ChatMessageResponse>) {
+    override suspend fun insertChatMessagesOnDB(list: List<ChatMessageEntityResponse>) {
         withContext(Dispatchers.IO) {
             chatMessageDao.insertChatMessages(list)
         }
@@ -143,7 +144,7 @@ constructor(
         }
     }
 
-    override fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageResponse> {
+    override fun getMessagesByChatId(chatId: Int): DataSource.Factory<Int, ChatMessageEntityResponse> {
         return chatMessageDao.getPagedMessagesByChatId(chatId)
     }
 

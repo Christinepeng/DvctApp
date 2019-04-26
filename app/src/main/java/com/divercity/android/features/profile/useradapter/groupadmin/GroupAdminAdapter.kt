@@ -8,24 +8,24 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 class GroupAdminAdapter @Inject
 constructor(val sessionRepository: SessionRepository) :
-    PagedListAdapter<UserResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+    PagedListAdapter<User, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
-    var selectedUsers = HashSet<UserResponse>()
-    var onSelectUnselectUser: ((ArrayList<UserResponse>) -> Unit)? = null
+    var selectedUsers = HashSet<User>()
+    var onSelectUnselectUser: ((ArrayList<User>) -> Unit)? = null
 
     lateinit var ownerId: String
 
     private var listener = object : GroupAdminViewHolder.Listener {
 
-        override fun onSelectUnselectUser(user: UserResponse, isSelected: Boolean) {
+        override fun onSelectUnselectUser(user: User, isSelected: Boolean) {
             if (isSelected)
                 selectedUsers.add(user)
             else
@@ -63,7 +63,7 @@ constructor(val sessionRepository: SessionRepository) :
         when (getItemViewType(position)) {
             R.layout.item_user_action -> (holder as GroupAdminViewHolder).bindTo(
                 selectedUsers.contains(getItem(position)),
-                getItem(position) as UserResponse
+                getItem(position) as User
             )
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
@@ -103,13 +103,13 @@ constructor(val sessionRepository: SessionRepository) :
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<UserResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<User>() {
 
-            override fun areItemsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+            override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
                 return oldItem == newItem
             }
 
-            override fun areContentsTheSame(oldItem: UserResponse, newItem: UserResponse): Boolean {
+            override fun areContentsTheSame(oldItem: User, newItem: User): Boolean {
                 return oldItem == newItem
             }
         }

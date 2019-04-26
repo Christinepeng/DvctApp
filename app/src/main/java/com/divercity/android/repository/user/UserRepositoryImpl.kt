@@ -4,19 +4,19 @@ import com.divercity.android.data.entity.activity.notification.NotificationRespo
 import com.divercity.android.data.entity.activity.notificationread.DataItem
 import com.divercity.android.data.entity.activity.notificationread.NotificationReadBody
 import com.divercity.android.data.entity.device.body.DeviceBody
-import com.divercity.android.data.entity.device.response.DeviceResponse
+import com.divercity.android.data.entity.device.response.DeviceEntityResponse
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
-import com.divercity.android.data.entity.profile.profile.User
-import com.divercity.android.data.entity.profile.profile.UserProfileBody
+import com.divercity.android.data.entity.profile.profile.UserProfileEntity
+import com.divercity.android.data.entity.profile.profile.UserProfileEntityBody
 import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBody
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
 import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
 import com.divercity.android.data.networking.services.UserService
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -40,11 +40,20 @@ constructor(
             throw HttpException(response)
     }
 
-    override fun fetchRemoteUserData(userId: String): Observable<UserResponse> {
+    override fun fetchRemoteUserData(userId: String): Observable<User> {
         return userService.fetchUserData(userId)
             .map { response ->
                 checkResponse(response)
-                response.body()!!.data
+                response.body()!!.data.toUser()
+            }
+    }
+
+    override fun fetchLoggedUserData(): Observable<User> {
+        return userService.fetchUserData(sessionRepository.getUserId())
+            .map { response ->
+                checkResponse(response)
+                sessionRepository.saveUserData(response.body()!!.data)
+                response.body()!!.data.toUser()
             }
     }
 
@@ -55,46 +64,47 @@ constructor(
         }
     }
 
-    override fun uploadUserPhoto(body: ProfilePictureBody): Observable<UserResponse> {
+    override fun uploadUserPhoto(body: ProfilePictureBody): Observable<User> {
         return userService.uploadUserPhoto(body).map { response ->
             checkResponse(response)
             sessionRepository.saveUserData(response.body()!!.data)
-            response.body()!!.data
+            response.body()!!.data.toUser()
         }
     }
 
-    override fun updateLoggedUserProfile(user: User): Observable<UserResponse> {
-        val userProfileBody = UserProfileBody()
+    override fun updateLoggedUserProfile(user: UserProfileEntity): Observable<User> {
+        val userProfileBody =
+            UserProfileEntityBody()
         userProfileBody.user = user
         return userService.updateUserProfile(sessionRepository.getUserId(), userProfileBody)
             .map { response ->
                 checkResponse(response)
                 sessionRepository.saveUserData(response.body()!!.data)
-                response.body()!!.data
+                response.body()!!.data.toUser()
             }
     }
 
-    override fun followOccupationOfInterests(occupationIds: List<String>): Observable<UserResponse> {
+    override fun followOccupationOfInterests(occupationIds: List<String>): Observable<User> {
         return userService.followOccupationOfInterests(FollowOOIBody(occupationIds))
             .map { response ->
                 checkResponse(response)
-                response.body()!!.data
+                response.body()!!.data.toUser()
             }
     }
 
-    override fun followInterests(interestsIds: List<String>): Observable<UserResponse> {
+    override fun followInterests(interestsIds: List<String>): Observable<User> {
         return userService.followInterests(FollowInterestsBody(interestsIds)).map { response ->
             checkResponse(response)
             sessionRepository.saveUserData(response.body()!!.data)
-            response.body()!!.data
+            response.body()!!.data.toUser()
         }
     }
 
-    override fun followIndustries(industriesIds: List<String>): Observable<UserResponse> {
+    override fun followIndustries(industriesIds: List<String>): Observable<User> {
         return userService.followIndustries(FollowIndustryBody(industriesIds)).map { response ->
             checkResponse(response)
             sessionRepository.saveUserData(response.body()!!.data)
-            response.body()!!.data
+            response.body()!!.data.toUser()
         }
     }
 
@@ -103,10 +113,10 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
+    ): Observable<List<User>> {
         return userService.fetchFollowersByUser(userId, pageNumber, size, query).map { response ->
             checkResponse(response)
-            response.body()!!.data
+            response.body()!!.data.map { it.toUser() }
         }
     }
 
@@ -115,10 +125,10 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
+    ): Observable<List<User>> {
         return userService.fetchFollowingByUser(userId, pageNumber, size, query).map { response ->
             checkResponse(response)
-            response.body()!!.data
+            response.body()!!.data.map { it.toUser() }
         }
     }
 
@@ -126,10 +136,10 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
+    ): Observable<List<User>> {
         return userService.fetchUsers(pageNumber, size, query).map { response ->
             checkResponse(response)
-            response.body()!!.data
+            response.body()!!.data.map { it.toUser() }
         }
     }
 
@@ -141,7 +151,7 @@ constructor(
         }
     }
 
-    override fun saveDevice(body: DeviceBody): Observable<DeviceResponse> {
+    override fun saveDevice(body: DeviceBody): Observable<DeviceEntityResponse> {
         return userService.saveDevice(body).map { response ->
             checkResponse(response)
             response.body()!!.data
@@ -176,10 +186,10 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
+    ): Observable<List<User>> {
         return userService.fetchRecommendedUsers(pageNumber, size, query).map { response ->
             checkResponse(response)
-            response.body()!!.data
+            response.body()!!.data.map { it.toUser() }
         }
     }
 
@@ -188,11 +198,11 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<UserResponse>> {
+    ): Observable<List<User>> {
         return userService.fetchConnectionRequests(userId, pageNumber, size, query)
             .map { response ->
                 checkResponse(response)
-                response.body()!!.data
+                response.body()!!.data.map { it.toUser() }
             }
     }
 

@@ -2,7 +2,8 @@ package com.divercity.android.repository.session
 
 import androidx.lifecycle.LiveData
 import com.divercity.android.data.entity.base.DataObject
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
+import com.divercity.android.model.user.User
 import retrofit2.Response
 
 /**
@@ -27,11 +28,11 @@ interface SessionRepository {
 
     suspend fun clearUserData()
 
-    fun getUserDB() : LiveData<UserResponse>
+    fun getUserDB() : LiveData<User>
 
-    fun saveUserHeaderData(response: Response<DataObject<UserResponse>>)
+    fun saveUserHeaderData(response: Response<DataObject<UserEntityResponse>>)
 
-    fun saveUserData(user: UserResponse)
+    fun saveUserData(user: UserEntityResponse)
 
     fun isLoggedUserJobSeeker(): Boolean
 

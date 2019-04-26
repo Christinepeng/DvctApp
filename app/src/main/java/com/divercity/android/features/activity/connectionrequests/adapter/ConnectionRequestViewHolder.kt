@@ -10,7 +10,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.group.ConnectionItem
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.features.activity.connectionrequests.model.GroupInvitationNotificationPosition
 import com.divercity.android.features.activity.connectionrequests.model.JoinGroupRequestPosition
 import com.divercity.android.features.activity.connectionrequests.model.UserPosition
@@ -127,8 +127,8 @@ private constructor(
                             }
                         }
                     }
-                    is UserResponse -> {
-                        val connectionRequest = data as UserResponse
+                    is UserEntityResponse -> {
+                        val connectionRequest = data as UserEntityResponse
                         txt_notification.text =
                             "${connectionRequest.userAttributes?.name} wants to connect with you"
 

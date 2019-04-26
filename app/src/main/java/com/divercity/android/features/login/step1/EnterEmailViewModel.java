@@ -1,24 +1,24 @@
 package com.divercity.android.features.login.step1;
 
 import android.app.Application;
-import androidx.lifecycle.MutableLiveData;
 
 import com.divercity.android.R;
 import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.core.utils.SingleLiveEvent;
 import com.divercity.android.core.utils.Util;
 import com.divercity.android.data.Resource;
-import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.login.step1.usecase.ChecIskEmailRegisteredUseCase;
 import com.divercity.android.features.login.step1.usecase.ConnectLinkedInApiHelper;
 import com.divercity.android.features.login.step1.usecase.LoginFacebookUseCase;
+import com.divercity.android.model.user.User;
 import com.google.gson.JsonElement;
 
 import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
+import androidx.lifecycle.MutableLiveData;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -33,7 +33,7 @@ public class EnterEmailViewModel extends BaseViewModel {
     private ConnectLinkedInApiHelper linkedInApiHelper;
 
     private SingleLiveEvent<Resource<Boolean>> isEmailRegistered = new SingleLiveEvent<>();
-    private SingleLiveEvent<Resource<UserResponse>> loginFacebookResponse = new SingleLiveEvent<>();
+    private SingleLiveEvent<Resource<User>> loginFacebookResponse = new SingleLiveEvent<>();
 
     private SingleLiveEvent<Object> navigateToSignUp = new SingleLiveEvent<>();
     private SingleLiveEvent<Object> navigateToLogin = new SingleLiveEvent<>();
@@ -80,7 +80,7 @@ public class EnterEmailViewModel extends BaseViewModel {
     public void loginFacebook(String token){
         loginFacebookResponse.setValue(Resource.Companion.loading(null));
 
-        DisposableObserverWrapper<UserResponse> disposable = new DisposableObserverWrapper<UserResponse>() {
+        DisposableObserverWrapper<User> disposable = new DisposableObserverWrapper<User>() {
             @Override
             protected void onFail(@NotNull String error) {
                 loginFacebookResponse.setValue(Resource.Companion.error(error,null));
@@ -92,7 +92,7 @@ public class EnterEmailViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(@NotNull UserResponse loginResponse) {
+            protected void onSuccess(@NotNull User loginResponse) {
                 loginFacebookResponse.setValue(Resource.Companion.success(loginResponse));
             }
         };
@@ -104,7 +104,7 @@ public class EnterEmailViewModel extends BaseViewModel {
         return isEmailRegistered;
     }
 
-    public SingleLiveEvent<Resource<UserResponse>> getLoginFacebookResponse() {
+    public SingleLiveEvent<Resource<User>> getLoginFacebookResponse() {
         return loginFacebookResponse;
     }
 

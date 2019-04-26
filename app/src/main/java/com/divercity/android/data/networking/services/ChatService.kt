@@ -5,10 +5,10 @@ import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.chat.addchatmemberbody.AddChatMemberBody
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.CurrentChatsResponse
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.data.entity.chat.messages.DataChatMessageResponse
 import com.divercity.android.data.entity.createchat.CreateChatResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -45,7 +45,7 @@ interface ChatService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @POST("users/{currentUserId}/chats")
     fun createChat(
@@ -76,7 +76,7 @@ interface ChatService {
 //        ,
 //        @Part("message[embedded_attachment_type]") attchmntType: RequestBody,
 //        @Part("message[embedded_attachment_id]") attchmntId: RequestBody
-    ): Observable<ChatMessageResponse>
+    ): Observable<ChatMessageEntityResponse>
 
     @Multipart
     @POST("messages")
@@ -85,5 +85,5 @@ interface ChatService {
         @Part("message[chat_id]") chatId: RequestBody,
         @Part("message[embedded_attachment_type]") attchmntType: RequestBody,
         @Part("message[embedded_attachment_id]") attchmntId: RequestBody
-    ): Observable<ChatMessageResponse>
+    ): Observable<ChatMessageEntityResponse>
 }

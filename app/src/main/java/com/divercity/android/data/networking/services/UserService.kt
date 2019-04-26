@@ -5,16 +5,16 @@ import com.divercity.android.data.entity.activity.notificationread.NotificationR
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.device.body.DeviceBody
-import com.divercity.android.data.entity.device.response.DeviceResponse
+import com.divercity.android.data.entity.device.response.DeviceEntityResponse
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
-import com.divercity.android.data.entity.profile.profile.UserProfileBody
+import com.divercity.android.data.entity.profile.profile.UserProfileEntityBody
 import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountResponse
 import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBody
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
 import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
 import io.reactivex.Observable
@@ -29,28 +29,28 @@ import retrofit2.http.*
 interface UserService {
 
     @GET("users/{id}")
-    fun fetchUserData(@Path("id") userId: String): Observable<Response<DataObject<UserResponse>>>
+    fun fetchUserData(@Path("id") userId: String): Observable<Response<DataObject<UserEntityResponse>>>
 
     @PUT("users/{id}")
-    fun updateUserProfile(@Path("id") userId: String, @Body body: UserProfileBody): Observable<Response<DataObject<UserResponse>>>
+    fun updateUserProfile(@Path("id") userId: String, @Body body: UserProfileEntityBody): Observable<Response<DataObject<UserEntityResponse>>>
 
     @POST("group_of_interests/{id}/follow")
     fun joinGroup(@Path("id") idGroup: String): Observable<Response<Void>>
 
     @POST("users/avatar_upload")
-    fun uploadUserPhoto(@Body body: ProfilePictureBody): Observable<Response<DataObject<UserResponse>>>
+    fun uploadUserPhoto(@Body body: ProfilePictureBody): Observable<Response<DataObject<UserEntityResponse>>>
 
     @POST("data/follow_occupation_of_interest")
-    fun followOccupationOfInterests(@Body body: FollowOOIBody): Observable<Response<DataObject<UserResponse>>>
+    fun followOccupationOfInterests(@Body body: FollowOOIBody): Observable<Response<DataObject<UserEntityResponse>>>
 
     @POST("users/current/update_interests")
-    fun followInterests(@Body body: FollowInterestsBody): Observable<Response<DataObject<UserResponse>>>
+    fun followInterests(@Body body: FollowInterestsBody): Observable<Response<DataObject<UserEntityResponse>>>
 
     @GET("users/{userId}/chats/unread_messages_count")
     fun fetchUnreadMessagesCount(@Path("userId") userId: String): Observable<Response<DataObject<UnreadMessageCountResponse>>>
 
     @POST("devices")
-    fun saveDevice(@Body body: DeviceBody): Observable<Response<DataObject<DeviceResponse>>>
+    fun saveDevice(@Body body: DeviceBody): Observable<Response<DataObject<DeviceEntityResponse>>>
 
     @PUT("devices/{deviceId}")
     fun updateDevice(@Path("deviceId") deviceId: String, @Body body: DeviceBody): Observable<Response<Void>>
@@ -66,7 +66,7 @@ interface UserService {
     fun cancelConnectionRequest(@Body body: UserConnectionBody): Observable<Response<Unit>>
 
     @POST("data/follow_industry")
-    fun followIndustries(@Body body: FollowIndustryBody): Observable<Response<DataObject<UserResponse>>>
+    fun followIndustries(@Body body: FollowIndustryBody): Observable<Response<DataObject<UserEntityResponse>>>
 
     @GET("users/{id}/followers")
     fun fetchFollowersByUser(
@@ -74,7 +74,7 @@ interface UserService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @GET("users/{id}/following")
     fun fetchFollowingByUser(
@@ -82,14 +82,14 @@ interface UserService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @GET("users?order_by_name=asc")
     fun fetchUsers(
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @GET("activity_records")
     fun fetchNotifications(
@@ -105,7 +105,7 @@ interface UserService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @GET("users/{userId}/connection_requests")
     fun fetchConnectionRequests(
@@ -113,7 +113,7 @@ interface UserService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<UserResponse>>>
+    ): Observable<Response<DataArray<UserEntityResponse>>>
 
     @GET("users/{userId}/experiences")
     fun fetchWorkExperiences(

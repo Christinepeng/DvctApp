@@ -11,7 +11,6 @@ import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.skills.SkillResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeActivity
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.android.features.chat.chat.ChatActivity
@@ -80,6 +79,7 @@ import com.divercity.android.features.singleuseraction.SingleUserActionActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
+import com.divercity.android.model.user.User
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -444,7 +444,7 @@ class Navigator @Inject constructor() {
     fun navigateToOtherUserProfileActivity(
         fragment: Fragment,
         userId: String?,
-        user: UserResponse?
+        user: User?
     ) {
         fragment.startActivity(
             OtherUserProfileActivity.getCallingIntent(

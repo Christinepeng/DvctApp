@@ -8,7 +8,7 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.features.profile.useradapter.charpagination.CharacterViewHolder
 import javax.inject.Inject
 
@@ -39,9 +39,9 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
         }
     }
 
-    fun getUserSelected(): UserResponse? {
+    fun getUserSelected(): UserEntityResponse? {
         return if (lastPositionSelected != null)
-            getItem(lastPositionSelected!!) as UserResponse
+            getItem(lastPositionSelected!!) as UserEntityResponse
         else
             null
     }
@@ -69,7 +69,7 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
             R.layout.item_user_action -> (holder as UserSingleSelViewHolder)
                 .bindTo(
                     lastPositionSelected == position,
-                    getItem(position) as UserResponse,
+                    getItem(position) as UserEntityResponse,
                     position
                 )
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
@@ -89,7 +89,7 @@ constructor() : PagedListAdapter<Any, RecyclerView.ViewHolder>(userDiffCallback)
     override fun getItemViewType(position: Int): Int {
         return if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
-        } else if (getItem(position) is UserResponse) {
+        } else if (getItem(position) is UserEntityResponse) {
             R.layout.item_user_action
         } else {
             R.layout.item_contact_character

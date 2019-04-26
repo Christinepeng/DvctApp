@@ -7,7 +7,7 @@ import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
 import com.divercity.android.JobQuery
 import com.divercity.android.core.functional.Either
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import kotlinx.coroutines.*
 import javax.inject.Inject
 import kotlin.coroutines.resume
@@ -84,7 +84,7 @@ constructor(private val apolloRepository: ApolloRepository) {
         val jobId: String,
         val position: Int,
         val view: View,
-        val chatMessageResponse: ChatMessageResponse
+        val chatMessageResponse: ChatMessageEntityResponse
     ) {
 
         companion object {
@@ -93,7 +93,7 @@ constructor(private val apolloRepository: ApolloRepository) {
                 jobId: String,
                 position: Int,
                 view: View,
-                chatMessageResponse: ChatMessageResponse
+                chatMessageResponse: ChatMessageEntityResponse
             ): Params {
                 return Params(jobId, position, view, chatMessageResponse)
             }

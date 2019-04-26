@@ -10,11 +10,12 @@ import android.os.Parcelable
 data class Question(
     var id: String?,
     var question: String?,
-    var questionPicUrl : String?,
+    var questionPicUrl: String?,
     var createdAt: String?,
-    var authorProfilePicUrl : String?,
-    var authorName : String?,
-    var groupTitle: String?
+    var authorProfilePicUrl: String?,
+    var authorName: String?,
+    var groupTitle: String?,
+    var groupId: Int?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -24,7 +25,8 @@ data class Question(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readString()
+        parcel.readString(),
+        parcel.readValue(Int::class.java.classLoader) as? Int
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -35,6 +37,7 @@ data class Question(
         parcel.writeString(authorProfilePicUrl)
         parcel.writeString(authorName)
         parcel.writeString(groupTitle)
+        parcel.writeValue(groupId)
     }
 
     override fun describeContents(): Int {

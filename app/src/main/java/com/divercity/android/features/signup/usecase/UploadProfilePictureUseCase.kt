@@ -2,7 +2,7 @@ package com.divercity.android.features.signup.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -17,9 +17,9 @@ class UploadProfilePictureUseCase @Inject
 constructor(@Named("executor_thread") executorThread : Scheduler,
             @Named("ui_thread") uiThread : Scheduler,
             val userRepository: UserRepository
-): UseCase<UserResponse, UploadProfilePictureUseCase.Params>(executorThread, uiThread){
+): UseCase<User, UploadProfilePictureUseCase.Params>(executorThread, uiThread){
 
-    override fun createObservableUseCase(params: Params): Observable<UserResponse> {
+    override fun createObservableUseCase(params: Params): Observable<User> {
 
         return userRepository.uploadUserPhoto(ProfilePictureBody(params.strFileBase64))
     }

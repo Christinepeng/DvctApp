@@ -1,9 +1,8 @@
 package com.divercity.android.data.entity.device.response
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class DataEntity(
 
 	@field:SerializedName("id")
 	val id: String? = null,

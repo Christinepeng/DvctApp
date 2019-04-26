@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.newchat.NewChatActivity
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.item_user_action.view.*
 import kotlinx.android.synthetic.main.view_user_image_desc.view.*
 
@@ -16,12 +16,12 @@ class UserViewHolder
 private constructor(itemView: View, private val listener: Listener?) :
     RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(position: Int, data: UserResponse?) {
+    fun bindTo(position: Int, data: User?) {
         data?.let {
             itemView.apply {
 
                 GlideApp.with(this)
-                    .load(it.userAttributes?.avatarMedium)
+                    .load(it.avatarMedium)
                     .apply(RequestOptions().circleCrop())
                     .into(include_img_desc.img)
 
@@ -30,7 +30,7 @@ private constructor(itemView: View, private val listener: Listener?) :
                     btn_direct_message.visibility = View.GONE
                 } else {
 
-                    when (data.userAttributes?.connected) {
+                    when (data.connected) {
                         "connected" -> {
                             btn_follow.setImageResource(R.drawable.icon_connected)
                             btn_follow.setOnClickListener(null)
@@ -58,8 +58,8 @@ private constructor(itemView: View, private val listener: Listener?) :
                     }
                 }
 
-                include_img_desc.txt_name.text = it.userAttributes?.name
-                include_img_desc.txt_subtitle1.text = it.userAttributes?.occupation
+                include_img_desc.txt_name.text = it.name
+                include_img_desc.txt_subtitle1.text = it.occupation
 
                 setOnClickListener {
                     listener?.onUserClick(data)
@@ -70,11 +70,11 @@ private constructor(itemView: View, private val listener: Listener?) :
 
     interface Listener {
 
-        fun onUserClick(user: UserResponse)
+        fun onUserClick(user: User)
 
-        fun onConnectUser(user: UserResponse, position : Int)
+        fun onConnectUser(user: User, position : Int)
 
-        fun onUserDirectMessage(user: UserResponse)
+        fun onUserDirectMessage(user: User)
     }
 
     companion object {

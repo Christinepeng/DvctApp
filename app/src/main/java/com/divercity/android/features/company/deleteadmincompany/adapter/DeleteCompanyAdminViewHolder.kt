@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import kotlinx.android.synthetic.main.item_user_left_selection.view.*
 import kotlinx.android.synthetic.main.view_user_image_desc.view.*
 
@@ -20,7 +20,7 @@ private constructor(
 ) :
     RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(isSelected: Boolean, data: CompanyAdminResponse?) {
+    fun bindTo(isSelected: Boolean, data: CompanyAdminEntityResponse?) {
         data?.attributes?.user?.let {
             itemView.apply {
 
@@ -56,7 +56,7 @@ private constructor(
 
     interface Listener {
 
-        fun onSelectUnselectUser(user: CompanyAdminResponse, isSelected: Boolean)
+        fun onSelectUnselectUser(user: CompanyAdminEntityResponse, isSelected: Boolean)
     }
 
     companion object {

@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 
 /**
  * Created by lucas on 30/12/2018.
@@ -15,14 +15,14 @@ import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
 interface ChatMessageDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun insertChatMessage(users: ChatMessageResponse)
+    fun insertChatMessage(users: ChatMessageEntityResponse)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     @JvmSuppressWildcards
-    fun insertChatMessages(list : List<ChatMessageResponse>)
+    fun insertChatMessages(list : List<ChatMessageEntityResponse>)
 
     @Query("SELECT * FROM chatMessage WHERE chatId = :chatId ORDER BY id DESC")
-    fun getPagedMessagesByChatId(chatId : Int): DataSource.Factory<Int, ChatMessageResponse>
+    fun getPagedMessagesByChatId(chatId : Int): DataSource.Factory<Int, ChatMessageEntityResponse>
 
     @Query("SELECT COUNT(*) FROM chatMessage WHERE chatId = :chatId ")
     fun countMessagesByChatId(chatId : Int): Int

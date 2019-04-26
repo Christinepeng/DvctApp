@@ -10,10 +10,10 @@ import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.home.people.connections.datasource.ConnectionsPaginatedRepositoryImpl
 import com.divercity.android.features.profile.usecase.ConnectUserUseCase
+import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -27,8 +27,8 @@ constructor(
     private val connectUserUseCase: ConnectUserUseCase
 ) : BaseViewModel() {
 
-    lateinit var pagedUserList: LiveData<PagedList<UserResponse>>
-    lateinit var listingPaginatedUser: Listing<UserResponse>
+    lateinit var pagedUserList: LiveData<PagedList<User>>
+    lateinit var listingPaginatedUser: Listing<User>
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var connectUserResponse = MutableLiveData<Resource<ConnectUserResponse>>()

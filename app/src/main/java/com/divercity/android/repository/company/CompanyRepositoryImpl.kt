@@ -1,14 +1,15 @@
 package com.divercity.android.repository.company
 
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
+import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.Admin
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.rating.RatingBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.CompanyService
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 import retrofit2.HttpException
 import retrofit2.Response
@@ -38,10 +39,10 @@ constructor(
         companyId: String,
         page: Int,
         size: Int
-    ): Observable<List<UserResponse>> {
-        return service.fetchEmployeesByCompany(companyId, page, size).map {
-            checkResponse(it)
-            it.body()?.data
+    ): Observable<List<User>> {
+        return service.fetchEmployeesByCompany(companyId, page, size).map { response ->
+            checkResponse(response)
+            response.body()!!.data.map { it.toUser() }
         }
     }
 
@@ -49,7 +50,7 @@ constructor(
         companyId: String,
         page: Int,
         size: Int
-    ): Observable<List<CompanyAdminResponse>> {
+    ): Observable<List<CompanyAdminEntityResponse>> {
         return service.fetchCompanyAdmins(companyId, page, size).map {
             checkResponse(it)
             it.body()?.data
@@ -59,7 +60,7 @@ constructor(
     override fun addCompanyAdmin(
         companyId: String,
         admins: AddAdminCompanyBody
-    ): Observable<List<CompanyAdminResponse>> {
+    ): Observable<List<CompanyAdminEntityResponse>> {
         return service.addCompanyAdmin(companyId, admins).map {
             checkResponse(it)
             it.body()?.data
@@ -70,7 +71,7 @@ constructor(
         companyId: String,
         adminsId: List<String>
     ): Observable<Unit> {
-        return service.deleteCompanyAdmin(companyId, DeleteCompanyAdminBody(adminsId)).map {
+        return service.deleteCompanyAdmin(companyId, DeleteCompanyAdminBody(Admin(adminsId))).map {
             checkResponse(it)
         }
     }

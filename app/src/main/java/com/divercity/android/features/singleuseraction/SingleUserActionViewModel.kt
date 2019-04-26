@@ -3,7 +3,7 @@ package com.divercity.android.features.singleuseraction
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.singleuseraction.usecase.ShareJobViaMessageUseCase
 import com.divercity.android.repository.paginated.UsersByCharacterPaginatedRepository
@@ -20,7 +20,7 @@ constructor(
     private val shareJobViaMessageUseCase: ShareJobViaMessageUseCase
 ) : BaseViewModelPagination<Any>(repository) {
 
-    var shareJobViaMessageResponse = SingleLiveEvent<Resource<ChatMessageResponse>>()
+    var shareJobViaMessageResponse = SingleLiveEvent<Resource<ChatMessageEntityResponse>>()
 
     init {
         fetchData(null, "")
@@ -28,7 +28,7 @@ constructor(
 
     fun shareJobViaMessage(otherUserId: String, jobId: String) {
         shareJobViaMessageResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<ChatMessageResponse>() {
+        val callback = object : DisposableObserverWrapper<ChatMessageEntityResponse>() {
             override fun onFail(error: String) {
                 shareJobViaMessageResponse.postValue(Resource.error(error, null))
             }
@@ -37,7 +37,7 @@ constructor(
                 shareJobViaMessageResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: ChatMessageResponse) {
+            override fun onSuccess(o: ChatMessageEntityResponse) {
                 shareJobViaMessageResponse.postValue(Resource.success(o))
             }
         }

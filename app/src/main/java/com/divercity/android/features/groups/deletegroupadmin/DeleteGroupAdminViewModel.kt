@@ -3,9 +3,9 @@ package com.divercity.android.features.groups.deletegroupadmin
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.deletegroupadmin.usecase.DeleteGroupAdminUseCase
+import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -17,7 +17,7 @@ class DeleteGroupAdminViewModel @Inject
 constructor(
     repository: GroupAdminsPaginatedRepository,
     private val deleteGroupAdminUseCase: DeleteGroupAdminUseCase
-) : BaseViewModelPagination<UserResponse>(repository) {
+) : BaseViewModelPagination<User>(repository) {
 
     var deleteGroupAdminResponse = SingleLiveEvent<Resource<Unit>>()
 

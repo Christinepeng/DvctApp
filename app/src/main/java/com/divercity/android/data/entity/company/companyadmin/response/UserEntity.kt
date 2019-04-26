@@ -3,8 +3,7 @@ package com.divercity.android.data.entity.company.companyadmin.response
 import com.google.gson.annotations.SerializedName
 import javax.annotation.Generated
 
-@Generated("com.robohorse.robopojogenerator")
-data class User(
+data class UserEntity(
 
 	@field:SerializedName("connected")
 	val connected: String? = null,

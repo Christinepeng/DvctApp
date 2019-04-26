@@ -13,7 +13,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_tab_about_group_detail.*
 import kotlinx.android.synthetic.main.view_image_with_foreground.view.*
 
@@ -126,7 +126,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
         })
     }
 
-    private fun showMemberPictures(members: List<UserResponse>) {
+    private fun showMemberPictures(members: List<User>) {
         lay_pictures.visibility = View.VISIBLE
 
         val imgViews: Array<View> =
@@ -136,7 +136,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
             imgViews[i].visibility = View.VISIBLE
 
             GlideApp.with(this)
-                .load(members[i].userAttributes?.avatarThumb)
+                .load(members[i].avatarThumb)
                 .apply(RequestOptions().circleCrop())
                 .into(imgViews[i].img)
 
@@ -146,7 +146,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
         }
     }
 
-    private fun showAdminPictures(admins: List<UserResponse>) {
+    private fun showAdminPictures(admins: List<User>) {
         if (admins.isNotEmpty()) {
             lbl_admins.visibility = View.VISIBLE
             lay_admin.visibility = View.VISIBLE
@@ -168,7 +168,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                 imgViews[i].visibility = View.VISIBLE
 
                 GlideApp.with(this)
-                    .load(admins[i].userAttributes?.avatarThumb)
+                    .load(admins[i].avatarThumb)
                     .apply(RequestOptions().circleCrop())
                     .into(imgViews[i].img)
 
@@ -176,10 +176,10 @@ class TabAboutGroupDetailFragment : BaseFragment() {
 //                    (imgViews[i] as FrameLayout).foreground = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
 
                 if (i == 0)
-                    txt_admins.hint = admins[i].userAttributes?.name
+                    txt_admins.hint = admins[i].name
                 else
                     txt_admins.hint =
-                        txt_admins.hint.toString().plus(",").plus(admins[i].userAttributes?.name)
+                        txt_admins.hint.toString().plus(",").plus(admins[i].name)
             }
         }
     }

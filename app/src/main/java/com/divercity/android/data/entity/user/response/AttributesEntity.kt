@@ -1,46 +1,46 @@
 package com.divercity.android.data.entity.user.response
 
-import androidx.room.Ignore
+import com.divercity.android.core.extension.empty
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-data class UserAttributes(
+data class AttributesEntity(
 
     @field:SerializedName("country")
-    var country: String? = "",
+    var country: String? = String.empty(),
 
     @field:SerializedName("avatar_medium")
-    var avatarMedium: String? = "",
+    var avatarMedium: String? = String.empty(),
 
     @field:SerializedName("account_type")
-    var accountType: String? = "",
+    var accountType: String? = String.empty(),
 
     @field:SerializedName("occupation")
-    var occupation: String? = "",
+    var occupation: String? = String.empty(),
 
     @field:SerializedName("birthdate")
-    var birthdate: String? = "",
+    var birthdate: String? = String.empty(),
 
     @field:SerializedName("role")
-    var role: String? = "",
+    var role: String? = String.empty(),
 
     @field:SerializedName("gender")
-    var gender: String? = "",
+    var gender: String? = String.empty(),
 
     @field:SerializedName("ethnicity")
-    var ethnicity: String? = "",
+    var ethnicity: String? = String.empty(),
 
     @field:SerializedName("city")
-    var city: String? = "",
+    var city: String? = String.empty(),
 
     @field:SerializedName("timezone")
-    var timezone: String? = "",
+    var timezone: String? = String.empty(),
 
     @field:SerializedName("phonenumber")
-    var phonenumber: String? = "",
+    var phonenumber: String? = String.empty(),
 
     @field:SerializedName("created_at")
-    var createdAt: String? = "",
+    var createdAt: String? = String.empty(),
 
     @field:SerializedName("questions_count")
     var questionsCount: Int? = -1,
@@ -52,40 +52,40 @@ data class UserAttributes(
     var groupOfInterestFollowingCount: Int? = -1,
 
     @field:SerializedName("uid")
-    var uid: String? = "",
+    var uid: String? = String.empty(),
 
     @field:SerializedName("answers_count")
     var answersCount: Int? = -1,
 
     @field:SerializedName("nickname")
-    var nickname: String? = "",
+    var nickname: String? = String.empty(),
 
     @field:SerializedName("company")
-    var company: Company? = Company(),
+    var company: CompanyEntity? = CompanyEntity.empty(),
 
     @field:SerializedName("is_followed_by_current")
     var isFollowedByCurrent: Boolean? = false,
 
     @field:SerializedName("email")
-    var email: String? = "",
+    var email: String? = String.empty(),
 
     @field:SerializedName("lat")
-    var lat: String? = "",
+    var lat: String? = String.empty(),
 
     @field:SerializedName("no_password_set")
-    var noPasswordSet: String? = "",
+    var noPasswordSet: String? = String.empty(),
 
     @field:SerializedName("lng")
-    var lng: String? = "",
+    var lng: String? = String.empty(),
 
     @field:SerializedName("avatar_thumb")
-    var avatarThumb: String? = "",
+    var avatarThumb: String? = String.empty(),
 
     @field:SerializedName("last_name")
-    var lastName: String? = "",
+    var lastName: String? = String.empty(),
 
     @field:SerializedName("school_name")
-    var schoolName: String? = "",
+    var schoolName: String? = String.empty(),
 
     @field:SerializedName("is_default_avatar")
     var isDefaultAvatar: Boolean? = false,
@@ -106,20 +106,19 @@ data class UserAttributes(
     var studentMajors: List<String>? = Collections.emptyList(),
 
     @field:SerializedName("name")
-    var name: String? = "",
+    var name: String? = String.empty(),
 
     @field:SerializedName("age_range")
-    var ageRange: String? = "",
+    var ageRange: String? = String.empty(),
 
     @field:SerializedName("skills")
-    var skills: List<String>? = Collections.emptyList()
-) {
+    var skills: List<String>? = Collections.emptyList(),
 
-    @Ignore
     @field:SerializedName("connected")
-    var connected: String? = ""
+    var connected: String? = String.empty()
+) {
+    companion object {
 
-    fun getFullLocation() : String{
-        return city.plus(", ").plus(country)
+        fun empty() = AttributesEntity()
     }
 }

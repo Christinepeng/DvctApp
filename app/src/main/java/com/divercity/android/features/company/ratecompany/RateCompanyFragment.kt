@@ -113,6 +113,8 @@ class RateCompanyFragment : BaseFragment() {
     private fun showData(company: CompanyResponse?) {
         company?.also {
 
+            lbl_explanation1.text = getString(R.string.rate_company_label, company.attributes?.name)
+
             root_layout.visibility = View.VISIBLE
 
             GlideApp.with(this)

@@ -5,7 +5,7 @@ import com.divercity.android.data.entity.emailusernamecheck.CheckUsernameEmailRe
 import com.divercity.android.data.entity.emailusernamecheck.emailbody.CheckEmailBody;
 import com.divercity.android.data.entity.emailusernamecheck.usernamebody.CheckUsernameBody;
 import com.divercity.android.data.entity.user.body.LoginBody;
-import com.divercity.android.data.entity.user.response.UserResponse;
+import com.divercity.android.data.entity.user.response.UserEntityResponse;
 import com.divercity.android.data.entity.signup.SignUpBody;
 
 import io.reactivex.Observable;
@@ -25,7 +25,7 @@ import retrofit2.http.Query;
 public interface RegisterLoginService {
 
     @POST("auth/sign_in")
-    Observable<Response<DataObject<UserResponse>>> login(@Body LoginBody loginBody);
+    Observable<Response<DataObject<UserEntityResponse>>> login(@Body LoginBody loginBody);
 
     @POST("users/check_email")
     Observable<CheckUsernameEmailResponse> checkEmail(@Body CheckEmailBody loginBody);
@@ -34,14 +34,14 @@ public interface RegisterLoginService {
     Observable<CheckUsernameEmailResponse> checkUsername(@Body CheckUsernameBody loginBody);
 
     @POST("auth")
-    Observable<Response<DataObject<UserResponse>>> signUp(@Body SignUpBody loginBody);
+    Observable<Response<DataObject<UserEntityResponse>>> signUp(@Body SignUpBody loginBody);
 
     @GET("auth/sso/linkedin")
-    Observable<Response<DataObject<UserResponse>>> loginLinkedin(
+    Observable<Response<DataObject<UserEntityResponse>>> loginLinkedin(
             @Query("code") String code,
             @Query("state") String state);
 
     @Multipart
     @POST("auth/sso/facebook")
-    Observable<Response<DataObject<UserResponse>>> loginFacebook(@Part("token") RequestBody token);
+    Observable<Response<DataObject<UserEntityResponse>>> loginFacebook(@Part("token") RequestBody token);
 }

@@ -3,8 +3,8 @@ package com.divercity.android.features.linkedin
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.linkedin.usecase.LoginLinkedInUseCase
+import com.divercity.android.model.user.User
 import javax.inject.Inject
 
 /**
@@ -14,7 +14,7 @@ import javax.inject.Inject
 class LinkedinViewModel @Inject
 constructor(val loginLinkedInUseCase: LoginLinkedInUseCase) : BaseViewModel() {
 
-    val loginLinkedInResponse = SingleLiveEvent<Resource<UserResponse>>()
+    val loginLinkedInResponse = SingleLiveEvent<Resource<User>>()
     val navigateToSelectUserType = SingleLiveEvent<Boolean>()
     val navigateToHome = SingleLiveEvent<Boolean>()
 
@@ -27,8 +27,8 @@ constructor(val loginLinkedInUseCase: LoginLinkedInUseCase) : BaseViewModel() {
                         loginLinkedInResponse.value = Resource.error(msg, null)
                     }
 
-                    override fun onSuccess(response: UserResponse) {
-                        if (response.userAttributes?.accountType == null)
+                    override fun onSuccess(response: User) {
+                        if (response.accountType == null)
                             navigateToSelectUserType.setValue(true)
                         else
                             navigateToHome.setValue(true)

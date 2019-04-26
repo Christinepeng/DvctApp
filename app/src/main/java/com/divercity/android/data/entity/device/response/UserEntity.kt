@@ -2,8 +2,8 @@ package com.divercity.android.data.entity.device.response
 
 import com.google.gson.annotations.SerializedName
 
-data class Relationships(
+data class UserEntity(
 
-	@field:SerializedName("user")
-	val user: User? = null
+	@field:SerializedName("data")
+	val data: DataEntity? = null
 )

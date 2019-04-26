@@ -9,7 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.data.entity.company.response.Photos
 import com.divercity.android.features.apollo.FetchJobFromViewHolderUseCase
 import com.divercity.android.features.apollo.FetchJobReloadedUseCase
@@ -32,8 +32,8 @@ private constructor(
     fun bindTo(
         position: Int,
         currentUserId: String,
-        data: ChatMessageResponse?,
-        next: ChatMessageResponse?
+        data: ChatMessageEntityResponse?,
+        next: ChatMessageEntityResponse?
     ) {
         data?.let {
             itemView.apply {

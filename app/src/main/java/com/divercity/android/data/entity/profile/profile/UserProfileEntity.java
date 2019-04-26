@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-public class User {
+public class UserProfileEntity {
 
     @SerializedName("country")
     private String country;

@@ -4,9 +4,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
+import com.divercity.android.features.profile.usecase.FetchLoggedUserDataUseCase
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -17,16 +17,16 @@ import javax.inject.Inject
 
 class CurrentUserProfileViewModel @Inject
 constructor(
-    private val fetchUserDataUseCase: FetchUserDataUseCase,
+    private val fetchLoggedUserDataUseCase: FetchLoggedUserDataUseCase,
     private val sessionRepository: SessionRepository
 ) : BaseViewModel() {
 
     // CurrentUserProfileFragment
-    var fetchUserDataResponse = MutableLiveData<Resource<UserResponse>>()
+    var fetchUserDataResponse = MutableLiveData<Resource<User>>()
 
     fun fetchProfileData() {
         fetchUserDataResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<UserResponse>() {
+        val callback = object : DisposableObserverWrapper<User>() {
             override fun onFail(error: String) {
                 fetchUserDataResponse.postValue(Resource.error(error, null))
             }
@@ -35,18 +35,17 @@ constructor(
                 fetchUserDataResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: UserResponse) {
-                sessionRepository.saveUserData(o)
+            override fun onSuccess(o: User) {
                 fetchUserDataResponse.postValue(Resource.success(o))
             }
         }
-        fetchUserDataUseCase.execute(
+        fetchLoggedUserDataUseCase.execute(
             callback,
-            FetchUserDataUseCase.Params.forUserData(sessionRepository.getUserId())
+            null
         )
     }
 
-    fun getCurrentUser(): LiveData<UserResponse> {
+    fun getCurrentUser(): LiveData<User> {
         return sessionRepository.getUserDB()
     }
 
@@ -56,6 +55,6 @@ constructor(
 
     override fun onCleared() {
         super.onCleared()
-        fetchUserDataUseCase.dispose()
+        fetchLoggedUserDataUseCase.dispose()
     }
 }

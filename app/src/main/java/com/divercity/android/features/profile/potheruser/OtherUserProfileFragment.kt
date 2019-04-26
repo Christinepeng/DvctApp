@@ -13,7 +13,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_other_user_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.view_accept_decline.*
@@ -47,7 +47,7 @@ class OtherUserProfileFragment : BaseFragment() {
     enum class DataHolder {
         INSTANCE;
 
-        private var userResponse: UserResponse? = null
+        private var userResponse: User? = null
 
         companion object {
 
@@ -55,7 +55,7 @@ class OtherUserProfileFragment : BaseFragment() {
                 return INSTANCE.userResponse != null
             }
 
-            var data: UserResponse?
+            var data: User?
                 get() {
                     val retList = INSTANCE.userResponse
                     INSTANCE.userResponse = null
@@ -131,28 +131,27 @@ class OtherUserProfileFragment : BaseFragment() {
         })
     }
 
-    private fun showData(userResponse: UserResponse) {
-        val attr = userResponse.userAttributes
+    private fun showData(user: User) {
         GlideApp.with(this)
-            .load(attr?.avatarMedium)
+            .load(user.avatarMedium)
             .apply(RequestOptions().circleCrop())
             .into(incl_profile.img_profile)
 
-        incl_profile.txt_name.text = attr?.name
+        incl_profile.txt_name.text = user.name
         incl_profile.txt_user_type.text =
-            Util.getUserTypeMap(context!!)[userResponse.userAttributes?.accountType]
+            Util.getUserTypeMap(context!!)[user.accountType]
 
-        if (attr?.connected == "pending_approval") {
+        if (user.connected == "pending_approval") {
             include_accept_decline.visibility = View.VISIBLE
-            txt_notification.text = attr.name.plus(" wants to connect with you")
+            txt_notification.text = user.name.plus(" wants to connect with you")
             btn_close.setOnClickListener {
                 include_accept_decline.visibility = View.GONE
             }
             btn_accept.setOnClickListener {
-                viewModel.acceptConnectionRequest(userResponse.id)
+                viewModel.acceptConnectionRequest(user.id)
             }
             btn_decline.setOnClickListener {
-                viewModel.declineConnectionRequest(userResponse.id)
+                viewModel.declineConnectionRequest(user.id)
             }
         } else {
             include_accept_decline.visibility = View.GONE

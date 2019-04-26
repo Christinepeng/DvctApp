@@ -7,20 +7,20 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.item_user_mention.view.*
 
 class UserMentionViewHolder
 private constructor(itemView: View, private val listener : Listener?) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(data: UserResponse?) {
+    fun bindTo(data: User?) {
         data?.let {
             GlideApp.with(itemView)
-                    .load(data.userAttributes?.avatarMedium)
+                    .load(data.avatarMedium)
                     .apply(RequestOptions().circleCrop())
                     .into(itemView.img)
 
-            itemView.txt_name.text = data.userAttributes?.name
+            itemView.txt_name.text = data.name
 
             itemView.setOnClickListener {
                 listener?.onUserClick(data)
@@ -29,7 +29,7 @@ private constructor(itemView: View, private val listener : Listener?) : Recycler
     }
 
     interface Listener {
-        fun onUserClick(data : UserResponse)
+        fun onUserClick(data : User)
     }
 
     companion object {

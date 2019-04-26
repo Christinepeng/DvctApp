@@ -1,16 +1,14 @@
 package com.divercity.android.data.entity.company.companyadmin.response
 
 import com.google.gson.annotations.SerializedName
-import javax.annotation.Generated
 
-@Generated("com.robohorse.robopojogenerator")
-data class Attributes(
+data class AttributesEntity(
 
     @field:SerializedName("employer")
-	val employer: Employer? = null,
+	val employer: EmployerEntity? = null,
 
     @field:SerializedName("user")
-	val user: User? = null,
+	val user: UserEntity? = null,
 
     @field:SerializedName("email")
 	val email: String? = null,

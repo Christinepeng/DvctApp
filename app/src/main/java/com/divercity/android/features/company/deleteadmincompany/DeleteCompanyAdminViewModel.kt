@@ -3,7 +3,7 @@ package com.divercity.android.features.company.deleteadmincompany
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.company.companyadmin.CompanyAdminPaginatedRepository
 import com.divercity.android.features.company.deleteadmincompany.usecase.DeleteCompanyAdminsUseCase
@@ -18,7 +18,7 @@ class DeleteCompanyAdminViewModel @Inject
 constructor(
     repository: CompanyAdminPaginatedRepository,
     private val deleteCompanyAdminsUseCase: DeleteCompanyAdminsUseCase
-) : BaseViewModelPagination<CompanyAdminResponse>(repository) {
+) : BaseViewModelPagination<CompanyAdminEntityResponse>(repository) {
 
     var deleteCompanyAdminResponse = SingleLiveEvent<Resource<Unit>>()
 

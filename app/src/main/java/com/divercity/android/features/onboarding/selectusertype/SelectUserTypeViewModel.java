@@ -1,16 +1,16 @@
 package com.divercity.android.features.onboarding.selectusertype;
 
-import androidx.lifecycle.MutableLiveData;
-
 import com.divercity.android.core.base.viewmodel.BaseViewModel;
 import com.divercity.android.data.Resource;
-import com.divercity.android.data.entity.user.response.UserResponse;
-import com.divercity.android.data.entity.profile.profile.User;
+import com.divercity.android.data.entity.profile.profile.UserProfileEntity;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase;
+import com.divercity.android.model.user.User;
 import com.google.gson.JsonElement;
 
 import javax.inject.Inject;
+
+import androidx.lifecycle.MutableLiveData;
 
 /**
  * Created by lucas on 17/10/2018.
@@ -18,7 +18,7 @@ import javax.inject.Inject;
 
 public class SelectUserTypeViewModel extends BaseViewModel {
 
-    MutableLiveData<Resource<UserResponse>> dataUpdateUser = new MutableLiveData<>();
+    MutableLiveData<Resource<User>> dataUpdateUser = new MutableLiveData<>();
     UpdateUserProfileUseCase updateUserProfileUseCase;
 
     @Inject
@@ -28,7 +28,7 @@ public class SelectUserTypeViewModel extends BaseViewModel {
 
     public void updateUserProfile(String typeId){
         dataUpdateUser.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<User>() {
             @Override
             protected void onFail(String error) {
                 dataUpdateUser.postValue(Resource.Companion.error(error,null));
@@ -40,11 +40,11 @@ public class SelectUserTypeViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(UserResponse o) {
+            protected void onSuccess(User o) {
                 dataUpdateUser.postValue(Resource.Companion.success(o));
             }
         };
-        User user = new User();
+        UserProfileEntity user = new UserProfileEntity();
         user.setAccountType(typeId);
         updateUserProfileUseCase.execute(callback,UpdateUserProfileUseCase.Params.forUser(user));
     }

@@ -12,6 +12,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import com.divercity.android.features.company.selectcompany.base.adapter.CompanyAdapter
+import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
 import javax.inject.Inject
@@ -41,14 +42,16 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingCompanyViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[OnboardingCompanyViewModel::class.java]
         currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.beginTransaction().add(
-                R.id.fragment_fragment_container, SelectCompanyFragment.newInstance()).commit()
+            R.id.fragment_fragment_container, SelectCompanyFragment.newInstance()
+        ).commit()
         setupHeader()
         subscribeToLiveData()
     }
@@ -70,13 +73,14 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
             }
 
             btn_skip.setOnClickListener {
-              onSkip()
+                onSkip()
             }
         }
     }
 
-    private fun onSkip(){
-        navigator.navigateToNextOnboarding(activity!!,
+    private fun onSkip() {
+        navigator.navigateToNextOnboarding(
+            activity!!,
             viewModel.getAccountType(),
             currentProgress,
             false
@@ -94,19 +98,30 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(
-                            activity!!,
-                            viewModel.getAccountType(),
-                            currentProgress,
-                            true
-                    )
+                    showRateCompanyDialog(response.data!!)
                 }
             }
         })
     }
 
+    private fun showRateCompanyDialog(company: CompanyResponse) {
+        val dialog = RateCompanyDiversityDialogFragment.newInstance(company)
+        dialog.listener = object : RateCompanyDiversityDialogFragment.Listener {
+
+            override fun onDismiss() {
+                navigator.navigateToNextOnboarding(
+                    activity!!,
+                    viewModel.getAccountType(),
+                    currentProgress,
+                    true
+                )
+            }
+        }
+        dialog.show(childFragmentManager, null)
+    }
+
     override fun onCompanyChosen(company: CompanyResponse) {
-        viewModel.updateUserProfile(company.id!!)
+        viewModel.updateUserProfile(company)
     }
 
     override fun onNoCurrentCompany() {

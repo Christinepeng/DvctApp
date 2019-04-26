@@ -1,9 +1,9 @@
 package com.divercity.android.db
 
-import androidx.sqlite.db.SupportSQLiteDatabase
+import android.content.Context
 import androidx.room.Room
 import androidx.room.migration.Migration
-import android.content.Context
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.divercity.android.db.dao.ChatMessageDao
 import com.divercity.android.db.dao.GroupDao
 import com.divercity.android.db.dao.RecentChatsDao
@@ -32,6 +32,7 @@ object RoomModule {
         return Room
             .databaseBuilder(context, AppDatabase::class.java, AppDatabase.DATABASE_NAME)
             .addMigrations(MIGRATION_1_2)
+            .fallbackToDestructiveMigration()
             .build()
     }
 

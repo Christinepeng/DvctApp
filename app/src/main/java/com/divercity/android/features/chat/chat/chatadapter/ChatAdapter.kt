@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.features.apollo.FetchJobFromViewHolderUseCase
 import com.divercity.android.features.apollo.FetchJobReloadedUseCase
 import com.divercity.android.repository.session.SessionRepository
@@ -17,7 +17,7 @@ constructor(
     val sessionRepository: SessionRepository,
     private val fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase,
     private val fetchJobReloadedUseCase: FetchJobReloadedUseCase
-) : PagedListAdapter<ChatMessageResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+) : PagedListAdapter<ChatMessageEntityResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var retryCallback: RetryCallback? = null
     var chatListener: ChatViewHolder.Listener? = null
@@ -78,18 +78,18 @@ constructor(
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<ChatMessageResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<ChatMessageEntityResponse>() {
 
             override fun areItemsTheSame(
-                oldItem: ChatMessageResponse,
-                newItem: ChatMessageResponse
+                oldItem: ChatMessageEntityResponse,
+                newItem: ChatMessageEntityResponse
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: ChatMessageResponse,
-                newItem: ChatMessageResponse
+                oldItem: ChatMessageEntityResponse,
+                newItem: ChatMessageEntityResponse
             ): Boolean {
                 return oldItem == newItem
             }

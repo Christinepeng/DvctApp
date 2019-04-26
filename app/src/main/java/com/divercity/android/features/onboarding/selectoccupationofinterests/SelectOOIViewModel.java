@@ -5,10 +5,10 @@ import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse;
-import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.onboarding.selectoccupationofinterests.datasource.OOIPaginatedRepositoryImpl;
 import com.divercity.android.features.onboarding.selectoccupationofinterests.usecase.FollowOOIUseCase;
+import com.divercity.android.model.user.User;
 import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
@@ -31,7 +31,7 @@ public class SelectOOIViewModel extends BaseViewModel {
 
     private LiveData<PagedList<OOIResponse>> pagedOOIList;
     private Listing<OOIResponse> listingPaginatedOOI;
-    private MutableLiveData<Resource<UserResponse>> followOOIResponse = new MutableLiveData<>();
+    private MutableLiveData<Resource<User>> followOOIResponse = new MutableLiveData<>();
     private OOIPaginatedRepositoryImpl repository;
     private UserRepository userRepository;
     private FollowOOIUseCase followOOIUseCase;
@@ -85,7 +85,7 @@ public class SelectOOIViewModel extends BaseViewModel {
 
     public void updateUserProfile(List<String> ooiIds) {
         followOOIResponse.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<User>() {
             @Override
             protected void onFail(String error) {
                 followOOIResponse.postValue(Resource.Companion.error(error, null));
@@ -97,14 +97,14 @@ public class SelectOOIViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(UserResponse o) {
+            protected void onSuccess(User o) {
                 followOOIResponse.postValue(Resource.Companion.success(o));
             }
         };
         followOOIUseCase.execute(callback, FollowOOIUseCase.Params.Companion.forOOI(ooiIds));
     }
 
-    public MutableLiveData<Resource<UserResponse>> getFollowOOIResponse() {
+    public MutableLiveData<Resource<User>> getFollowOOIResponse() {
         return followOOIResponse;
     }
 

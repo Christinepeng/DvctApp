@@ -11,10 +11,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.home.people.ITabPeople
 import com.divercity.android.features.profile.useradapter.pagination.UserPaginationAdapter
 import com.divercity.android.features.profile.useradapter.pagination.UserViewHolder
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_connections.*
 import javax.inject.Inject
 
@@ -154,21 +154,21 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabPeople {
 
     private val listener: UserViewHolder.Listener = object : UserViewHolder.Listener {
 
-        override fun onConnectUser(user: UserResponse, position: Int) {
+        override fun onConnectUser(user: User, position: Int) {
             lastConnectUserPosition = position
             viewModel.connectToUser(user.id)
         }
 
-        override fun onUserDirectMessage(user: UserResponse) {
+        override fun onUserDirectMessage(user: User) {
             navigator.navigateToChatActivity(
                 this@AllConnectionsFragment,
-                user.userAttributes!!.name!!,
+                user.name!!,
                 user.id,
                 null
             )
         }
 
-        override fun onUserClick(user: UserResponse) {
+        override fun onUserClick(user: User) {
             navigator.navigateToOtherUserProfileActivity(this@AllConnectionsFragment, null, user)
         }
     }

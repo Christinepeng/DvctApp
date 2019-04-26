@@ -1,8 +1,7 @@
 package com.divercity.android.repository.registerlogin
 
 import com.divercity.android.data.entity.emailusernamecheck.CheckUsernameEmailResponse
-import com.divercity.android.data.entity.user.response.UserResponse
-
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
 /**
@@ -11,7 +10,7 @@ import io.reactivex.Observable
 
 interface RegisterLoginRepository {
 
-    fun login(email: String, password: String): Observable<UserResponse>
+    fun login(email: String, password: String): Observable<User>
 
     fun isEmailRegistered(email: String): Observable<CheckUsernameEmailResponse>
 
@@ -23,12 +22,12 @@ interface RegisterLoginRepository {
         email: String,
         password: String,
         confirmPassword: String
-    ): Observable<UserResponse>
+    ): Observable<User>
 
     fun loginLinkedin(
         code: String,
         state: String
-    ): Observable<UserResponse>
+    ): Observable<User>
 
-    fun loginFacebook(token: String): Observable<UserResponse>
+    fun loginFacebook(token: String): Observable<User>
 }

@@ -8,13 +8,13 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 class CompanyAdminAdapter @Inject
 constructor(val sessionRepository: SessionRepository) :
-    PagedListAdapter<CompanyAdminResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+    PagedListAdapter<CompanyAdminEntityResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -80,18 +80,18 @@ constructor(val sessionRepository: SessionRepository) :
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<CompanyAdminResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<CompanyAdminEntityResponse>() {
 
             override fun areItemsTheSame(
-                oldItem: CompanyAdminResponse,
-                newItem: CompanyAdminResponse
+                oldItem: CompanyAdminEntityResponse,
+                newItem: CompanyAdminEntityResponse
             ): Boolean {
                 return oldItem.id == newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: CompanyAdminResponse,
-                newItem: CompanyAdminResponse
+                oldItem: CompanyAdminEntityResponse,
+                newItem: CompanyAdminEntityResponse
             ): Boolean {
                 return oldItem == newItem
             }

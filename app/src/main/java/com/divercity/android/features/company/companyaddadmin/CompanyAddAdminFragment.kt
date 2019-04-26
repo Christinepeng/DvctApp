@@ -17,10 +17,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.company.companyaddadmin.adapter.AdminSelectedAdapter
 import com.divercity.android.features.company.companyaddadmin.adapter.AdminSelectedViewHolder
 import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_company_add_admin.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -86,7 +86,7 @@ class CompanyAddAdminFragment : BaseFragment(), RetryCallback {
         list_admins.layoutManager = StaggeredGridLayoutManager(2, 1)
         adapterAdmin.listener = object : AdminSelectedViewHolder.Listener {
 
-            override fun onAdminRemoved(data: UserResponse) {
+            override fun onAdminRemoved(data: User) {
                 adapterUsers.selectedUsers.remove(data)
                 adapterAdmin.admins?.remove(data)
                 adapterAdmin.notifyDataSetChanged()

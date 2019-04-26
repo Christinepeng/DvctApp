@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.profile.usecase.ConnectUserUseCase
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -20,7 +20,7 @@ constructor(
     repository: UserConnectionsPaginatedRepository,
     private val sessionRepository: SessionRepository,
     private val connectUserUseCase: ConnectUserUseCase
-) : BaseViewModelPagination<UserResponse>(repository) {
+) : BaseViewModelPagination<User>(repository) {
 
     var connectUserResponse = MutableLiveData<Resource<ConnectUserResponse>>()
 

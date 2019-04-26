@@ -4,9 +4,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.paging.PageKeyedDataSource
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.usecase.FetchUsersUseCase
 import com.divercity.android.features.home.people.connections.usecase.FetchConnectionsUseCase
+import com.divercity.android.model.user.User
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
@@ -19,7 +19,7 @@ class ConnectionsDataSource(
     private val fetchConnectionsUseCase: FetchConnectionsUseCase,
     private val fetchUsersUseCase: FetchUsersUseCase,
     private val query: String
-) : PageKeyedDataSource<Long, UserResponse>() {
+) : PageKeyedDataSource<Long, User>() {
 
     val networkState = MutableLiveData<NetworkState>()
     val initialLoad = MutableLiveData<NetworkState>()
@@ -40,7 +40,7 @@ class ConnectionsDataSource(
 
     override fun loadInitial(
         params: PageKeyedDataSource.LoadInitialParams<Long>,
-        callback: PageKeyedDataSource.LoadInitialCallback<Long, UserResponse>
+        callback: PageKeyedDataSource.LoadInitialCallback<Long, User>
     ) {
         // update network states.
         // we also provide an initial load state to the listeners so that the UI can know when the
@@ -48,9 +48,9 @@ class ConnectionsDataSource(
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
-        val disposableObserver = object : DisposableObserver<List<UserResponse>>() {
+        val disposableObserver = object : DisposableObserver<List<User>>() {
 
-            override fun onNext(data: List<UserResponse>) {
+            override fun onNext(data: List<User>) {
                 setRetry(Action { loadInitial(params, callback) })
                 networkState.postValue(NetworkState.LOADED)
                 if (data.size < params.requestedLoadSize) {
@@ -80,20 +80,20 @@ class ConnectionsDataSource(
 
     override fun loadBefore(
         params: PageKeyedDataSource.LoadParams<Long>,
-        callback: PageKeyedDataSource.LoadCallback<Long, UserResponse>
+        callback: PageKeyedDataSource.LoadCallback<Long, User>
     ) {
 
     }
 
     override fun loadAfter(
         params: PageKeyedDataSource.LoadParams<Long>,
-        callback: PageKeyedDataSource.LoadCallback<Long, UserResponse>
+        callback: PageKeyedDataSource.LoadCallback<Long, User>
     ) {
         networkState.postValue(NetworkState.LOADING)
 
-        val disposableObserver = object : DisposableObserver<List<UserResponse>>() {
+        val disposableObserver = object : DisposableObserver<List<User>>() {
 
-            override fun onNext(data: List<UserResponse>) {
+            override fun onNext(data: List<User>) {
                 setRetry(null)
                 callback.onResult(data, params.key + 1)
                 networkState.postValue(NetworkState.LOADED)

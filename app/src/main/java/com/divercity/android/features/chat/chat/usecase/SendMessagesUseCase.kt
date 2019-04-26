@@ -1,7 +1,7 @@
 package com.divercity.android.features.chat.chat.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.chat.messages.ChatMessageResponse
+import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.repository.chat.ChatRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -17,9 +17,9 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: ChatRepository
-) : UseCase<ChatMessageResponse, SendMessagesUseCase.Params>(executorThread, uiThread) {
+) : UseCase<ChatMessageEntityResponse, SendMessagesUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<ChatMessageResponse> {
+    override fun createObservableUseCase(params: Params): Observable<ChatMessageEntityResponse> {
         return repository.sendMessage(
             params.message,
             params.chatId,

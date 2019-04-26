@@ -3,9 +3,9 @@ package com.divercity.android.features.activity
 import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -20,12 +20,12 @@ constructor(
     private val sessionRepository: SessionRepository
 ) : BaseViewModel() {
 
-    var fetchUserDataResponse = MutableLiveData<Resource<UserResponse>>()
+    var fetchUserDataResponse = MutableLiveData<Resource<User>>()
     var adapterPosition: Int? = null
 
     fun fetchProfileData() {
         fetchUserDataResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<UserResponse>() {
+        val callback = object : DisposableObserverWrapper<User>() {
             override fun onFail(error: String) {
                 fetchUserDataResponse.postValue(Resource.error(error, null))
             }
@@ -34,7 +34,7 @@ constructor(
                 fetchUserDataResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: UserResponse) {
+            override fun onSuccess(o: User) {
                 fetchUserDataResponse.postValue(Resource.success(o))
             }
         }

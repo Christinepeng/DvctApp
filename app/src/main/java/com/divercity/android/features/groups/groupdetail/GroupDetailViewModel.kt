@@ -7,7 +7,6 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.groupdetail.usecase.AcceptGroupAdminInviteUseCase
 import com.divercity.android.features.groups.groupdetail.usecase.DeclineGroupAdminInviteUseCase
@@ -15,6 +14,7 @@ import com.divercity.android.features.groups.groupdetail.usecase.FetchGroupByIdU
 import com.divercity.android.features.groups.groupdetail.usecase.FetchGroupMembersUseCase
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
+import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -32,7 +32,7 @@ constructor(
     private val declineGroupAdminInviteUseCase: DeclineGroupAdminInviteUseCase
 ) : BaseViewModel() {
 
-    var fetchGroupMembersResponse = SingleLiveEvent<Resource<List<UserResponse>>>()
+    var fetchGroupMembersResponse = SingleLiveEvent<Resource<List<User>>>()
     var groupAdminInviteResponse = SingleLiveEvent<Resource<Unit>>()
     var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
@@ -43,7 +43,7 @@ constructor(
     fun fetchGroupMembers(groupId: String, page: Int, size: Int, query: String?) {
         fetchGroupMembersResponse.postValue(Resource.loading(null))
 
-        val callback = object : DisposableObserverWrapper<List<UserResponse>>() {
+        val callback = object : DisposableObserverWrapper<List<User>>() {
             override fun onFail(error: String) {
                 fetchGroupMembersResponse.postValue(Resource.error(error, null))
             }
@@ -52,7 +52,7 @@ constructor(
                 fetchGroupMembersResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: List<UserResponse>) {
+            override fun onSuccess(o: List<User>) {
                 fetchGroupMembersResponse.postValue(Resource.success(o))
             }
         }

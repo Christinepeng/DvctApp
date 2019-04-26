@@ -5,8 +5,8 @@ import com.divercity.android.data.entity.emailusernamecheck.emailbody.CheckEmail
 import com.divercity.android.data.entity.emailusernamecheck.usernamebody.CheckUsernameBody
 import com.divercity.android.data.entity.signup.SignUpBody
 import com.divercity.android.data.entity.user.body.LoginBody
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.services.RegisterLoginService
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
 import okhttp3.MediaType
@@ -25,12 +25,12 @@ constructor(
     private val registerLoginService: RegisterLoginService
 ) : RegisterLoginRepository {
 
-    override fun login(email: String, password: String): Observable<UserResponse> {
+    override fun login(email: String, password: String): Observable<User> {
         return registerLoginService.login(LoginBody(email, password))
             .map { response ->
                 checkResponse(response)
                 sessionRepository.saveUserHeaderData(response)
-                response.body()!!.data
+                response.body()!!.data.toUser()
             }
     }
 
@@ -39,7 +39,7 @@ constructor(
         email: String,
         password: String,
         confirmPassword: String
-    ): Observable<UserResponse> {
+    ): Observable<User> {
         return registerLoginService.signUp(
             SignUpBody(
                 password,
@@ -50,19 +50,19 @@ constructor(
         ).map { response ->
             checkResponse(response)
             sessionRepository.saveUserHeaderData(response)
-            response.body()!!.data
+            response.body()!!.data.toUser()
         }
     }
 
-    override fun loginLinkedin(code: String, state: String): Observable<UserResponse> {
+    override fun loginLinkedin(code: String, state: String): Observable<User> {
         return registerLoginService.loginLinkedin(code, state).map { response ->
             checkResponse(response)
             sessionRepository.saveUserHeaderData(response)
-            response.body()!!.data
+            response.body()!!.data.toUser()
         }
     }
 
-    override fun loginFacebook(token: String): Observable<UserResponse> {
+    override fun loginFacebook(token: String): Observable<User> {
         return registerLoginService.loginFacebook(
             RequestBody.create(
                 MediaType.parse("text/plain"),
@@ -71,7 +71,7 @@ constructor(
         ).map { response ->
             checkResponse(response)
             sessionRepository.saveUserHeaderData(response)
-            response.body()!!.data
+            response.body()!!.data.toUser()
         }
     }
 

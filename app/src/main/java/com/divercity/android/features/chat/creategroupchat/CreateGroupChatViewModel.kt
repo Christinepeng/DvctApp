@@ -6,10 +6,10 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.createchat.CreateChatResponse
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.chat.creategroupchat.usecase.AddChatGroupMemberUseCase
 import com.divercity.android.features.chat.creategroupchat.usecase.CreateGroupChatUseCase
+import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import java.io.File
 import javax.inject.Inject
@@ -28,9 +28,9 @@ constructor(
     val addChatGroupMemberResponse = SingleLiveEvent<Resource<CreateChatResponse>>()
 
     var photoFile: File? = null
-    lateinit var listMembers: ArrayList<UserResponse>
+    lateinit var listMembers: ArrayList<User>
 
-    fun createGroup(members: HashSet<UserResponse>, groupName: String) {
+    fun createGroup(members: HashSet<User>, groupName: String) {
         createGroupChatResponse.postValue(Resource.loading(null))
         listMembers = ArrayList(members)
         val callback = object : DisposableObserverWrapper<CreateChatResponse>() {
@@ -65,7 +65,7 @@ constructor(
         )
     }
 
-    private fun addChatGroupMembers(chatResponse: CreateChatResponse, members : ArrayList<UserResponse>) {
+    private fun addChatGroupMembers(chatResponse: CreateChatResponse, members : ArrayList<User>) {
         val membersIds = ArrayList<String>()
         for (i in members)
             membersIds.add(i.id)

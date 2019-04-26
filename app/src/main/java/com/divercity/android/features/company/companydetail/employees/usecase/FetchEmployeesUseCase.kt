@@ -1,7 +1,8 @@
 package com.divercity.android.features.company.companydetail.employees.usecase
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import com.divercity.android.repository.company.CompanyRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -16,21 +17,11 @@ class FetchEmployeesUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: CompanyRepository
-) : UseCase<@JvmSuppressWildcards List<UserResponse>, FetchEmployeesUseCase.Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<User>, Params>(executorThread, uiThread) {
 
     lateinit var companyId: String
 
-    override fun createObservableUseCase(params: Params): Observable<List<UserResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<User>> {
         return repository.fetchEmployeesByCompany(companyId, params.page, params.size)
-    }
-
-    class Params private constructor(val page: Int, val size: Int) {
-
-        companion object {
-
-            fun forFollowers(page: Int, size: Int): Params {
-                return Params(page, size)
-            }
-        }
     }
 }

@@ -2,7 +2,7 @@ package com.divercity.android.features.home
 
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
-import com.divercity.android.data.entity.device.response.DeviceResponse
+import com.divercity.android.data.entity.device.response.DeviceEntityResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.usecase.SaveFCMTokenUseCase
 import com.divercity.android.repository.session.SessionRepository
@@ -26,14 +26,14 @@ constructor(var sessionRepository: SessionRepository,
         FirebaseMessaging.getInstance().isAutoInitEnabled = true
         if(sessionRepository.getDeviceId() == null){
             FirebaseInstanceId.getInstance().instanceId.addOnSuccessListener {
-                val callback = object : DisposableObserverWrapper<DeviceResponse>() {
+                val callback = object : DisposableObserverWrapper<DeviceEntityResponse>() {
                     override fun onFail(error: String) {
                     }
 
                     override fun onHttpException(error: JsonElement) {
                     }
 
-                    override fun onSuccess(o: DeviceResponse) {
+                    override fun onSuccess(o: DeviceEntityResponse) {
                         sessionRepository.setDeviceId(o.id)
                         sessionRepository.setFCMToken(o.attributes?.token)
                     }

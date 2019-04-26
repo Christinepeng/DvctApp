@@ -105,6 +105,8 @@
     <string name="ratings">Ratings</string>
     <string name="review">Review</string>
     <string name="rate_company_diversity">Rate Company\'s Diversity</string>
+    <string name="rate_company_label">Rate %1$s based on your opinion of how seriously they take diversity &amp; inclusion.</string>
+    <string name="submit_diversity_rating">Submit Diversity Rating</string>
 
     <!-- Location-->
     <string name="use_my_location">Use My Location</string>
@@ -116,7 +118,7 @@
     <string name="last_used_at">Last used at %1$s</string>
 
     <!-- Profile onboarding-->
-    <string name="select_your_company">Select your Company</string>
+    <string name="select_your_company">What company do you work for currently?</string>
     <string name="select_your_industry">Select your Industry</string>
     <string name="select_your_major">Select your Major</string>
     <string name="select_your_ooi">Select your Occupation of Interests</string>

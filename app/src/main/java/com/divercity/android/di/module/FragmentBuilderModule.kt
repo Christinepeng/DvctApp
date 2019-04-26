@@ -30,6 +30,7 @@ import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarC
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
+import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogFragment
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.ethnicity.base.SelectEthnicityFragment
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityFragment
@@ -436,4 +437,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindRateCompanyFragment(): RateCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindRateCompanyDiversityDialogFragment(): RateCompanyDiversityDialogFragment
 }

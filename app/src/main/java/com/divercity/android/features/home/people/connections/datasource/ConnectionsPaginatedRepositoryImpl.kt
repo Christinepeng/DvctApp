@@ -5,9 +5,9 @@ import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.divercity.android.core.base.PaginatedQueryRepository
 import com.divercity.android.core.utils.Listing
-import com.divercity.android.data.entity.user.response.UserResponse
 import com.divercity.android.features.chat.usecase.FetchUsersUseCase
 import com.divercity.android.features.home.people.connections.usecase.FetchConnectionsUseCase
+import com.divercity.android.model.user.User
 import java.util.concurrent.Executors
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ class ConnectionsPaginatedRepositoryImpl
 @Inject internal constructor(
     private val fetchConnectionsUseCase: FetchConnectionsUseCase,
     private val fetchUsersUseCase: FetchUsersUseCase
-) : PaginatedQueryRepository<UserResponse> {
+) : PaginatedQueryRepository<User> {
 
     private var connectionsSourceFactory: ConnectionsSourceFactory? = null
 
@@ -28,7 +28,7 @@ class ConnectionsPaginatedRepositoryImpl
         private val pageSize = 20
     }
 
-    override fun fetchData(query: String?): Listing<UserResponse> {
+    override fun fetchData(query: String?): Listing<User> {
 
         val executor = Executors.newFixedThreadPool(5)
 

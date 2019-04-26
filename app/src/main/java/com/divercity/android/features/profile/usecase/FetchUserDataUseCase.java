@@ -1,8 +1,8 @@
 package com.divercity.android.features.profile.usecase;
 
 import com.divercity.android.core.base.usecase.UseCase;
-import com.divercity.android.data.entity.user.response.UserResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
+import com.divercity.android.model.user.User;
 import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
@@ -12,7 +12,7 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class FetchUserDataUseCase extends UseCase<UserResponse, FetchUserDataUseCase.Params> {
+public class FetchUserDataUseCase extends UseCase<User, FetchUserDataUseCase.Params> {
 
     private UserRepository userRepository;
 
@@ -25,7 +25,7 @@ public class FetchUserDataUseCase extends UseCase<UserResponse, FetchUserDataUse
     }
 
     @Override
-    protected Observable<UserResponse> createObservableUseCase(Params params) {
+    protected Observable<User> createObservableUseCase(Params params) {
         return userRepository.fetchRemoteUserData(params.userId);
     }
 
@@ -41,7 +41,7 @@ public class FetchUserDataUseCase extends UseCase<UserResponse, FetchUserDataUse
         }
     }
 
-    public static abstract class Callback extends DisposableObserverWrapper<UserResponse> {
+    public static abstract class Callback extends DisposableObserverWrapper<User> {
 
         @Override
         protected void onHttpException(JsonElement error) {

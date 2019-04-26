@@ -1,11 +1,11 @@
 package com.divercity.android.repository.company
 
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
-import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminResponse
+import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
-import com.divercity.android.data.entity.user.response.UserResponse
+import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
 /**
@@ -23,18 +23,18 @@ interface CompanyRepository {
         companyId: String,
         page: Int,
         size: Int
-    ): Observable<List<UserResponse>>
+    ): Observable<List<User>>
 
     fun fetchCompanyAdmins(
         companyId: String,
         page: Int,
         size: Int
-    ): Observable<List<CompanyAdminResponse>>
+    ): Observable<List<CompanyAdminEntityResponse>>
 
     fun addCompanyAdmin(
         companyId: String,
         admins: AddAdminCompanyBody
-    ): Observable<List<CompanyAdminResponse>>
+    ): Observable<List<CompanyAdminEntityResponse>>
 
     fun deleteCompanyAdmins(
         companyId: String,

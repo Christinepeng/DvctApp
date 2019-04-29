@@ -3,8 +3,8 @@ package com.divercity.android.features.splash
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.features.profile.usecase.FetchLoggedUserDataUseCase
-import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
+import com.divercity.android.features.user.usecase.FetchLoggedUserDataUseCase
+import com.divercity.android.features.user.usecase.FetchUserDataUseCase
 import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import org.json.JSONObject

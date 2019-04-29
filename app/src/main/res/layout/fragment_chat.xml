@@ -92,7 +92,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/et_msg" />
 
-    <EditText
+    <com.linkedin.android.spyglass.ui.MentionsEditText
         android:id="@+id/et_msg"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

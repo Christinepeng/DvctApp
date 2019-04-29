@@ -7,7 +7,7 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.features.profile.useradapter.charpagination.CharacterViewHolder
+import com.divercity.android.features.user.useradapter.charpagination.CharacterViewHolder
 import com.divercity.android.model.user.User
 import javax.inject.Inject
 

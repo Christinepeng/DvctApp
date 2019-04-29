@@ -25,7 +25,7 @@ import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.home.home.HomeFragment
 import com.divercity.android.features.home.people.TabPeopleFragment
 import com.divercity.android.features.jobs.TabJobsFragment
-import com.divercity.android.features.profile.pcurrentuser.CurrentUserProfileFragment
+import com.divercity.android.features.user.profilecurrentuser.CurrentUserProfileFragment
 import com.divercity.android.features.usecase.LogoutUseCase
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity

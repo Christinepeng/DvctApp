@@ -314,12 +314,12 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.editpersonal.PersonalSettingsActivity"
+            android:name=".features.user.editpersonal.PersonalSettingsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
         <activity
-            android:name="com.divercity.android.features.profile.myinterests.InterestsActivity"
+            android:name="com.divercity.android.features.user.myinterests.InterestsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -379,7 +379,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.potheruser.OtherUserProfileActivity"
+            android:name=".features.user.profileotheruser.OtherUserProfileActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -414,7 +414,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.profile.experience.AddWorkExperienceActivity"
+            android:name=".features.user.experience.AddWorkExperienceActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

@@ -19,7 +19,7 @@ import com.divercity.android.features.singleuseraction.SingleUserActionActivity.
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.PARAM_ACTION_TYPE
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.TYPE_ADD_ADMIN
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.TYPE_SHARE_JOB
-import com.divercity.android.features.profile.useradapter.charpaginationsinglesel.UserCharPagSingleSelAdapter
+import com.divercity.android.features.user.useradapter.charpaginationsinglesel.UserCharPagSingleSelAdapter
 import kotlinx.android.synthetic.main.fragment_user_action.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*

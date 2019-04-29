@@ -12,7 +12,7 @@ import androidx.core.app.NotificationCompat
 import com.divercity.android.R
 import com.divercity.android.features.chat.chat.ChatActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
-import com.divercity.android.features.profile.potheruser.OtherUserProfileActivity
+import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
 import com.facebook.FacebookSdk.getApplicationContext
 import javax.inject.Inject
 

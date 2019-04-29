@@ -17,7 +17,7 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity.Companion.INTENT_EXTRA_PARAM_GROUP_ID
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity.Companion.TYPE_ADD_ADMIN_GROUP
-import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
+import com.divercity.android.features.user.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity.Companion.PARAM_ACTION_TYPE
 import kotlinx.android.synthetic.main.fragment_user_action.*
 import kotlinx.android.synthetic.main.view_search.view.*

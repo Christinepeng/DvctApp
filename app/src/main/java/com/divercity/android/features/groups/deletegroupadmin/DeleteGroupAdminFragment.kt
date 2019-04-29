@@ -14,7 +14,7 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity.Companion.INTENT_EXTRA_PARAM_GROUP_ID
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity.Companion.INTENT_EXTRA_PARAM_GROUP_OWNER_ID
-import com.divercity.android.features.profile.useradapter.groupadmin.GroupAdminAdapter
+import com.divercity.android.features.user.useradapter.groupadmin.GroupAdminAdapter
 import kotlinx.android.synthetic.main.fragment_delete_group_admin.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject

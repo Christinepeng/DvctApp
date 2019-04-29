@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
 import com.divercity.android.features.company.companies.CompaniesFragment
 import com.divercity.android.features.groups.allgroups.AllGroupsFragment
-import com.divercity.android.features.home.people.connections.AllConnectionsFragment
+import com.divercity.android.features.user.allconnections.AllConnectionsFragment
 import javax.inject.Inject
 
 /**

@@ -5,7 +5,7 @@ import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.profile.usecase.ConnectUserUseCase
+import com.divercity.android.features.user.usecase.ConnectUserUseCase
 import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import javax.inject.Inject

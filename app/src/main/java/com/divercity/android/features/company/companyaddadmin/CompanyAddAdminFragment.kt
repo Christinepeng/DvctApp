@@ -19,7 +19,7 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.features.company.companyaddadmin.adapter.AdminSelectedAdapter
 import com.divercity.android.features.company.companyaddadmin.adapter.AdminSelectedViewHolder
-import com.divercity.android.features.profile.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
+import com.divercity.android.features.user.useradapter.charpaginationmultiplesel.UserCharPagMultiSelAdapter
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_company_add_admin.*
 import kotlinx.android.synthetic.main.view_search.view.*

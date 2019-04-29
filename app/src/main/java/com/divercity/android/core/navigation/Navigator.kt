@@ -68,10 +68,6 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
-import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
-import com.divercity.android.features.profile.experience.AddWorkExperienceActivity
-import com.divercity.android.features.profile.myinterests.InterestsActivity
-import com.divercity.android.features.profile.potheruser.OtherUserProfileActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
@@ -79,6 +75,10 @@ import com.divercity.android.features.singleuseraction.SingleUserActionActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
+import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
+import com.divercity.android.features.user.experience.AddWorkExperienceActivity
+import com.divercity.android.features.user.myinterests.InterestsActivity
+import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
 import com.divercity.android.model.user.User
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -441,16 +441,31 @@ class Navigator @Inject constructor() {
         fragment.startActivity(InterestsActivity.getCallingIntent(fragment.context, isEdition))
     }
 
-    fun navigateToOtherUserProfileActivity(
+    fun navigateToOtherUserProfileForResult(
         fragment: Fragment,
         userId: String?,
-        user: User?
+        user: User?,
+        code: Int
+    ) {
+        fragment.startActivityForResult(
+            OtherUserProfileActivity.getCallingIntent(
+                fragment.context,
+                userId,
+                user
+            ),
+            code
+        )
+    }
+
+    fun navigateToOtherUserProfile(
+        fragment: Fragment,
+        userId: String?
     ) {
         fragment.startActivity(
             OtherUserProfileActivity.getCallingIntent(
                 fragment.context,
                 userId,
-                user
+                null
             )
         )
     }

@@ -56,10 +56,10 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
-import com.divercity.android.features.profile.editpersonal.PersonalSettingsActivity
-import com.divercity.android.features.profile.experience.AddWorkExperienceActivity
-import com.divercity.android.features.profile.myinterests.InterestsActivity
-import com.divercity.android.features.profile.potheruser.OtherUserProfileActivity
+import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
+import com.divercity.android.features.user.experience.AddWorkExperienceActivity
+import com.divercity.android.features.user.myinterests.InterestsActivity
+import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity

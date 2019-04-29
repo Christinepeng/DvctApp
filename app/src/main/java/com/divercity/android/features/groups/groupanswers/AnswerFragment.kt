@@ -4,13 +4,8 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
-import android.graphics.Typeface
 import android.os.Bundle
-import android.text.Spannable
-import android.text.style.StyleSpan
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -23,23 +18,15 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.extension.networkInfo
 import com.divercity.android.core.utils.GlideApp
+import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerAdapter
 import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerViewHolder
 import com.divercity.android.features.groups.groupanswers.model.Question
-import com.divercity.android.model.UserMentionable
-import com.divercity.android.model.user.User
 import com.linkedin.android.spyglass.suggestions.SuggestionsResult
-import com.linkedin.android.spyglass.suggestions.interfaces.Suggestible
-import com.linkedin.android.spyglass.suggestions.interfaces.SuggestionsResultListener
-import com.linkedin.android.spyglass.suggestions.interfaces.SuggestionsVisibilityManager
-import com.linkedin.android.spyglass.tokenization.QueryToken
-import com.linkedin.android.spyglass.tokenization.impl.WordTokenizer
 import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig
-import com.linkedin.android.spyglass.tokenization.interfaces.QueryTokenReceiver
 import kotlinx.android.synthetic.main.fragment_answers.*
-import kotlinx.android.synthetic.main.item_user_mention.view.*
 import kotlinx.android.synthetic.main.view_image_btn_full.view.*
 import kotlinx.android.synthetic.main.view_image_btn_small.view.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -47,24 +34,23 @@ import net.yslibrary.android.keyboardvisibilityevent.KeyboardVisibilityEvent
 import pl.aprilapps.easyphotopicker.DefaultCallback
 import pl.aprilapps.easyphotopicker.EasyImage
 import java.io.File
-import java.util.*
 import javax.inject.Inject
 
 /**
  * Created by lucas on 24/12/2018.
  */
 
-class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultListener,
-    SuggestionsVisibilityManager {
+class AnswerFragment : BaseFragment() {
 
     lateinit var viewModel: AnswerViewModel
 
     @Inject
     lateinit var adapter: AnswerAdapter
 
-    lateinit var userAdapter: UserMentionAdapter
+//    lateinit var userAdapter: UserMentionAdapter
 
-    var isReplacing = false
+    @Inject
+    lateinit var userMentionWrapper: UserMentionWrapper
 
     var question: Question? = null
     private var photoFile: File? = null
@@ -72,7 +58,6 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
     companion object {
 
         private const val PARAM_QUESTION = "paramQuestionId"
-        private const val BUCKET = "people-network"
         private val tokenizerConfig = WordTokenizerConfig
             .Builder()
             .setMaxNumKeywords(2)
@@ -98,6 +83,19 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AnswerViewModel::class.java)
         question = arguments?.getParcelable(PARAM_QUESTION)
         viewModel.start(question)
+
+        userMentionWrapper.setEditTextTokenize(et_msg, tokenizerConfig)
+        userMentionWrapper.mentionsEdTxt = et_msg
+        userMentionWrapper.list_users = list_users
+        userMentionWrapper.fetchUsers = { searchQuery, queryToken ->
+            viewModel.fetchGroupMembers(
+                question!!.groupId.toString(),
+                0,
+                10,
+                searchQuery,
+                queryToken
+            )
+        }
 
         KeyboardVisibilityEvent.setEventListener(activity!!) {
             if (it) {
@@ -126,10 +124,6 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
     private fun setupView() {
         showProgressNoBk()
 
-        et_msg.tokenizer = WordTokenizer(tokenizerConfig)
-        et_msg.setQueryTokenReceiver(this)
-        et_msg.setSuggestionsVisibilityManager(this)
-
         Glide
             .with(this)
             .load(question?.authorProfilePicUrl)
@@ -137,6 +131,14 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
             .into(img_user)
 
         txt_name.text = question?.authorName
+
+        img_user.setOnClickListener {
+            navigator.navigateToOtherUserProfile(this@AnswerFragment, question?.authorId)
+        }
+
+        txt_name.setOnClickListener {
+            navigator.navigateToOtherUserProfile(this@AnswerFragment, question?.authorId)
+        }
 
         txt_date.text = Util.getTimeAgoWithStringServerDate(question?.createdAt)
 
@@ -166,14 +168,12 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
         }
 
         btn_send.setOnClickListener {
-            //            if (et_msg.text.toString() != "" || photoFile != null) {
-//                viewModel.sendNewAnswer(
-//                    et_msg.text.toString(),
-//                    ImageUtils.getStringBase64(photoFile, 600, 600)
-//                )
-//            }
-
-            getData()
+            if (et_msg.text.toString() != "" || photoFile != null) {
+                viewModel.sendNewAnswer(
+                    userMentionWrapper.getMessageWithMentions(),
+                    ImageUtils.getStringBase64(photoFile, 600, 600)
+                )
+            }
         }
 
         lay_image_full_screen.btn_close_full_screen_image.setOnClickListener {
@@ -181,6 +181,10 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
         }
 
         adapter.answerListener = object : AnswerViewHolder.Listener {
+
+            override fun onNavigateToUserProfile(userId: String) {
+                navigator.navigateToOtherUserProfile(this@AnswerFragment, userId)
+            }
 
             override fun onImageTap(imageUrl: String) {
                 lay_image_full_screen.visibility = View.VISIBLE
@@ -201,46 +205,6 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
 
         txt_question.text = question?.question
 
-//        et_msg.addTextChangedListener(object : TextWatcher {
-//
-//            override fun afterTextChanged(p0: Editable?) {
-//                val message = p0.toString()
-//                if (message != "" && !isReplacing) {
-//                    val fullText = et_msg.text.toString().substring(0, et_msg.selectionStart)
-//                    val lastWord = fullText.substring(fullText.lastIndexOf(" ") + 1)
-//
-//                    if (lastWord != "" && lastWord[0] == '@') {
-//                        showList(true)
-//                        viewModel.filterUserList(lastWord.substring(1))
-//                    } else {
-//                        showList(false)
-//                    }
-//                } else {
-//                    showList(false)
-//                    viewModel.filterUserList("")
-//                }
-//            }
-//
-//            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                if (!isReplacing) {
-//                    if (p2 > p3) {
-//                        val spanStyle = et_msg.text.getSpans(p1, p1 + p2, StyleSpan::class.java)
-////                        val spanUser = et_msg.text.getSpans(p1, p1 + p2, ChatMember::class.java)
-//                        if (spanStyle.isNotEmpty()) {
-//                            for (i in spanStyle.indices) {
-//                                et_msg.text.removeSpan(spanStyle[i])
-////                                et_msg.text.removeSpan(spanUser[i])
-//                            }
-//                        }
-//                    }
-//                }
-//            }
-//
-//            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//
-//            }
-//        })
-
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -248,82 +212,6 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
                     checkEndOffset() // Each time when list is scrolled check if end of the list is reached
             }
         })
-
-
-//        list_users.adapter = userAdapter
-    }
-
-    private fun getData() {
-        val text = et_msg.mentionsText
-        val mentionsSpan = text.mentionSpans
-        var stringTxt = et_msg.text.toString()
-
-        var amount = 0
-
-        mentionsSpan.sortBy {
-            text.getSpanStart(it)
-        }
-
-        mentionsSpan.forEach {
-            val start = text.getSpanStart(it)
-            val end = text.getSpanEnd(it)
-
-            val name = text.subSequence(start, end).toString()
-            val replacement = "<@U-" + (it.mention as UserMentionable).userId + ">"
-
-            stringTxt = stringTxt.replaceRange(
-                start - amount,
-                end - amount,
-                replacement
-            )
-
-            amount += name.length - replacement.length
-        }
-
-
-//        mentionsSpan.map { (it.mention as UserMentionable).fullName = "<@U-" + (it.mention as UserMentionable).userId + ">"  }
-
-
-        Toast.makeText(requireContext(), stringTxt, Toast.LENGTH_SHORT).show()
-
-
-//        val editable = MentionsEditable(et_msg.text.toString())
-//        mentionsSpan.forEachIndexed { pos, data ->
-//            editable.setSpan(data, text.getSpanStart(data), text.getSpanEnd(data), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-//            (editable.mentionSpans[pos].mention as UserMentionable).fullName = "<@U-" + (data.mention as UserMentionable).userId + ">"
-//        }
-//        val res = editable.toString()
-//        Toast.makeText(requireContext(), res, Toast.LENGTH_SHORT).show()
-    }
-
-    private fun replaceMention(user: User) {
-        isReplacing = true
-
-        val fullTextTillCursor = et_msg.text.toString().substring(0, et_msg.selectionStart)
-        val lastIndexOfAT = fullTextTillCursor.lastIndexOf("@")
-        val textToInsert = "@".plus(user.name!!)
-
-        et_msg.text.replace(
-            lastIndexOfAT,
-            et_msg.selectionStart,
-            "@".plus(user.name)
-        )
-        viewModel.mentions.add(user)
-        val bss = StyleSpan(Typeface.BOLD)
-//        et_msg.text.setSpan(user.toChatMember(),
-//            lastIndexOfAT,
-//            lastIndexOfAT + textToInsert.length,
-//            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-//        )
-
-        et_msg.text.setSpan(
-            bss,
-            lastIndexOfAT,
-            lastIndexOfAT + textToInsert.length,
-            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
-        et_msg.setSelection(lastIndexOfAT + textToInsert.length)
-        isReplacing = false
     }
 
     private fun checkIfHasToScrollDown(): Boolean {
@@ -378,21 +266,6 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
             }
         })
 
-//        viewModel.fetchChatMembersResponse.observe(viewLifecycleOwner, Observer { response ->
-//            when (response?.status) {
-//                Status.LOADING -> {
-//
-//                }
-//                Status.ERROR -> {
-//                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
-//                }
-//                Status.SUCCESS -> {
-//                    userAdapter.data = response.data!!
-//                    userAdapter.notifyDataSetChanged()
-//                }
-//            }
-//        })
-
         viewModel.fetchAnswersResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
@@ -423,9 +296,8 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
                     Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    val result =
-                        SuggestionsResult(response.data?.queryToken, response.data?.users)
-                    onReceiveSuggestionsResult(result, BUCKET)
+                    val result = SuggestionsResult(response.data?.queryToken, response.data?.users)
+                    userMentionWrapper.onReceiveSuggestionsResult(result, UserMentionWrapper.BUCKET)
                 }
             }
         })
@@ -514,84 +386,6 @@ class AnswerFragment : BaseFragment(), QueryTokenReceiver, SuggestionsResultList
             val netInfo = context!!.networkInfo
             if (netInfo != null && netInfo.isConnected) {
                 viewModel.checkErrorsToReconnect()
-            }
-        }
-    }
-
-    override fun onQueryReceived(queryToken: QueryToken): MutableList<String> {
-        val buckets = Arrays.asList<String>(BUCKET)
-        if (queryToken.tokenString.startsWith("@")) {
-            viewModel.fetchGroupMembers(
-                question!!.groupId.toString(),
-                0,
-                10,
-                queryToken.tokenString.substring(1),
-                queryToken
-            )
-        } else {
-            displaySuggestions(false)
-        }
-        return buckets
-    }
-
-    override fun onReceiveSuggestionsResult(result: SuggestionsResult, bucket: String) {
-        val suggestions = result.suggestions
-        userAdapter = UserMentionAdapter(result.suggestions)
-        list_users.swapAdapter(userAdapter, true)
-        val display = suggestions != null && suggestions.size > 0
-        displaySuggestions(display)
-    }
-
-    override fun displaySuggestions(display: Boolean) {
-        if (display) {
-            list_users.visibility = View.VISIBLE
-        } else {
-            list_users.visibility = View.GONE
-        }
-    }
-
-    override fun isDisplayingSuggestions(): Boolean {
-        return list_users.visibility == View.VISIBLE
-    }
-
-
-    inner class UserMentionAdapter
-    constructor(var users: List<Suggestible>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
-        override fun getItemCount(): Int {
-            return users.size
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-            val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(R.layout.item_user_mention, parent, false)
-            return UserMentionViewHolder(view)
-        }
-
-        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            (holder as UserMentionViewHolder).bindTo(users[position] as UserMentionable)
-        }
-    }
-
-    inner class UserMentionViewHolder
-    constructor(itemView: View) :
-        RecyclerView.ViewHolder(itemView) {
-
-        fun bindTo(data: UserMentionable?) {
-            data?.let {
-                GlideApp.with(itemView)
-                    .load(data.pictureUrl)
-                    .apply(RequestOptions().circleCrop())
-                    .into(itemView.img)
-
-                itemView.txt_name.text = data.fullName
-
-                itemView.setOnClickListener {
-                    et_msg.insertMention(data)
-                    list_users.swapAdapter(UserMentionAdapter(ArrayList()), true)
-                    displaySuggestions(false)
-                    et_msg.requestFocus()
-                }
             }
         }
     }

@@ -20,8 +20,8 @@ import com.divercity.android.features.activity.connectionrequests.usecase.Accept
 import com.divercity.android.features.activity.connectionrequests.usecase.AcceptJoinGroupRequestUseCase
 import com.divercity.android.features.activity.connectionrequests.usecase.DeclineGroupInviteUseCase
 import com.divercity.android.features.activity.connectionrequests.usecase.DeclineJoinGroupRequestUseCase
-import com.divercity.android.features.profile.potheruser.usecase.AcceptConnectionRequestUseCase
-import com.divercity.android.features.profile.potheruser.usecase.DeclineConnectionRequestUseCase
+import com.divercity.android.features.user.profileotheruser.usecase.AcceptConnectionRequestUseCase
+import com.divercity.android.features.user.profileotheruser.usecase.DeclineConnectionRequestUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
 

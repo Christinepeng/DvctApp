@@ -12,23 +12,31 @@ import com.divercity.android.data.entity.group.answer.response.AnswerResponse
 import kotlinx.android.synthetic.main.item_answer.view.*
 
 class AnswerViewHolder
-private constructor(itemView: View, val listener : Listener?) : RecyclerView.ViewHolder(itemView) {
+private constructor(itemView: View, val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(data: AnswerResponse?, next: AnswerResponse?) {
-        data?.attributes?.let {
+        data?.attributes?.let { answer ->
             itemView.apply {
-                txt_msg.text = it.text
-                txt_time.text = Util.getStringAppTimeWithDate(it.createdAt)
-                txt_name.text = it.authorInfo?.name
+                txt_msg.text = answer.text
+                txt_time.text = Util.getStringAppTimeWithDate(answer.createdAt)
+                txt_name.text = answer.authorInfo?.name
 
                 GlideApp.with(itemView)
-                    .load(it.authorInfo?.avatarMedium)
+                    .load(answer.authorInfo?.avatarMedium)
                     .apply(RequestOptions().circleCrop())
                     .into(img_user)
 
-                if(it.images != null && it.images?.size != 0){
+                img_user.setOnClickListener {
+                    listener?.onNavigateToUserProfile(answer.authorId.toString())
+                }
+
+                txt_name.setOnClickListener {
+                    listener?.onNavigateToUserProfile(answer.authorId.toString())
+                }
+
+                if (answer.images != null && answer.images?.size != 0) {
                     GlideApp.with(itemView)
-                        .load(it.images?.get(0))
+                        .load(answer.images?.get(0))
                         .into(itemView.img_msg_picture)
                     itemView.cardview_msg_picture.visibility = View.VISIBLE
                     itemView.cardview_msg_picture.setOnClickListener {
@@ -40,10 +48,10 @@ private constructor(itemView: View, val listener : Listener?) : RecyclerView.Vie
                 }
 
                 if (next != null) {
-                    if (Util.areDatesSameDay(it.createdAt, next.attributes?.createdAt)) {
+                    if (Util.areDatesSameDay(answer.createdAt, next.attributes?.createdAt)) {
                         txt_date.visibility = View.GONE
 
-                        if (it.authorId == next.attributes?.authorId) {
+                        if (answer.authorId == next.attributes?.authorId) {
                             itemView.img_user.visibility = View.GONE
                             itemView.txt_name.visibility = View.GONE
                         } else {
@@ -51,13 +59,13 @@ private constructor(itemView: View, val listener : Listener?) : RecyclerView.Vie
                             itemView.txt_name.visibility = View.VISIBLE
                         }
                     } else {
-                        itemView.txt_date.text = Util.getStringDateWithServerDate(it.createdAt)
+                        itemView.txt_date.text = Util.getStringDateWithServerDate(answer.createdAt)
                         itemView.txt_date.visibility = View.VISIBLE
                         itemView.img_user.visibility = View.VISIBLE
                         itemView.txt_name.visibility = View.VISIBLE
                     }
                 } else {
-                    itemView.txt_date.text = Util.getStringDateWithServerDate(it.createdAt)
+                    itemView.txt_date.text = Util.getStringDateWithServerDate(answer.createdAt)
                     itemView.txt_date.visibility = View.VISIBLE
                     itemView.img_user.visibility = View.VISIBLE
                     itemView.txt_name.visibility = View.VISIBLE
@@ -68,7 +76,7 @@ private constructor(itemView: View, val listener : Listener?) : RecyclerView.Vie
 
     companion object {
 
-        fun create(parent: ViewGroup, listener : Listener?): AnswerViewHolder {
+        fun create(parent: ViewGroup, listener: Listener?): AnswerViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_answer, parent, false)
             return AnswerViewHolder(view, listener)
@@ -78,5 +86,7 @@ private constructor(itemView: View, val listener : Listener?) : RecyclerView.Vie
     interface Listener {
 
         fun onImageTap(imageUrl: String)
+
+        fun onNavigateToUserProfile(userId: String)
     }
 }

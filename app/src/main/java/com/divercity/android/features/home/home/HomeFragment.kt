@@ -110,7 +110,8 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                     question = it.attributes.text,
                     groupTitle =  it.attributes.group[0].title,
                     questionPicUrl = it.attributes.pictureMain,
-                    groupId = it.attributes.group[0].id
+                    groupId = it.attributes.group[0].id,
+                    authorId = it.attributes.authorId.toString()
                 )
             )
         }

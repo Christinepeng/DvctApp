@@ -57,4 +57,42 @@ data class User(
     fun fullLocation(): String {
         return city.plus(", ").plus(country)
     }
+
+    fun copy(user : User){
+        country = user.country
+        avatarMedium = user.avatarThumb
+        accountType = user.accountType
+        occupation = user.occupation
+        birthdate  = user.birthdate
+        role = user.role
+        gender = user.gender
+        ethnicity = user.ethnicity
+        city = user.city
+        timezone = user.timezone
+        phoneNumber = user.phoneNumber
+        createdAt = user.createdAt
+        questionsCount = user.questionsCount
+        occupationOfInterests = user.occupationOfInterests
+        groupOfInterestFollowingCount = user.groupOfInterestFollowingCount
+        uid = user.uid
+        answersCount = user.answersCount
+        nickname = user.nickname
+        company = user.company
+        isFollowedByCurrent = user.isFollowedByCurrent
+        email = user.email
+        noPasswordSet = user.noPasswordSet
+        avatarThumb = user.avatarThumb
+        lastName = user.lastName
+        schoolName = user.schoolName
+        isDefaultAvatar = user.isDefaultAvatar
+        interestIds = user.interestIds
+        followingCount = user.followingCount
+        followersCount = user.followersCount
+        industries = user.industries
+        studentMajors = user.studentMajors
+        name = user.name
+        ageRange = user.ageRange
+        skills = user.skills
+        connected = user.connected
+    }
 }

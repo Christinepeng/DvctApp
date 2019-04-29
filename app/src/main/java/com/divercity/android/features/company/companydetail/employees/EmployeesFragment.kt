@@ -1,5 +1,6 @@
 package com.divercity.android.features.company.companydetail.employees
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -10,8 +11,8 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.profile.useradapter.pagination.UserPaginationAdapter
-import com.divercity.android.features.profile.useradapter.pagination.UserViewHolder
+import com.divercity.android.features.user.useradapter.pagination.UserPaginationAdapter
+import com.divercity.android.features.user.useradapter.pagination.UserViewHolder
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_employees.*
 import javax.inject.Inject
@@ -28,11 +29,14 @@ class EmployeesFragment : BaseFragment(), RetryCallback {
     lateinit var adapter: UserPaginationAdapter
 
     private var isListRefreshing = false
+
+    private var lastUserPositionTap = 0
     private var lastConnectUserPosition = 0
 
     companion object {
 
         private const val PARAM_COMPANY_ID = "paramCommpanyId"
+        const val REQUEST_CODE_USER = 200
 
         fun newInstance(companyId: String): EmployeesFragment {
             val fragment = EmployeesFragment()
@@ -54,7 +58,7 @@ class EmployeesFragment : BaseFragment(), RetryCallback {
         subscribeToPaginatedLiveData()
     }
 
-    fun initViewModel(){
+    fun initViewModel() {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)
                 .get(EmployeesViewModel::class.java)
@@ -151,8 +155,21 @@ class EmployeesFragment : BaseFragment(), RetryCallback {
             )
         }
 
-        override fun onUserClick(user: User) {
-            navigator.navigateToOtherUserProfileActivity(this@EmployeesFragment, null, user)
+        override fun onUserClick(user: User, position: Int) {
+            lastUserPositionTap = position
+            navigator.navigateToOtherUserProfileForResult(
+                this@EmployeesFragment,
+                null,
+                user,
+                REQUEST_CODE_USER
+            )
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_USER) {
+            adapter.notifyItemChanged(lastUserPositionTap)
         }
     }
 }

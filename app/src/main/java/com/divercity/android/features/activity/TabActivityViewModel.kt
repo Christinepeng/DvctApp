@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.data.Resource
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.profile.usecase.FetchUserDataUseCase
+import com.divercity.android.features.user.usecase.FetchUserDataUseCase
 import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement

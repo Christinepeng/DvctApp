@@ -17,8 +17,8 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.profile.useradapter.charpagination.UserCharPagAdapter
-import com.divercity.android.features.profile.useradapter.pagination.UserViewHolder
+import com.divercity.android.features.user.useradapter.charpagination.UserCharPagAdapter
+import com.divercity.android.features.user.useradapter.pagination.UserViewHolder
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_new_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -177,7 +177,7 @@ class NewChatFragment : BaseFragment(), RetryCallback {
         override fun onUserDirectMessage(user: User) {
         }
 
-        override fun onUserClick(user: User) {
+        override fun onUserClick(user: User, position: Int) {
             navigator.navigateToChatActivity(this@NewChatFragment, user.name!!, user.id, -1)
         }
     }

@@ -18,10 +18,13 @@ import com.divercity.android.features.chat.chat.usecase.FetchMessagesUseCase
 import com.divercity.android.features.chat.chat.usecase.FetchOrCreateChatUseCase
 import com.divercity.android.features.chat.chat.usecase.SendMessagesUseCase
 import com.divercity.android.model.user.User
+import com.divercity.android.model.usermentionable.QueryTokenUserMentionable
+import com.divercity.android.model.usermentionable.UserMentionable
 import com.divercity.android.repository.chat.ChatRepository
 import com.divercity.android.repository.session.SessionRepository
 import com.divercity.android.socket.ChatWebSocket
 import com.google.gson.JsonElement
+import com.linkedin.android.spyglass.tokenization.QueryToken
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
@@ -46,11 +49,11 @@ constructor(
 ) : BaseViewModel() {
 
     var pageFetchList = ArrayList<Int>()
-    var chatMembers: List<User>? = null
+    var chatMembers: List<UserMentionable>? = null
 
     var fetchCreateChatResponse = SingleLiveEvent<Resource<CreateChatResponse>>()
     var fetchMessagesResponse = SingleLiveEvent<Resource<DataChatMessageResponse>>()
-    var fetchChatMembersResponse = SingleLiveEvent<Resource<List<User>>>()
+    var fetchChatMembersResponse = SingleLiveEvent<Resource<QueryTokenUserMentionable>>()
     var sendMessageResponse = SingleLiveEvent<Resource<ChatMessageEntityResponse>>()
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var pagedListLiveData: LiveData<PagedList<ChatMessageEntityResponse>>? = null
@@ -121,10 +124,16 @@ constructor(
 
             override fun onSuccess(o: List<User>) {
                 hasFetchGroupMembersError = false
-                chatMembers = o.filter {
-                    it.id != sessionRepository.getUserId()
-                }
-                fetchChatMembersResponse.postValue(Resource.success(o))
+                chatMembers = o
+                    .filter {
+                        it.id != sessionRepository.getUserId()
+                    }.map {
+                        UserMentionable(
+                            it.id,
+                            it.name!!,
+                            it.avatarMedium!!
+                        )
+                    }
             }
         }
         fetchChatMembersUseCase.execute(
@@ -133,14 +142,19 @@ constructor(
         )
     }
 
-    fun filterUserList(filter: String) {
-        if (!chatMembers.isNullOrEmpty())
+    fun filterUserList(query: String, queryToken: QueryToken) {
+        if (!chatMembers.isNullOrEmpty()) {
             fetchChatMembersResponse.postValue(
                 Resource.success(
-                    chatMembers?.filter {
-                        it.name!!.toLowerCase().contains(filter.toLowerCase())
-                    })
+                    QueryTokenUserMentionable(
+                        queryToken,
+                        chatMembers!!.filter {
+                            it.fullName.toLowerCase().contains(query.toLowerCase())
+                        }
+                    )
+                )
             )
+        }
     }
 
     fun fetchOrCreateChat(otherUserId: String) {

@@ -15,7 +15,8 @@ data class Question(
     var authorProfilePicUrl: String?,
     var authorName: String?,
     var groupTitle: String?,
-    var groupId: Int?
+    var groupId: Int?,
+    var authorId: String?
 ) : Parcelable {
 
     constructor(parcel: Parcel) : this(
@@ -26,7 +27,8 @@ data class Question(
         parcel.readString(),
         parcel.readString(),
         parcel.readString(),
-        parcel.readValue(Int::class.java.classLoader) as? Int
+        parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -38,6 +40,7 @@ data class Question(
         parcel.writeString(authorName)
         parcel.writeString(groupTitle)
         parcel.writeValue(groupId)
+        parcel.writeString(authorId)
     }
 
     override fun describeContents(): Int {

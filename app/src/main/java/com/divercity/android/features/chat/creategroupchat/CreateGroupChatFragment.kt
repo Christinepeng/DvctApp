@@ -13,7 +13,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
-import com.divercity.android.features.profile.useradapter.nopagmultisel.UserMultiSelAdapter
+import com.divercity.android.features.user.useradapter.nopagmultisel.UserMultiSelAdapter
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_create_group_chat.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*

@@ -78,7 +78,8 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
                         question = question.attributes.text,
                         groupTitle = question.attributes.group[0].title,
                         questionPicUrl = question.attributes.pictureMain,
-                        groupId = question.attributes.group[0].id
+                        groupId = question.attributes.group[0].id,
+                        authorId = question.attributes.authorId.toString()
                     )
                 )
             }

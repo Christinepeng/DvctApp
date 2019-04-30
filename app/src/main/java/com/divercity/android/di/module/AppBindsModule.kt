@@ -10,8 +10,6 @@ import com.divercity.android.repository.data.DataRepository
 import com.divercity.android.repository.data.DataRepositoryImpl
 import com.divercity.android.repository.document.DocumentRepository
 import com.divercity.android.repository.document.DocumentRepositoryImpl
-import com.divercity.android.repository.feed.FeedRepository
-import com.divercity.android.repository.feed.FeedRepositoryImpl
 import com.divercity.android.repository.group.GroupRepository
 import com.divercity.android.repository.group.GroupRepositoryImpl
 import com.divercity.android.repository.job.JobRepository
@@ -36,9 +34,6 @@ abstract class AppBindsModule {
 
     @Binds
     abstract fun bindRegisterLoginRepository(repository: RegisterLoginRepositoryImpl): RegisterLoginRepository
-
-    @Binds
-    abstract fun bindFeedRepository(repository: FeedRepositoryImpl): FeedRepository
 
     @Binds
     abstract fun bindDocumentRepository(repository: DocumentRepositoryImpl): DocumentRepository

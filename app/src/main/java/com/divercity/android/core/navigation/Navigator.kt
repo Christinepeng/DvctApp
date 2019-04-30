@@ -38,7 +38,6 @@ import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity
 import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
 import com.divercity.android.features.groups.groupanswers.AnswerActivity
-import com.divercity.android.features.groups.groupanswers.model.Question
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.groups.mygroups.MyGroupsActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
@@ -79,6 +78,7 @@ import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
 import com.divercity.android.features.user.experience.AddWorkExperienceActivity
 import com.divercity.android.features.user.myinterests.InterestsActivity
 import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
+import com.divercity.android.model.Question
 import com.divercity.android.model.user.User
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -600,6 +600,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToAnswerActivity(fragment: Fragment, question: Question) {
         fragment.startActivity(AnswerActivity.getCallingIntent(fragment.context, question))
+    }
+
+    fun navigateToQuestionAndAnswers(fragment: Fragment, questionId: String) {
+        fragment.startActivity(AnswerActivity.getCallingIntent(fragment.context, questionId))
     }
 
     fun navigateToNextOnboarding(

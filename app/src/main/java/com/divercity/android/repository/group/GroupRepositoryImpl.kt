@@ -4,7 +4,7 @@ import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.company.companyadmin.body.Admin
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
-import com.divercity.android.data.entity.group.answer.response.AnswerResponse
+import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.data.entity.group.group.GroupResponse
@@ -16,12 +16,11 @@ import com.divercity.android.data.entity.group.invitation.user.GroupInviteUser
 import com.divercity.android.data.entity.group.invitation.user.GroupInviteUserBody
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.question.NewQuestionBody
-import com.divercity.android.data.entity.group.question.Question
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
-import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.data.networking.services.GroupService
 import com.divercity.android.db.dao.GroupDao
+import com.divercity.android.model.Question
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
 import kotlinx.coroutines.Dispatchers
@@ -98,10 +97,10 @@ constructor(
         page: Int,
         size: Int,
         query: String?
-    ): Observable<List<QuestionResponse>> {
-        return service.fetchQuestions(groupId, page, size, query).map {
-            checkResponse(it)
-            it.body()?.data
+    ): Observable<List<Question>> {
+        return service.fetchQuestions(groupId, page, size, query).map { response ->
+            checkResponse(response)
+            response.body()?.data?.map { it.toQuestion() }
         }
     }
 
@@ -198,18 +197,12 @@ constructor(
         question: String,
         groupId: String,
         image: String?
-    ): Observable<QuestionResponse> {
+    ): Observable<Question> {
         return service.createNewTopic(
-            NewQuestionBody(
-                Question(
-                    text = question,
-                    groupOfInterestIds = listOf(groupId),
-                    image = image
-                )
-            )
+            NewQuestionBody(question, groupId, image)
         ).map {
             checkResponse(it)
-            it.body()?.data
+            it.body()?.data?.toQuestion()
         }
     }
 
@@ -218,30 +211,30 @@ constructor(
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<AnswerResponse>> {
+    ): Observable<List<AnswerEntityResponse>> {
         return service.fetchAnswers(questionId, pageNumber, size, query).map {
             checkResponse(it)
             it.body()?.data
         }
     }
 
-    override fun getPagedAnswersByQuestionId(questionId: Int): DataSource.Factory<Int, AnswerResponse> {
+    override fun getPagedAnswersByQuestionId(questionId: Int): DataSource.Factory<Int, AnswerEntityResponse> {
         return groupDao.getPagedAnswersByQuestionId(questionId)
     }
 
-    override suspend fun insertAnswers(answers: List<AnswerResponse>) {
+    override suspend fun insertAnswers(answers: List<AnswerEntityResponse>) {
         return withContext(Dispatchers.IO) {
             groupDao.insertAnswers(answers)
         }
     }
 
-    override suspend fun insertAnswer(answer: AnswerResponse) {
+    override suspend fun insertAnswer(answer: AnswerEntityResponse) {
         return withContext(Dispatchers.IO) {
             groupDao.insertAnswer(answer)
         }
     }
 
-    override fun sendNewAnswer(body: AnswerBody): Observable<AnswerResponse> {
+    override fun sendNewAnswer(body: AnswerBody): Observable<AnswerEntityResponse> {
         return service.sendNewAnswer(body).map {
             checkResponse(it)
             it.body()?.data
@@ -320,6 +313,23 @@ constructor(
     override fun deleteGroupAdmins(groupId: String, adminsId: List<String>): Observable<Unit> {
         return service.deleteGroupAdmins(groupId, Admin(adminsId)).map {
             checkResponse(it)
+        }
+    }
+
+    override fun fetchFeedQuestions(
+        pageNumber: Int,
+        size: Int
+    ): Observable<List<Question>> {
+        return service.fetchFeedQuestions(pageNumber, size).map { response ->
+            checkResponse(response)
+            response.body()?.data?.map { it.toQuestion() }
+        }
+    }
+
+    override fun fetchQuestionById(questionId: String): Observable<Question> {
+        return service.fetchQuestionById(questionId).map { response ->
+            checkResponse(response)
+            response.body()?.data?.toQuestion()
         }
     }
 }

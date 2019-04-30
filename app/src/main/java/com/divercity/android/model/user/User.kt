@@ -28,7 +28,8 @@ data class User(
     var uid: String?,
     var answersCount: Int?,
     var nickname: String?,
-    var company: UserCompany?,
+    var companyId: Int?,
+    var companyName: String?,
     var isFollowedByCurrent: Boolean?,
     var email: String?,
     var noPasswordSet: String?,
@@ -77,7 +78,8 @@ data class User(
         uid = user.uid
         answersCount = user.answersCount
         nickname = user.nickname
-        company = user.company
+        companyId = user.companyId
+        companyName = user.companyName
         isFollowedByCurrent = user.isFollowedByCurrent
         email = user.email
         noPasswordSet = user.noPasswordSet

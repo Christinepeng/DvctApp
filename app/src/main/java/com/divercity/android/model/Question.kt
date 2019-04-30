@@ -1,7 +1,8 @@
-package com.divercity.android.features.groups.groupanswers.model
+package com.divercity.android.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.divercity.android.data.entity.home.HomeItem
 
 /**
  * Created by lucas on 24/01/2019.
@@ -16,8 +17,11 @@ data class Question(
     var authorName: String?,
     var groupTitle: String?,
     var groupId: Int?,
-    var authorId: String?
-) : Parcelable {
+    var authorId: String?,
+    var lastAnswer: String?,
+    var lastAnswerAuthorName: String?,
+    var lastAnswerAuthorPicture: String?
+) : HomeItem, Parcelable {
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),
@@ -28,6 +32,9 @@ data class Question(
         parcel.readString(),
         parcel.readString(),
         parcel.readValue(Int::class.java.classLoader) as? Int,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
         parcel.readString()
     )
 
@@ -41,6 +48,9 @@ data class Question(
         parcel.writeString(groupTitle)
         parcel.writeValue(groupId)
         parcel.writeString(authorId)
+        parcel.writeString(lastAnswer)
+        parcel.writeString(lastAnswerAuthorName)
+        parcel.writeString(lastAnswerAuthorPicture)
     }
 
     override fun describeContents(): Int {

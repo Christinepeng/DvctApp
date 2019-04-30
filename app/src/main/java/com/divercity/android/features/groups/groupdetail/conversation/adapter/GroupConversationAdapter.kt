@@ -1,18 +1,18 @@
 package com.divercity.android.features.groups.groupdetail.conversation.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.questions.QuestionResponse
+import com.divercity.android.model.Question
 import javax.inject.Inject
 
 class GroupConversationAdapter @Inject
-constructor() : PagedListAdapter<QuestionResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+constructor() : PagedListAdapter<Question, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -75,13 +75,13 @@ constructor() : PagedListAdapter<QuestionResponse, RecyclerView.ViewHolder>(user
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<QuestionResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<Question>() {
 
-            override fun areItemsTheSame(oldItem: QuestionResponse, newItem: QuestionResponse): Boolean {
+            override fun areItemsTheSame(oldItem: Question, newItem: Question): Boolean {
                 return oldItem.id === newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: QuestionResponse, newItem: QuestionResponse): Boolean {
+            override fun areContentsTheSame(oldItem: Question, newItem: Question): Boolean {
                 return oldItem == newItem
             }
         }

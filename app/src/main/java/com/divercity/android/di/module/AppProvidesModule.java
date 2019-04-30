@@ -59,14 +59,6 @@ public abstract class AppProvidesModule {
         return new ApolloRepository(client);
     }
 
-//    @Provides
-//    @Singleton
-//    static Session provideSession(ChatRepository chatRepository,
-//                                  SessionRepository sessionRepository,
-//                                  UpdateFCMTokenUseCase updateFCMTokenUseCase) {
-//        return new Session(chatRepository, sessionRepository, updateFCMTokenUseCase);
-//    }
-
     @Provides
     @Singleton
     static NotificationHelper provideNotificationHelper(Context context) {

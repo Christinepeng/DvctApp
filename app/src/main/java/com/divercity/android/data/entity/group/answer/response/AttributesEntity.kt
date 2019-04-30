@@ -3,7 +3,7 @@ package com.divercity.android.data.entity.group.answer.response
 import com.google.gson.annotations.SerializedName
 import java.util.*
 
-data class Attributes(
+data class AttributesEntity(
 
 	@field:SerializedName("raw_text")
 	var rawText: String? = null,
@@ -54,5 +54,5 @@ data class Attributes(
 	var votesup: Int? = null,
 
 	@field:SerializedName("author_info")
-	var authorInfo: AuthorInfo? = null
+	var authorInfo: AuthorInfoEntity? = null
 )

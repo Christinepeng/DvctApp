@@ -4,7 +4,7 @@ import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.company.companyadmin.body.Admin
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
-import com.divercity.android.data.entity.group.answer.response.AnswerResponse
+import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.groupadmin.AddGroupAdminsBody
@@ -15,7 +15,7 @@ import com.divercity.android.data.entity.group.invitationnotification.GroupInvit
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
-import com.divercity.android.data.entity.questions.QuestionResponse
+import com.divercity.android.data.entity.questions.QuestionEntityResponse
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import io.reactivex.Observable
 import okhttp3.RequestBody
@@ -98,7 +98,12 @@ interface GroupService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<QuestionResponse>>>
+    ): Observable<Response<DataArray<QuestionEntityResponse>>>
+
+    @GET("questions/{questionId}")
+    fun fetchQuestionById(
+        @Path("questionId") questionId: String
+    ): Observable<Response<DataObject<QuestionEntityResponse>>>
 
     @GET("group_of_interests/following")
     fun fetchFollowedGroups(
@@ -138,7 +143,7 @@ interface GroupService {
     @POST("questions")
     fun createNewTopic(
         @Body body: NewQuestionBody
-    ): Observable<Response<DataObject<QuestionResponse>>>
+    ): Observable<Response<DataObject<QuestionEntityResponse>>>
 
     @GET("questions/{questionId}/answers")
     fun fetchAnswers(
@@ -146,12 +151,12 @@ interface GroupService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<AnswerResponse>>>
+    ): Observable<Response<DataArray<AnswerEntityResponse>>>
 
     @POST("answers")
     fun sendNewAnswer(
         @Body body: AnswerBody
-    ): Observable<Response<DataObject<AnswerResponse>>>
+    ): Observable<Response<DataObject<AnswerEntityResponse>>>
 
     @Multipart
     @POST("group_of_interests/accept_invite")
@@ -199,4 +204,10 @@ interface GroupService {
     fun declineGroupAdminInvite(
         @Part("invite_id") inviteIdPart: RequestBody
     ): Observable<Response<Unit>>
+
+    @GET("questions?filter_by_user_groups=true")
+    fun fetchFeedQuestions(
+        @Query("page[number]") pageNumber: Int,
+        @Query("page[size]") size: Int
+    ): Observable<Response<DataArray<QuestionEntityResponse>>>
 }

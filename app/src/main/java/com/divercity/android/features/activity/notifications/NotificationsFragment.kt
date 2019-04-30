@@ -42,7 +42,7 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
         super.onCreate(savedInstanceState)
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)
-                    .get(NotificationsViewModel::class.java)
+                .get(NotificationsViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
@@ -58,14 +58,14 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
         viewModel.markNotificationReadResponse.observe(this, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
-                    showProgress()
+//                    showProgress()
                 }
                 Status.ERROR -> {
-                    hideProgress()
+//                    hideProgress()
                     Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
-                    hideProgress()
+//                    hideProgress()
                     adapter.updateNotification(response.data!!)
                 }
             }
@@ -88,9 +88,9 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
 
@@ -136,6 +136,12 @@ class NotificationsFragment : BaseFragment(), RetryCallback {
 
         override fun onNotificationClick(notification: NotificationPositionModel) {
             viewModel.markNotificationRead(notification)
+            when (notification.notificationResponse.attributes?.aType) {
+                "response" -> navigator.navigateToQuestionAndAnswers(
+                    this@NotificationsFragment,
+                    notification.notificationResponse.relationships?.aTarget?.data?.id!!
+                )
+            }
         }
     }
 }

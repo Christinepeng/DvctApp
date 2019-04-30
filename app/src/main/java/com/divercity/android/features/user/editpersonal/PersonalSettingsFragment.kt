@@ -197,7 +197,7 @@ class PersonalSettingsFragment : BaseFragment() {
             lay_personal.txt_occupation.text = it.occupation
             lay_personal.txt_location.text =
                 it.city.plus(", ").plus(it.country)
-            lay_personal.txt_company.text = it.company?.name
+            lay_personal.txt_company.text = it.companyName
         }
     }
 

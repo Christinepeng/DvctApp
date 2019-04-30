@@ -2,7 +2,7 @@ package com.divercity.android.features.home.home.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.home.HomeItem
-import com.divercity.android.repository.feed.FeedRepository
+import com.divercity.android.repository.group.GroupRepository
 import com.divercity.android.repository.job.JobRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -19,7 +19,7 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val jobRepository: JobRepository,
-    private val feedRepository: FeedRepository
+    private val feedRepository: GroupRepository
 ) : UseCase<@JvmSuppressWildcards List<HomeItem>, FetchQuestionsJobsUseCase.Params>(
     executorThread,
     uiThread
@@ -33,7 +33,7 @@ constructor(
             null
         )
 
-        val fetchQuestions = feedRepository.fetchQuestions(
+        val fetchQuestions = feedRepository.fetchFeedQuestions(
             params.page,
             params.size
         )

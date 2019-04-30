@@ -2,19 +2,21 @@ package com.divercity.android.features.groups.groupanswers
 
 import android.os.Handler
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.MySocket
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.answer.response.AnswerResponse
+import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.groupanswers.model.AnswersPageModel
-import com.divercity.android.features.groups.groupanswers.model.Question
 import com.divercity.android.features.groups.groupanswers.usecase.FetchAnswersUseCase
+import com.divercity.android.features.groups.groupanswers.usecase.FetchQuestionByIdUseCase
 import com.divercity.android.features.groups.groupanswers.usecase.SendNewAnswerUseCase
 import com.divercity.android.features.groups.groupdetail.usecase.FetchGroupMembersUseCase
+import com.divercity.android.model.Question
 import com.divercity.android.model.user.User
 import com.divercity.android.model.usermentionable.QueryTokenUserMentionable
 import com.divercity.android.model.usermentionable.UserMentionable
@@ -40,16 +42,17 @@ constructor(
     private val fetchGroupMembersUseCase: FetchGroupMembersUseCase,
     private val fetchAnswersUseCase: FetchAnswersUseCase,
     private val sendNewAnswerUseCase: SendNewAnswerUseCase,
-    private val groupRepository: GroupRepository
+    private val groupRepository: GroupRepository,
+    private val fetchQuestionByIdUseCase: FetchQuestionByIdUseCase
 ) : BaseViewModel() {
 
     var pageFetchList = ArrayList<Int>()
 
     var fetchAnswersResponse = SingleLiveEvent<Resource<AnswersPageModel>>()
-    var sendNewAnswerResponse = SingleLiveEvent<Resource<AnswerResponse>>()
+    var sendNewAnswerResponse = SingleLiveEvent<Resource<AnswerEntityResponse>>()
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
-    var pagedListLiveData: LiveData<PagedList<AnswerResponse>>? = null
+    var pagedListLiveData: LiveData<PagedList<AnswerEntityResponse>>? = null
     var fetchGroupMembersResponse = SingleLiveEvent<Resource<QueryTokenUserMentionable>>()
 
     private val viewModelJob = Job()
@@ -58,8 +61,8 @@ constructor(
     var handlerReconnect = Handler()
     var reconnectingAttempts = 0
 
-    var question: Question? = null
-    var questionId: Int = -1
+    lateinit var questionId: String
+    var questionLiveData = MutableLiveData<Question?>()
 
     var hasFetchQuestionsError = false
 
@@ -71,16 +74,15 @@ constructor(
         private const val THRESHOLD = 10
     }
 
-    fun start(question: Question?) {
-        this.question = question
-        questionId = question!!.id!!.toInt()
-        initializePagedList(questionId)
-        connectToAnswersWebSocket(questionId)
-        fetchAnswers(question.id!!, 0, PAGE_SIZE, "")
+    fun start(questionId: String) {
+        this.questionId = questionId
+        initializePagedList()
+        connectToAnswersWebSocket()
+        fetchAnswers(0, PAGE_SIZE, "")
     }
 
-    fun initializePagedList(questionId: Int) {
-        val dataSourceFactory = groupRepository.getPagedAnswersByQuestionId(questionId)
+    fun initializePagedList() {
+        val dataSourceFactory = groupRepository.getPagedAnswersByQuestionId(questionId.toInt())
         val config = PagedList.Config.Builder()
             .setPageSize(PAGE_SIZE)
             .setInitialLoadSizeHint(30)
@@ -90,9 +92,9 @@ constructor(
         subscribeToPaginatedLiveData.call()
     }
 
-    fun fetchAnswers(questionId: String, page: Int, size: Int, searchQuery: String) {
+    fun fetchAnswers(page: Int, size: Int, searchQuery: String) {
         fetchAnswersResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<List<AnswerResponse>>() {
+        val callback = object : DisposableObserverWrapper<List<AnswerEntityResponse>>() {
             override fun onFail(error: String) {
                 hasFetchQuestionsError = true
 
@@ -106,7 +108,7 @@ constructor(
                 fetchAnswersResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: List<AnswerResponse>) {
+            override fun onSuccess(o: List<AnswerEntityResponse>) {
                 hasFetchQuestionsError = false
 
                 fetchAnswersResponse.postValue(Resource.success(AnswersPageModel(o, page)))
@@ -127,6 +129,26 @@ constructor(
         )
     }
 
+    fun fetchQuestionById() {
+        val callback = object : DisposableObserverWrapper<Question>() {
+            override fun onFail(error: String) {
+
+            }
+
+            override fun onHttpException(error: JsonElement) {
+
+            }
+
+            override fun onSuccess(o: Question) {
+                questionLiveData.value = o
+            }
+        }
+
+        fetchQuestionByIdUseCase.execute(
+            callback, FetchQuestionByIdUseCase.Params(questionId)
+        )
+    }
+
     fun sendNewAnswer(answer: String, image: String?) {
 
         var images: List<String>? = null
@@ -135,7 +157,7 @@ constructor(
         }
 
         sendNewAnswerResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<AnswerResponse>() {
+        val callback = object : DisposableObserverWrapper<AnswerEntityResponse>() {
             override fun onFail(error: String) {
                 sendNewAnswerResponse.postValue(Resource.error(error, null))
             }
@@ -145,18 +167,18 @@ constructor(
             }
 
 
-            override fun onSuccess(o: AnswerResponse) {
+            override fun onSuccess(o: AnswerEntityResponse) {
                 mentions.clear()
                 sendNewAnswerResponse.postValue(Resource.success(null))
             }
         }
         sendNewAnswerUseCase.execute(
             callback, SendNewAnswerUseCase.Params
-                .forAnswer(images, answer, question!!.id!!)
+                .forAnswer(images, answer, questionId)
         )
     }
 
-    fun insertAnswerDb(answer: AnswerResponse) {
+    fun insertAnswerDb(answer: AnswerEntityResponse) {
         uiScope.launch {
             groupRepository.insertAnswer(answer)
         }
@@ -173,14 +195,14 @@ constructor(
             val page = items / PAGE_SIZE
             if (!pageFetchList.contains(page)) {
                 pageFetchList.add(page)
-                fetchAnswers(question!!.id!!, page, PAGE_SIZE, "")
+                fetchAnswers(page, PAGE_SIZE, "")
             }
         } else if (visibleItemCount + firstVisibleItemPosition == totalItemCount) {
 //          We add one to check if the next page has been fetched
             val page = totalItemCount / PAGE_SIZE + 1
             if (!pageFetchList.contains(page)) {
                 pageFetchList.add(page)
-                fetchAnswers(question!!.id!!, page, PAGE_SIZE, "")
+                fetchAnswers(page, PAGE_SIZE, "")
             }
         }
     }
@@ -192,31 +214,30 @@ constructor(
         fetchAnswersUseCase.dispose()
     }
 
-    private fun connectToAnswersWebSocket(chatId: Int) {
+    private fun connectToAnswersWebSocket() {
 
         answersWebSocket.listener = object : AnswersWebSocket.Listener {
 
-            override fun onAnswerReceived(answer: AnswerResponse) {
+            override fun onAnswerReceived(answer: AnswerEntityResponse) {
                 insertAnswerDb(answer)
             }
         }
 
-        answersWebSocket.connect(chatId.toString())
+        answersWebSocket.connect(questionId)
     }
 
-    fun checkIfReconnectionIsNeeded() {
-        if (questionId != -1 &&
-            (answersWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR ||
-                    answersWebSocket.getSocketState() == MySocket.State.RECONNECT_ATTEMPT)
+    private fun checkIfReconnectionIsNeeded() {
+        if (answersWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR ||
+            answersWebSocket.getSocketState() == MySocket.State.RECONNECT_ATTEMPT
         ) {
             answersWebSocket.stopTryingToReconnect()
-            connectToAnswersWebSocket(questionId)
+            connectToAnswersWebSocket()
         }
     }
 
     fun checkErrorsToReconnect() {
         if (hasFetchQuestionsError) {
-            fetchAnswers(question?.id!!, 0, PAGE_SIZE, "")
+            fetchAnswers(0, PAGE_SIZE, "")
         } else {
             checkIfReconnectionIsNeeded()
         }

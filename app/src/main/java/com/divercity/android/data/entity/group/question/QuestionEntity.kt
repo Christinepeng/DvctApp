@@ -2,7 +2,7 @@ package com.divercity.android.data.entity.group.question
 
 import com.google.gson.annotations.SerializedName
 
-data class Question(
+data class QuestionEntity(
 
     @field:SerializedName("question_type")
     val questionType: String = "topic",

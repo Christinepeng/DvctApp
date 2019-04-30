@@ -22,7 +22,6 @@ import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
-import com.divercity.android.features.groups.groupanswers.model.Question
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.home.home.adapter.HomeAdapter
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedAdapter
@@ -55,7 +54,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     private var positionJoinRequest: Int = 0
     private var positionJoinClicked: Int = 0
 
-    private lateinit var newMessageDisposable : Disposable
+    private lateinit var newMessageDisposable: Disposable
 
     companion object {
 
@@ -101,19 +100,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         homeAdapter.setRetryCallback(this)
 
         homeAdapter.questionListener = QuestionsViewHolder.Listener {
-            navigator.navigateToAnswerActivity(
-                this, Question(
-                    id = it.id,
-                    authorProfilePicUrl = it.attributes.authorInfo.avatarThumb,
-                    authorName = it.attributes.authorInfo.name,
-                    createdAt = it.attributes.createdAt,
-                    question = it.attributes.text,
-                    groupTitle =  it.attributes.group[0].title,
-                    questionPicUrl = it.attributes.pictureMain,
-                    groupId = it.attributes.group[0].id,
-                    authorId = it.attributes.authorId.toString()
-                )
-            )
+            navigator.navigateToAnswerActivity(this, it)
         }
 
         recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
@@ -200,19 +187,21 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             homeAdapter.submitList(it)
         })
 
-        viewModel.fetchRecommendedJobsGroupsResponse.observe(viewLifecycleOwner, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
+        viewModel.fetchRecommendedJobsGroupsResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response?.status) {
+                    Status.LOADING -> {
 
-                }
-                Status.ERROR -> {
+                    }
+                    Status.ERROR -> {
 
+                    }
+                    Status.SUCCESS -> {
+                        recommendedAdapter.data = response.data
+                    }
                 }
-                Status.SUCCESS -> {
-                    recommendedAdapter.data = response.data
-                }
-            }
-        })
+            })
 
         viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer {
             it?.getContentIfNotHandled()?.let { group ->
@@ -246,25 +235,27 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         })
 
-        viewModel.fetchUnreadMessagesCountResponse.observe(viewLifecycleOwner, Observer { resource ->
-            when (resource?.status) {
-                Status.LOADING -> {
+        viewModel.fetchUnreadMessagesCountResponse.observe(
+            viewLifecycleOwner,
+            Observer { resource ->
+                when (resource?.status) {
+                    Status.LOADING -> {
 
-                }
-                Status.ERROR -> {
+                    }
+                    Status.ERROR -> {
 
-                }
-                Status.SUCCESS -> {
-                    activity?.apply {
-                        if (resource.data!! > 0) {
-                            icon_notification.visibility = View.VISIBLE
-                            icon_notification.text = resource.data.toString()
-                        } else
-                            icon_notification.visibility = View.GONE
+                    }
+                    Status.SUCCESS -> {
+                        activity?.apply {
+                            if (resource.data!! > 0) {
+                                icon_notification.visibility = View.VISIBLE
+                                icon_notification.text = resource.data.toString()
+                            } else
+                                icon_notification.visibility = View.GONE
+                        }
                     }
                 }
-            }
-        })
+            })
 
         viewModel.listState.observe(viewLifecycleOwner, Observer { parcelable ->
             list_main.layoutManager?.onRestoreInstanceState(parcelable)

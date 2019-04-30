@@ -130,6 +130,7 @@ class DivercityMessagingService : FirebaseMessagingService() {
         sessionRepository.getDeviceId()?.let { deviceId ->
             p0?.let { token ->
                 val callback = object : DisposableObserverWrapper<Boolean>() {
+
                     override fun onFail(error: String) {
                     }
 

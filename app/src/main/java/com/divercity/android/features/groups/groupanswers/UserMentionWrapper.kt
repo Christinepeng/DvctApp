@@ -37,10 +37,18 @@ constructor() : QueryTokenReceiver, SuggestionsResultListener,
 
     companion object {
         const val BUCKET = "people-network"
+
+        private val tokenizerConfig = WordTokenizerConfig
+            .Builder()
+            .setMaxNumKeywords(2)
+            .setWordBreakChars(", ")
+            .setExplicitChars("@")
+            .setThreshold(1)
+            .build()
     }
 
-    fun setEditTextTokenize( edTxt : MentionsEditText, tokenizer: WordTokenizerConfig){
-        edTxt.tokenizer = WordTokenizer(tokenizer)
+    fun setEditTextTokenize( edTxt : MentionsEditText){
+        edTxt.tokenizer = WordTokenizer(tokenizerConfig)
         edTxt.setQueryTokenReceiver(this)
         edTxt.setSuggestionsVisibilityManager(this)
     }

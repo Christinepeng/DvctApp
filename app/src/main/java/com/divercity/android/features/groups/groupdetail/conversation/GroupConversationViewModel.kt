@@ -1,7 +1,7 @@
 package com.divercity.android.features.groups.groupdetail.conversation
 
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
-import com.divercity.android.data.entity.questions.QuestionResponse
+import com.divercity.android.model.Question
 import javax.inject.Inject
 
 /**
@@ -11,7 +11,7 @@ import javax.inject.Inject
 class GroupConversationViewModel @Inject
 constructor(
     repository: GroupConversationPaginatedRepository
-) : BaseViewModelPagination<QuestionResponse>(repository) {
+) : BaseViewModelPagination<Question>(repository) {
 
     private var groupId: String? = null
 

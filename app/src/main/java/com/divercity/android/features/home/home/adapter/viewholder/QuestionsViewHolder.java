@@ -1,9 +1,6 @@
 package com.divercity.android.features.home.home.adapter.viewholder;
 
 import android.graphics.drawable.Drawable;
-import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,8 +16,12 @@ import com.bumptech.glide.request.target.Target;
 import com.divercity.android.R;
 import com.divercity.android.core.utils.GlideApp;
 import com.divercity.android.core.utils.Util;
-import com.divercity.android.data.entity.questions.QuestionResponse;
+import com.divercity.android.model.Question;
 import com.divercity.android.repository.session.SessionRepository;
+
+import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class QuestionsViewHolder extends RecyclerView.ViewHolder {
 
@@ -57,8 +58,8 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
         imgMainPicture = itemView.findViewById(R.id.item_quest_img_main);
     }
 
-    public void bindTo(QuestionResponse data) {
-        String urlMain = data.getAttributes().getPictureMain();
+    public void bindTo(Question data) {
+        String urlMain = data.getQuestionPicUrl();
         if (urlMain != null) {
             GlideApp.with(itemView)
                     .load(urlMain)
@@ -80,14 +81,14 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
             cardViewImgMainContainer.setVisibility(View.GONE);
         }
 
-        String urlImgAuthor = data.getAttributes().getAuthorInfo().getAvatarMedium();
+        String urlImgAuthor = data.getAuthorProfilePicUrl();
         if (urlImgAuthor != null)
             GlideApp.with(itemView)
-                    .load(data.getAttributes().getAuthorInfo().getAvatarMedium())
+                    .load(urlImgAuthor)
                     .apply(new RequestOptions().circleCrop())
                     .into(mImgAuthor);
         try {
-            String urlImgAnswerAuthor = data.getAttributes().getLastActivityInfo().getAuthorInfo().getAvatarThumb();
+            String urlImgAnswerAuthor = data.getLastAnswerAuthorPicture();
             GlideApp.with(itemView)
                     .load(urlImgAnswerAuthor).into(mImgAnswerAuthor);
         } catch (NullPointerException e) {
@@ -96,12 +97,12 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
                     .into(mImgAnswerAuthor);
 //            mImgAnswerAuthor.setImageResource(R.drawable.tab_profile_inactive);
         }
-        mTxtQuestion.setText(data.getAttributes().getText());
-        mTxtAuthorTime.setText(" · " + data.getAttributes().getAuthorInfo().getNickname() + " · " + Util.getTimeAgoWithStringServerDate(data.getAttributes().getCreatedAt()));
-        mTxtGroupName.setText(data.getAttributes().getGroup().get(0).getTitle());
+        mTxtQuestion.setText(data.getQuestion());
+        mTxtAuthorTime.setText(" · " + data.getAuthorName() + " · " + Util.getTimeAgoWithStringServerDate(data.getCreatedAt()));
+        mTxtGroupName.setText(data.getGroupTitle());
         try {
-            mTxtAnswer.setText(data.getAttributes().getLastActivityInfo().getAuthorInfo().getName() + ": " +
-                    data.getAttributes().getLastActivityInfo().getAnswerInfo().getText());
+            mTxtAnswer.setText(data.getLastAnswerAuthorName() + ": " +
+                    data.getLastAnswer());
         } catch (NullPointerException e) {
             mTxtAnswer.setText("");
             mTxtAnswer.setHint("Be the first to comment");
@@ -121,6 +122,6 @@ public class QuestionsViewHolder extends RecyclerView.ViewHolder {
 
     public interface Listener {
 
-        void onQuestionClick(QuestionResponse question);
+        void onQuestionClick(Question question);
     }
 }

@@ -20,8 +20,6 @@ import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.divercity.android.features.home.home.datasource.QuestionsPaginatedRepositoryImpl
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase
 import com.divercity.android.features.home.home.usecase.FetchUnreadMessagesCountUseCase
-import com.divercity.android.features.home.home.usecase.GetStoriesFeatured
-import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,11 +29,9 @@ import javax.inject.Inject
 class HomeViewModel @Inject
 constructor(
     private val questionsRepository: QuestionsPaginatedRepositoryImpl,
-    private val getStoriesFeatured: GetStoriesFeatured,
     private val fetchFeedRecommendedJobsGroupsUseCase: FetchFeedRecommendedJobsGroupsUseCase,
     private val joinGroupUseCase: JoinGroupUseCase,
     private val requestToJoinUseCase: RequestJoinGroupUseCase,
-    private val session: SessionRepository,
     private val fetchUnreadMessagesCountUseCase: FetchUnreadMessagesCountUseCase
 ) : BaseViewModel() {
 

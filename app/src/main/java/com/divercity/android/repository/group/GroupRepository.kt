@@ -3,7 +3,7 @@ package com.divercity.android.repository.group
 import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
-import com.divercity.android.data.entity.group.answer.response.AnswerResponse
+import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.groupadmin.AddGroupAdminsBody
@@ -13,7 +13,7 @@ import com.divercity.android.data.entity.group.invitation.user.GroupInviteUser
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
-import com.divercity.android.data.entity.questions.QuestionResponse
+import com.divercity.android.model.Question
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
@@ -61,7 +61,7 @@ interface GroupRepository {
         page: Int,
         size: Int,
         query: String?
-    ): Observable<List<QuestionResponse>>
+    ): Observable<List<Question>>
 
     fun fetchGroupAdmins(
         groupId: String,
@@ -96,26 +96,26 @@ interface GroupRepository {
 
     fun createNewTopic(
         question: String, groupId: String, image: String?
-    ): Observable<QuestionResponse>
+    ): Observable<Question>
 
     fun fetchAnswers(
         questionId: String,
         pageNumber: Int,
         size: Int,
         query: String?
-    ): Observable<List<AnswerResponse>>
+    ): Observable<List<AnswerEntityResponse>>
 
     fun deleteGroup(groupId: String): Observable<Boolean>
 
     fun fetchGroupById(groupId: String): Observable<GroupResponse>
 
-    fun getPagedAnswersByQuestionId(questionId: Int): DataSource.Factory<Int, AnswerResponse>
+    fun getPagedAnswersByQuestionId(questionId: Int): DataSource.Factory<Int, AnswerEntityResponse>
 
-    suspend fun insertAnswers(answers: List<AnswerResponse>)
+    suspend fun insertAnswers(answers: List<AnswerEntityResponse>)
 
-    suspend fun insertAnswer(answer: AnswerResponse)
+    suspend fun insertAnswer(answer: AnswerEntityResponse)
 
-    fun sendNewAnswer(body: AnswerBody): Observable<AnswerResponse>
+    fun sendNewAnswer(body: AnswerBody): Observable<AnswerEntityResponse>
 
     fun acceptGroupInvite(inviteId: String): Observable<Unit>
 
@@ -143,4 +143,10 @@ interface GroupRepository {
         groupId: String,
         adminsId: List<String>
     ): Observable<Unit>
+
+    fun fetchFeedQuestions(pageNumber: Int, size: Int): Observable<List<Question>>
+
+    fun fetchQuestionById(
+        questionId: String
+    ): Observable<Question>
 }

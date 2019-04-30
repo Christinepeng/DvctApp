@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
 import com.divercity.android.data.entity.group.group.GroupResponse
@@ -19,8 +18,8 @@ import javax.inject.Inject
 class GroupDetailViewPagerAdapter
 @Inject constructor(
         val context: Context,
-        fm: FragmentManager
-) : FragmentStatePagerAdapter(fm) {
+        fm: GroupDetailFragment
+) : FragmentStatePagerAdapter(fm.childFragmentManager) {
 
     private var registeredFragments = SparseArray<Fragment>()
 

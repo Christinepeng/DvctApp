@@ -22,12 +22,6 @@ class ApiServiceModule {
 
     @Provides
     @Singleton
-    fun provideInterestService(@Named("auth") retrofit: Retrofit): FeedService {
-        return retrofit.create(FeedService::class.java)
-    }
-
-    @Provides
-    @Singleton
     fun provideUserService(@Named("auth") retrofit: Retrofit): UserService {
         return retrofit.create(UserService::class.java)
     }

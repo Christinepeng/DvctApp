@@ -1,14 +1,5 @@
 package com.divercity.android.features.home.home.adapter;
 
-import androidx.paging.AsyncPagedListDiffer;
-import androidx.paging.PagedList;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.AsyncDifferConfig;
-import androidx.recyclerview.widget.AdapterListUpdateCallback;
-import androidx.recyclerview.widget.DiffUtil;
-import androidx.recyclerview.widget.ListUpdateCallback;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.divercity.android.R;
@@ -17,13 +8,23 @@ import com.divercity.android.core.ui.NetworkStateViewHolder;
 import com.divercity.android.core.ui.RetryCallback;
 import com.divercity.android.data.entity.home.HomeItem;
 import com.divercity.android.data.entity.home.Recommended;
-import com.divercity.android.data.entity.questions.QuestionResponse;
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedAdapter;
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder;
 import com.divercity.android.features.home.home.adapter.viewholder.RecommendedViewHolder;
+import com.divercity.android.model.Question;
 import com.divercity.android.repository.session.SessionRepository;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.paging.AsyncPagedListDiffer;
+import androidx.paging.PagedList;
+import androidx.recyclerview.widget.AdapterListUpdateCallback;
+import androidx.recyclerview.widget.AsyncDifferConfig;
+import androidx.recyclerview.widget.DiffUtil;
+import androidx.recyclerview.widget.ListUpdateCallback;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeAdapterOld extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
@@ -107,7 +108,7 @@ public class HomeAdapterOld extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case R.layout.item_question:
-                ((QuestionsViewHolder) holder).bindTo((QuestionResponse) mDiffer.getItem(position));
+                ((QuestionsViewHolder) holder).bindTo((Question) mDiffer.getItem(position));
                 break;
             case R.layout.view_network_state:
                 ((NetworkStateViewHolder) holder).bindTo(networkState);

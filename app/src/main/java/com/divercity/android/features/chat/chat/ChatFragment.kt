@@ -25,7 +25,6 @@ import com.divercity.android.features.chat.chat.chatadapter.ChatViewHolder
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.groups.groupanswers.UserMentionWrapper
 import com.linkedin.android.spyglass.suggestions.SuggestionsResult
-import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig
 import kotlinx.android.synthetic.main.fragment_chat.*
 import kotlinx.android.synthetic.main.view_image_btn_full.view.*
 import kotlinx.android.synthetic.main.view_image_btn_small.view.*
@@ -58,14 +57,6 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
         private const val PARAM_USER_ID = "paramUserId"
         private const val PARAM_DISPLAY_NAME = "paramDisplayName"
         private const val PARAM_CHAT_ID = "paramChatId"
-
-        private val tokenizerConfig = WordTokenizerConfig
-            .Builder()
-            .setMaxNumKeywords(2)
-            .setWordBreakChars(", ")
-            .setExplicitChars("@")
-            .setThreshold(1)
-            .build()
 
         fun newInstance(userName: String, userId: String?, chatId: Int?): ChatFragment {
             val fragment = ChatFragment()
@@ -110,7 +101,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
 
     private fun setupView() {
 
-        userMentionWrapper.setEditTextTokenize(et_msg, tokenizerConfig)
+        userMentionWrapper.setEditTextTokenize(et_msg)
         userMentionWrapper.mentionsEdTxt = et_msg
         userMentionWrapper.list_users = list_users
         userMentionWrapper.fetchUsers = { searchQuery, queryToken ->

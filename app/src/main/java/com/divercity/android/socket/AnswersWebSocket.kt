@@ -2,9 +2,9 @@ package com.divercity.android.socket
 
 import com.divercity.android.core.utils.MySocket
 import com.divercity.android.core.utils.Util
-import com.divercity.android.data.entity.group.answer.response.AnswerResponse
-import com.divercity.android.data.entity.group.answer.response.Attributes
-import com.divercity.android.data.entity.group.answer.response.AuthorInfo
+import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
+import com.divercity.android.data.entity.group.answer.response.AttributesEntity
+import com.divercity.android.data.entity.group.answer.response.AuthorInfoEntity
 import com.google.gson.Gson
 import com.google.gson.JsonParser
 import com.google.gson.annotations.SerializedName
@@ -46,14 +46,14 @@ constructor(private val socket: MySocket) {
 
                         if (message.has("question_type")) {
                             val r = Gson().fromJson(message, SocketAnswerResponse::class.java)
-                            val answerResponse = AnswerResponse(
-                                Attributes(
+                            val answerResponse = AnswerEntityResponse(
+                                AttributesEntity(
                                     text = r.answerText,
                                     rawText = r.answerText,
                                     authorId = r.answerAuthorId,
                                     createdAt = Util.getDateWithServerTimeStamp(r.createdAt),
                                     questionId = r.questionId,
-                                    authorInfo = AuthorInfo(
+                                    authorInfo = AuthorInfoEntity(
                                         name = r.answerAuthorName,
                                         avatarMedium = r.answerAuthorAvatarMedium,
                                         avatarThumb = r.answerAuthorAvatarThumb,
@@ -89,7 +89,7 @@ constructor(private val socket: MySocket) {
     }
 
     interface Listener {
-        fun onAnswerReceived(answer: AnswerResponse)
+        fun onAnswerReceived(answer: AnswerEntityResponse)
     }
 
     data class SocketAnswerResponse(

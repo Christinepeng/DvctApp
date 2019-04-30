@@ -2,7 +2,7 @@ package com.divercity.android.data.entity.group.answer.response
 
 import com.google.gson.annotations.SerializedName
 
-data class Data(
+data class DataEntity(
 
 	@field:SerializedName("id")
 	val id: String? = null,

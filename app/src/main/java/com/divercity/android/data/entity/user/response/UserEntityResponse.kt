@@ -11,7 +11,6 @@ import com.divercity.android.db.converter.CompanyTypeConverter
 import com.divercity.android.db.converter.IntListTypeConverter
 import com.divercity.android.db.converter.StringListTypeConverter
 import com.divercity.android.model.user.User
-import com.divercity.android.model.user.UserCompany
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "user", primaryKeys = ["id"])
@@ -57,10 +56,8 @@ data class UserEntityResponse(
         answersCount = userAttributes?.answersCount,
         ageRange = userAttributes?.ageRange,
         avatarThumb = userAttributes?.avatarThumb,
-        company = UserCompany(
-            userAttributes?.company?.name,
-            userAttributes?.company?.id
-        ),
+        companyId = userAttributes?.company?.id,
+        companyName = userAttributes?.company?.name,
         connected = userAttributes?.connected,
         createdAt = userAttributes?.createdAt,
         email = userAttributes?.email,

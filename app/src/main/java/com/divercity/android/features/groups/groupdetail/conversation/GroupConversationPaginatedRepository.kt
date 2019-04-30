@@ -3,8 +3,8 @@ package com.divercity.android.features.groups.groupdetail.conversation
 import com.divercity.android.core.base.datasource.BaseDataSourceRepository
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.features.groups.groupdetail.conversation.usecase.FetchGroupConversationsCase
+import com.divercity.android.model.Question
 import javax.inject.Inject
 
 /**
@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 class GroupConversationPaginatedRepository @Inject
 constructor(private val fetchGroupConversationsCase: FetchGroupConversationsCase) :
-    BaseDataSourceRepository<QuestionResponse>() {
+    BaseDataSourceRepository<Question>() {
 
-    override fun getUseCase(): UseCase<List<QuestionResponse>, Params> {
+    override fun getUseCase(): UseCase<List<Question>, Params> {
         return fetchGroupConversationsCase
     }
 

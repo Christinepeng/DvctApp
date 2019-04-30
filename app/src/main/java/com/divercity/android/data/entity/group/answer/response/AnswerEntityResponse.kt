@@ -17,11 +17,11 @@ import com.google.gson.annotations.SerializedName
     StringListTypeConverter::class,
     DateTypeConverter::class
 )
-data class AnswerResponse(
+data class AnswerEntityResponse(
 
     @field:SerializedName("attributes")
     @Embedded(prefix = "attr_")
-    var attributes: Attributes? = null,
+    var attributes: AttributesEntity? = null,
 
     @field:SerializedName("id")
     var id: String = "-1",
@@ -32,6 +32,6 @@ data class AnswerResponse(
 
     @Ignore
     @field:SerializedName("relationships")
-    var relationships: Relationships? = null
+    var relationships: RelationshipsEntity? = null
 
 }

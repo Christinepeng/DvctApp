@@ -8,13 +8,13 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
-import com.divercity.android.data.entity.group.answer.response.AnswerResponse
+import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import kotlinx.android.synthetic.main.item_answer.view.*
 
 class AnswerViewHolder
 private constructor(itemView: View, val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(data: AnswerResponse?, next: AnswerResponse?) {
+    fun bindTo(data: AnswerEntityResponse?, next: AnswerEntityResponse?) {
         data?.attributes?.let { answer ->
             itemView.apply {
                 txt_msg.text = answer.text

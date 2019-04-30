@@ -11,12 +11,12 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.data.entity.home.Recommended
 import com.divercity.android.data.entity.job.response.JobResponse
-import com.divercity.android.data.entity.questions.QuestionResponse
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedAdapter
 import com.divercity.android.features.home.home.adapter.viewholder.JobFeedViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.RecommendedViewHolder
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
+import com.divercity.android.model.Question
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
@@ -60,7 +60,7 @@ constructor(val sessionRepository: SessionRepository) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             R.layout.item_question -> (holder as QuestionsViewHolder)
-                .bindTo(getItem(position) as QuestionResponse)
+                .bindTo(getItem(position) as Question)
             R.layout.view_network_state -> (holder as NetworkStateViewHolder)
                 .bindTo(networkState)
             R.layout.item_list_recommended -> (holder as RecommendedViewHolder)
@@ -79,7 +79,7 @@ constructor(val sessionRepository: SessionRepository) :
             R.layout.view_network_state
         } else if (position == 0) {
             R.layout.item_list_recommended
-        } else if (getItem(position) is QuestionResponse) {
+        } else if (getItem(position) is Question) {
             R.layout.item_question
         } else
             R.layout.item_feed_job

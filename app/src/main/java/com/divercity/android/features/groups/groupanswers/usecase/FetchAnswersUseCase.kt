@@ -1,7 +1,7 @@
 package com.divercity.android.features.groups.groupanswers.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.group.answer.response.AnswerResponse
+import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import com.divercity.android.repository.group.GroupRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -17,9 +17,9 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: GroupRepository
-) : UseCase<List<AnswerResponse>, FetchAnswersUseCase.Params>(executorThread, uiThread) {
+) : UseCase<List<AnswerEntityResponse>, FetchAnswersUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<List<AnswerResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<AnswerEntityResponse>> {
         return repository.fetchAnswers(
             params.questionId,
             params.page,

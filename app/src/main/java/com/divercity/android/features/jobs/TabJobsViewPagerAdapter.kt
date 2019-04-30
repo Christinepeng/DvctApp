@@ -4,7 +4,6 @@ import android.content.Context
 import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
 import com.divercity.android.features.jobs.applications.JobsApplicationsFragment
@@ -21,9 +20,9 @@ import javax.inject.Inject
 class TabJobsViewPagerAdapter
 @Inject constructor(
     val context: Context,
-    fm: FragmentManager,
+    fm: TabJobsFragment,
     private val sessionRepository: SessionRepository
-) : FragmentStatePagerAdapter(fm) {
+) : FragmentStatePagerAdapter(fm.childFragmentManager) {
 
     private val PAGE_COUNT = 3
 

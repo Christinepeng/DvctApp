@@ -1,9 +1,8 @@
-package com.divercity.android.data.entity.group.answer.response
+package com.divercity.android.data.entity.questions
 
 import com.google.gson.annotations.SerializedName
-import javax.annotation.Generated
 
-data class AuthorInfo(
+data class LatestAnswerersInfoItemEntity(
 
 	@field:SerializedName("avatar_medium")
 	val avatarMedium: String? = null,
@@ -20,6 +19,6 @@ data class AuthorInfo(
 	@field:SerializedName("last_name")
 	val lastName: String? = null,
 
-	@field:SerializedName("present")
-	val present: Boolean? = null
+	@field:SerializedName("id")
+	val id: Int? = null
 )

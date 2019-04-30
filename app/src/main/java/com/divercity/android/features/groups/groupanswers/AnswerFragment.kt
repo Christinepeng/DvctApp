@@ -23,9 +23,8 @@ import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerAdapter
 import com.divercity.android.features.groups.groupanswers.answeradapter.AnswerViewHolder
-import com.divercity.android.features.groups.groupanswers.model.Question
+import com.divercity.android.model.Question
 import com.linkedin.android.spyglass.suggestions.SuggestionsResult
-import com.linkedin.android.spyglass.tokenization.impl.WordTokenizerConfig
 import kotlinx.android.synthetic.main.fragment_answers.*
 import kotlinx.android.synthetic.main.view_image_btn_full.view.*
 import kotlinx.android.synthetic.main.view_image_btn_small.view.*
@@ -47,29 +46,22 @@ class AnswerFragment : BaseFragment() {
     @Inject
     lateinit var adapter: AnswerAdapter
 
-//    lateinit var userAdapter: UserMentionAdapter
-
     @Inject
     lateinit var userMentionWrapper: UserMentionWrapper
 
-    var question: Question? = null
+    //    var question: Question? = null
     private var photoFile: File? = null
 
     companion object {
 
-        private const val PARAM_QUESTION = "paramQuestionId"
-        private val tokenizerConfig = WordTokenizerConfig
-            .Builder()
-            .setMaxNumKeywords(2)
-            .setWordBreakChars(", ")
-            .setExplicitChars("@")
-            .setThreshold(1)
-            .build()
+        private const val PARAM_QUESTION = "paramQuestion"
+        private const val PARAM_QUESTION_ID = "paramQuestionId"
 
-        fun newInstance(question: Question): AnswerFragment {
+        fun newInstance(questionId: String?, question: Question?): AnswerFragment {
             val fragment = AnswerFragment()
             val arguments = Bundle()
             arguments.putParcelable(PARAM_QUESTION, question)
+            arguments.putString(PARAM_QUESTION_ID, questionId)
             fragment.arguments = arguments
             return fragment
         }
@@ -81,40 +73,14 @@ class AnswerFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(AnswerViewModel::class.java)
-        question = arguments?.getParcelable(PARAM_QUESTION)
-        viewModel.start(question)
 
-        userMentionWrapper.setEditTextTokenize(et_msg, tokenizerConfig)
-        userMentionWrapper.mentionsEdTxt = et_msg
-        userMentionWrapper.list_users = list_users
-        userMentionWrapper.fetchUsers = { searchQuery, queryToken ->
-            viewModel.fetchGroupMembers(
-                question!!.groupId.toString(),
-                0,
-                10,
-                searchQuery,
-                queryToken
-            )
-        }
-
-        KeyboardVisibilityEvent.setEventListener(activity!!) {
-            if (it) {
-                group_header.visibility = View.GONE
-                item_quest_cardview_pic_main.visibility = View.GONE
-            } else {
-                group_header.visibility = View.VISIBLE
-                if (question?.questionPicUrl != null) {
-                    item_quest_cardview_pic_main.visibility = View.VISIBLE
-                }
-            }
-        }
-
-        (activity as AppCompatActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
-            supportActionBar?.let {
-                it.title = question?.groupTitle
-                it.setDisplayHomeAsUpEnabled(true)
-            }
+        val question = arguments?.getParcelable<Question>(PARAM_QUESTION)
+        if (question != null) {
+            viewModel.questionLiveData.postValue(question)
+            viewModel.start(question.id!!)
+        } else {
+            viewModel.start(arguments?.getString(PARAM_QUESTION_ID)!!)
+            viewModel.fetchQuestionById()
         }
 
         subscribeToLiveData()
@@ -124,39 +90,9 @@ class AnswerFragment : BaseFragment() {
     private fun setupView() {
         showProgressNoBk()
 
-        Glide
-            .with(this)
-            .load(question?.authorProfilePicUrl)
-            .apply(RequestOptions().circleCrop())
-            .into(img_user)
-
-        txt_name.text = question?.authorName
-
-        img_user.setOnClickListener {
-            navigator.navigateToOtherUserProfile(this@AnswerFragment, question?.authorId)
-        }
-
-        txt_name.setOnClickListener {
-            navigator.navigateToOtherUserProfile(this@AnswerFragment, question?.authorId)
-        }
-
-        txt_date.text = Util.getTimeAgoWithStringServerDate(question?.createdAt)
-
-        if (question?.questionPicUrl != null) {
-            Glide
-                .with(this)
-                .load(question?.questionPicUrl)
-                .into(item_quest_img_main)
-
-            item_quest_img_main.setOnClickListener {
-                lay_image_full_screen.visibility = View.VISIBLE
-                GlideApp.with(this)
-                    .load(question?.questionPicUrl)
-                    .into(lay_image_full_screen.img_full_screen)
-            }
-        } else {
-            item_quest_cardview_pic_main.visibility = View.GONE
-        }
+        userMentionWrapper.setEditTextTokenize(et_msg)
+        userMentionWrapper.mentionsEdTxt = et_msg
+        userMentionWrapper.list_users = list_users
 
         lay_image.btn_remove_img.setOnClickListener {
             photoFile = null
@@ -193,6 +129,7 @@ class AnswerFragment : BaseFragment() {
                     .into(lay_image_full_screen.img_full_screen)
             }
         }
+
         list.adapter = adapter
         adapter.registerAdapterDataObserver(object : RecyclerView.AdapterDataObserver() {
 
@@ -203,7 +140,6 @@ class AnswerFragment : BaseFragment() {
             }
         })
 
-        txt_question.text = question?.question
 
         list.addOnScrollListener(object : RecyclerView.OnScrollListener() {
 
@@ -212,6 +148,77 @@ class AnswerFragment : BaseFragment() {
                     checkEndOffset() // Each time when list is scrolled check if end of the list is reached
             }
         })
+    }
+
+    private fun showData(question: Question?) {
+        if (question != null) {
+
+            (activity as AppCompatActivity).apply {
+                setSupportActionBar(include_toolbar.toolbar)
+                supportActionBar?.let {
+                    it.title = question.groupTitle
+                    it.setDisplayHomeAsUpEnabled(true)
+                }
+            }
+
+            userMentionWrapper.fetchUsers = { searchQuery, queryToken ->
+                viewModel.fetchGroupMembers(
+                    question.groupId.toString(),
+                    0,
+                    10,
+                    searchQuery,
+                    queryToken
+                )
+            }
+
+            KeyboardVisibilityEvent.setEventListener(activity!!) {
+                if (it) {
+                    group_header.visibility = View.GONE
+                    item_quest_cardview_pic_main.visibility = View.GONE
+                } else {
+                    group_header.visibility = View.VISIBLE
+                    if (question.questionPicUrl != null) {
+                        item_quest_cardview_pic_main.visibility = View.VISIBLE
+                    }
+                }
+            }
+
+            Glide
+                .with(this)
+                .load(question.authorProfilePicUrl)
+                .apply(RequestOptions().circleCrop())
+                .into(img_user)
+
+            txt_name.text = question.authorName
+
+            img_user.setOnClickListener {
+                navigator.navigateToOtherUserProfile(this@AnswerFragment, question.authorId)
+            }
+
+            txt_name.setOnClickListener {
+                navigator.navigateToOtherUserProfile(this@AnswerFragment, question.authorId)
+            }
+
+            txt_date.text = Util.getTimeAgoWithStringServerDate(question?.createdAt)
+
+            if (question.questionPicUrl != null) {
+                Glide
+                    .with(this)
+                    .load(question.questionPicUrl)
+                    .into(item_quest_img_main)
+
+                item_quest_img_main.setOnClickListener {
+                    lay_image_full_screen.visibility = View.VISIBLE
+                    GlideApp.with(this)
+                        .load(question.questionPicUrl)
+                        .into(lay_image_full_screen.img_full_screen)
+                }
+            } else {
+                item_quest_cardview_pic_main.visibility = View.GONE
+            }
+
+            txt_question.text = question?.question
+        }
     }
 
     private fun checkIfHasToScrollDown(): Boolean {
@@ -300,6 +307,10 @@ class AnswerFragment : BaseFragment() {
                     userMentionWrapper.onReceiveSuggestionsResult(result, UserMentionWrapper.BUCKET)
                 }
             }
+        })
+
+        viewModel.questionLiveData.observe(viewLifecycleOwner, Observer {
+            showData(it)
         })
     }
 

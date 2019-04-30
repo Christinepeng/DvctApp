@@ -42,20 +42,24 @@ class SplashFragment : BaseFragment() {
 
     private fun initBranch() {
 //        Deep link routing
-        Branch.getInstance().initSession({ referringParams, error ->
-            if (error == null) {
-                Timber.e("BRANCH SDK $referringParams")
+        if(requireActivity().isTaskRoot) {
+            Branch.getInstance().initSession({ referringParams, error ->
+                if (error == null) {
+                    Timber.e("BRANCH SDK $referringParams")
 
-                if (referringParams.optBoolean("+clicked_branch_link", false)) {
-                    viewModel.checkRouteDeepLink(referringParams)
+                    if (referringParams.optBoolean("+clicked_branch_link", false)) {
+                        viewModel.checkRouteDeepLink(referringParams)
+                    } else {
+                        viewModel.checkRouteNoDeepLink()
+                    }
                 } else {
-                    viewModel.checkRouteNoDeepLink()
+                    Timber.e("BRANCH SDK ${error.message}")
+                    viewModel.showBranIOErrorDialog.call()
                 }
-            } else {
-                Timber.e("BRANCH SDK ${error.message}")
-                viewModel.showBranIOErrorDialog.call()
-            }
-        }, requireActivity().intent?.data, requireActivity())
+            }, requireActivity().intent?.data, requireActivity())
+        } else {
+            finish()
+        }
     }
 
     private fun subscribeToLiveData() {
@@ -68,10 +72,10 @@ class SplashFragment : BaseFragment() {
         })
 
         viewModel.navigateToHome.observe(this, Observer {
-            navigator.navigateToHomeActivity(activity!!)
+            navigator.navigateToHomeActivity(requireActivity())
 //            navigator.navigateToSelectGroupActivity(requireActivity(), 25)
 //            navigator.navigateToSelectCompanyActivity(requireActivity(), 20)
-            activity!!.finish()
+            finish()
         })
 
         viewModel.showBranIOErrorDialog.observe(this, Observer {
@@ -82,19 +86,23 @@ class SplashFragment : BaseFragment() {
         })
 
         viewModel.navigateToSelectUserType.observe(this, Observer {
-            navigator.navigateToSelectUserTypeActivity(activity!!)
-            activity!!.finish()
+            navigator.navigateToSelectUserTypeActivity(requireActivity())
+            finish()
         })
 
         viewModel.navigateToEnterEmail.observe(this, Observer {
-            navigator.navigateToEnterEmailActivity(activity!!)
-            activity!!.finish()
+            navigator.navigateToEnterEmailActivity(requireActivity())
+            finish()
         })
 
         viewModel.navigateToGroupDetail.observe(this, Observer {
             navigator.navigateToGroupDetail(this, it.toString())
-            activity!!.finish()
+            finish()
         })
+    }
+
+    private fun finish(){
+        requireActivity().finish()
     }
 
     private fun showErrorDialog(msg: String, action: () -> Unit) {

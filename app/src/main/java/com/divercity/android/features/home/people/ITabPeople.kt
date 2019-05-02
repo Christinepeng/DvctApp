@@ -6,5 +6,5 @@ package com.divercity.android.features.home.people
  
 interface ITabPeople {
 
-    fun search(search : String?)
+    fun search(query : String?)
 }

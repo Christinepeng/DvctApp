@@ -46,7 +46,7 @@ constructor() : PagerAdapter() {
         val view = layoutInflater!!.inflate(R.layout.view_pager_panel_group, null)
 
         item?.also { item ->
-            item.attributes?.also {
+            item.attributes.also {
                 GlideApp.with(container)
                     .load(it.pictureMain)
                     .into(view.img_group)
@@ -83,9 +83,9 @@ constructor() : PagerAdapter() {
         val view: View = viewGroup.findViewWithTag(position)
 
         list?.get(position)?.apply {
-            attributes?.also {
+            attributes.also {
                 it.isFollowedByCurrent = true
-                it.followersCount = it.followersCount?.plus(1)
+                it.followersCount = it.followersCount.plus(1)
 
                 view.txt_members.text = it.followersCount.toString().plus(" Members")
             }

@@ -41,7 +41,7 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
         }
         val user = UserProfileEntity()
         user.ethnicity = ethnicity
-        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     fun getAccountType(): String {

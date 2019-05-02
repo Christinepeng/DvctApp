@@ -165,8 +165,8 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabPeople {
 
     }
 
-    override fun search(search: String?) {
-        viewModel.fetchData(viewLifecycleOwner, search)
+    override fun search(query: String?) {
+        viewModel.fetchData(viewLifecycleOwner, query)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

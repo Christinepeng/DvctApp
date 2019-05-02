@@ -46,7 +46,7 @@ public class SelectUserTypeViewModel extends BaseViewModel {
         };
         UserProfileEntity user = new UserProfileEntity();
         user.setAccountType(typeId);
-        updateUserProfileUseCase.execute(callback,UpdateUserProfileUseCase.Params.forUser(user));
+        updateUserProfileUseCase.execute(callback,new UpdateUserProfileUseCase.Params(user));
     }
 
     @Override

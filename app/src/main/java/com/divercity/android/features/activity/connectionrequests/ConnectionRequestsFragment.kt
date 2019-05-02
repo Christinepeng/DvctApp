@@ -90,6 +90,11 @@ class ConnectionRequestsFragment : BaseFragment(), RetryCallback {
                 if (networkState?.status != Status.LOADING)
                     isListRefreshing = false
 
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
+                    txt_no_requests.visibility = View.VISIBLE
+                else
+                    txt_no_requests.visibility = View.GONE
+
                 swipe_list_main.isRefreshing = isListRefreshing
             }
 

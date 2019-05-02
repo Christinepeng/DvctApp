@@ -130,6 +130,10 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
 
         adapter.chatListener = object : ChatViewHolder.Listener {
 
+            override fun onNavigateToProfile(userId: String) {
+                navigator.navigateToOtherUserProfile(this@ChatFragment,userId)
+            }
+
             override fun onJobApply(jobId: String) {
                 showJobApplyDialog(jobId)
             }
@@ -307,7 +311,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.menu_search, menu)
+        inflater.inflate(R.menu.menu_threedots, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
 

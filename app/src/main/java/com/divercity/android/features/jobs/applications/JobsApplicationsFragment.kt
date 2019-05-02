@@ -95,7 +95,7 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedJobsList?.observe(this, Observer {
+        viewModel.pagedJobsList.observe(this, Observer {
             adapter.submitList(it)
         })
 

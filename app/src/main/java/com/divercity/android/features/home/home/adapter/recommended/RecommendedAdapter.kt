@@ -46,7 +46,7 @@ constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     fun updatePositionOnJoinGroup(position: Int){
-        (data?.get(position) as GroupResponse).attributes?.apply {
+        (data?.get(position) as GroupResponse).attributes.apply {
             followersCount += 1
             isFollowedByCurrent = true
             notifyItemChanged(position)
@@ -55,7 +55,7 @@ constructor() : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     fun updatePositionOnJoinRequest(position: Int){
         // TODO: update with response group data
-        (data?.get(position) as GroupResponse).attributes?.apply {
+        (data?.get(position) as GroupResponse).attributes.apply {
             requestToJoinStatus = "pending"
             notifyItemChanged(position)
         }

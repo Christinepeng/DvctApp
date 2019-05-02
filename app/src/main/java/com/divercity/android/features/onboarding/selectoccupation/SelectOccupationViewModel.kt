@@ -49,7 +49,7 @@ constructor(
         }
         val user = UserProfileEntity()
         user.occupation = occupation
-        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     override fun onCleared() {

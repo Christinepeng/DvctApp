@@ -20,7 +20,7 @@ constructor(
     private val sessionRepository: SessionRepository
 ) : UseCase<Int, Any?>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(a: Any?): Observable<Int> {
+    override fun createObservableUseCase(params: Any?): Observable<Int> {
         return repository.fetchUnreadMessagesCount(sessionRepository.getUserId())
     }
 }

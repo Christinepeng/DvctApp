@@ -14,6 +14,7 @@ import com.divercity.android.data.entity.activity.notification.NotificationRespo
 import com.divercity.android.features.activity.notifications.model.NotificationPositionModel
 import kotlinx.android.synthetic.main.item_notification.view.*
 
+@Suppress("DEPRECATION")
 class NotificationsViewHolder
 private constructor(
     itemView: View,

@@ -32,7 +32,7 @@
     <string name="not_now">Not Now</string>
     <string name="maybe_later">Maybe later</string>
     <string name="no_notifications">You have no activity yet; post or respond/react to a question or comment so we can get this show on the road</string>
-    <string name="no_connection_requests">No Requests Yet</string>
+    <string name="no_requests_yet">No Requests Yet</string>
     <string name="me">Me</string>
     <string name="add">ADD</string>
     <string name="search_company">Please, search to show results</string>
@@ -66,6 +66,7 @@
     <string name="education">Education</string>
     <string name="view_resume">View Resume</string>
     <string name="connection_requests">Connection Requests</string>
+    <string name="requests">Requests</string>
     <string name="upload_your_resume">Upload your resume</string>
     <string name="upload_resume_prompt">Profiles with resumes have a higher response rate from recruiters.</string>
     <string name="upload_a_resume">Upload a resume</string>

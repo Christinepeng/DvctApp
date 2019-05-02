@@ -40,10 +40,19 @@ private constructor(
                 txt_msg.text = it.message
                 txt_time.text = Util.getStringAppTimeWithString(it.messageCreatedAt)
 
-                if (currentUserId == it.fromUserId.toString())
+                if (currentUserId == it.fromUserId.toString()) {
                     txt_name.text = context.getString(R.string.me)
-                else
+                    txt_name.setOnClickListener(null)
+                    img_user.setOnClickListener(null)
+                }else {
                     txt_name.text = it.fromUsername
+                    txt_name.setOnClickListener {
+                        listener?.onNavigateToProfile(data.fromUserId!!.toString())
+                    }
+                    img_user.setOnClickListener {
+                        listener?.onNavigateToProfile(data.fromUserId!!.toString())
+                    }
+                }
 
                 GlideApp.with(itemView)
                     .load(data.fromUserAvatarMedium)
@@ -210,5 +219,7 @@ private constructor(
         fun onJobClick(jobId: String)
 
         fun onJobApply(jobId: String)
+
+        fun onNavigateToProfile(userId: String)
     }
 }

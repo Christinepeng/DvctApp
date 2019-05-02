@@ -10,10 +10,10 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.group.ConnectionItem
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
-import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.features.activity.connectionrequests.model.GroupInvitationNotificationPosition
 import com.divercity.android.features.activity.connectionrequests.model.JoinGroupRequestPosition
 import com.divercity.android.features.activity.connectionrequests.model.UserPosition
+import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.item_connection_request.view.*
 
 class ConnectionRequestViewHolder
@@ -29,7 +29,7 @@ private constructor(
 
                 when (data) {
                     is GroupInvitationNotificationResponse -> {
-                        val groupInvitation = data as GroupInvitationNotificationResponse
+                        val groupInvitation: GroupInvitationNotificationResponse = data
                         txt_notification.text = groupInvitation.attributes?.body
 
                         GlideApp.with(this)
@@ -82,7 +82,7 @@ private constructor(
                         }
                     }
                     is JoinGroupRequestResponse -> {
-                        val joinGroup = data as JoinGroupRequestResponse
+                        val joinGroup: JoinGroupRequestResponse = data
                         txt_notification.text =
                             "${joinGroup.attributes?.userInfo?.name} " +
                                     "wants to join your group: " +
@@ -127,17 +127,17 @@ private constructor(
                             }
                         }
                     }
-                    is UserEntityResponse -> {
-                        val connectionRequest = data as UserEntityResponse
+                    is User -> {
+                        val connectionRequest: User = data
                         txt_notification.text =
-                            "${connectionRequest.userAttributes?.name} wants to connect with you"
+                            "${connectionRequest.name} wants to connect with you"
 
                         GlideApp.with(this)
-                            .load(connectionRequest.userAttributes?.avatarMedium)
+                            .load(connectionRequest.avatarMedium)
                             .apply(RequestOptions().circleCrop())
                             .into(img_user)
 
-                        if (connectionRequest.userAttributes?.connected == "pending_approval") {
+                        if (connectionRequest.connected == "pending_approval") {
                             btn_accept.visibility = View.VISIBLE
                             btn_decline.visibility = View.VISIBLE
                             img_result.visibility = View.INVISIBLE
@@ -153,13 +153,13 @@ private constructor(
                                     UserPosition(position, connectionRequest)
                                 )
                             }
-                        } else if (connectionRequest.userAttributes?.connected == "accepted") {
+                        } else if (connectionRequest.connected == "accepted") {
                             btn_accept.visibility = View.INVISIBLE
                             btn_decline.visibility = View.INVISIBLE
                             img_result.visibility = View.VISIBLE
 
                             img_result.setImageResource(R.drawable.icon_connected)
-                        } else if (connectionRequest.userAttributes?.connected == "declined") {
+                        } else if (connectionRequest.connected == "declined") {
                             btn_accept.visibility = View.INVISIBLE
                             btn_decline.visibility = View.INVISIBLE
                             img_result.visibility = View.VISIBLE

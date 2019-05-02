@@ -42,7 +42,7 @@ constructor(
         }
         val user = UserProfileEntity()
         user.jobEmployerId = company.id
-        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     fun getAccountType(): String {

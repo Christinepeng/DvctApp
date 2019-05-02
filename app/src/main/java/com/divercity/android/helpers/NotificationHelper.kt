@@ -11,6 +11,7 @@ import android.os.Build
 import androidx.core.app.NotificationCompat
 import com.divercity.android.R
 import com.divercity.android.features.chat.chat.ChatActivity
+import com.divercity.android.features.groups.groupanswers.AnswerActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
 import com.facebook.FacebookSdk.getApplicationContext
@@ -137,6 +138,38 @@ constructor(val context: Context) {
         val requestID = System.currentTimeMillis().toInt()
 
         val intent = GroupDetailActivity.getCallingIntent(context, groupId, null)
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+
+        val resultPendingIntent = PendingIntent.getActivity(
+            getApplicationContext(),
+            requestID, intent,
+            PendingIntent.FLAG_UPDATE_CURRENT
+        )
+
+        return NotificationCompat.Builder(context, GENERAL_NOTIFICATIONS)
+            .setContentTitle(title)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .bigText(body)
+                    .setBigContentTitle(title)
+            )
+            .setContentIntent(resultPendingIntent)
+            .setContentText(body)
+            .setDefaults(NotificationCompat.DEFAULT_ALL)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setSmallIcon(getSmallIcon())
+            .setAutoCancel(true)
+    }
+
+    fun getQuestionNotification(
+        title: String,
+        body: String,
+        questionId: String
+    ): NotificationCompat.Builder {
+
+        val requestID = System.currentTimeMillis().toInt()
+
+        val intent = AnswerActivity.getCallingIntent(context, questionId)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
 
         val resultPendingIntent = PendingIntent.getActivity(

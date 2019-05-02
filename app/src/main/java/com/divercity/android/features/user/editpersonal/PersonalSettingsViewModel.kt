@@ -95,7 +95,7 @@ constructor(
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }
-        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     fun checkDocumentAndUploadIt(uri: Uri) {

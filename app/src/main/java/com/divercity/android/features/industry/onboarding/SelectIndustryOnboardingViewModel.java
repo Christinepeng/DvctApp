@@ -5,12 +5,11 @@ import com.divercity.android.core.ui.NetworkState;
 import com.divercity.android.core.utils.Listing;
 import com.divercity.android.data.Resource;
 import com.divercity.android.data.entity.industry.IndustryResponse;
-import com.divercity.android.data.entity.user.response.UserEntityResponse;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.industry.base.industry.IndustryPaginatedRepositoryImpl;
 import com.divercity.android.features.industry.onboarding.usecase.FollowIndustriesUseCase;
+import com.divercity.android.model.user.User;
 import com.divercity.android.repository.session.SessionRepository;
-import com.divercity.android.repository.user.UserRepository;
 import com.google.gson.JsonElement;
 
 import java.util.List;
@@ -33,17 +32,14 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
     private Listing<IndustryResponse> listingPaginatedIndustry;
     private IndustryPaginatedRepositoryImpl repository;
     private SessionRepository sessionRepository;
-    private UserRepository userRepository;
     private FollowIndustriesUseCase followIndustriesUseCase;
-    private MutableLiveData<Resource<UserEntityResponse>> followIndustriesResponse = new MutableLiveData<>();
+    private MutableLiveData<Resource<User>> followIndustriesResponse = new MutableLiveData<>();
 
     @Inject
     public SelectIndustryOnboardingViewModel(IndustryPaginatedRepositoryImpl repository,
                                              FollowIndustriesUseCase followIndustriesUseCase,
-                                             UserRepository userRepository,
                                              SessionRepository sessionRepository) {
         this.repository = repository;
-        this.userRepository = userRepository;
         this.followIndustriesUseCase = followIndustriesUseCase;
         this.sessionRepository = sessionRepository;
         fetchIndustries(null, null);
@@ -85,7 +81,7 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
 
     public void followIndustries(List<String> industriesSelected) {
         followIndustriesResponse.postValue(Resource.Companion.loading(null));
-        DisposableObserverWrapper callback = new DisposableObserverWrapper<UserEntityResponse>() {
+        DisposableObserverWrapper callback = new DisposableObserverWrapper<User>() {
             @Override
             protected void onFail(String error) {
                 followIndustriesResponse.postValue(Resource.Companion.error(error, null));
@@ -97,14 +93,14 @@ public class SelectIndustryOnboardingViewModel extends BaseViewModel {
             }
 
             @Override
-            protected void onSuccess(UserEntityResponse o) {
+            protected void onSuccess(User o) {
                 followIndustriesResponse.postValue(Resource.Companion.success(o));
             }
         };
         followIndustriesUseCase.execute(callback, FollowIndustriesUseCase.Params.Companion.forIndustry(industriesSelected));
     }
 
-    public MutableLiveData<Resource<UserEntityResponse>> getFollowIndustriesResponse() {
+    public MutableLiveData<Resource<User>> getFollowIndustriesResponse() {
         return followIndustriesResponse;
     }
 

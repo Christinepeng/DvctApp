@@ -82,7 +82,7 @@ constructor(
             }
 
             override fun onSuccess(o: ConnectUserResponse) {
-                user.user.userAttributes?.connected = o.attributes?.status
+                user.user.connected = o.attributes?.status
                 acceptDeclineConnectionRequestResponse.postValue(Resource.success(user))
             }
         }
@@ -109,7 +109,7 @@ constructor(
             }
 
             override fun onSuccess(o: Unit) {
-                user.user.userAttributes?.connected = "declined"
+                user.user.connected = "declined"
                 acceptDeclineConnectionRequestResponse.postValue(Resource.success(user))
             }
         }

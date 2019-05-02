@@ -35,6 +35,7 @@ class DivercityMessagingService : FirebaseMessagingService() {
         const val NEW_GROUP_INVITE_PN = "NEW_GROUP_INVITE_PN"
         const val GROUP_JOIN_REQUEST = "GROUP_JOIN_REQUEST"
         const val GROUP_CREATE_ADMIN_PN = "GROUP_CREATE_ADMIN_PN"
+        const val NEW_MENTION = "NEW_MENTION"
     }
 
     override fun onCreate() {
@@ -116,6 +117,17 @@ class DivercityMessagingService : FirebaseMessagingService() {
                                     "Group admin invitation",
                                     data.data["alert"]!!,
                                     data.data["goi_id"]!!
+                                )
+                        )
+                    }
+                    NEW_MENTION -> {
+                        notificationHelper.notify(
+                            Math.random().toInt(),
+                            notificationHelper
+                                .getQuestionNotification(
+                                    "New mention",
+                                    data.data["alert"]!!,
+                                    data.data["question_id"]!!
                                 )
                         )
                     }

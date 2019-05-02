@@ -54,6 +54,7 @@ constructor(
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var pagedListLiveData: LiveData<PagedList<AnswerEntityResponse>>? = null
     var fetchGroupMembersResponse = SingleLiveEvent<Resource<QueryTokenUserMentionable>>()
+    var fetchQuestionByIdResponse = SingleLiveEvent<Resource<Any?>>()
 
     private val viewModelJob = Job()
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -130,16 +131,18 @@ constructor(
     }
 
     fun fetchQuestionById() {
+        fetchQuestionByIdResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<Question>() {
             override fun onFail(error: String) {
-
+                fetchQuestionByIdResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-
+                fetchQuestionByIdResponse.postValue(Resource.error(error.toString(), null))
             }
 
             override fun onSuccess(o: Question) {
+                fetchQuestionByIdResponse.postValue(Resource.success(null))
                 questionLiveData.value = o
             }
         }

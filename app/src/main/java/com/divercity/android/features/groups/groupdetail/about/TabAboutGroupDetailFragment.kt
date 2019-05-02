@@ -62,14 +62,14 @@ class TabAboutGroupDetailFragment : BaseFragment() {
     }
 
     fun setupView() {
-        if (group?.attributes?.description != null) {
-            txt_description.hint = group?.attributes?.description
+        if (group.attributes.description != null) {
+            txt_description.hint = group.attributes.description
             txt_description.visibility = View.VISIBLE
         } else {
             txt_description.visibility = View.GONE
         }
 
-        if (group!!.isPublic()) {
+        if (group.isPublic()) {
             img_lock_unlock.setImageDrawable(
                 ContextCompat.getDrawable(
                     context!!,
@@ -87,7 +87,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
             txt_subtitle1.text = getString(R.string.private_group)
         }
 
-        txt_members.hint = (group?.attributes?.followersCount).toString().plus(" Members")
+        txt_members.hint = (group.attributes.followersCount).toString().plus(" Members")
     }
 
     private fun showToast(msg: String?) {
@@ -140,7 +140,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                 .apply(RequestOptions().circleCrop())
                 .into(imgViews[i].img)
 
-            if (i == members.size - 1 && i != group?.attributes?.followersCount!! - 1)
+            if (i == members.size - 1 && i != group.attributes.followersCount - 1)
                 (imgViews[i] as FrameLayout).foreground =
                     ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
         }
@@ -179,7 +179,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                     txt_admins.hint = admins[i].name
                 else
                     txt_admins.hint =
-                        txt_admins.hint.toString().plus(",").plus(admins[i].name)
+                        txt_admins.hint.toString().plus(", ").plus(admins[i].name)
             }
         }
     }

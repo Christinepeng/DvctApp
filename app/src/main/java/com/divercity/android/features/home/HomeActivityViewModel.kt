@@ -19,8 +19,10 @@ class HomeActivityViewModel @Inject
 constructor(var sessionRepository: SessionRepository,
             private var saveFCMTokenUseCase: SaveFCMTokenUseCase) : BaseViewModel() {
 
-    fun getProfilePictureUrl(): String? = sessionRepository.getUserAvatarUrl()
     val navigateToGroupDetail = SingleLiveEvent<String>()
+    val updateUserProfilePic = SingleLiveEvent<Unit>()
+
+    fun getProfilePictureUrl(): String? = sessionRepository.getUserAvatarUrl()
 
     fun checkFCMDevice(){
         FirebaseMessaging.getInstance().isAutoInitEnabled = true

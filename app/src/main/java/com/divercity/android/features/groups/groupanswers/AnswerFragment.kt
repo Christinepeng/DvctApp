@@ -171,7 +171,7 @@ class AnswerFragment : BaseFragment() {
                 )
             }
 
-            KeyboardVisibilityEvent.setEventListener(activity!!) {
+            KeyboardVisibilityEvent.setEventListener(requireActivity()) {
                 if (it) {
                     group_header.visibility = View.GONE
                     item_quest_cardview_pic_main.visibility = View.GONE
@@ -199,7 +199,7 @@ class AnswerFragment : BaseFragment() {
                 navigator.navigateToOtherUserProfile(this@AnswerFragment, question.authorId)
             }
 
-            txt_date.text = Util.getTimeAgoWithStringServerDate(question?.createdAt)
+            txt_date.text = Util.getTimeAgoWithStringServerDate(question.createdAt)
 
             if (question.questionPicUrl != null) {
                 Glide
@@ -217,7 +217,7 @@ class AnswerFragment : BaseFragment() {
                 item_quest_cardview_pic_main.visibility = View.GONE
             }
 
-            txt_question.text = question?.question
+            txt_question.text = question.question
         }
     }
 
@@ -305,6 +305,22 @@ class AnswerFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     val result = SuggestionsResult(response.data?.queryToken, response.data?.users)
                     userMentionWrapper.onReceiveSuggestionsResult(result, UserMentionWrapper.BUCKET)
+                }
+            }
+        })
+
+        viewModel.fetchQuestionByIdResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
                 }
             }
         })

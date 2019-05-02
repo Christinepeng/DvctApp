@@ -47,7 +47,7 @@ constructor(
         }
         val user = UserProfileEntity()
         user.gender = gender
-        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     override fun onCleared() {

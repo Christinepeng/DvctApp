@@ -44,7 +44,7 @@ class ProfilePromptFragment : BaseFragment() {
     private fun setupView() {
         btn_next.setOnClickListener {
             navigator.navigateToNextOnboarding(activity!!,
-                    viewModel.accountType!!,
+                    viewModel.accountType,
                     0,
                     false
             )

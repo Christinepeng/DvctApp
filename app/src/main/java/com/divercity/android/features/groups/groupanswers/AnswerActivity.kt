@@ -33,4 +33,10 @@ class AnswerActivity : BaseActivity() {
         intent.getStringExtra(INTENT_EXTRA_PARAM_QUESTION_ID),
         intent.getParcelableExtra(INTENT_EXTRA_PARAM_QUESTION)
     )
+
+    override fun onBackPressed() {
+        if (isTaskRoot)
+            navigator.navigateToHomeActivity(this)
+        super.onBackPressed()
+    }
 }

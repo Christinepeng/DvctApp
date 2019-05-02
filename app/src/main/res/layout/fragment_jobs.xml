@@ -12,12 +12,12 @@
         android:background="@android:color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
         app:tabIndicatorColor="@color/colorPrimary"
         app:tabMode="fixed"
-        app:tabTextColor="@color/grey3"
         app:tabSelectedTextColor="@color/colorPrimary"
-        app:tabTextAppearance="@style/MyCustomTextAppearance" />
+        app:tabTextAppearance="@style/MyCustomTextAppearance"
+        app:tabTextColor="@color/grey3" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"

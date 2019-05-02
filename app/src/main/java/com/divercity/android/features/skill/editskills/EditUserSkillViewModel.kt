@@ -44,7 +44,7 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
         }
         val user = UserProfileEntity()
         user.skillList = skills
-        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     val accountType: String

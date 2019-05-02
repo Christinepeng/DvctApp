@@ -16,6 +16,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
+import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -31,6 +32,7 @@ class CurrentUserProfileFragment : BaseFragment() {
     lateinit var adapter: ProfileViewPagerAdapter
 
     private lateinit var viewModel: CurrentUserProfileViewModel
+    private lateinit var sharedViewModel: HomeActivityViewModel
 
     companion object {
 
@@ -47,6 +49,11 @@ class CurrentUserProfileFragment : BaseFragment() {
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory)
                 .get(CurrentUserProfileViewModel::class.java)
+        } ?: throw Exception("Invalid Fragment")
+
+        sharedViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(HomeActivityViewModel::class.java)
         } ?: throw Exception("Invalid Fragment")
     }
 
@@ -80,6 +87,8 @@ class CurrentUserProfileFragment : BaseFragment() {
     }
 
     private fun showData(user: User) {
+        sharedViewModel.updateUserProfilePic.call()
+
         GlideApp.with(this)
             .load(user.avatarMedium)
             .apply(RequestOptions().circleCrop())

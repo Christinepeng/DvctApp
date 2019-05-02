@@ -16,8 +16,8 @@ data class GroupResponse(
 ) : RecommendedItem, Parcelable {
 
     constructor(parcel: Parcel) : this(
-        parcel.readParcelable(Attributes::class.java.classLoader),
-        parcel.readString()
+        parcel.readParcelable(Attributes::class.java.classLoader)!!,
+        parcel.readString()!!
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {

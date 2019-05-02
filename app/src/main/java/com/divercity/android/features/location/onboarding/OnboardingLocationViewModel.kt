@@ -41,7 +41,7 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
         val user = UserProfileEntity()
         user.city = location.attributes?.name
         user.country = location.attributes?.countryName
-        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params.forUser(user))
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     fun getAccountType(): String {

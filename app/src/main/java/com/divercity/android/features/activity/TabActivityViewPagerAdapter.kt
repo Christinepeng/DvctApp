@@ -30,7 +30,7 @@ class TabActivityViewPagerAdapter
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
         context.getString(R.string.notifications),
-        context.getString(R.string.connection_requests)
+        context.getString(R.string.requests)
     )
 
     override fun getItem(position: Int): Fragment {

@@ -1,8 +1,6 @@
 package com.divercity.android.features.linkedin
 
 import android.annotation.TargetApi
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.net.Uri
 import android.net.http.SslError
 import android.os.Build
@@ -10,6 +8,8 @@ import android.os.Bundle
 import android.view.View
 import android.webkit.*
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
@@ -150,17 +150,17 @@ class LinkedinFragment : BaseFragment() {
         uri?.let {
             val authorizationUrl = it.toString()
             if (authorizationUrl.startsWith(REDIRECT_URI)) {
-                val uri = Uri.parse(authorizationUrl)
+                val pUri = Uri.parse(authorizationUrl)
                 //We take from the url the authorizationToken and the state token. We have to check that the state token returned by the Service is the same we sent.
                 //If not, that means the request may be a result of CSRF and must be rejected.
-                val stateToken = uri.getQueryParameter(STATE_PARAM)
+                val stateToken = pUri.getQueryParameter(STATE_PARAM)
                 if (stateToken == null || stateToken != STATE) {
                     Timber.i("State token doesn't match")
                     return true
                 }
 
                 //If the user doesn't allow authorization to our application, the authorizationToken Will be null.
-                val authorizationToken = uri.getQueryParameter(RESPONSE_TYPE_VALUE)
+                val authorizationToken = pUri.getQueryParameter(RESPONSE_TYPE_VALUE)
                 if (authorizationToken == null) {
                     Timber.i("The user doesn't allow authorization.")
                     activity!!.finish()

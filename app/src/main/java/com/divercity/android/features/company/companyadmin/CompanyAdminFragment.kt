@@ -125,7 +125,7 @@ class CompanyAdminFragment : BaseFragment(), RetryCallback {
 
         viewModel.refreshState().observe(this, Observer { networkState ->
 
-            adapter.currentList?.let { pagedList ->
+            adapter.currentList?.let { _ ->
                 if (networkState?.status != Status.LOADING)
                     isListRefreshing = false
 

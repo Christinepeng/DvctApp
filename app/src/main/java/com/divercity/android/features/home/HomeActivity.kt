@@ -25,8 +25,8 @@ import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.home.home.HomeFragment
 import com.divercity.android.features.home.people.TabPeopleFragment
 import com.divercity.android.features.jobs.TabJobsFragment
-import com.divercity.android.features.user.profilecurrentuser.CurrentUserProfileFragment
 import com.divercity.android.features.usecase.LogoutUseCase
+import com.divercity.android.features.user.profilecurrentuser.CurrentUserProfileFragment
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.android.support.DaggerAppCompatActivity
 import io.reactivex.disposables.Disposable
@@ -34,6 +34,7 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
+@Suppress("DEPRECATION")
 class HomeActivity : DaggerAppCompatActivity() {
 
     @Inject
@@ -89,6 +90,10 @@ class HomeActivity : DaggerAppCompatActivity() {
         })
 
         viewModel.checkDeepLinkRedirection()
+
+        viewModel.updateUserProfilePic.observe(this, Observer {
+            setUserProfilePicture()
+        })
     }
 
     /**
@@ -143,7 +148,10 @@ class HomeActivity : DaggerAppCompatActivity() {
 
             onNavigationItemSelectedListener = myOnNavigationItemSelectedListener
         }
+        setUserProfilePicture()
+    }
 
+    private fun setUserProfilePicture(){
         Glide
             .with(this)
             .load(viewModel.getProfilePictureUrl())

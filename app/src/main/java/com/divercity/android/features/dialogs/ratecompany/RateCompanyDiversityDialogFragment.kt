@@ -96,7 +96,7 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
                 txt_title.text = getString(R.string.rate_company_label, company?.attributes?.name)
 
                 btn_close.setOnClickListener {
-                    listener?.onDismiss()
+                    listener?.onCompanyRated()
                     dismiss()
                 }
 
@@ -124,7 +124,7 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    listener?.onDismiss()
+                    listener?.onCompanyRated()
                     dismiss()
                 }
             }
@@ -140,7 +140,7 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
 
     interface Listener {
 
-        fun onDismiss()
+        fun onCompanyRated()
     }
 
     private fun showProgress() = progressStatus(View.VISIBLE)

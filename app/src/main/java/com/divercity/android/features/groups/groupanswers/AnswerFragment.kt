@@ -177,7 +177,7 @@ class AnswerFragment : BaseFragment() {
                     item_quest_cardview_pic_main.visibility = View.GONE
                 } else {
                     group_header.visibility = View.VISIBLE
-                    if (question.questionPicUrl != null) {
+                    if (question.checkedPicture() != null) {
                         item_quest_cardview_pic_main.visibility = View.VISIBLE
                     }
                 }
@@ -201,16 +201,16 @@ class AnswerFragment : BaseFragment() {
 
             txt_date.text = Util.getTimeAgoWithStringServerDate(question.createdAt)
 
-            if (question.questionPicUrl != null) {
+            if (question.checkedPicture() != null) {
                 Glide
                     .with(this)
-                    .load(question.questionPicUrl)
+                    .load(question.checkedPicture())
                     .into(item_quest_img_main)
 
                 item_quest_img_main.setOnClickListener {
                     lay_image_full_screen.visibility = View.VISIBLE
                     GlideApp.with(this)
-                        .load(question.questionPicUrl)
+                        .load(question.checkedPicture())
                         .into(lay_image_full_screen.img_full_screen)
                 }
             } else {

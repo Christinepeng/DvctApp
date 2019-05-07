@@ -49,7 +49,6 @@ import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.features.home.home.HomeViewModel
 import com.divercity.android.features.home.people.TabPeopleViewModel
-import com.divercity.android.features.user.allconnections.AllConnectionsViewModel
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingViewModel
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
 import com.divercity.android.features.invitations.contacts.InvitePhoneContactsViewModel
@@ -80,14 +79,8 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
-import com.divercity.android.features.user.editpersonal.PersonalSettingsViewModel
-import com.divercity.android.features.user.experience.AddWorkExperienceViewModel
-import com.divercity.android.features.user.myinterests.InterestsViewModel
-import com.divercity.android.features.user.profilecurrentuser.CurrentUserProfileViewModel
-import com.divercity.android.features.user.profilecurrentuser.tabprofile.TabProfileViewModel
-import com.divercity.android.features.user.profileotheruser.OtherUserProfileViewModel
-import com.divercity.android.features.user.profileotheruser.tabprofile.TabOtherUserProfileViewModel
-import com.divercity.android.features.user.userconnections.ConnectionsViewModel
+import com.divercity.android.features.password.changepassword.ChangePasswordViewModel
+import com.divercity.android.features.password.resetpassword.ResetPasswordViewModel
 import com.divercity.android.features.settings.ProfileSettingsViewModel
 import com.divercity.android.features.settings.accountsettings.AccountSettingsViewModel
 import com.divercity.android.features.signup.SignUpViewModel
@@ -97,6 +90,15 @@ import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
 import com.divercity.android.features.skill.jobskills.JobSkillsViewModel
 import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
 import com.divercity.android.features.splash.SplashViewModel
+import com.divercity.android.features.user.allconnections.AllConnectionsViewModel
+import com.divercity.android.features.user.editpersonal.PersonalSettingsViewModel
+import com.divercity.android.features.user.experience.AddWorkExperienceViewModel
+import com.divercity.android.features.user.myinterests.InterestsViewModel
+import com.divercity.android.features.user.profilecurrentuser.CurrentUserProfileViewModel
+import com.divercity.android.features.user.profilecurrentuser.tabprofile.TabProfileViewModel
+import com.divercity.android.features.user.profileotheruser.OtherUserProfileViewModel
+import com.divercity.android.features.user.profileotheruser.tabprofile.TabOtherUserProfileViewModel
+import com.divercity.android.features.user.userconnections.ConnectionsViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -582,4 +584,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(RateCompanyDiversityDialogViewModel::class)
     abstract fun bindsRateCompanyDiversityDialogViewModel(viewModel: RateCompanyDiversityDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ResetPasswordViewModel::class)
+    abstract fun bindsResetPasswordViewModel(viewModel: ResetPasswordViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChangePasswordViewModel::class)
+    abstract fun bindsChangePasswordViewModel(viewModel: ChangePasswordViewModel): ViewModel
 }

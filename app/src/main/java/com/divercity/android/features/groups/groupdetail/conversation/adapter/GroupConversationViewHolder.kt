@@ -27,7 +27,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                     .into(itemView.item_group_img)
 
             GlideApp.with(itemView)
-                    .load(data.questionPicUrl)
+                    .load(data.checkedPicture())
                     .listener(object: RequestListener<Drawable>{
                         override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
                             itemView.item_quest_cardview_pic_main.visibility = View.VISIBLE
@@ -41,7 +41,7 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
                     })
                     .into(itemView.item_quest_img_main)
 
-            itemView.item_quest_txt_author_name.text = it.authorName
+            itemView.item_quest_txt_question.text = it.authorName
             itemView.item_quest_txt_answer.text = it.question
             itemView.item_quest_txt_author_time.text = Util.getStringDateTimeWithServerDate(it.createdAt)
             itemView.setOnClickListener {

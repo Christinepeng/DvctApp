@@ -1,13 +1,12 @@
 package com.divercity.android.features.signup
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import com.google.android.material.snackbar.Snackbar
 import android.view.View
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -17,6 +16,7 @@ import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.AddProfilePictureDialogFragment
 import com.divercity.android.features.dialogs.CustomTwoBtnDialogFragment
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
@@ -97,7 +97,7 @@ class SignUpFragment : BaseFragment() {
     }
 
     fun subscribeToLiveData() {
-        viewModel.signUpResponse.observe(this, Observer { voidResource ->
+        viewModel.signUpResponse.observe(viewLifecycleOwner, Observer { voidResource ->
             when (voidResource?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -127,7 +127,7 @@ class SignUpFragment : BaseFragment() {
 //            }
 //        })
 
-        viewModel.uploadProfilePictureResponse.observe(this, Observer {
+        viewModel.uploadProfilePictureResponse.observe(viewLifecycleOwner, Observer {
             when (it?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -142,7 +142,7 @@ class SignUpFragment : BaseFragment() {
             }
         })
 
-        viewModel.navigateToSelectUserType.observe(this, Observer {
+        viewModel.navigateToSelectUserType.observe(viewLifecycleOwner, Observer {
             activity?.run {
                 navigator.navigateToSelectUserTypeActivity(this)
                 this.finish()

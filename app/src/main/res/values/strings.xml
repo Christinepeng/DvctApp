@@ -81,6 +81,7 @@
     <string name="add_work_experience">Add Work Experience</string>
     <string name="current_no_connections">You don’t seem to have any Connections yet :(</string>
     <string name="other_no_connections">This user doesn\'t seem to have any Connections yet :(</string>
+    <string name="reset_password">Reset Password</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -203,6 +204,11 @@
     <string name="create_account">Create Account</string>
     <string name="account_profile">Account Profile</string>
     <string name="confirm_password">Confirm password</string>
+    <string name="new_password">New Password</string>
+    <string name="old_password">Old Password</string>
+    <string name="confirm_new_password">Confirm New Password</string>
+    <string name="confirm_email">Confirm Email</string>
+    <string name="email_been_sent">An email has been sent with instructions to reset your password</string>
 
     <!-- Tabs-->
     <string name="groups">Groups</string>

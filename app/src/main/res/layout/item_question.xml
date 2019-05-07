@@ -58,7 +58,7 @@
         tools:text="&#183; \ufeff@johndoe &#183; sdfsdfsdfs dsfs dfs fsdfs dfsdfsdfs dfs sdfs sdfsdfs @string/check_fields gdfgdf dfgd " />
 
     <TextView
-        android:id="@+id/item_quest_txt_author_name"
+        android:id="@+id/item_quest_txt_question"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
@@ -89,7 +89,7 @@
         app:cardElevation="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
-        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_author_name">
+        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_question">
 
         <ImageView
             android:id="@+id/item_quest_img_main"
@@ -105,7 +105,7 @@
         android:id="@+id/item_quest_txt_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_quest_txt_author_name"
+        android:layout_below="@id/item_quest_txt_question"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_toEndOf="@id/cardview_quest_pic_author"

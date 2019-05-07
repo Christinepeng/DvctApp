@@ -83,6 +83,21 @@ constructor(
         return registerLoginService.checkUsername(CheckUsernameBody(username))
     }
 
+    override fun requestResetPassword(email: String): Observable<Unit> {
+        val partEmail = RequestBody.create(MediaType.parse("text/plain"), email)
+        return registerLoginService.requestResetPassword(partEmail).map {
+            checkResponse(it)
+        }
+    }
+
+    override fun resetPassword(password: String, token: String): Observable<Unit> {
+        val partPassword = RequestBody.create(MediaType.parse("text/plain"), password)
+        val partToken = RequestBody.create(MediaType.parse("text/plain"), token)
+        return registerLoginService.resetPassword(partPassword, partToken).map {
+            checkResponse(it)
+        }
+    }
+
     private fun checkResponse(response: Response<*>) {
         if (!response.isSuccessful)
             throw HttpException(response)

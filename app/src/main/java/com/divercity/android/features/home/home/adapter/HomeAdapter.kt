@@ -40,8 +40,8 @@ constructor(val sessionRepository: SessionRepository) :
         return when (viewType) {
             R.layout.item_question -> QuestionsViewHolder.create(
                 parent,
-                sessionRepository,
-                questionListener
+                questionListener,
+                sessionRepository
             )
             R.layout.view_network_state -> NetworkStateViewHolder.create(
                 parent,
@@ -60,7 +60,7 @@ constructor(val sessionRepository: SessionRepository) :
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
             R.layout.item_question -> (holder as QuestionsViewHolder)
-                .bindTo(getItem(position) as Question)
+                .bindTo(position, getItem(position) as Question)
             R.layout.view_network_state -> (holder as NetworkStateViewHolder)
                 .bindTo(networkState)
             R.layout.item_list_recommended -> (holder as RecommendedViewHolder)

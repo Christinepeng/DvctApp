@@ -41,29 +41,28 @@ class SplashFragment : BaseFragment() {
     }
 
     private fun initBranch() {
-//        Deep link routing
-        if(requireActivity().isTaskRoot) {
-            Branch.getInstance().initSession({ referringParams, error ->
-                if (error == null) {
-                    Timber.e("BRANCH SDK $referringParams")
+//      Deep link routing
+        Branch.getInstance().initSession({ referringParams, error ->
+            if (error == null) {
+                Timber.e("BRANCH SDK $referringParams")
 
-                    if (referringParams.optBoolean("+clicked_branch_link", false)) {
-                        viewModel.checkRouteDeepLink(referringParams)
-                    } else {
-                        viewModel.checkRouteNoDeepLink()
-                    }
+                if (referringParams.optBoolean("+clicked_branch_link", false)) {
+                    viewModel.checkRouteDeepLink(referringParams)
                 } else {
-                    Timber.e("BRANCH SDK ${error.message}")
-                    viewModel.showBranIOErrorDialog.call()
+                    if (requireActivity().isTaskRoot)
+                        viewModel.checkRouteNoDeepLink()
+                    else
+                        finish()
                 }
-            }, requireActivity().intent?.data, requireActivity())
-        } else {
-            finish()
-        }
+            } else {
+                Timber.e("BRANCH SDK ${error.message}")
+                viewModel.showBranchIOErrorDialog.call()
+            }
+        }, requireActivity().intent?.data, requireActivity())
     }
 
     private fun subscribeToLiveData() {
-        viewModel.fetchUserDataResponse.observe(this, Observer { listResource ->
+        viewModel.fetchUserDataResponse.observe(viewLifecycleOwner, Observer { listResource ->
             if (Status.ERROR == listResource?.status)
                 showErrorDialog(
                     listResource.message ?: "Error",
@@ -71,37 +70,42 @@ class SplashFragment : BaseFragment() {
                 )
         })
 
-        viewModel.navigateToHome.observe(this, Observer {
+        viewModel.navigateToHome.observe(viewLifecycleOwner, Observer {
             navigator.navigateToHomeActivity(requireActivity())
 //            navigator.navigateToSelectGroupActivity(requireActivity(), 25)
 //            navigator.navigateToSelectCompanyActivity(requireActivity(), 20)
             finish()
         })
 
-        viewModel.showBranIOErrorDialog.observe(this, Observer {
+        viewModel.showBranchIOErrorDialog.observe(viewLifecycleOwner, Observer {
             showErrorDialog(
                 "Network error",
                 ::initBranch
             )
         })
 
-        viewModel.navigateToSelectUserType.observe(this, Observer {
+        viewModel.navigateToSelectUserType.observe(viewLifecycleOwner, Observer {
             navigator.navigateToSelectUserTypeActivity(requireActivity())
             finish()
         })
 
-        viewModel.navigateToEnterEmail.observe(this, Observer {
+        viewModel.navigateToEnterEmail.observe(viewLifecycleOwner, Observer {
             navigator.navigateToEnterEmailActivity(requireActivity())
             finish()
         })
 
-        viewModel.navigateToGroupDetail.observe(this, Observer {
+        viewModel.navigateToGroupDetail.observe(viewLifecycleOwner, Observer {
             navigator.navigateToGroupDetail(this, it.toString())
+            finish()
+        })
+
+        viewModel.navigateToResetPassword.observe(viewLifecycleOwner, Observer {
+            navigator.navigateToResetPassword(this, it)
             finish()
         })
     }
 
-    private fun finish(){
+    private fun finish() {
         requireActivity().finish()
     }
 

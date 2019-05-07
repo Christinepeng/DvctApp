@@ -89,6 +89,8 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolFragment
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeFragment
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeFragment
+import com.divercity.android.features.password.changepassword.ChangePasswordFragment
+import com.divercity.android.features.password.resetpassword.ResetPasswordFragment
 import com.divercity.android.features.settings.ProfileSettingsFragment
 import com.divercity.android.features.settings.accountsettings.AccountSettingsFragment
 import com.divercity.android.features.signup.SignUpFragment
@@ -437,4 +439,10 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindRateCompanyDiversityDialogFragment(): RateCompanyDiversityDialogFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindResetPasswordFragment(): ResetPasswordFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindChangePasswordFragment(): ChangePasswordFragment
 }

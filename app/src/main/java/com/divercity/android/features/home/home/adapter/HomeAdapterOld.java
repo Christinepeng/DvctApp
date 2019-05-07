@@ -94,7 +94,7 @@ public class HomeAdapterOld extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
             case R.layout.item_question:
-                return QuestionsViewHolder.create(parent, sessionRepository, null);
+                return QuestionsViewHolder.Companion.create(parent, null, sessionRepository);
             case R.layout.view_network_state:
                 return NetworkStateViewHolder.create(parent, retryCallback);
             case R.layout.item_list_recommended:
@@ -108,7 +108,7 @@ public class HomeAdapterOld extends RecyclerView.Adapter<RecyclerView.ViewHolder
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         switch (getItemViewType(position)) {
             case R.layout.item_question:
-                ((QuestionsViewHolder) holder).bindTo((Question) mDiffer.getItem(position));
+                ((QuestionsViewHolder) holder).bindTo(position, (Question) mDiffer.getItem(position));
                 break;
             case R.layout.view_network_state:
                 ((NetworkStateViewHolder) holder).bindTo(networkState);

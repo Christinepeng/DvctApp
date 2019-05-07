@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
+import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.google.android.material.snackbar.Snackbar
 import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_login.*
@@ -63,7 +64,7 @@ class LoginFragment : BaseFragment() {
     }
 
     fun subscribeToLiveData() {
-        viewModel.login.observe(this, Observer { response ->
+        viewModel.login.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -81,6 +82,22 @@ class LoginFragment : BaseFragment() {
                 }
             }
         })
+
+        viewModel.requestResetPasswordResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+                Status.ERROR -> {
+                    hideProgress()
+                    showSnackbar(response.message)
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    showConfirmEmailSentDialog()
+                }
+            }
+        })
     }
 
     fun showSnackbar(message: String?) {
@@ -93,8 +110,22 @@ class LoginFragment : BaseFragment() {
         }
     }
 
+    private fun showConfirmEmailSentDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.confirm_email),
+            getString(R.string.email_been_sent),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { }
+        customOneBtnDialogFragment.isCancelable = false
+        customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
     private fun setupEvents() {
-        txt_forgot_password.setOnClickListener { showToast() }
+        txt_forgot_password.setOnClickListener {
+            viewModel.requestResetPassword()
+        }
+
         btn_create_account.setOnClickListener {
             viewModel.login(et_password.text.toString())
         }

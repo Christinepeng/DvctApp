@@ -29,6 +29,7 @@ import com.divercity.android.features.home.home.adapter.recommended.RecommendedG
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedJobViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
+import com.divercity.android.model.Question
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -99,8 +100,11 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     private fun initAdapters() {
         homeAdapter.setRetryCallback(this)
 
-        homeAdapter.questionListener = QuestionsViewHolder.Listener {
-            navigator.navigateToAnswerActivity(this, it)
+        homeAdapter.questionListener = object : QuestionsViewHolder.Listener {
+
+            override fun onQuestionClick(position: Int, question: Question) {
+                navigator.navigateToAnswerActivity(this@HomeFragment, question)
+            }
         }
 
         recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
@@ -183,7 +187,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
 
-        viewModel.questionList.observe(this, Observer {
+        viewModel.questionList.observe(viewLifecycleOwner, Observer {
             homeAdapter.submitList(it)
         })
 

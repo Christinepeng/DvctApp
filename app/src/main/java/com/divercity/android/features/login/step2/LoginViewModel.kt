@@ -1,13 +1,15 @@
 package com.divercity.android.features.login.step2
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import com.divercity.android.R
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
+import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.login.step2.usecase.LoginUseCase
+import com.divercity.android.features.login.step2.usecase.RequestResetPasswordUseCase
 import com.divercity.android.model.user.User
+import com.google.gson.JsonElement
 import javax.inject.Inject
 
 /**
@@ -17,11 +19,14 @@ import javax.inject.Inject
 class LoginViewModel @Inject
 internal constructor(
     private val application: Application,
-    private val loginUseCase: LoginUseCase
+    private val loginUseCase: LoginUseCase,
+    private val requestResetPasswordUseCase: RequestResetPasswordUseCase
 ) : BaseViewModel() {
 
     val login = SingleLiveEvent<Resource<User>>()
-    private var userEmail: String? = null
+    val requestResetPasswordResponse = SingleLiveEvent<Resource<Unit>>()
+
+    private lateinit var userEmail: String
 
     fun login(password: String?) {
         if (password != null && password != "") {
@@ -46,8 +51,23 @@ internal constructor(
         }
     }
 
-    fun getLogin(): LiveData<Resource<User>> {
-        return login
+    fun requestResetPassword() {
+        requestResetPasswordResponse.value = Resource.loading(null)
+        val callback = object : DisposableObserverWrapper<Unit>() {
+
+            override fun onFail(error: String) {
+                requestResetPasswordResponse.value = Resource.error(error, null)
+            }
+
+            override fun onHttpException(error: JsonElement?) {
+                requestResetPasswordResponse.value = Resource.error(error.toString(), null)
+            }
+
+            override fun onSuccess(t: Unit) {
+                requestResetPasswordResponse.value = Resource.success(t)
+            }
+        }
+        requestResetPasswordUseCase.execute(callback, RequestResetPasswordUseCase.Params.to(userEmail))
     }
 
     fun setUserEmail(userEmail: String) {

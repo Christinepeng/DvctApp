@@ -54,8 +54,8 @@ android {
         applicationId "com.divercity.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 11
-        versionName "B-1.9"
+        versionCode 12
+        versionName "D-1.20"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -80,8 +80,8 @@ android {
             minifyEnabled false
             debuggable true
             manifestPlaceholders = [enableCrashReporting:"false"]
-//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig getSigningConfig()
         }

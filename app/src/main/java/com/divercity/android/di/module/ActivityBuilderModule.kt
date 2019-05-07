@@ -56,10 +56,8 @@ import com.divercity.android.features.onboarding.selectoccupationofinterests.Sel
 import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
-import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
-import com.divercity.android.features.user.experience.AddWorkExperienceActivity
-import com.divercity.android.features.user.myinterests.InterestsActivity
-import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
+import com.divercity.android.features.password.changepassword.ChangePasswordActivity
+import com.divercity.android.features.password.resetpassword.ResetPasswordActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
@@ -68,6 +66,10 @@ import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import com.divercity.android.features.splash.SplashActivity
+import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
+import com.divercity.android.features.user.experience.AddWorkExperienceActivity
+import com.divercity.android.features.user.myinterests.InterestsActivity
+import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -281,4 +283,10 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindRateCompanyActivity(): RateCompanyActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindResetPasswordActivity(): ResetPasswordActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindChangePasswordActivity(): ChangePasswordActivity
 }

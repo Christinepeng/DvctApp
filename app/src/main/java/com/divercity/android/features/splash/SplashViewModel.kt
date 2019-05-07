@@ -20,8 +20,9 @@ internal constructor(
     val navigateToSelectUserType = SingleLiveEvent<Any>()
     val navigateToHome = SingleLiveEvent<Any>()
     val navigateToEnterEmail = SingleLiveEvent<Any>()
-    val showBranIOErrorDialog = SingleLiveEvent<Unit>()
+    val showBranchIOErrorDialog = SingleLiveEvent<Unit>()
     val navigateToGroupDetail = SingleLiveEvent<Int>()
+    val navigateToResetPassword = SingleLiveEvent<String>()
 
     var deepLinkData: JSONObject? = null
 
@@ -71,7 +72,10 @@ internal constructor(
 
     fun checkRouteDeepLink(data: JSONObject) {
         deepLinkData = data
-        if (session.isUserLogged()) {
+
+        if(deepLinkData?.getString("type") == "password_reset"){
+            navigateToResetPassword.postValue(deepLinkData?.getString("token"))
+        } else if (session.isUserLogged()) {
 //            If the app is already open and user is logged it won't be null. If the app is closed
 //            and user is logged it will be null and we have to check data on the server.
             if (session.getUserType() != null) {

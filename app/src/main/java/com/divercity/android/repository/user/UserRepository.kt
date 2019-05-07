@@ -51,7 +51,7 @@ interface UserRepository {
 
     fun addNewExperience(
         userId: String,
-        experience : WorkExperienceBody
+        experience: WorkExperienceBody
     ): Observable<WorkExperienceResponse>
 
     fun fetchFollowersByUser(
@@ -91,4 +91,10 @@ interface UserRepository {
         size: Int,
         query: String?
     ): Observable<List<User>>
+
+    fun changePassword(
+        oldPassword: String,
+        newPassword: String,
+        confirmation: String
+    ): Observable<Unit>
 }

@@ -11,7 +11,7 @@ import com.divercity.android.data.entity.home.HomeItem
 data class Question(
     var id: String?,
     var question: String?,
-    var questionPicUrl: String?,
+    private var questionPicUrl: String?,
     var createdAt: String?,
     var authorProfilePicUrl: String?,
     var authorName: String?,
@@ -22,6 +22,13 @@ data class Question(
     var lastAnswerAuthorName: String?,
     var lastAnswerAuthorPicture: String?
 ) : HomeItem, Parcelable {
+
+    fun checkedPicture(): String? {
+        return if (questionPicUrl == "https://apinew.pincapp.com/images/default_avatar.png")
+            null
+        else
+            questionPicUrl
+    }
 
     constructor(parcel: Parcel) : this(
         parcel.readString(),

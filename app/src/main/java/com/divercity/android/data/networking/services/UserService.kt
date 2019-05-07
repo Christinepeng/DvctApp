@@ -9,6 +9,7 @@ import com.divercity.android.data.entity.device.response.DeviceEntityResponse
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody
+import com.divercity.android.data.entity.password.ChangePasswordEntityBody
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.UserProfileEntityBody
 import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountResponse
@@ -123,6 +124,12 @@ interface UserService {
     @POST("users/{userId}/experiences")
     fun addNewExperience(
         @Path("userId") userId: String,
-        @Body experience : WorkExperienceBody
+        @Body experience: WorkExperienceBody
     ): Observable<Response<DataObject<WorkExperienceResponse>>>
+
+    @POST("users/{userId}/update_password")
+    fun changePassword(
+        @Path("userId") userId: String,
+        @Body body: ChangePasswordEntityBody
+    ): Observable<Response<Unit>>
 }

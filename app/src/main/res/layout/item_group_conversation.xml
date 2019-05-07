@@ -35,15 +35,15 @@
         android:lineSpacingExtra="1sp"
         android:textColor="#a4a4b3"
         android:textSize="11sp"
-        app:layout_constraintBottom_toBottomOf="@+id/item_quest_txt_author_name"
+        app:layout_constraintBottom_toBottomOf="@+id/item_quest_txt_question"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/item_quest_txt_author_name"
-        app:layout_constraintTop_toTopOf="@+id/item_quest_txt_author_name"
+        app:layout_constraintStart_toEndOf="@+id/item_quest_txt_question"
+        app:layout_constraintTop_toTopOf="@+id/item_quest_txt_question"
         tools:text="12:52" />
 
     <TextView
-        android:id="@+id/item_quest_txt_author_name"
+        android:id="@+id/item_quest_txt_question"
         android:layout_width="wrap_content"
         android:layout_height="19dp"
         android:layout_marginStart="16dp"
@@ -87,7 +87,7 @@
         android:id="@+id/item_quest_txt_answer"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/item_quest_txt_author_name"
+        android:layout_below="@id/item_quest_txt_question"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -100,7 +100,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
-        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_author_name"
+        app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_question"
         app:layout_constraintVertical_chainStyle="spread_inside"
         tools:text="Sara: ventura ventura sfsdf sdf sdfsdf sd sdfsd s ventura ventura ventura ventura ventura ventura ventura  ventura ventura ventura ventura ventura  ventura ventura " />
 

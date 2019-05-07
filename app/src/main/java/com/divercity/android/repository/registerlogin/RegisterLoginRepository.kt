@@ -30,4 +30,11 @@ interface RegisterLoginRepository {
     ): Observable<User>
 
     fun loginFacebook(token: String): Observable<User>
+
+    fun requestResetPassword(email: String): Observable<Unit>
+
+    fun resetPassword(
+        password: String,
+        token: String
+    ): Observable<Unit>
 }

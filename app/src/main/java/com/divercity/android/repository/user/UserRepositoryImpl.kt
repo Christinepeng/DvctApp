@@ -8,6 +8,8 @@ import com.divercity.android.data.entity.device.response.DeviceEntityResponse
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody
+import com.divercity.android.data.entity.password.ChangePasswordEntityBody
+import com.divercity.android.data.entity.password.PasswordEntity
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.entity.profile.profile.UserProfileEntityBody
@@ -252,6 +254,21 @@ constructor(
         return userService.addNewExperience(userId, experience).map { response ->
             checkResponse(response)
             response.body()!!.data
+        }
+    }
+
+    override fun changePassword(
+        oldPassword: String,
+        newPassword: String,
+        confirmation: String
+    ): Observable<Unit> {
+        return userService.changePassword(
+            sessionRepository.getUserId(),
+            ChangePasswordEntityBody(
+                PasswordEntity(confirmation, newPassword, oldPassword)
+            )
+        ).map {
+            checkResponse(it)
         }
     }
 }

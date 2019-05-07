@@ -75,6 +75,10 @@ class ProfileSettingsFragment : BaseFragment() {
             navigator.navigateToAccountSettingsActivity(this)
         }
 
+        lay_change_password.setOnClickListener {
+            navigator.navigateToChangePassword(this)
+        }
+
 //        lay_personal_settings.setOnClickListener {
 //            navigator.navigateToPersonalSettingsActivity(this)
 //        }

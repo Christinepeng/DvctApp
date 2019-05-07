@@ -108,7 +108,8 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
         val dialog = RateCompanyDiversityDialogFragment.newInstance(company)
         dialog.listener = object : RateCompanyDiversityDialogFragment.Listener {
 
-            override fun onDismiss() {
+            override fun onCompanyRated() {
+                showToast("Company Rated Successfully")
                 navigator.navigateToNextOnboarding(
                     activity!!,
                     viewModel.getAccountType(),
@@ -118,6 +119,10 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
             }
         }
         dialog.show(childFragmentManager, null)
+    }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun onCompanyChosen(company: CompanyResponse) {

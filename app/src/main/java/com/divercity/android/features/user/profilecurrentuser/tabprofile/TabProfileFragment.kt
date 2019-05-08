@@ -135,7 +135,7 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
             lay_personal.txt_age_range.text = usr.ageRange
             lay_personal.txt_subtitle2.text = usr.schoolName
             lay_personal.txt_occupation.text = usr.occupation
-            lay_personal.txt_location.text = usr.city.plus(", ").plus(usr.country)
+            lay_personal.txt_location.text = usr.country
             lay_personal.txt_company.text = usr.companyName
 
             if (usr.skills.isNullOrEmpty()) {

@@ -21,8 +21,6 @@ import com.divercity.android.features.home.home.datasource.QuestionsPaginatedRep
 import com.divercity.android.features.home.home.usecase.FetchFeedRecommendedJobsGroupsUseCase
 import com.divercity.android.features.home.home.usecase.FetchUnreadMessagesCountUseCase
 import com.google.gson.JsonElement
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import javax.inject.Inject
 
@@ -48,7 +46,6 @@ constructor(
     val refreshState: LiveData<NetworkState> = questionListing.refreshState
 
     private val viewModelJob = Job()
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     // To hold tab1 scroll position when fragment dies
     val listState = MutableLiveData<Parcelable>()

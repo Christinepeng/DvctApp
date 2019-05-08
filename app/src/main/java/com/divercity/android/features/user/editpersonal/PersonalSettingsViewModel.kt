@@ -33,14 +33,11 @@ constructor(
 ) : BaseViewModel() {
 
     val updateUserProfileResponse = SingleLiveEvent<Resource<User>>()
-    var uploadDocumentResponse = SingleLiveEvent<Resource<DocumentResponse>>()
+    val uploadDocumentResponse = SingleLiveEvent<Resource<DocumentResponse>>()
+    val showDiversityRateDialog = SingleLiveEvent<String>()
 
     fun getCurrentUser() : LiveData<User> {
         return sessionRepository.getUserDB()
-    }
-
-    fun getUserType() : String?{
-        return sessionRepository.getUserType()
     }
 
     fun updateEthnicity(ethnicity: String?) {
@@ -92,6 +89,8 @@ constructor(
             }
 
             override fun onSuccess(o: User) {
+                if(user.jobEmployerId != null)
+                    showDiversityRateDialog.value = o.companyId.toString()
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }

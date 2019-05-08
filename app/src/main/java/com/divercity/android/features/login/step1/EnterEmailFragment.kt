@@ -24,6 +24,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.io.IOException
 import javax.inject.Inject
 
 
@@ -57,7 +58,12 @@ class EnterEmailFragment : BaseFragment() {
 
         CoroutineScope(Dispatchers.IO).launch {
             Timber.e("Called Launch")
-            FirebaseInstanceId.getInstance().deleteInstanceId()
+            try {
+                FirebaseInstanceId.getInstance().deleteInstanceId()
+            } catch (e : IOException){
+                e.printStackTrace()
+                showToast("Error deleting notification token")
+            }
         }
     }
 

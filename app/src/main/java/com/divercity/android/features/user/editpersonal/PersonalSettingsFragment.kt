@@ -14,6 +14,7 @@ import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
+import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogFragment
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
@@ -125,7 +126,7 @@ class PersonalSettingsFragment : BaseFragment() {
     }
 
     private fun subscribeToLiveData() {
-        viewModel.updateUserProfileResponse.observe(this, Observer { response ->
+        viewModel.updateUserProfileResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -147,7 +148,7 @@ class PersonalSettingsFragment : BaseFragment() {
             setData(it)
         })
 
-        viewModel.uploadDocumentResponse.observe(this, Observer { document ->
+        viewModel.uploadDocumentResponse.observe(viewLifecycleOwner, Observer { document ->
             when (document?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -163,6 +164,21 @@ class PersonalSettingsFragment : BaseFragment() {
                 }
             }
         })
+
+        viewModel.showDiversityRateDialog.observe(viewLifecycleOwner, Observer {
+            showRateCompanyDialog(it)
+        })
+    }
+
+    private fun showRateCompanyDialog(companyId: String) {
+        val dialog = RateCompanyDiversityDialogFragment.newInstance(companyId)
+        dialog.listener = object : RateCompanyDiversityDialogFragment.Listener {
+
+            override fun onCompanyRated() {
+                showToast("Company Rated Successfully")
+            }
+        }
+        dialog.show(childFragmentManager, null)
     }
 
     private fun openDocSelector() {

@@ -14,8 +14,8 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
-import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
-import com.divercity.android.features.home.people.ITabPeople
+import com.divercity.android.features.search.ITabSearch
+import com.divercity.android.model.position.GroupPositionModel
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class AllGroupsFragment : BaseFragment(), RetryCallback, ITabPeople {
+class AllGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: AllGroupsViewModel
 

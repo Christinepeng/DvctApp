@@ -18,6 +18,7 @@ import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.home.HomeActivity
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_groups.*
 import javax.inject.Inject
@@ -177,8 +178,8 @@ class TabGroupsFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
-                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
-                        ?.fetchGroups(lastSearchQuery)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
+                        ?.search(lastSearchQuery)
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)
@@ -214,8 +215,8 @@ class TabGroupsFragment : BaseFragment() {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
-                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
-                        ?.fetchGroups(query)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
+                        ?.search(query)
                 lastSearchQuery = query
                 return false
             }
@@ -223,8 +224,8 @@ class TabGroupsFragment : BaseFragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
                 handlerSearch.postDelayed({
-                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabsGroups)
-                            ?.fetchGroups(newText)
+                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
+                            ?.search(newText)
                     lastSearchQuery = newText
                 }, AppConstants.SEARCH_DELAY)
                 return true

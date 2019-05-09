@@ -1,21 +1,21 @@
 package com.divercity.android.features.jobs.mypostings
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.job.response.JobResponse
-import com.divercity.android.features.jobs.ITabJobs
 import com.divercity.android.features.jobs.mypostings.adapter.JobsAdapter
 import com.divercity.android.features.jobs.mypostings.adapter.JobsViewHolder
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.fragment_jobs_my_postings.*
 import javax.inject.Inject
 
@@ -23,7 +23,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
+class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: MyJobsPostingsViewModel
 
@@ -159,7 +159,7 @@ class MyJobsPostingsFragment : BaseFragment(), RetryCallback, ITabJobs {
         }
     }
 
-    override fun fetchJobs(searchQuery: String?) {
+    override fun search(searchQuery: String?) {
         viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
     }
 

@@ -6,6 +6,7 @@ import com.divercity.android.data.entity.company.companyadmin.body.Admin
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
+import com.divercity.android.data.entity.group.discardgroup.DiscardGroupsEntityBody
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.groupadmin.AddGroupAdminsBody
 import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
@@ -210,4 +211,9 @@ interface GroupService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int
     ): Observable<Response<DataArray<QuestionEntityResponse>>>
+
+    @POST("group_of_interests/discard_groups")
+    fun discardRecommendedGroups(
+        @Body body: DiscardGroupsEntityBody
+    ): Observable<Response<Unit>>
 }

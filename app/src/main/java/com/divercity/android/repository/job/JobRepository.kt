@@ -84,4 +84,8 @@ interface JobRepository {
         page: Int,
         size: Int
     ): Observable<List<JobResponse>>
+
+    fun discardRecommendedJobs(
+        jobsId: List<String>
+    ): Observable<Unit>
 }

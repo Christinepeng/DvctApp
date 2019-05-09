@@ -1,5 +1,6 @@
 package com.divercity.android.repository.job
 
+import com.divercity.android.data.entity.job.discardjob.DiscardJobsEntityBody
 import com.divercity.android.data.entity.job.jobpostingbody.JobBody
 import com.divercity.android.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.android.data.entity.job.jobtype.JobTypeResponse
@@ -211,5 +212,12 @@ constructor(private val jobService: JobService) : JobRepository {
             checkResponse(it)
             it.body()?.data
         }
+    }
+
+    override fun discardRecommendedJobs(jobsId: List<String>): Observable<Unit> {
+        return jobService.discardRecommendedJobs(DiscardJobsEntityBody(jobsId))
+            .map { response ->
+                checkResponse(response)
+            }
     }
 }

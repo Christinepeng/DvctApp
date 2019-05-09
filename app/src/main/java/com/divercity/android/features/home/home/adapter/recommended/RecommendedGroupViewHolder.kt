@@ -13,14 +13,15 @@ import com.divercity.android.data.entity.group.group.GroupResponse
 import kotlinx.android.synthetic.main.item_recommended.view.*
 
 class RecommendedGroupViewHolder
-private constructor(itemView: View, private val listener: Listener?) : RecyclerView.ViewHolder(itemView) {
+private constructor(itemView: View, private val listener: Listener?) :
+    RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(position: Int, data: GroupResponse?) {
         data?.let {
             GlideApp.with(itemView)
-                    .load(it.attributes.pictureMain)
-                    .apply(RequestOptions().circleCrop())
-                    .into(itemView.img)
+                .load(it.attributes.pictureMain)
+                .apply(RequestOptions().circleCrop())
+                .into(itemView.img)
 
             itemView.txt_title.text = it.attributes.title
             itemView.txt_subtitle1.text = it.attributes.followersCount.toString().plus(" Members")
@@ -51,6 +52,10 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
             itemView.setOnClickListener {
                 listener?.onGroupClick(data)
             }
+
+            itemView.btn_close.setOnClickListener {
+                listener?.onGroupDiscarded(position, data)
+            }
         }
     }
 
@@ -60,6 +65,8 @@ private constructor(itemView: View, private val listener: Listener?) : RecyclerV
         fun onGroupJoinClick(position: Int, group: GroupResponse)
 
         fun onGroupClick(group: GroupResponse)
+
+        fun onGroupDiscarded(position: Int, group: GroupResponse)
     }
 
     companion object {

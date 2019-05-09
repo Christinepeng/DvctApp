@@ -13,6 +13,7 @@ import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.home.HomeActivity
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_people.*
 import javax.inject.Inject
@@ -97,7 +98,7 @@ class TabPeopleFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
-                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabPeople)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                     ?.search(viewModel.lastSearchQuery)
             }
         }
@@ -135,7 +136,7 @@ class TabPeopleFragment : BaseFragment() {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
-                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabPeople)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                     ?.search(query)
                 viewModel.lastSearchQuery = query ?: ""
                 return false
@@ -144,7 +145,7 @@ class TabPeopleFragment : BaseFragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
                 handlerSearch.postDelayed({
-                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabPeople)
+                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                         ?.search(newText)
                     viewModel.lastSearchQuery = newText ?: ""
                 }, AppConstants.SEARCH_DELAY)

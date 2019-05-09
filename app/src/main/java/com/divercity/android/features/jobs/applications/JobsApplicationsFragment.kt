@@ -9,9 +9,9 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.jobs.ITabJobs
 import com.divercity.android.features.jobs.applications.adapter.JobApplicationAdapter
 import com.divercity.android.features.jobs.applications.adapter.JobApplicationViewHolder
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.fragment_jobs_applications.*
 import javax.inject.Inject
 
@@ -19,7 +19,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
+class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: JobsApplicationsViewModel
 
@@ -155,7 +155,7 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabJobs {
 
     }
 
-    override fun fetchJobs(searchQuery: String?) {
+    override fun search(searchQuery: String?) {
         viewModel.fetchJobs(viewLifecycleOwner, searchQuery)
     }
 }

@@ -6,10 +6,10 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.divercity.android.BuildConfig
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -24,12 +24,14 @@ import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.home.home.adapter.HomeAdapter
-import com.divercity.android.features.home.home.adapter.recommended.RecommendedAdapter
+import com.divercity.android.features.home.home.adapter.RecommendedAdapter
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedGroupViewHolder
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedJobViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
 import com.divercity.android.model.Question
+import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.JobPositionModel
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
@@ -43,6 +45,7 @@ import javax.inject.Inject
 class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: HomeViewModel
+    lateinit var recommendedViewModel: HomeRecommendedViewModel
 
     @Inject
     lateinit var homeAdapter: HomeAdapter
@@ -54,6 +57,9 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     private var positionApplyClicked: Int = 0
     private var positionJoinRequest: Int = 0
     private var positionJoinClicked: Int = 0
+
+    private var searchView: SearchView? = null
+    private var searchItem: MenuItem? = null
 
     private lateinit var newMessageDisposable: Disposable
 
@@ -71,6 +77,11 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+
+        recommendedViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(HomeRecommendedViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
         setHasOptionsMenu(true)
     }
 
@@ -107,7 +118,28 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         }
 
+        homeAdapter.feedJobListener = object : JobsViewHolder.Listener {
+
+            override fun onApplyClick(position: Int, job: JobResponse) {
+                showJobApplyDialog(job.id)
+            }
+
+            override fun onJobClick(job: JobResponse) {
+                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
+            }
+        }
+
+        list_jobs_questions.adapter = homeAdapter
+
+        recommendedAdapter.setRetryCallback(RetryCallback {
+            recommendedViewModel.retry()
+        })
+
         recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
+
+            override fun onGroupDiscarded(position: Int, group: GroupResponse) {
+                viewModel.discardRecommendedGroup(GroupPositionModel(position, group))
+            }
 
             override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
                 positionJoinRequest = position
@@ -126,6 +158,10 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
         recommendedAdapter.jobListener = object : RecommendedJobViewHolder.Listener {
 
+            override fun onJobDiscarded(position: Int, job: JobResponse) {
+                viewModel.discardRecommendedJobs(JobPositionModel(position, job))
+            }
+
             override fun onJobClick(job: JobResponse) {
                 navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
             }
@@ -137,20 +173,6 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         }
 
         homeAdapter.recommendedAdapter = recommendedAdapter
-
-        homeAdapter.feedJobListener = object : JobsViewHolder.Listener {
-
-            override fun onApplyClick(position: Int, job: JobResponse) {
-                showJobApplyDialog(job.id)
-            }
-
-            override fun onJobClick(job: JobResponse) {
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
-            }
-        }
-
-        list_main.layoutManager = LinearLayoutManager(context)
-        list_main.adapter = homeAdapter
     }
 
     private fun showJobApplyDialog(jobId: String?) {
@@ -160,12 +182,16 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     private fun subscribeToLiveData() {
 
-        viewModel.networkState.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+            homeAdapter.submitList(it)
+        })
+
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             if (!mIsRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 homeAdapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(viewLifecycleOwner, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
 
             homeAdapter.currentList?.let { pagedList ->
 
@@ -173,10 +199,8 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                     mIsRefreshing = false
 
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0) {
-                    lay_no_groups.visibility = View.VISIBLE
                     (btn_fab as View).visibility = View.GONE
                 } else {
-                    lay_no_groups.visibility = View.GONE
                     (btn_fab as View).visibility = View.VISIBLE
                 }
 
@@ -187,25 +211,34 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
 
-        viewModel.questionList.observe(viewLifecycleOwner, Observer {
-            homeAdapter.submitList(it)
+        recommendedViewModel.pagedList.observe(viewLifecycleOwner, Observer {
+            recommendedAdapter.submitList(it)
         })
 
-        viewModel.fetchRecommendedJobsGroupsResponse.observe(
-            viewLifecycleOwner,
-            Observer { response ->
-                when (response?.status) {
-                    Status.LOADING -> {
+        recommendedViewModel.networkState().observe(viewLifecycleOwner, Observer {
+            if (!mIsRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+                recommendedAdapter.setNetworkState(it)
+        })
 
-                    }
-                    Status.ERROR -> {
+        recommendedViewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
 
-                    }
-                    Status.SUCCESS -> {
-                        recommendedAdapter.data = response.data
-                    }
+            recommendedAdapter.currentList?.let { pagedList ->
+
+                //                if (networkState?.status != Status.LOADING)
+//                    mIsRefreshing = false
+
+                if (networkState?.status == Status.SUCCESS && pagedList.size == 0) {
+//                    (btn_fab as View).visibility = View.GONE
+                } else {
+//                    (btn_fab as View).visibility = View.VISIBLE
                 }
-            })
+
+//                swipe_list_main.isRefreshing = mIsRefreshing
+            }
+
+//            if (!mIsRefreshing)
+//                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
+        })
 
         viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer {
             it?.getContentIfNotHandled()?.let { group ->
@@ -261,12 +294,51 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 }
             })
 
+        viewModel.discardRecommendedGroupsResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response?.status) {
+                    Status.LOADING -> {
+                        showProgressNoBk()
+                    }
+
+                    Status.ERROR -> {
+                        hideProgressNoBk()
+                        Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        hideProgressNoBk()
+                        recommendedAdapter.onGroupDiscarded(response.data!!)
+//                    recommendedAdapter.updatePositionOnJoinRequest(positionJoinRequest)
+                    }
+                }
+            })
+
+        viewModel.discardRecommendedJobsResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgressNoBk()
+                }
+
+                Status.ERROR -> {
+                    hideProgressNoBk()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgressNoBk()
+                    recommendedAdapter.onJobDiscarded(response.data!!)
+//                    recommendedAdapter.updatePositionOnJoinRequest(positionJoinRequest)
+                }
+            }
+        })
+
         viewModel.listState.observe(viewLifecycleOwner, Observer { parcelable ->
-            list_main.layoutManager?.onRestoreInstanceState(parcelable)
+            list_jobs_questions.layoutManager?.onRestoreInstanceState(parcelable)
         })
     }
 
     override fun retry() {
+        recommendedViewModel.retry()
         viewModel.retry()
     }
 
@@ -277,6 +349,8 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 mIsRefreshing = true
                 homeAdapter.onRefresh()
                 viewModel.refresh()
+                recommendedAdapter.onRefresh()
+                recommendedViewModel.refresh()
             }
 
             setColorSchemeColors(
@@ -290,6 +364,38 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.menu_home_fragment_toolbar, menu)
+        searchItem = menu.findItem(R.id.action_search)
+        searchView = searchItem?.actionView as SearchView
+        searchView?.queryHint = getString(R.string.search)
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != null && query.isNotEmpty())
+                    navigator.navigateToSearch(this@HomeFragment, query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+        })
+
+        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+
+            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+//                menu.findItem(R.id.logout).isVisible = false
+//                menu.findItem(R.id.about).isVisible = false
+                return true
+            }
+
+            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+//                menu.findItem(R.id.logout).isVisible = true
+//                menu.findItem(R.id.about).isVisible = true
+                return true
+            }
+        })
+
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -297,10 +403,6 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         return when (item.itemId) {
             R.id.logout -> {
                 (activity as HomeActivity).logout()
-                true
-            }
-            R.id.action_search -> {
-                showToast()
                 true
             }
             R.id.about -> {
@@ -316,14 +418,9 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     }
 
     private fun setupEvents() {
+
         btn_fab.setOnClickListener {
             showHomeTabActionDialog()
-        }
-        btn_create_edit_group.setOnClickListener {
-            showToast()
-        }
-        btn_explore_groups.setOnClickListener {
-            showToast()
         }
     }
 
@@ -342,7 +439,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     }
 
     override fun onSuccessJobApply() {
-
+        recommendedAdapter.updatePositionOnJobApplied(positionApplyClicked)
     }
 
     private fun showHomeTabActionDialog() {
@@ -362,7 +459,12 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.listState.value = list_main.layoutManager?.onSaveInstanceState()
+
+        searchView?.setOnQueryTextListener(null)
+        searchItem?.setOnActionExpandListener(null)
+        searchItem = null
+
+        viewModel.listState.value = list_jobs_questions.layoutManager?.onSaveInstanceState()
         viewModel.onDestroyView()
         if (!newMessageDisposable.isDisposed) newMessageDisposable.dispose()
     }

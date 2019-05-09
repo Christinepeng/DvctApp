@@ -1,4 +1,4 @@
-package com.divercity.android.features.groups.allgroups.model
+package com.divercity.android.model.position
 
 import com.divercity.android.data.entity.group.group.GroupResponse
 

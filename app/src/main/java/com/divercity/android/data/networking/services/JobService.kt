@@ -3,6 +3,7 @@ package com.divercity.android.data.networking.services
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.base.IncludedArray
+import com.divercity.android.data.entity.job.discardjob.DiscardJobsEntityBody
 import com.divercity.android.data.entity.job.jobpostingbody.JobBody
 import com.divercity.android.data.entity.job.jobsharedgroupbody.JobShareGroupBody
 import com.divercity.android.data.entity.job.jobtype.JobTypeResponse
@@ -131,4 +132,9 @@ interface JobService {
         @Query("page[number]") page: Int,
         @Query("page[size]") size: Int
     ): Observable<Response<DataArray<JobResponse>>>
+
+    @POST("jobs/discard_jobs")
+    fun discardRecommendedJobs(
+        @Body body: DiscardJobsEntityBody
+    ): Observable<Response<Unit>>
 }

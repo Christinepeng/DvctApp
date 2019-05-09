@@ -7,6 +7,7 @@ import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
 import com.divercity.android.data.entity.group.creategroup.CreateGroupBody
 import com.divercity.android.data.entity.group.creategroup.GroupOfInterest
+import com.divercity.android.data.entity.group.discardgroup.DiscardGroupsEntityBody
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.group.groupadmin.AddGroupAdminsBody
 import com.divercity.android.data.entity.group.invitation.GroupInviteResponse
@@ -331,5 +332,12 @@ constructor(
             checkResponse(response)
             response.body()?.data?.toQuestion()
         }
+    }
+
+    override fun discardRecommendedGroups(groupsId: List<String>): Observable<Unit> {
+        return service.discardRecommendedGroups(DiscardGroupsEntityBody(groupsId))
+            .map { response ->
+                checkResponse(response)
+            }
     }
 }

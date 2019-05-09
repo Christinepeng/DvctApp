@@ -13,11 +13,11 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.company.companies.adapter.TabCompaniesAdapter
 import com.divercity.android.features.company.companies.adapter.TabCompaniesViewHolder
-import com.divercity.android.features.home.people.ITabPeople
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.fragment_companies.*
 import javax.inject.Inject
 
-class CompaniesFragment : BaseFragment(), RetryCallback, ITabPeople {
+class CompaniesFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: CompaniesViewModel
 

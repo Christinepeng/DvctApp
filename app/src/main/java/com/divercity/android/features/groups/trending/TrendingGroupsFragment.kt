@@ -10,9 +10,9 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.groups.ITabsGroups
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.viewmodel.GroupViewModel
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -21,7 +21,7 @@ import javax.inject.Inject
  */
 
 
-class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
+class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: TrendingGroupsViewModel
 
@@ -164,7 +164,7 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
 //        }
 //    }
 
-    override fun fetchGroups(searchQuery: String?) {
+    override fun search(searchQuery: String?) {
         viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
     }
 }

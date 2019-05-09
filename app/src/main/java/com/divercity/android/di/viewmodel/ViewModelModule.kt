@@ -47,6 +47,7 @@ import com.divercity.android.features.groups.onboarding.SelectGroupViewModel
 import com.divercity.android.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import com.divercity.android.features.home.HomeActivityViewModel
+import com.divercity.android.features.home.home.HomeRecommendedViewModel
 import com.divercity.android.features.home.home.HomeViewModel
 import com.divercity.android.features.home.people.TabPeopleViewModel
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingViewModel
@@ -81,6 +82,7 @@ import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeVi
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
 import com.divercity.android.features.password.changepassword.ChangePasswordViewModel
 import com.divercity.android.features.password.resetpassword.ResetPasswordViewModel
+import com.divercity.android.features.search.SearchViewModel
 import com.divercity.android.features.settings.ProfileSettingsViewModel
 import com.divercity.android.features.settings.accountsettings.AccountSettingsViewModel
 import com.divercity.android.features.signup.SignUpViewModel
@@ -133,6 +135,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     abstract fun bindsHomeViewModel(viewModel: HomeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeRecommendedViewModel::class)
+    abstract fun bindsHomeRecommendedViewModel(viewModel: HomeRecommendedViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -594,4 +601,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(ChangePasswordViewModel::class)
     abstract fun bindsChangePasswordViewModel(viewModel: ChangePasswordViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SearchViewModel::class)
+    abstract fun bindsSearchViewModel(viewModel: SearchViewModel): ViewModel
 }

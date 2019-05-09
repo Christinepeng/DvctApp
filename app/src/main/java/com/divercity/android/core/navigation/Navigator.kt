@@ -69,6 +69,7 @@ import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeAc
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
 import com.divercity.android.features.password.changepassword.ChangePasswordActivity
 import com.divercity.android.features.password.resetpassword.ResetPasswordActivity
+import com.divercity.android.features.search.SearchActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
@@ -246,6 +247,15 @@ class Navigator @Inject constructor() {
             ResetPasswordActivity.getCallingIntent(
                 fragment.context,
                 token
+            )
+        )
+    }
+
+    fun navigateToSearch(fragment: Fragment, searchQuery: String) {
+        fragment.startActivity(
+            SearchActivity.getCallingIntent(
+                fragment.context,
+                searchQuery
             )
         )
     }

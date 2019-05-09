@@ -127,7 +127,7 @@ interface UserService {
         @Body experience: WorkExperienceBody
     ): Observable<Response<DataObject<WorkExperienceResponse>>>
 
-    @POST("users/{userId}/update_password")
+    @PUT("users/{userId}/update_password")
     fun changePassword(
         @Path("userId") userId: String,
         @Body body: ChangePasswordEntityBody

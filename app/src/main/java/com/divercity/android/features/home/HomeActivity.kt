@@ -109,8 +109,10 @@ class HomeActivity : DaggerAppCompatActivity() {
             4 -> selectedFragment = CurrentUserProfileFragment.newInstance()
         }
         val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, selectedFragment)
-        transaction.commit()
+        transaction
+            .replace(R.id.container, selectedFragment)
+            .addToBackStack(null)
+            .commit()
     }
 
     private val myOnNavigationItemSelectedListener =
@@ -151,7 +153,7 @@ class HomeActivity : DaggerAppCompatActivity() {
         setUserProfilePicture()
     }
 
-    private fun setUserProfilePicture(){
+    private fun setUserProfilePicture() {
         Glide
             .with(this)
             .load(viewModel.getProfilePictureUrl())

@@ -69,7 +69,7 @@ class JobApplicantsFragment : BaseFragment(), RetryCallback {
     private fun initList() {
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
-        list_main.adapter = adapter
+        list_jobs_questions.adapter = adapter
 
         swipe_list_main.apply {
             setOnRefreshListener {

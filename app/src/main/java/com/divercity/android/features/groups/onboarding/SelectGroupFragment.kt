@@ -20,7 +20,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
-import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
+import com.divercity.android.model.position.GroupPositionModel
 import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*

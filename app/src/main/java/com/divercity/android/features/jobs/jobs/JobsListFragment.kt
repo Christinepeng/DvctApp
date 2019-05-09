@@ -12,9 +12,9 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
-import com.divercity.android.features.jobs.ITabJobs
 import com.divercity.android.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -22,7 +22,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialogFragment.Listener {
+class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: JobsListViewModel
 
@@ -153,11 +153,11 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabJobs, JobApplyDialog
         dialog.show(childFragmentManager, null)
     }
 
-    override fun fetchJobs(searchQuery: String?) {
+    override fun search(searchQuery: String?) {
         viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 
     override fun onSuccessJobApply() {
-        fetchJobs(null)
+        search(null)
     }
 }

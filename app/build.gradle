@@ -141,12 +141,12 @@ dependencies {
 
     def kotlinCoroutines_version = "1.1.1"
 
-    def room_version_runtime = '2.1.0-alpha07'
+    def room_version_runtime = '2.1.0-beta01'
     def room_version = '2.1.0-alpha04'
 
     def firebase_messaging_version = "17.6.0"
     def firebas_core_version = "16.0.8"
-    def crashlytics_version = "2.9.9"
+    def crashlytics_version = "2.10.0"
 
     def spyglass_version = "2.0.0"
 

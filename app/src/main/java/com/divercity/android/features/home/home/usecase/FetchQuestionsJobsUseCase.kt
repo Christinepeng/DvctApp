@@ -1,5 +1,6 @@
 package com.divercity.android.features.home.home.usecase
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.repository.group.GroupRepository
@@ -20,7 +21,7 @@ constructor(
     @Named("ui_thread") uiThread: Scheduler,
     private val jobRepository: JobRepository,
     private val feedRepository: GroupRepository
-) : UseCase<@JvmSuppressWildcards List<HomeItem>, FetchQuestionsJobsUseCase.Params>(
+) : UseCase<@JvmSuppressWildcards List<HomeItem>, Params>(
     executorThread,
     uiThread
 ) {
@@ -53,7 +54,7 @@ constructor(
                         val randJobs = (1..2).random()
                         var endLimitJobs = startLimitJobs + randJobs
                         if(endLimitJobs > jobs.size) endLimitJobs = jobs.size
-                        for(i in startLimitJobs..(endLimitJobs - 1))
+                        for(i in startLimitJobs until endLimitJobs)
                             shuffledJobsAndQuestions.add(jobs[i])
                         startLimitJobs += randJobs
                     }
@@ -62,7 +63,7 @@ constructor(
                         val randQuestions = (1..2).random()
                         var endLimitQuestions = randQuestions + startLimitQuestions
                         if(endLimitQuestions > questions.size) endLimitQuestions = questions.size
-                        for(i in startLimitQuestions..(endLimitQuestions - 1))
+                        for(i in startLimitQuestions until endLimitQuestions)
                             shuffledJobsAndQuestions.add(questions[i])
                         startLimitQuestions += randQuestions
                     }
@@ -71,15 +72,5 @@ constructor(
                 return@BiFunction shuffledJobsAndQuestions
             }
         )
-    }
-
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
-
-        companion object {
-
-            fun forJobs(page: Int, size: Int, query: String?): Params {
-                return Params(page, size, query)
-            }
-        }
     }
 }

@@ -66,7 +66,7 @@ class RecentDocsDialogFragment : BaseDialogFragment() {
         dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_recent_docs, null)
 
         adapter.listener = listenerAdapter
-        dialogView.list_main.adapter = adapter
+        dialogView.list_jobs_questions.adapter = adapter
 
         builder.setView(dialogView)
         return builder.create()

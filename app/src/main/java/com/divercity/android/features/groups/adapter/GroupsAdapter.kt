@@ -9,7 +9,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
+import com.divercity.android.model.position.GroupPositionModel
 import javax.inject.Inject
 
 class GroupsAdapter @Inject

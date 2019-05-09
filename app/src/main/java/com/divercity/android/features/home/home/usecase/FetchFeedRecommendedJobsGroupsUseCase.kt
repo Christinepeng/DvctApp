@@ -1,14 +1,14 @@
 package com.divercity.android.features.home.home.usecase
 
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.home.HomeItem
-import com.divercity.android.data.entity.home.Recommended
 import com.divercity.android.data.entity.home.RecommendedItem
 import com.divercity.android.repository.group.GroupRepository
 import com.divercity.android.repository.job.JobRepository
+import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
-import io.reactivex.functions.Function4
+import io.reactivex.functions.BiFunction
 import javax.inject.Inject
 import javax.inject.Named
 
@@ -22,91 +22,65 @@ constructor(
     @Named("ui_thread") uiThread: Scheduler,
     private val jobRepository: JobRepository,
     private val groupRepository: GroupRepository,
-    private val feedRepository: GroupRepository
-) : UseCase<@JvmSuppressWildcards List<HomeItem>, FetchFeedRecommendedJobsGroupsUseCase.Params>(
+    private val sessionRepository: SessionRepository
+) : UseCase<@JvmSuppressWildcards List<RecommendedItem>, Params>(
     executorThread,
     uiThread
 ) {
 
-    override fun createObservableUseCase(params: Params): Observable<List<HomeItem>> {
+    override fun createObservableUseCase(params: Params): Observable<List<RecommendedItem>> {
 
-        val fetchRecommendedJobs = jobRepository.fetchRecommendedJobs(
-            0,
-            5,
-            null
-        )
+//        if (sessionRepository.isLoggedUserJobSeeker()) {
 
-        val fetchGroups = groupRepository.fetchRecommendedGroups(
-            0,
-            5
-        )
+            val fetchRecommendedJobs = jobRepository.fetchRecommendedJobs(
+                params.page,
+                params.size,
+                null
+            )
 
-        val fetchQuestions = feedRepository.fetchFeedQuestions(
-            params.page,
-            params.size
-        )
+            val fetchRecommendedGroups = groupRepository.fetchRecommendedGroups(
+                params.page,
+                params.size
+            )
 
-        val fetchJobs = jobRepository.fetchJobs(
-            params.page,
-            params.size,
-            null
-        )
+            return Observable.zip(
+                fetchRecommendedGroups,
+                fetchRecommendedJobs,
+                BiFunction { groups, jobs ->
+                    val shuffledRecommendedJobsGroups = ArrayList<RecommendedItem>()
+                    var startLimitJobs = 0
+                    var startLimitGroups = 0
 
-        return Observable.zip(
-            fetchGroups,
-            fetchRecommendedJobs,
-            fetchQuestions,
-            fetchJobs,
-            Function4 { t1, t2, questions, jobs ->
-                val recommendedRes = ArrayList<RecommendedItem>()
-                recommendedRes.addAll(t2)
-                recommendedRes.addAll(t1)
-                recommendedRes.shuffle()
+                    while (jobs.isNotEmpty() && startLimitJobs < jobs.size ||
+                        groups.isNotEmpty() && startLimitGroups < groups.size
+                    ) {
+                        if (startLimitJobs < jobs.size) {
+                            val randJobs = (1..2).random()
+                            var endLimitJobs = startLimitJobs + randJobs
+                            if (endLimitJobs > jobs.size) endLimitJobs = jobs.size
+                            for (i in startLimitJobs until endLimitJobs)
+                                shuffledRecommendedJobsGroups.add(jobs[i])
+                            startLimitJobs += randJobs
+                        }
 
-                val recommended = Recommended(recommendedRes)
-
-                val shuffledJobsAndQuestions = ArrayList<HomeItem>()
-                var startLimitJobs = 0
-                var startLimitQuestions = 0
-
-                while(jobs.isNotEmpty() && startLimitJobs < jobs.size ||
-                    questions.isNotEmpty() && startLimitQuestions < questions.size){
-
-                    if(startLimitJobs < jobs.size){
-                        val randJobs = (1..2).random()
-                        var endLimitJobs = startLimitJobs + randJobs
-                        if(endLimitJobs > jobs.size) endLimitJobs = jobs.size
-                        for(i in startLimitJobs..(endLimitJobs - 1))
-                            shuffledJobsAndQuestions.add(jobs[i])
-                        startLimitJobs += randJobs
+                        if (startLimitGroups < groups.size) {
+                            val randQuestions = (1..2).random()
+                            var endLimitQuestions = randQuestions + startLimitGroups
+                            if (endLimitQuestions > groups.size) endLimitQuestions = groups.size
+                            for (i in startLimitGroups until endLimitQuestions)
+                                shuffledRecommendedJobsGroups.add(groups[i])
+                            startLimitGroups += randQuestions
+                        }
                     }
-
-                    if(startLimitQuestions < questions.size){
-                        val randQuestions = (1..2).random()
-                        var endLimitQuestions = randQuestions + startLimitQuestions
-                        if(endLimitQuestions > questions.size) endLimitQuestions = questions.size
-                        for(i in startLimitQuestions..(endLimitQuestions - 1))
-                            shuffledJobsAndQuestions.add(questions[i])
-                        startLimitQuestions += randQuestions
-                    }
+                    return@BiFunction shuffledRecommendedJobsGroups
                 }
-
-                val res = ArrayList<HomeItem>()
-                res.add(recommended)
-                res.addAll(shuffledJobsAndQuestions)
-
-                return@Function4 res
-            }
-        )
-    }
-
-    class Params private constructor(val page: Int, val size: Int, val query: String?) {
-
-        companion object {
-
-            fun forJobs(page: Int, size: Int, query: String?): Params {
-                return Params(page, size, query)
-            }
-        }
+            )
+//        } else {
+//            @Suppress("UNCHECKED_CAST")
+//            return groupRepository.fetchRecommendedGroups(
+//                params.page,
+//                params.size
+//            ) as Observable<List<RecommendedItem>>
+//        }
     }
 }

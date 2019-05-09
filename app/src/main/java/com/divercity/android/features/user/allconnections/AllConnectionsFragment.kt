@@ -12,7 +12,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.home.people.ITabPeople
+import com.divercity.android.features.search.ITabSearch
 import com.divercity.android.features.user.useradapter.pagination.UserPaginationAdapter
 import com.divercity.android.features.user.useradapter.pagination.UserViewHolder
 import com.divercity.android.model.user.User
@@ -24,7 +24,7 @@ import javax.inject.Inject
  */
 
 
-class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabPeople {
+class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: AllConnectionsViewModel
 

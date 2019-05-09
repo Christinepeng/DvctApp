@@ -149,4 +149,8 @@ interface GroupRepository {
     fun fetchQuestionById(
         questionId: String
     ): Observable<Question>
+
+    fun discardRecommendedGroups(
+        groupsId: List<String>
+    ): Observable<Unit>
 }

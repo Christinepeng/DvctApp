@@ -14,6 +14,7 @@ import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.home.HomeActivity
+import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_jobs.*
 import javax.inject.Inject
@@ -99,8 +100,8 @@ class TabJobsFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
-                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabJobs)
-                    ?.fetchJobs(lastSearchQuery)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
+                    ?.search(lastSearchQuery)
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)
@@ -117,8 +118,8 @@ class TabJobsFragment : BaseFragment() {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
-                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabJobs)
-                    ?.fetchJobs(query)
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
+                    ?.search(query)
                 lastSearchQuery = query
                 return false
             }
@@ -126,8 +127,8 @@ class TabJobsFragment : BaseFragment() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
                 handlerSearch.postDelayed({
-                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabJobs)
-                        ?.fetchJobs(newText)
+                    (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
+                        ?.search(newText)
                     lastSearchQuery = newText
                 }, AppConstants.SEARCH_DELAY)
                 return true

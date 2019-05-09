@@ -10,8 +10,9 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/list_main"
+            android:id="@+id/list_jobs_questions"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scrollbarSize="5dp"
@@ -21,70 +22,6 @@
             tools:listitem="@layout/item_question" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <LinearLayout
-        android:id="@+id/lay_no_groups"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="vertical"
-        android:visibility="gone">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:src="@drawable/icon_no_conversation" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_margin="16dp"
-            android:fontFamily="@font/avenir_roman"
-            android:gravity="center_horizontal"
-            android:lineSpacingExtra="6dp"
-            android:text="@string/no_conversation"
-            android:textColor="@color/textTitle"
-            android:textSize="15sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_explore_groups"
-            style="@style/AppText"
-            android:layout_width="match_parent"
-            android:layout_height="31dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/shape_backgrd_round_blue2"
-            android:fontFamily="@font/avenir_medium"
-            android:minHeight="30dip"
-            android:text="@string/explore_groups"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_create_edit_group"
-            style="@style/AppText"
-            android:layout_width="match_parent"
-            android:layout_height="31dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginBottom="20dp"
-            android:background="@drawable/shape_backgrd_round_blue2"
-            android:fontFamily="@font/avenir_medium"
-            android:minHeight="30dip"
-            android:text="@string/create_group"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="15sp" />
-
-    </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_fab"

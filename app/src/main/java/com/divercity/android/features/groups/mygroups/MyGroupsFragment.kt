@@ -12,11 +12,11 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.features.groups.ITabsGroups
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
 import com.divercity.android.features.groups.allgroups.AllGroupsFragment
-import com.divercity.android.features.groups.allgroups.model.GroupPositionModel
+import com.divercity.android.features.search.ITabSearch
+import com.divercity.android.model.position.GroupPositionModel
 import kotlinx.android.synthetic.main.fragment_my_groups.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -26,7 +26,7 @@ import javax.inject.Inject
  */
 
 
-class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
+class MyGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: MyGroupsViewModel
 
@@ -162,7 +162,7 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabsGroups {
         }
     }
 
-    override fun fetchGroups(searchQuery: String?) {
+    override fun search(searchQuery: String?) {
         viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
     }
 }

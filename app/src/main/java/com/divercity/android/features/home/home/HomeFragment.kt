@@ -364,37 +364,37 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.menu_home_fragment_toolbar, menu)
-        searchItem = menu.findItem(R.id.action_search)
-        searchView = searchItem?.actionView as SearchView
-        searchView?.queryHint = getString(R.string.search)
-
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                if (query != null && query.isNotEmpty())
-                    navigator.navigateToSearch(this@HomeFragment, query)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                return true
-            }
-        })
-
-        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-
-            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
-//                menu.findItem(R.id.logout).isVisible = false
-//                menu.findItem(R.id.about).isVisible = false
-                return true
-            }
-
-            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-//                menu.findItem(R.id.logout).isVisible = true
-//                menu.findItem(R.id.about).isVisible = true
-                return true
-            }
-        })
+//        searchItem = menu.findItem(R.id.action_search)
+//        searchView = searchItem?.actionView as SearchView
+//        searchView?.queryHint = getString(R.string.search)
+//
+//        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                if (newText != null && newText.length == 1)
+//                    navigator.navigateToSearch(this@HomeFragment, newText)
+//                return true
+//            }
+//        })
+//
+//        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
+//
+//            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
+////                menu.findItem(R.id.logout).isVisible = false
+////                menu.findItem(R.id.about).isVisible = false
+//                return true
+//            }
+//
+//            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
+////                menu.findItem(R.id.logout).isVisible = true
+////                menu.findItem(R.id.about).isVisible = true
+//                return true
+//            }
+//        })
 
         super.onCreateOptionsMenu(menu, inflater)
     }

@@ -25,6 +25,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:fontFamily="@font/avenir_medium"
         android:gravity="center_horizontal"
         android:lineSpacingExtra="6dp"
@@ -37,7 +38,6 @@
         android:layout_width="70dp"
         android:layout_height="70dp"
         android:layout_gravity="center"
-        android:layout_marginTop="16dp"
         android:contentDescription="TODO"
         android:scaleType="center"
         tools:background="@color/appBlue" />

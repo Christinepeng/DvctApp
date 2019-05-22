@@ -1,140 +1,200 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/white"
-    android:paddingStart="12dp"
-    android:paddingTop="12dp"
-    android:paddingEnd="12dp"
-    android:paddingBottom="12dp">
-
-    <ImageView
-        android:id="@+id/img_job_poster"
-        android:layout_width="38dp"
-        android:layout_height="38dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="center"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_job_poster_name"
-        app:layout_constraintVertical_bias="0.0"
-        tools:background="@android:color/black" />
-
-    <TextView
-        android:id="@+id/txt_job_poster_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="@font/avenir_medium"
-        android:textColor="#3198e5"
-        android:textSize="11sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Racism &amp; Equality" />
-
-    <TextView
-        android:id="@+id/txt_job_created"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:fontFamily="@font/avenir_book"
-        android:lineSpacingExtra="1sp"
-        android:textColor="#a4a4b3"
-        android:textSize="11sp"
-        app:layout_constraintStart_toEndOf="@+id/txt_job_poster_name"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="- 12/03/2018" />
+    android:orientation="vertical">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/shape_backgrd_round2"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_job_poster"
-        app:layout_constraintTop_toBottomOf="@+id/txt_job_created">
+        android:background="@color/white"
+        android:paddingStart="15dp"
+        android:paddingTop="10dp"
+        android:paddingEnd="15dp"
+        android:paddingBottom="10dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_view"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
+        <ImageView
+            android:id="@+id/img_job_poster"
+            android:layout_width="38dp"
+            android:layout_height="38dp"
+            android:layout_marginTop="8dp"
+            android:scaleType="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.0">
+            app:layout_constraintTop_toBottomOf="@+id/txt_job_created"
+            tools:background="@android:color/black" />
 
-            <ImageView
-                android:id="@+id/item_jobs_img"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="center"
-                tools:background="@color/appBlue" />
-
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="@id/card_view"
-            app:layout_constraintEnd_toStartOf="@+id/btn_job_action"
-            app:layout_constraintStart_toEndOf="@+id/card_view"
-            app:layout_constraintTop_toTopOf="@id/card_view">
-
-            <TextView
-                android:id="@+id/item_jobs_txt_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="end"
-                android:fontFamily="@font/avenir_medium"
-                android:maxLines="1"
-                android:textColor="#333241"
-                android:textSize="15sp"
-                tools:text="Blacks in Tech sdfsdf sdfsdfs sdfsdfsd sdfsdfs sdfsfds dfs dsfsdf @string/_continue" />
-
-            <TextView
-                android:id="@+id/item_jobs_txt_company"
-                style="@style/AppText6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="Dropbox" />
-
-            <TextView
-                android:id="@+id/item_jobs_txt_place"
-                style="@style/AppText5"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
-                android:ellipsize="end"
-                android:maxLines="1"
-                tools:text="San Francisco, USA" />
-
-        </LinearLayout>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_job_action"
+        <TextView
+            android:id="@+id/txt_job_created"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="4dp"
-            android:background="@null"
-            app:layout_constraintBottom_toBottomOf="@id/card_view"
+            android:fontFamily="@font/avenir_book"
+            android:lineSpacingExtra="1sp"
+            android:textColor="#a4a4b3"
+            android:textSize="11sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1 month ago" />
+
+        <TextView
+            android:id="@+id/item_jobs_txt_poster_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/avenir_medium"
+            android:maxLines="1"
+            android:textColor="#333241"
+            android:textSize="15sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@id/card_view"
-            tools:src="@drawable/btn_apply" />
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_job_poster"
+            app:layout_constraintTop_toTopOf="@+id/img_job_poster"
+            tools:text="Blacks in Tech sdfsdf sdfsdfs sdfsdfsd sdfsdfs sdfsfds dfs dsfsdf @string/_continue" />
+
+        <TextView
+            android:id="@+id/item_jobs_txt_poster_occupation"
+            style="@style/AppText5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            app:layout_constraintBottom_toBottomOf="@+id/img_job_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/img_job_poster"
+            app:layout_constraintTop_toBottomOf="@+id/item_jobs_txt_poster_name"
+            tools:text="San Francisco, USA" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/img_job_poster">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_view"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0">
+
+                <ImageView
+                    android:id="@+id/item_jobs_img"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="center"
+                    tools:background="@color/appBlue" />
+
+            </androidx.cardview.widget.CardView>
+
+            <LinearLayout
+                android:id="@+id/linearLayout3"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="@id/card_view"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/card_view"
+                app:layout_constraintTop_toTopOf="@id/card_view">
+
+                <TextView
+                    android:id="@+id/item_jobs_txt_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/avenir_medium"
+                    android:maxLines="1"
+                    android:textColor="#333241"
+                    android:textSize="15sp"
+                    tools:text="Blacks in Tech sdfsdf sdfsdfs sdfsdfsd sdfsdfs sdfsfds dfs dsfsdf @string/_continue" />
+
+                <TextView
+                    android:id="@+id/item_jobs_txt_company"
+                    style="@style/AppText6"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="Dropbox" />
+
+                <TextView
+                    android:id="@+id/item_jobs_txt_place"
+                    style="@style/AppText5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    tools:text="San Francisco, USA" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_save"
+                    style="@style/AppText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bk_white_stroke_blue_rounded"
+                    android:fontFamily="@font/avenir_medium"
+                    android:minHeight="32dip"
+                    android:text="@string/save"
+                    android:textAllCaps="false"
+                    android:textColor="@color/appBlue"
+                    android:textSize="14sp" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btn_apply"
+                    style="@style/AppText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/shape_backgrd_round_blue3"
+                    android:fontFamily="@font/avenir_medium"
+                    android:minHeight="32dip"
+                    android:text="@string/apply"
+                    android:textAllCaps="false"
+                    android:textColor="@android:color/white"
+                    android:textSize="14sp" />
+
+            </LinearLayout>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <View
+        style="@style/RecyclerViewDivider"
+        android:layout_height="3dp" />
+
+</LinearLayout>

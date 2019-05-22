@@ -1,5 +1,6 @@
 package com.divercity.android.features.home.home
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
@@ -25,27 +26,32 @@ import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.home.home.adapter.HomeAdapter
 import com.divercity.android.features.home.home.adapter.RecommendedAdapter
+import com.divercity.android.features.home.home.adapter.RecommendedConnectionsAdapter
+import com.divercity.android.features.home.home.adapter.recommended.RecommendedConnectionViewHolder
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedGroupViewHolder
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedJobViewHolder
+import com.divercity.android.features.home.home.adapter.viewholder.JobFeedViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
-import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
 import com.divercity.android.model.Question
-import com.divercity.android.model.position.GroupPositionModel
-import com.divercity.android.model.position.JobPositionModel
+import com.divercity.android.model.position.GroupPosition
+import com.divercity.android.model.position.JobPosition
+import com.divercity.android.model.position.UserPosition
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
+
 
 /**
  * Created by lucas on 25/10/2018.
  */
 
 
-class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Listener {
+class HomeFragment : BaseFragment() {
 
     lateinit var viewModel: HomeViewModel
     lateinit var recommendedViewModel: HomeRecommendedViewModel
+    lateinit var recommendedConnectionsViewModel: HomeRecommendedConnectionsViewModel
 
     @Inject
     lateinit var homeAdapter: HomeAdapter
@@ -53,10 +59,14 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     @Inject
     lateinit var recommendedAdapter: RecommendedAdapter
 
+    @Inject
+    lateinit var recommendedConnectionsAdapter: RecommendedConnectionsAdapter
+
     private var mIsRefreshing = false
     private var positionApplyClicked: Int = 0
     private var positionJoinRequest: Int = 0
     private var positionJoinClicked: Int = 0
+    private var lastRecommendedUserPositionTap: Int = 0
 
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
@@ -64,6 +74,8 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     private lateinit var newMessageDisposable: Disposable
 
     companion object {
+
+        const val REQUEST_CODE_USER = 200
 
         fun newInstance(): HomeFragment {
             return HomeFragment()
@@ -74,12 +86,18 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         recommendedViewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(HomeRecommendedViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
+        recommendedConnectionsViewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory)
+                .get(HomeRecommendedConnectionsViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
 
         setHasOptionsMenu(true)
@@ -109,7 +127,11 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     }
 
     private fun initAdapters() {
-        homeAdapter.setRetryCallback(this)
+        homeAdapter.showRecommendedSection = viewModel.showRecommendedSection.value!!
+
+        homeAdapter.setRetryCallback(RetryCallback {
+            viewModel.retry()
+        })
 
         homeAdapter.questionListener = object : QuestionsViewHolder.Listener {
 
@@ -118,27 +140,29 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         }
 
-        homeAdapter.feedJobListener = object : JobsViewHolder.Listener {
+        homeAdapter.feedJobListener = object : JobFeedViewHolder.Listener {
+            override fun onApplyClick(jobPos: JobPosition) {
+                showJobApplyDialog(jobPos, false)
+            }
 
-            override fun onApplyClick(position: Int, job: JobResponse) {
-                showJobApplyDialog(job.id)
+            override fun onSaveUnsaveClick(save: Boolean, jobPos: JobPosition) {
+                viewModel.saveUnsaveJob(save, jobPos)
             }
 
             override fun onJobClick(job: JobResponse) {
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
+                navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
             }
         }
 
-        list_jobs_questions.adapter = homeAdapter
-
         recommendedAdapter.setRetryCallback(RetryCallback {
+            recommendedAdapter.onRefreshRetry()
             recommendedViewModel.retry()
         })
 
         recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
 
             override fun onGroupDiscarded(position: Int, group: GroupResponse) {
-                viewModel.discardRecommendedGroup(GroupPositionModel(position, group))
+                viewModel.discardRecommendedGroup(GroupPosition(position, group))
             }
 
             override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
@@ -159,24 +183,63 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         recommendedAdapter.jobListener = object : RecommendedJobViewHolder.Listener {
 
             override fun onJobDiscarded(position: Int, job: JobResponse) {
-                viewModel.discardRecommendedJobs(JobPositionModel(position, job))
+                viewModel.discardRecommendedJobs(JobPosition(position, job))
             }
 
             override fun onJobClick(job: JobResponse) {
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
+                navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
             }
 
             override fun onApplyClick(position: Int, job: JobResponse) {
                 positionApplyClicked = position
-                showJobApplyDialog(job.id)
+                showJobApplyDialog(JobPosition(position, job), true)
             }
         }
 
         homeAdapter.recommendedAdapter = recommendedAdapter
+
+        recommendedConnectionsAdapter.setRetryCallback(RetryCallback {
+            recommendedConnectionsAdapter.onRefreshRetry()
+            recommendedConnectionsViewModel.retry()
+        })
+
+        recommendedConnectionsAdapter.listener = object : RecommendedConnectionViewHolder.Listener {
+
+            override fun onUserClick(userPosition: UserPosition) {
+                lastRecommendedUserPositionTap = userPosition.position
+                navigator.navigateToOtherUserProfileForResult(
+                    this@HomeFragment,
+                    null,
+                    userPosition.user,
+                    REQUEST_CODE_USER
+                )
+            }
+
+            override fun onConnectClick(userPosition: UserPosition) {
+                recommendedConnectionsViewModel.connectToUser(userPosition)
+            }
+
+            override fun onUserDiscarded(userPosition: UserPosition) {
+            }
+        }
+
+        homeAdapter.recommendedConnectionsAdapter = recommendedConnectionsAdapter
+
+        list_jobs_questions.adapter = homeAdapter
+
     }
 
-    private fun showJobApplyDialog(jobId: String?) {
-        val dialog = JobApplyDialogFragment.newInstance(jobId!!)
+    private fun showJobApplyDialog(jobPos: JobPosition, isRecommended: Boolean) {
+        val dialog = JobApplyDialogFragment.newInstance(jobPos.job.id!!)
+        dialog.listener = object : JobApplyDialogFragment.Listener {
+
+            override fun onSuccessJobApply() {
+                if (isRecommended)
+                    recommendedAdapter.updatePositionOnJobApplied(jobPos.position)
+                else
+                    homeAdapter.updatePositionOnJobApplied(jobPos.position)
+            }
+        }
         dialog.show(childFragmentManager, null)
     }
 
@@ -216,8 +279,15 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         })
 
         recommendedViewModel.networkState().observe(viewLifecycleOwner, Observer {
-            if (!mIsRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
-                recommendedAdapter.setNetworkState(it)
+            recommendedAdapter.setNetworkState(it)
+
+            if ((it?.status == Status.ERROR || it?.status == Status.SUCCESS) &&
+                ((recommendedAdapter.currentList?.size == 0) ||
+                        (recommendedAdapter.currentList?.size != 0 && !homeAdapter.showRecommendedSection))
+            ) {
+                viewModel.showRecommendedSection.value = true
+                homeAdapter.notifyItemChanged(0)
+            }
         })
 
         recommendedViewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
@@ -238,6 +308,18 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
 
 //            if (!mIsRefreshing)
 //                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
+        })
+
+        recommendedConnectionsViewModel.pagedList.observe(viewLifecycleOwner, Observer {
+            recommendedConnectionsAdapter.submitList(it)
+        })
+
+        recommendedConnectionsViewModel.networkState().observe(viewLifecycleOwner, Observer {
+            recommendedConnectionsAdapter.setNetworkState(it)
+        })
+
+        recommendedConnectionsViewModel.refreshState().observe(viewLifecycleOwner, Observer { _ ->
+
         })
 
         viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer {
@@ -332,14 +414,54 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
             }
         })
 
+        viewModel.jobSaveUnsaveResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response.status) {
+                Status.LOADING -> {
+                    showProgressNoBk()
+                }
+
+                Status.ERROR -> {
+                    hideProgressNoBk()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgressNoBk()
+                    homeAdapter.notifyItemChanged(response.data?.position!! - 1)
+                }
+            }
+        })
+
         viewModel.listState.observe(viewLifecycleOwner, Observer { parcelable ->
             list_jobs_questions.layoutManager?.onRestoreInstanceState(parcelable)
         })
+
+        viewModel.showRecommendedSection.observe(viewLifecycleOwner, Observer {
+            homeAdapter.showRecommendedSection = it
+        })
+
+        recommendedConnectionsViewModel.connectUserResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response?.status) {
+                    Status.LOADING -> {
+                        showProgressNoBk()
+                    }
+
+                    Status.ERROR -> {
+                        hideProgressNoBk()
+                        showToast(response.message)
+                    }
+
+                    Status.SUCCESS -> {
+                        hideProgressNoBk()
+                        recommendedConnectionsAdapter.notifyItemChanged(response.data?.position!!)
+                    }
+                }
+            })
     }
 
-    override fun retry() {
-        recommendedViewModel.retry()
-        viewModel.retry()
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun initSwipeToRefresh() {
@@ -347,10 +469,13 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         swipe_list_main.apply {
             setOnRefreshListener {
                 mIsRefreshing = true
-                homeAdapter.onRefresh()
+                homeAdapter.onRefreshRetry()
                 viewModel.refresh()
-                recommendedAdapter.onRefresh()
+                recommendedAdapter.onRefreshRetry()
                 recommendedViewModel.refresh()
+                viewModel.showRecommendedSection.value = false
+                recommendedConnectionsAdapter.onRefreshRetry()
+                recommendedConnectionsViewModel.refresh()
             }
 
             setColorSchemeColors(
@@ -364,23 +489,24 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
         inflater.inflate(R.menu.menu_home_fragment_toolbar, menu)
-//        searchItem = menu.findItem(R.id.action_search)
-//        searchView = searchItem?.actionView as SearchView
-//        searchView?.queryHint = getString(R.string.search)
-//
-//        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                if (newText != null && newText.length == 1)
-//                    navigator.navigateToSearch(this@HomeFragment, newText)
-//                return true
-//            }
-//        })
-//
+        searchItem = menu.findItem(R.id.action_search)
+        searchView = searchItem?.actionView as SearchView
+        searchView?.queryHint = getString(R.string.search)
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                if (newText != null && newText.length == 1) {
+                    navigator.navigateToSearch(this@HomeFragment, newText)
+                }
+                return true
+            }
+        })
+
 //        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
 //
 //            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
@@ -410,7 +536,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 true
             }
             android.R.id.home -> {
-                navigator.navigateToChatsActivity(activity!!)
+                navigator.navigateToChatsActivity(requireActivity())
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -425,7 +551,7 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
     }
 
     private fun showToast() {
-        Toast.makeText(activity!!, "Coming soon", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity(), "Coming soon", Toast.LENGTH_SHORT).show()
     }
 
     private fun showAboutDialog() {
@@ -438,10 +564,6 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         customOneBtnDialogFragment.show(childFragmentManager, null)
     }
 
-    override fun onSuccessJobApply() {
-        recommendedAdapter.updatePositionOnJobApplied(positionApplyClicked)
-    }
-
     private fun showHomeTabActionDialog() {
         val dialog = HomeTabActionDialogFragment.newInstance()
         dialog.listener = object : HomeTabActionDialogFragment.Listener {
@@ -450,8 +572,9 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
                 navigator.navigateToCreateGroupStep1(this@HomeFragment)
             }
 
-            override fun onNewTopic() {
-                navigator.navigateToCreateTopicActivity(this@HomeFragment, null)
+            override fun onNewPost() {
+                navigator.navigateToCreateNewPost(this@HomeFragment)
+//                navigator.navigateToCreateTopicActivity(this@HomeFragment, null)
             }
         }
         dialog.show(childFragmentManager, null)
@@ -469,8 +592,16 @@ class HomeFragment : BaseFragment(), RetryCallback, JobApplyDialogFragment.Liste
         if (!newMessageDisposable.isDisposed) newMessageDisposable.dispose()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_USER) {
+            recommendedConnectionsAdapter.notifyItemChanged(lastRecommendedUserPositionTap)
+        }
+    }
+
     override fun onResume() {
         super.onResume()
+        searchItem?.collapseActionView()
         viewModel.fetchUnreadMessagesCount()
     }
 }

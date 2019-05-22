@@ -75,13 +75,13 @@ class SelectInterestsFragment : BaseFragment() {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
                 if (btn_skip.text == getString(R.string.skip)) {
                     navigator.navigateToNextOnboarding(
-                            activity!!,
+                            requireActivity(),
                             viewModel.getAccountType(),
                             currentProgress,
                             false)
@@ -119,7 +119,7 @@ class SelectInterestsFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     navigator.navigateToNextOnboarding(
-                            activity!!,
+                            requireActivity(),
                             viewModel.getAccountType(),
                             currentProgress,
                             true)

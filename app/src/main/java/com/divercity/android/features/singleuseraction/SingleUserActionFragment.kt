@@ -157,7 +157,7 @@ class SingleUserActionFragment : BaseFragment(), RetryCallback {
                 Status.SUCCESS -> {
                     hideProgress()
                     showToast("Job shared successfully")
-                    activity!!.finish()
+                    requireActivity().finish()
                 }
             }
         })

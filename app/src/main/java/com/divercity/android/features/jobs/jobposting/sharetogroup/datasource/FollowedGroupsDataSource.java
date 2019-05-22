@@ -2,10 +2,12 @@ package com.divercity.android.features.jobs.jobposting.sharetogroup.datasource;
 
 import android.util.Log;
 
+import com.divercity.android.core.base.usecase.Params;
 import com.divercity.android.core.ui.NetworkState;
-import com.divercity.android.data.entity.base.DataArray;
 import com.divercity.android.data.entity.group.group.GroupResponse;
 import com.divercity.android.features.jobs.jobposting.sharetogroup.usecase.FetchFollowedGroupsUseCase;
+
+import java.util.List;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
@@ -56,16 +58,16 @@ public class FollowedGroupsDataSource extends PageKeyedDataSource<Long, GroupRes
         networkState.postValue(NetworkState.LOADING);
         initialLoading.postValue(NetworkState.LOADING);
 
-        DisposableObserver<DataArray<GroupResponse>> disposableObserver = new DisposableObserver<DataArray<GroupResponse>>() {
+        DisposableObserver<List<GroupResponse>> disposableObserver = new DisposableObserver<List<GroupResponse>>() {
             @Override
-            public void onNext(DataArray<GroupResponse> data) {
+            public void onNext(List<GroupResponse> data) {
                 setRetry(() -> loadInitial(params, callback));
                 if (data != null) {
                     networkState.postValue(NetworkState.LOADED);
-                    if(data.getData().size() < params.requestedLoadSize) {
-                        callback.onResult(data.getData(), null, null);
+                    if (data.size() < params.requestedLoadSize) {
+                        callback.onResult(data, null, null);
                     } else {
-                        callback.onResult(data.getData(), null, 2l);
+                        callback.onResult(data, null, 2l);
                     }
                     initialLoading.postValue(NetworkState.LOADED);
                 } else {
@@ -88,7 +90,7 @@ public class FollowedGroupsDataSource extends PageKeyedDataSource<Long, GroupRes
 
             }
         };
-        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(0, params.requestedLoadSize, query));
+        fetchFollowedGroupsUseCase.execute(disposableObserver, new Params(0, params.requestedLoadSize, query));
     }
 
     @Override
@@ -100,12 +102,12 @@ public class FollowedGroupsDataSource extends PageKeyedDataSource<Long, GroupRes
     public void loadAfter(@NonNull final LoadParams<Long> params, @NonNull final LoadCallback<Long, GroupResponse> callback) {
         networkState.postValue(NetworkState.LOADING);
 
-        DisposableObserver<DataArray<GroupResponse>> disposableObserver = new DisposableObserver<DataArray<GroupResponse>>() {
+        DisposableObserver<List<GroupResponse>> disposableObserver = new DisposableObserver<List<GroupResponse>>() {
             @Override
-            public void onNext(DataArray<GroupResponse> data) {
+            public void onNext(List<GroupResponse> data) {
                 if (data != null) {
                     setRetry(null);
-                    callback.onResult(data.getData(), params.key + 1);
+                    callback.onResult(data, params.key + 1);
                     networkState.postValue(NetworkState.LOADED);
                 } else {
                     setRetry(() -> loadAfter(params, callback));                // publish the error
@@ -125,7 +127,7 @@ public class FollowedGroupsDataSource extends PageKeyedDataSource<Long, GroupRes
             }
         };
 
-        fetchFollowedGroupsUseCase.execute(disposableObserver, FetchFollowedGroupsUseCase.Params.Companion.forGroups(params.key.intValue(), params.requestedLoadSize, query));
+        fetchFollowedGroupsUseCase.execute(disposableObserver, new Params(params.key.intValue(), params.requestedLoadSize, query));
     }
 
     @NonNull
@@ -146,9 +148,9 @@ public class FollowedGroupsDataSource extends PageKeyedDataSource<Long, GroupRes
         }
     }
 
-    public void dispose(){
+    public void dispose() {
         fetchFollowedGroupsUseCase.getCompositeDisposable().clear();
-        if(disposableRetry != null)
+        if (disposableRetry != null)
             disposableRetry.dispose();
     }
 }

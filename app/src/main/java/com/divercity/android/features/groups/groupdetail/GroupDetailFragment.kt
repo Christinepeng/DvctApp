@@ -314,7 +314,9 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             }
 
             override fun onEditMembers() {
-
+                navigator.navigateToDeleteGroupMembers(
+                    this@GroupDetailFragment, viewModel.getGroup()?.id!!
+                )
             }
 
             override fun onInvite() {
@@ -403,14 +405,14 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
 
     override fun onInviteContact() {
         navigator.navigateToPhoneContactsActivity(
-            activity!!,
+            requireActivity(),
             InvitePhoneContactsActivity.getGroupInviteBundle(groupId)
         )
     }
 
     override fun onInviteDivercity() {
         navigator.navigateToInviteUsers(
-            activity!!,
+            requireActivity(),
             InviteUsersActivity.getGroupInviteBundle(groupId)
         )
     }

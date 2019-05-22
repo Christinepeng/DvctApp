@@ -75,7 +75,7 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
@@ -85,7 +85,7 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
     }
 
     private fun navigateToNext(shouldIncrement: Boolean) {
-        navigator.navigateToNextOnboarding(activity!!,
+        navigator.navigateToNextOnboarding(requireActivity(),
                 viewModel.getAccountType(),
                 currentProgress,
                 shouldIncrement

@@ -44,8 +44,8 @@ class JobApplySuccessDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_apply_success, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_job_apply_success, null)
 
         dialogView.apply {
 

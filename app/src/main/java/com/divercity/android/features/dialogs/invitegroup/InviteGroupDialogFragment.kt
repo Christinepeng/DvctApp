@@ -56,8 +56,8 @@ class InviteGroupDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_invite_group, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_invite_group, null)
 
         dialogView.apply {
 

@@ -50,8 +50,8 @@ class JobPosterActionsDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         job = arguments?.getParcelable(PARAM_JOB)
 
-        val builder = AlertDialog.Builder(activity!!)
-        val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_poster_actions, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_job_poster_actions, null)
 
         dialogView.btn_edit_job.setOnClickListener {
             dismiss()

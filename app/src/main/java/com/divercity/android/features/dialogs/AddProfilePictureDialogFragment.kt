@@ -25,8 +25,8 @@ class AddProfilePictureDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        val inflater = activity!!.layoutInflater
+        val builder = AlertDialog.Builder(requireActivity())
+        val inflater = requireActivity().layoutInflater
         val dialogView = inflater.inflate(R.layout.dialog_add_profile_picture, null)
 
         dialogView.apply {

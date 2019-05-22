@@ -6,7 +6,7 @@ class AdapterDataObserverProxy(
         private val adapterDataObserver: RecyclerView.AdapterDataObserver
 ) : RecyclerView.AdapterDataObserver() {
 
-    var headerCount : Int = 0
+    var headerCount : Int = 1
 
     override fun onChanged() {
         adapterDataObserver.onChanged()

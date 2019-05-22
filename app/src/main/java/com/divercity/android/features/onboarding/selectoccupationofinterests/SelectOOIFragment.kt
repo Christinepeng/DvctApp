@@ -73,7 +73,7 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
                 viewModel.updateUserProfile(adapter.idList)
             else
                 navigator.navigateToNextOnboarding(
-                    activity!!,
+                    requireActivity(),
                     viewModel.accountType,
                     currentProgress,
                     false
@@ -119,12 +119,12 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
-                    activity!!,
+                    requireActivity(),
                     viewModel.accountType,
                     currentProgress,
                     false
@@ -156,7 +156,7 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
                 Status.SUCCESS -> {
                     hideProgress()
                     navigator.navigateToNextOnboarding(
-                            activity!!,
+                            requireActivity(),
                             viewModel.accountType,
                             currentProgress,
                             true

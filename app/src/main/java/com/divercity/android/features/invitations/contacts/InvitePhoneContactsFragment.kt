@@ -85,7 +85,7 @@ class InvitePhoneContactsFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     showToast(response.data)
-                    activity!!.finish()
+                    requireActivity().finish()
                 }
             }
         })

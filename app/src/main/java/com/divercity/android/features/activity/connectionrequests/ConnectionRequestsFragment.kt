@@ -12,9 +12,9 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.features.activity.connectionrequests.adapter.ConnectionRequestAdapter
 import com.divercity.android.features.activity.connectionrequests.adapter.ConnectionRequestViewHolder
-import com.divercity.android.features.activity.connectionrequests.model.GroupInvitationNotificationPosition
-import com.divercity.android.features.activity.connectionrequests.model.JoinGroupRequestPosition
-import com.divercity.android.features.activity.connectionrequests.model.UserPosition
+import com.divercity.android.model.position.GroupInvitationNotificationPosition
+import com.divercity.android.model.position.JoinGroupRequestPosition
+import com.divercity.android.model.position.UserPosition
 import kotlinx.android.synthetic.main.fragment_connection_requests.*
 import javax.inject.Inject
 

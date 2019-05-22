@@ -71,13 +71,13 @@ class OnboardingSkillFragment : BaseFragment(), SelectSkillFragment.Listener {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
                 if (include_header.btn_skip.text == getText(R.string.skip))
                     navigator.navigateToNextOnboarding(
-                        activity!!,
+                        requireActivity(),
                         viewModel.accountType,
                         currentProgress,
                         false
@@ -112,7 +112,7 @@ class OnboardingSkillFragment : BaseFragment(), SelectSkillFragment.Listener {
                 Status.SUCCESS -> {
                     hideProgress()
                     navigator.navigateToNextOnboarding(
-                        activity!!,
+                        requireActivity(),
                         viewModel.accountType,
                         currentProgress,
                         true

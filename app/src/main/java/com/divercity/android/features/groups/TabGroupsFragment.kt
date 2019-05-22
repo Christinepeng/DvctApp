@@ -6,21 +6,16 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.widget.SearchView
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.core.ui.ViewPagerDotsPanel
-import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.activity_home.*
-import kotlinx.android.synthetic.main.fragment_groups.*
+import kotlinx.android.synthetic.main.fragment_people.*
 import javax.inject.Inject
 
 
@@ -29,18 +24,12 @@ import javax.inject.Inject
  */
 class TabGroupsFragment : BaseFragment() {
 
-    lateinit var viewModelTab: TabGroupsViewModel
+    lateinit var viewModel: TabGroupsViewModel
 
     @Inject
     lateinit var adapterTab: TabGroupsViewPagerAdapter
 
-    @Inject
-    lateinit var recommendedGroupsAdapter: TabGroupsPanelViewPagerAdapter
-
     private var handlerSearch = Handler()
-    private var lastSearchQuery: String? = ""
-    var lastPositionJoinClick = 0
-    lateinit var handlerViewPager: Handler
 
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
@@ -52,21 +41,19 @@ class TabGroupsFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_groups
+    override fun layoutId(): Int = R.layout.fragment_people
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = activity?.run {
+            ViewModelProviders.of(this, viewModelFactory).get(TabGroupsViewModel::class.java)
+        } ?: throw Exception("Invalid Activity")
+
         setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        viewModelTab = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(TabGroupsViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
-
-        handlerViewPager = Handler()
 
         setupToolbar()
         initView()
@@ -81,81 +68,7 @@ class TabGroupsFragment : BaseFragment() {
     }
 
     private fun subscribeToLiveData() {
-        viewModelTab.fetchRecommendedGroupsResponse.observe(viewLifecycleOwner, Observer {
-            it?.let { group ->
-                if (group.status == Status.SUCCESS) {
-                    img_default_group.visibility = View.GONE
-                    initAdapterRecommendedGroups(it.data)
-                }
-            }
-        })
 
-        viewModelTab.joinGroupResponse.observe(viewLifecycleOwner, Observer {
-            it?.getContentIfNotHandled()?.let { group ->
-                when (group.status) {
-                    Status.LOADING -> showProgress()
-
-                    Status.ERROR -> {
-                        hideProgress()
-                        Toast.makeText(activity, group.message, Toast.LENGTH_SHORT).show()
-                    }
-                    Status.SUCCESS -> {
-                        hideProgress()
-                        recommendedGroupsAdapter.updateView(lastPositionJoinClick)
-                    }
-                }
-            }
-        })
-    }
-
-    private fun initAdapterRecommendedGroups(list: List<GroupResponse>?) {
-        if (list?.size != 0) {
-            lay_carousel_viewpager.visibility = View.VISIBLE
-
-            slider_viewpager.adapter = recommendedGroupsAdapter
-
-            recommendedGroupsAdapter.listener = object : TabGroupsPanelViewPagerAdapter.Listener {
-
-                override fun onBtnJoinClicked(groupId: String?, position: Int) {
-                    groupId?.let {
-                        lastPositionJoinClick = position
-                        viewModelTab.joinGroup(groupId)
-                    }
-                }
-            }
-
-            recommendedGroupsAdapter.setList(list)
-
-            val viewPagerDotsPanel = ViewPagerDotsPanel(
-                    context,
-                    recommendedGroupsAdapter.count,
-                    sliderDots
-            )
-
-            slider_viewpager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-                override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
-
-                override fun onPageSelected(position: Int) {
-                    viewPagerDotsPanel.onPageSelected(position)
-                    handlerViewPager.removeCallbacksAndMessages(null)
-                    handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-                }
-
-                override fun onPageScrollStateChanged(state: Int) {}
-            })
-
-            handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-        } else {
-            lay_carousel_viewpager.visibility = View.GONE
-        }
-    }
-
-    private val runnable = Runnable {
-        slider_viewpager.currentItem =
-                if (slider_viewpager.currentItem == recommendedGroupsAdapter.count - 1)
-                    0
-                else
-                    slider_viewpager.currentItem + 1
     }
 
     private fun setupToolbar() {
@@ -169,6 +82,13 @@ class TabGroupsFragment : BaseFragment() {
     }
 
     private fun setupAdapterViewPager() {
+
+        viewpager.adapter = adapterTab
+        viewModel.adapterPosition?.apply {
+            viewpager.currentItem = this
+        }
+        tab_layout.setupWithViewPager(viewpager)
+
         val onPageListener = object : ViewPager.OnPageChangeListener {
 
             override fun onPageScrollStateChanged(p0: Int) {
@@ -179,16 +99,10 @@ class TabGroupsFragment : BaseFragment() {
 
             override fun onPageSelected(p0: Int) {
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
-                        ?.search(lastSearchQuery)
+                    ?.search(viewModel.lastSearchQuery)
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)
-        viewpager.adapter = adapterTab
-        tab_layout.setupWithViewPager(viewpager)
-
-//        viewpager.post {
-//            onPageListener.onPageSelected(0)
-//        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -196,16 +110,23 @@ class TabGroupsFragment : BaseFragment() {
         inflater.inflate(R.menu.menu_search, menu)
         searchItem = menu.findItem(R.id.action_search)
         searchView = searchItem?.actionView as SearchView
-        searchView?.queryHint = getString(R.string.search)
+
+        if (viewModel.lastSearchQuery == "")
+            searchView?.queryHint = getString(R.string.search)
+        else {
+            searchItem?.expandActionView()
+            searchView?.setQuery(viewModel.lastSearchQuery, true)
+            searchView?.clearFocus()
+        }
 
         searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
             override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
-                lay_carousel_viewpager.visibility = View.GONE
+//                lay_carousel_viewpager.visibility = View.GONE
                 return true
             }
 
             override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-                lay_carousel_viewpager.visibility = View.VISIBLE
+//                lay_carousel_viewpager.visibility = View.VISIBLE
                 return true
             }
 
@@ -216,8 +137,8 @@ class TabGroupsFragment : BaseFragment() {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 handlerSearch.removeCallbacksAndMessages(null)
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
-                        ?.search(query)
-                lastSearchQuery = query
+                    ?.search(query)
+                viewModel.lastSearchQuery = query ?: ""
                 return false
             }
 
@@ -225,8 +146,8 @@ class TabGroupsFragment : BaseFragment() {
                 handlerSearch.removeCallbacksAndMessages(null)
                 handlerSearch.postDelayed({
                     (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
-                            ?.search(newText)
-                    lastSearchQuery = newText
+                        ?.search(newText)
+                    viewModel.lastSearchQuery = newText ?: ""
                 }, AppConstants.SEARCH_DELAY)
                 return true
             }
@@ -236,14 +157,14 @@ class TabGroupsFragment : BaseFragment() {
     }
 
     override fun onDestroyView() {
-        handlerViewPager.removeCallbacksAndMessages(null)
         handlerSearch.removeCallbacksAndMessages(null)
 
         searchView?.setOnQueryTextListener(null)
         searchItem?.setOnActionExpandListener(null)
         searchItem = null
 
-        lastSearchQuery = ""
+        viewModel.adapterPosition = viewpager.currentItem
+
         super.onDestroyView()
     }
 }

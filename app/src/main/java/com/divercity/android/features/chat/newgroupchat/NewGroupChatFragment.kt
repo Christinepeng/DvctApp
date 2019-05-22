@@ -159,7 +159,7 @@ class NewGroupChatFragment : BaseFragment(), RetryCallback {
 //              To remove activity from the stack
                 activity?.apply {
                     setResult(Activity.RESULT_OK, intent)
-                    activity!!.finish ()
+                    requireActivity().finish ()
                 }
             }
         }

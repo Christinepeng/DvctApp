@@ -103,12 +103,12 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
-                    activity!!,
+                    requireActivity(),
                     viewModel.accountType,
                     currentProgress,
                     false
@@ -173,7 +173,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     private val listener: MajorViewHolder.Listener = MajorViewHolder.Listener {
         //        viewModelJobs.updateUserProfileWithSelectedAgeRange(it)
         navigator.navigateToNextOnboarding(
-            activity!!,
+            requireActivity(),
             viewModel.accountType,
             currentProgress,
             true

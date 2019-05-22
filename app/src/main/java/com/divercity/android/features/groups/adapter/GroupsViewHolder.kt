@@ -11,7 +11,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.GroupPosition
 import kotlinx.android.synthetic.main.item_group.view.*
 
 class GroupsViewHolder
@@ -52,7 +52,7 @@ private constructor(itemView: View, private val listener: Listener?) :
                             setOnClickListener {
                                 isEnabled = false
                                 listener?.onGroupJoinClick(
-                                    GroupPositionModel(
+                                    GroupPosition(
                                         position,
                                         data
                                     )
@@ -62,7 +62,7 @@ private constructor(itemView: View, private val listener: Listener?) :
                             setOnClickListener {
                                 isEnabled = false
                                 listener?.onGroupRequestJoinClick(
-                                    GroupPositionModel(
+                                    GroupPosition(
                                         position,
                                         data
                                     )
@@ -89,9 +89,9 @@ private constructor(itemView: View, private val listener: Listener?) :
 
     interface Listener {
 
-        fun onGroupRequestJoinClick(groupPosition: GroupPositionModel)
+        fun onGroupRequestJoinClick(groupPosition: GroupPosition)
 
-        fun onGroupJoinClick(groupPosition: GroupPositionModel)
+        fun onGroupJoinClick(groupPosition: GroupPosition)
 
         fun onGroupClick(position: Int, group: GroupResponse)
     }

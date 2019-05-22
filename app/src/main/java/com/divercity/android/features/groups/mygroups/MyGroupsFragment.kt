@@ -16,7 +16,7 @@ import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
 import com.divercity.android.features.groups.allgroups.AllGroupsFragment
 import com.divercity.android.features.search.ITabSearch
-import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.GroupPosition
 import kotlinx.android.synthetic.main.fragment_my_groups.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -83,16 +83,16 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedGroupList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
                     isListRefreshing = false
@@ -140,10 +140,10 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     private val listener = object : GroupsViewHolder.Listener {
 
-        override fun onGroupRequestJoinClick(groupPosition: GroupPositionModel) {
+        override fun onGroupRequestJoinClick(groupPosition: GroupPosition) {
         }
 
-        override fun onGroupJoinClick(groupPosition: GroupPositionModel) {
+        override fun onGroupJoinClick(groupPosition: GroupPosition) {
         }
 
         override fun onGroupClick(position: Int, group: GroupResponse) {
@@ -163,6 +163,6 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     override fun search(searchQuery: String?) {
-        viewModel.fetchGroups(viewLifecycleOwner, searchQuery)
+        viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 }

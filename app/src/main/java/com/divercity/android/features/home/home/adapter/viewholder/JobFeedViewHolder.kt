@@ -10,13 +10,17 @@ import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.entity.job.response.JobResponse
-import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
+import com.divercity.android.model.position.JobPosition
 import kotlinx.android.synthetic.main.item_feed_job.view.*
 
 class JobFeedViewHolder
-private constructor(itemView: View, private val listener: JobsViewHolder.Listener?, private val isLoggedUserJobSeeker : Boolean) : RecyclerView.ViewHolder(itemView) {
+private constructor(
+    itemView: View,
+    private val listener: Listener?,
+    private val isLoggedUserJobSeeker: Boolean
+) : RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(position : Int, data: JobResponse?) {
+    fun bindTo(position: Int, data: JobResponse?) {
 
         data?.let {
             itemView.apply {
@@ -28,25 +32,66 @@ private constructor(itemView: View, private val listener: JobsViewHolder.Listene
                 item_jobs_txt_place.text = it.attributes?.locationDisplayName
                 item_jobs_txt_title.text = it.attributes?.title
 
-                if(isLoggedUserJobSeeker) {
-                    btn_job_action.visibility = View.VISIBLE
+                if (isLoggedUserJobSeeker) {
+                    btn_apply.visibility = View.VISIBLE
                     it.attributes?.isAppliedByCurrent?.also { isApplied ->
                         if (!isApplied) {
-                            btn_job_action.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.btn_apply))
-                            btn_job_action.setOnClickListener {
-                                listener?.onApplyClick(position, data)
+                            btn_apply.background = ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.shape_backgrd_round_blue3
+                            )
+                            btn_apply.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                            btn_apply.setText(R.string.apply)
+                            btn_apply.setOnClickListener {
+                                listener?.onApplyClick(JobPosition(position, data))
                             }
                         } else {
-                            btn_job_action.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.btn_applied))
-                            btn_job_action.setOnClickListener(null)
+                            btn_apply.background = ContextCompat.getDrawable(
+                                context!!,
+                                R.drawable.bk_white_stroke_blue_rounded
+                            )
+                            btn_apply.setTextColor(
+                                ContextCompat.getColor(
+                                    context!!,
+                                    R.color.appBlue
+                                )
+                            )
+                            btn_apply.setText(R.string.applied)
                         }
                     }
                 } else {
-                    btn_job_action.visibility = View.GONE
+                    btn_apply.visibility = View.GONE
                 }
 
-                txt_job_poster_name.text = it.attributes?.recruiter?.name
-                txt_job_created.text = " · ".plus(Util.getTimeAgoWithStringServerDate(it.attributes?.publishedOn))
+                it.attributes?.isBookmarkedByCurrent?.let {
+                    if (it) {
+                        btn_save.background = ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.shape_backgrd_round_blue3
+                        )
+                        btn_save.setTextColor(ContextCompat.getColor(context!!, R.color.white))
+                        btn_save.setText(R.string.saved)
+                        btn_save.setOnClickListener {
+                            listener?.onSaveUnsaveClick(false, JobPosition(position, data))
+                        }
+                    } else {
+                        btn_save.background = ContextCompat.getDrawable(
+                            context!!,
+                            R.drawable.bk_white_stroke_blue_rounded
+                        )
+                        btn_save.setTextColor(ContextCompat.getColor(context!!, R.color.appBlue))
+                        btn_save.setText(R.string.save)
+                        btn_save.setOnClickListener {
+                            listener?.onSaveUnsaveClick(true, JobPosition(position, data))
+                        }
+                    }
+                }
+
+                item_jobs_txt_poster_name.text = it.attributes?.recruiter?.name
+                item_jobs_txt_poster_occupation.text = it.attributes?.recruiter?.occupation
+
+                txt_job_created.text =
+                    Util.getTimeAgoWithStringServerDate(it.attributes?.publishedOn)
 
                 GlideApp.with(itemView)
                     .load(it.attributes?.recruiter?.avatarThumb)
@@ -60,9 +105,22 @@ private constructor(itemView: View, private val listener: JobsViewHolder.Listene
         }
     }
 
+    interface Listener {
+
+        fun onApplyClick(jobPos: JobPosition)
+
+        fun onJobClick(job: JobResponse)
+
+        fun onSaveUnsaveClick(save: Boolean, jobPos: JobPosition)
+    }
+
     companion object {
 
-        fun create(parent: ViewGroup, listener: JobsViewHolder.Listener?, isLoggedUserJobSeeker : Boolean): JobFeedViewHolder {
+        fun create(
+            parent: ViewGroup,
+            listener: Listener?,
+            isLoggedUserJobSeeker: Boolean
+        ): JobFeedViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_feed_job, parent, false)
             return JobFeedViewHolder(view, listener, isLoggedUserJobSeeker)

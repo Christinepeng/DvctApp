@@ -10,10 +10,11 @@ import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.data.entity.job.response.JobResponse
+import com.divercity.android.features.groups.adapter.EmptyViewHolder
+import com.divercity.android.features.home.home.adapter.recommended.RecommendedConnectionsSectionViewHolder
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.JobFeedViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
-import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
 import com.divercity.android.model.Question
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
@@ -21,16 +22,18 @@ import javax.inject.Inject
 class HomeAdapter @Inject
 constructor(
     val sessionRepository: SessionRepository
-) :
-    PagedListAdapter<HomeItem, RecyclerView.ViewHolder>(userDiffCallback) {
+) : PagedListAdapter<HomeItem, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
-    var feedJobListener: JobsViewHolder.Listener? = null
+    var feedJobListener: JobFeedViewHolder.Listener? = null
     var questionListener: QuestionsViewHolder.Listener? = null
     var adapterProxy: AdapterDataObserverProxy? = null
 
     lateinit var recommendedAdapter: RecommendedAdapter
+    lateinit var recommendedConnectionsAdapter: RecommendedConnectionsAdapter
+
+    var showRecommendedSection = false
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
@@ -56,6 +59,11 @@ constructor(
                 parent,
                 recommendedAdapter
             )
+            R.layout.item_list_recommended_connection -> RecommendedConnectionsSectionViewHolder.create(
+                parent,
+                recommendedConnectionsAdapter
+            )
+            R.layout.view_empty -> EmptyViewHolder.create(parent)
             else -> throw IllegalArgumentException("unknown view type")
         }
     }
@@ -65,12 +73,13 @@ constructor(
             R.layout.view_network_state -> (holder as NetworkStateViewHolder)
                 .bindTo(networkState)
             R.layout.item_question -> (holder as QuestionsViewHolder)
-                .bindTo(position, getItem(position) as Question)
+                .bindTo(position, getItem(position - getRightPosition(position)) as Question)
             R.layout.item_feed_job -> (holder as JobFeedViewHolder)
-                .bindTo(position, getItem(position) as JobResponse)
+                .bindTo(position, getItem(position - getRightPosition(position)) as JobResponse)
             R.layout.item_list_recommended -> (holder as RecommendedViewHolder).bindTo(
                 recommendedAdapter.currentList?.size
             )
+            R.layout.item_list_recommended_connection -> (holder as RecommendedConnectionsSectionViewHolder).bindTo()
         }
     }
 
@@ -79,18 +88,28 @@ constructor(
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (hasExtraRow() && position == itemCount - 1) {
+        return if (position == 0) {
+            if (showRecommendedSection)
+                R.layout.item_list_recommended
+            else
+                R.layout.view_empty
+        } else if (currentList?.isNotEmpty() == true && position == 3) {
+            R.layout.item_list_recommended_connection
+        } else if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
-        } else if (position == 0) {
-            R.layout.item_list_recommended
-        } else if (getItem(position) is Question) {
+        } else if (getItem(position - getRightPosition(position)) is Question) {
             R.layout.item_question
-        } else
+        } else {
             R.layout.item_feed_job
+        }
     }
 
+//  This is because on position 0 we have recommended jobs and groups and on position 3 we have
+//  recommended connections
+    fun getRightPosition(position: Int) = if(position < 4) 1 else 2
+
     override fun getItemCount(): Int {
-        return super.getItemCount() + if (hasExtraRow()) 1 else 0
+        return super.getItemCount() + 1 + if (hasExtraRow()) 1 else 0
     }
 
     fun setNetworkState(newNetworkState: NetworkState?) {
@@ -100,19 +119,26 @@ constructor(
         val hasExtraRow = hasExtraRow()
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
-                notifyItemRemoved(super.getItemCount())
-                adapterProxy?.headerCount = 0
+                notifyItemRemoved(itemCount - 1)
+//                adapterProxy?.headerCount = 0
             } else {
-                notifyItemInserted(super.getItemCount())
-                adapterProxy?.headerCount = 1
+                notifyItemInserted(itemCount - 1)
+//                adapterProxy?.headerCount = 1
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
-            notifyItemChanged(itemCount - 1)
+            notifyItemChanged(itemCount - 2)
         }
     }
 
-    fun onRefresh() {
-        adapterProxy?.headerCount = 0
+    fun onRefreshRetry() {
+//        adapterProxy?.headerCount = 0
+    }
+
+    fun updatePositionOnJobApplied(position: Int) {
+        (getItem(position - 1) as JobResponse).attributes?.apply {
+            isAppliedByCurrent = true
+            notifyItemChanged(position)
+        }
     }
 
     companion object {

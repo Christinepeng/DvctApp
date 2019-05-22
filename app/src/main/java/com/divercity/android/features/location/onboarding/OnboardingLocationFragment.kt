@@ -65,11 +65,11 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(activity!!,
+                navigator.navigateToNextOnboarding(requireActivity(),
                         viewModel.getAccountType(),
                         currentProgress,
                         false
@@ -89,7 +89,7 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(activity!!,
+                    navigator.navigateToNextOnboarding(requireActivity(),
                             viewModel.getAccountType(),
                             currentProgress,
                             true

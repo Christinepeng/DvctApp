@@ -130,14 +130,14 @@ class CreateEditGroupStep1Fragment : BaseFragment() {
     private fun enableSaveCreateButton(boolean: Boolean) {
         btn_next.isEnabled = boolean
         if (boolean) {
-            btn_next.setTextColor(ContextCompat.getColor(activity!!, R.color.white))
+            btn_next.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
             btn_next.setOnClickListener {
                 navigateToNext()
             }
         } else
             btn_next.setTextColor(
                 ContextCompat.getColor(
-                    activity!!,
+                    requireActivity(),
                     R.color.whiteDisable
                 )
             )
@@ -208,7 +208,7 @@ class CreateEditGroupStep1Fragment : BaseFragment() {
                 override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
                     //Cancel handling, you might wanna remove taken photoFile if it was canceled
                     if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
                         photoFile?.delete()
                     }
                 }

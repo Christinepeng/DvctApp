@@ -115,8 +115,7 @@ class TabOtherUserProfileFragment : BaseFragment(), RecentDocsDialogFragment.Lis
             lay_personal.txt_age_range.text = it.ageRange
             lay_personal.txt_subtitle2.text = it.schoolName
             lay_personal.txt_occupation.text = it.occupation
-            lay_personal.txt_location.text =
-                it.city.plus(", ").plus(it.country)
+            lay_personal.txt_location.text = it.fullLocation()
 
             if (it.skills.isNullOrEmpty()) {
                 lay_skills.visibility = View.GONE

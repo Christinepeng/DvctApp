@@ -147,7 +147,7 @@ class CreateEditGroupStep3Fragment : BaseFragment() {
     private fun enableCreateButton(boolean: Boolean) {
         btn_create_edit_group.isEnabled = boolean
         if (boolean) {
-            btn_create_edit_group.setTextColor(ContextCompat.getColor(activity!!, R.color.white))
+            btn_create_edit_group.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
             btn_create_edit_group.setOnClickListener {
 
                 if (isEditing)
@@ -169,7 +169,7 @@ class CreateEditGroupStep3Fragment : BaseFragment() {
         } else
             btn_create_edit_group.setTextColor(
                 ContextCompat.getColor(
-                    activity!!,
+                    requireActivity(),
                     R.color.whiteDisable
                 )
             )

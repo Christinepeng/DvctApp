@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.MySocket
 import com.divercity.android.core.utils.SingleLiveEvent
@@ -285,9 +286,10 @@ constructor(
                 )
             }
         }
+        fetchGroupMembersUseCase.groupId = groupId
         fetchGroupMembersUseCase.execute(
             callback,
-            FetchGroupMembersUseCase.Params.forGroups(groupId, page, size, query)
+            Params(page, size, query)
         )
     }
 

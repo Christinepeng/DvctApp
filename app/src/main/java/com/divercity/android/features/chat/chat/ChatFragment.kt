@@ -139,7 +139,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
             }
 
             override fun onJobClick(jobId: String) {
-                navigator.navigateToJobDescriptionSeekerActivity(activity!!, jobId, null)
+                navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), jobId, null)
             }
 
             override fun onImageTap(imageUrl: String) {
@@ -318,13 +318,13 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
     override fun onResume() {
         super.onResume()
         val intentFilter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
-        activity!!.registerReceiver(networkChangeReceiver, intentFilter)
+        requireActivity().registerReceiver(networkChangeReceiver, intentFilter)
         viewModel.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        activity!!.unregisterReceiver(networkChangeReceiver)
+        requireActivity().unregisterReceiver(networkChangeReceiver)
         viewModel.onPause()
     }
 
@@ -370,7 +370,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
                 override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
                     //Cancel handling, you might wanna remove taken photoFile if it was canceled
                     if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
                         photoFile?.delete()
                     }
                 }

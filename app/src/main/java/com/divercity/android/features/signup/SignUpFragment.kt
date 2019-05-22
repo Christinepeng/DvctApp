@@ -228,14 +228,14 @@ class SignUpFragment : BaseFragment() {
 
 //    private fun isUsernameRegistered(b: Boolean) {
 //        if (b) {
-//            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.red))
-//            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.icon_wrong))
+//            et_username.setTextColor(ContextCompat.getColor(requireActivity(), R.color.red))
+//            img_username_status.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.icon_wrong))
 //            img_username_status.visibility = View.VISIBLE
 //            lay_warning_username.visibility = View.VISIBLE
 //            isUserRegistered = 1
 //        } else {
-//            et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.green))
-//            img_username_status.setImageDrawable(ContextCompat.getDrawable(activity!!, R.drawable.img_checkmark))
+//            et_username.setTextColor(ContextCompat.getColor(requireActivity(), R.color.green))
+//            img_username_status.setImageDrawable(ContextCompat.getDrawable(requireActivity(), R.drawable.img_checkmark))
 //            img_username_status.visibility = View.VISIBLE
 //            lay_warning_username.visibility = View.GONE
 //            isUserRegistered = 0
@@ -244,7 +244,7 @@ class SignUpFragment : BaseFragment() {
 //
 //    private fun removeUsernameStyleAndHideImg() {
 //        isUserRegistered = 2
-//        et_username.setTextColor(ContextCompat.getColor(activity!!, R.color.appText1))
+//        et_username.setTextColor(ContextCompat.getColor(requireActivity(), R.color.appText1))
 //        img_username_status.visibility = View.GONE
 //        lay_warning_username.visibility = View.GONE
 //    }
@@ -309,7 +309,7 @@ class SignUpFragment : BaseFragment() {
                 override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
                     //Cancel handling, you might wanna remove taken photoFile if it was canceled
                     if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
                         photoFile?.delete()
                     }
                 }
@@ -353,7 +353,7 @@ class SignUpFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        EasyImage.clearConfiguration(activity!!)
+        EasyImage.clearConfiguration(requireActivity())
         super.onDestroy()
     }
 }

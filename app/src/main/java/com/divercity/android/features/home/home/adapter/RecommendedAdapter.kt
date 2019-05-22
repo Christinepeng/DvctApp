@@ -15,8 +15,8 @@ import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.groups.adapter.EmptyViewHolder
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedGroupViewHolder
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedJobViewHolder
-import com.divercity.android.model.position.GroupPositionModel
-import com.divercity.android.model.position.JobPositionModel
+import com.divercity.android.model.position.GroupPosition
+import com.divercity.android.model.position.JobPosition
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
@@ -39,7 +39,11 @@ constructor(val sessionRepository: SessionRepository) :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.view_network_state -> NetworkStateHorizontalViewHolder.create(
+            R.layout.view_network_state -> NetworkStateViewHolder.create(
+                parent,
+                retryCallback
+            )
+            R.layout.view_network_state_horizontal -> NetworkStateHorizontalViewHolder.create(
                 parent,
                 retryCallback
             )
@@ -59,7 +63,9 @@ constructor(val sessionRepository: SessionRepository) :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.view_network_state -> (holder as NetworkStateHorizontalViewHolder)
+            R.layout.view_network_state -> (holder as NetworkStateViewHolder)
+                .bindTo(networkState)
+            R.layout.view_network_state_horizontal -> (holder as NetworkStateHorizontalViewHolder)
                 .bindTo(networkState)
             JOB -> (holder as RecommendedJobViewHolder).bindTo(
                 position,
@@ -76,7 +82,10 @@ constructor(val sessionRepository: SessionRepository) :
 
     override fun getItemViewType(position: Int): Int {
         return if (hasExtraRow() && position == itemCount - 1) {
-            R.layout.view_network_state
+            if(currentList != null && currentList?.size == 0)
+                R.layout.view_network_state
+            else
+                R.layout.view_network_state_horizontal
         } else if (getItem(position) is JobResponse &&
             discardedJobs.contains((getItem(position) as JobResponse).id) ||
             (getItem(position) is GroupResponse) &&
@@ -100,10 +109,10 @@ constructor(val sessionRepository: SessionRepository) :
         val hasExtraRow = hasExtraRow()
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
-                notifyItemRemoved(super.getItemCount())
+                notifyItemRemoved(itemCount)
                 adapterProxy?.headerCount = 0
             } else {
-                notifyItemInserted(super.getItemCount())
+                notifyItemInserted(itemCount)
                 adapterProxy?.headerCount = 1
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
@@ -111,7 +120,7 @@ constructor(val sessionRepository: SessionRepository) :
         }
     }
 
-    fun onRefresh() {
+    fun onRefreshRetry() {
         adapterProxy?.headerCount = 0
     }
 
@@ -166,12 +175,12 @@ constructor(val sessionRepository: SessionRepository) :
         super.registerAdapterDataObserver(adapterProxy!!)
     }
 
-    fun onGroupDiscarded(groupPos : GroupPositionModel){
+    fun onGroupDiscarded(groupPos : GroupPosition){
         discardedGroups.add(groupPos.group.id)
         notifyItemChanged(groupPos.position)
     }
 
-    fun onJobDiscarded(jobPos : JobPositionModel){
+    fun onJobDiscarded(jobPos : JobPosition){
         discardedJobs.add(jobPos.job.id!!)
         notifyItemChanged(jobPos.position)
     }

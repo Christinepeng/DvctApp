@@ -12,6 +12,7 @@ import com.divercity.android.features.chat.newchat.NewChatFragment
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatFragment
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsFragment
 import com.divercity.android.features.company.companies.CompaniesFragment
+import com.divercity.android.features.company.companiesmycompanies.CompaniesMyCompaniesFragment
 import com.divercity.android.features.company.companyaddadmin.CompanyAddAdminFragment
 import com.divercity.android.features.company.companyadmin.CompanyAdminFragment
 import com.divercity.android.features.company.companydetail.CompanyDetailFragment
@@ -42,16 +43,20 @@ import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.groups.allgroups.AllGroupsFragment
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Fragment
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Fragment
+import com.divercity.android.features.groups.createnewpost.CreateNewPostFragment
 import com.divercity.android.features.groups.createtopic.CreateTopicFragment
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminFragment
-import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
+import com.divercity.android.features.groups.deletegroupmember.DeleteGroupMemberFragment
+import com.divercity.android.features.groups.followedgroups.FollowedGroupsFragment
 import com.divercity.android.features.groups.groupanswers.AnswerFragment
 import com.divercity.android.features.groups.groupdetail.GroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailFragment
 import com.divercity.android.features.groups.groupdetail.conversation.GroupConversationFragment
 import com.divercity.android.features.groups.mygroups.MyGroupsFragment
 import com.divercity.android.features.groups.onboarding.SelectGroupFragment
+import com.divercity.android.features.groups.selectfollowedgroup.SelectFollowedGroupFragment
 import com.divercity.android.features.groups.trending.TrendingGroupsFragment
+import com.divercity.android.features.groups.yourgroups.YourGroupsFragment
 import com.divercity.android.features.home.home.HomeFragment
 import com.divercity.android.features.home.people.TabPeopleFragment
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingFragment
@@ -298,7 +303,7 @@ abstract class FragmentBuilderModule {
     abstract fun bindOnboardingGenderFragment(): OnboardingGenderFragment
 
     @ContributesAndroidInjector
-    abstract fun bindFollowingGroupsFragment(): FollowingGroupsFragment
+    abstract fun bindFollowingGroupsFragment(): SelectFollowedGroupFragment
 
     @ContributesAndroidInjector
     abstract fun bindOnboardingAgeFragment(): OnboardingAgeFragment
@@ -449,4 +454,19 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindSearchFragment(): SearchFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCreateNewPostFragment(): CreateNewPostFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCompaniesMyCompaniesFragment(): CompaniesMyCompaniesFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindDeleteGroupMemberFragment(): DeleteGroupMemberFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindYourGroupsFragment(): YourGroupsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindFollowedGroupsFragment(): FollowedGroupsFragment
 }

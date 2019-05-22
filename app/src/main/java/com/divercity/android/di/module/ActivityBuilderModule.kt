@@ -23,13 +23,16 @@ import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Activity
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Activity
+import com.divercity.android.features.groups.createnewpost.CreateNewPostActivity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity
-import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
+import com.divercity.android.features.groups.deletegroupmember.DeleteGroupMemberActivity
+import com.divercity.android.features.groups.followedgroups.FollowedGroupsActivity
 import com.divercity.android.features.groups.groupanswers.AnswerActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.groups.mygroups.MyGroupsActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
+import com.divercity.android.features.groups.selectfollowedgroup.SelectFollowedGroupActivity
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingActivity
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryActivity
@@ -229,7 +232,7 @@ abstract class ActivityBuilderModule {
     abstract fun bindCreateTopicActivity(): CreateTopicActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindFollowingGroupsActivity(): FollowingGroupsActivity
+    abstract fun bindFollowingGroupsActivity(): SelectFollowedGroupActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindAnswerActivity(): AnswerActivity
@@ -293,4 +296,13 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSearchActivity(): SearchActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindCreateNewPostActivity(): CreateNewPostActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindDeleteGroupMemberActivity(): DeleteGroupMemberActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindFollowedGroupsActivity(): FollowedGroupsActivity
 }

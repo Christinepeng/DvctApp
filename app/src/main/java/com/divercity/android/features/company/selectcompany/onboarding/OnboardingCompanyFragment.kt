@@ -69,7 +69,7 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
@@ -80,7 +80,7 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
 
     private fun onSkip() {
         navigator.navigateToNextOnboarding(
-            activity!!,
+            requireActivity(),
             viewModel.getAccountType(),
             currentProgress,
             false
@@ -111,7 +111,7 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
             override fun onCompanyRated() {
                 showToast("Company Rated Successfully")
                 navigator.navigateToNextOnboarding(
-                    activity!!,
+                    requireActivity(),
                     viewModel.getAccountType(),
                     currentProgress,
                     true

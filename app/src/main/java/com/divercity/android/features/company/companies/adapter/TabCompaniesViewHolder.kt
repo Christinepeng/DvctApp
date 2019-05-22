@@ -9,7 +9,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import kotlinx.android.synthetic.main.item_company.view.*
 
-class TabCompaniesViewHolder private constructor(itemView: View, private val listener: Listener) :
+class TabCompaniesViewHolder private constructor(itemView: View, private val listener: Listener?) :
     RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(data: CompanyResponse?) {
@@ -42,7 +42,7 @@ class TabCompaniesViewHolder private constructor(itemView: View, private val lis
                     item_txt_subtitle3.visibility = View.GONE
                 }
 
-                setOnClickListener { listener.onCompanyClick(data) }
+                setOnClickListener { listener?.onCompanyClick(data) }
             }
         }
     }
@@ -54,7 +54,7 @@ class TabCompaniesViewHolder private constructor(itemView: View, private val lis
 
     companion object {
 
-        fun create(parent: ViewGroup, listener: Listener): TabCompaniesViewHolder {
+        fun create(parent: ViewGroup, listener: Listener?): TabCompaniesViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_company, parent, false)
             return TabCompaniesViewHolder(view, listener)

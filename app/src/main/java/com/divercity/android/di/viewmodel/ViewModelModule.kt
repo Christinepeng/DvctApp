@@ -12,6 +12,7 @@ import com.divercity.android.features.chat.newchat.NewChatViewModel
 import com.divercity.android.features.chat.newgroupchat.NewGroupChatViewModel
 import com.divercity.android.features.chat.recentchats.oldrecentchats.ChatsViewModel
 import com.divercity.android.features.company.companies.CompaniesViewModel
+import com.divercity.android.features.company.companiesmycompanies.CompaniesMyCompaniesViewModel
 import com.divercity.android.features.company.companyaddadmin.CompanyAddAdminViewModel
 import com.divercity.android.features.company.companyadmin.CompanyAdminViewModel
 import com.divercity.android.features.company.companydetail.CompanyDetailViewModel
@@ -35,18 +36,23 @@ import com.divercity.android.features.groups.TabGroupsViewModel
 import com.divercity.android.features.groups.allgroups.AllGroupsViewModel
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1ViewModel
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3ViewModel
+import com.divercity.android.features.groups.createnewpost.CreateNewPostViewModel
 import com.divercity.android.features.groups.createtopic.CreateTopicViewModel
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminViewModel
-import com.divercity.android.features.groups.followedgroups.FollowingGroupsViewModel
+import com.divercity.android.features.groups.deletegroupmember.DeleteGroupMemberViewModel
+import com.divercity.android.features.groups.followedgroups.FollowedGroupsViewModel
 import com.divercity.android.features.groups.groupanswers.AnswerViewModel
 import com.divercity.android.features.groups.groupdetail.GroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.about.TabAboutGroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.conversation.GroupConversationViewModel
 import com.divercity.android.features.groups.mygroups.MyGroupsViewModel
 import com.divercity.android.features.groups.onboarding.SelectGroupViewModel
+import com.divercity.android.features.groups.selectfollowedgroup.SelectFollowedGroupViewModel
 import com.divercity.android.features.groups.trending.TrendingGroupsViewModel
 import com.divercity.android.features.groups.viewmodel.GroupViewModel
+import com.divercity.android.features.groups.yourgroups.YourGroupsViewModel
 import com.divercity.android.features.home.HomeActivityViewModel
+import com.divercity.android.features.home.home.HomeRecommendedConnectionsViewModel
 import com.divercity.android.features.home.home.HomeRecommendedViewModel
 import com.divercity.android.features.home.home.HomeViewModel
 import com.divercity.android.features.home.people.TabPeopleViewModel
@@ -359,8 +365,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(FollowingGroupsViewModel::class)
-    abstract fun bindsFollowingGroupsViewModel(viewModel: FollowingGroupsViewModel): ViewModel
+    @ViewModelKey(SelectFollowedGroupViewModel::class)
+    abstract fun bindsFollowingGroupsViewModel(viewModel: SelectFollowedGroupViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -606,4 +612,34 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SearchViewModel::class)
     abstract fun bindsSearchViewModel(viewModel: SearchViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CreateNewPostViewModel::class)
+    abstract fun bindsCreateNewPostViewModel(viewModel: CreateNewPostViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(CompaniesMyCompaniesViewModel::class)
+    abstract fun bindsCompaniesMyCompaniesViewModel(viewModel: CompaniesMyCompaniesViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(DeleteGroupMemberViewModel::class)
+    abstract fun bindsDeleteGroupMemberViewModel(viewModel: DeleteGroupMemberViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(YourGroupsViewModel::class)
+    abstract fun bindsYourGroupsViewModel(viewModel: YourGroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(FollowedGroupsViewModel::class)
+    abstract fun bindsFollowedGroupsViewModel(viewModel: FollowedGroupsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(HomeRecommendedConnectionsViewModel::class)
+    abstract fun bindsHomeRecommendedConnectionsViewModel(viewModel: HomeRecommendedConnectionsViewModel): ViewModel
 }

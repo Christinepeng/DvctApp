@@ -100,16 +100,16 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedUserList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(viewLifecycleOwner, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(viewLifecycleOwner, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
                     isListRefreshing = false
@@ -144,7 +144,7 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     private fun fetchConnections(searchQuery: String?) {
-        viewModel.fetchConnections(viewLifecycleOwner, searchQuery)
+        viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 
     override fun onDestroyView() {

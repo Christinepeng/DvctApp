@@ -364,7 +364,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.groups.followedgroups.FollowingGroupsActivity"
+            android:name=".features.groups.selectfollowedgroup.SelectFollowedGroupActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -471,6 +471,21 @@
 
         <activity
             android:name=".features.search.SearchActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.groups.createnewpost.CreateNewPostActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.groups.deletegroupmember.DeleteGroupMemberActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.groups.followedgroups.FollowedGroupsActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

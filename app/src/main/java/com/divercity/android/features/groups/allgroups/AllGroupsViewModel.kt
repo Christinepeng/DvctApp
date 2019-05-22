@@ -6,7 +6,7 @@ import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.google.gson.JsonElement
@@ -23,14 +23,14 @@ constructor(
     private val requestToJoinUseCase: RequestJoinGroupUseCase
 ) : BaseViewModelPagination<GroupResponse>(repository) {
 
-    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
-    var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
+    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
+    var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
 
     init {
         fetchData(null, "")
     }
 
-    fun joinGroup(group: GroupPositionModel) {
+    fun joinGroup(group: GroupPosition) {
         joinPublicGroupResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<Boolean>() {
@@ -49,7 +49,7 @@ constructor(
         joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group.group.id))
     }
 
-    fun requestToJoinGroup(group: GroupPositionModel) {
+    fun requestToJoinGroup(group: GroupPosition) {
         requestToJoinPrivateGroupResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<MessageResponse>() {

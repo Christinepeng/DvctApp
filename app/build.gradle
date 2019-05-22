@@ -54,8 +54,8 @@ android {
         applicationId "com.divercity.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 12
-        versionName "B-1.10"
+        versionCode 14
+        versionName "D-1.22"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -80,8 +80,8 @@ android {
             minifyEnabled false
             debuggable true
             manifestPlaceholders = [enableCrashReporting: "false"]
-//            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
+            buildConfigField "String", "BASE_URL", '"api.divercity.io"'
+//            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig getSigningConfig()
         }
@@ -132,8 +132,8 @@ dependencies {
     def rxandroid_version = "2.1.1"
 
     def glide_version = "4.8.0"
-    def lifecycle_version = '2.1.0-alpha04'
-    def dagger_version = "2.21"
+    def lifecycle_version = '2.2.0-alpha01'
+    def dagger_version = "2.22.1"
 
     def timber_version = "4.7.1"
 
@@ -144,8 +144,8 @@ dependencies {
     def room_version_runtime = '2.1.0-beta01'
     def room_version = '2.1.0-alpha04'
 
-    def firebase_messaging_version = "17.6.0"
-    def firebase_core_version = "16.0.8"
+    def firebase_messaging_version = "18.0.0"
+    def firebase_core_version = "16.0.9"
     def crashlytics_version = "2.10.0"
 
     def spyglass_version = "2.0.0"

@@ -343,13 +343,13 @@ class AnswerFragment : BaseFragment() {
     override fun onResume() {
         super.onResume()
         val intentFilter = IntentFilter("android.net.conn.CONNECTIVITY_CHANGE")
-        activity!!.registerReceiver(networkChangeReceiver, intentFilter)
+        requireActivity().registerReceiver(networkChangeReceiver, intentFilter)
         viewModel.onResume()
     }
 
     override fun onPause() {
         super.onPause()
-        activity!!.unregisterReceiver(networkChangeReceiver)
+        requireActivity().unregisterReceiver(networkChangeReceiver)
         viewModel.onPause()
     }
 
@@ -388,7 +388,7 @@ class AnswerFragment : BaseFragment() {
                 override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
                     //Cancel handling, you might wanna remove taken photoFile if it was canceled
                     if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
                         photoFile?.delete()
                     }
                 }

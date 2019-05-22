@@ -15,11 +15,11 @@
         android:text="@string/create_group" />
 
     <TextView
-        android:id="@+id/btn_new_topic"
+        android:id="@+id/btn_new_post"
         style="@style/AppText3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/create_new_topic" />
+        android:text="@string/create_new_post" />
 
 </LinearLayout>

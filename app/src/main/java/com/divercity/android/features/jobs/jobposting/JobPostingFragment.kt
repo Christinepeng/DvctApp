@@ -231,7 +231,7 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
     private fun enableSaveCreateButton(boolean: Boolean) {
         btn_save_create_job.isEnabled = boolean
         if (boolean) {
-            btn_save_create_job.setTextColor(ContextCompat.getColor(activity!!, R.color.white))
+            btn_save_create_job.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
             btn_save_create_job.setOnClickListener {
                 if (jobForEdition == null) {
                     viewModel.postJob(
@@ -251,7 +251,7 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
         } else
             btn_save_create_job.setTextColor(
                     ContextCompat.getColor(
-                            activity!!,
+                            requireActivity(),
                             R.color.whiteDisable
                     )
             )

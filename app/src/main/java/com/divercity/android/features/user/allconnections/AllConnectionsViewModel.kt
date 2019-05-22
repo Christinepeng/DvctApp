@@ -1,17 +1,10 @@
 package com.divercity.android.features.user.allconnections
 
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
-import com.divercity.android.core.base.viewmodel.BaseViewModel
-import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Listing
-import com.divercity.android.core.utils.SingleLiveEvent
+import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.user.allconnections.datasource.ConnectionsPaginatedRepositoryImpl
 import com.divercity.android.features.user.usecase.ConnectUserUseCase
 import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
@@ -23,28 +16,16 @@ import javax.inject.Inject
 
 class AllConnectionsViewModel @Inject
 constructor(
-    private val repository: ConnectionsPaginatedRepositoryImpl,
+    repository: UsersPaginatedRepository,
     private val connectUserUseCase: ConnectUserUseCase
-) : BaseViewModel() {
+) : BaseViewModelPagination<User>(repository) {
 
-    lateinit var pagedUserList: LiveData<PagedList<User>>
-    lateinit var listingPaginatedUser: Listing<User>
-
-    var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
     var connectUserResponse = MutableLiveData<Resource<ConnectUserResponse>>()
 
     internal var jobId: String? = null
 
-    private lateinit var lastSearch : String
-
-    val networkState: LiveData<NetworkState>
-        get() = listingPaginatedUser.networkState
-
-    val refreshState: LiveData<NetworkState>
-        get() = listingPaginatedUser.refreshState
-
     init {
-        fetchConnections(null, null)
+        fetchData()
     }
 
     fun connectToUser(userId: String) {
@@ -68,44 +49,8 @@ constructor(
         )
     }
 
-    fun fetchConnections(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
-        if (searchQuery == null) {
-            lastSearch = ""
-            fetchData(lifecycleOwner, lastSearch)
-        } else if (searchQuery != lastSearch) {
-            lastSearch = searchQuery
-            fetchData(lifecycleOwner, lastSearch)
-        }
-    }
-
-    private fun fetchData(lifecycleOwner: LifecycleOwner?, searchQuery: String) {
-        repository.clear()
-
-        listingPaginatedUser = repository.fetchData(searchQuery)
-        pagedUserList = listingPaginatedUser.pagedList
-
-        lifecycleOwner?.let {
-            removeObservers(it)
-            subscribeToPaginatedLiveData.call()
-        }
-    }
-
-    private fun removeObservers(lifecycleOwner: LifecycleOwner) {
-        networkState.removeObservers(lifecycleOwner)
-        refreshState.removeObservers(lifecycleOwner)
-        pagedUserList.removeObservers(lifecycleOwner)
-    }
-
     override fun onCleared() {
         super.onCleared()
-        repository.clear()
-    }
-
-    fun retry() {
-        repository.retry()
-    }
-
-    fun refresh() {
-        repository.refresh()
+        connectUserUseCase.dispose()
     }
 }

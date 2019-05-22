@@ -22,6 +22,7 @@
     <string name="conversation">Conversation</string>
     <string name="settings">Settings</string>
     <string name="connections">Connections</string>
+    <string name="connection">Connection</string>
     <string name="pick_source">Pick source</string>
     <string name="error_notifications">Error setting up notifications, try to restart the app</string>
     <string name="invitations">Invitations</string>
@@ -40,6 +41,7 @@
     <string name="start_new_conversation">Start a new conversation</string>
     <string name="select_at_least_one">Select at least one</string>
     <string name="submit">Submit</string>
+    <string name="see_all">See All ></string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>
@@ -94,6 +96,7 @@
     <string name="select_company_size">Select Company Size</string>
     <string name="companies">Companies</string>
     <string name="my_companies">My Companies</string>
+    <string name="othe_companies">Other Companies</string>
     <string name="no_created_company">You don\'t have any created company</string>
     <string name="no_employee">This company doesn\'t have any employee yet</string>
     <string name="no_review">This company doesn\'t have any review yet</string>
@@ -217,6 +220,10 @@
     <string name="profile">Profile</string>
     <string name="job_board">Job Board</string>
     <string name="people">People</string>
+    <string name="your_groups">Your Groups</string>
+    <string name="discover">Discover</string>
+    <string name="popular_group_posts">Popular Posts in Your Groups</string>
+    <string name="all_your_groups">All Your Groups</string>
 
     <!-- Home-->
     <string name="logout">Logout</string>
@@ -226,6 +233,7 @@
     <string name="explore_groups">Explore Groups</string>
     <string name="create_group">Create a New Group</string>
     <string name="recommended">Recommended</string>
+    <string name="recommended_connections">Recommended Connections</string>
 
     <!-- Jobs-->
     <string name="applications">Applications</string>
@@ -276,6 +284,7 @@
     <string name="job_application_meantime">In the meantime, here are some jobs you might be interested in:</string>
     <string name="view_application">View Application</string>
     <string name="connect">Connect</string>
+    <string name="requested">Requested</string>
     <string name="direct_message">Direct Message</string>
     <string name="no_job_posting">You haven\'t posted any job yet</string>
     <string name="no_saved_job">You haven\'t saved any job yet</string>
@@ -325,8 +334,10 @@
     <string name="invite_from_divercity">Invite From Divercity</string>
     <string name="invite_from_contact_list">Invite From Contact List</string>
     <string name="create_new_topic">Create New Topic</string>
+    <string name="create_new_post">Create New Post</string>
     <string name="choose_group">Choose a Group</string>
     <string name="topic_name">Topic Name</string>
+    <string name="type_here">Type here…</string>
     <string name="start_topic">Start a Topic</string>
     <string name="change_group">Change Group</string>
     <string name="be_first_comment">Be the first to comment</string>

@@ -1,6 +1,7 @@
 package com.divercity.android.features.groups.groupdetail
 
 import androidx.lifecycle.MutableLiveData
+import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.Event
 import com.divercity.android.core.utils.SingleLiveEvent
@@ -56,9 +57,10 @@ constructor(
                 fetchGroupMembersResponse.postValue(Resource.success(o))
             }
         }
+        fetchGroupMembersUseCase.groupId = groupId
         fetchGroupMembersUseCase.execute(
             callback,
-            FetchGroupMembersUseCase.Params.forGroups(groupId, page, size, query)
+            Params(page, size, query)
         )
     }
 

@@ -66,11 +66,11 @@ class OnboardingGenderFragment : BaseFragment(), SelectGenderFragment.Listener {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(activity!!,
+                navigator.navigateToNextOnboarding(requireActivity(),
                         viewModel.accountType,
                         currentProgress,
                         false
@@ -90,7 +90,7 @@ class OnboardingGenderFragment : BaseFragment(), SelectGenderFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(activity!!,
+                    navigator.navigateToNextOnboarding(requireActivity(),
                             viewModel.accountType,
                             currentProgress,
                             true

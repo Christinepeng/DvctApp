@@ -20,7 +20,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
-import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
@@ -121,11 +121,11 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
         }
     }
@@ -157,15 +157,15 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                     if (++countJoin == 3) {
                         btn_continue.background =
                             ContextCompat.getDrawable(
-                                activity!!,
+                                requireActivity(),
                                 R.drawable.shape_backgrd_round_blue2
                             )
                         btn_continue.setOnClickListener {
                             val nextProgress =
                                 OnboardingProgression.getNextNavigationProgressOnboarding(
-                                    activity!!, viewModel.accountType, currentProgress
+                                    requireActivity(), viewModel.accountType, currentProgress
                                 )
-                            navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
+                            navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
                         }
                     }
                 }
@@ -195,12 +195,12 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     private fun checkContinueBtnState() {
         if (countJoin >= 3) {
             btn_continue.background =
-                ContextCompat.getDrawable(activity!!, R.drawable.shape_backgrd_round_blue2)
+                ContextCompat.getDrawable(requireActivity(), R.drawable.shape_backgrd_round_blue2)
             btn_continue.setOnClickListener {
                 val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
-                    activity!!, viewModel.accountType, currentProgress
+                    requireActivity(), viewModel.accountType, currentProgress
                 )
-                navigator.navigateToHomeActivity(activity!!, nextProgress >= 100)
+                navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
             }
         }
     }
@@ -232,11 +232,11 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
     private val listener = object : GroupsViewHolder.Listener {
 
-        override fun onGroupRequestJoinClick(groupPosition: GroupPositionModel) {
+        override fun onGroupRequestJoinClick(groupPosition: GroupPosition) {
             groupViewModel.requestToJoinGroup(groupPosition)
         }
 
-        override fun onGroupJoinClick(groupPosition: GroupPositionModel) {
+        override fun onGroupJoinClick(groupPosition: GroupPosition) {
             groupViewModel.joinGroup(groupPosition)
         }
 

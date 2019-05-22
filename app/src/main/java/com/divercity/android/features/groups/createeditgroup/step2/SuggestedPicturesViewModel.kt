@@ -10,7 +10,6 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.groups.mygroups.datasource.MyGroupsPaginatedRepositoryImpl
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -20,8 +19,8 @@ import javax.inject.Inject
  */
 
 class SuggestedPicturesViewModel @Inject
-constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
-            private val joinGroupUseCase: JoinGroupUseCase
+constructor(
+    private val joinGroupUseCase: JoinGroupUseCase
 ) : BaseViewModel() {
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Any>()
@@ -38,23 +37,23 @@ constructor(private val repository: MyGroupsPaginatedRepositoryImpl,
 
     fun refreshState(): LiveData<NetworkState> = listingPaginatedGroup.refreshState
 
-    fun retry() = repository.retry()
-
-    fun refresh() = repository.refresh()
+//    fun retry() = repository.retry()
+//
+//    fun refresh() = repository.refresh()
 
     fun fetchGroups(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
         searchQuery?.let {
-            if (it != lastSearch) {
-                lastSearch = it
-                repository.compositeDisposable.clear()
-                listingPaginatedGroup = repository.fetchData(searchQuery)
-                pagedGroupList = listingPaginatedGroup.pagedList
-
-                lifecycleOwner?.let { lifecycleOwner ->
-                    removeObservers(lifecycleOwner)
-                    subscribeToPaginatedLiveData.call()
-                }
-            }
+//            if (it != lastSearch) {
+//                lastSearch = it
+//                repository.compositeDisposable.clear()
+//                listingPaginatedGroup = repository.fetchData(searchQuery)
+//                pagedGroupList = listingPaginatedGroup.pagedList
+//
+//                lifecycleOwner?.let { lifecycleOwner ->
+//                    removeObservers(lifecycleOwner)
+//                    subscribeToPaginatedLiveData.call()
+//                }
+//            }
         }
     }
 

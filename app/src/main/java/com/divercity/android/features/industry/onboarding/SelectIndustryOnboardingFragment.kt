@@ -85,12 +85,12 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
-                        activity!!,
+                        requireActivity(),
                         viewModel.accountType,
                         currentProgress,
                         false
@@ -110,7 +110,7 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(activity!!,
+                    navigator.navigateToNextOnboarding(requireActivity(),
                             viewModel.accountType,
                             currentProgress,
                             true

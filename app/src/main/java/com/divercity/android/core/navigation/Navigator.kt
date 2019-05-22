@@ -34,13 +34,16 @@ import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
 import com.divercity.android.features.gender.withtoolbar.ToolbarGenderActivity
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Activity
 import com.divercity.android.features.groups.createeditgroup.step3.CreateEditGroupStep3Activity
+import com.divercity.android.features.groups.createnewpost.CreateNewPostActivity
 import com.divercity.android.features.groups.createtopic.CreateTopicActivity
 import com.divercity.android.features.groups.deletegroupadmin.DeleteGroupAdminActivity
-import com.divercity.android.features.groups.followedgroups.FollowingGroupsActivity
+import com.divercity.android.features.groups.deletegroupmember.DeleteGroupMemberActivity
+import com.divercity.android.features.groups.followedgroups.FollowedGroupsActivity
 import com.divercity.android.features.groups.groupanswers.AnswerActivity
 import com.divercity.android.features.groups.groupdetail.GroupDetailActivity
 import com.divercity.android.features.groups.mygroups.MyGroupsActivity
 import com.divercity.android.features.groups.onboarding.SelectGroupActivity
+import com.divercity.android.features.groups.selectfollowedgroup.SelectFollowedGroupActivity
 import com.divercity.android.features.home.HomeActivity
 import com.divercity.android.features.industry.onboarding.SelectIndustryOnboardingActivity
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryActivity
@@ -268,6 +271,14 @@ class Navigator @Inject constructor() {
         )
     }
 
+    fun navigateToCreateNewPost(fragment: Fragment) {
+        fragment.startActivity(
+            CreateNewPostActivity.getCallingIntent(
+                fragment.context
+            )
+        )
+    }
+
     fun navigateToSplash(fragment: Fragment) {
         fragment.startActivity(
             SplashActivity.getCallingIntent(fragment.context)
@@ -428,8 +439,14 @@ class Navigator @Inject constructor() {
 
     fun navigateToFollowingGroupsActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(
-            FollowingGroupsActivity.getCallingIntent(fragment.context),
+            SelectFollowedGroupActivity.getCallingIntent(fragment.context),
             code
+        )
+    }
+
+    fun navigateToFollowedGroups(fragment: Fragment) {
+        fragment.startActivity(
+            FollowedGroupsActivity.getCallingIntent(fragment.context)
         )
     }
 
@@ -542,7 +559,7 @@ class Navigator @Inject constructor() {
     fun navigateToCompanyDetail(fragment: Fragment, company: CompanyResponse) {
         fragment.startActivity(
             CompanyDetailActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 company.id,
                 company
             )
@@ -552,7 +569,7 @@ class Navigator @Inject constructor() {
     fun navigateToRateCompany(fragment: Fragment, company: CompanyResponse, code: Int) {
         fragment.startActivityForResult(
             RateCompanyActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 company.id,
                 company
             ), code
@@ -563,7 +580,7 @@ class Navigator @Inject constructor() {
     fun navigateToCompanyDetail(fragment: Fragment, companyId: String) {
         fragment.startActivity(
             CompanyDetailActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 companyId,
                 null
             )
@@ -573,7 +590,7 @@ class Navigator @Inject constructor() {
     fun navigateToCompanyAdmins(fragment: Fragment, companyId: String) {
         fragment.startActivity(
             CompanyAdminActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 companyId
             )
         )
@@ -582,7 +599,7 @@ class Navigator @Inject constructor() {
 //    fun navigateToCompanyAdminAdd(fragment: Fragment, companyId: String) {
 //        fragment.startActivity(
 //            SingleUserActionActivity.getCallingIntent(
-//                fragment.context!!,
+//                fragment.requireContext(),
 //                SingleUserActionActivity.getAddGroupAdminBundle(companyId)
 //            )
 //        )
@@ -591,7 +608,7 @@ class Navigator @Inject constructor() {
     fun navigateToCompanyAddAdminForResult(fragment: Fragment, companyId: String, code: Int) {
         fragment.startActivityForResult(
             CompanyAddAdminActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 companyId
             ), code
         )
@@ -600,7 +617,7 @@ class Navigator @Inject constructor() {
     fun navigateToShareJobViaMessage(fragment: Fragment, jobId: String) {
         fragment.startActivity(
             SingleUserActionActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 SingleUserActionActivity.getShareJobViaMessageBundle(jobId)
             )
         )
@@ -609,8 +626,17 @@ class Navigator @Inject constructor() {
     fun navigateToDeleteGroupAdmin(fragment: Fragment, groupId: String, ownerId: String) {
         fragment.startActivity(
             DeleteGroupAdminActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 DeleteGroupAdminActivity.getEditGroupAdminBundle(groupId, ownerId)
+            )
+        )
+    }
+
+    fun navigateToDeleteGroupMembers(fragment: Fragment, groupId: String) {
+        fragment.startActivity(
+            DeleteGroupMemberActivity.getCallingIntent(
+                fragment.requireContext(),
+                groupId
             )
         )
     }
@@ -618,7 +644,7 @@ class Navigator @Inject constructor() {
     fun navigateToDeleteCompanyAdmin(fragment: Fragment, companyId: String, ownerId: String) {
         fragment.startActivity(
             DeleteCompanyAdminActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 companyId,
                 ownerId
             )
@@ -628,7 +654,7 @@ class Navigator @Inject constructor() {
     fun navigateToAddGroupAdmins(fragment: Fragment, groupId: String) {
         fragment.startActivity(
             MultipleUserActionActivity.getCallingIntent(
-                fragment.context!!,
+                fragment.requireContext(),
                 MultipleUserActionActivity.getAddGroupAdminBundle(groupId)
             )
         )

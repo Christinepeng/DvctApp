@@ -108,11 +108,11 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(activity!!,
+                navigator.navigateToNextOnboarding(requireActivity(),
                         viewModel.accountType,
                         currentProgress,
                         false
@@ -143,7 +143,7 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(activity!!,
+                    navigator.navigateToNextOnboarding(requireActivity(),
                             viewModel.accountType,
                             currentProgress,
                             true

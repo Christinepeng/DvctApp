@@ -23,7 +23,7 @@ constructor(var application: Application) {
 //            Scope.build(Scope.R_BASICPROFILE),
 //            object : AuthListener {
 //                override fun onAuthSuccess() {
-//                    val sessionManager = LISessionManager.getInstance(activity!!.applicationContext)
+//                    val sessionManager = LISessionManager.getInstance(requireActivity().applicationContext)
 //                    val session = sessionManager.session
 //                    if (session.isValid)
 //                        listener.onAuthSucces(session.accessToken)
@@ -42,7 +42,7 @@ constructor(var application: Application) {
 //    fun getLinkedInPackageHash(activity: AppCompatActivity?) {
 //        try {
 //
-//            val info = activity!!.packageManager.getPackageInfo(
+//            val info = requireActivity().packageManager.getPackageInfo(
 //                BuildConfig.APPLICATION_ID, //give your package name here
 //                PackageManager.GET_SIGNATURES
 //            )

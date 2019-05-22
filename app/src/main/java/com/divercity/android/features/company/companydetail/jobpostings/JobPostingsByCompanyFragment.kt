@@ -152,7 +152,7 @@ class JobPostingsByCompanyFragment : BaseFragment(), RetryCallback {
         }
 
         override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionSeekerActivity(activity!!, job.id, job)
+            navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
         }
     }
 

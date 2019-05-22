@@ -114,7 +114,7 @@ class LoadUrlFragment : BaseFragment() {
             }
 
             override fun onPositiveBtnClick() {
-                activity!!.finish()
+                requireActivity().finish()
             }
         })
         dialog.isCancelable = false

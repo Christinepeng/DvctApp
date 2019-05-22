@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
+import com.divercity.android.features.company.companiesmycompanies.CompaniesMyCompaniesFragment
 import com.divercity.android.features.jobs.applications.JobsApplicationsFragment
 import com.divercity.android.features.jobs.jobs.JobsListFragment
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsFragment
@@ -24,23 +25,26 @@ class TabJobsViewPagerAdapter
     private val sessionRepository: SessionRepository
 ) : FragmentStatePagerAdapter(fm.childFragmentManager) {
 
-    private val PAGE_COUNT = 3
+    private val PAGE_COUNT = 4
 
     private var registeredFragments = SparseArray<Fragment>()
 
     // Tab titles
     private val tabTitlesRecruiter: Array<String> = arrayOf(
-            context.getString(R.string.my_postings),
-            context.getString(R.string.jobs),
-            context.getString(R.string.saved)
+        context.getString(R.string.my_postings),
+        context.getString(R.string.jobs),
+        context.getString(R.string.companies),
+        context.getString(R.string.saved)
+
     )
 
 
     // Tab titles
     private val tabTitlesJobSeeker: Array<String> = arrayOf(
-            context.getString(R.string.jobs),
-            context.getString(R.string.applications),
-            context.getString(R.string.saved)
+        context.getString(R.string.jobs),
+        context.getString(R.string.applications),
+        context.getString(R.string.companies),
+        context.getString(R.string.saved)
     )
 
     override fun getItem(position: Int): Fragment {
@@ -54,6 +58,7 @@ class TabJobsViewPagerAdapter
         return when (position) {
             0 -> JobsListFragment.newInstance()
             1 -> JobsApplicationsFragment.newInstance()
+            2 -> CompaniesMyCompaniesFragment.newInstance()
             else -> SavedJobsFragment.newInstance()
         }
     }
@@ -62,6 +67,7 @@ class TabJobsViewPagerAdapter
         return when (position) {
             0 -> MyJobsPostingsFragment.newInstance()
             1 -> JobsListFragment.newInstance()
+            2 -> CompaniesMyCompaniesFragment.newInstance()
             else -> SavedJobsFragment.newInstance()
         }
     }

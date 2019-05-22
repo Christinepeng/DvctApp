@@ -62,8 +62,8 @@ class RecentDocsDialogFragment : BaseDialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_recent_docs, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_recent_docs, null)
 
         adapter.listener = listenerAdapter
         dialogView.list_jobs_questions.adapter = adapter

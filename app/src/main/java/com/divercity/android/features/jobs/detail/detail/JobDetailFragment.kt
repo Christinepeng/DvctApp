@@ -88,7 +88,7 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
             viewModel.fetchJobById(job)
         else {
             showToast(R.string.error)
-            activity!!.finish()
+            requireActivity().finish()
         }
     }
 
@@ -246,7 +246,7 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
             }
 
             override fun onPositiveBtnClick() {
-                activity!!.finish()
+                requireActivity().finish()
             }
         })
         dialog.isCancelable = false

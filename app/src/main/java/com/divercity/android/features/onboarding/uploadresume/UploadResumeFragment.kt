@@ -68,7 +68,7 @@ class UploadResumeFragment : BaseFragment() {
                     hideProgress()
                     showToast(R.string.file_upload_success)
                     navigator.navigateToNextOnboarding(
-                        activity!!,
+                        requireActivity(),
                         viewModel.accountType,
                         currentProgress,
                         true
@@ -98,12 +98,12 @@ class UploadResumeFragment : BaseFragment() {
             txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(activity!!)
+                navigator.navigateToHomeActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
-                    activity!!,
+                    requireActivity(),
                     viewModel.accountType,
                     currentProgress,
                     false

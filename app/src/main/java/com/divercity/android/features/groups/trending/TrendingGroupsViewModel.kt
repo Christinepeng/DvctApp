@@ -9,7 +9,7 @@ import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.features.groups.trending.datasource.TrendingGroupsPaginatedRepositoryImpl
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
@@ -29,8 +29,8 @@ constructor(
     lateinit var pagedGroupList: LiveData<PagedList<GroupResponse>>
     private lateinit var listingPaginatedGroup: Listing<GroupResponse>
 
-    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
-    var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPositionModel>>()
+    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
+    var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
 
     private var lastSearch: String? = null
 

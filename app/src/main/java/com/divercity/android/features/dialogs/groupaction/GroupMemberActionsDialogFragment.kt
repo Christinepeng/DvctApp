@@ -26,9 +26,9 @@ class GroupMemberActionsDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val builder = AlertDialog.Builder(activity!!)
+        val builder = AlertDialog.Builder(requireActivity())
         val dialogView =
-            activity!!.layoutInflater.inflate(R.layout.dialog_group_member_actions, null)
+            requireActivity().layoutInflater.inflate(R.layout.dialog_group_member_actions, null)
 
         dialogView.apply {
 

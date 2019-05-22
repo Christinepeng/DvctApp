@@ -76,9 +76,9 @@ class LoginFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     if (response.data?.accountType == null)
-                        navigator.navigateToSelectUserTypeActivity(activity!!)
+                        navigator.navigateToSelectUserTypeActivity(requireActivity())
                     else
-                        navigator.navigateToHomeActivity(activity!!)
+                        navigator.navigateToHomeActivity(requireActivity())
                 }
             }
         })

@@ -3,7 +3,6 @@ package com.divercity.android.features.usecase
 import com.divercity.android.db.AppDatabase
 import com.divercity.android.helpers.NotificationHelper
 import com.divercity.android.repository.session.SessionRepository
-import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.observers.DisposableObserver
 import kotlinx.coroutines.*
@@ -31,7 +30,6 @@ constructor(
         ioScope.launch {
             Timber.e("En logout 2")
             appDatabase.clearAllTables()
-            FirebaseInstanceId.getInstance().deleteInstanceId()
 
             if (!sessionRepository.getDeviceId().isNullOrEmpty() &&
                 !sessionRepository.getFCMToken().isNullOrEmpty() &&

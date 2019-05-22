@@ -78,7 +78,7 @@ class EditUserSkillFragment : BaseFragment(), SelectSkillFragment.Listener {
 
                 Status.SUCCESS -> {
                     hideProgress()
-                    activity!!.finish()
+                    requireActivity().finish()
                 }
             }
         })

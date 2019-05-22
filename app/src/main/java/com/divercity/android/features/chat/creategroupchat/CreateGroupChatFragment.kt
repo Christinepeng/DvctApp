@@ -128,7 +128,7 @@ class CreateGroupChatFragment : BaseFragment() {
 
                     activity?.apply {
                         setResult(Activity.RESULT_OK, intent)
-                        activity!!.finish ()
+                        requireActivity().finish ()
                     }
                 }
             }
@@ -165,7 +165,7 @@ class CreateGroupChatFragment : BaseFragment() {
                 override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
                     //Cancel handling, you might wanna remove taken photoFile if it was canceled
                     if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
                         photoFile?.delete()
                     }
                 }
@@ -190,7 +190,7 @@ class CreateGroupChatFragment : BaseFragment() {
     }
 
     override fun onDestroy() {
-        EasyImage.clearConfiguration(activity!!)
+        EasyImage.clearConfiguration(requireActivity())
         super.onDestroy()
     }
 }

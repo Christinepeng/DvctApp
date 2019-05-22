@@ -125,7 +125,7 @@ class ShareJobGroupFragment : BaseFragment(), RetryCallback {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    activity!!.finish()
+                    requireActivity().finish()
                 }
             }
         })

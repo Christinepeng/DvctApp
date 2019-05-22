@@ -4,8 +4,8 @@ import android.app.Dialog
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.fragment.app.DialogFragment
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.DialogFragment
 import com.divercity.android.R
 import kotlinx.android.synthetic.main.dialog_home_tab_action.view.*
 
@@ -26,9 +26,9 @@ class HomeTabActionDialogFragment : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val builder = AlertDialog.Builder(activity!!)
+        val builder = AlertDialog.Builder(requireActivity())
         val dialogView =
-            activity!!.layoutInflater.inflate(R.layout.dialog_home_tab_action, null)
+            requireActivity().layoutInflater.inflate(R.layout.dialog_home_tab_action, null)
 
         dialogView.apply {
 
@@ -37,8 +37,8 @@ class HomeTabActionDialogFragment : DialogFragment() {
                 dismiss()
             }
 
-            btn_new_topic.setOnClickListener {
-                listener?.onNewTopic()
+            btn_new_post.setOnClickListener {
+                listener?.onNewPost()
                 dismiss()
             }
         }
@@ -58,6 +58,6 @@ class HomeTabActionDialogFragment : DialogFragment() {
 
         fun onNewGroup()
 
-        fun onNewTopic()
+        fun onNewPost()
     }
 }

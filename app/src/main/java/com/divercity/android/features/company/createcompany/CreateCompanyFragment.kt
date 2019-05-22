@@ -88,7 +88,7 @@ class CreateCompanyFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     showToast(getString(R.string.company_successfully_created))
-                    activity!!.finish()
+                    requireActivity().finish()
                 }
             }
         })
@@ -186,7 +186,7 @@ class CreateCompanyFragment : BaseFragment() {
             override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
                 //Cancel handling, you might wanna remove taken photoFile if it was canceled
                 if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                    val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                    val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
                     photoFile?.delete()
                 }
             }
@@ -226,7 +226,7 @@ class CreateCompanyFragment : BaseFragment() {
     private fun enableCreateButton(boolean: Boolean) {
         btn_create_company.isEnabled = boolean
         if (boolean) {
-            btn_create_company.setTextColor(ContextCompat.getColor(activity!!, R.color.white))
+            btn_create_company.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
             btn_create_company.setOnClickListener {
                 viewModel.createCompany(et_company_name.text.toString(),
                         viewModel.companySize?.id!!,
@@ -236,7 +236,7 @@ class CreateCompanyFragment : BaseFragment() {
                         if (photoFile != null) ImageUtils.getStringBase64(photoFile, 400, 400)!! else "")
             }
         } else
-            btn_create_company.setTextColor(ContextCompat.getColor(activity!!, R.color.whiteDisable))
+            btn_create_company.setTextColor(ContextCompat.getColor(requireActivity(), R.color.whiteDisable))
     }
 
     override fun onSaveInstanceState(outState: Bundle) {

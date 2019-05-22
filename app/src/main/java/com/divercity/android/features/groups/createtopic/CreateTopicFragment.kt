@@ -15,7 +15,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.features.groups.followedgroups.FollowingGroupsFragment
+import com.divercity.android.features.groups.selectfollowedgroup.SelectFollowedGroupFragment
 import kotlinx.android.synthetic.main.fragment_create_topic.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
@@ -137,7 +137,7 @@ class CreateTopicFragment : BaseFragment() {
                 override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
                     //Cancel handling, you might wanna remove taken photoFile if it was canceled
                     if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(activity!!)
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
                         photoFile?.delete()
                     }
                 }
@@ -147,7 +147,7 @@ class CreateTopicFragment : BaseFragment() {
             when (requestCode) {
                 REQUEST_CODE_GROUP -> {
                     showGroup(
-                        data?.extras?.getParcelable(FollowingGroupsFragment.GROUP_PICKED)
+                        data?.extras?.getParcelable(SelectFollowedGroupFragment.GROUP_PICKED)
                     )
                 }
             }
@@ -192,7 +192,7 @@ class CreateTopicFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    activity!!.finish()
+                    requireActivity().finish()
                 }
             }
         })

@@ -55,16 +55,19 @@ data class User(
                         accountType == context.getString(R.string.professional_id))
     }
 
-    fun fullLocation(): String {
-        return city.plus(", ").plus(country)
+    fun fullLocation(): String? {
+        return if (city != null)
+            city?.plus(", ").plus(country)
+        else
+            country
     }
 
-    fun copy(user : User){
+    fun copy(user: User) {
         country = user.country
         avatarMedium = user.avatarThumb
         accountType = user.accountType
         occupation = user.occupation
-        birthdate  = user.birthdate
+        birthdate = user.birthdate
         role = user.role
         gender = user.gender
         ethnicity = user.ethnicity

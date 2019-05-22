@@ -110,7 +110,7 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
         }
 
         lay_personal.lay_companies.setOnClickListener {
-            navigator.navigateToMyCompanies(activity!!)
+            navigator.navigateToMyCompanies(requireActivity())
         }
 
         lay_personal.lay_groups.setOnClickListener {
@@ -135,7 +135,7 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
             lay_personal.txt_age_range.text = usr.ageRange
             lay_personal.txt_subtitle2.text = usr.schoolName
             lay_personal.txt_occupation.text = usr.occupation
-            lay_personal.txt_location.text = usr.country
+            lay_personal.txt_location.text = usr.fullLocation()
             lay_personal.txt_company.text = usr.companyName
 
             if (usr.skills.isNullOrEmpty()) {

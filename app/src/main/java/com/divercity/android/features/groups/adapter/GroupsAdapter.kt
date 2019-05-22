@@ -9,7 +9,7 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.group.group.GroupResponse
-import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.GroupPosition
 import javax.inject.Inject
 
 class GroupsAdapter @Inject
@@ -81,7 +81,7 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         }
     }
 
-    fun updatePositionOnJoinPublicGroup(groupPosition: GroupPositionModel){
+    fun updatePositionOnJoinPublicGroup(groupPosition: GroupPosition){
 //      We are not receiving the whole group when I get the response, so I have to do this.
 //      I think it is not a good idea, but the backend engineer refused to return the group
 
@@ -96,7 +96,7 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         notifyItemChanged(position)
     }
 
-    fun updatePositionOnJoinRequest(groupPosition: GroupPositionModel){
+    fun updatePositionOnJoinRequest(groupPosition: GroupPosition){
 //      We are not receiving the whole group when I get the response, so I have to do this.
 //      I think it is not a good idea, but the backend engineer refused to return the group
 

@@ -40,8 +40,8 @@ class JobSeekerActionsDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_seeker_actions, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_job_seeker_actions, null)
 
         dialogView.btn_share_via_message.setOnClickListener {
             dismiss()

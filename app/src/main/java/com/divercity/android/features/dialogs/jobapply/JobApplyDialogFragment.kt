@@ -2,7 +2,6 @@ package com.divercity.android.features.dialogs.jobapply
 
 import android.app.Activity
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -68,23 +67,9 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
         subscribeToLiveData()
     }
 
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        try {
-            // To know if the dialog is being called from an activity or fragment
-            parentFragment?.let {
-                listener = it as Listener
-            }
-            if (listener == null)
-                listener = context as Listener
-        } catch (e: ClassCastException) {
-            throw ClassCastException("Calling context must implement JobPostedDialogFragment.Listener")
-        }
-    }
-
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_apply, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_job_apply, null)
 
         GlideApp.with(this)
             .load(sessionRepository.getUserAvatarUrl())
@@ -180,7 +165,7 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
 
     private fun showJobApplySuccessDialog(){
         val fragment = JobApplySuccessDialogFragment.newInstance(jobId!!)
-        fragment.show(activity!!.supportFragmentManager, null)
+        fragment.show(requireActivity().supportFragmentManager, null)
     }
 
     private fun showDocData(doc: DocumentResponse?) {

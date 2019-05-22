@@ -15,7 +15,7 @@ import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.adapter.GroupsAdapter
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
 import com.divercity.android.features.search.ITabSearch
-import com.divercity.android.model.position.GroupPositionModel
+import com.divercity.android.model.position.GroupPosition
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -150,11 +150,11 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     private val listener = object : GroupsViewHolder.Listener {
 
-        override fun onGroupRequestJoinClick(groupPosition: GroupPositionModel) {
+        override fun onGroupRequestJoinClick(groupPosition: GroupPosition) {
             viewModel.requestToJoinGroup(groupPosition)
         }
 
-        override fun onGroupJoinClick(groupPosition: GroupPositionModel) {
+        override fun onGroupJoinClick(groupPosition: GroupPosition) {
             viewModel.joinGroup(groupPosition)
         }
 

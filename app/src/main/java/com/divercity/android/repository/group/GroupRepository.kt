@@ -13,6 +13,7 @@ import com.divercity.android.data.entity.group.invitation.user.GroupInviteUser
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
+import com.divercity.android.data.entity.message.MessagesResponse
 import com.divercity.android.model.Question
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
@@ -29,7 +30,7 @@ interface GroupRepository {
         page: Int,
         size: Int,
         query: String?
-    ): Observable<DataArray<GroupResponse>>
+    ): Observable<List<GroupResponse>>
 
     fun fetchTrendingGroups(
         page: Int,
@@ -39,7 +40,7 @@ interface GroupRepository {
 
     fun fetchAllGroups(page: Int, size: Int, query: String?): Observable<List<GroupResponse>>
 
-    fun fetchMyGroups(page: Int, size: Int, query: String?): Observable<DataArray<GroupResponse>>
+    fun fetchMyGroups(page: Int, size: Int, query: String?): Observable<List<GroupResponse>>
 
     fun fetchGroupMembers(
         groupId: String,
@@ -153,4 +154,20 @@ interface GroupRepository {
     fun discardRecommendedGroups(
         groupsId: List<String>
     ): Observable<Unit>
+
+    fun deleteGroupMembers(
+        groupId: String,
+        userIds: List<String>
+    ): Observable<MessagesResponse>
+
+    fun fetchPopularGroupQuestions(
+        pageNumber: Int,
+        size: Int
+    ): Observable<List<Question>>
+
+    fun createNewPost(
+        question: String,
+        groupIds: List<String>,
+        image: String?
+    ): Observable<Question>
 }

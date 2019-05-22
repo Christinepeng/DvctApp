@@ -85,8 +85,8 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_job_application, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_job_application, null)
 
         dialogView.apply {
             subscribeToLiveData()

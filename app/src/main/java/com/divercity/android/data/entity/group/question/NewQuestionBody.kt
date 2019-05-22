@@ -9,12 +9,12 @@ data class NewQuestionBody(
 ) {
     constructor(
         question: String,
-        groupId: String,
+        groupIds: List<String>,
         image: String?
     ) : this(
         QuestionEntity(
             text = question,
-            groupOfInterestIds = listOf(groupId),
+            groupOfInterestIds = groupIds,
             image = image
         )
     )

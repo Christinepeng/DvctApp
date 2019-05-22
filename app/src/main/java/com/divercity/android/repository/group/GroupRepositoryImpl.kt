@@ -2,6 +2,7 @@ package com.divercity.android.repository.group
 
 import androidx.paging.DataSource
 import com.divercity.android.data.entity.base.DataArray
+import com.divercity.android.data.entity.body.UserIdsEntityBody
 import com.divercity.android.data.entity.company.companyadmin.body.Admin
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
@@ -19,6 +20,7 @@ import com.divercity.android.data.entity.group.invitationnotification.GroupInvit
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
+import com.divercity.android.data.entity.message.MessagesResponse
 import com.divercity.android.data.networking.services.GroupService
 import com.divercity.android.db.dao.GroupDao
 import com.divercity.android.model.Question
@@ -120,10 +122,10 @@ constructor(
         page: Int,
         size: Int,
         query: String?
-    ): Observable<DataArray<GroupResponse>> {
+    ): Observable<List<GroupResponse>> {
         return service.fetchFollowedGroups(page, size, query).map {
             checkResponse(it)
-            it.body()
+            it.body()?.data
         }
     }
 
@@ -142,10 +144,10 @@ constructor(
         page: Int,
         size: Int,
         query: String?
-    ): Observable<DataArray<GroupResponse>> {
+    ): Observable<List<GroupResponse>> {
         return service.fetchMyGroups(page, size, query).map {
             checkResponse(it)
-            it.body()
+            it.body()!!.data
         }
     }
 
@@ -200,12 +202,26 @@ constructor(
         image: String?
     ): Observable<Question> {
         return service.createNewTopic(
-            NewQuestionBody(question, groupId, image)
+            NewQuestionBody(question, listOf(groupId), image)
         ).map {
             checkResponse(it)
             it.body()?.data?.toQuestion()
         }
     }
+
+    override fun createNewPost(
+        question: String,
+        groupIds: List<String>,
+        image: String?
+    ): Observable<Question> {
+        return service.createNewTopic(
+            NewQuestionBody(question, groupIds, image)
+        ).map {
+            checkResponse(it)
+            it.body()?.data?.toQuestion()
+        }
+    }
+
 
     override fun fetchAnswers(
         questionId: String,
@@ -327,6 +343,16 @@ constructor(
         }
     }
 
+    override fun fetchPopularGroupQuestions(
+        pageNumber: Int,
+        size: Int
+    ): Observable<List<Question>> {
+        return service.fetchPopularGroupQuestions(pageNumber, size).map { response ->
+            checkResponse(response)
+            response.body()?.data?.map { it.toQuestion() }
+        }
+    }
+
     override fun fetchQuestionById(questionId: String): Observable<Question> {
         return service.fetchQuestionById(questionId).map { response ->
             checkResponse(response)
@@ -339,5 +365,15 @@ constructor(
             .map { response ->
                 checkResponse(response)
             }
+    }
+
+    override fun deleteGroupMembers(
+        groupId: String,
+        userIds: List<String>
+    ): Observable<MessagesResponse> {
+        return service.deleteGroupMembers(groupId, UserIdsEntityBody(userIds)).map { response ->
+            checkResponse(response)
+            response.body()
+        }
     }
 }

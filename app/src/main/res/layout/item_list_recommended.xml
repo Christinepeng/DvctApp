@@ -5,6 +5,7 @@
     android:id="@+id/lay_recommended"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
@@ -20,13 +21,18 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_recommended"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
         android:layout_below="@id/textView7"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:orientation="horizontal"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_recommended" />
+
+    <View
+        style="@style/RecyclerViewDivider"
+        android:layout_height="3dp"
+        android:layout_below="@id/list_recommended" />
 
 </RelativeLayout>

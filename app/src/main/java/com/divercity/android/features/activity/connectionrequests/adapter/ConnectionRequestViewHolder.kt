@@ -10,9 +10,9 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.group.ConnectionItem
 import com.divercity.android.data.entity.group.invitationnotification.GroupInvitationNotificationResponse
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
-import com.divercity.android.features.activity.connectionrequests.model.GroupInvitationNotificationPosition
-import com.divercity.android.features.activity.connectionrequests.model.JoinGroupRequestPosition
-import com.divercity.android.features.activity.connectionrequests.model.UserPosition
+import com.divercity.android.model.position.GroupInvitationNotificationPosition
+import com.divercity.android.model.position.JoinGroupRequestPosition
+import com.divercity.android.model.position.UserPosition
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.item_connection_request.view.*
 
@@ -101,13 +101,19 @@ private constructor(
 
                                 btn_accept.setOnClickListener {
                                     listener?.acceptJoinGroupRequest(
-                                        JoinGroupRequestPosition(position, joinGroup)
+                                        JoinGroupRequestPosition(
+                                            position,
+                                            joinGroup
+                                        )
                                     )
                                 }
 
                                 btn_decline.setOnClickListener {
                                     listener?.declineJoinGroupRequest(
-                                        JoinGroupRequestPosition(position, joinGroup)
+                                        JoinGroupRequestPosition(
+                                            position,
+                                            joinGroup
+                                        )
                                     )
                                 }
                             }
@@ -144,13 +150,19 @@ private constructor(
 
                             btn_accept.setOnClickListener {
                                 listener?.acceptUserConnectionRequest(
-                                    UserPosition(position, connectionRequest)
+                                    UserPosition(
+                                        position,
+                                        connectionRequest
+                                    )
                                 )
                             }
 
                             btn_decline.setOnClickListener {
                                 listener?.declineUserConnectionRequest(
-                                    UserPosition(position, connectionRequest)
+                                    UserPosition(
+                                        position,
+                                        connectionRequest
+                                    )
                                 )
                             }
                         } else if (connectionRequest.connected == "accepted") {

@@ -181,7 +181,7 @@ class OtherUserProfileFragment : BaseFragment() {
                             R.color.appBlue
                         )
                     )
-                    btn_connect.text = "Connection"
+                    btn_connect.setText(R.string.connection)
                 }
                 "requested" -> {
                     include_accept_decline.visibility = View.GONE
@@ -193,7 +193,7 @@ class OtherUserProfileFragment : BaseFragment() {
                             R.color.appBlue
                         )
                     )
-                    btn_connect.text = "Requested"
+                    btn_connect.setText(R.string.requested)
                 }
                 "pending_approval" -> {
                     include_accept_decline.visibility = View.VISIBLE
@@ -219,7 +219,7 @@ class OtherUserProfileFragment : BaseFragment() {
                             android.R.color.white
                         )
                     )
-                    btn_connect.text = "Accept"
+                    btn_connect.setText(R.string.accept)
                 }
                 "not_connected" -> {
                     include_accept_decline.visibility = View.GONE
@@ -234,7 +234,7 @@ class OtherUserProfileFragment : BaseFragment() {
                             android.R.color.white
                         )
                     )
-                    btn_connect.text = "Connect"
+                    btn_connect.setText(R.string.connect)
                 }
             }
         }

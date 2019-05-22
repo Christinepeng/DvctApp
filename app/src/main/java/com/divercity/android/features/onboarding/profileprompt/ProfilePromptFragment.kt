@@ -43,7 +43,7 @@ class ProfilePromptFragment : BaseFragment() {
 
     private fun setupView() {
         btn_next.setOnClickListener {
-            navigator.navigateToNextOnboarding(activity!!,
+            navigator.navigateToNextOnboarding(requireActivity(),
                     viewModel.accountType,
                     0,
                     false
@@ -51,7 +51,7 @@ class ProfilePromptFragment : BaseFragment() {
         }
 
         btn_not_now.setOnClickListener {
-            navigator.navigateToHomeActivity(activity!!)
+            navigator.navigateToHomeActivity(requireActivity())
         }
     }
 

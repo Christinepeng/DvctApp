@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="120dp"
+    android:layout_height="180dp"
+    android:layout_marginStart="4dp"
+    android:layout_marginEnd="4dp"
+    android:background="@drawable/shape_backgrd_round2"
+    android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:background="@null"
+        android:paddingStart="16dp"
+        android:visibility="gone"
+        android:paddingTop="10dp"
+        android:paddingEnd="10dp"
+        android:paddingBottom="16dp"
+        android:src="@drawable/x_close"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/img"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/desc"
+        android:scaleType="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:background="@color/appBlue" />
+
+    <TextView
+        android:id="@+id/txt_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="center"
+        android:maxLines="2"
+        android:textColor="#333241"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img"
+        tools:text="Chuka Ikokwu" />
+
+    <TextView
+        android:id="@+id/txt_subtitle1"
+        style="@style/AppText5"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:gravity="center"
+        android:maxLines="2"
+        app:layout_constraintBottom_toTopOf="@+id/btn_action"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/txt_title"
+        tools:text="Asd sfsd s" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_action"
+        style="@style/AppText"
+        android:layout_width="match_parent"
+        android:layout_height="31dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="12dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:background="@drawable/shape_backgrd_round_blue3"
+        android:fontFamily="@font/avenir_medium"
+        android:gravity="center"
+        android:minHeight="30dip"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="@string/connect" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

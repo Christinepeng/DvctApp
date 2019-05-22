@@ -113,7 +113,7 @@ class PersonalSettingsFragment : BaseFragment() {
         }
 
         lay_personal.lay_companies.setOnClickListener {
-            navigator.navigateToMyCompanies(activity!!)
+            navigator.navigateToMyCompanies(requireActivity())
         }
 
         lay_personal.lay_groups.setOnClickListener {
@@ -211,8 +211,7 @@ class PersonalSettingsFragment : BaseFragment() {
             lay_personal.txt_age_range.text = it.ageRange
             lay_personal.txt_subtitle2.text = it.schoolName
             lay_personal.txt_occupation.text = it.occupation
-            lay_personal.txt_location.text =
-                it.city.plus(", ").plus(it.country)
+            lay_personal.txt_location.text = it.fullLocation()
             lay_personal.txt_company.text = it.companyName
         }
     }

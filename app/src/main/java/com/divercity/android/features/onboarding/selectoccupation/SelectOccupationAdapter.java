@@ -1,8 +1,5 @@
 package com.divercity.android.features.onboarding.selectoccupation;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatImageButton;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +11,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by lucas on 17/10/2018.
@@ -27,42 +28,42 @@ public class SelectOccupationAdapter extends RecyclerView.Adapter<SelectOccupati
     private void fillList() {
 
         String strings[] = {
-                "💼   Accountant",
-                "✈️   Aerospace Engineer",
-                "🎨   Artist",
-                "💰   Banker",
-                "👩‍🔬 Chemical Engineer",
-                "📐   Civil Engineer",
-                "🎓   College Student",
-                "📚   Consultant",
-                "💃   Dancer",
-                "🖥   Data Analyst/Manager",
-                "💊   Doctor",
-                "🔬   Engineering Designer",
-                "🎧   Entertainer",
-                "👠   Fashion Designer",
-                "💼   General Manager",
-                "🎓   Graduate Student",
-                "💇‍♀️ Hair & Beauty Professional",
-                "🎒   High School Student",
-                "👨🏽‍💻   Human Resources",
-                "💵   Investment Banker",
-                "⚖️   Lawyer",
-                "📈   Marketing Manager/Associate",
-                "⚙️   Mechanical Engineer",
-                "🎤   Musician",
-                "🏥   Nurse",
-                "📂   Other",
-                "📝   Physical Therapist",
-                "📊   Product Manager",
-                "📋   Project Manager",
-                "✒️   Psychologist",
-                "🏠   Realtor",
-                "🗂   Recruiter",
-                "👨‍👩‍👧‍👦   Social Worker",
-                "💻   Software Engineer",
-                "📖   Teacher",
-                "📱   Web/Mobile Designer"
+                "Accountant",
+                "Aerospace Engineer",
+                "Artist",
+                "Banker",
+                "Chemical Engineer",
+                "Civil Engineer",
+                "College Student",
+                "Consultant",
+                "Dancer",
+                "Data Analyst/Manager",
+                "Doctor",
+                "Engineering Designer",
+                "Entertainer",
+                "Fashion Designer",
+                "General Manager",
+                "Graduate Student",
+                "‍Hair & Beauty Professional",
+                "High School Student",
+                "Human Resources",
+                "Investment Banker",
+                "Lawyer",
+                "Marketing Manager/Associate",
+                "Mechanical Engineer",
+                "Musician",
+                "Nurse",
+                "Other",
+                "Physical Therapist",
+                "Product Manager",
+                "Project Manager",
+                "Psychologist",
+                "Realtor",
+                "Recruiter",
+                "Social Worker",
+                "Software Engineer",
+                "Teacher",
+                "Web/Mobile Designer"
         };
 
         for (String str : strings)

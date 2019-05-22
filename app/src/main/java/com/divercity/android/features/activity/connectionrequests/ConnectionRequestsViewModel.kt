@@ -13,9 +13,9 @@ import com.divercity.android.data.entity.group.ConnectionItem
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.activity.connectionrequests.datasource.ConnectionRequestsPaginatedRepositoryImpl
-import com.divercity.android.features.activity.connectionrequests.model.GroupInvitationNotificationPosition
-import com.divercity.android.features.activity.connectionrequests.model.JoinGroupRequestPosition
-import com.divercity.android.features.activity.connectionrequests.model.UserPosition
+import com.divercity.android.model.position.GroupInvitationNotificationPosition
+import com.divercity.android.model.position.JoinGroupRequestPosition
+import com.divercity.android.model.position.UserPosition
 import com.divercity.android.features.activity.connectionrequests.usecase.AcceptGroupInviteUseCase
 import com.divercity.android.features.activity.connectionrequests.usecase.AcceptJoinGroupRequestUseCase
 import com.divercity.android.features.activity.connectionrequests.usecase.DeclineGroupInviteUseCase

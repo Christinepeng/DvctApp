@@ -47,8 +47,8 @@ class CompanyActionsDialogFragment : DialogFragment() {
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val builder = AlertDialog.Builder(activity!!)
-        val dialogView = activity!!.layoutInflater.inflate(R.layout.dialog_company_actions, null)
+        val builder = AlertDialog.Builder(requireActivity())
+        val dialogView = requireActivity().layoutInflater.inflate(R.layout.dialog_company_actions, null)
 
         if(arguments!!.getBoolean(PARAM_COMPANY_IS_ADMIN, false)){
             dialogView.btn_edit_admins.visibility = View.VISIBLE

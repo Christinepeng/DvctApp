@@ -2,6 +2,7 @@ package com.divercity.android.data.networking.services
 
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
+import com.divercity.android.data.entity.body.UserIdsEntityBody
 import com.divercity.android.data.entity.company.companyadmin.body.Admin
 import com.divercity.android.data.entity.group.answer.body.AnswerBody
 import com.divercity.android.data.entity.group.answer.response.AnswerEntityResponse
@@ -16,6 +17,7 @@ import com.divercity.android.data.entity.group.invitationnotification.GroupInvit
 import com.divercity.android.data.entity.group.question.NewQuestionBody
 import com.divercity.android.data.entity.group.requests.JoinGroupRequestResponse
 import com.divercity.android.data.entity.message.MessageResponse
+import com.divercity.android.data.entity.message.MessagesResponse
 import com.divercity.android.data.entity.questions.QuestionEntityResponse
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import io.reactivex.Observable
@@ -212,8 +214,20 @@ interface GroupService {
         @Query("page[size]") size: Int
     ): Observable<Response<DataArray<QuestionEntityResponse>>>
 
+    @GET("questions?by_popular=1")
+    fun fetchPopularGroupQuestions(
+        @Query("page[number]") pageNumber: Int,
+        @Query("page[size]") size: Int
+    ): Observable<Response<DataArray<QuestionEntityResponse>>>
+
     @POST("group_of_interests/discard_groups")
     fun discardRecommendedGroups(
         @Body body: DiscardGroupsEntityBody
     ): Observable<Response<Unit>>
+
+    @HTTP(method = "DELETE", path = "group_of_interests/{groupId}/remove_members", hasBody = true)
+    fun deleteGroupMembers(
+        @Path("groupId") groupId: String,
+        @Body body: UserIdsEntityBody
+    ): Observable<Response<MessagesResponse>>
 }

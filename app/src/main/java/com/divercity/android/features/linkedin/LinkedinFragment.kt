@@ -18,7 +18,6 @@ import kotlinx.android.synthetic.main.fragment_linkedin.*
 import timber.log.Timber
 
 
-
 /**
  * Created by lucas on 01/11/2018.
  */
@@ -30,10 +29,12 @@ class LinkedinFragment : BaseFragment() {
     //This is the private api key of our application
     private val SECRET_KEY = "pqkN0PNzATda01f7"
     //This is any string we want to use. This will be used for avoiding CSRF attacks. You can generate one here: http://strongpasswordgenerator.com/
-    private val STATE = "https://sandbox-api.divercity.io/api/auth/sso/linkedin"
+//    private val STATE = "https://sandbox-api.divercity.io/api/auth/sso/linkedin"
+    private val STATE = "https://api.divercity.io/api/auth/sso/linkedin"
     //This is the url that LinkedIn Auth process will redirect to. We can put whatever we want that starts with http:// or https:// .
     //We use a made up url that we will intercept when redirecting. Avoid Uppercases.
-    private val REDIRECT_URI = "https://sandbox-api.divercity.io/api/auth/sso/linkedin"
+//    private val REDIRECT_URI = "https://sandbox-api.divercity.io/api/auth/sso/linkedin"
+    private val REDIRECT_URI = "https://api.divercity.io/api/auth/sso/linkedin"
     /*********************************************/
 
     //These are constants used for build the urls
@@ -47,6 +48,7 @@ class LinkedinFragment : BaseFragment() {
     private val CLIENT_ID_PARAM = "client_id"
     private val STATE_PARAM = "state"
     private val REDIRECT_URI_PARAM = "redirect_uri"
+    private val SCOPE_PARAM = "scope=r_liteprofile%20r_emailaddress%20w_member_social"
 /*---------------------------------------*/
 
     private val QUESTION_MARK = "?"
@@ -76,7 +78,7 @@ class LinkedinFragment : BaseFragment() {
         subscribeToLiveData()
     }
 
-    private fun loadWeb(){
+    private fun loadWeb() {
         showProgress()
         web_view.webViewClient = object : WebViewClient() {
 
@@ -86,29 +88,49 @@ class LinkedinFragment : BaseFragment() {
             }
 
             @TargetApi(Build.VERSION_CODES.N)
-            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+            override fun shouldOverrideUrlLoading(
+                view: WebView?,
+                request: WebResourceRequest?
+            ): Boolean {
                 return handleUri(request?.url)
             }
 
-            override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+            override fun onReceivedError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                error: WebResourceError?
+            ) {
 //                super.onReceivedError(view, request, error)
                 hideProgress()
                 showDialogConnectionError()
             }
 
-            override fun onReceivedError(view: WebView?, errorCode: Int, description: String?, failingUrl: String?) {
+            override fun onReceivedError(
+                view: WebView?,
+                errorCode: Int,
+                description: String?,
+                failingUrl: String?
+            ) {
 //                super.onReceivedError(view, errorCode, description, failingUrl)
                 hideProgress()
                 showDialogConnectionError()
             }
 
-            override fun onReceivedSslError(view: WebView?, handler: SslErrorHandler?, error: SslError?) {
+            override fun onReceivedSslError(
+                view: WebView?,
+                handler: SslErrorHandler?,
+                error: SslError?
+            ) {
 //                super.onReceivedSslError(view, handler, error)
                 hideProgress()
                 showDialogConnectionError()
             }
 
-            override fun onReceivedHttpError(view: WebView?, request: WebResourceRequest?, errorResponse: WebResourceResponse?) {
+            override fun onReceivedHttpError(
+                view: WebView?,
+                request: WebResourceRequest?,
+                errorResponse: WebResourceResponse?
+            ) {
 //                super.onReceivedHttpError(view, request, errorResponse)
                 hideProgress()
                 showDialogConnectionError()
@@ -116,7 +138,7 @@ class LinkedinFragment : BaseFragment() {
 
             override fun onPageFinished(view: WebView?, url: String?) {
 //                super.onPageFinished(view, url)
-                if(url == null || !url.startsWith(REDIRECT_URI))
+                if (url == null || !url.startsWith(REDIRECT_URI))
                     hideProgress()
             }
         }
@@ -126,10 +148,10 @@ class LinkedinFragment : BaseFragment() {
 
     private fun showDialogConnectionError() {
         val dialog = CustomTwoBtnDialogFragment.newInstance(
-                getString(R.string.ups),
-                getString(R.string.error_connection),
-                getString(R.string.cancel),
-                getString(R.string.retry)
+            getString(R.string.ups),
+            getString(R.string.error_connection),
+            getString(R.string.cancel),
+            getString(R.string.retry)
         )
 
         dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
@@ -139,11 +161,11 @@ class LinkedinFragment : BaseFragment() {
             }
 
             override fun onPositiveBtnClick() {
-                activity!!.finish()
+                requireActivity().finish()
             }
         })
         dialog.isCancelable = false
-        dialog.show(childFragmentManager,null)
+        dialog.show(childFragmentManager, null)
     }
 
     private fun handleUri(uri: Uri?): Boolean {
@@ -163,7 +185,7 @@ class LinkedinFragment : BaseFragment() {
                 val authorizationToken = pUri.getQueryParameter(RESPONSE_TYPE_VALUE)
                 if (authorizationToken == null) {
                     Timber.i("The user doesn't allow authorization.")
-                    activity!!.finish()
+                    requireActivity().finish()
                     return true
                 }
                 Timber.i("Auth token received: $authorizationToken")
@@ -199,11 +221,12 @@ class LinkedinFragment : BaseFragment() {
      * @return Url
      */
     private fun getAuthorizationUrl(): String {
-        return (AUTHORIZATION_URL
-                + QUESTION_MARK + RESPONSE_TYPE_PARAM + EQUALS + RESPONSE_TYPE_VALUE
-                + AMPERSAND + CLIENT_ID_PARAM + EQUALS + API_KEY
-                + AMPERSAND + STATE_PARAM + EQUALS + STATE
-                + AMPERSAND + REDIRECT_URI_PARAM + EQUALS + REDIRECT_URI)
+        val query = RESPONSE_TYPE_PARAM + EQUALS + RESPONSE_TYPE_VALUE +
+                AMPERSAND + CLIENT_ID_PARAM + EQUALS + API_KEY +
+                AMPERSAND + STATE_PARAM + EQUALS + STATE +
+                AMPERSAND + REDIRECT_URI_PARAM + EQUALS + REDIRECT_URI +
+                AMPERSAND + SCOPE_PARAM
+        return (AUTHORIZATION_URL + QUESTION_MARK + query)
     }
 
     fun subscribeToLiveData() {
@@ -222,13 +245,13 @@ class LinkedinFragment : BaseFragment() {
         })
 
         viewModel.navigateToHome.observe(this, Observer {
-            navigator.navigateToHomeActivity(activity!!)
-            activity!!.finish()
+            navigator.navigateToHomeActivity(requireActivity())
+            requireActivity().finish()
         })
 
         viewModel.navigateToSelectUserType.observe(this, Observer {
-            navigator.navigateToSelectUserTypeActivity(activity!!)
-            activity!!.finish()
+            navigator.navigateToSelectUserTypeActivity(requireActivity())
+            requireActivity().finish()
         })
     }
 

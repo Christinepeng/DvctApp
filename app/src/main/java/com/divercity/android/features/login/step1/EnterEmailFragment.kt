@@ -18,7 +18,6 @@ import com.divercity.android.features.login.step1.usecase.ConnectFacebookApiHelp
 import com.facebook.internal.CallbackManagerImpl
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
-import dagger.android.support.AndroidSupportInjection
 import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -51,7 +50,6 @@ class EnterEmailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        AndroidSupportInjection.inject(this)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
         connectFacebookApiHelper = ConnectFacebookApiHelper(this)
         connectFacebookApiHelper.setListener(facebookListener)
@@ -104,20 +102,20 @@ class EnterEmailFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     if (response.data?.accountType == null)
-                        navigator.navigateToSelectUserTypeActivity(activity!!)
+                        navigator.navigateToSelectUserTypeActivity(requireActivity())
                     else
-                        navigator.navigateToHomeActivity(activity!!)
-                    activity!!.finish()
+                        navigator.navigateToHomeActivity(requireActivity())
+                    requireActivity().finish()
                 }
             }
         })
 
         viewModel.navigateToLogin.observe(this, Observer {
-            navigator.navigateToLoginActivity(activity!!, getEdTxtEmail())
+            navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
         })
 
         viewModel.navigateToSignUp.observe(this, Observer {
-            navigator.navigateToSignUpActivity(activity!!, getEdTxtEmail())
+            navigator.navigateToSignUpActivity(requireActivity(), getEdTxtEmail())
         })
     }
 
@@ -137,7 +135,7 @@ class EnterEmailFragment : BaseFragment() {
         }
 
         btn_linkedin.setOnClickListener {
-            navigator.navigateToLinkedinActivity(activity!!)
+            navigator.navigateToLinkedinActivity(requireActivity())
         }
 
         btn_send.setOnClickListener {

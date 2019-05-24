@@ -40,6 +40,12 @@ constructor(
         CURRENT_CHAT_ID
     }
 
+    init {
+        CoroutineScope(Dispatchers.IO).launch {
+            currentLoggedUser = userDao.getUserSync()
+        }
+    }
+
     private val sharedPreferencesManager: SharedPreferencesManager<Key> =
         SharedPreferencesManager(context, USER_PREF_NAME)
 

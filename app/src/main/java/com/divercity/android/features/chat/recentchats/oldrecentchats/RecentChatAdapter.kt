@@ -1,9 +1,9 @@
 package com.divercity.android.features.chat.recentchats.oldrecentchats
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
@@ -14,9 +14,8 @@ import com.divercity.android.repository.user.UserRepository
 import javax.inject.Inject
 
 class RecentChatAdapter @Inject
-constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsersChatListItem, RecyclerView.ViewHolder>(
-    userDiffCallback
-) {
+constructor(val userRepository: UserRepository) :
+    PagedListAdapter<ExistingUsersChatListItem, RecyclerView.ViewHolder>(chatDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
@@ -64,6 +63,8 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsers
         return super.getItemCount() + if (hasExtraRow()) 1 else 0
     }
 
+    fun getNetworkState() : NetworkState? = networkState
+
     fun setNetworkState(newNetworkState: NetworkState?) {
         val previousState = this.networkState
         val hadExtraRow = hasExtraRow()
@@ -71,9 +72,9 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsers
         val hasExtraRow = hasExtraRow()
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
-                notifyItemRemoved(super.getItemCount())
+                notifyItemRemoved(itemCount)
             } else {
-                notifyItemInserted(super.getItemCount())
+                notifyItemInserted(itemCount)
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
             notifyItemChanged(itemCount - 1)
@@ -82,13 +83,19 @@ constructor(val userRepository: UserRepository) : PagedListAdapter<ExistingUsers
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<ExistingUsersChatListItem>() {
+        private val chatDiffCallback = object : DiffUtil.ItemCallback<ExistingUsersChatListItem>() {
 
-            override fun areItemsTheSame(oldItem: ExistingUsersChatListItem, newItem: ExistingUsersChatListItem): Boolean {
-                return oldItem.id === newItem.id
+            override fun areItemsTheSame(
+                oldItem: ExistingUsersChatListItem,
+                newItem: ExistingUsersChatListItem
+            ): Boolean {
+                return oldItem.id == newItem.id
             }
 
-            override fun areContentsTheSame(oldItem: ExistingUsersChatListItem, newItem: ExistingUsersChatListItem): Boolean {
+            override fun areContentsTheSame(
+                oldItem: ExistingUsersChatListItem,
+                newItem: ExistingUsersChatListItem
+            ): Boolean {
                 return oldItem == newItem
             }
         }

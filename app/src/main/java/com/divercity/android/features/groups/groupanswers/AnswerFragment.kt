@@ -92,7 +92,10 @@ class AnswerFragment : BaseFragment() {
 
         userMentionWrapper.setEditTextTokenize(et_msg)
         userMentionWrapper.mentionsEdTxt = et_msg
-        userMentionWrapper.list_users = list_users
+        userMentionWrapper.listUsers = list_users
+        userMentionWrapper.onListHiding = {
+            viewModel.disposeGroupMemberUseCase()
+        }
 
         lay_image.btn_remove_img.setOnClickListener {
             photoFile = null
@@ -355,6 +358,7 @@ class AnswerFragment : BaseFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        userMentionWrapper.onDestroy()
         viewModel.onDestroy()
     }
 

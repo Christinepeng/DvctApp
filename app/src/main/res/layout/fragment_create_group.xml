@@ -88,8 +88,7 @@
         android:background="@color/white"
         android:fontFamily="@font/avenir_roman"
         android:hint="@string/create_group"
-        android:imeOptions="actionDone"
-        android:inputType="textCapSentences"
+        android:inputType="textMultiLine|textCapSentences"
         android:padding="24dp"
         android:textColor="#333241"
         android:textSize="15sp"
@@ -108,9 +107,9 @@
         android:fontFamily="@font/avenir_light"
         android:padding="10dp"
         android:text="@string/delete_group"
-        android:visibility="gone"
         android:textColor="#a4a4b3"
         android:textSize="13sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_group_name" />
 

@@ -14,6 +14,6 @@ constructor(repository: RecentChatsPaginatedRepository)
     : BaseViewModelPagination<ExistingUsersChatListItem>(repository){
 
     init {
-        fetchData(null, "")
+        fetchData()
     }
 }

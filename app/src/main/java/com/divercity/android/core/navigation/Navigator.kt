@@ -245,10 +245,10 @@ class Navigator @Inject constructor() {
         )
     }
 
-    fun navigateToResetPassword(fragment: Fragment, token: String) {
-        fragment.startActivity(
+    fun navigateToResetPassword(activity: Activity, token: String) {
+        activity.startActivity(
             ResetPasswordActivity.getCallingIntent(
-                fragment.context,
+                activity,
                 token
             )
         )

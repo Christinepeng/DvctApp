@@ -30,9 +30,4 @@
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         tools:listitem="@layout/item_recommended" />
 
-    <View
-        style="@style/RecyclerViewDivider"
-        android:layout_height="3dp"
-        android:layout_below="@id/list_recommended" />
-
 </RelativeLayout>

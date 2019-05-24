@@ -2,6 +2,8 @@ package com.divercity.android.features.chat.recentchats.oldrecentchats
 
 import android.os.Bundle
 import android.os.Handler
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -9,12 +11,17 @@ import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.paging.PagedList
+import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import com.divercity.android.core.bus.RxBus
+import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import com.divercity.android.features.chat.recentchats.newrecentchats.RecentChatViewHolder
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_chats.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -30,11 +37,15 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     @Inject
     lateinit var adapter: RecentChatAdapter
 
-    private var isListRefreshing = false
+    private var isListRefreshing = true
+    private var isListRefreshingNoUI = false
 
     private var handlerSearch = Handler()
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
+
+    private var pagedList: PagedList<ExistingUsersChatListItem>? = null
+    private lateinit var newMessageDisposable: Disposable
 
     companion object {
 
@@ -48,11 +59,16 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChatsViewModel::class.java)
-//        setHasOptionsMenu(true)
+        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        newMessageDisposable = RxBus.listen(RxEvent.OnNewMessageReceived::class.java).subscribe {
+            isListRefreshingNoUI = true
+            viewModel.refresh()
+        }
 
         (activity as AppCompatActivity).apply {
             setSupportActionBar(include_toolbar.toolbar)
@@ -87,6 +103,7 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     private fun initAdapter() {
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
+        list.itemAnimator = null
         list.adapter = adapter
     }
 
@@ -104,12 +121,23 @@ class ChatsFragment : BaseFragment(), RetryCallback {
 
     private fun subscribeToPaginatedLiveData() {
         viewModel.pagedList.observe(viewLifecycleOwner, Observer {
-            adapter.submitList(it)
+            //            adapter.submitList(it)
+            pagedList = it
         })
 
         viewModel.networkState().observe(viewLifecycleOwner, Observer {
-            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS) {
+                if ((isListRefreshing || isListRefreshingNoUI) &&
+                    (it?.status == Status.SUCCESS || it?.status == Status.ERROR)
+                ) {
+                    isListRefreshingNoUI = false
+                    isListRefreshing = false
+                    swipe_list_main.isRefreshing = false
+                    swipe_list_main.isEnabled = it.status == Status.SUCCESS
+                    adapter.submitList(pagedList)
+                }
                 adapter.setNetworkState(it)
+            }
         })
 
         viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
@@ -131,7 +159,8 @@ class ChatsFragment : BaseFragment(), RetryCallback {
                     txt_no_results.visibility = View.GONE
                 }
 
-                swipe_list_main.isRefreshing = isListRefreshing
+                if (!isListRefreshingNoUI)
+                    swipe_list_main.isRefreshing = isListRefreshing
             }
 
             if (!isListRefreshing)
@@ -146,41 +175,50 @@ class ChatsFragment : BaseFragment(), RetryCallback {
                 isListRefreshing = true
                 viewModel.refresh()
             }
-            isEnabled = false
+            isEnabled = true
             setColorSchemeColors(
                 ContextCompat.getColor(context, R.color.colorPrimaryDark),
                 ContextCompat.getColor(context, R.color.colorPrimary),
                 ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
+            isRefreshing = true
         }
     }
 
-//    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-//        menu.clear()
-//        inflater.inflate(R.menu.menu_search, menu)
-//        searchItem = menu.findItem(R.id.action_search)
-//        searchView = searchItem?.actionView as SearchView
-//        searchView?.queryHint = getString(R.string.search)
-//
-//        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-//
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                handlerSearch.removeCallbacksAndMessages(null)
-//                viewModel.fetchData(viewLifecycleOwner, query)
-//                return false
-//            }
-//
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                handlerSearch.removeCallbacksAndMessages(null)
-//                handlerSearch.postDelayed({
-//                    viewModel.fetchData(viewLifecycleOwner, newText)
-//                }, AppConstants.SEARCH_DELAY)
-//                return true
-//            }
-//        })
-//
-//        super.onCreateOptionsMenu(menu, inflater)
-//    }
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        menu.clear()
+        inflater.inflate(R.menu.menu_search, menu)
+        searchItem = menu.findItem(R.id.action_search)
+        searchView = searchItem?.actionView as SearchView
+        searchView?.queryHint = getString(R.string.search)
+
+        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                handlerSearch.removeCallbacksAndMessages(null)
+                viewModel.fetchData(viewLifecycleOwner, query)
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                handlerSearch.removeCallbacksAndMessages(null)
+                handlerSearch.postDelayed({
+                    viewModel.fetchData(viewLifecycleOwner, newText)
+                }, AppConstants.SEARCH_DELAY)
+                return true
+            }
+        })
+
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        if (adapter.getNetworkState()?.status == Status.SUCCESS) {
+            isListRefreshingNoUI = true
+            viewModel.refresh()
+        }
+    }
 
     override fun retry() {
         viewModel.retry()

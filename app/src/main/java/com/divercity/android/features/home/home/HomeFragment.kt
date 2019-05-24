@@ -14,8 +14,6 @@ import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.BuildConfig
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.core.bus.RxBus
-import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
@@ -36,7 +34,6 @@ import com.divercity.android.model.Question
 import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.model.position.JobPosition
 import com.divercity.android.model.position.UserPosition
-import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import javax.inject.Inject
@@ -71,7 +68,7 @@ class HomeFragment : BaseFragment() {
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
 
-    private lateinit var newMessageDisposable: Disposable
+//    private lateinit var newMessageDisposable: Disposable
 
     companion object {
 
@@ -106,9 +103,9 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        newMessageDisposable = RxBus.listen(RxEvent.OnNewMessageReceived::class.java).subscribe {
-            viewModel.fetchUnreadMessagesCount()
-        }
+//        newMessageDisposable = RxBus.listen(RxEvent.OnNewMessageReceived::class.java).subscribe {
+//            viewModel.fetchUnreadMessagesCount()
+//        }
         setupToolbar()
         setupEvents()
         initAdapters()
@@ -224,6 +221,10 @@ class HomeFragment : BaseFragment() {
         }
 
         homeAdapter.recommendedConnectionsAdapter = recommendedConnectionsAdapter
+
+        homeAdapter.onWritePost = {
+            navigator.navigateToCreateNewPost(this@HomeFragment)
+        }
 
         list_jobs_questions.adapter = homeAdapter
 
@@ -589,7 +590,7 @@ class HomeFragment : BaseFragment() {
 
         viewModel.listState.value = list_jobs_questions.layoutManager?.onSaveInstanceState()
         viewModel.onDestroyView()
-        if (!newMessageDisposable.isDisposed) newMessageDisposable.dispose()
+//        if (!newMessageDisposable.isDisposed) newMessageDisposable.dispose()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -601,6 +602,7 @@ class HomeFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
+        /* When user search and press back the search is collapse*/
         searchItem?.collapseActionView()
         viewModel.fetchUnreadMessagesCount()
     }

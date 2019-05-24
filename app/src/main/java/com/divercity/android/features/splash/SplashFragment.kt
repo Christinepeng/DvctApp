@@ -49,10 +49,14 @@ class SplashFragment : BaseFragment() {
                 if (referringParams.optBoolean("+clicked_branch_link", false)) {
                     viewModel.checkRouteDeepLink(referringParams)
                 } else {
-                    if (requireActivity().isTaskRoot)
+                    /* This is because as branch.io requirement is singleTask for entry activity,
+                    *  when you open the app tapping the app icon it will always go through
+                     * this flow*/
+                    if (requireActivity().isTaskRoot) {
                         viewModel.checkRouteNoDeepLink()
-                    else
+                    } else {
                         finish()
+                    }
                 }
             } else {
                 Timber.e("BRANCH SDK ${error.message}")
@@ -100,7 +104,7 @@ class SplashFragment : BaseFragment() {
         })
 
         viewModel.navigateToResetPassword.observe(viewLifecycleOwner, Observer {
-            navigator.navigateToResetPassword(this, it)
+            navigator.navigateToResetPassword(requireActivity(), it)
             finish()
         })
     }

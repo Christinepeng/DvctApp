@@ -1,5 +1,6 @@
 package com.divercity.android.features.chat.chat.chatadapter
 
+import android.util.SparseArray
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
@@ -7,32 +8,35 @@ import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
-import com.divercity.android.features.apollo.FetchJobFromViewHolderUseCase
-import com.divercity.android.features.apollo.FetchJobReloadedUseCase
+import com.divercity.android.features.apollo.FetchJobApolloUseCase
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
 
 class ChatAdapter @Inject
 constructor(
     val sessionRepository: SessionRepository,
-    private val fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase,
-    private val fetchJobReloadedUseCase: FetchJobReloadedUseCase
+    private val fetchJobReloadedUseCase: FetchJobApolloUseCase
 ) : PagedListAdapter<ChatMessageEntityResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var retryCallback: RetryCallback? = null
     var chatListener: ChatViewHolder.Listener? = null
-    var jobsFetched = HashMap<Int, FetchJobReloadedUseCase.JobDataView>()
+    var jobsFetched = SparseArray<FetchJobApolloUseCase.JobDataView>()
 
     private var adapterListener = object : Listener {
 
-        override fun onJobFetched(position: Int, job: FetchJobReloadedUseCase.JobDataView) {
-            jobsFetched[position] = job
-            getItem(position)?.attachment = job
-            notifyItemChanged(position)
+        override fun getJobFetchedByJobId(jobId: Int): FetchJobApolloUseCase.JobDataView? {
+            return jobsFetched[jobId]
         }
 
-        override fun getJobFetchedByPosition(position: Int): FetchJobReloadedUseCase.JobDataView? {
-            return jobsFetched[position]
+        override fun onJobFetched(data: FetchJobApolloUseCase.JobDataView) {
+            jobsFetched.put(data.id, data)
+            ChatViewHolder.showJobData(
+                data.view,
+                data.job,
+                data.errors,
+                sessionRepository.isLoggedUserJobSeeker(),
+                chatListener
+            )
         }
     }
 
@@ -45,7 +49,6 @@ constructor(
             parent,
             chatListener,
             adapterListener,
-            fetchJobFromViewHolderUseCase,
             fetchJobReloadedUseCase,
             sessionRepository.isLoggedUserJobSeeker()
         )
@@ -69,7 +72,7 @@ constructor(
     }
 
     fun onDestroy() {
-        fetchJobFromViewHolderUseCase.cancel()
+        fetchJobReloadedUseCase.cancel()
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -98,8 +101,8 @@ constructor(
 
     interface Listener {
 
-        fun onJobFetched(position: Int, job: FetchJobReloadedUseCase.JobDataView)
+        fun onJobFetched(data: FetchJobApolloUseCase.JobDataView)
 
-        fun getJobFetchedByPosition(position: Int): FetchJobReloadedUseCase.JobDataView?
+        fun getJobFetchedByJobId(jobId: Int): FetchJobApolloUseCase.JobDataView?
     }
 }

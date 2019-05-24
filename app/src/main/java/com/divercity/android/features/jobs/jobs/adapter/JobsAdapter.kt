@@ -1,9 +1,9 @@
 package com.divercity.android.features.jobs.jobs.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
@@ -65,9 +65,9 @@ constructor(val sessionRepository: SessionRepository) : PagedListAdapter<JobResp
         val hasExtraRow = hasExtraRow()
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
-                notifyItemRemoved(super.getItemCount())
+                notifyItemRemoved(itemCount)
             } else {
-                notifyItemInserted(super.getItemCount())
+                notifyItemInserted(itemCount)
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
             notifyItemChanged(itemCount - 1)

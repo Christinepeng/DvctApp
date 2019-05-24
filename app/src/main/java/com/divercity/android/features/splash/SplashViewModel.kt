@@ -97,6 +97,10 @@ internal constructor(
         }
     }
 
+    fun checkPushNotificationRoute(){
+
+    }
+
     fun setPendingRoute() {
         /* To open group detail when user gets to HomeActivity*/
         when (deepLinkData?.getString("type")) {

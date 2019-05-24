@@ -103,7 +103,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
 
         userMentionWrapper.setEditTextTokenize(et_msg)
         userMentionWrapper.mentionsEdTxt = et_msg
-        userMentionWrapper.list_users = list_users
+        userMentionWrapper.listUsers = list_users
         userMentionWrapper.fetchUsers = { searchQuery, queryToken ->
             viewModel.filterUserList(
                 searchQuery,

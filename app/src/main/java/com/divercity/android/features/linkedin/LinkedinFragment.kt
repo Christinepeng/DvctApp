@@ -1,5 +1,6 @@
 package com.divercity.android.features.linkedin
 
+import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.net.Uri
 import android.net.http.SslError
@@ -78,6 +79,7 @@ class LinkedinFragment : BaseFragment() {
         subscribeToLiveData()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun loadWeb() {
         showProgress()
         web_view.webViewClient = object : WebViewClient() {
@@ -143,6 +145,7 @@ class LinkedinFragment : BaseFragment() {
             }
         }
         Timber.e("Authorize URL: ".plus(getAuthorizationUrl()))
+        web_view.settings.javaScriptEnabled = true
         web_view.loadUrl(getAuthorizationUrl())
     }
 

@@ -15,6 +15,7 @@ import com.divercity.android.features.home.home.adapter.recommended.RecommendedC
 import com.divercity.android.features.home.home.adapter.recommended.RecommendedViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.JobFeedViewHolder
 import com.divercity.android.features.home.home.adapter.viewholder.QuestionsViewHolder
+import com.divercity.android.features.home.home.adapter.viewholder.WritePostViewHolder
 import com.divercity.android.model.Question
 import com.divercity.android.repository.session.SessionRepository
 import javax.inject.Inject
@@ -29,11 +30,28 @@ constructor(
     var feedJobListener: JobFeedViewHolder.Listener? = null
     var questionListener: QuestionsViewHolder.Listener? = null
     var adapterProxy: AdapterDataObserverProxy? = null
+    lateinit var onWritePost: () -> Unit
 
     lateinit var recommendedAdapter: RecommendedAdapter
     lateinit var recommendedConnectionsAdapter: RecommendedConnectionsAdapter
 
     var showRecommendedSection = false
+
+    companion object {
+
+        private const val AMOUNT_HEADERS = 2
+
+        private val userDiffCallback = object : DiffUtil.ItemCallback<HomeItem>() {
+
+            override fun areItemsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {
+                return oldItem == newItem
+            }
+
+            override fun areContentsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
@@ -64,6 +82,7 @@ constructor(
                 recommendedConnectionsAdapter
             )
             R.layout.view_empty -> EmptyViewHolder.create(parent)
+            R.layout.view_write_post -> WritePostViewHolder.create(parent, onWritePost)
             else -> throw IllegalArgumentException("unknown view type")
         }
     }
@@ -93,7 +112,9 @@ constructor(
                 R.layout.item_list_recommended
             else
                 R.layout.view_empty
-        } else if (currentList?.isNotEmpty() == true && position == 3) {
+        } else if (currentList?.isNotEmpty() == true && position == 1) {
+            R.layout.view_write_post
+        } else if (currentList?.isNotEmpty() == true && position == 4) {
             R.layout.item_list_recommended_connection
         } else if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
@@ -104,9 +125,8 @@ constructor(
         }
     }
 
-//  This is because on position 0 we have recommended jobs and groups and on position 3 we have
-//  recommended connections
-    fun getRightPosition(position: Int) = if(position < 4) 1 else 2
+
+    fun getRightPosition(position: Int) = if (position < 5) AMOUNT_HEADERS else 3
 
     override fun getItemCount(): Int {
         return super.getItemCount() + 1 + if (hasExtraRow()) 1 else 0
@@ -120,10 +140,8 @@ constructor(
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
                 notifyItemRemoved(itemCount - 1)
-//                adapterProxy?.headerCount = 0
             } else {
                 notifyItemInserted(itemCount - 1)
-//                adapterProxy?.headerCount = 1
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
             notifyItemChanged(itemCount - 2)
@@ -138,20 +156,6 @@ constructor(
         (getItem(position - 1) as JobResponse).attributes?.apply {
             isAppliedByCurrent = true
             notifyItemChanged(position)
-        }
-    }
-
-    companion object {
-
-        private val userDiffCallback = object : DiffUtil.ItemCallback<HomeItem>() {
-
-            override fun areItemsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(oldItem: HomeItem, newItem: HomeItem): Boolean {
-                return oldItem == newItem
-            }
         }
     }
 

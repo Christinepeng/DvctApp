@@ -58,7 +58,6 @@
                     android:gravity="top"
                     android:hint="@string/group_description"
                     android:inputType="textCapSentences"
-                    android:lines="6"
                     android:padding="16dp" />
 
             </LinearLayout>

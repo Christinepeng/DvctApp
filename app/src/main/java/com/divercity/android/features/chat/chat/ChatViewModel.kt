@@ -90,7 +90,7 @@ constructor(
         }
     }
 
-    fun getChatsIfExist(userId: String) {
+    private fun getChatsIfExist(userId: String) {
         uiScope.launch {
             val user = "\"id\":\"".plus(userId).plus("\"")
             val chatId = chatMessageRepository.fetchChatIdByUser(user)
@@ -110,7 +110,7 @@ constructor(
         subscribeToPaginatedLiveData.call()
     }
 
-    fun fetchChatMembers(chatId: String, page: Int, size: Int) {
+    private fun fetchChatMembers(chatId: String, page: Int, size: Int) {
         fetchChatMembersResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<List<User>>() {
             override fun onFail(error: String) {
@@ -331,7 +331,7 @@ constructor(
         chatWebSocket.connect(chatId.toString())
     }
 
-    fun checkIfReconnectionIsNeeded() {
+    private fun checkIfReconnectionIsNeeded() {
         if (chatId != null && chatId != -1 &&
             (chatWebSocket.getSocketState() == MySocket.State.CONNECT_ERROR ||
                     chatWebSocket.getSocketState() == MySocket.State.RECONNECT_ATTEMPT)
@@ -358,6 +358,7 @@ constructor(
     }
 
     fun onResume() {
+        //Not to show notifications of current chat
         sessionRepository.setCurrentChatId(chatId.toString())
     }
 

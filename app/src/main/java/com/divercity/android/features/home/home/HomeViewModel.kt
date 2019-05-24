@@ -3,6 +3,8 @@ package com.divercity.android.features.home.home
 import android.os.Parcelable
 import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
+import com.divercity.android.core.bus.RxBus
+import com.divercity.android.core.bus.RxEvent
 import com.divercity.android.core.utils.Event
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
@@ -21,6 +23,7 @@ import com.divercity.android.features.jobs.jobs.usecase.SaveJobUseCase
 import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.model.position.JobPosition
 import com.google.gson.JsonElement
+import io.reactivex.disposables.Disposable
 import javax.inject.Inject
 
 class HomeViewModel @Inject
@@ -46,11 +49,16 @@ constructor(
     val listState = MutableLiveData<Parcelable>()
 
     val showRecommendedSection = MutableLiveData<Boolean>()
+    private var newMessageDisposable: Disposable
 
     init {
         showRecommendedSection.value = false
         fetchData()
         fetchUnreadMessagesCount()
+
+        newMessageDisposable = RxBus.listen(RxEvent.OnNewMessageReceived::class.java).subscribe {
+            fetchUnreadMessagesCount()
+        }
     }
 
     fun joinGroup(group: GroupResponse) {
@@ -144,8 +152,6 @@ constructor(
     }
 
     fun fetchUnreadMessagesCount() {
-        fetchUnreadMessagesCountResponse.postValue(Resource.loading(null))
-
         val callback = object : DisposableObserverWrapper<Int>() {
             override fun onFail(error: String) {
                 fetchUnreadMessagesCountResponse.postValue(Resource.error(error, null))
@@ -214,6 +220,7 @@ constructor(
         super.onCleared()
         joinGroupUseCase.dispose()
         requestToJoinUseCase.dispose()
+        if (!newMessageDisposable.isDisposed) newMessageDisposable.dispose()
     }
 
     fun onDestroyView() {

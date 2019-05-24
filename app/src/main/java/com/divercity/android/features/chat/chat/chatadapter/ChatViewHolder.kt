@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
+import com.divercity.android.JobQuery
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import com.divercity.android.data.entity.company.response.Photos
-import com.divercity.android.features.apollo.FetchJobFromViewHolderUseCase
-import com.divercity.android.features.apollo.FetchJobReloadedUseCase
+import com.divercity.android.features.apollo.FetchJobApolloUseCase
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.item_chat.view.*
 import kotlinx.android.synthetic.main.item_job_chat.view.*
@@ -22,10 +22,9 @@ class ChatViewHolder
 private constructor(
     itemView: View,
     val listener: Listener?,
-    val adapterListener: ChatAdapter.Listener,
-    private val fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase,
-    private val fetchJobReloadedUseCase: FetchJobReloadedUseCase,
-    private val isLoggedUserJobSeeker : Boolean
+    private val adapterListener: ChatAdapter.Listener,
+    private val fetchJobReloadedUseCase: FetchJobApolloUseCase,
+    private val isLoggedUserJobSeeker: Boolean
 ) :
     RecyclerView.ViewHolder(itemView) {
 
@@ -44,7 +43,7 @@ private constructor(
                     txt_name.text = context.getString(R.string.me)
                     txt_name.setOnClickListener(null)
                     img_user.setOnClickListener(null)
-                }else {
+                } else {
                     txt_name.text = it.fromUsername
                     txt_name.setOnClickListener {
                         listener?.onNavigateToProfile(data.fromUserId!!.toString())
@@ -93,81 +92,29 @@ private constructor(
 
                     lay_job.visibility = View.VISIBLE
 
-                    val jobDataView = adapterListener.getJobFetchedByPosition(position)
+                    val jobDataView =
+                        adapterListener.getJobFetchedByJobId(it.embeddedAttachmentId!!.toInt())
                     if (jobDataView == null) {
                         fetchJobReloadedUseCase.invoke(
-                            FetchJobReloadedUseCase.Params.forJob(
-                                it.embeddedAttachmentId!!,
-                                position,
-                                itemView.lay_job,
-                                data
+                            FetchJobApolloUseCase.Params.forJob(
+                                it,
+                                lay_job
                             )
                         ) {
                             it.either({ my_data ->
-                                adapterListener.onJobFetched(my_data.position, my_data)
+                                adapterListener.onJobFetched(my_data)
                             }, { my_data ->
-                                adapterListener.onJobFetched(my_data.position, my_data)
+                                adapterListener.onJobFetched(my_data)
                             })
                         }
-                    } else if (jobDataView.errors.isNullOrEmpty()) {
-                        val job = jobDataView.job!!.Job()
-                        lay_job.item_jobs_txt_title.text = job.title()
-                        val photos = Gson().fromJson(
-                            job.employer()?.employer_photos() as String,
-                            Photos::class.java
-                        )
-
-                        GlideApp.with(itemView)
-                            .load(photos.medium)
-                            .into(item_jobs_img)
-
-                        lay_job.item_jobs_txt_company.text = job.employer()?.name()
-                        lay_job.item_jobs_txt_place.text = job.location_display_name()
-
-                        if(isLoggedUserJobSeeker) {
-                            btn_job_action.visibility = View.VISIBLE
-                            job.is_applied_by_current?.also { isApplied ->
-                                if (!isApplied) {
-                                    btn_job_action.setImageDrawable(
-                                        ContextCompat.getDrawable(
-                                            itemView.context,
-                                            R.drawable.btn_apply
-                                        )
-                                    )
-                                    btn_job_action.setOnClickListener {
-                                        listener?.onJobApply(job.id())
-                                    }
-                                } else {
-                                    btn_job_action.setImageDrawable(
-                                        ContextCompat.getDrawable(
-                                            itemView.context,
-                                            R.drawable.btn_applied
-                                        )
-                                    )
-                                    btn_job_action.setOnClickListener(null)
-                                }
-                            }
-                        } else {
-                            btn_job_action.visibility = View.GONE
-                        }
-
-                        lay_job.setOnClickListener {
-                            listener?.onJobClick(job.id())
-                        }
-
-                        lay_job.txt_errors.visibility = View.GONE
-                        lay_job.loading.visibility = View.GONE
-                        lay_job.card_view.visibility = View.VISIBLE
-                        lay_job.lay_desc.visibility = View.VISIBLE
-//                        lay_job.btn_job_action.visibility = View.VISIBLE
                     } else {
-                        lay_job.loading.visibility = View.GONE
-                        lay_job.card_view.visibility = View.INVISIBLE
-                        lay_job.lay_desc.visibility = View.GONE
-                        lay_job.btn_job_action.visibility = View.GONE
-                        lay_job.txt_errors.visibility = View.VISIBLE
-                        lay_job.txt_errors.text = jobDataView.errors
-                        lay_job.setOnClickListener(null)
+                        showJobData(
+                            lay_job,
+                            jobDataView.job,
+                            jobDataView.errors,
+                            isLoggedUserJobSeeker,
+                            listener
+                        )
                     }
                 } else {
                     lay_job.visibility = View.GONE
@@ -195,9 +142,8 @@ private constructor(
             parent: ViewGroup,
             listener: Listener?,
             adapterListener: ChatAdapter.Listener,
-            fetchJobFromViewHolderUseCase: FetchJobFromViewHolderUseCase,
-            fetchJobReloadedUseCase: FetchJobReloadedUseCase,
-            isLoggedUserJobSeeker : Boolean
+            fetchJobReloadedUseCase: FetchJobApolloUseCase,
+            isLoggedUserJobSeeker: Boolean
         ): ChatViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_chat, parent, false)
@@ -205,10 +151,86 @@ private constructor(
                 view,
                 listener,
                 adapterListener,
-                fetchJobFromViewHolderUseCase,
                 fetchJobReloadedUseCase,
                 isLoggedUserJobSeeker
             )
+        }
+
+        fun showJobData(
+            view: View?,
+            cJob: JobQuery.Data?,
+            errors: String?,
+            isLoggedUserJobSeeker: Boolean,
+            listener: Listener?
+        ) {
+            view?.apply {
+                cJob.let {
+                    item_jobs_txt_title.text = ""
+                    item_jobs_txt_company.text = ""
+                    item_jobs_txt_place.text = ""
+
+                    if (errors.isNullOrEmpty()) {
+                        val job = it!!.Job()
+                        item_jobs_txt_title.text = job.title()
+
+                        val photos = Gson().fromJson(
+                            job.employer()?.employer_photos() as String,
+                            Photos::class.java
+                        )
+
+                        GlideApp.with(this)
+                            .load(photos.medium)
+                            .into(item_jobs_img)
+
+                        item_jobs_txt_company.text = job.employer()?.name()
+                        item_jobs_txt_place.text = job.location_display_name()
+
+                        if (isLoggedUserJobSeeker) {
+                            btn_job_action.visibility = View.VISIBLE
+                            job.is_applied_by_current?.also { isApplied ->
+                                if (!isApplied) {
+                                    btn_job_action.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                            this.context,
+                                            R.drawable.btn_apply
+                                        )
+                                    )
+                                    btn_job_action.setOnClickListener {
+                                        listener?.onJobApply(job.id())
+                                    }
+                                } else {
+                                    btn_job_action.setImageDrawable(
+                                        ContextCompat.getDrawable(
+                                            this.context,
+                                            R.drawable.btn_applied
+                                        )
+                                    )
+                                    btn_job_action.setOnClickListener(null)
+                                }
+                            }
+                        } else {
+                            btn_job_action.visibility = View.GONE
+                        }
+
+                        setOnClickListener {
+                            listener?.onJobClick(job.id())
+                        }
+
+                        txt_errors.visibility = View.GONE
+                        loading.visibility = View.GONE
+                        card_view.visibility = View.VISIBLE
+                        lay_desc.visibility = View.VISIBLE
+                    } else {
+                        loading.visibility = View.GONE
+                        card_view.visibility = View.INVISIBLE
+                        lay_desc.visibility = View.GONE
+                        btn_job_action.visibility = View.GONE
+                        txt_errors.visibility = View.VISIBLE
+                        txt_errors.text = errors
+                        setOnClickListener(null)
+                    }
+                }
+            }
         }
     }
 

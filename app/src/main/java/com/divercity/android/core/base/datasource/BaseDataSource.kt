@@ -41,8 +41,8 @@ class BaseDataSource<T>(
     }
 
     override fun loadInitial(
-        params: PageKeyedDataSource.LoadInitialParams<Long>,
-        callback: PageKeyedDataSource.LoadInitialCallback<Long, T>
+        params: LoadInitialParams<Long>,
+        callback: LoadInitialCallback<Long, T>
     ) {
         // update network states.
         // we also provide an initial load state to the listeners so that the UI can know when the
@@ -82,15 +82,15 @@ class BaseDataSource<T>(
     }
 
     override fun loadBefore(
-        params: PageKeyedDataSource.LoadParams<Long>,
-        callback: PageKeyedDataSource.LoadCallback<Long, T>
+        params: LoadParams<Long>,
+        callback: LoadCallback<Long, T>
     ) {
 
     }
 
     override fun loadAfter(
-        params: PageKeyedDataSource.LoadParams<Long>,
-        callback: PageKeyedDataSource.LoadCallback<Long, T>
+        params: LoadParams<Long>,
+        callback: LoadCallback<Long, T>
     ) {
         networkState.postValue(NetworkState.LOADING)
 

@@ -327,6 +327,7 @@
     <string name="pending">Pending</string>
     <string name="group_description">Group Description</string>
     <string name="write_new_post">Write a New Post</string>
+    <string name="write_a_post">Write a Post</string>
     <string name="edit_group">Edit Group</string>
     <string name="add_admin">Add Admin</string>
     <string name="view_members">View Members</string>

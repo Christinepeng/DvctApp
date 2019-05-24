@@ -1,7 +1,6 @@
 package com.divercity.android.data.entity.chat.messages
 
 import androidx.room.Entity
-import androidx.room.Ignore
 import com.divercity.android.core.extension.empty
 import com.google.gson.annotations.SerializedName
 
@@ -45,10 +44,7 @@ data class ChatMessageEntityResponse(
     var chatId: Int = -1,
 
     @field:SerializedName("from_user_id")
-    var fromUserId: Int? = -1,
-
-    @Ignore
-    var attachment: Any? = null
+    var fromUserId: Int? = -1
 ) {
 
     fun getCheckedPicture(): String? {

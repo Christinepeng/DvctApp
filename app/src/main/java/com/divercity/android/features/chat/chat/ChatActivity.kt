@@ -13,9 +13,9 @@ class ChatActivity : BaseActivity() {
 
     companion object {
 
-        private const val PARAM_USER_ID = "paramUserId"
-        private const val PARAM_DISPLAY_NAME = "paramDisplayName"
-        private const val PARAM_CHAT_ID = "paramChatId"
+        const val PARAM_USER_ID = "paramUserId"
+        const val PARAM_DISPLAY_NAME = "paramDisplayName"
+        const val PARAM_CHAT_ID = "paramChatId"
 
         fun getCallingIntent(
             context: Context?,

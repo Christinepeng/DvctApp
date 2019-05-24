@@ -3,8 +3,10 @@ package com.divercity.android.features.groups.createeditgroup.step1
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -77,6 +79,9 @@ class CreateEditGroupStep1Fragment : BaseFragment() {
     }
 
     private fun setupView() {
+        et_group_name.imeOptions = EditorInfo.IME_ACTION_DONE
+        et_group_name.setRawInputType(InputType.TYPE_CLASS_TEXT)
+
         if (group != null) {
             btn_delete_group.visibility = View.VISIBLE
             btn_change_photo.visibility = View.VISIBLE

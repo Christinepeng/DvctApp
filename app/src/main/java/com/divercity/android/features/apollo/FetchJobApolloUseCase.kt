@@ -16,7 +16,7 @@ import kotlin.coroutines.resume
  * Created by lucas on 06/12/2018.
  */
 
-class FetchJobReloadedUseCase @Inject
+class FetchJobApolloUseCase @Inject
 constructor(private val apolloRepository: ApolloRepository) {
 
     private var calls = ArrayList<ApolloQueryCall<JobQuery.Data>>()
@@ -37,9 +37,10 @@ constructor(private val apolloRepository: ApolloRepository) {
                     override fun onFailure(e: ApolloException) {
                         if (continuation.isActive) {
                             val r = JobDataView(
+                                -1,
                                 null,
                                 e.cause?.message ?: "Server error",
-                                params.position
+                                params.view
                             )
                             continuation.resume(Either.Left(r))
                         }
@@ -49,16 +50,18 @@ constructor(private val apolloRepository: ApolloRepository) {
                         if (continuation.isActive)
                             if (response.hasErrors()) {
                                 val r = JobDataView(
+                                    -2,
                                     null,
-                                    "Error getting company",
-                                    params.position
+                                    "Error getting job",
+                                    params.view
                                 )
                                 continuation.resume(Either.Left(r))
                             } else {
                                 val r = JobDataView(
+                                    response.data()!!.Job().id().toInt(),
                                     response.data()!!,
                                     null,
-                                    params.position
+                                    params.view
                                 )
                                 continuation.resume(Either.Right(r))
                             }
@@ -76,29 +79,30 @@ constructor(private val apolloRepository: ApolloRepository) {
         scopes.forEach { it.coroutineContext.cancelChildren() }
     }
 
-    fun buildQuery(params: Params): ApolloQueryCall<JobQuery.Data> {
-        return apolloRepository.getJob(params.jobId)
+    private fun buildQuery(params: Params): ApolloQueryCall<JobQuery.Data> {
+        return apolloRepository.getJob(params.chatMessageResponse.embeddedAttachmentId!!)
     }
 
     class Params private constructor(
-        val jobId: String,
-        val position: Int,
-        val view: View,
-        val chatMessageResponse: ChatMessageEntityResponse
+        val chatMessageResponse: ChatMessageEntityResponse,
+        val view: View?
     ) {
 
         companion object {
 
             fun forJob(
-                jobId: String,
-                position: Int,
-                view: View,
-                chatMessageResponse: ChatMessageEntityResponse
+                chatMessageResponse: ChatMessageEntityResponse,
+                view: View?
             ): Params {
-                return Params(jobId, position, view, chatMessageResponse)
+                return Params(chatMessageResponse, view)
             }
         }
     }
 
-    data class JobDataView(var job: JobQuery.Data?, var errors: String?, var position: Int)
+    data class JobDataView(
+        var id: Int,
+        var job: JobQuery.Data?,
+        var errors: String?,
+        var view: View?
+    )
 }

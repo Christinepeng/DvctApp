@@ -25,12 +25,15 @@ import javax.inject.Inject
 class NotificationHelper @Inject
 constructor(val context: Context) {
 
-    val CHAT_CHANNEL = "chats"
-    val GENERAL_NOTIFICATIONS = "general_notifications"
     private var manager: NotificationManager? = null
 
     init {
         createChannels()
+    }
+
+    companion object {
+        const val CHAT_CHANNEL = "chats"
+        const val GENERAL_NOTIFICATIONS = "general_notifications"
     }
 
     @SuppressLint("WrongConstant")
@@ -72,7 +75,7 @@ constructor(val context: Context) {
         val requestID = System.currentTimeMillis().toInt()
 
         val intent = ChatActivity.getCallingIntent(context, nameDisplay ?: "", userId, chatId)
-        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
+//        intent.flags = Intent.FL
 
         val resultPendingIntent = PendingIntent.getActivity(
             getApplicationContext(),

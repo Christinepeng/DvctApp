@@ -1,10 +1,12 @@
 package com.divercity.android.features.groups.groupanswers
 
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
+import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.model.usermentionable.UserMentionable
@@ -30,10 +32,13 @@ class UserMentionWrapper @Inject
 constructor() : QueryTokenReceiver, SuggestionsResultListener,
     SuggestionsVisibilityManager {
 
-    lateinit var list_users: RecyclerView
+    lateinit var listUsers: RecyclerView
     lateinit var fetchUsers: (String, QueryToken) -> Unit
+    var onListHiding: (() -> Unit)? = null
     lateinit var mentionsEdTxt: MentionsEditText
-    private lateinit var userAdapter : UserMentionAdapter
+    private lateinit var userAdapter: UserMentionAdapter
+
+    private var handlerSearch = Handler()
 
     companion object {
         const val BUCKET = "people-network"
@@ -43,11 +48,11 @@ constructor() : QueryTokenReceiver, SuggestionsResultListener,
             .setMaxNumKeywords(2)
             .setWordBreakChars(", ")
             .setExplicitChars("@")
-            .setThreshold(1)
+            .setThreshold(0)
             .build()
     }
 
-    fun setEditTextTokenize( edTxt : MentionsEditText){
+    fun setEditTextTokenize(edTxt: MentionsEditText) {
         edTxt.tokenizer = WordTokenizer(tokenizerConfig)
         edTxt.setQueryTokenReceiver(this)
         edTxt.setSuggestionsVisibilityManager(this)
@@ -55,8 +60,13 @@ constructor() : QueryTokenReceiver, SuggestionsResultListener,
 
     override fun onQueryReceived(queryToken: QueryToken): MutableList<String> {
         val buckets = Arrays.asList<String>(BUCKET)
-        if (queryToken.tokenString.startsWith("@") && queryToken.tokenString.length > 1) {
-            fetchUsers(queryToken.tokenString.substring(1), queryToken)
+//        && queryToken.tokenString.length > 1
+        if (queryToken.tokenString.startsWith("@")) {
+            val query = queryToken.tokenString.substring(1)
+            handlerSearch.removeCallbacksAndMessages(null)
+            handlerSearch.postDelayed({
+                fetchUsers(query, queryToken)
+            }, AppConstants.SEARCH_DELAY)
         } else {
             displaySuggestions(false)
         }
@@ -66,23 +76,23 @@ constructor() : QueryTokenReceiver, SuggestionsResultListener,
     override fun onReceiveSuggestionsResult(result: SuggestionsResult, bucket: String) {
         val suggestions = result.suggestions
         userAdapter = UserMentionAdapter(result.suggestions)
-        list_users.swapAdapter(userAdapter, true)
+        listUsers.swapAdapter(userAdapter, true)
         val display = suggestions != null && suggestions.size > 0
         displaySuggestions(display)
     }
 
     override fun displaySuggestions(display: Boolean) {
         if (display) {
-            list_users.visibility = View.VISIBLE
+            listUsers.visibility = View.VISIBLE
         } else {
-            list_users.visibility = View.GONE
+            onListHiding?.invoke()
+            listUsers.visibility = View.GONE
         }
     }
 
     override fun isDisplayingSuggestions(): Boolean {
-        return list_users.visibility == View.VISIBLE
+        return listUsers.visibility == View.VISIBLE
     }
-
 
     inner class UserMentionAdapter
     constructor(var users: List<Suggestible>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -117,7 +127,7 @@ constructor() : QueryTokenReceiver, SuggestionsResultListener,
 
                 itemView.setOnClickListener {
                     mentionsEdTxt.insertMention(data)
-                    list_users.swapAdapter(UserMentionAdapter(ArrayList()), true)
+                    listUsers.swapAdapter(UserMentionAdapter(ArrayList()), true)
                     displaySuggestions(false)
                     mentionsEdTxt.requestFocus()
                 }
@@ -125,7 +135,7 @@ constructor() : QueryTokenReceiver, SuggestionsResultListener,
         }
     }
 
-    fun getMessageWithMentions() : String{
+    fun getMessageWithMentions(): String {
         val text = mentionsEdTxt.mentionsText
         val mentionsSpan = text.mentionSpans
         var stringTxt = mentionsEdTxt.text.toString()
@@ -157,4 +167,7 @@ constructor() : QueryTokenReceiver, SuggestionsResultListener,
         return stringTxt
     }
 
+    fun onDestroy() {
+        handlerSearch.removeCallbacksAndMessages(null)
+    }
 }

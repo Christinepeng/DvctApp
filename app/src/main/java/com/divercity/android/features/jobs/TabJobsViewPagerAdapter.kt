@@ -25,7 +25,9 @@ class TabJobsViewPagerAdapter
     private val sessionRepository: SessionRepository
 ) : FragmentStatePagerAdapter(fm.childFragmentManager) {
 
-    private val PAGE_COUNT = 4
+    companion object {
+        private const val PAGE_COUNT = 4
+    }
 
     private var registeredFragments = SparseArray<Fragment>()
 
@@ -82,6 +84,12 @@ class TabJobsViewPagerAdapter
             tabTitlesRecruiter[position]
     }
 
+    fun getJobsTabPosition() : Int{
+        return if (sessionRepository.isLoggedUserJobSeeker())
+            0
+        else
+            1
+    }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {
         val fragment = super.instantiateItem(container, position) as Fragment

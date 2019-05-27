@@ -116,4 +116,9 @@
         <item name="android:colorForeground">#42221f1f</item>
     </style>
 
+    <style name="DialogFullScreen" parent="android:Theme" >
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">false</item>
+    </style>
+
 </resources>

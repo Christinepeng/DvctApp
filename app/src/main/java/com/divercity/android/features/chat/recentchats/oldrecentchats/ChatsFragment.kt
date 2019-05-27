@@ -12,7 +12,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.paging.PagedList
-import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.bus.RxBus
@@ -39,6 +38,7 @@ class ChatsFragment : BaseFragment(), RetryCallback {
 
     private var isListRefreshing = true
     private var isListRefreshingNoUI = false
+    private var isSearching = false
 
     private var handlerSearch = Handler()
     private var searchView: SearchView? = null
@@ -59,7 +59,7 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChatsViewModel::class.java)
-        setHasOptionsMenu(true)
+//        setHasOptionsMenu(true)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -121,7 +121,10 @@ class ChatsFragment : BaseFragment(), RetryCallback {
 
     private fun subscribeToPaginatedLiveData() {
         viewModel.pagedList.observe(viewLifecycleOwner, Observer {
-            //            adapter.submitList(it)
+//            if (isSearching) {
+//                adapter.submitList(it)
+//                isSearching = false
+//            }
             pagedList = it
         })
 
@@ -186,28 +189,31 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        menu.clear()
-        inflater.inflate(R.menu.menu_search, menu)
-        searchItem = menu.findItem(R.id.action_search)
-        searchView = searchItem?.actionView as SearchView
-        searchView?.queryHint = getString(R.string.search)
-
-        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                handlerSearch.removeCallbacksAndMessages(null)
-                viewModel.fetchData(viewLifecycleOwner, query)
-                return false
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                handlerSearch.removeCallbacksAndMessages(null)
-                handlerSearch.postDelayed({
-                    viewModel.fetchData(viewLifecycleOwner, newText)
-                }, AppConstants.SEARCH_DELAY)
-                return true
-            }
-        })
+//        menu.clear()
+//        inflater.inflate(R.menu.menu_search, menu)
+//        searchItem = menu.findItem(R.id.action_search)
+//        searchView = searchItem?.actionView as SearchView
+//        searchView?.queryHint = getString(R.string.search)
+//
+//        searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+//
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                handlerSearch.removeCallbacksAndMessages(null)
+//                viewModel.fetchData(viewLifecycleOwner, query)
+//                return false
+//            }
+//
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                handlerSearch.removeCallbacksAndMessages(null)
+//                handlerSearch.postDelayed({
+////                    isSearching = true
+////                    isListRefreshing = true
+////                    swipe_list_main.isRefreshing = true
+////                    viewModel.fetchData(viewLifecycleOwner, newText)
+//                }, AppConstants.SEARCH_DELAY)
+//                return true
+//            }
+//        })
 
         super.onCreateOptionsMenu(menu, inflater)
     }

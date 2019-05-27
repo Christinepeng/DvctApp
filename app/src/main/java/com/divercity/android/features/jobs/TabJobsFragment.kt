@@ -14,6 +14,7 @@ import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.home.HomeActivity
+import com.divercity.android.features.jobs.jobs.JobsListFragment
 import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.fragment_jobs.*
@@ -33,6 +34,7 @@ class TabJobsFragment : BaseFragment() {
 
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
+    private var filterItem: MenuItem? = null
 
     private var handlerSearch = Handler()
     private var lastSearchQuery: String? = ""
@@ -87,6 +89,8 @@ class TabJobsFragment : BaseFragment() {
     private fun setupAdapterViewPager() {
         viewpager.adapter = adapterTab
         viewModel.adapterPosition?.apply {
+            if (this == 1)
+                filterItem?.isVisible = true
             viewpager.currentItem = this
         }
         tab_layout.setupWithViewPager(viewpager)
@@ -100,6 +104,8 @@ class TabJobsFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
+                filterItem?.isVisible =
+                    adapterTab.getRegisteredFragment(viewpager.currentItem) is JobsListFragment
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                     ?.search(lastSearchQuery)
             }
@@ -109,8 +115,9 @@ class TabJobsFragment : BaseFragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         menu.clear()
-        inflater.inflate(R.menu.menu_search, menu)
+        inflater.inflate(R.menu.menu_search_filter, menu)
         searchItem = menu.findItem(R.id.action_search)
+        filterItem = menu.findItem(R.id.action_filter)
         searchView = searchItem?.actionView as SearchView
         searchView?.queryHint = getString(R.string.search)
 
@@ -135,7 +142,25 @@ class TabJobsFragment : BaseFragment() {
             }
         })
 
+        if(adapterTab.getJobsTabPosition() == 0)
+            filterItem?.isVisible = true
+        else {
+            val prevPos = viewModel.adapterPosition
+            if (prevPos != null && prevPos == adapterTab.getJobsTabPosition())
+                filterItem?.isVisible = true
+        }
+
         super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        return when (item?.itemId) {
+            R.id.action_filter -> {
+                (adapterTab.getRegisteredFragment(viewpager.currentItem) as? JobsListFragment)?.onOpenFilterMenu()
+                true
+            }
+            else -> false
+        }
     }
 
     override fun onDestroyView() {

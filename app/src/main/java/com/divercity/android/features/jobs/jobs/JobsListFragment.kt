@@ -12,17 +12,21 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogFragment
 import com.divercity.android.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
+import com.divercity.android.features.jobs.jobs.search.JobSearchFilterFragment
 import com.divercity.android.features.search.ITabSearch
-import kotlinx.android.synthetic.main.fragment_list_refresh.*
+import kotlinx.android.synthetic.main.fragment_jobs_list.*
 import javax.inject.Inject
+
 
 /**
  * Created by lucas on 25/10/2018.
  */
 
-class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDialogFragment.Listener {
+class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
+    JobApplyDialogFragment.Listener {
 
     lateinit var viewModel: JobsListViewModel
 
@@ -39,7 +43,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDial
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_list_refresh
+    override fun layoutId(): Int = R.layout.fragment_jobs_list
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +58,8 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDial
         initAdapter()
         subscribeToPaginatedLiveData()
         subscribeToLiveData()
+
+        navigateToFragment()
     }
 
     private fun initAdapter() {
@@ -75,8 +81,9 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDial
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    adapter.currentList?.get(positionApplyClicked)?.attributes?.isBookmarkedByCurrent =
-                            job.data?.attributes?.isBookmarkedByCurrent
+                    adapter.currentList?.get(positionApplyClicked)
+                        ?.attributes?.isBookmarkedByCurrent =
+                        job.data?.attributes?.isBookmarkedByCurrent
                     adapter.notifyItemChanged(positionApplyClicked)
                 }
             }
@@ -125,9 +132,9 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDial
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
@@ -159,5 +166,21 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDial
 
     override fun onSuccessJobApply() {
         search(null)
+    }
+
+    fun navigateToFragment() {
+        val transaction = childFragmentManager.beginTransaction()
+        transaction
+            .replace(R.id.fragment_container, JobSearchFilterFragment.newInstance())
+            .commit()
+    }
+
+    fun onOpenFilterMenu() {
+//        showJobSearchFilterDialog()
+    }
+
+    private fun showJobSearchFilterDialog() {
+        val dialog = JobSearchFilterDialogFragment.newInstance()
+        dialog.show(childFragmentManager, null)
     }
 }

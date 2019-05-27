@@ -21,6 +21,7 @@
     <string name="next">Next</string>
     <string name="conversation">Conversation</string>
     <string name="settings">Settings</string>
+    <string name="filter">Filter</string>
     <string name="connections">Connections</string>
     <string name="connection">Connection</string>
     <string name="pick_source">Pick source</string>
@@ -406,5 +407,8 @@
     <string name="facebook_app_id">1497808533858953</string>
     <string name="fb_login_protocol_scheme">fb1497808533858953</string>
     <string name="read_contact_permission_title">Read Contact Permission is necessary</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

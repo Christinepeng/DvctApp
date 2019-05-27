@@ -69,6 +69,7 @@ import com.divercity.android.features.jobs.jobposting.JobPostingViewModel
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeViewModel
 import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupViewModel
 import com.divercity.android.features.jobs.jobs.JobsListViewModel
+import com.divercity.android.features.jobs.jobs.search.JobSearchFilterViewModel
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.android.features.jobs.savedjobs.SavedJobsViewModel
 import com.divercity.android.features.jobs.similarjobs.SimilarJobListViewModel
@@ -642,4 +643,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeRecommendedConnectionsViewModel::class)
     abstract fun bindsHomeRecommendedConnectionsViewModel(viewModel: HomeRecommendedConnectionsViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(JobSearchFilterViewModel::class)
+    abstract fun bindsJobSearchFilterViewModel(viewModel: JobSearchFilterViewModel): ViewModel
 }

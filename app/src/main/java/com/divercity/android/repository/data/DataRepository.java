@@ -30,7 +30,7 @@ public interface DataRepository {
 
     Observable<DataArray<MajorResponse>> fetchMajors(int page, int size, String query);
 
-    Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query);
+    Observable<List<LocationResponse>> fetchLocations(int page, int size, String query);
 
     Observable<List<SkillResponse>> fetchSkills(int page, int size, String query);
 

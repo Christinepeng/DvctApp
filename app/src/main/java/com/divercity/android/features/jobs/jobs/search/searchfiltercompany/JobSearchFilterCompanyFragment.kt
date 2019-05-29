@@ -1,4 +1,4 @@
-package com.divercity.android.features.jobs.jobs.search.searchfilter
+package com.divercity.android.features.jobs.jobs.search.searchfiltercompany
 
 import android.content.Context
 import android.os.Bundle
@@ -6,26 +6,25 @@ import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.IJobSearchFilter
-import com.divercity.android.features.jobs.jobs.search.searchfilterlocation.JobSearchFilterLocationFragment
-import com.divercity.android.features.jobs.jobs.search.searchfilterview.JobSearchFilterViewFragment
-import kotlinx.android.synthetic.main.fragment_job_search_filter.*
+import com.divercity.android.features.jobs.jobs.search.searchfiltercompanysize.JobSearchFilterCompanySizeFragment
+import kotlinx.android.synthetic.main.fragment_job_search_filter_company.*
 
 /**
  * Created by lucas on 24/10/2018.
  */
 
-class JobSearchFilterFragment : BaseFragment() {
+class JobSearchFilterCompanyFragment : BaseFragment() {
 
     private var listener: IJobSearchFilter? = null
 
     companion object {
 
-        fun newInstance(): JobSearchFilterFragment {
-            return JobSearchFilterFragment()
+        fun newInstance(): JobSearchFilterCompanyFragment {
+            return JobSearchFilterCompanyFragment()
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_job_search_filter
+    override fun layoutId(): Int = R.layout.fragment_job_search_filter_company
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -48,16 +47,12 @@ class JobSearchFilterFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lay_view_type.setOnClickListener {
-            listener?.replaceFragment(JobSearchFilterViewFragment.newInstance(), "TEST")
+        lay_company_size.setOnClickListener {
+            listener?.replaceFragment(JobSearchFilterCompanySizeFragment.newInstance(), null)
         }
 
-        lay_location.setOnClickListener {
-            listener?.replaceFragment(JobSearchFilterLocationFragment.newInstance(), null)
-        }
-
-        btn_close.setOnClickListener {
-            listener?.replaceFragment(null, null)
+        lay_industry.setOnClickListener {
+            //            listener?.replaceFragment(, null)
         }
     }
 }

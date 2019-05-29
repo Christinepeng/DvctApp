@@ -1,15 +1,15 @@
 package com.divercity.android.features.location.base
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.os.Handler
-import androidx.core.content.ContextCompat
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -113,21 +113,21 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
         if (viewModel.lastSearch != query) {
             handlerSearch.removeCallbacksAndMessages(null)
             handlerSearch.postDelayed({
-                viewModel.fetchLocations(viewLifecycleOwner, query)
+                viewModel.fetchData(viewLifecycleOwner, query)
             }, AppConstants.SEARCH_DELAY)
         }
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedLocationList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 adapter.currentList?.let { list ->
                     if (networkState.status == Status.SUCCESS && list.size == 0)

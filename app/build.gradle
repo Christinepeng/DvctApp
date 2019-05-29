@@ -101,6 +101,13 @@ android {
     androidExtensions {
         experimental = true
     }
+
+//    dexOptions {
+//        maxProcessCount 4
+//        javaMaxHeapSize "4g"
+//        dexInProcess = false
+//        preDexLibraries = false
+//    }
 }
 
 //configurations.all {
@@ -133,8 +140,10 @@ dependencies {
 
     def glide_version = "4.8.0"
     def lifecycle_version = '2.2.0-alpha01'
-    def dagger_version = "2.22.1"
+//    def dagger_version = "2.22.1"
+    def dagger_version = "2.23"
 
+//
     def timber_version = "4.7.1"
 
     def leakCanary_version = "1.6.2"

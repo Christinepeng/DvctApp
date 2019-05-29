@@ -1,12 +1,12 @@
 package com.divercity.android.features.company.companysize
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
@@ -62,7 +62,7 @@ class CompanySizesFragment : BaseFragment() {
     }
 
     private fun subscribeToLiveData() {
-        viewModel.fetchCompanySizeResponse.observe(this, Observer { response ->
+        viewModel.fetchCompanySizeResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     showRetry(false)
@@ -87,7 +87,7 @@ class CompanySizesFragment : BaseFragment() {
     private fun showRetry(boolean: Boolean) {
         if (boolean) {
             include_retry.btn_retry.setOnClickListener {
-                viewModel.fetchJobTypes()
+                viewModel.fetchCompanySizes()
             }
             include_retry.visibility = View.VISIBLE
         } else

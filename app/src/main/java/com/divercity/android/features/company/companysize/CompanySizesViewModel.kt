@@ -19,10 +19,10 @@ constructor(private val fetchCompanySizesUseCase: FetchCompanySizesUseCase) : Ba
     var fetchCompanySizeResponse = MutableLiveData<Resource<List<CompanySizeResponse>>>()
 
     init {
-        fetchJobTypes()
+        fetchCompanySizes()
     }
 
-    fun fetchJobTypes() {
+    fun fetchCompanySizes() {
         fetchCompanySizeResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<List<CompanySizeResponse>>() {
             override fun onFail(error: String) {

@@ -67,10 +67,10 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Observable<DataArray<LocationResponse>> fetchLocations(int page, int size, String query) {
+    public Observable<List<LocationResponse>> fetchLocations(int page, int size, String query) {
         return service.fetchLocations(page, size, query).map(response -> {
             checkResponse(response);
-            return response.body();
+            return response.body().getData();
         });
     }
 

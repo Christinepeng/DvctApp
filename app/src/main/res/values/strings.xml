@@ -43,6 +43,7 @@
     <string name="select_at_least_one">Select at least one</string>
     <string name="submit">Submit</string>
     <string name="see_all">See All ></string>
+    <string name="reset">Reset</string>
 
     <!-- Profile-->
     <string name="personal">Personal</string>

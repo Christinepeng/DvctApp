@@ -1,4 +1,4 @@
-package com.divercity.android.features.jobs.jobs.search
+package com.divercity.android.features.jobs.jobs.search.searchfilter
 
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import javax.inject.Inject

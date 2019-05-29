@@ -7,15 +7,16 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.app.AlertDialog
+import androidx.fragment.app.Fragment
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseDialogFragment
-import com.divercity.android.features.jobs.jobs.search.JobSearchFilterFragment
+import com.divercity.android.features.jobs.jobs.search.searchfilter.JobSearchFilterFragment
 
 /**
  * Created by lucas on 18/03/2018.
  */
 
-class JobSearchFilterDialogFragment : BaseDialogFragment() {
+class JobSearchFilterDialogFragment : BaseDialogFragment(), IJobSearchFilter {
 
     private lateinit var dialogView: View
 
@@ -57,7 +58,23 @@ class JobSearchFilterDialogFragment : BaseDialogFragment() {
 
         savedInstanceState ?: childFragmentManager
             .beginTransaction()
-            .add(R.id.fragment_container, JobSearchFilterFragment.newInstance())
+            .replace(R.id.fragment_container, JobSearchFilterFragment.newInstance())
             .commit()
+    }
+
+    override fun replaceFragment(fragment: Fragment?, tag: String?) {
+        if(fragment != null) {
+            childFragmentManager
+                .beginTransaction()
+                .addToBackStack(tag)
+                .replace(R.id.fragment_container, fragment)
+                .commit()
+        } else {
+            dismiss()
+        }
+    }
+
+    override fun onBackPressed() {
+        childFragmentManager.popBackStackImmediate()
     }
 }

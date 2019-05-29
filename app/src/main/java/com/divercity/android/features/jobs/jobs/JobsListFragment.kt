@@ -15,7 +15,6 @@ import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogFragment
 import com.divercity.android.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
-import com.divercity.android.features.jobs.jobs.search.JobSearchFilterFragment
 import com.divercity.android.features.search.ITabSearch
 import kotlinx.android.synthetic.main.fragment_jobs_list.*
 import javax.inject.Inject
@@ -58,8 +57,6 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
         initAdapter()
         subscribeToPaginatedLiveData()
         subscribeToLiveData()
-
-        navigateToFragment()
     }
 
     private fun initAdapter() {
@@ -168,15 +165,8 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
         search(null)
     }
 
-    fun navigateToFragment() {
-        val transaction = childFragmentManager.beginTransaction()
-        transaction
-            .replace(R.id.fragment_container, JobSearchFilterFragment.newInstance())
-            .commit()
-    }
-
     fun onOpenFilterMenu() {
-//        showJobSearchFilterDialog()
+        showJobSearchFilterDialog()
     }
 
     private fun showJobSearchFilterDialog() {

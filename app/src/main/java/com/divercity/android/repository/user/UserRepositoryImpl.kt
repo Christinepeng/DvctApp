@@ -1,5 +1,6 @@
 package com.divercity.android.repository.user
 
+import com.divercity.android.core.base.BaseRepository
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.data.entity.activity.notificationread.DataItem
 import com.divercity.android.data.entity.activity.notificationread.NotificationReadBody
@@ -23,8 +24,6 @@ import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.HttpException
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -35,12 +34,7 @@ class UserRepositoryImpl @Inject
 constructor(
     private val userService: UserService,
     private val sessionRepository: SessionRepository
-) : UserRepository {
-
-    private fun checkResponse(response: Response<*>) {
-        if (!response.isSuccessful)
-            throw HttpException(response)
-    }
+) : BaseRepository(), UserRepository {
 
     override fun fetchRemoteUserData(userId: String): Observable<User> {
         return userService.fetchUserData(userId)

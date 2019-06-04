@@ -1,6 +1,7 @@
 package com.divercity.android.repository.group
 
 import androidx.paging.DataSource
+import com.divercity.android.core.base.BaseRepository
 import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.body.UserIdsEntityBody
 import com.divercity.android.data.entity.company.companyadmin.body.Admin
@@ -30,8 +31,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.HttpException
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -42,7 +41,7 @@ class GroupRepositoryImpl @Inject
 constructor(
     private val service: GroupService,
     private val groupDao: GroupDao
-) : GroupRepository {
+) : BaseRepository(), GroupRepository {
 
     override fun fetchRecommendedGroups(
         pageNumber: Int,
@@ -161,11 +160,6 @@ constructor(
             checkResponse(response)
             response.body()?.data?.map { it.toUser() }
         }
-    }
-
-    private fun checkResponse(response: Response<*>) {
-        if (!response.isSuccessful)
-            throw HttpException(response)
     }
 
     override fun inviteContact(invitations: GroupInviteContact): Observable<GroupInviteResponse> {

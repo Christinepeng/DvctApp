@@ -1,9 +1,9 @@
 package com.divercity.android.features.jobs.applications.adapter
 
+import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import android.view.ViewGroup
 import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
@@ -37,7 +37,7 @@ constructor(val sessionRepository: SessionRepository) : PagedListAdapter<JobAppl
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_job -> (holder as JobApplicationViewHolder).bindTo(position, getItem(position))
+            R.layout.item_job -> (holder as JobApplicationViewHolder).bindTo(getItem(position))
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
     }

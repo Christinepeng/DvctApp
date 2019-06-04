@@ -55,7 +55,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 14
-        versionName "D-1.22"
+        versionName "B-1.12"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -138,7 +138,7 @@ dependencies {
     def rxjava_version = "2.2.4"
     def rxandroid_version = "2.1.1"
 
-    def glide_version = "4.8.0"
+    def glide_version = "4.9.0"
     def lifecycle_version = '2.2.0-alpha01'
 //    def dagger_version = "2.22.1"
     def dagger_version = "2.23"
@@ -150,7 +150,7 @@ dependencies {
 
     def kotlinCoroutines_version = "1.1.1"
 
-    def room_version_runtime = '2.1.0-beta01'
+    def room_version_runtime = '2.1.0-rc01'
     def room_version = '2.1.0-alpha04'
 
     def firebase_messaging_version = "18.0.0"
@@ -251,8 +251,8 @@ dependencies {
     implementation 'io.branch.sdk.android:library:3.1.0'
 
     testImplementation 'junit:junit:4.12'
-    androidTestImplementation 'androidx.test:runner:1.2.0-beta01'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0-beta01'
+    androidTestImplementation 'androidx.test:runner:1.2.0'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 }
 
 repositories {

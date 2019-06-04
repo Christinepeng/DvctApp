@@ -13,7 +13,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.divercity.android.R
 import com.divercity.android.core.bus.RxBus
@@ -34,7 +34,6 @@ import kotlinx.android.synthetic.main.activity_home.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
-@Suppress("DEPRECATION")
 class HomeActivity : DaggerAppCompatActivity() {
 
     @Inject
@@ -157,7 +156,11 @@ class HomeActivity : DaggerAppCompatActivity() {
             .with(this)
             .load(viewModel.getProfilePictureUrl())
             .apply(RequestOptions().circleCrop())
-            .into(object : SimpleTarget<Drawable>() {
+            .into(object : CustomTarget<Drawable>() {
+
+                override fun onLoadCleared(placeholder: Drawable?) {
+                }
+
                 override fun onResourceReady(
                     resource: Drawable,
                     transition: Transition<in Drawable>?

@@ -56,10 +56,11 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btn_continue.visibility = View.GONE
-        viewModel.fetchMajors(this, null)
+
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
+
         subscribeToPaginatedLiveData()
         subscribeToUpdateUserLiveData()
         setupHeader()
@@ -109,7 +110,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
                     requireActivity(),
-                    viewModel.accountType,
+                    viewModel.getAccountType(),
                     currentProgress,
                     false
                 )
@@ -121,9 +122,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
         if (lastSearch != query) {
             handlerSearch.removeCallbacksAndMessages(null)
             handlerSearch.postDelayed({
-                viewModel.fetchMajors(this@SelectMajorFragment, if (query == "") null else query)
-                subscribeToPaginatedLiveData()
-                lastSearch = query
+                viewModel.fetchData(viewLifecycleOwner, query)
             }, AppConstants.SEARCH_DELAY)
         }
     }
@@ -146,15 +145,15 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedMajorList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 adapter.currentList?.let {
                     if (networkState.status == Status.SUCCESS && it.size == 0)
@@ -174,7 +173,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
         //        viewModelJobs.updateUserProfileWithSelectedAgeRange(it)
         navigator.navigateToNextOnboarding(
             requireActivity(),
-            viewModel.accountType,
+            viewModel.getAccountType(),
             currentProgress,
             true
         )

@@ -1,5 +1,6 @@
 package com.divercity.android.repository.job
 
+import com.divercity.android.core.base.BaseRepository
 import com.divercity.android.data.entity.job.discardjob.DiscardJobsEntityBody
 import com.divercity.android.data.entity.job.jobpostingbody.JobBody
 import com.divercity.android.data.entity.job.jobsharedgroupbody.JobShareGroupBody
@@ -10,8 +11,6 @@ import com.divercity.android.data.networking.services.JobService
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.HttpException
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -19,7 +18,7 @@ import javax.inject.Inject
  */
 
 class JobRepositoryImpl @Inject
-constructor(private val jobService: JobService) : JobRepository {
+constructor(private val jobService: JobService) : BaseRepository(), JobRepository {
 
     override fun fetchRecommendedJobs(
         page: Int,
@@ -159,11 +158,6 @@ constructor(private val jobService: JobService) : JobRepository {
             checkResponse(it)
             it.body()?.data
         }
-    }
-
-    private fun checkResponse(response: Response<*>) {
-        if (!response.isSuccessful)
-            throw HttpException(response)
     }
 
     override fun editJob(jobId: String, body: JobBody): Observable<JobResponse> {

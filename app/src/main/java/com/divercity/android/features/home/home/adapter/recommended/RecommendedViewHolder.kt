@@ -12,7 +12,7 @@ class RecommendedViewHolder
 private constructor(itemView: View, val adapter: RecommendedAdapter) :
     RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(listSize: Int?) {
+    fun bindTo() {
 //        if(listSize != null && listSize != 0)
 //            itemView.lay_recommended.visibility = View.VISIBLE
 //        else

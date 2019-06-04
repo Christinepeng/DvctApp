@@ -59,8 +59,8 @@ class CompaniesFragment : BaseFragment(), RetryCallback, ITabSearch {
         list.adapter = adapter
     }
 
-    override fun search(query: String?) {
-        viewModel.fetchData(viewLifecycleOwner, query)
+    override fun search(searchQuery: String?) {
+        viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 
     private fun subscribeToPaginatedLiveData() {

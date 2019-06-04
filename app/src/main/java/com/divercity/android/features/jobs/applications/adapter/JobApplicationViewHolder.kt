@@ -1,10 +1,10 @@
 package com.divercity.android.features.jobs.applications.adapter
 
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.jobapplication.JobApplicationResponse
@@ -14,7 +14,7 @@ class JobApplicationViewHolder
 private constructor(itemView: View, private val listener: Listener?, private val isLoggedUserJobSeeker: Boolean) :
         RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(position: Int, data: JobApplicationResponse?) {
+    fun bindTo(data: JobApplicationResponse?) {
         data?.let {
             GlideApp.with(itemView)
                     .load(it.attributes?.employer?.photos?.original)

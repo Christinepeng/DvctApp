@@ -57,14 +57,12 @@ constructor(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (itemCount > position + 1)
             (holder as ChatViewHolder).bindTo(
-                position,
                 sessionRepository.getUserId(),
                 getItem(position),
                 getItem(position + 1)
             )
         else
             (holder as ChatViewHolder).bindTo(
-                position,
                 sessionRepository.getUserId(),
                 getItem(position),
                 null

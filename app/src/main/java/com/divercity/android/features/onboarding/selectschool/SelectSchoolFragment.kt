@@ -1,7 +1,5 @@
 package com.divercity.android.features.onboarding.selectschool
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -9,6 +7,8 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -61,10 +61,11 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         btn_continue.visibility = View.GONE
-        viewModel.fetchSchools(this, null)
+
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
+
         subscribeToPaginatedLiveData()
         subscribeToSchoolLiveData()
         setupHeader()
@@ -74,11 +75,8 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
 
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
-
                 val toSearch: String? = include_search.edtxt_search.text.toString()
-
                 search(toSearch)
-
                 true
             } else
                 false
@@ -113,7 +111,7 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(requireActivity(),
-                        viewModel.accountType,
+                        viewModel.getAccountType(),
                         currentProgress,
                         false
                 )
@@ -125,9 +123,7 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
         if(lastSearch != query) {
             handlerSearch.removeCallbacksAndMessages(null)
             handlerSearch.postDelayed({
-                viewModel.fetchSchools(this@SelectSchoolFragment, if (query == "") null else query)
-                subscribeToPaginatedLiveData()
-                lastSearch = query
+                viewModel.fetchData(viewLifecycleOwner, query)
             }, AppConstants.SEARCH_DELAY)
         }
     }
@@ -144,7 +140,7 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
                 Status.SUCCESS -> {
                     hideProgress()
                     navigator.navigateToNextOnboarding(requireActivity(),
-                            viewModel.accountType,
+                            viewModel.getAccountType(),
                             currentProgress,
                             true
                     )
@@ -154,15 +150,15 @@ class SelectSchoolFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedSchoolList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 adapter.currentList?.let {
                     if (networkState.status == Status.SUCCESS && it.size == 0)

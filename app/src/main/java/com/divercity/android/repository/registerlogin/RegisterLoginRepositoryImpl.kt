@@ -1,5 +1,6 @@
 package com.divercity.android.repository.registerlogin
 
+import com.divercity.android.core.base.BaseRepository
 import com.divercity.android.data.entity.emailusernamecheck.CheckUsernameEmailResponse
 import com.divercity.android.data.entity.emailusernamecheck.emailbody.CheckEmailBody
 import com.divercity.android.data.entity.emailusernamecheck.usernamebody.CheckUsernameBody
@@ -11,8 +12,6 @@ import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.HttpException
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -23,7 +22,7 @@ class RegisterLoginRepositoryImpl @Inject
 constructor(
     private val sessionRepository: SessionRepository,
     private val registerLoginService: RegisterLoginService
-) : RegisterLoginRepository {
+) : BaseRepository(), RegisterLoginRepository {
 
     override fun login(email: String, password: String): Observable<User> {
         return registerLoginService.login(LoginBody(email, password))
@@ -96,10 +95,5 @@ constructor(
         return registerLoginService.resetPassword(partPassword, partToken).map {
             checkResponse(it)
         }
-    }
-
-    private fun checkResponse(response: Response<*>) {
-        if (!response.isSuccessful)
-            throw HttpException(response)
     }
 }

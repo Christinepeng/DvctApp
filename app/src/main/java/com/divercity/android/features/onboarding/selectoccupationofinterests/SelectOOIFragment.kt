@@ -1,8 +1,6 @@
 package com.divercity.android.features.onboarding.selectoccupationofinterests
 
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -10,6 +8,8 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -55,7 +55,6 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupView()
         subscribeToPaginatedLiveData()
         subscribeToLiveData()
@@ -74,7 +73,7 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
             else
                 navigator.navigateToNextOnboarding(
                     requireActivity(),
-                    viewModel.accountType,
+                    viewModel.getAccountType(),
                     currentProgress,
                     false
                 )
@@ -125,7 +124,7 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
                     requireActivity(),
-                    viewModel.accountType,
+                    viewModel.getAccountType(),
                     currentProgress,
                     false
                 )
@@ -137,9 +136,7 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
         if (lastSearch != query) {
             handlerSearch.removeCallbacksAndMessages(null)
             handlerSearch.postDelayed({
-                viewModel.fetchOOI(this@SelectOOIFragment, if (query == "") null else query)
-                subscribeToPaginatedLiveData()
-                lastSearch = query
+                viewModel.fetchData(viewLifecycleOwner, query)
             }, AppConstants.SEARCH_DELAY)
         }
     }
@@ -157,7 +154,7 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
                     hideProgress()
                     navigator.navigateToNextOnboarding(
                             requireActivity(),
-                            viewModel.accountType,
+                            viewModel.getAccountType(),
                             currentProgress,
                             true
                     )
@@ -167,15 +164,15 @@ class SelectOOIFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedOOIList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 adapter.currentList?.let {
                     if (networkState.status == Status.SUCCESS){

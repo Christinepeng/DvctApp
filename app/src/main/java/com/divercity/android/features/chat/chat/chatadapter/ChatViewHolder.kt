@@ -29,7 +29,6 @@ private constructor(
     RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(
-        position: Int,
         currentUserId: String,
         data: ChatMessageEntityResponse?,
         next: ChatMessageEntityResponse?

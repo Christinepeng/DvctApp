@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
-import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.group.group.GroupResponse
@@ -23,7 +22,7 @@ private constructor(itemView: View, private val listener: Listener?) :
             itemView.apply {
                 GlideApp.with(this)
                     .load(data.attributes.pictureMain)
-                    .apply(RequestOptions().transforms(RoundedCorners(16)))
+                    .transform(RoundedCorners(16))
                     .into(itemView.item_group_img)
 
                 item_group_txt_title.text = data.attributes.title

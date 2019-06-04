@@ -95,9 +95,7 @@ constructor(
                 .bindTo(position, getItem(position - getRightPosition(position)) as Question)
             R.layout.item_feed_job -> (holder as JobFeedViewHolder)
                 .bindTo(position, getItem(position - getRightPosition(position)) as JobResponse)
-            R.layout.item_list_recommended -> (holder as RecommendedViewHolder).bindTo(
-                recommendedAdapter.currentList?.size
-            )
+            R.layout.item_list_recommended -> (holder as RecommendedViewHolder).bindTo()
             R.layout.item_list_recommended_connection -> (holder as RecommendedConnectionsSectionViewHolder).bindTo()
         }
     }

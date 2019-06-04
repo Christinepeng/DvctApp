@@ -95,8 +95,8 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
         })
     }
 
-    override fun search(query: String?) {
-        fetchConnections(query)
+    override fun search(searchQuery: String?) {
+        fetchConnections(searchQuery)
     }
 
     private fun subscribeToPaginatedLiveData() {

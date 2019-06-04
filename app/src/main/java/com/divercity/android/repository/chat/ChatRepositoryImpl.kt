@@ -1,6 +1,7 @@
 package com.divercity.android.repository.chat
 
 import androidx.paging.DataSource
+import com.divercity.android.core.base.BaseRepository
 import com.divercity.android.data.entity.chat.addchatmemberbody.AddChatMemberBody
 import com.divercity.android.data.entity.chat.creategroupchatbody.CreateGroupChatBody
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
@@ -16,8 +17,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MediaType
 import okhttp3.RequestBody
-import retrofit2.HttpException
-import retrofit2.Response
 import javax.inject.Inject
 
 /**
@@ -29,7 +28,7 @@ constructor(
     private val chatService: ChatService,
     private val chatMessageDao: ChatMessageDao,
     private val recentChatsDao: RecentChatsDao
-) : ChatRepository {
+) : BaseRepository(), ChatRepository {
 
     override fun fetchChatMembers(
         currentUserId: String,
@@ -74,11 +73,6 @@ constructor(
             checkResponse(it)
             it.body()?.data
         }
-    }
-
-    private fun checkResponse(response: Response<*>) {
-        if (!response.isSuccessful)
-            throw HttpException(response)
     }
 
     override fun sendMessage(
@@ -185,13 +179,4 @@ constructor(
             true
         }
     }
-
-//    override fun sendMessageAttachment(
-//        message: String,
-//        chatId: String,
-//        attchmntType: String,
-//        attchmntId: String
-//    ): Observable<ChatMessageResponse> {
-//
-//    }
 }

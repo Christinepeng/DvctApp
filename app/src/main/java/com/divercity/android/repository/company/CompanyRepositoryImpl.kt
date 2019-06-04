@@ -1,5 +1,6 @@
 package com.divercity.android.repository.company
 
+import com.divercity.android.core.base.BaseRepository
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.Admin
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
@@ -11,8 +12,6 @@ import com.divercity.android.data.entity.company.review.CompanyDiversityReviewRe
 import com.divercity.android.data.networking.services.CompanyService
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
-import retrofit2.HttpException
-import retrofit2.Response
 import javax.inject.Inject
 
 
@@ -23,7 +22,7 @@ import javax.inject.Inject
 class CompanyRepositoryImpl @Inject
 constructor(
     private val service: CompanyService
-) : CompanyRepository {
+) : BaseRepository(), CompanyRepository {
 
     override fun fetchCompaniesIamAdmin(
         page: Int,
@@ -102,10 +101,5 @@ constructor(
             checkResponse(it)
             it.body()?.data
         }
-    }
-
-    private fun checkResponse(response: Response<*>) {
-        if (!response.isSuccessful)
-            throw HttpException(response)
     }
 }

@@ -53,22 +53,6 @@
         android:textSize="17sp"
         tools:text="Dropbox" />
 
-    <RatingBar
-        android:id="@+id/rating_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="29dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:isIndicator="false"
-        android:numStars="10"
-        android:progressDrawable="@drawable/ll_rating_bar"
-        android:stepSize="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_explanation1" />
-
     <TextView
         android:id="@+id/textView9"
         android:layout_width="wrap_content"
@@ -79,6 +63,22 @@
         android:text="This anonymous rating will help us suggest companies that care about diversity and inclusion to other candidates."
         android:textColor="#333241"
         android:textSize="15sp" />
+
+    <RatingBar
+        android:id="@+id/rating_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="29dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="8dp"
+        android:isIndicator="false"
+        android:numStars="5"
+        android:progressDrawable="@drawable/ll_rating_bar"
+        android:stepSize="1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_explanation1" />
 
     <LinearLayout
         android:id="@+id/lay_review"

@@ -106,6 +106,16 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
 
     private fun showRateCompanyDialog(company: CompanyResponse) {
         val dialog = RateCompanyDiversityDialogFragment.newInstance(company)
+
+        dialog.onClose = {
+            navigator.navigateToNextOnboarding(
+                requireActivity(),
+                viewModel.getAccountType(),
+                currentProgress,
+                true
+            )
+        }
+
         dialog.listener = object : RateCompanyDiversityDialogFragment.Listener {
 
             override fun onCompanyRated() {

@@ -1,7 +1,5 @@
 package com.divercity.android.features.industry.onboarding
 
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -9,6 +7,8 @@ import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -30,7 +30,6 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
     var currentProgress: Int = 0
 
     private var handlerSearch = Handler()
-    private var lastSearch: String? = null
 
     companion object {
         private const val PARAM_PROGRESS = "paramProgress"
@@ -48,7 +47,10 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectIndustryOnboardingViewModel::class.java]
+        viewModel = ViewModelProviders.of(
+            this,
+            viewModelFactory
+        )[SelectIndustryOnboardingViewModel::class.java]
         currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
@@ -90,10 +92,10 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
 
             btn_skip.setOnClickListener {
                 navigator.navigateToNextOnboarding(
-                        requireActivity(),
-                        viewModel.accountType,
-                        currentProgress,
-                        false
+                    requireActivity(),
+                    viewModel.getAccountType(),
+                    currentProgress,
+                    false
                 )
             }
         }
@@ -110,10 +112,11 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(requireActivity(),
-                            viewModel.accountType,
-                            currentProgress,
-                            true
+                    navigator.navigateToNextOnboarding(
+                        requireActivity(),
+                        viewModel.getAccountType(),
+                        currentProgress,
+                        true
                     )
                 }
             }
@@ -148,26 +151,22 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
     }
 
     private fun search(query: String?) {
-        if (lastSearch != query) {
-            handlerSearch.removeCallbacksAndMessages(null)
-            handlerSearch.postDelayed({
-                viewModel.fetchIndustries(this, if (query == "") null else query)
-                subscribeToPaginatedLiveData()
-                lastSearch = query
-            }, AppConstants.SEARCH_DELAY)
-        }
+        handlerSearch.removeCallbacksAndMessages(null)
+        handlerSearch.postDelayed({
+            viewModel.fetchData(viewLifecycleOwner, query)
+        }, AppConstants.SEARCH_DELAY)
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedIndustryList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 adapter.currentList?.let {
                     if (networkState.status == Status.SUCCESS) {

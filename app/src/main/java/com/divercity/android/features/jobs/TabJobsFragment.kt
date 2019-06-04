@@ -56,9 +56,8 @@ class TabJobsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(TabJobsViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(TabJobsViewModel::class.java)
 
         setupToolbar()
         setupAdapterViewPager()
@@ -88,11 +87,8 @@ class TabJobsFragment : BaseFragment() {
 
     private fun setupAdapterViewPager() {
         viewpager.adapter = adapterTab
-        viewModel.adapterPosition?.apply {
-            if (this == 1)
-                filterItem?.isVisible = true
-            viewpager.currentItem = this
-        }
+        viewpager.currentItem = viewModel.adapterPosition
+
         tab_layout.setupWithViewPager(viewpager)
 
         val onPageListener = object : ViewPager.OnPageChangeListener {
@@ -142,13 +138,15 @@ class TabJobsFragment : BaseFragment() {
             }
         })
 
-        if(adapterTab.getJobsTabPosition() == 0)
+        if (viewModel.adapterPosition == 0 && viewModel.isLoggedUserJobSeeker() ||
+            viewModel.adapterPosition == 1 && !viewModel.isLoggedUserJobSeeker()
+        )
             filterItem?.isVisible = true
-        else {
-            val prevPos = viewModel.adapterPosition
-            if (prevPos != null && prevPos == adapterTab.getJobsTabPosition())
-                filterItem?.isVisible = true
-        }
+//        else if(adapterTab.getJobsTabPosition() == 1 && !viewModel.isLoggedUserJobSeeker()) {
+//            val prevPos = viewModel.adapterPosition
+//            if (prevPos != null && prevPos == adapterTab.getJobsTabPosition())
+//                filterItem?.isVisible = true
+//        }
 
         super.onCreateOptionsMenu(menu, inflater)
     }

@@ -34,6 +34,7 @@ class DivercityApp : Application(), HasActivityInjector, HasServiceInjector {
 
     override fun serviceInjector(): AndroidInjector<Service> = dispatchingServiceInjector
 
+
     override fun attachBaseContext(base: Context?) {
         super.attachBaseContext(base)
         MultiDex.install(this)

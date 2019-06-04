@@ -46,15 +46,11 @@ class CurrentUserProfileFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
 
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(CurrentUserProfileViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(CurrentUserProfileViewModel::class.java)
 
-        sharedViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(HomeActivityViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
+        sharedViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(HomeActivityViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

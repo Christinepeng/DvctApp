@@ -28,7 +28,7 @@
         android:layout_marginBottom="8dp"
         android:background="@color/white"
         android:fontFamily="@font/avenir_roman"
-        android:hint="@string/type_here"
+        android:hint="@string/type_your_message_here"
         android:padding="24dp"
         android:textColor="#333241"
         android:textSize="15sp"

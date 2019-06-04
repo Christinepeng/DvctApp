@@ -75,7 +75,8 @@ class SplashFragment : BaseFragment() {
         })
 
         viewModel.navigateToHome.observe(viewLifecycleOwner, Observer {
-            navigator.navigateToHomeActivity(requireActivity())
+//            navigator.navigateToHomeActivity(requireActivity())
+            navigator.navigateToSelectUserTypeActivity(requireActivity())
 //            navigator.navigateToSelectGroupActivity(requireActivity(), 25)
 //            navigator.navigateToSelectCompanyActivity(requireActivity(), 20)
             finish()

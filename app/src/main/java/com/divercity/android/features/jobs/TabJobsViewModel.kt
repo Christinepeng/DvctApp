@@ -14,11 +14,11 @@ import javax.inject.Inject
 
 class TabJobsViewModel @Inject
 constructor(val userRepository: UserRepositoryImpl,
-            sessionRepository: SessionRepository,
+            val sessionRepository: SessionRepository,
             val application: Application) : BaseViewModel() {
 
     val showBtnAddJob = MutableLiveData<Int>()
-    var adapterPosition: Int? = null
+    var adapterPosition: Int = 0
 
     init {
 
@@ -27,6 +27,8 @@ constructor(val userRepository: UserRepositoryImpl,
         else
             showBtnAddJob.value = View.VISIBLE
     }
+
+    fun isLoggedUserJobSeeker() = sessionRepository.isLoggedUserJobSeeker()
 
 //    fun getAccountType(): String? {
 //        return sessionRepository.getAccountType()

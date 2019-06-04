@@ -42,10 +42,8 @@ class CompaniesMyCompaniesFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(CompaniesMyCompaniesViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(CompaniesMyCompaniesViewModel::class.java)
         setupView()
         initSwipeToRefresh()
         subscribeToLiveData()

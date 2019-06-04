@@ -40,9 +40,7 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(JobsApplicationsViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(JobsApplicationsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

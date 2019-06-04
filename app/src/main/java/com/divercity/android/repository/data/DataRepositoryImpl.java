@@ -43,10 +43,10 @@ public class DataRepositoryImpl implements DataRepository {
     }
 
     @Override
-    public Observable<DataArray<IndustryResponse>> fetchIndustries(int page, int size, String query) {
+    public Observable<List<IndustryResponse>> fetchIndustries(int page, int size, String query) {
         return service.fetchIndustries(page, size, query).map(response -> {
             checkResponse(response);
-            return response.body();
+            return response.body().getData();
         });
     }
 

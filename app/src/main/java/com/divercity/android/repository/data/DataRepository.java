@@ -24,7 +24,7 @@ public interface DataRepository {
 
     Observable<List<CompanyResponse>> fetchCompanies(int page, int size, String query);
 
-    Observable<DataArray<IndustryResponse>> fetchIndustries(int page, int size, String query);
+    Observable<List<IndustryResponse>> fetchIndustries(int page, int size, String query);
 
     Observable<DataArray<SchoolResponse>> fetchSchool(int page, int size, String query);
 

@@ -1,16 +1,16 @@
 package com.divercity.android.features.industry.selectsingleindustry
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -37,7 +37,6 @@ class SelectSingleIndustryFragment : BaseFragment(), RetryCallback {
     lateinit var viewModel: SelectSingleIndustryViewModel
 
     private var handlerSearch = Handler()
-    private var lastSearch: String? = null
 
     companion object {
         const val INDUSTRY_PICKED = "locationPicked"
@@ -49,7 +48,8 @@ class SelectSingleIndustryFragment : BaseFragment(), RetryCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectSingleIndustryViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[SelectSingleIndustryViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,15 +75,15 @@ class SelectSingleIndustryFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedIndustryList.observe(this, Observer {
+        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
             singleAdapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             singleAdapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 singleAdapter.currentList?.let {
                     if (networkState.status == Status.SUCCESS && it.size == 0)
@@ -123,14 +123,10 @@ class SelectSingleIndustryFragment : BaseFragment(), RetryCallback {
     }
 
     private fun search(query: String?) {
-        if (lastSearch != query) {
-            handlerSearch.removeCallbacksAndMessages(null)
-            handlerSearch.postDelayed({
-                viewModel.fetchIndustries(this, if (query == "") null else query)
-                subscribeToPaginatedLiveData()
-                lastSearch = query
-            }, AppConstants.SEARCH_DELAY)
-        }
+        handlerSearch.removeCallbacksAndMessages(null)
+        handlerSearch.postDelayed({
+            viewModel.fetchData(viewLifecycleOwner, query)
+        }, AppConstants.SEARCH_DELAY)
     }
 
     override fun retry() {

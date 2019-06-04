@@ -46,9 +46,8 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(JobsListViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(JobsListViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -166,7 +165,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
     }
 
     fun onOpenFilterMenu() {
-        showJobSearchFilterDialog()
+//        showJobSearchFilterDialog()
     }
 
     private fun showJobSearchFilterDialog() {

@@ -78,6 +78,7 @@ import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroup
 import com.divercity.android.features.jobs.jobs.JobsListFragment
 import com.divercity.android.features.jobs.jobs.search.searchfilter.JobSearchFilterFragment
 import com.divercity.android.features.jobs.jobs.search.searchfiltercompany.JobSearchFilterCompanyFragment
+import com.divercity.android.features.jobs.jobs.search.searchfiltercompanyindustry.JobSearchFilterCompanyIndustryFragment
 import com.divercity.android.features.jobs.jobs.search.searchfiltercompanysize.JobSearchFilterCompanySizeFragment
 import com.divercity.android.features.jobs.jobs.search.searchfilterlocation.JobSearchFilterLocationFragment
 import com.divercity.android.features.jobs.jobs.search.searchfilterview.JobSearchFilterViewFragment
@@ -493,4 +494,7 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindJobSearchFilterCompanySizeFragment(): JobSearchFilterCompanySizeFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindJobSearchFilterCompanyIndustryFragment(): JobSearchFilterCompanyIndustryFragment
 }

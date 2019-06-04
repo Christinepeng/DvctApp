@@ -10,6 +10,7 @@ import com.divercity.android.R
 import com.divercity.android.core.navigation.Navigator
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.android.support.DaggerAppCompatActivity
 import io.branch.referral.Branch
 import timber.log.Timber
@@ -24,6 +25,9 @@ class SplashActivity : DaggerAppCompatActivity() {
     lateinit var viewModelFactory: ViewModelProvider.Factory
 
     private lateinit var viewModel: SplashViewModel
+
+    @Inject
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     companion object {
 
@@ -73,6 +77,7 @@ class SplashActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SplashViewModel::class.java]
         subscribeToLiveData()
+        firebaseAnalytics.logEvent(FirebaseAnalytics.Event.APP_OPEN, null)
     }
 
     private fun initBranch() {
@@ -111,6 +116,7 @@ class SplashActivity : DaggerAppCompatActivity() {
 
         viewModel.navigateToHome.observe(this, Observer {
             navigator.navigateToHomeActivity(this)
+//            navigator.navigateToSelectUserTypeActivity(this)
 //            navigator.navigateToSelectGroupActivity(this, 25)
 //            navigator.navigateToSelectCompanyActivity(this, 20)
             finish()

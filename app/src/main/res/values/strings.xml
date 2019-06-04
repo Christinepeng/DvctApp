@@ -112,7 +112,7 @@
     <string name="ratings">Ratings</string>
     <string name="review">Review</string>
     <string name="rate_company_diversity">Rate Company\'s Diversity</string>
-    <string name="rate_company_label">Rate %1$s based on your opinion of how seriously they take diversity &amp; inclusion.</string>
+    <string name="rate_company_label">How Diverse-minded and Inclusive is %1$s in your humble opinion?</string>
     <string name="submit_diversity_rating">Submit Diversity Rating</string>
 
     <!-- Location-->
@@ -341,6 +341,7 @@
     <string name="choose_group">Choose a Group</string>
     <string name="topic_name">Topic Name</string>
     <string name="type_here">Type here…</string>
+    <string name="type_your_message_here">Type your message here …</string>
     <string name="start_topic">Start a Topic</string>
     <string name="change_group">Change Group</string>
     <string name="be_first_comment">Be the first to comment</string>

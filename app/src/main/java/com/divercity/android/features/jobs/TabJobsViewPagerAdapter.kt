@@ -84,11 +84,8 @@ class TabJobsViewPagerAdapter
             tabTitlesRecruiter[position]
     }
 
-    fun getJobsTabPosition() : Int{
-        return if (sessionRepository.isLoggedUserJobSeeker())
-            0
-        else
-            1
+    fun getJobsTabPosition(): Int {
+        return if (sessionRepository.isLoggedUserJobSeeker()) 0 else 1
     }
 
     override fun instantiateItem(container: ViewGroup, position: Int): Any {

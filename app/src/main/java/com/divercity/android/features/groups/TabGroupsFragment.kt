@@ -45,9 +45,8 @@ class TabGroupsFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(TabGroupsViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(TabGroupsViewModel::class.java)
 
         setHasOptionsMenu(true)
     }

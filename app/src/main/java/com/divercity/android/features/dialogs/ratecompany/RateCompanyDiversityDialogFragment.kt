@@ -27,6 +27,7 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
     var listener: Listener? = null
 
     private lateinit var dialogView: View
+    var onClose: (() -> Unit)? = null
 
     companion object {
 
@@ -116,6 +117,7 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
 
             btn_close.setOnClickListener {
                 dismiss()
+                onClose?.invoke()
             }
 
             btn_submit.setOnClickListener {

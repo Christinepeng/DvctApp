@@ -3,9 +3,13 @@ package com.divercity.android.features.jobs.jobs.search.searchfiltercompany
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.IJobSearchFilter
+import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogViewModel
+import com.divercity.android.features.jobs.jobs.search.searchfiltercompanyindustry.JobSearchFilterCompanyIndustryFragment
 import com.divercity.android.features.jobs.jobs.search.searchfiltercompanysize.JobSearchFilterCompanySizeFragment
 import kotlinx.android.synthetic.main.fragment_job_search_filter_company.*
 
@@ -16,6 +20,7 @@ import kotlinx.android.synthetic.main.fragment_job_search_filter_company.*
 class JobSearchFilterCompanyFragment : BaseFragment() {
 
     private var listener: IJobSearchFilter? = null
+    lateinit var viewModel: JobSearchFilterDialogViewModel
 
     companion object {
 
@@ -42,17 +47,33 @@ class JobSearchFilterCompanyFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)[JobSearchFilterDialogViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        btn_back.setOnClickListener {
+            listener?.onBackPressed()
+        }
 
         lay_company_size.setOnClickListener {
             listener?.replaceFragment(JobSearchFilterCompanySizeFragment.newInstance(), null)
         }
 
         lay_industry.setOnClickListener {
-            //            listener?.replaceFragment(, null)
+            listener?.replaceFragment(JobSearchFilterCompanyIndustryFragment.newInstance(), null)
         }
+        subscribeToLiveData()
+    }
+
+    private fun subscribeToLiveData() {
+        viewModel.companySize.observe(viewLifecycleOwner, Observer {
+            txt_company_size.text = it
+        })
+
+        viewModel.companyIndustry.observe(viewLifecycleOwner, Observer {
+            txt_industry.text = it
+        })
     }
 }

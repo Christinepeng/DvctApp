@@ -72,14 +72,14 @@ android {
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-            manifestPlaceholders = [enableCrashReporting: "true"]
+            manifestPlaceholders = [enableCrashReporting: "true", enableAnalytics:"true"]
             signingConfig signingConfigs.config
         }
 
         debug {
             minifyEnabled false
             debuggable true
-            manifestPlaceholders = [enableCrashReporting: "false"]
+            manifestPlaceholders = [enableCrashReporting: "false", enableAnalytics:"true"]
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
 //            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

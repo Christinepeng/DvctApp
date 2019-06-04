@@ -17,12 +17,7 @@ constructor(
 
     var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
 
-    /* Filters */
-    var viewTypeFilter = "All"
-    var locationFilter = "All"
-    var companyFilter = "All Sizes, All"
-
     init {
-        fetchData()
+        fetchData(null, "")
     }
 }

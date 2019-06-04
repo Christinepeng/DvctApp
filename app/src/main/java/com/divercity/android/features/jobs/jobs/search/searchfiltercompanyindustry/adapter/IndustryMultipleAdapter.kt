@@ -1,4 +1,4 @@
-package com.divercity.android.features.jobs.jobs.search.searchfilterlocation.adapter
+package com.divercity.android.features.jobs.jobs.search.searchfiltercompanyindustry.adapter
 
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
@@ -8,26 +8,26 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.location.LocationResponse
+import com.divercity.android.data.entity.industry.IndustryResponse
 import javax.inject.Inject
 
-class LocationMultipleSelectionAdapter @Inject
-constructor() : PagedListAdapter<LocationResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+class IndustryMultipleAdapter @Inject
+constructor() : PagedListAdapter<IndustryResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
-    var selectedLocations = HashSet<LocationResponse>()
+    var selectedIndustries = HashSet<IndustryResponse>()
 
-    var onSelectUnselectLocation: (() -> Unit)? = null
+    var onSelectUnselectIndustry: (() -> Unit)? = null
 
-    private var listener = object : LocationMultipleSelectionViewHolder.Listener {
+    private var listener = object : IndustryMultipleViewHolder.Listener {
 
-        override fun onSelectUnselectLocation(location: LocationResponse, isSelected: Boolean) {
+        override fun onSelectUnselectIndustry(industry: IndustryResponse, isSelected: Boolean) {
             if (isSelected)
-                selectedLocations.add(location)
+                selectedIndustries.add(industry)
             else
-                selectedLocations.remove(location)
-            onSelectUnselectLocation?.invoke()
+                selectedIndustries.remove(industry)
+            onSelectUnselectIndustry?.invoke()
         }
     }
 
@@ -35,20 +35,20 @@ constructor() : PagedListAdapter<LocationResponse, RecyclerView.ViewHolder>(user
         this.retryCallback = retryCallback
     }
 
-    fun onSelectAll() {
-        selectedLocations.clear()
+    fun onSelectAll(){
+        selectedIndustries.clear()
         notifyDataSetChanged()
     }
 
-    fun getSelectedLocationsString(): String {
-        return selectedLocations.joinToString {
+    fun getSelectedIndustriesString() : String{
+        return selectedIndustries.joinToString {
             it.attributes?.name ?: ""
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_text -> LocationMultipleSelectionViewHolder.create(
+            R.layout.item_text -> IndustryMultipleViewHolder.create(
                 parent,
                 listener
             )
@@ -59,8 +59,8 @@ constructor() : PagedListAdapter<LocationResponse, RecyclerView.ViewHolder>(user
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_text -> (holder as LocationMultipleSelectionViewHolder).bindTo(
-                selectedLocations.contains(getItem(position)),
+            R.layout.item_text -> (holder as IndustryMultipleViewHolder).bindTo(
+                selectedIndustries.contains(getItem(position)),
                 getItem(position)
             )
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
@@ -101,18 +101,18 @@ constructor() : PagedListAdapter<LocationResponse, RecyclerView.ViewHolder>(user
 
     companion object {
 
-        private val userDiffCallback = object : DiffUtil.ItemCallback<LocationResponse>() {
+        private val userDiffCallback = object : DiffUtil.ItemCallback<IndustryResponse>() {
 
             override fun areItemsTheSame(
-                oldItem: LocationResponse,
-                newItem: LocationResponse
+                oldItem: IndustryResponse,
+                newItem: IndustryResponse
             ): Boolean {
                 return oldItem.id === newItem.id
             }
 
             override fun areContentsTheSame(
-                oldItem: LocationResponse,
-                newItem: LocationResponse
+                oldItem: IndustryResponse,
+                newItem: IndustryResponse
             ): Boolean {
                 return oldItem == newItem
             }

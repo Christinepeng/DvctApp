@@ -10,6 +10,7 @@ import com.divercity.android.repository.appstate.AppStateRepository;
 import com.divercity.android.repository.appstate.AppStateRepositoryImpl;
 import com.divercity.android.repository.session.SessionRepository;
 import com.divercity.android.repository.session.SessionRepositoryImpl;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import javax.inject.Named;
 import javax.inject.Singleton;
@@ -64,4 +65,11 @@ public abstract class AppProvidesModule {
     static NotificationHelper provideNotificationHelper(Context context) {
         return new NotificationHelper(context);
     }
+
+    @Provides
+    @Singleton
+    static FirebaseAnalytics provideFirebaseAnalytics(Context context) {
+        return FirebaseAnalytics.getInstance(context);
+    }
+
 }

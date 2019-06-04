@@ -27,7 +27,7 @@ constructor(
 
     init {
         showMyCompaniesSection.value = false
-        fetchData()
+        fetchData(null, "")
         fetchMyCompanies()
     }
 

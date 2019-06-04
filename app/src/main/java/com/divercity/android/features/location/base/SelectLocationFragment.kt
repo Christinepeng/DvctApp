@@ -54,7 +54,8 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectLocationViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[SelectLocationViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -110,12 +111,10 @@ class SelectLocationFragment : BaseFragment(), RetryCallback {
     }
 
     private fun search(query: String?) {
-        if (viewModel.lastSearch != query) {
-            handlerSearch.removeCallbacksAndMessages(null)
-            handlerSearch.postDelayed({
-                viewModel.fetchData(viewLifecycleOwner, query)
-            }, AppConstants.SEARCH_DELAY)
-        }
+        handlerSearch.removeCallbacksAndMessages(null)
+        handlerSearch.postDelayed({
+            viewModel.fetchData(viewLifecycleOwner, query)
+        }, AppConstants.SEARCH_DELAY)
     }
 
     private fun subscribeToPaginatedLiveData() {

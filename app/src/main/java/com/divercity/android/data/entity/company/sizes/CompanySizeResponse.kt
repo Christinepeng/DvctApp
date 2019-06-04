@@ -15,11 +15,11 @@ data class CompanySizeResponse(
 	@field:SerializedName("type")
 	val type: String? = null
 ) : Parcelable {
+
 	constructor(parcel: Parcel) : this(
 			parcel.readParcelable(Attributes::class.java.classLoader),
 			parcel.readString(),
-			parcel.readString()) {
-	}
+			parcel.readString())
 
 	override fun writeToParcel(parcel: Parcel, flags: Int) {
 		parcel.writeParcelable(attributes, flags)

@@ -155,13 +155,15 @@ class GroupDetailFragment : BaseFragment(), InviteGroupDialogFragment.Listener {
             if (group.attributes.isCurrentUserAdmin) {
                 btn_member_pending.setText(R.string.admin)
                 btn_member_pending.visibility = View.VISIBLE
-                btn_conversation.visibility = View.VISIBLE
+//                btn_conversation.visibility = View.VISIBLE
+                btn_conversation.visibility = View.GONE
                 (btn_fab as View).visibility = View.VISIBLE
                 btn_join.visibility = View.GONE
             } else if (group.attributes.isFollowedByCurrent) {
                 btn_member_pending.setText(R.string.member)
                 btn_member_pending.visibility = View.VISIBLE
-                btn_conversation.visibility = View.VISIBLE
+//                btn_conversation.visibility = View.VISIBLE
+                btn_conversation.visibility = View.GONE
                 (btn_fab as View).visibility = View.VISIBLE
                 btn_join.visibility = View.GONE
             } else if (group.isPublic()) {

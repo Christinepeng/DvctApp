@@ -3,9 +3,12 @@ package com.divercity.android.features.jobs.jobs.search.searchfilterview
 import android.content.Context
 import android.os.Bundle
 import android.view.View
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.IJobSearchFilter
+import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogViewModel
 import kotlinx.android.synthetic.main.fragment_job_search_filter_view.*
 
 /**
@@ -13,6 +16,8 @@ import kotlinx.android.synthetic.main.fragment_job_search_filter_view.*
  */
 
 class JobSearchFilterViewFragment : BaseFragment() {
+
+    lateinit var viewModel: JobSearchFilterDialogViewModel
 
     private var listener: IJobSearchFilter? = null
 
@@ -41,6 +46,7 @@ class JobSearchFilterViewFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)[JobSearchFilterDialogViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -49,5 +55,37 @@ class JobSearchFilterViewFragment : BaseFragment() {
         btn_back.setOnClickListener {
             listener?.onBackPressed()
         }
+
+        lay_new.setOnClickListener {
+            viewModel.viewTypeFilter.value = "New"
+        }
+
+        lay_recommended.setOnClickListener {
+            viewModel.viewTypeFilter.value = "Recommended"
+        }
+
+        lay_all.setOnClickListener {
+            viewModel.viewTypeFilter.value = "All"
+        }
+
+        viewModel.viewTypeFilter.observe(viewLifecycleOwner, Observer {
+            when(it){
+                "All" -> {
+                    btn_select_all.isSelected = true
+                    btn_select_recommended.isSelected = false
+                    btn_select_new.isSelected = false
+                }
+                "Recommended" -> {
+                    btn_select_all.isSelected = false
+                    btn_select_recommended.isSelected = true
+                    btn_select_new.isSelected = false
+                }
+                "New" -> {
+                    btn_select_all.isSelected = false
+                    btn_select_recommended.isSelected = false
+                    btn_select_new.isSelected = true
+                }
+            }
+        })
     }
 }

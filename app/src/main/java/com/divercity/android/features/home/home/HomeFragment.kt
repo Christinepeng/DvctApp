@@ -84,18 +84,14 @@ class HomeFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(HomeViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(HomeViewModel::class.java)
 
-        recommendedViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(HomeRecommendedViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        recommendedViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(HomeRecommendedViewModel::class.java)
 
-        recommendedConnectionsViewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(HomeRecommendedConnectionsViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
+        recommendedConnectionsViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(HomeRecommendedConnectionsViewModel::class.java)
 
         setHasOptionsMenu(true)
     }

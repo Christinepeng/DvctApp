@@ -1,4 +1,4 @@
-package com.divercity.android.features.jobs.jobs.search.searchfilterlocation
+package com.divercity.android.features.jobs.jobs.search.searchfiltercompanyindustry
 
 import android.content.Context
 import android.os.Bundle
@@ -16,9 +16,9 @@ import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.jobsearchfilter.IJobSearchFilter
 import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogViewModel
-import com.divercity.android.features.jobs.jobs.search.searchfilterlocation.adapter.LocationMultipleSelectionAdapter
-import com.divercity.android.features.location.base.SelectLocationViewModel
-import kotlinx.android.synthetic.main.fragment_job_search_filter_location.*
+import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryViewModel
+import com.divercity.android.features.jobs.jobs.search.searchfiltercompanyindustry.adapter.IndustryMultipleAdapter
+import kotlinx.android.synthetic.main.fragment_job_search_filter_industry.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import javax.inject.Inject
 
@@ -26,14 +26,14 @@ import javax.inject.Inject
  * Created by lucas on 24/10/2018.
  */
 
-class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
+class JobSearchFilterCompanyIndustryFragment : BaseFragment(), RetryCallback {
 
     lateinit var viewModel: JobSearchFilterDialogViewModel
 
     @Inject
-    lateinit var adapter: LocationMultipleSelectionAdapter
+    lateinit var adapter: IndustryMultipleAdapter
 
-    private lateinit var viewModelLocation: SelectLocationViewModel
+    lateinit var viewModelIndustry: SelectSingleIndustryViewModel
 
     private var listener: IJobSearchFilter? = null
 
@@ -41,12 +41,12 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
 
     companion object {
 
-        fun newInstance(): JobSearchFilterLocationFragment {
-            return JobSearchFilterLocationFragment()
+        fun newInstance(): JobSearchFilterCompanyIndustryFragment {
+            return JobSearchFilterCompanyIndustryFragment()
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_job_search_filter_location
+    override fun layoutId(): Int = R.layout.fragment_job_search_filter_industry
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -68,8 +68,8 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
             requireActivity(),
             viewModelFactory
         )[JobSearchFilterDialogViewModel::class.java]
-        viewModelLocation = ViewModelProviders.of(this, viewModelFactory)
-            .get(SelectLocationViewModel::class.java)
+        viewModelIndustry = ViewModelProviders.of(this, viewModelFactory)
+            .get(SelectSingleIndustryViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -82,14 +82,14 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
     }
 
     private fun initView() {
-        btn_select_all.isSelected = viewModel.isAllLocationSelected
+        btn_select_all.isSelected = viewModel.isAllIndustriesSelected
         btn_back.setOnClickListener {
             if (btn_select_all.isSelected)
-                viewModel.locationFilter.value = "All"
+                viewModel.companyIndustry.value = "All"
             else
-                viewModel.locationFilter.value = adapter.getSelectedLocationsString()
-            viewModel.isAllLocationSelected = btn_select_all.isSelected
-            viewModel.selectedLocations = adapter.selectedLocations
+                viewModel.companyIndustry.value = adapter.getSelectedIndustriesString()
+            viewModel.isAllIndustriesSelected = btn_select_all.isSelected
+            viewModel.selectedIndustries = adapter.selectedIndustries
             listener?.onBackPressed()
         }
 
@@ -102,34 +102,30 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
     }
 
     private fun initList() {
-        adapter.selectedLocations = viewModel.selectedLocations
+        adapter.selectedIndustries = viewModel.selectedIndustries
         adapter.setRetryCallback(this)
-        adapter.onSelectUnselectLocation = {
+        adapter.onSelectUnselectIndustry = {
             btn_select_all.isSelected = false
         }
         list.adapter = adapter
     }
 
     private fun subscribeToLiveData() {
-        viewModelLocation.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
+        viewModelIndustry.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
-        })
-
-        viewModel.locationFilter.observe(viewLifecycleOwner, Observer {
-
         })
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModelLocation.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModelIndustry.pagedList.observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModelLocation.networkState().observe(viewLifecycleOwner, Observer {
+        viewModelIndustry.networkState().observe(viewLifecycleOwner, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModelLocation.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
+        viewModelIndustry.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 adapter.currentList?.let { list ->
                     if (networkState.status == Status.SUCCESS && list.size == 0)
@@ -139,6 +135,10 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
                 }
             }
         })
+    }
+
+    override fun retry() {
+        viewModelIndustry.retry()
     }
 
     private fun setupSearch() {
@@ -171,11 +171,7 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
     private fun search(query: String?) {
         handlerSearch.removeCallbacksAndMessages(null)
         handlerSearch.postDelayed({
-            viewModelLocation.fetchData(viewLifecycleOwner, query)
+            viewModelIndustry.fetchData(viewLifecycleOwner, query)
         }, AppConstants.SEARCH_DELAY)
-    }
-
-    override fun retry() {
-        viewModelLocation.retry()
     }
 }

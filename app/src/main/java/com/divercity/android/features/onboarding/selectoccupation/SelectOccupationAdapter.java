@@ -132,7 +132,7 @@ public class SelectOccupationAdapter extends RecyclerView.Adapter<SelectOccupati
 
         @Override
         public String toString() {
-            return this.title.substring(this.title.indexOf(" ")).trim();
+            return title;
         }
     }
 }

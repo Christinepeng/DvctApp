@@ -9,10 +9,8 @@ import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateHorizontalViewHolder
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.entity.group.group.GroupResponse
-import javax.inject.Inject
 
-class GroupsSmallAdapter @Inject
-constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+class GroupsSmallAdapter : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null

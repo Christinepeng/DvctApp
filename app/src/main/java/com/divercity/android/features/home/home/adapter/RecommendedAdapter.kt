@@ -28,7 +28,7 @@ constructor(val sessionRepository: SessionRepository) :
     private var retryCallback: RetryCallback? = null
     var groupListener: RecommendedGroupViewHolder.Listener? = null
     var jobListener: RecommendedJobViewHolder.Listener? = null
-    var adapterProxy: AdapterDataObserverProxy? = null
+//    var adapterProxy: AdapterDataObserverProxy? = null
 
     private var discardedGroups = ArrayList<String>()
     private var discardedJobs = ArrayList<String>()
@@ -72,7 +72,7 @@ constructor(val sessionRepository: SessionRepository) :
                 getItem(position) as JobResponse
             )
             GROUP -> (holder as RecommendedGroupViewHolder)
-                .bindTo(position, getItem(position) as GroupResponse)
+                .bindTo(GroupPosition(position, getItem(position) as GroupResponse))
         }
     }
 
@@ -82,7 +82,7 @@ constructor(val sessionRepository: SessionRepository) :
 
     override fun getItemViewType(position: Int): Int {
         return if (hasExtraRow() && position == itemCount - 1) {
-            if(currentList != null && currentList?.size == 0)
+            if (currentList != null && currentList?.size == 0)
                 R.layout.view_network_state
             else
                 R.layout.view_network_state_horizontal
@@ -110,10 +110,10 @@ constructor(val sessionRepository: SessionRepository) :
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
                 notifyItemRemoved(itemCount)
-                adapterProxy?.headerCount = 0
+//                adapterProxy?.headerCount = 0
             } else {
                 notifyItemInserted(itemCount)
-                adapterProxy?.headerCount = 1
+//                adapterProxy?.headerCount = 1
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
             notifyItemChanged(itemCount - 1)
@@ -121,22 +121,21 @@ constructor(val sessionRepository: SessionRepository) :
     }
 
     fun onRefreshRetry() {
-        adapterProxy?.headerCount = 0
+//        adapterProxy?.headerCount = 0
     }
 
-    fun updatePositionOnJoinGroup(position: Int) {
-        (getItem(position) as GroupResponse).attributes.apply {
+    fun updatePositionOnJoinGroup(groupPos: GroupPosition) {
+        groupPos.group.attributes.apply {
             followersCount += 1
             isFollowedByCurrent = true
-            notifyItemChanged(position)
+            notifyItemChanged(groupPos.position)
         }
     }
 
-    fun updatePositionOnJoinRequest(position: Int) {
-        // TODO: update with response group data
-        (getItem(position) as GroupResponse).attributes.apply {
+    fun updatePositionOnJoinGroupRequest(groupPos: GroupPosition) {
+        groupPos.group.attributes.apply {
             requestToJoinStatus = "pending"
-            notifyItemChanged(position)
+            notifyItemChanged(groupPos.position)
         }
     }
 
@@ -170,17 +169,17 @@ constructor(val sessionRepository: SessionRepository) :
         }
     }
 
-    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
-        adapterProxy = AdapterDataObserverProxy(observer)
-        super.registerAdapterDataObserver(adapterProxy!!)
-    }
+//    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
+//        adapterProxy = AdapterDataObserverProxy(observer)
+//        super.registerAdapterDataObserver(adapterProxy!!)
+//    }
 
-    fun onGroupDiscarded(groupPos : GroupPosition){
+    fun onGroupDiscarded(groupPos: GroupPosition) {
         discardedGroups.add(groupPos.group.id)
         notifyItemChanged(groupPos.position)
     }
 
-    fun onJobDiscarded(jobPos : JobPosition){
+    fun onJobDiscarded(jobPos: JobPosition) {
         discardedJobs.add(jobPos.job.id!!)
         notifyItemChanged(jobPos.position)
     }

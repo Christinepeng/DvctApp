@@ -36,7 +36,7 @@ class EnterEmailFragment : BaseFragment() {
     @Inject
     lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 
-    lateinit var connectFacebookApiHelper: ConnectFacebookApiHelper
+    private lateinit var connectFacebookApiHelper: ConnectFacebookApiHelper
 
     lateinit var viewModel: EnterEmailViewModel
     private lateinit var handlerViewPager: Handler
@@ -58,7 +58,7 @@ class EnterEmailFragment : BaseFragment() {
             Timber.e("Called Launch")
             try {
                 FirebaseInstanceId.getInstance().deleteInstanceId()
-            } catch (e : IOException){
+            } catch (e: IOException) {
                 e.printStackTrace()
                 showToast("Error deleting notification token")
             }
@@ -122,9 +122,9 @@ class EnterEmailFragment : BaseFragment() {
     fun showSnackbar(message: String?) {
         activity?.run {
             Snackbar.make(
-                    findViewById(android.R.id.content),
-                    message ?: "Error",
-                    Snackbar.LENGTH_LONG
+                findViewById(android.R.id.content),
+                message ?: "Error",
+                Snackbar.LENGTH_LONG
             ).show()
         }
     }
@@ -152,24 +152,29 @@ class EnterEmailFragment : BaseFragment() {
         }
     }
 
-    fun getEdTxtEmail() : String {
+    fun getEdTxtEmail(): String {
         return user_email.text.toString().trim()
     }
 
     private fun showToast(msg: String?) {
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireActivity().applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
 
     fun setupViewPager() {
         viewPager.adapter = viewPagerEnterEmailAdapter
         val viewPagerDotsPanel = ViewPagerDotsPanel(
-                context,
-                viewPagerEnterEmailAdapter.count,
-                sliderDots
+            context,
+            viewPagerEnterEmailAdapter.count,
+            sliderDots
         )
 
         viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {}
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
 
             override fun onPageSelected(position: Int) {
                 viewPagerDotsPanel.onPageSelected(position)
@@ -184,20 +189,26 @@ class EnterEmailFragment : BaseFragment() {
 
     private val runnable = Runnable {
         viewPager.currentItem =
-                if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
-                    0
-                else
-                    viewPager.currentItem + 1
+            if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
+                0
+            else
+                viewPager.currentItem + 1
     }
 
     override fun onDestroyView() {
-        handlerViewPager.removeCallbacksAndMessages(null)
         super.onDestroyView()
+        handlerViewPager.removeCallbacksAndMessages(null)
+        connectFacebookApiHelper.cancel()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode())
-            connectFacebookApiHelper.facebookCallbackManager.onActivityResult(requestCode, resultCode, data)
+            connectFacebookApiHelper.facebookCallbackManager
+                .onActivityResult(
+                    requestCode,
+                    resultCode,
+                    data
+                )
         super.onActivityResult(requestCode, resultCode, data)
     }
 

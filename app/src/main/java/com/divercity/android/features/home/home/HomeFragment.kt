@@ -16,7 +16,6 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
@@ -61,8 +60,6 @@ class HomeFragment : BaseFragment() {
 
     private var mIsRefreshing = false
     private var positionApplyClicked: Int = 0
-    private var positionJoinRequest: Int = 0
-    private var positionJoinClicked: Int = 0
     private var lastRecommendedUserPositionTap: Int = 0
 
     private var searchView: SearchView? = null
@@ -98,10 +95,6 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-//        newMessageDisposable = RxBus.listen(RxEvent.OnNewMessageReceived::class.java).subscribe {
-//            viewModel.fetchUnreadMessagesCount()
-//        }
         setupToolbar()
         setupEvents()
         initAdapters()
@@ -153,23 +146,20 @@ class HomeFragment : BaseFragment() {
         })
 
         recommendedAdapter.groupListener = object : RecommendedGroupViewHolder.Listener {
-
-            override fun onGroupDiscarded(position: Int, group: GroupResponse) {
-                viewModel.discardRecommendedGroup(GroupPosition(position, group))
+            override fun onGroupRequestJoinClick(groupPos: GroupPosition) {
+                viewModel.requestToJoinGroup(groupPos)
             }
 
-            override fun onGroupRequestJoinClick(position: Int, group: GroupResponse) {
-                positionJoinRequest = position
-                viewModel.requestToJoinGroup(group)
+            override fun onGroupJoinClick(groupPos: GroupPosition) {
+                viewModel.joinGroup(groupPos)
             }
 
-            override fun onGroupClick(group: GroupResponse) {
-                navigator.navigateToGroupDetail(this@HomeFragment, group)
+            override fun onGroupClick(groupPos: GroupPosition) {
+                navigator.navigateToGroupDetail(this@HomeFragment, groupPos.group)
             }
 
-            override fun onGroupJoinClick(position: Int, group: GroupResponse) {
-                positionJoinClicked = position
-                viewModel.joinGroup(group)
+            override fun onGroupDiscarded(groupPos: GroupPosition) {
+                viewModel.discardRecommendedGroup(groupPos)
             }
         }
 
@@ -319,19 +309,17 @@ class HomeFragment : BaseFragment() {
 
         })
 
-        viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer {
-            it?.getContentIfNotHandled()?.let { group ->
-                when (group.status) {
-                    Status.LOADING -> showProgress()
+        viewModel.joinGroupResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                }
 
-                    Status.ERROR -> {
-                        hideProgress()
-                        Toast.makeText(activity, group.message, Toast.LENGTH_SHORT).show()
-                    }
-                    Status.SUCCESS -> {
-                        hideProgress()
-                        recommendedAdapter.updatePositionOnJoinGroup(positionJoinClicked)
-                    }
+                Status.ERROR -> {
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    recommendedAdapter.updatePositionOnJoinGroup(response.data!!)
                 }
             }
         })
@@ -346,7 +334,7 @@ class HomeFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    recommendedAdapter.updatePositionOnJoinRequest(positionJoinRequest)
+                    recommendedAdapter.updatePositionOnJoinGroupRequest(response.data!!)
                 }
             }
         })
@@ -388,7 +376,7 @@ class HomeFragment : BaseFragment() {
                     Status.SUCCESS -> {
                         hideProgressNoBk()
                         recommendedAdapter.onGroupDiscarded(response.data!!)
-//                    recommendedAdapter.updatePositionOnJoinRequest(positionJoinRequest)
+//                    recommendedAdapter.updatePositionOnJoinGroupRequest(positionJoinRequest)
                     }
                 }
             })
@@ -406,7 +394,7 @@ class HomeFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgressNoBk()
                     recommendedAdapter.onJobDiscarded(response.data!!)
-//                    recommendedAdapter.updatePositionOnJoinRequest(positionJoinRequest)
+//                    recommendedAdapter.updatePositionOnJoinGroupRequest(positionJoinRequest)
                 }
             }
         })
@@ -504,21 +492,6 @@ class HomeFragment : BaseFragment() {
             }
         })
 
-//        searchItem?.setOnActionExpandListener(object : MenuItem.OnActionExpandListener {
-//
-//            override fun onMenuItemActionExpand(p0: MenuItem?): Boolean {
-////                menu.findItem(R.id.logout).isVisible = false
-////                menu.findItem(R.id.about).isVisible = false
-//                return true
-//            }
-//
-//            override fun onMenuItemActionCollapse(p0: MenuItem?): Boolean {
-////                menu.findItem(R.id.logout).isVisible = true
-////                menu.findItem(R.id.about).isVisible = true
-//                return true
-//            }
-//        })
-
         super.onCreateOptionsMenu(menu, inflater)
     }
 
@@ -545,10 +518,6 @@ class HomeFragment : BaseFragment() {
         btn_fab.setOnClickListener {
             showHomeTabActionDialog()
         }
-    }
-
-    private fun showToast() {
-        Toast.makeText(requireActivity(), "Coming soon", Toast.LENGTH_SHORT).show()
     }
 
     private fun showAboutDialog() {

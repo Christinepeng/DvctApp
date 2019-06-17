@@ -61,17 +61,19 @@ import com.divercity.android.features.location.onboarding.OnboardingLocationActi
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.android.features.login.step1.EnterEmailActivity
 import com.divercity.android.features.login.step2.LoginActivity
+import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
+import com.divercity.android.features.major.withtoolbar.SelectSingleMajorActivity
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsActivity
-import com.divercity.android.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIActivity
-import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
 import com.divercity.android.features.password.changepassword.ChangePasswordActivity
 import com.divercity.android.features.password.resetpassword.ResetPasswordActivity
+import com.divercity.android.features.school.onboarding.OnboardingSchoolActivity
+import com.divercity.android.features.school.withtoolbar.SelectSingleSchoolActivity
 import com.divercity.android.features.search.SearchActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
@@ -81,11 +83,15 @@ import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import com.divercity.android.features.splash.SplashActivity
+import com.divercity.android.features.user.addediteducation.AddEditEducationActivity
+import com.divercity.android.features.user.addeditworkexperience.AddEditWorkExperienceActivity
+import com.divercity.android.features.user.editexperienceeducation.EditExperienceEducationActivity
 import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
-import com.divercity.android.features.user.experience.AddWorkExperienceActivity
 import com.divercity.android.features.user.myinterests.InterestsActivity
 import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
+import com.divercity.android.model.Education
 import com.divercity.android.model.Question
+import com.divercity.android.model.WorkExperience
 import com.divercity.android.model.user.User
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -137,6 +143,13 @@ class Navigator @Inject constructor() {
         activity.startActivity(LoginActivity.getCallingIntent(activity, email))
     }
 
+    fun navigateToEditExperienceEducationForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(
+            EditExperienceEducationActivity.getCallingIntent(fragment.requireActivity()),
+            code
+        )
+    }
+
     fun navigateToProfilePromptActivity(activity: FragmentActivity) {
         activity.startActivity(ProfilePromptActivity.getCallingIntent(activity))
     }
@@ -145,8 +158,15 @@ class Navigator @Inject constructor() {
         activity.startActivity(SelectUserTypeActivity.getCallingIntent(activity))
     }
 
-    fun navigateToSelectSchoolActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectSchoolActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingSchool(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(OnboardingSchoolActivity.getCallingIntent(activity, progress))
+    }
+
+    fun navigateToSelectSchool(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(
+            SelectSingleSchoolActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToSelectGroupActivity(activity: FragmentActivity, progress: Int) {
@@ -194,8 +214,15 @@ class Navigator @Inject constructor() {
         activity.startActivity(OnboardingEthnicityActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectMajorActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectMajorActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingMajor(activity: FragmentActivity, progress: Int) {
+        activity.startActivity(OnboardingMajorActivity.getCallingIntent(activity, progress))
+    }
+
+    fun navigateToSelectMajor(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(
+            SelectSingleMajorActivity.getCallingIntent(fragment.context),
+            code
+        )
     }
 
     fun navigateToOnboardingSkillActivity(activity: FragmentActivity, progress: Int) {
@@ -533,7 +560,32 @@ class Navigator @Inject constructor() {
 
     fun navigateToAddWorkExperienceForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(
-            AddWorkExperienceActivity.getCallingIntent(fragment.context),
+            AddEditWorkExperienceActivity.getCallingIntent(fragment.context, null),
+            code
+        )
+    }
+
+    fun navigateToEditWorkExperienceForResult(
+        fragment: Fragment,
+        workExperience: WorkExperience,
+        code: Int
+    ) {
+        fragment.startActivityForResult(
+            AddEditWorkExperienceActivity.getCallingIntent(fragment.context, workExperience),
+            code
+        )
+    }
+
+    fun navigateToAddEducationForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(
+            AddEditEducationActivity.getCallingIntent(fragment.context, null),
+            code
+        )
+    }
+
+    fun navigateToEditEducationForResult(fragment: Fragment, education: Education, code: Int) {
+        fragment.startActivityForResult(
+            AddEditEducationActivity.getCallingIntent(fragment.context, education),
             code
         )
     }
@@ -747,10 +799,10 @@ class Navigator @Inject constructor() {
             activity.getString(R.string.student_id) -> {
                 when (activity) {
                     is ProfilePromptActivity ->
-                        navigateToSelectSchoolActivity(activity, progress)
-                    is SelectSchoolActivity ->
-                        navigateToSelectMajorActivity(activity, progress)
-                    is SelectMajorActivity ->
+                        navigateToOnboardingSchool(activity, progress)
+                    is OnboardingSchoolActivity ->
+                        navigateToOnboardingMajor(activity, progress)
+                    is OnboardingMajorActivity ->
                         navigateToOnboardingLocationActivity(activity, progress)
                     is OnboardingLocationActivity ->
                         navigateToSelectOOIActivity(activity, progress)

@@ -54,8 +54,8 @@ android {
         applicationId "com.divercity.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 14
-        versionName "B-1.12"
+        versionCode 15
+        versionName "B-1.13"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -72,14 +72,14 @@ android {
             debuggable false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
-            manifestPlaceholders = [enableCrashReporting: "true", enableAnalytics:"true"]
+            manifestPlaceholders = [enableCrashReporting: "true", enableAnalytics: "true"]
             signingConfig signingConfigs.config
         }
 
         debug {
             minifyEnabled false
             debuggable true
-            manifestPlaceholders = [enableCrashReporting: "false", enableAnalytics:"true"]
+            manifestPlaceholders = [enableCrashReporting: "false", enableAnalytics: "false"]
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
 //            buildConfigField "String", "BASE_URL", '"dev-api.divercity.io"'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -102,24 +102,11 @@ android {
         experimental = true
     }
 
-//    dexOptions {
-//        maxProcessCount 4
-//        javaMaxHeapSize "4g"
-//        dexInProcess = false
-//        preDexLibraries = false
+//    apollo {
+//        schemaFilePath = "src/main/graphql/com/divercity/android/schema.json"
+//        outputPackageName = "com.divercity.android"
 //    }
 }
-
-//configurations.all {
-//    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
-//        def requested = details.requested
-//        if (requested.group == "androidx") {
-//            if (!requested.name.startsWith("multidex")) {
-//                details.useVersion "28.+"
-//            }
-//        }
-//    }
-//}
 
 dependencies {
 
@@ -141,7 +128,7 @@ dependencies {
     def glide_version = "4.9.0"
     def lifecycle_version = '2.2.0-alpha01'
 //    def dagger_version = "2.22.1"
-    def dagger_version = "2.23"
+    def dagger_version = "2.23.1"
 
 //
     def timber_version = "4.7.1"
@@ -150,7 +137,7 @@ dependencies {
 
     def kotlinCoroutines_version = "1.1.1"
 
-    def room_version_runtime = '2.1.0-rc01'
+    def room_version_runtime = '2.1.0'
     def room_version = '2.1.0-alpha04'
 
     def firebase_messaging_version = "18.0.0"
@@ -227,6 +214,8 @@ dependencies {
 
     // Apollo
     implementation "com.apollographql.apollo:apollo-runtime:$apollo_version"
+    compileOnly 'org.jetbrains:annotations:16.0.1'
+    testCompileOnly 'org.jetbrains:annotations:16.0.1'
 
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines_version"

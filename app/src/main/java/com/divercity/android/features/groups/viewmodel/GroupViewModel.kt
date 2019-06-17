@@ -5,9 +5,9 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
+import com.divercity.android.model.position.GroupPosition
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -27,8 +27,8 @@ constructor(
     fun joinGroup(group: GroupPosition) {
         joinPublicGroupResponse.postValue(Resource.loading(null))
 
-        val callback = object : DisposableObserverWrapper<Boolean>() {
-            override fun onSuccess(t: Boolean) {
+        val callback = object : DisposableObserverWrapper<Unit>() {
+            override fun onSuccess(t: Unit) {
                 joinPublicGroupResponse.postValue(Resource.success(group))
             }
 

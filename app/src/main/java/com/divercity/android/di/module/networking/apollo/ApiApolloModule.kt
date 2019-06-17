@@ -6,7 +6,6 @@ import com.apollographql.apollo.response.CustomTypeValue
 import com.divercity.android.BuildConfig
 import com.divercity.android.data.networking.config.CheckConnectivityInterceptor
 import com.divercity.android.repository.session.SessionRepository
-import com.divercity.android.type.CustomType
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient

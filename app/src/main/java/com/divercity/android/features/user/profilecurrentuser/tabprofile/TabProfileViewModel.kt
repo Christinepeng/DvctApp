@@ -7,12 +7,14 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.profile.profile.UserProfileEntity
-import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.selectinterests.usecase.FetchInterestsUseCase
 import com.divercity.android.features.onboarding.selectinterests.usecase.FollowInterestsUseCase
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
+import com.divercity.android.features.user.usecase.FetchEducationsUseCase
 import com.divercity.android.features.user.usecase.FetchWorkExperiencesUseCase
+import com.divercity.android.model.Education
+import com.divercity.android.model.WorkExperience
 import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import com.google.gson.JsonElement
@@ -28,16 +30,14 @@ constructor(
     private val sessionRepository: SessionRepository,
     private val fetchInterestsUseCase: FetchInterestsUseCase,
     private val followInterestsUseCase: FollowInterestsUseCase,
-    private val fetchWorkExperiencesUseCase: FetchWorkExperiencesUseCase
+    private val fetchWorkExperiencesUseCase: FetchWorkExperiencesUseCase,
+    private val fetchEducationsUseCase: FetchEducationsUseCase
 ) : BaseViewModel() {
 
-    var fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
+    val fetchInterestsResponse = MutableLiveData<Resource<List<InterestsResponse>>>()
     val updateUserProfileResponse = SingleLiveEvent<Resource<User>>()
-    var fetchWorkExperiencesResponse = MutableLiveData<Resource<List<WorkExperienceResponse>>>()
-
-    fun getUserType(): String? {
-        return sessionRepository.getUserType()
-    }
+    val fetchWorkExperiencesResponse = MutableLiveData<Resource<List<WorkExperience>>>()
+    val fetchEducationsResponse = MutableLiveData<Resource<List<Education>>>()
 
     fun getCurrentUser(): LiveData<User> {
         return sessionRepository.getUserDB()
@@ -72,7 +72,7 @@ constructor(
 
     fun fetchWorkExperiences() {
         fetchWorkExperiencesResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<List<WorkExperienceResponse>>() {
+        val callback = object : DisposableObserverWrapper<List<WorkExperience>>() {
             override fun onFail(error: String) {
                 fetchWorkExperiencesResponse.postValue(Resource.error(error, null))
             }
@@ -81,13 +81,34 @@ constructor(
                 fetchWorkExperiencesResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: List<WorkExperienceResponse>) {
+            override fun onSuccess(o: List<WorkExperience>) {
                 fetchWorkExperiencesResponse.postValue(Resource.success(o))
             }
         }
         fetchWorkExperiencesUseCase.execute(
             callback,
             FetchWorkExperiencesUseCase.Params.to(sessionRepository.getUserId())
+        )
+    }
+
+    fun fetchEducations() {
+        fetchEducationsResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<List<Education>>() {
+            override fun onFail(error: String) {
+                fetchEducationsResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                fetchEducationsResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: List<Education>) {
+                fetchEducationsResponse.postValue(Resource.success(o))
+            }
+        }
+        fetchEducationsUseCase.execute(
+            callback,
+            FetchEducationsUseCase.Params.to(sessionRepository.getUserId())
         )
     }
 
@@ -120,5 +141,6 @@ constructor(
         updateUserProfileUseCase.dispose()
         fetchInterestsUseCase.dispose()
         followInterestsUseCase.dispose()
+        fetchEducationsUseCase.dispose()
     }
 }

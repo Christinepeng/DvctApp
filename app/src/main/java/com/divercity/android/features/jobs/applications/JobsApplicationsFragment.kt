@@ -58,20 +58,20 @@ class JobsApplicationsFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     private fun subscribeToLiveData() {
-//        detailViewModel.publishUnpublishJobResponse.observe(this, Observer { company ->
-//            when (company?.status) {
+//        detailViewModel.publishUnpublishJobResponse.observe(this, Observer { companyName ->
+//            when (companyName?.status) {
 //                Status.LOADING -> {
 //                    showProgress()
 //                }
 //
 //                Status.ERROR -> {
 //                    hideProgress()
-//                    Toast.makeText(activity, company.message, Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(activity, companyName.message, Toast.LENGTH_SHORT).show()
 //                }
 //                Status.SUCCESS -> {
 //                    hideProgress()
 //                    singleAdapter.currentList?.get(positionSaveUnsavedClicked)?.userAttributes?.isBookmarkedByCurrent =
-//                            company.data?.userAttributes?.isBookmarkedByCurrent
+//                            companyName.data?.userAttributes?.isBookmarkedByCurrent
 //                    singleAdapter.notifyItemChanged(positionSaveUnsavedClicked)
 //                }
 //            }

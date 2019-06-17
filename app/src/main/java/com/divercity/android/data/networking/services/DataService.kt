@@ -7,10 +7,10 @@ import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.android.data.entity.industry.IndustryResponse
 import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.location.LocationResponse
-import com.divercity.android.data.entity.major.MajorResponse
+import com.divercity.android.data.entity.major.MajorEntityResponse
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse
 import com.divercity.android.data.entity.photo.PhotoEntityResponse
-import com.divercity.android.data.entity.school.SchoolResponse
+import com.divercity.android.data.entity.school.SchoolEntityResponse
 import com.divercity.android.data.entity.skills.SkillResponse
 
 import io.reactivex.Observable
@@ -45,14 +45,14 @@ interface DataService {
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<SchoolResponse>>>
+    ): Observable<Response<DataArray<SchoolEntityResponse>>>
 
     @GET("data/student_majors")
     fun fetchStudentMajors(
         @Query("page[number]") pageNumber: Int,
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
-    ): Observable<Response<DataArray<MajorResponse>>>
+    ): Observable<Response<DataArray<MajorEntityResponse>>>
 
     @GET("data/company_sizes")
     fun fetchCompanySizes(): Observable<Response<DataArray<CompanySizeResponse>>>

@@ -23,7 +23,7 @@ constructor(val sessionRepository: SessionRepository) :
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
     var listener: RecommendedConnectionViewHolder.Listener? = null
-    private var adapterProxy: AdapterDataObserverProxy? = null
+//    private var adapterProxy: AdapterDataObserverProxy? = null
 
     private var discarded = ArrayList<String>()
 
@@ -94,10 +94,10 @@ constructor(val sessionRepository: SessionRepository) :
         if (hadExtraRow != hasExtraRow) {
             if (hadExtraRow) {
                 notifyItemRemoved(itemCount)
-                adapterProxy?.headerCount = 0
+//                adapterProxy?.headerCount = 0
             } else {
                 notifyItemInserted(itemCount)
-                adapterProxy?.headerCount = 1
+//                adapterProxy?.headerCount = 1
             }
         } else if (hasExtraRow && previousState !== newNetworkState) {
             notifyItemChanged(itemCount - 1)
@@ -105,7 +105,7 @@ constructor(val sessionRepository: SessionRepository) :
     }
 
     fun onRefreshRetry() {
-        adapterProxy?.headerCount = 0
+//        adapterProxy?.headerCount = 0
     }
 
     companion object {
@@ -128,10 +128,10 @@ constructor(val sessionRepository: SessionRepository) :
         }
     }
 
-    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
-        adapterProxy = AdapterDataObserverProxy(observer)
-        super.registerAdapterDataObserver(adapterProxy!!)
-    }
+//    override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {
+//        adapterProxy = AdapterDataObserverProxy(observer)
+//        super.registerAdapterDataObserver(adapterProxy!!)
+//    }
 
     fun onUserDiscarded(userPosition: UserPosition) {
         discarded.add(userPosition.user.id)

@@ -89,8 +89,8 @@ constructor(
     fun joinGroup(group: GroupResponse) {
         joinGroupResponse.postValue(Event(Resource.loading(null)))
 
-        val callback = object : DisposableObserverWrapper<Boolean>() {
-            override fun onSuccess(t: Boolean) {
+        val callback = object : DisposableObserverWrapper<Unit>() {
+            override fun onSuccess(t: Unit) {
                 joinGroupResponse.postValue(Event(Resource.success(t)))
             }
 

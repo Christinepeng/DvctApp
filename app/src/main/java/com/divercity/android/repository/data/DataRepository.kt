@@ -6,11 +6,11 @@ import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.android.data.entity.industry.IndustryResponse
 import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.location.LocationResponse
-import com.divercity.android.data.entity.major.MajorResponse
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse
 import com.divercity.android.data.entity.photo.PhotoEntityResponse
-import com.divercity.android.data.entity.school.SchoolResponse
 import com.divercity.android.data.entity.skills.SkillResponse
+import com.divercity.android.model.Major
+import com.divercity.android.model.School
 import io.reactivex.Observable
 
 /**
@@ -23,9 +23,9 @@ interface DataRepository {
 
     fun fetchIndustries(page: Int, size: Int, query: String?): Observable<List<IndustryResponse>>
 
-    fun fetchSchool(page: Int, size: Int, query: String?): Observable<List<SchoolResponse>>
+    fun fetchSchool(page: Int, size: Int, query: String?): Observable<List<School>>
 
-    fun fetchMajors(page: Int, size: Int, query: String?): Observable<List<MajorResponse>>
+    fun fetchMajors(page: Int, size: Int, query: String?): Observable<List<Major>>
 
     fun fetchLocations(page: Int, size: Int, query: String?): Observable<List<LocationResponse>>
 

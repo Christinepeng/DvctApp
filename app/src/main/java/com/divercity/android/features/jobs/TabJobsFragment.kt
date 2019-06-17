@@ -100,8 +100,8 @@ class TabJobsFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
-                filterItem?.isVisible =
-                    adapterTab.getRegisteredFragment(viewpager.currentItem) is JobsListFragment
+//                filterItem?.isVisible =
+//                    adapterTab.getRegisteredFragment(viewpager.currentItem) is JobsListFragment
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                     ?.search(lastSearchQuery)
             }
@@ -138,15 +138,15 @@ class TabJobsFragment : BaseFragment() {
             }
         })
 
+//        if (viewModel.adapterPosition == 0 && viewModel.isLoggedUserJobSeeker() ||
+//            viewModel.adapterPosition == 1 && !viewModel.isLoggedUserJobSeeker()
+//        )
+//            filterItem?.isVisible = true
+
         if (viewModel.adapterPosition == 0 && viewModel.isLoggedUserJobSeeker() ||
             viewModel.adapterPosition == 1 && !viewModel.isLoggedUserJobSeeker()
         )
-            filterItem?.isVisible = true
-//        else if(adapterTab.getJobsTabPosition() == 1 && !viewModel.isLoggedUserJobSeeker()) {
-//            val prevPos = viewModel.adapterPosition
-//            if (prevPos != null && prevPos == adapterTab.getJobsTabPosition())
-//                filterItem?.isVisible = true
-//        }
+            filterItem?.isVisible = false
 
         super.onCreateOptionsMenu(menu, inflater)
     }

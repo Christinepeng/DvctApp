@@ -56,17 +56,31 @@
         android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/view7" />
 
+    <!--<androidx.recyclerview.widget.RecyclerView-->
+    <!--android:id="@+id/list_users"-->
+    <!--android:layout_width="0dp"-->
+    <!--android:layout_height="0dp"-->
+    <!--android:background="?android:colorBackground"-->
+    <!--android:maxHeight="50dp"-->
+    <!--android:visibility="gone"-->
+    <!--app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"-->
+    <!--app:layout_constraintBottom_toTopOf="@+id/et_msg"-->
+    <!--app:layout_constraintEnd_toEndOf="parent"-->
+    <!--app:layout_constraintHeight_default="wrap"-->
+    <!--app:layout_constraintHeight_max="200dp"-->
+    <!--app:layout_constraintStart_toStartOf="parent" />-->
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list_users"
         android:layout_width="0dp"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:background="?android:colorBackground"
         android:maxHeight="50dp"
         android:visibility="gone"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constrainedHeight="true"
         app:layout_constraintBottom_toTopOf="@+id/et_msg"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHeight_default="wrap"
         app:layout_constraintHeight_max="200dp"
         app:layout_constraintStart_toStartOf="parent" />
 

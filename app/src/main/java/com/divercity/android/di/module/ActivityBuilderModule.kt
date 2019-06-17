@@ -1,5 +1,8 @@
 package com.divercity.android.di.module
 
+import com.divercity.android.di.module.fragments.FragmentBuilderModule
+import com.divercity.android.di.module.fragments.FragmentDataBuilderModule
+import com.divercity.android.di.module.fragments.FragmentSessionBuilderModule
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeActivity
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeActivity
 import com.divercity.android.features.chat.chat.ChatActivity
@@ -50,17 +53,19 @@ import com.divercity.android.features.location.onboarding.OnboardingLocationActi
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.android.features.login.step1.EnterEmailActivity
 import com.divercity.android.features.login.step2.LoginActivity
+import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
+import com.divercity.android.features.major.withtoolbar.SelectSingleMajorActivity
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsActivity
-import com.divercity.android.features.onboarding.selectmajor.SelectMajorActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIActivity
-import com.divercity.android.features.onboarding.selectschool.SelectSchoolActivity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeActivity
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
 import com.divercity.android.features.password.changepassword.ChangePasswordActivity
 import com.divercity.android.features.password.resetpassword.ResetPasswordActivity
+import com.divercity.android.features.school.onboarding.OnboardingSchoolActivity
+import com.divercity.android.features.school.withtoolbar.SelectSingleSchoolActivity
 import com.divercity.android.features.search.SearchActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
@@ -70,8 +75,10 @@ import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import com.divercity.android.features.splash.SplashActivity
+import com.divercity.android.features.user.addediteducation.AddEditEducationActivity
+import com.divercity.android.features.user.addeditworkexperience.AddEditWorkExperienceActivity
+import com.divercity.android.features.user.editexperienceeducation.EditExperienceEducationActivity
 import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
-import com.divercity.android.features.user.experience.AddWorkExperienceActivity
 import com.divercity.android.features.user.myinterests.InterestsActivity
 import com.divercity.android.features.user.profileotheruser.OtherUserProfileActivity
 import dagger.Module
@@ -84,20 +91,100 @@ import dagger.android.ContributesAndroidInjector
 @Module
 abstract class ActivityBuilderModule {
 
+    //COMPANY
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingCompanyActivity(): OnboardingCompanyActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindToolbarCompanyActivity(): ToolbarCompanyActivity
+
+    //SCHOOL
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingSchoolActivity(): OnboardingSchoolActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindToolbarSchoolActivity(): SelectSingleSchoolActivity
+
+    //LOCATION
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingLocationActivity(): OnboardingLocationActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindSelectLocationActivity(): ToolbarLocationActivity
+
+    //MAJOR
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingMajorActivity(): OnboardingMajorActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindSelectSingleMajorActivity(): SelectSingleMajorActivity
+
+    //INDUSTRY
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingIndustryActivity(): SelectIndustryOnboardingActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindToolbarIndustryActivity(): SelectSingleIndustryActivity
+
+    //ETHNICITY
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingEthnicityActivity(): OnboardingEthnicityActivity
+
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindToolbarEthnicityActivity(): ToolbarEthnicityActivity
+
+    //GENDER
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingGenderActivity(): OnboardingGenderActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindToolbarGenderActivity(): ToolbarGenderActivity
+
+    //AGE
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindToolbarAgeActivity(): ToolbarAgeActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindSelectBirthdayActivity(): OnboardingAgeActivity
+
+    //SKILL
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindOnboardingSkillActivity(): OnboardingSkillActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindJobSkillsActivity(): JobSkillsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindEditUserSkillActivity(): EditUserSkillActivity
+
+
+    //SESSION
+
+    @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
+    abstract fun bindEnterEmailActivity(): EnterEmailActivity
+
+    @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
+    abstract fun bindLoginActivity(): LoginActivity
+
+    @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
+    abstract fun bindSignUpActivity(): SignUpActivity
+
+
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSplashActivity(): SplashActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindHomeActivity(): HomeActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindEnterEmailActivity(): EnterEmailActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindLoginActivity(): LoginActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSignUpActivity(): SignUpActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectUserTypeActivity(): SelectUserTypeActivity
@@ -106,31 +193,10 @@ abstract class ActivityBuilderModule {
     abstract fun bindProfilePromptActivity(): ProfilePromptActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectSchoolActivity(): SelectSchoolActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectGroupActivity(): SelectGroupActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectBirthdayActivity(): OnboardingAgeActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectCompanyActivity(): OnboardingCompanyActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindOnboardingLocationActivity(): OnboardingLocationActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindOnboardingEthnicityActivity(): OnboardingEthnicityActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindOnboardingGenderActivity(): OnboardingGenderActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectInterestsActivity(): SelectInterestsActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectMajorActivity(): SelectMajorActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectOccupationActivity(): SelectOccupationActivity
@@ -141,20 +207,14 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindJobPostingActivity(): JobPostingActivity
 
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindSelectLocationActivity(): ToolbarLocationActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindToolbarCompanyActivity(): ToolbarCompanyActivity
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindCreateCompanyActivity(): CreateCompanyActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindJobTypeActivity(): JobTypeActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindShareJobGroupActivity(): ShareJobGroupActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindJobSkillsActivity(): JobSkillsActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindJobDescriptionSeekerActivity(): JobDetailActivity
@@ -166,28 +226,10 @@ abstract class ActivityBuilderModule {
     abstract fun bindJobApplicantsActivity(): JobApplicantsActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindCreateCompanyActivity(): CreateCompanyActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindOnboardingIndustryActivity(): SelectIndustryOnboardingActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindToolbarIndustryActivity(): SelectSingleIndustryActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindCompanySizesActivity(): CompanySizesActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectOOIActivity(): SelectOOIActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindToolbarEthnicityActivity(): ToolbarEthnicityActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindToolbarGenderActivity(): ToolbarGenderActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindToolbarAgeActivity(): ToolbarAgeActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindDirectMessagesActivity(): ChatsActivity
@@ -241,13 +283,7 @@ abstract class ActivityBuilderModule {
     abstract fun bindLoadUrlActivity(): LoadUrlActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindOnboardingSkillActivity(): OnboardingSkillActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindUploadResumeActivity(): UploadResumeActivity
-
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindToolbarSkillsActivity(): EditUserSkillActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindOtherUserProfileActivity(): OtherUserProfileActivity
@@ -271,7 +307,7 @@ abstract class ActivityBuilderModule {
     abstract fun bindCompanyAdminAddActivity(): SingleUserActionActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
-    abstract fun bindAddWorkExperienceActivity(): AddWorkExperienceActivity
+    abstract fun bindAddWorkExperienceActivity(): AddEditWorkExperienceActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindCompanyAddAdminActivity(): CompanyAddAdminActivity
@@ -305,4 +341,10 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindFollowedGroupsActivity(): FollowedGroupsActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindEditExperienceEducationActivity(): EditExperienceEducationActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindAddEducationActivity(): AddEditEducationActivity
 }

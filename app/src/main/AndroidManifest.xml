@@ -149,7 +149,12 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectschool.SelectSchoolActivity"
+            android:name=".features.school.onboarding.OnboardingSchoolActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.school.withtoolbar.SelectSingleSchoolActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -190,7 +195,12 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.selectmajor.SelectMajorActivity"
+            android:name=".features.major.withtoolbar.SelectSingleMajorActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.major.onboarding.OnboardingMajorActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -429,7 +439,7 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.user.experience.AddWorkExperienceActivity"
+            android:name=".features.user.addeditworkexperience.AddEditWorkExperienceActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
@@ -485,6 +495,16 @@
 
         <activity
             android:name=".features.groups.followedgroups.FollowedGroupsActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.user.editexperienceeducation.EditExperienceEducationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.user.addediteducation.AddEditEducationActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

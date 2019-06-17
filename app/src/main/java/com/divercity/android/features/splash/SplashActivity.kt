@@ -31,25 +31,6 @@ class SplashActivity : DaggerAppCompatActivity() {
 
     companion object {
 
-//        const val PARAM_PN_TYPE = "paramPushNotificationType"
-//
-//        // ADD CHAT MESSAGE
-//        const val TYPE_PN_NEW_MESSAGE = 1
-//
-//        fun getChatMessagePNBundle(
-//            pnType: String,
-//            userName: String,
-//            userId: String?,
-//            chatId: Int
-//        ): Bundle {
-//            val bundle = Bundle()
-//            bundle.putString(PARAM_PN_TYPE, pnType)
-//            bundle.putString(ChatActivity.PARAM_USER_ID, userId)
-//            bundle.putString(ChatActivity.PARAM_DISPLAY_NAME, userName)
-//            bundle.putInt(ChatActivity.PARAM_CHAT_ID, chatId)
-//            return bundle
-//        }
-
         fun getCallingIntent(
             context: Context,
             bundle: Bundle

@@ -16,9 +16,9 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val userRepository: UserRepository
-) : UseCase<Boolean, JoinGroupUseCase.Params>(executorThread, uiThread) {
+) : UseCase<Unit, JoinGroupUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<Boolean> {
+    override fun createObservableUseCase(params: Params): Observable<Unit> {
         return userRepository.joinGroup(params.groupId)
     }
 

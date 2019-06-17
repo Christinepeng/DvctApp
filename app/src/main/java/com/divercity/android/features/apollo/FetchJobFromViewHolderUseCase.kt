@@ -1,7 +1,6 @@
 package com.divercity.android.features.apollo
 
 import com.apollographql.apollo.ApolloQueryCall
-import com.divercity.android.JobQuery
 import com.divercity.android.core.base.usecase.ApolloSuspendUseCase
 import javax.inject.Inject
 

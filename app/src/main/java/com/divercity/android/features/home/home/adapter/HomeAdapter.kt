@@ -123,7 +123,6 @@ constructor(
         }
     }
 
-
     fun getRightPosition(position: Int) = if (position < 5) AMOUNT_HEADERS else 3
 
     override fun getItemCount(): Int {

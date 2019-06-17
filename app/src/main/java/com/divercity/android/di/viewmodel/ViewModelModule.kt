@@ -28,6 +28,7 @@ import com.divercity.android.features.company.selectcompany.base.SelectCompanyVi
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyViewModel
 import com.divercity.android.features.dialogs.jobapplication.JobApplicationDialogViewModel
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogViewModel
+import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogViewModel
 import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogViewModel
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogViewModel
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityViewModel
@@ -69,7 +70,6 @@ import com.divercity.android.features.jobs.jobposting.JobPostingViewModel
 import com.divercity.android.features.jobs.jobposting.jobtype.JobTypeViewModel
 import com.divercity.android.features.jobs.jobposting.sharetogroup.ShareJobGroupViewModel
 import com.divercity.android.features.jobs.jobs.JobsListViewModel
-import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogViewModel
 import com.divercity.android.features.jobs.mypostings.MyJobsPostingsViewModel
 import com.divercity.android.features.jobs.savedjobs.SavedJobsViewModel
 import com.divercity.android.features.jobs.similarjobs.SimilarJobListViewModel
@@ -78,17 +78,19 @@ import com.divercity.android.features.location.base.SelectLocationViewModel
 import com.divercity.android.features.location.onboarding.OnboardingLocationViewModel
 import com.divercity.android.features.login.step1.EnterEmailViewModel
 import com.divercity.android.features.login.step2.LoginViewModel
+import com.divercity.android.features.major.base.SelectMajorViewModel
+import com.divercity.android.features.major.onboarding.OnboardingMajorViewModel
 import com.divercity.android.features.multipleuseraction.MultipleUserActionViewModel
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptViewModel
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsViewModel
-import com.divercity.android.features.onboarding.selectmajor.SelectMajorViewModel
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationViewModel
 import com.divercity.android.features.onboarding.selectoccupationofinterests.SelectOOIViewModel
-import com.divercity.android.features.onboarding.selectschool.SelectSchoolViewModel
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
 import com.divercity.android.features.password.changepassword.ChangePasswordViewModel
 import com.divercity.android.features.password.resetpassword.ResetPasswordViewModel
+import com.divercity.android.features.school.base.SelectSchoolViewModel
+import com.divercity.android.features.school.onboarding.OnboardingSchoolViewModel
 import com.divercity.android.features.search.SearchViewModel
 import com.divercity.android.features.settings.ProfileSettingsViewModel
 import com.divercity.android.features.settings.accountsettings.AccountSettingsViewModel
@@ -99,9 +101,11 @@ import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
 import com.divercity.android.features.skill.jobskills.JobSkillsViewModel
 import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
 import com.divercity.android.features.splash.SplashViewModel
+import com.divercity.android.features.user.addediteducation.AddEditEducationViewModel
+import com.divercity.android.features.user.addeditworkexperience.AddEditWorkExperienceViewModel
 import com.divercity.android.features.user.allconnections.AllConnectionsViewModel
+import com.divercity.android.features.user.editexperienceeducation.EditExperienceEducationViewModel
 import com.divercity.android.features.user.editpersonal.PersonalSettingsViewModel
-import com.divercity.android.features.user.experience.AddWorkExperienceViewModel
 import com.divercity.android.features.user.myinterests.InterestsViewModel
 import com.divercity.android.features.user.profilecurrentuser.CurrentUserProfileViewModel
 import com.divercity.android.features.user.profilecurrentuser.tabprofile.TabProfileViewModel
@@ -170,6 +174,11 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
+    @ViewModelKey(OnboardingSchoolViewModel::class)
+    abstract fun bindsOnboardingSchoolViewModel(viewModel: OnboardingSchoolViewModel): ViewModel
+
+    @Binds
+    @IntoMap
     @ViewModelKey(SelectGroupViewModel::class)
     abstract fun bindsSelectGroupViewModel(viewModel: SelectGroupViewModel): ViewModel
 
@@ -202,6 +211,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectSingleIndustryViewModel::class)
     abstract fun bindsSelectSingleIndustryViewModel(viewModel: SelectSingleIndustryViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(OnboardingMajorViewModel::class)
+    abstract fun bindsOnboardingMajorViewModel(viewModel: OnboardingMajorViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -556,8 +570,8 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(AddWorkExperienceViewModel::class)
-    abstract fun bindsAddWorkExperienceViewModel(viewModel: AddWorkExperienceViewModel): ViewModel
+    @ViewModelKey(AddEditWorkExperienceViewModel::class)
+    abstract fun bindsAddWorkExperienceViewModel(viewModel: AddEditWorkExperienceViewModel): ViewModel
 
     @Binds
     @IntoMap
@@ -648,4 +662,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(JobSearchFilterDialogViewModel::class)
     abstract fun bindsJobSearchFilterViewModel(viewModel: JobSearchFilterDialogViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(EditExperienceEducationViewModel::class)
+    abstract fun bindsEditExperienceEducationViewModel(viewModel: EditExperienceEducationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(AddEditEducationViewModel::class)
+    abstract fun bindsAddEducationViewModel(viewModel: AddEditEducationViewModel): ViewModel
 }

@@ -5,7 +5,6 @@ import com.apollographql.apollo.ApolloCall
 import com.apollographql.apollo.ApolloQueryCall
 import com.apollographql.apollo.api.Response
 import com.apollographql.apollo.exception.ApolloException
-import com.divercity.android.JobQuery
 import com.divercity.android.core.functional.Either
 import com.divercity.android.data.entity.chat.messages.ChatMessageEntityResponse
 import kotlinx.coroutines.*

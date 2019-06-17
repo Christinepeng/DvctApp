@@ -1,11 +1,14 @@
 package com.divercity.android.repository.user
 
 import com.divercity.android.core.base.BaseRepository
+import com.divercity.android.core.extension.toEducation
 import com.divercity.android.data.entity.activity.notification.NotificationResponse
 import com.divercity.android.data.entity.activity.notificationread.DataItem
 import com.divercity.android.data.entity.activity.notificationread.NotificationReadBody
 import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceEntityResponse
+import com.divercity.android.data.entity.education.body.EducationEntity
+import com.divercity.android.data.entity.education.body.EducationEntityBody
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody
@@ -17,8 +20,9 @@ import com.divercity.android.data.entity.profile.profile.UserProfileEntityBody
 import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBody
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
-import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
 import com.divercity.android.data.networking.services.UserService
+import com.divercity.android.model.Education
+import com.divercity.android.model.WorkExperience
 import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
 import io.reactivex.Observable
@@ -53,10 +57,9 @@ constructor(
             }
     }
 
-    override fun joinGroup(groupId: String): Observable<Boolean> {
+    override fun joinGroup(groupId: String): Observable<Unit> {
         return userService.joinGroup(groupId).map { response ->
             checkResponse(response)
-            true
         }
     }
 
@@ -234,23 +237,6 @@ constructor(
             }
     }
 
-    override fun fetchWorkExperiences(userId: String): Observable<List<WorkExperienceResponse>> {
-        return userService.fetchWorkExperiences(userId).map { response ->
-            checkResponse(response)
-            response.body()!!.data
-        }
-    }
-
-    override fun addNewExperience(
-        userId: String,
-        experience: WorkExperienceBody
-    ): Observable<WorkExperienceResponse> {
-        return userService.addNewExperience(userId, experience).map { response ->
-            checkResponse(response)
-            response.body()!!.data
-        }
-    }
-
     override fun changePassword(
         oldPassword: String,
         newPassword: String,
@@ -263,6 +249,104 @@ constructor(
             )
         ).map {
             checkResponse(it)
+        }
+    }
+
+    //EDUCATION
+
+    override fun fetchEducations(userId: String): Observable<List<Education>> {
+        return userService.fetchEducations(userId).map { response ->
+            checkResponse(response)
+            response.body()!!.data.map {
+                it.toEducation()
+            }
+        }
+    }
+
+    override fun addEducation(
+        schoolId: String,
+        major: String,
+        from: String,
+        to: String
+    ): Observable<Education> {
+        return userService.addEducation(
+            sessionRepository.getUserId(),
+            EducationEntityBody(EducationEntity(major, schoolId, from, to))
+        ).map {
+            checkResponse(it)
+            it.body()!!.data.toEducation()
+        }
+    }
+
+    override fun updateEducation(
+        educationId: String,
+        schoolId: String?,
+        major: String?,
+        from: String?,
+        to: String?
+    ): Observable<Education> {
+        return userService.updateEducation(
+            sessionRepository.getUserId(),
+            educationId,
+            EducationEntityBody(EducationEntity(major, schoolId, from, to))
+        ).map {
+            checkResponse(it)
+            it.body()!!.data.toEducation()
+        }
+    }
+
+    override fun deleteEducation(educationId: String): Observable<Unit> {
+        return userService.deleteEducation(
+            sessionRepository.getUserId(),
+            educationId
+        ).map {
+            checkResponse(it)
+        }
+    }
+
+    //WORK EXPERIENCE
+
+    override fun fetchWorkExperiences(userId: String): Observable<List<WorkExperience>> {
+        return userService.fetchWorkExperiences(userId).map { response ->
+            checkResponse(response)
+            response.body()!!.data.map {
+                it.toWorkExperience()
+            }
+        }
+    }
+
+    override fun addExperience(
+        experience: WorkExperienceBody
+    ): Observable<WorkExperience> {
+        return userService.addNewExperience(
+            sessionRepository.getUserId(),
+            experience
+        ).map { response ->
+            checkResponse(response)
+            response.body()!!.data.toWorkExperience()
+        }
+    }
+
+    override fun updateExperience(
+        experienceId: String,
+        experience: WorkExperienceBody
+    ): Observable<WorkExperience> {
+        return userService.updateExperience(
+            sessionRepository.getUserId(),
+            experienceId,
+            experience
+        ).map { response ->
+            checkResponse(response)
+            response.body()!!.data.toWorkExperience()
+        }
+    }
+
+    override fun deleteExperience(experienceId: String): Observable<Unit> {
+        return userService.deleteExperience(
+            sessionRepository.getUserId(),
+            experienceId
+        ).map { response ->
+            checkResponse(response)
         }
     }
 }

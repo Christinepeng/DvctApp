@@ -37,7 +37,6 @@ import javax.inject.Inject
 
 class CreateNewPostFragment : BaseFragment(), RetryCallback {
 
-    @Inject
     lateinit var adapter: GroupsSmallAdapter
 
     @Inject
@@ -150,6 +149,7 @@ class CreateNewPostFragment : BaseFragment(), RetryCallback {
         }
         list_selected_groups.adapter = adapterSelected
 
+        adapter = GroupsSmallAdapter()
         adapter.setRetryCallback(this)
         adapter.onSelectUnselectGroup = {
             adapterSelected.groups = it

@@ -7,7 +7,8 @@ import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
-import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
+import com.divercity.android.model.Education
+import com.divercity.android.model.WorkExperience
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
@@ -23,7 +24,7 @@ interface UserRepository {
 
     fun fetchLoggedUserData(): Observable<User>
 
-    fun joinGroup(groupId: String): Observable<Boolean>
+    fun joinGroup(groupId: String): Observable<Unit>
 
     fun uploadUserPhoto(body: ProfilePictureBody): Observable<User>
 
@@ -46,13 +47,6 @@ interface UserRepository {
     fun declineConnectionRequest(userId: String): Observable<Unit>
 
     fun markNotificationRead(notificationId: String): Observable<Unit>
-
-    fun fetchWorkExperiences(userId: String): Observable<List<WorkExperienceResponse>>
-
-    fun addNewExperience(
-        userId: String,
-        experience: WorkExperienceBody
-    ): Observable<WorkExperienceResponse>
 
     fun fetchFollowersByUser(
         userId: String,
@@ -96,5 +90,45 @@ interface UserRepository {
         oldPassword: String,
         newPassword: String,
         confirmation: String
+    ): Observable<Unit>
+
+    fun fetchEducations(
+        userId: String
+    ): Observable<List<Education>>
+
+    fun addEducation(
+        schoolId: String,
+        major: String,
+        from: String,
+        to: String
+    ): Observable<Education>
+
+    fun updateEducation(
+        educationId: String,
+        schoolId: String?,
+        major: String?,
+        from: String?,
+        to: String?
+    ): Observable<Education>
+
+    fun deleteEducation(
+        educationId: String
+    ): Observable<Unit>
+
+    //WORK EXPERIENCE
+
+    fun fetchWorkExperiences(userId: String): Observable<List<WorkExperience>>
+
+    fun addExperience(
+        experience: WorkExperienceBody
+    ): Observable<WorkExperience>
+
+    fun updateExperience(
+        experienceId: String,
+        experience: WorkExperienceBody
+    ): Observable<WorkExperience>
+
+    fun deleteExperience(
+        experienceId: String
     ): Observable<Unit>
 }

@@ -60,7 +60,7 @@ data class AttributesEntity(
     @field:SerializedName("nickname")
     var nickname: String? = String.empty(),
 
-    @field:SerializedName("company")
+    @field:SerializedName("companyName")
     var company: CompanyEntity? = CompanyEntity.empty(),
 
     @field:SerializedName("is_followed_by_current")

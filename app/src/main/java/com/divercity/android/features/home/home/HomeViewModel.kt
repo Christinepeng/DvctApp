@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
 import com.divercity.android.core.bus.RxBus
 import com.divercity.android.core.bus.RxEvent
-import com.divercity.android.core.utils.Event
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
-import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.home.HomeItem
 import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.message.MessageResponse
@@ -38,9 +36,9 @@ constructor(
     private val saveJobUseCase: SaveJobUseCase
 ) : BaseViewModelPagination<HomeItem>(repository) {
 
-    var requestToJoinResponse = SingleLiveEvent<Resource<MessageResponse>>()
+    var requestToJoinResponse = SingleLiveEvent<Resource<GroupPosition>>()
     var fetchUnreadMessagesCountResponse = MutableLiveData<Resource<Int>>()
-    var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
+    var joinGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
     var discardRecommendedJobsResponse = SingleLiveEvent<Resource<JobPosition>>()
     var discardRecommendedGroupsResponse = SingleLiveEvent<Resource<GroupPosition>>()
     var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobPosition>>()
@@ -61,23 +59,23 @@ constructor(
         }
     }
 
-    fun joinGroup(group: GroupResponse) {
-        joinGroupResponse.postValue(Event(Resource.loading(null)))
+    fun joinGroup(groupPos: GroupPosition) {
+        joinGroupResponse.postValue(Resource.loading(null))
 
-        val callback = object : DisposableObserverWrapper<Boolean>() {
-            override fun onSuccess(t: Boolean) {
-                joinGroupResponse.postValue(Event(Resource.success(t)))
+        val callback = object : DisposableObserverWrapper<Unit>() {
+            override fun onHttpException(error: JsonElement?) {
+                joinGroupResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(t: Unit) {
+                joinGroupResponse.postValue(Resource.success(groupPos))
             }
 
             override fun onFail(error: String) {
-                joinGroupResponse.postValue(Event(Resource.error(error, null)))
-            }
-
-            override fun onHttpException(error: JsonElement) {
-                joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
+                joinGroupResponse.postValue(Resource.error(error, null))
             }
         }
-        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(group.id))
+        joinGroupUseCase.execute(callback, JoinGroupUseCase.Params.forJoin(groupPos.group.id))
     }
 
     fun discardRecommendedGroup(groupPos: GroupPosition) {
@@ -129,7 +127,7 @@ constructor(
         )
     }
 
-    fun requestToJoinGroup(group: GroupResponse) {
+    fun requestToJoinGroup(groupPos: GroupPosition) {
         requestToJoinResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<MessageResponse>() {
@@ -142,12 +140,12 @@ constructor(
             }
 
             override fun onSuccess(o: MessageResponse) {
-                requestToJoinResponse.postValue(Resource.success(o))
+                requestToJoinResponse.postValue(Resource.success(groupPos))
             }
         }
         requestToJoinUseCase.execute(
             callback,
-            RequestJoinGroupUseCase.Params.toJoin(group.id)
+            RequestJoinGroupUseCase.Params.toJoin(groupPos.group.id)
         )
     }
 

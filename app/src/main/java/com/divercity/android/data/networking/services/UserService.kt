@@ -6,6 +6,8 @@ import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.device.body.DeviceBody
 import com.divercity.android.data.entity.device.response.DeviceEntityResponse
+import com.divercity.android.data.entity.education.body.EducationEntityBody
+import com.divercity.android.data.entity.education.response.EducationEntityResponse
 import com.divercity.android.data.entity.industry.body.FollowIndustryBody
 import com.divercity.android.data.entity.interests.body.FollowInterestsBody
 import com.divercity.android.data.entity.occupationofinterests.body.FollowOOIBody
@@ -17,7 +19,7 @@ import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBod
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
-import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
+import com.divercity.android.data.entity.workexperience.response.WorkExperienceEntityResponse
 import io.reactivex.Observable
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -36,7 +38,7 @@ interface UserService {
     fun updateUserProfile(@Path("id") userId: String, @Body body: UserProfileEntityBody): Observable<Response<DataObject<UserEntityResponse>>>
 
     @POST("group_of_interests/{id}/follow")
-    fun joinGroup(@Path("id") idGroup: String): Observable<Response<Void>>
+    fun joinGroup(@Path("id") idGroup: String): Observable<Response<Unit>>
 
     @POST("users/avatar_upload")
     fun uploadUserPhoto(@Body body: ProfilePictureBody): Observable<Response<DataObject<UserEntityResponse>>>
@@ -116,20 +118,62 @@ interface UserService {
         @Query("search_query") query: String?
     ): Observable<Response<DataArray<UserEntityResponse>>>
 
+    @PUT("users/{userId}/update_password")
+    fun changePassword(
+        @Path("userId") userId: String,
+        @Body body: ChangePasswordEntityBody
+    ): Observable<Response<Unit>>
+
+    //EDUCATIONS
+
+    @GET("users/{userId}/educations")
+    fun fetchEducations(
+        @Path("userId") userId: String
+    ): Observable<Response<DataArray<EducationEntityResponse>>>
+
+
+    @POST("users/{userId}/educations")
+    fun addEducation(
+        @Path("userId") userId: String,
+        @Body education: EducationEntityBody
+    ): Observable<Response<DataObject<EducationEntityResponse>>>
+
+    @PUT("users/{userId}/educations/{educationId}")
+    fun updateEducation(
+        @Path("userId") userId: String,
+        @Path("educationId") educationId: String,
+        @Body education: EducationEntityBody
+    ): Observable<Response<DataObject<EducationEntityResponse>>>
+
+    @DELETE("users/{userId}/educations/{educationId}")
+    fun deleteEducation(
+        @Path("userId") userId: String,
+        @Path("educationId") educationId: String
+    ): Observable<Response<Unit>>
+
+    //WORK EXPERIENCE
+
     @GET("users/{userId}/experiences")
     fun fetchWorkExperiences(
         @Path("userId") userId: String
-    ): Observable<Response<DataArray<WorkExperienceResponse>>>
+    ): Observable<Response<DataArray<WorkExperienceEntityResponse>>>
 
     @POST("users/{userId}/experiences")
     fun addNewExperience(
         @Path("userId") userId: String,
         @Body experience: WorkExperienceBody
-    ): Observable<Response<DataObject<WorkExperienceResponse>>>
+    ): Observable<Response<DataObject<WorkExperienceEntityResponse>>>
 
-    @PUT("users/{userId}/update_password")
-    fun changePassword(
+    @PUT("users/{userId}/experiences/{expId}")
+    fun updateExperience(
         @Path("userId") userId: String,
-        @Body body: ChangePasswordEntityBody
+        @Path("expId") educationId: String,
+        @Body experience: WorkExperienceBody
+    ): Observable<Response<DataObject<WorkExperienceEntityResponse>>>
+
+    @DELETE("users/{userId}/experiences/{expId}")
+    fun deleteExperience(
+        @Path("userId") userId: String,
+        @Path("expId") educationId: String
     ): Observable<Response<Unit>>
 }

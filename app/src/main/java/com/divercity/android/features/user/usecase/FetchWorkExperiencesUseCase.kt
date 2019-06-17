@@ -1,7 +1,7 @@
 package com.divercity.android.features.user.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.workexperience.response.WorkExperienceResponse
+import com.divercity.android.model.WorkExperience
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -16,9 +16,9 @@ class FetchWorkExperiencesUseCase @Inject
 constructor(@Named("executor_thread") executorThread: Scheduler,
             @Named("ui_thread") uiThread: Scheduler,
             private val repository: UserRepository
-) : UseCase<@JvmSuppressWildcards List<WorkExperienceResponse>, FetchWorkExperiencesUseCase.Params>(executorThread, uiThread) {
+) : UseCase<@JvmSuppressWildcards List<WorkExperience>, FetchWorkExperiencesUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<List<WorkExperienceResponse>> {
+    override fun createObservableUseCase(params: Params): Observable<List<WorkExperience>> {
         return repository.fetchWorkExperiences(params.userId)
     }
 

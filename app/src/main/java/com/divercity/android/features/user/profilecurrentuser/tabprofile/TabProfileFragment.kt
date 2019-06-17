@@ -16,7 +16,8 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
-import com.divercity.android.features.user.experience.adapter.WorkExperienceAdapter
+import com.divercity.android.features.user.addediteducation.adapter.EducationAdapter
+import com.divercity.android.features.user.addeditworkexperience.adapter.WorkExperienceAdapter
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_tab_profile.*
 import kotlinx.android.synthetic.main.view_user_personal_details.view.*
@@ -34,11 +35,14 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
     lateinit var interestAdapter: SelectInterestsAdapter
 
     @Inject
-    lateinit var workExperienceAdapter : WorkExperienceAdapter
+    lateinit var workExperienceAdapter: WorkExperienceAdapter
+
+    @Inject
+    lateinit var educationAdapter: EducationAdapter
 
     companion object {
 
-        const val REQUEST_CODE_NEW_EXPERIENCE = 200
+        const val REQUEST_CODE_NEW_EXPERIENCE_EDUCATION = 200
 
         fun newInstance(): TabProfileFragment {
             return TabProfileFragment()
@@ -50,10 +54,8 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(TabProfileViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(TabProfileViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,33 +65,17 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
     }
 
     fun setupView() {
-//        ProfileUtils.setupProfileLayout(
-//            viewModel.getUserType(),
-//            context!!,
-//            lay_personal,
-//            lay_skills,
-//            lay_experience,
-//            lay_education,
-//            lay_interests
-//        )
 
         lay_personal.lay_resume.setOnClickListener {
             showUploadedResumesDialog()
         }
 
-        workExperienceAdapter.listener = {
-
-        }
         list_experience.adapter = workExperienceAdapter
 
-//        list_interest.layoutManager = StaggeredGridLayoutManager(2, 1)
-//        list_interest.adapter = interestAdapter
-
-
+        list_education.adapter = educationAdapter
 
         val typeface = ResourcesCompat.getFont(context!!, R.font.avenir_medium)
         tagview_skills.tagTypeface = typeface
-
         tagview_skills.setOnTagClickListener(object : TagView.OnTagClickListener {
 
             override fun onSelectedTagDrag(position: Int, text: String?) {
@@ -122,13 +108,24 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
         }
 
         btn_edit_experience.setOnClickListener {
-            navigator.navigateToAddWorkExperienceForResult(this, REQUEST_CODE_NEW_EXPERIENCE)
+            navigator.navigateToEditExperienceEducationForResult(
+                this@TabProfileFragment,
+                REQUEST_CODE_NEW_EXPERIENCE_EDUCATION
+            )
+        }
+
+        btn_edit_education.setOnClickListener {
+            navigator.navigateToEditExperienceEducationForResult(
+                this@TabProfileFragment,
+                REQUEST_CODE_NEW_EXPERIENCE_EDUCATION
+            )
         }
     }
 
     private fun setData(user: User?) {
-        user?.let {usr ->
+        user?.let { usr ->
             viewModel.fetchWorkExperiences()
+            viewModel.fetchEducations()
 
             lay_personal.txt_ethnicity.text = usr.ethnicity
             lay_personal.txt_gender.text = usr.gender
@@ -168,7 +165,7 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
 
     private fun subscribeToLiveData() {
 
-        viewModel.updateUserProfileResponse.observe(this, Observer { response ->
+        viewModel.updateUserProfileResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -190,7 +187,7 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
             setData(it)
         })
 
-        viewModel.fetchInterestsResponse.observe(this, Observer { response ->
+        viewModel.fetchInterestsResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                 }
@@ -202,13 +199,23 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
             }
         })
 
-        viewModel.fetchWorkExperiencesResponse.observe(this, Observer { response ->
-            if(response.status == Status.SUCCESS){
-                if(response?.data!!.isNotEmpty())
+        viewModel.fetchWorkExperiencesResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.status == Status.SUCCESS) {
+                if (response?.data!!.isNotEmpty())
                     txt_add_experience.visibility = View.GONE
                 else
                     txt_add_experience.visibility = View.VISIBLE
                 workExperienceAdapter.list = response.data
+            }
+        })
+
+        viewModel.fetchEducationsResponse.observe(viewLifecycleOwner, Observer { response ->
+            if (response.status == Status.SUCCESS) {
+                if (response?.data!!.isNotEmpty())
+                    txt_add_education.visibility = View.GONE
+                else
+                    txt_add_education.visibility = View.VISIBLE
+                educationAdapter.list = response.data
             }
         })
     }
@@ -226,8 +233,12 @@ class TabProfileFragment : BaseFragment(), RecentDocsDialogFragment.Listener {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_NEW_EXPERIENCE && Activity.RESULT_OK == resultCode) {
-            viewModel.fetchWorkExperiences()
-        }
+        if (resultCode == Activity.RESULT_OK)
+            when (requestCode) {
+                REQUEST_CODE_NEW_EXPERIENCE_EDUCATION -> {
+                    viewModel.fetchWorkExperiences()
+                    viewModel.fetchEducations()
+                }
+            }
     }
 }

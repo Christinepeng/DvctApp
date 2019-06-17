@@ -1,7 +1,6 @@
 package com.divercity.android.features.login.step1.usecase;
 
 import android.os.Bundle;
-import androidx.fragment.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -24,6 +23,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
+
+import androidx.fragment.app.Fragment;
 
 public class ConnectFacebookApiHelper {
 
@@ -103,6 +104,12 @@ public class ConnectFacebookApiHelper {
 
     public void setListener(OnFacebookDataListener listener) {
         mListener = listener;
+    }
+
+    public void cancel(){
+        if(mFacebookCallbackManager != null){
+            LoginManager.getInstance().unregisterCallback(mFacebookCallbackManager);
+        }
     }
 
     public Date facebookDateStringToDate(String date) {

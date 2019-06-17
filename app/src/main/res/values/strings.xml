@@ -37,6 +37,7 @@
     <string name="no_requests_yet">No Requests Yet</string>
     <string name="me">Me</string>
     <string name="add">ADD</string>
+    <string name="update">Update</string>
     <string name="search_company">Please, search to show results</string>
     <string name="change_photo">Change Photo</string>
     <string name="start_new_conversation">Start a new conversation</string>
@@ -65,6 +66,7 @@
     <string name="app">App</string>
     <string name="notifications">Notifications</string>
     <string name="personal_settings">Personal Settings</string>
+    <string name="experience_education">Experience &amp; Education</string>
     <string name="personal_settings_subtitle">Ethnicity, Gender, Occupation, Location…</string>
     <string name="experience">Experience</string>
     <string name="education">Education</string>
@@ -83,9 +85,16 @@
     <string name="view_companies">View Companies</string>
     <string name="edit_interests">Edit Interests</string>
     <string name="add_work_experience">Add Work Experience</string>
+    <string name="edit_work_experience">Edit Work Experience</string>
+    <string name="add_education">Add Education</string>
+    <string name="edit_education">Edit Education</string>
+    <string name="plus_add_work_experience">+ Add Work Experience</string>
+    <string name="plus_add_education">+ Add Education</string>
+    <string name="work_experience">Work Experience</string>
     <string name="current_no_connections">You don’t seem to have any Connections yet :(</string>
     <string name="other_no_connections">This user doesn\'t seem to have any Connections yet :(</string>
     <string name="reset_password">Reset Password</string>
+    <string name="major">Major</string>
 
     <!-- Company-->
     <string name="create_new_company">Create New Company</string>
@@ -253,8 +262,10 @@
     <string name="skills">Skills</string>
     <string name="job_description">Job Description</string>
     <string name="create">Create</string>
-    <string name="select_location">Select location</string>
-    <string name="select_company">Select company</string>
+    <string name="select_location">Select Location</string>
+    <string name="select_company">Select Company</string>
+    <string name="select_school">Select School</string>
+    <string name="select_major">Select Major</string>
     <string name="select_job_type">Select Job Type</string>
     <string name="job_posted_succesfully">Your Job was Successfully Posted!</string>
     <string name="job_posted_subtitle">How about letting some of your Friends or Groups know about the Job Posting you just created?</string>

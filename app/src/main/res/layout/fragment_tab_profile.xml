@@ -122,8 +122,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="16dp"
                         android:background="@null"
+                        android:padding="16dp"
                         android:src="@drawable/ic_edit" />
 
                 </LinearLayout>
@@ -181,8 +181,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:layout_marginEnd="16dp"
                         android:background="@null"
+                        android:padding="16dp"
                         android:src="@drawable/ic_edit" />
 
                 </LinearLayout>
@@ -207,51 +207,6 @@
                     app:layout_constraintTop_toTopOf="@+id/list" />
 
             </LinearLayout>
-
-            <!--<LinearLayout-->
-            <!--android:id="@+id/lay_interests"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="vertical"-->
-            <!--android:visibility="visible"-->
-            <!--tools:visibility="visible">-->
-
-            <!--<LinearLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:orientation="horizontal">-->
-
-            <!--<TextView-->
-            <!--android:id="@+id/lbl_interests"-->
-            <!--android:layout_width="0dp"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_margin="16dp"-->
-            <!--android:layout_weight="1"-->
-            <!--android:fontFamily="@font/avenir_heavy"-->
-            <!--android:text="@string/interests"-->
-            <!--android:textColor="#333241"-->
-            <!--android:textSize="17sp" />-->
-
-            <!--<ImageButton-->
-            <!--android:id="@+id/btn_edit_interests"-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:background="@null"-->
-            <!--android:padding="16dp"-->
-            <!--android:src="@drawable/ic_edit" />-->
-
-            <!--</LinearLayout>-->
-
-            <!--<androidx.recyclerview.widget.RecyclerView-->
-            <!--android:id="@+id/list_interest"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="1dp"-->
-            <!--android:background="@android:color/white"-->
-            <!--app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />-->
-
-            <!--</LinearLayout>-->
 
         </LinearLayout>
 

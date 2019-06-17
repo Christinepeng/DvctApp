@@ -12,5 +12,5 @@ import dagger.android.ContributesAndroidInjector
 abstract class ServiceBuilderModule {
 
     @ContributesAndroidInjector
-    abstract fun DivercityMessagingService (): DivercityMessagingService
+    abstract fun divercityMessagingService (): DivercityMessagingService
 }

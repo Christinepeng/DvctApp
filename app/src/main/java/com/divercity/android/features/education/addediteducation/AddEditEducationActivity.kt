@@ -1,4 +1,4 @@
-package com.divercity.android.features.user.addediteducation
+package com.divercity.android.features.education.addediteducation
 
 import android.content.Context
 import android.content.Intent
@@ -22,7 +22,8 @@ class AddEditEducationActivity : BaseActivity() {
         }
     }
 
-    override fun fragment(): BaseFragment = AddEditEducationFragment.newInstance(
-        intent.getParcelableExtra(INTENT_EXTRA_PARAM_EDUCATION)
-    )
+    override fun fragment(): BaseFragment =
+        AddEditEducationFragment.newInstance(
+            intent.getParcelableExtra(INTENT_EXTRA_PARAM_EDUCATION)
+        )
 }

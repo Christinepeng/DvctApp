@@ -19,6 +19,7 @@ import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.entity.profile.profile.UserProfileEntityBody
 import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBody
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
+import com.divercity.android.data.entity.user.discard.DiscardConnectionBody
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
 import com.divercity.android.data.networking.services.UserService
 import com.divercity.android.model.Education
@@ -267,11 +268,12 @@ constructor(
         schoolId: String,
         major: String,
         from: String,
-        to: String
+        to: String,
+        degreeId: String
     ): Observable<Education> {
         return userService.addEducation(
             sessionRepository.getUserId(),
-            EducationEntityBody(EducationEntity(major, schoolId, from, to))
+            EducationEntityBody(EducationEntity(major, schoolId, from, to, degreeId))
         ).map {
             checkResponse(it)
             it.body()!!.data.toEducation()
@@ -283,12 +285,13 @@ constructor(
         schoolId: String?,
         major: String?,
         from: String?,
-        to: String?
+        to: String?,
+        degreeId: String?
     ): Observable<Education> {
         return userService.updateEducation(
             sessionRepository.getUserId(),
             educationId,
-            EducationEntityBody(EducationEntity(major, schoolId, from, to))
+            EducationEntityBody(EducationEntity(major, schoolId, from, to, degreeId))
         ).map {
             checkResponse(it)
             it.body()!!.data.toEducation()
@@ -345,6 +348,14 @@ constructor(
         return userService.deleteExperience(
             sessionRepository.getUserId(),
             experienceId
+        ).map { response ->
+            checkResponse(response)
+        }
+    }
+
+    override fun discardRecommendedConnection(body: DiscardConnectionBody): Observable<Unit> {
+        return userService.discardRecommendedConnection(
+            body
         ).map { response ->
             checkResponse(response)
         }

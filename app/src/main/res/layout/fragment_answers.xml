@@ -15,123 +15,134 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
-    <androidx.constraintlayout.widget.Group
-        android:id="@+id/group_header"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:constraint_referenced_ids="img_user,view8, txt_question,lay_date_time" />
-
-    <ImageView
-        android:id="@+id/img_user"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/include_toolbar"
-        tools:src="@drawable/tab_profile_inactive" />
-
-    <LinearLayout
-        android:id="@+id/lay_date_time"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/img_user"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/img_user"
-        app:layout_constraintTop_toTopOf="@+id/img_user">
-
-        <TextView
-            android:id="@+id/txt_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:ellipsize="end"
-            android:fontFamily="@font/avenir_medium"
-            android:maxWidth="220dp"
-            android:maxLines="2"
-            android:textColor="#333241"
-            android:textSize="15sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_user"
-            app:layout_constraintEnd_toStartOf="@+id/txt_time"
-            app:layout_constraintHorizontal_chainStyle="spread_inside"
-            app:layout_constraintStart_toEndOf="@+id/img_user"
-            app:layout_constraintTop_toTopOf="@+id/img_user"
-            tools:text="ghdfgfghdfgdfgdfgdfgfghfghfghfghggfghfghfghfghhfghfdfgdfgdfgdfdfghfhd " />
-
-        <TextView
-            android:id="@+id/txt_date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="0"
-            android:ellipsize="end"
-            android:fontFamily="@font/avenir_book"
-            android:maxLines="1"
-            android:textColor="@color/grey3"
-            android:textSize="13sp"
-            tools:text="Fri, Dec, 28th" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/txt_question"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:autoLink="web"
-        android:fontFamily="@font/avenir_book"
-        android:lineSpacingExtra="5sp"
-        android:textColor="#333241"
-        android:textColorLink="@color/appBlue"
-        android:textSize="15sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img_user"
-        tools:text="sdf" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/item_quest_cardview_pic_main"
-        android:layout_width="0dp"
-        android:layout_height="165dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:shape="ring"
-        app:cardCornerRadius="10dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_question">
-
-        <ImageView
-            android:id="@+id/item_quest_img_main"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:contentDescription="TODO"
-            android:scaleType="centerCrop"
-            tools:background="@android:color/black" />
-
-    </androidx.cardview.widget.CardView>
-
-    <View
-        android:id="@+id/view8"
+    <ScrollView
+        android:id="@+id/lay_header"
         android:layout_width="match_parent"
-        android:layout_height="24dp"
-        android:layout_marginTop="8dp"
-        android:background="?android:colorBackground"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/item_quest_cardview_pic_main" />
+        app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
+
+            <ImageView
+                android:id="@+id/img_user"
+                android:layout_width="35dp"
+                android:layout_height="35dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/tab_profile_inactive" />
+
+            <LinearLayout
+                android:id="@+id/lay_date_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="@+id/img_user"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/img_user"
+                app:layout_constraintTop_toTopOf="@+id/img_user">
+
+                <TextView
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/avenir_medium"
+                    android:maxWidth="220dp"
+                    android:maxLines="2"
+                    android:textColor="#333241"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/img_user"
+                    app:layout_constraintEnd_toStartOf="@+id/txt_time"
+                    app:layout_constraintHorizontal_chainStyle="spread_inside"
+                    app:layout_constraintStart_toEndOf="@+id/img_user"
+                    app:layout_constraintTop_toTopOf="@+id/img_user"
+                    tools:text="ghdfgfghdfgdfgdfgdfgfghfghfghfghggfghfghfghfghhfghfdfgdfgdfgdfdfghfhd " />
+
+                <TextView
+                    android:id="@+id/txt_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="0"
+                    android:ellipsize="end"
+                    android:fontFamily="@font/avenir_book"
+                    android:maxLines="1"
+                    android:textColor="@color/grey3"
+                    android:textSize="13sp"
+                    tools:text="Fri, Dec, 28th" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/txt_question"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:autoLink="web"
+                android:fontFamily="@font/avenir_book"
+                android:lineSpacingExtra="5sp"
+                android:textColor="#333241"
+                android:textColorLink="@color/appBlue"
+                android:textSize="15sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_chainStyle="packed"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/img_user"
+                tools:text="sdf" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/item_quest_cardview_pic_main"
+                android:layout_width="0dp"
+                android:layout_height="165dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:shape="ring"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txt_question">
+
+                <ImageView
+                    android:id="@+id/item_quest_img_main"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="TODO"
+                    android:scaleType="centerCrop"
+                    tools:background="@android:color/black" />
+
+            </androidx.cardview.widget.CardView>
+
+            <View
+                android:id="@+id/view8"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginTop="8dp"
+                android:background="?android:colorBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/item_quest_cardview_pic_main" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
 
     <!-- This wraps is because of a bug with recyclerview within constraintlayout-->
     <RelativeLayout
@@ -141,7 +152,7 @@
         app:layout_constraintBottom_toTopOf="@+id/lay_image"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view8">
+        app:layout_constraintTop_toBottomOf="@+id/lay_header">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"

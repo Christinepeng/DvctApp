@@ -6,6 +6,7 @@ import com.divercity.android.data.entity.device.response.DeviceEntityResponse
 import com.divercity.android.data.entity.profile.picture.ProfilePictureBody
 import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
+import com.divercity.android.data.entity.user.discard.DiscardConnectionBody
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
 import com.divercity.android.model.Education
 import com.divercity.android.model.WorkExperience
@@ -100,7 +101,8 @@ interface UserRepository {
         schoolId: String,
         major: String,
         from: String,
-        to: String
+        to: String,
+        degreeId: String
     ): Observable<Education>
 
     fun updateEducation(
@@ -108,7 +110,8 @@ interface UserRepository {
         schoolId: String?,
         major: String?,
         from: String?,
-        to: String?
+        to: String?,
+        degreeId: String?
     ): Observable<Education>
 
     fun deleteEducation(
@@ -130,5 +133,9 @@ interface UserRepository {
 
     fun deleteExperience(
         experienceId: String
+    ): Observable<Unit>
+
+    fun discardRecommendedConnection(
+        body: DiscardConnectionBody
     ): Observable<Unit>
 }

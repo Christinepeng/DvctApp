@@ -91,6 +91,7 @@ constructor(
 
         val callback = object : DisposableObserverWrapper<Unit>() {
             override fun onSuccess(t: Unit) {
+                onGroupJoinSuccess()
                 joinGroupResponse.postValue(Event(Resource.success(t)))
             }
 
@@ -99,7 +100,6 @@ constructor(
             }
 
             override fun onHttpException(error: JsonElement) {
-                onGroupJoinSuccess()
                 joinGroupResponse.postValue(Event(Resource.error(error.toString(), null)))
             }
         }

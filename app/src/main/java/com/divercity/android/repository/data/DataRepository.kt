@@ -8,7 +8,9 @@ import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse
 import com.divercity.android.data.entity.photo.PhotoEntityResponse
+import com.divercity.android.data.entity.recommendedjobsgoi.RecommendedJobsGOIResponse
 import com.divercity.android.data.entity.skills.SkillResponse
+import com.divercity.android.model.Degree
 import com.divercity.android.model.Major
 import com.divercity.android.model.School
 import io.reactivex.Observable
@@ -44,4 +46,11 @@ interface DataRepository {
         size: Int,
         query: String?
     ): Observable<List<OOIResponse>>
+
+    fun fetchDegrees(): Observable<List<Degree>>
+
+    fun fetchRecommendedJobsGOIS(
+        pageNumber: Int,
+        size: Int
+    ): Observable<RecommendedJobsGOIResponse>
 }

@@ -49,7 +49,9 @@ class LinkedinFragment : BaseFragment() {
     private val CLIENT_ID_PARAM = "client_id"
     private val STATE_PARAM = "state"
     private val REDIRECT_URI_PARAM = "redirect_uri"
-    private val SCOPE_PARAM = "scope=r_liteprofile%20r_emailaddress%20w_member_social"
+//    private val SCOPE_PARAM = "scope=r_liteprofile%20r_emailaddress%20w_member_social"
+    private val SCOPE_PARAM = "scope=r_liteprofile%20r_basicprofile%20r_emailaddress"
+
 /*---------------------------------------*/
 
     private val QUESTION_MARK = "?"

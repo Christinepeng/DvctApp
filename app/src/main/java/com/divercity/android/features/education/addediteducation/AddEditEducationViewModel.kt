@@ -1,11 +1,11 @@
-package com.divercity.android.features.user.addediteducation
+package com.divercity.android.features.education.addediteducation
 
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.user.addediteducation.usecase.AddEducationUseCase
-import com.divercity.android.features.user.addediteducation.usecase.EditEducationUseCase
+import com.divercity.android.features.education.addediteducation.usecase.AddEducationUseCase
+import com.divercity.android.features.education.addediteducation.usecase.EditEducationUseCase
 import com.divercity.android.model.Education
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -26,7 +26,8 @@ constructor(
         schoolId: String,
         major: String,
         from: String,
-        to: String
+        to: String,
+        degreeId: String
     ) {
         addEditEducationResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<Education>() {
@@ -43,7 +44,7 @@ constructor(
             }
         }
         addEducationUseCase.execute(
-            callback, AddEducationUseCase.Params.toAdd(schoolId, major, from, to)
+            callback, AddEducationUseCase.Params.toAdd(schoolId, major, from, to, degreeId)
         )
     }
 
@@ -52,7 +53,8 @@ constructor(
         schoolId: String?,
         major: String?,
         from: String?,
-        to: String?
+        to: String?,
+        degreeId: String?
     ) {
         addEditEducationResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<Education>() {
@@ -69,7 +71,7 @@ constructor(
             }
         }
         editEducationUseCase.execute(
-            callback, EditEducationUseCase.Params.toEdit(educationId, schoolId, major, from, to)
+            callback, EditEducationUseCase.Params.toEdit(educationId, schoolId, major, from, to, degreeId)
         )
     }
 

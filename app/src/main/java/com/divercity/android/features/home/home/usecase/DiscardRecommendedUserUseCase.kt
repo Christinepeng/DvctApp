@@ -1,6 +1,7 @@
-package com.divercity.android.features.user.addediteducation.usecase
+package com.divercity.android.features.home.home.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
+import com.divercity.android.data.entity.user.discard.DiscardConnectionBody
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -11,32 +12,23 @@ import javax.inject.Named
  * Created by lucas on 18/10/2018.
  */
 
-class DeleteEducationUseCase @Inject
+class DiscardRecommendedUserUseCase @Inject
 constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: UserRepository
-) : UseCase<Unit, DeleteEducationUseCase.Params>(executorThread, uiThread) {
+) : UseCase<Unit, DiscardRecommendedUserUseCase.Params>(executorThread, uiThread) {
 
     override fun createObservableUseCase(params: Params): Observable<Unit> {
-
-        return repository.deleteEducation(
-            params.educationId
-        )
+        return repository.discardRecommendedConnection(DiscardConnectionBody(params.userIds))
     }
 
-    class Params private constructor(
-        val educationId: String
-    ) {
+    class Params private constructor(val userIds: List<String>) {
 
         companion object {
 
-            fun toDelete(
-                educationId: String
-            ): Params {
-                return Params(
-                    educationId
-                )
+            fun toDiscard(userIds: List<String>): Params {
+                return Params(userIds)
             }
         }
     }

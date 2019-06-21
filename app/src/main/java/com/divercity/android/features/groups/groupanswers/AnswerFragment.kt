@@ -176,10 +176,10 @@ class AnswerFragment : BaseFragment() {
 
             KeyboardVisibilityEvent.setEventListener(requireActivity()) {
                 if (it) {
-                    group_header.visibility = View.GONE
+                    lay_header.visibility = View.GONE
                     item_quest_cardview_pic_main.visibility = View.GONE
                 } else {
-                    group_header.visibility = View.VISIBLE
+                    lay_header.visibility = View.VISIBLE
                     if (question.checkedPicture() != null) {
                         item_quest_cardview_pic_main.visibility = View.VISIBLE
                     }

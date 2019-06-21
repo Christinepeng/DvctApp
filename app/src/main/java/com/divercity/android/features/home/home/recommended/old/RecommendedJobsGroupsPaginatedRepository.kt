@@ -1,4 +1,4 @@
-package com.divercity.android.features.home.home
+package com.divercity.android.features.home.home.recommended.old
 
 import com.divercity.android.core.base.datasource.BaseDataSourceRepository
 import com.divercity.android.core.base.usecase.Params

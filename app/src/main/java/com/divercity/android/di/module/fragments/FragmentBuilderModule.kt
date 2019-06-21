@@ -17,7 +17,6 @@ import com.divercity.android.features.company.companydetail.about.CompanyDetailA
 import com.divercity.android.features.company.companydetail.employees.EmployeesFragment
 import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyFragment
 import com.divercity.android.features.company.companysize.CompanySizesFragment
-import com.divercity.android.features.company.createcompany.CreateCompanyFragment
 import com.divercity.android.features.company.deleteadmincompany.DeleteCompanyAdminFragment
 import com.divercity.android.features.company.diversityrating.DiversityRatingFragment
 import com.divercity.android.features.company.mycompanies.MyCompaniesFragment
@@ -28,6 +27,7 @@ import com.divercity.android.features.dialogs.jobapplysuccess.JobApplySuccessDia
 import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogFragment
 import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogFragment
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
+import com.divercity.android.features.education.addediteducation.AddEditEducationFragment
 import com.divercity.android.features.groups.TabGroupsFragment
 import com.divercity.android.features.groups.allgroups.AllGroupsFragment
 import com.divercity.android.features.groups.createeditgroup.step1.CreateEditGroupStep1Fragment
@@ -87,7 +87,6 @@ import com.divercity.android.features.settings.ProfileSettingsFragment
 import com.divercity.android.features.settings.accountsettings.AccountSettingsFragment
 import com.divercity.android.features.singleuseraction.SingleUserActionFragment
 import com.divercity.android.features.splash.SplashFragment
-import com.divercity.android.features.user.addediteducation.AddEditEducationFragment
 import com.divercity.android.features.user.addeditworkexperience.AddEditWorkExperienceFragment
 import com.divercity.android.features.user.allconnections.AllConnectionsFragment
 import com.divercity.android.features.user.editexperienceeducation.EditExperienceEducationFragment
@@ -194,9 +193,6 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindRecentDocsDialogFragment(): RecentDocsDialogFragment
-
-    @ContributesAndroidInjector
-    abstract fun bindCreateCompanyFragment(): CreateCompanyFragment
 
     @ContributesAndroidInjector
     abstract fun bindCompanySizesFragment(): CompanySizesFragment

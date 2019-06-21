@@ -4,7 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.data.Resource
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.user.addediteducation.usecase.DeleteEducationUseCase
+import com.divercity.android.features.education.addediteducation.usecase.DeleteEducationUseCase
 import com.divercity.android.features.user.addeditworkexperience.usecase.DeleteWorkExperienceUseCase
 import com.divercity.android.features.user.usecase.FetchEducationsUseCase
 import com.divercity.android.features.user.usecase.FetchWorkExperiencesUseCase

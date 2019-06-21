@@ -504,7 +504,12 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.user.addediteducation.AddEditEducationActivity"
+            android:name=".features.education.addediteducation.AddEditEducationActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".features.education.degree.SelectDegreeActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 

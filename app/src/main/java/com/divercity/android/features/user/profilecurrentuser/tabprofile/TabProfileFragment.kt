@@ -16,7 +16,7 @@ import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsAdapter
-import com.divercity.android.features.user.addediteducation.adapter.EducationAdapter
+import com.divercity.android.features.education.addediteducation.adapter.EducationAdapter
 import com.divercity.android.features.user.addeditworkexperience.adapter.WorkExperienceAdapter
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_tab_profile.*

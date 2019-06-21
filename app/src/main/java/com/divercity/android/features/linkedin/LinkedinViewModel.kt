@@ -12,7 +12,7 @@ import javax.inject.Inject
  */
 
 class LinkedinViewModel @Inject
-constructor(val loginLinkedInUseCase: LoginLinkedInUseCase) : BaseViewModel() {
+constructor(private val loginLinkedInUseCase: LoginLinkedInUseCase) : BaseViewModel() {
 
     val loginLinkedInResponse = SingleLiveEvent<Resource<User>>()
     val navigateToSelectUserType = SingleLiveEvent<Boolean>()

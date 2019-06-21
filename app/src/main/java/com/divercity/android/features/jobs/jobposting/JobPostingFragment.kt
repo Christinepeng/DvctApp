@@ -35,7 +35,7 @@ class JobPostingFragment : BaseFragment(), JobPostedDialogFragment.Listener {
 
     lateinit var viewModel: JobPostingViewModel
 
-    var jobForEdition: JobResponse? = null
+    private var jobForEdition: JobResponse? = null
 
     companion object {
         private const val PARAM_JOB = "paramJob"

@@ -17,6 +17,7 @@ import com.divercity.android.data.entity.profile.profile.UserProfileEntityBody
 import com.divercity.android.data.entity.unreadmessagecount.UnreadMessageCountResponse
 import com.divercity.android.data.entity.user.connectuser.body.UserConnectionBody
 import com.divercity.android.data.entity.user.connectuser.response.ConnectUserResponse
+import com.divercity.android.data.entity.user.discard.DiscardConnectionBody
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.data.entity.workexperience.body.WorkExperienceBody
 import com.divercity.android.data.entity.workexperience.response.WorkExperienceEntityResponse
@@ -175,5 +176,10 @@ interface UserService {
     fun deleteExperience(
         @Path("userId") userId: String,
         @Path("expId") educationId: String
+    ): Observable<Response<Unit>>
+
+    @POST("users/discard_connections")
+    fun discardRecommendedConnection(
+        @Body body: DiscardConnectionBody
     ): Observable<Response<Unit>>
 }

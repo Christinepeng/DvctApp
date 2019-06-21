@@ -1,4 +1,4 @@
-package com.divercity.android.features.user.addediteducation.usecase
+package com.divercity.android.features.education.addediteducation.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.model.Education
@@ -25,7 +25,8 @@ constructor(
             params.schoolId,
             params.major,
             params.from,
-            params.to
+            params.to,
+            params.degreeId
         )
     }
 
@@ -33,7 +34,8 @@ constructor(
         val schoolId: String,
         val major: String,
         val from: String,
-        val to: String
+        val to: String,
+        val degreeId: String
     ) {
 
         companion object {
@@ -42,13 +44,15 @@ constructor(
                 schoolId: String,
                 major: String,
                 from: String,
-                to: String
+                to: String,
+                degreeId: String
             ): Params {
                 return Params(
                     schoolId,
                     major,
                     from,
-                    to
+                    to,
+                    degreeId
                 )
             }
         }

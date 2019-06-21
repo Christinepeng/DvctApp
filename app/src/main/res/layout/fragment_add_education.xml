@@ -53,6 +53,15 @@
                 android:padding="16dp" />
 
             <TextView
+                android:id="@+id/txt_degree"
+                style="@style/AppText2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/white"
+                android:hint="@string/degree"
+                android:padding="16dp" />
+
+            <TextView
                 android:id="@+id/txt_major"
                 style="@style/AppText2"
                 android:layout_width="match_parent"

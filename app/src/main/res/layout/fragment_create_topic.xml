@@ -64,74 +64,82 @@
         android:paddingStart="14dp"
         android:paddingTop="14dp"
         android:paddingEnd="14dp"
-        android:visibility="gone"
         android:text="@string/change_group"
         android:textColor="#3198e5"
         android:textSize="12sp"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_title" />
 
-    <LinearLayout
-        android:id="@+id/lay_name"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12dp"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:visibility="visible"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_change_group">
 
-        <EditText
-            android:id="@+id/et_topic_name"
+        <LinearLayout
+            android:id="@+id/lay_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:fontFamily="@font/avenir_roman"
-            android:hint="@string/topic_name"
-            android:inputType="textCapSentences"
-            android:padding="24dp"
-            android:textColor="#333241"
-            android:textSize="15sp" />
+            android:layout_marginTop="12dp"
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:visibility="visible">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/lay_img"
-            android:layout_width="match_parent"
-            android:layout_height="165dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginEnd="16dp"
-            android:shape="ring"
-            android:visibility="gone"
-            app:cardCornerRadius="10dp"
-            app:cardElevation="0dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
-            app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_question"
-            tools:visibility="visible">
-
-            <ImageView
-                android:id="@+id/img_topic"
+            <EditText
+                android:id="@+id/et_topic_name"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"
-                tools:background="@android:color/black" />
+                android:layout_height="wrap_content"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/avenir_roman"
+                android:hint="@string/type_here"
+                android:inputType="textMultiLine|textCapSentences"
+                android:lineSpacingExtra="5sp"
+                android:padding="24dp"
+                android:textColor="#333241"
+                android:textSize="15sp" />
 
-        </androidx.cardview.widget.CardView>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/lay_img"
+                android:layout_width="match_parent"
+                android:layout_height="165dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
+                android:shape="ring"
+                android:visibility="gone"
+                app:cardCornerRadius="10dp"
+                app:cardElevation="0dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/cardview_quest_pic_author"
+                app:layout_constraintTop_toBottomOf="@+id/item_quest_txt_question"
+                tools:visibility="visible">
 
-    </LinearLayout>
+                <ImageView
+                    android:id="@+id/img_topic"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"
+                    tools:background="@android:color/black" />
 
-    <TextView
-        android:id="@+id/btn_add_photo"
-        style="@style/AppText3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:padding="22dp"
-        android:text="@string/add_photo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lay_name" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/btn_add_photo"
+                style="@style/AppText3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:padding="22dp"
+                android:text="@string/add_photo"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lay_name" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

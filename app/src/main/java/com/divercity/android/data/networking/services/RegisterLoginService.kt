@@ -30,7 +30,7 @@ interface RegisterLoginService {
     @POST("auth")
     fun signUp(@Body loginBody: SignUpBody): Observable<Response<DataObject<UserEntityResponse>>>
 
-    @GET("auth/sso/linkedin")
+    @POST("auth/sso/linkedin")
     fun loginLinkedin(
         @Query("code") code: String,
         @Query("state") state: String

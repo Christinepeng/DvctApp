@@ -11,7 +11,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.IOnBackPressed
 import com.divercity.android.data.Status
-import com.divercity.android.features.user.addediteducation.adapter.EducationAdapter
+import com.divercity.android.features.education.addediteducation.adapter.EducationAdapter
 import com.divercity.android.features.user.addeditworkexperience.adapter.WorkExperienceAdapter
 import kotlinx.android.synthetic.main.fragment_edit_experience_education.*
 import kotlinx.android.synthetic.main.view_network_state.view.*

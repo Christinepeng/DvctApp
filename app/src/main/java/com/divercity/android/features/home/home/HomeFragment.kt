@@ -46,7 +46,7 @@ import javax.inject.Inject
 class HomeFragment : BaseFragment() {
 
     lateinit var viewModel: HomeViewModel
-    lateinit var recommendedViewModel: HomeRecommendedViewModel
+    private lateinit var recommendedViewModel: HomeRecommendedViewModel
     lateinit var recommendedConnectionsViewModel: HomeRecommendedConnectionsViewModel
 
     @Inject
@@ -203,6 +203,7 @@ class HomeFragment : BaseFragment() {
             }
 
             override fun onUserDiscarded(userPosition: UserPosition) {
+                recommendedConnectionsViewModel.discardRecommendedConnection(userPosition)
             }
         }
 
@@ -443,6 +444,26 @@ class HomeFragment : BaseFragment() {
                     }
                 }
             })
+
+        recommendedConnectionsViewModel.discardRecommendedUserResponse
+            .observe(
+                viewLifecycleOwner,
+                Observer { response ->
+                    when (response?.status) {
+                        Status.LOADING -> {
+                            showProgressNoBk()
+                        }
+
+                        Status.ERROR -> {
+                            hideProgressNoBk()
+                            Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                        }
+                        Status.SUCCESS -> {
+                            hideProgressNoBk()
+                            recommendedConnectionsAdapter.onUserDiscarded(response.data!!)
+                        }
+                    }
+                })
     }
 
     private fun showToast(msg: String?) {

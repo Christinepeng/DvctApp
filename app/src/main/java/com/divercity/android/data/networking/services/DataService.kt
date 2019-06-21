@@ -4,12 +4,14 @@ import com.divercity.android.data.entity.base.DataArray
 import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
+import com.divercity.android.data.entity.degree.DegreeEntityResponse
 import com.divercity.android.data.entity.industry.IndustryResponse
 import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.data.entity.major.MajorEntityResponse
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse
 import com.divercity.android.data.entity.photo.PhotoEntityResponse
+import com.divercity.android.data.entity.recommendedjobsgoi.RecommendedJobsGOIResponse
 import com.divercity.android.data.entity.school.SchoolEntityResponse
 import com.divercity.android.data.entity.skills.SkillResponse
 
@@ -32,6 +34,12 @@ interface DataService {
         @Query("page[size]") size: Int,
         @Query("search_query") query: String?
     ): Observable<Response<DataArray<CompanyResponse>>>
+
+    @GET("recommenders/group_of_interests_jobs")
+    fun fetchRecommendedJobsGOIs(
+        @Query("page[number]") pageNumber: Int,
+        @Query("page[size]") size: Int
+    ): Observable<RecommendedJobsGOIResponse>
 
     @GET("data/industries")
     fun fetchIndustries(
@@ -88,4 +96,7 @@ interface DataService {
 
     @POST("job_employers")
     fun createCompany(@Body body: CreateCompanyBody): Observable<Response<Void>>
+
+    @GET("data/degrees")
+    fun fetchDegrees(): Observable<Response<DataArray<DegreeEntityResponse>>>
 }

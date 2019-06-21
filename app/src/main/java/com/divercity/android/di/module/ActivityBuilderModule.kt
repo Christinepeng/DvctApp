@@ -20,6 +20,8 @@ import com.divercity.android.features.company.mycompanies.MyCompaniesActivity
 import com.divercity.android.features.company.ratecompany.RateCompanyActivity
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyActivity
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyActivity
+import com.divercity.android.features.education.addediteducation.AddEditEducationActivity
+import com.divercity.android.features.education.degree.SelectDegreeActivity
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityActivity
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityActivity
 import com.divercity.android.features.gender.onboarding.OnboardingGenderActivity
@@ -75,7 +77,6 @@ import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
 import com.divercity.android.features.skill.onboarding.OnboardingSkillActivity
 import com.divercity.android.features.splash.SplashActivity
-import com.divercity.android.features.user.addediteducation.AddEditEducationActivity
 import com.divercity.android.features.user.addeditworkexperience.AddEditWorkExperienceActivity
 import com.divercity.android.features.user.editexperienceeducation.EditExperienceEducationActivity
 import com.divercity.android.features.user.editpersonal.PersonalSettingsActivity
@@ -98,6 +99,9 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
     abstract fun bindToolbarCompanyActivity(): ToolbarCompanyActivity
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindCreateCompanyActivity(): CreateCompanyActivity
 
     //SCHOOL
 
@@ -167,6 +171,11 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
     abstract fun bindEditUserSkillActivity(): EditUserSkillActivity
 
+    //DEGREE
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindSelectDegreeActivity(): SelectDegreeActivity
+
 
     //SESSION
 
@@ -206,9 +215,6 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindJobPostingActivity(): JobPostingActivity
-
-    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
-    abstract fun bindCreateCompanyActivity(): CreateCompanyActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindJobTypeActivity(): JobTypeActivity

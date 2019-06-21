@@ -3,9 +3,11 @@ package com.divercity.android.di.module.fragments
 import com.divercity.android.features.agerange.base.SelectAgeFragment
 import com.divercity.android.features.agerange.onboarding.OnboardingAgeFragment
 import com.divercity.android.features.agerange.withtoolbar.ToolbarAgeFragment
+import com.divercity.android.features.company.createcompany.CreateCompanyFragment
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyFragment
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
+import com.divercity.android.features.education.degree.SelectDegreeFragment
 import com.divercity.android.features.ethnicity.base.SelectEthnicityFragment
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityFragment
 import com.divercity.android.features.ethnicity.withtoolbar.ToolbarEthnicityFragment
@@ -47,6 +49,9 @@ abstract class FragmentDataBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindToolbarCompanyFragment(): ToolbarCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindCreateCompanyFragment(): CreateCompanyFragment
 
     //SCHOOL
 
@@ -135,5 +140,9 @@ abstract class FragmentDataBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindToolbarSkillFragment(): EditUserSkillFragment
+
+    //DEGREE
+    @ContributesAndroidInjector
+    abstract fun bindSelectDegreeFragment(): SelectDegreeFragment
 
 }

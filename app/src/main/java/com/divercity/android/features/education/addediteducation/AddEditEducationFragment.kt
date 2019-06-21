@@ -1,4 +1,4 @@
-package com.divercity.android.features.user.addediteducation
+package com.divercity.android.features.education.addediteducation
 
 import android.app.Activity
 import android.content.Intent
@@ -12,8 +12,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.YearPickerDialogFragment
+import com.divercity.android.features.education.degree.SelectDegreeFragment
 import com.divercity.android.features.major.withtoolbar.SelectSingleMajorFragment
 import com.divercity.android.features.school.withtoolbar.SelectSingleSchoolFragment
+import com.divercity.android.model.Degree
 import com.divercity.android.model.Education
 import com.divercity.android.model.Major
 import com.divercity.android.model.School
@@ -35,6 +37,7 @@ class AddEditEducationFragment : BaseFragment(),
     private var education: Education? = null
     private var school: School? = null
     private var major: Major? = null
+    private var degree: Degree? = null
 
     companion object {
 
@@ -42,9 +45,12 @@ class AddEditEducationFragment : BaseFragment(),
 
         const val REQUEST_CODE_SCHOOL = 220
         const val REQUEST_CODE_MAJOR = 240
+        const val REQUEST_CODE_DEGREE = 290
+
 
         fun newInstance(group: Education?): AddEditEducationFragment {
-            val fragment = AddEditEducationFragment()
+            val fragment =
+                AddEditEducationFragment()
             val arguments = Bundle()
             arguments.putParcelable(PARAM_EDUCATION, group)
             fragment.arguments = arguments
@@ -80,12 +86,25 @@ class AddEditEducationFragment : BaseFragment(),
             showDialogYearPicker()
         }
 
+        txt_degree.setOnClickListener {
+            navigator.navigateToSelectDegree(
+                this,
+                REQUEST_CODE_DEGREE
+            )
+        }
+
         txt_school.setOnClickListener {
-            navigator.navigateToSelectSchool(this, REQUEST_CODE_SCHOOL)
+            navigator.navigateToSelectSchool(
+                this,
+                REQUEST_CODE_SCHOOL
+            )
         }
 
         txt_major.setOnClickListener {
-            navigator.navigateToSelectMajor(this, REQUEST_CODE_MAJOR)
+            navigator.navigateToSelectMajor(
+                this,
+                REQUEST_CODE_MAJOR
+            )
         }
 
         btn_add_edt.setOnClickListener {
@@ -96,14 +115,16 @@ class AddEditEducationFragment : BaseFragment(),
                         school?.id,
                         major?.name,
                         txt_start_year.text.toString(),
-                        txt_end_year.text.toString()
+                        txt_end_year.text.toString(),
+                        degree?.id
                     )
                 else
                     viewModel.addEducation(
                         school!!.id,
                         major?.name!!,
                         txt_start_year.text.toString(),
-                        txt_end_year.text.toString()
+                        txt_end_year.text.toString(),
+                        degree!!.id
                     )
             else
                 showToast(getString(R.string.check_fields))
@@ -121,7 +142,8 @@ class AddEditEducationFragment : BaseFragment(),
         return txt_school.text.toString() != "" &&
                 txt_major.text.toString() != "" &&
                 txt_start_year.text.toString() != "" &&
-                txt_end_year.text.toString() != ""
+                txt_end_year.text.toString() != "" &&
+                txt_degree.text.toString() != ""
     }
 
     private fun showToast(msg: String?) {
@@ -202,6 +224,11 @@ class AddEditEducationFragment : BaseFragment(),
                     major =
                         data?.extras?.getParcelable(SelectSingleMajorFragment.MAJOR_PICKED)
                     txt_major.text = major?.name
+                }
+                REQUEST_CODE_DEGREE -> {
+                    degree =
+                        data?.extras?.getParcelable(SelectDegreeFragment.DEGREE_PICKED)
+                    txt_degree.text = degree?.name
                 }
             }
         }

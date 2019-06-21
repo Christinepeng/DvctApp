@@ -1,16 +1,16 @@
 package com.divercity.android.features.company.createcompany
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
@@ -113,7 +113,7 @@ class CreateCompanyFragment : BaseFragment() {
     private fun setupView() {
         enableCreateButton(false)
 
-        btn_photo.setOnClickListener {
+        img_photo.setOnClickListener {
             EasyImage.openChooserWithGallery(this, "Pick source", 0)
         }
 
@@ -200,7 +200,7 @@ class CreateCompanyFragment : BaseFragment() {
         GlideApp.with(this)
                 .load(file)
                 .apply(RequestOptions().circleCrop())
-                .into(img_company)
+                .into(img_photo)
     }
 
     private fun setLocation(location: LocationResponse?) {

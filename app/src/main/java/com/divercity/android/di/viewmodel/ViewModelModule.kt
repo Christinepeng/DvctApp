@@ -31,6 +31,8 @@ import com.divercity.android.features.dialogs.jobapply.JobApplyDialogViewModel
 import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogViewModel
 import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogViewModel
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogViewModel
+import com.divercity.android.features.education.addediteducation.AddEditEducationViewModel
+import com.divercity.android.features.education.degree.SelectDegreeViewModel
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityViewModel
 import com.divercity.android.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.android.features.groups.TabGroupsViewModel
@@ -101,7 +103,6 @@ import com.divercity.android.features.skill.editskills.EditUserSkillViewModel
 import com.divercity.android.features.skill.jobskills.JobSkillsViewModel
 import com.divercity.android.features.skill.onboarding.OnboardingSkillViewModel
 import com.divercity.android.features.splash.SplashViewModel
-import com.divercity.android.features.user.addediteducation.AddEditEducationViewModel
 import com.divercity.android.features.user.addeditworkexperience.AddEditWorkExperienceViewModel
 import com.divercity.android.features.user.allconnections.AllConnectionsViewModel
 import com.divercity.android.features.user.editexperienceeducation.EditExperienceEducationViewModel
@@ -672,4 +673,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(AddEditEducationViewModel::class)
     abstract fun bindsAddEducationViewModel(viewModel: AddEditEducationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectDegreeViewModel::class)
+    abstract fun bindsSelectDegreeViewModel(viewModel: SelectDegreeViewModel): ViewModel
 }

@@ -42,47 +42,89 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
-                android:id="@+id/btn_photo"
-                android:layout_width="82dp"
-                android:layout_height="82dp"
+            <ImageView
+                android:id="@+id/img_photo"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp">
+                android:layout_marginBottom="16dp"
+                android:src="@drawable/img_take_picture"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/include_toolbar" />
 
-                <FrameLayout
-                    android:layout_width="85dp"
-                    android:layout_height="85dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/circle_white"
-                    app:backgroundTint="@android:color/white">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/avenir_book"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                android:textColor="#85848d"
+                android:textSize="13sp"
+                android:text="Click the camera icon to upload the company logo" />
 
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:fontFamily="@font/avenir_roman"
-                        android:text="Photo" />
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:fontFamily="@font/avenir_book"-->
+                <!--android:gravity="center_horizontal"-->
+                <!--android:textColor="#85848d"-->
+                <!--android:textSize="13sp"-->
+                <!--android:text="─────────── OR ─────────── " />-->
 
-                </FrameLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_gravity="center"-->
+                <!--android:padding="10dp"-->
+                <!--android:fontFamily="@font/avenir_medium"-->
+                <!--android:textColor="@color/appBlue"-->
+                <!--android:text="Search for the company logo online" />-->
 
-                <ImageView
-                    android:id="@+id/img_company"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:scaleType="centerCrop" />
+            <!--<RelativeLayout-->
+            <!--android:id="@+id/btn_photo"-->
+            <!--android:layout_width="82dp"-->
+            <!--android:layout_height="82dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginTop="16dp"-->
+            <!--android:layout_marginBottom="16dp">-->
 
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/img_icon_add_edit"
-                    android:layout_width="29dp"
-                    android:layout_height="29dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentBottom="true"
-                    android:background="@drawable/circle_blue"
-                    android:src="@drawable/ic_add_24dp"
-                    app:backgroundTint="#333241" />
+            <!--<FrameLayout-->
+            <!--android:layout_width="85dp"-->
+            <!--android:layout_height="85dp"-->
+            <!--android:layout_gravity="center_horizontal"-->
+            <!--android:background="@drawable/circle_white"-->
+            <!--app:backgroundTint="@android:color/white">-->
 
-            </RelativeLayout>
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:fontFamily="@font/avenir_roman"-->
+            <!--android:text="Photo" />-->
+
+            <!--</FrameLayout>-->
+
+            <!--<ImageView-->
+            <!--android:id="@+id/img_company"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:scaleType="centerCrop" />-->
+
+            <!--<androidx.appcompat.widget.AppCompatImageButton-->
+            <!--android:id="@+id/img_icon_add_edit"-->
+            <!--android:layout_width="29dp"-->
+            <!--android:layout_height="29dp"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:layout_alignParentBottom="true"-->
+            <!--android:background="@drawable/circle_blue"-->
+            <!--android:src="@drawable/ic_add_24dp"-->
+            <!--app:backgroundTint="#333241" />-->
+
+            <!--</RelativeLayout>-->
 
             <LinearLayout
                 android:id="@+id/lay_company_name"

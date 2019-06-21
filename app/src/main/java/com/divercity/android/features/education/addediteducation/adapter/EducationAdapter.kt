@@ -1,4 +1,4 @@
-package com.divercity.android.features.user.addediteducation.adapter
+package com.divercity.android.features.education.addediteducation.adapter
 
 import android.view.LayoutInflater
 import android.view.View

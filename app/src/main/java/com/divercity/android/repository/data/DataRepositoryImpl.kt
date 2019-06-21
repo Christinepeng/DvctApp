@@ -1,6 +1,7 @@
 package com.divercity.android.repository.data
 
 import com.divercity.android.core.base.BaseRepository
+import com.divercity.android.core.extension.toDegree
 import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
@@ -9,8 +10,10 @@ import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.data.entity.occupationofinterests.OOIResponse
 import com.divercity.android.data.entity.photo.PhotoEntityResponse
+import com.divercity.android.data.entity.recommendedjobsgoi.RecommendedJobsGOIResponse
 import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.data.networking.services.DataService
+import com.divercity.android.model.Degree
 import com.divercity.android.model.Major
 import com.divercity.android.model.School
 import io.reactivex.Observable
@@ -130,5 +133,21 @@ constructor(private val service: DataService) : BaseRepository(), DataRepository
             checkResponse(response)
             response.body()!!.data
         }
+    }
+
+    override fun fetchDegrees(): Observable<List<Degree>> {
+        return service.fetchDegrees().map { response ->
+            checkResponse(response)
+            response.body()!!.data.map {
+                it.toDegree()
+            }
+        }
+    }
+
+    override fun fetchRecommendedJobsGOIS(
+        pageNumber: Int,
+        size: Int
+    ): Observable<RecommendedJobsGOIResponse> {
+        return service.fetchRecommendedJobsGOIs(pageNumber, size)
     }
 }

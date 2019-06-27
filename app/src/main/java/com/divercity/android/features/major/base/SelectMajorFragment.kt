@@ -106,7 +106,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 

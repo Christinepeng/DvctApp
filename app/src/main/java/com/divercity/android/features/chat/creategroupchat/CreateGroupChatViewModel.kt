@@ -39,7 +39,7 @@ constructor(
                 createGroupChatResponse.postValue(Resource.error(error, null))
             }
 
-            override fun onHttpException(error: JsonElement?) {
+            override fun onHttpException(error: JsonElement) {
                 createGroupChatResponse.postValue(Resource.error(error.toString(), null))
 
             }
@@ -77,7 +77,7 @@ constructor(
                 addChatGroupMemberResponse.value = Resource.error(error, null)
             }
 
-            override fun onHttpException(error: JsonElement?) {
+            override fun onHttpException(error: JsonElement) {
                 addChatGroupMemberResponse.value = Resource.error(error.toString(), null)
             }
 

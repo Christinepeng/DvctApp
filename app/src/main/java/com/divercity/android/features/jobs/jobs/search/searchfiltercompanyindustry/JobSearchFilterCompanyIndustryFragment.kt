@@ -117,7 +117,7 @@ class JobSearchFilterCompanyIndustryFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModelIndustry.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModelIndustry.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 

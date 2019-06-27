@@ -1,14 +1,15 @@
 package com.divercity.android.features.jobs.jobs.adapter
 
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.job.response.JobResponse
+import com.divercity.android.model.position.JobPosition
 import kotlinx.android.synthetic.main.item_job.view.*
 
 class JobsViewHolder
@@ -30,7 +31,7 @@ private constructor(itemView: View, private val listener: Listener?,private val 
                     if (!isApplied) {
                         itemView.btn_job_action.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.btn_apply))
                         itemView.btn_job_action.setOnClickListener {
-                            listener?.onApplyClick(position, data)
+                            listener?.onApplyClick(JobPosition(position, data))
                         }
                     } else {
                         itemView.btn_job_action.setImageDrawable(ContextCompat.getDrawable(itemView.context, R.drawable.btn_applied))
@@ -50,16 +51,16 @@ private constructor(itemView: View, private val listener: Listener?,private val 
             itemView.txt_recruiter_occup.text = it.attributes?.recruiter?.occupation
 
             itemView.setOnClickListener {
-                listener?.onJobClick(data)
+                listener?.onJobClick(JobPosition(position, data))
             }
         }
     }
 
     interface Listener {
 
-        fun onApplyClick(position: Int, job: JobResponse)
+        fun onApplyClick(jobPos: JobPosition)
 
-        fun onJobClick(job: JobResponse)
+        fun onJobClick(jobPos: JobPosition)
     }
 
     companion object {

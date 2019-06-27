@@ -111,6 +111,8 @@ constructor(
     }
 
     private fun fetchChatMembers(chatId: String, page: Int, size: Int) {
+        fetchChatMembersUseCase.compositeDisposable.clear()
+
         fetchChatMembersResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<List<User>>() {
             override fun onFail(error: String) {

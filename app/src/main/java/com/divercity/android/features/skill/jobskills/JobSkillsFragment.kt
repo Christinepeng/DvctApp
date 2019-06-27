@@ -115,7 +115,7 @@ class JobSkillsFragment : BaseFragment(), RetryCallback, IOnBackPressed {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 

@@ -1,5 +1,6 @@
 package com.divercity.android.features.groups.yourgroups
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
@@ -35,8 +36,11 @@ class YourGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     private var isListRefreshing = false
     private var handlerSearch = Handler()
+    private var lastGroupPositionTap = 0
 
     companion object {
+
+        const val REQUEST_CODE_GROUP = 200
 
         fun newInstance(): YourGroupsFragment {
             return YourGroupsFragment()
@@ -95,7 +99,8 @@ class YourGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
             override fun onGroupJoinClick(groupPosition: GroupPosition) {}
 
             override fun onGroupClick(position: Int, group: GroupResponse) {
-                navigator.navigateToGroupDetail(this@YourGroupsFragment, group)
+                lastGroupPositionTap = position
+                navigator.navigateToGroupDetailForResult(this@YourGroupsFragment, group, REQUEST_CODE_GROUP)
             }
         }
 
@@ -115,7 +120,7 @@ class YourGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             //            adapter.showFollowedGroupSection = viewModel.lastSearch.isNullOrEmpty()
             adapter.submitList(it)
         })
@@ -179,6 +184,13 @@ class YourGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
         override fun onQuestionClick(position: Int, question: Question) {
             navigator.navigateToAnswerActivity(this@YourGroupsFragment, question)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_GROUP) {
+            groupAdapter.notifyItemChanged(lastGroupPositionTap)
         }
     }
 }

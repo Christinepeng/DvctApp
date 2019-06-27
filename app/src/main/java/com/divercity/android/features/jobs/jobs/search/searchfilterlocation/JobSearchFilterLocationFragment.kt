@@ -121,7 +121,7 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModelLocation.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModelLocation.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 

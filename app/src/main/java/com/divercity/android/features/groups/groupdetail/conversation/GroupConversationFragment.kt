@@ -9,10 +9,11 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
+import com.divercity.android.features.groups.groupdetail.GroupDetailViewModel
 import com.divercity.android.features.groups.groupdetail.conversation.adapter.GroupConversationAdapter
 import com.divercity.android.features.groups.groupdetail.conversation.adapter.GroupConversationViewHolder
 import com.divercity.android.model.Question
-import kotlinx.android.synthetic.main.fragment_list_refresh.*
+import kotlinx.android.synthetic.main.fragment_group_conversation.*
 import javax.inject.Inject
 
 /**
@@ -21,7 +22,8 @@ import javax.inject.Inject
 
 class GroupConversationFragment : BaseFragment(), RetryCallback {
 
-    lateinit var viewModel: GroupConversationViewModel
+    private lateinit var viewModel: GroupConversationViewModel
+    private lateinit var groupDetailViewModel: GroupDetailViewModel
 
     @Inject
     lateinit var adapter: GroupConversationAdapter
@@ -30,71 +32,86 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
 
     companion object {
 
-        private const val PARAM_GROUP_ID = "paramGroupId"
-
-        fun newInstance(groupId: String): GroupConversationFragment {
-            val fragment = GroupConversationFragment()
-            val arguments = Bundle()
-            arguments.putString(PARAM_GROUP_ID, groupId)
-            fragment.arguments = arguments
-            return fragment
+        fun newInstance(): GroupConversationFragment {
+            return GroupConversationFragment()
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_list_refresh
+    override fun layoutId(): Int = R.layout.fragment_group_conversation
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(GroupConversationViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
 
-        arguments?.getString(PARAM_GROUP_ID)?.let {
-            viewModel.fetchConversations(it)
-        }
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(GroupConversationViewModel::class.java)
+
+        groupDetailViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(GroupDetailViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initSwipeToRefresh()
-        initAdapter()
+        setupView()
+        viewModel.fetchConversations(groupDetailViewModel.groupId)
         subscribeToPaginatedLiveData()
-        subscribeToLiveData()
     }
 
-    private fun initAdapter() {
+    private fun setupView(){
+        txt_no_results.setText(R.string.no_group_conversation)
+
+        swipe_list_main.apply {
+            setOnRefreshListener {
+                if (hasToShowConversations()) {
+                    lay_must_be_member.visibility = View.GONE
+                    isListRefreshing = true
+                    viewModel.refresh()
+                } else {
+                    lay_must_be_member.visibility = View.VISIBLE
+                    isRefreshing = false
+                }
+            }
+            setColorSchemeColors(
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
+        }
+
         adapter.setRetryCallback(this)
         adapter.setListener(object : GroupConversationViewHolder.Listener {
 
             override fun onConversationClick(question: Question) {
                 navigator.navigateToAnswerActivity(
-                    this@GroupConversationFragment, question)
+                    this@GroupConversationFragment, question
+                )
             }
         })
         list.adapter = adapter
 
-        txt_no_results.setText(R.string.no_group_conversation)
-    }
-
-    private fun subscribeToLiveData() {
-
-        viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
-            subscribeToPaginatedLiveData()
-        })
+        if (hasToShowConversations()) {
+            swipe_list_main.isEnabled = false
+            lay_must_be_member.visibility = View.GONE
+        } else {
+            swipe_list_main.isEnabled = true
+            lay_must_be_member.visibility = View.VISIBLE
+        }
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(this, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
-            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
+            if (
+                (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+                &&
+                hasToShowConversations()
+            )
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
@@ -102,31 +119,21 @@ class GroupConversationFragment : BaseFragment(), RetryCallback {
 
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
                     txt_no_results.visibility = View.VISIBLE
-                else
+                else {
                     txt_no_results.visibility = View.GONE
+                }
 
                 swipe_list_main.isRefreshing = isListRefreshing
             }
 
-            if (!isListRefreshing)
+            if (!isListRefreshing && hasToShowConversations())
                 swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
     }
 
-    private fun initSwipeToRefresh() {
-
-        swipe_list_main.apply {
-            setOnRefreshListener {
-                isListRefreshing = true
-                viewModel.refresh()
-            }
-            isEnabled = false
-            setColorSchemeColors(
-                ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                ContextCompat.getColor(context, R.color.colorPrimary),
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
-        }
+    private fun hasToShowConversations(): Boolean {
+        val group = groupDetailViewModel.groupLiveData.value
+        return group!!.isPublic() || group.iAmAMemberOrAdmin()
     }
 
     override fun retry() {

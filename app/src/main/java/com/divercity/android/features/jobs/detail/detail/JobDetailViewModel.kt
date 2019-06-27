@@ -18,14 +18,27 @@ import javax.inject.Inject
  */
 
 class JobDetailViewModel @Inject
-constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
-            private val saveJobUseCase: SaveJobUseCase,
-            private val fetchJobByIdUseCase: FetchJobByIdUseCase,
-            val sessionRepository: SessionRepository) : BaseViewModel() {
+constructor(
+    private val removeSavedJobUseCase: RemoveSavedJobUseCase,
+    private val saveJobUseCase: SaveJobUseCase,
+    private val fetchJobByIdUseCase: FetchJobByIdUseCase,
+    val sessionRepository: SessionRepository
+) : BaseViewModel() {
 
-    var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
-    var fetchJobByIdResponse = MutableLiveData<Resource<JobResponse>>()
-    var showJobData = MutableLiveData<Resource<JobResponse>>()
+    var jobSaveUnsaveResponse = SingleLiveEvent<Resource<Unit>>()
+    var fetchJobResponse = MutableLiveData<Resource<JobResponse>>()
+
+    lateinit var jobId: String
+    var jobLiveData = MutableLiveData<JobResponse>()
+
+    fun setJob(job: JobResponse) {
+        jobId = job.id!!
+        jobLiveData.postValue(job)
+    }
+
+    fun getJob(): JobResponse {
+        return jobLiveData.value!!
+    }
 
     fun saveJob(jobData: JobResponse) {
         jobSaveUnsaveResponse.postValue(Resource.loading(null))
@@ -39,7 +52,8 @@ constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
             }
 
             override fun onSuccess(o: JobResponse) {
-                showJobData.postValue(Resource.success(o))
+                onJobSave(true)
+                jobSaveUnsaveResponse.postValue(Resource.success(null))
             }
         }
         saveJobUseCase.execute(callback, SaveJobUseCase.Params.forJobs(jobData.id!!))
@@ -57,32 +71,52 @@ constructor(private val removeSavedJobUseCase: RemoveSavedJobUseCase,
             }
 
             override fun onSuccess(o: JobResponse) {
-                showJobData.postValue(Resource.success(o))
+                onJobSave(false)
+                jobSaveUnsaveResponse.postValue(Resource.success(null))
             }
         }
         removeSavedJobUseCase.execute(callback, RemoveSavedJobUseCase.Params.forJobs(jobData.id!!))
     }
 
-    fun fetchJobById(jobId: String) {
-        fetchJobByIdResponse.postValue(Resource.loading(null))
+    fun fetchJob() {
+        fetchJobResponse.postValue(Resource.loading(null))
         val callback = object : DisposableObserverWrapper<JobResponse>() {
             override fun onFail(error: String) {
-                fetchJobByIdResponse.postValue(Resource.error(error, JobResponse(id = jobId)))
+                fetchJobResponse.postValue(Resource.error(error, null))
             }
 
             override fun onHttpException(error: JsonElement) {
-                fetchJobByIdResponse.postValue(Resource.error(error.toString(), JobResponse(id = jobId)))
+                fetchJobResponse.postValue(Resource.error(error.toString(), null))
             }
 
             override fun onSuccess(o: JobResponse) {
-                showJobData.postValue(Resource.success(o))
+                setJob(o)
+                fetchJobResponse.postValue(Resource.success(o))
             }
         }
         fetchJobByIdUseCase.execute(callback, FetchJobByIdUseCase.Params.forJob(jobId))
     }
 
-    fun isLoggedUserJobSeeker() : Boolean{
+    fun onJobSave(state: Boolean) {
+        val job = jobLiveData.value
+        job?.attributes?.isBookmarkedByCurrent = state
+        jobLiveData.postValue(job)
+    }
+
+    fun onCancelJobApplication() {
+        val job = jobLiveData.value
+        job?.attributes?.isAppliedByCurrent = false
+        jobLiveData.postValue(job)
+    }
+
+    fun isLoggedUserJobSeeker(): Boolean {
         return sessionRepository.isLoggedUserJobSeeker()
+    }
+
+    fun onJobApplied(){
+        val job = jobLiveData.value
+        job?.attributes?.isAppliedByCurrent = true
+        jobLiveData.postValue(job)
     }
 
     override fun onCleared() {

@@ -13,6 +13,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
+import com.divercity.android.features.groups.groupdetail.GroupDetailViewModel
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_tab_about_group_detail.*
 import kotlinx.android.synthetic.main.view_image_with_foreground.view.*
@@ -24,19 +25,12 @@ import kotlinx.android.synthetic.main.view_image_with_foreground.view.*
 class TabAboutGroupDetailFragment : BaseFragment() {
 
     private lateinit var viewModel: TabAboutGroupDetailViewModel
-
-    private lateinit var group: GroupResponse
+    private lateinit var groupDetailViewModel: GroupDetailViewModel
 
     companion object {
 
-        private const val PARAM_GROUP = "paramGroup"
-
-        fun newInstance(group: GroupResponse): TabAboutGroupDetailFragment {
-            val fragment = TabAboutGroupDetailFragment()
-            val arguments = Bundle()
-            arguments.putParcelable(PARAM_GROUP, group)
-            fragment.arguments = arguments
-            return fragment
+        fun newInstance(): TabAboutGroupDetailFragment {
+            return TabAboutGroupDetailFragment()
         }
     }
 
@@ -44,15 +38,12 @@ class TabAboutGroupDetailFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory)
-                .get(TabAboutGroupDetailViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
-        group = arguments!!.getParcelable(PARAM_GROUP)!!
-        group.let {
-            viewModel.fetchGroupMembers(it, 0, 8, null)
-            viewModel.fetchGroupAdmins(it, 0, 8, null)
-        }
+
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(TabAboutGroupDetailViewModel::class.java)
+
+        groupDetailViewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(GroupDetailViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -62,6 +53,23 @@ class TabAboutGroupDetailFragment : BaseFragment() {
     }
 
     fun setupView() {
+        swipe_refresh.apply {
+            setOnRefreshListener {
+                groupDetailViewModel.fetchGroup()
+            }
+            setColorSchemeColors(
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
+        }
+    }
+
+    private fun showGroupData(group: GroupResponse) {
+
+        viewModel.fetchGroupMembers(group, 0, 8, null)
+        viewModel.fetchGroupAdmins(group, 0, 8, null)
+
         if (group.attributes.description != null) {
             txt_description.hint = group.attributes.description
             txt_description.visibility = View.VISIBLE
@@ -124,6 +132,28 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                 }
             }
         })
+
+        groupDetailViewModel.fetchGroupByIdResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response?.status) {
+                    Status.LOADING -> {
+                        swipe_refresh.isRefreshing = true
+                    }
+
+                    Status.ERROR -> {
+                        swipe_refresh.isRefreshing = false
+                        Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        swipe_refresh.isRefreshing = false
+                    }
+                }
+            })
+
+        groupDetailViewModel.groupLiveData.observe(viewLifecycleOwner, Observer { group ->
+            showGroupData(group!!)
+        })
     }
 
     private fun showMemberPictures(members: List<User>) {
@@ -140,7 +170,7 @@ class TabAboutGroupDetailFragment : BaseFragment() {
                 .apply(RequestOptions().circleCrop())
                 .into(imgViews[i].img)
 
-            if (i == members.size - 1 && i != group.attributes.followersCount - 1)
+            if (i == members.size - 1 && i != groupDetailViewModel.groupLiveData.value!!.attributes.followersCount - 1)
                 (imgViews[i] as FrameLayout).foreground =
                     ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_circular)
         }

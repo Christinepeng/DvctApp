@@ -1,8 +1,6 @@
 package com.divercity.android.features.jobs.jobs
 
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
-import com.divercity.android.core.utils.SingleLiveEvent
-import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.job.response.JobResponse
 import javax.inject.Inject
 
@@ -14,8 +12,6 @@ class JobsListViewModel @Inject
 constructor(
     repository: JobPaginatedRepository
 ) : BaseViewModelPagination<JobResponse>(repository) {
-
-    var jobSaveUnsaveResponse = SingleLiveEvent<Resource<JobResponse>>()
 
     init {
         fetchData(null, "")

@@ -9,10 +9,15 @@ import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.entity.job.response.JobResponse
+import com.divercity.android.model.position.JobPosition
 import kotlinx.android.synthetic.main.item_recommended.view.*
 
 class RecommendedJobViewHolder
-private constructor(itemView: View, private val listener: Listener?, val isLoggedUserJobSeeker : Boolean) :
+private constructor(
+    itemView: View,
+    private val listener: Listener?,
+    val isLoggedUserJobSeeker: Boolean
+) :
     RecyclerView.ViewHolder(itemView) {
 
     fun bindTo(position: Int, data: JobResponse?) {
@@ -26,7 +31,7 @@ private constructor(itemView: View, private val listener: Listener?, val isLogge
             itemView.txt_subtitle1.text =
                 it.attributes?.employer?.name.plus("\n").plus(it.attributes?.locationDisplayName)
 
-            if(isLoggedUserJobSeeker) {
+            if (isLoggedUserJobSeeker) {
                 itemView.btn_action.visibility = View.VISIBLE
                 itemView.btn_action.setText(R.string.apply)
                 it.attributes?.isAppliedByCurrent?.let {
@@ -43,7 +48,7 @@ private constructor(itemView: View, private val listener: Listener?, val isLogge
                         )
                         itemView.btn_action.setText(R.string.apply)
                         itemView.btn_action.setOnClickListener {
-                            listener?.onApplyClick(position, data)
+                            listener?.onApplyClick(JobPosition(position, data))
                         }
                     } else {
                         itemView.btn_action.background = ContextCompat.getDrawable(
@@ -64,27 +69,31 @@ private constructor(itemView: View, private val listener: Listener?, val isLogge
             }
 
             itemView.setOnClickListener {
-                listener?.onJobClick(data)
+                listener?.onJobClick(JobPosition(position, data))
             }
 
             itemView.btn_close.setOnClickListener {
-                listener?.onJobDiscarded(position, data)
+                listener?.onJobDiscarded(JobPosition(position, data))
             }
         }
     }
 
     interface Listener {
 
-        fun onApplyClick(position: Int, job: JobResponse)
+        fun onApplyClick(jobPos: JobPosition)
 
-        fun onJobClick(job: JobResponse)
+        fun onJobClick(jobPos: JobPosition)
 
-        fun onJobDiscarded(position: Int, job: JobResponse)
+        fun onJobDiscarded(jobPos: JobPosition)
     }
 
     companion object {
 
-        fun create(parent: ViewGroup, listener: Listener?, isLoggedUserJobSeeker : Boolean): RecommendedJobViewHolder {
+        fun create(
+            parent: ViewGroup,
+            listener: Listener?,
+            isLoggedUserJobSeeker: Boolean
+        ): RecommendedJobViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
             val view = layoutInflater.inflate(R.layout.item_recommended, parent, false)
             return RecommendedJobViewHolder(view, listener, isLoggedUserJobSeeker)

@@ -115,22 +115,21 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
     private fun search(query: String?) {
         handlerSearch.removeCallbacksAndMessages(null)
         handlerSearch.postDelayed({
-            viewModel.fetchCompanies(viewLifecycleOwner, if (query == "") null else query)
-
+            viewModel.fetchData(viewLifecycleOwner, query)
         }, AppConstants.SEARCH_DELAY)
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedCompanyList.observe(this, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState.observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             txt_search_company.visibility = View.GONE
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState.observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             networkState?.let {
                 adapter.currentList?.let { list ->
                     if (networkState.status == Status.SUCCESS && list.size == 0)

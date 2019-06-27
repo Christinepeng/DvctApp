@@ -1,25 +1,26 @@
 package com.divercity.android.core.base.datasource
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.core.utils.Listing
+import com.divercity.android.testing.OpenForTesting
 import java.util.concurrent.Executors
 
+@OpenForTesting
 abstract class BaseDataSourceRepository<T> {
 
-    var dataSourceFactory: BaseDataSourceFactory<T>? = null
+    private var dataSourceFactory: BaseDataSourceFactory<T>? = null
+    lateinit var listing: Listing<T>
+    lateinit var pagedList: LiveData<PagedList<T>>
+    final var pageSize = 20
 
-    companion object {
+    abstract fun getUseCase(): UseCase<List<T>, Params>
 
-        const val pageSize = 20
-    }
-
-    abstract fun getUseCase() : UseCase<List<T>, Params>
-
-    fun fetchData(query: String?): Listing<T> {
+    fun fetchData(query: String?) {
         val executor = Executors.newFixedThreadPool(5)
 
         dataSourceFactory = BaseDataSourceFactory(getUseCase(), query)
@@ -31,11 +32,11 @@ abstract class BaseDataSourceRepository<T> {
             .setEnablePlaceholders(false)
             .build()
 
-        val pagedList = LivePagedListBuilder(dataSourceFactory!!, config)
+        pagedList = LivePagedListBuilder(dataSourceFactory!!, config)
             .setFetchExecutor(executor)
             .build()
 
-        return Listing(
+        listing = Listing(
             pagedList,
             Transformations.switchMap(dataSourceFactory!!.dataSource) { input -> input.networkState },
             Transformations.switchMap(dataSourceFactory!!.dataSource) { input -> input.initialLoad }

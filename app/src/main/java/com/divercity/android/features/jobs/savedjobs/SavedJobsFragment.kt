@@ -1,5 +1,6 @@
 package com.divercity.android.features.jobs.savedjobs
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -9,11 +10,11 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
 import com.divercity.android.features.search.ITabSearch
+import com.divercity.android.model.position.JobPosition
 import kotlinx.android.synthetic.main.fragment_jobs_saved.*
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class SavedJobsFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDialogFragment.Listener  {
+class SavedJobsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: SavedJobsViewModel
 
@@ -29,9 +30,11 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDia
     lateinit var adapter: JobsAdapter
 
     private var isListRefreshing = false
-    private var positionApplyClicked: Int = 0
+    private var lastJobPositionTap = 0
 
     companion object {
+
+        const val REQUEST_CODE_JOB = 201
 
         fun newInstance(): SavedJobsFragment {
             return SavedJobsFragment()
@@ -42,7 +45,8 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDia
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(SavedJobsViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(SavedJobsViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,7 +59,20 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDia
 
     private fun initAdapter() {
         adapter.setRetryCallback(this)
-        adapter.setListener(listener)
+        adapter.listener = object : JobsViewHolder.Listener {
+
+            override fun onApplyClick(jobPos: JobPosition) {
+                showJobApplyDialog(jobPos)
+            }
+
+            override fun onJobClick(jobPos: JobPosition) {
+                navigator.navigateToJobDetailForResult(
+                    this@SavedJobsFragment,
+                    jobPos.job,
+                    REQUEST_CODE_JOB
+                )
+            }
+        }
         list.adapter = adapter
     }
 
@@ -67,16 +84,16 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDia
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(this, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
@@ -123,28 +140,25 @@ class SavedJobsFragment : BaseFragment(), RetryCallback, ITabSearch, JobApplyDia
         viewModel.retry()
     }
 
-    private fun showJobApplyDialog(jobId: String?) {
-        val dialog = JobApplyDialogFragment.newInstance(jobId!!)
+    private fun showJobApplyDialog(jobPos: JobPosition) {
+        val dialog = JobApplyDialogFragment.newInstance(jobPos.job)
+        dialog.listener = object : JobApplyDialogFragment.Listener {
+
+            override fun onSuccessJobApply() {
+                adapter.notifyItemChanged(jobPos.position)
+            }
+        }
         dialog.show(childFragmentManager, null)
-    }
-
-    private val listener = object : JobsViewHolder.Listener {
-
-        override fun onApplyClick(position: Int, job: JobResponse) {
-            positionApplyClicked = position
-            showJobApplyDialog(job.id)
-        }
-
-        override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
-        }
     }
 
     override fun search(searchQuery: String?) {
         viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
 
-    override fun onSuccessJobApply() {
-        viewModel.fetchData(viewLifecycleOwner, null)
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_JOB) {
+            adapter.notifyItemChanged(lastJobPositionTap)
+        }
     }
 }

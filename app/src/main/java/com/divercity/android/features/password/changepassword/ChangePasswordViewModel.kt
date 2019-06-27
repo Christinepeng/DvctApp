@@ -27,7 +27,7 @@ constructor(
                 changePasswordResponse.value = Resource.error(error, null)
             }
 
-            override fun onHttpException(error: JsonElement?) {
+            override fun onHttpException(error: JsonElement) {
                 changePasswordResponse.value = Resource.error(error.toString(), null)
             }
 

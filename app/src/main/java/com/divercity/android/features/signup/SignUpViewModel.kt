@@ -51,7 +51,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
 //            override fun onFail(error: String) {
 //            }
 //
-//            override fun onHttpException(error: JsonElement?) {
+//            override fun onHttpException(code: Int, error: JsonElement?) {
 //            }
 //
 //            override fun onSuccess(t: Boolean) {
@@ -71,7 +71,7 @@ constructor(private val signUpUseCase: SignUpUseCase,
                     uploadProfilePictureResponse.value = Resource.error(error, null)
                 }
 
-                override fun onHttpException(error: JsonElement?) {
+                override fun onHttpException(error: JsonElement) {
 
                 }
 

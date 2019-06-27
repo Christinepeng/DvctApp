@@ -1,8 +1,8 @@
 package com.divercity.android.features.jobs.jobs
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -10,12 +10,12 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogFragment
 import com.divercity.android.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
 import com.divercity.android.features.search.ITabSearch
+import com.divercity.android.model.position.JobPosition
 import kotlinx.android.synthetic.main.fragment_jobs_list.*
 import javax.inject.Inject
 
@@ -24,8 +24,7 @@ import javax.inject.Inject
  * Created by lucas on 25/10/2018.
  */
 
-class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
-    JobApplyDialogFragment.Listener {
+class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     lateinit var viewModel: JobsListViewModel
 
@@ -33,9 +32,11 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
     lateinit var adapter: JobsAdapter
 
     private var isListRefreshing = false
-    private var positionApplyClicked: Int = 0
+    private var lastJobPositionTap = 0
 
     companion object {
+
+        const val REQUEST_CODE_JOB = 201
 
         fun newInstance(): JobsListFragment {
             return JobsListFragment()
@@ -60,30 +61,25 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
 
     private fun initAdapter() {
         adapter.setRetryCallback(this)
-        adapter.setListener(listener)
+        adapter.listener = object : JobsViewHolder.Listener {
+
+            override fun onApplyClick(jobPos: JobPosition) {
+                showJobApplyDialog(jobPos)
+            }
+
+            override fun onJobClick(jobPos: JobPosition) {
+                lastJobPositionTap = jobPos.position
+                navigator.navigateToJobDetailForResult(
+                    this@JobsListFragment,
+                    jobPos.job,
+                    REQUEST_CODE_JOB
+                )
+            }
+        }
         list.adapter = adapter
     }
 
     private fun subscribeToLiveData() {
-        viewModel.jobSaveUnsaveResponse.observe(this, Observer { job ->
-            when (job?.status) {
-                Status.LOADING -> {
-                    showProgress()
-                }
-
-                Status.ERROR -> {
-                    hideProgress()
-                    Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
-                }
-                Status.SUCCESS -> {
-                    hideProgress()
-                    adapter.currentList?.get(positionApplyClicked)
-                        ?.attributes?.isBookmarkedByCurrent =
-                        job.data?.attributes?.isBookmarkedByCurrent
-                    adapter.notifyItemChanged(positionApplyClicked)
-                }
-            }
-        })
 
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
@@ -91,16 +87,16 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(this, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)
@@ -139,29 +135,19 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
         viewModel.retry()
     }
 
-    private val listener: JobsViewHolder.Listener = object : JobsViewHolder.Listener {
+    private fun showJobApplyDialog(jobPos: JobPosition) {
+        val dialog = JobApplyDialogFragment.newInstance(jobPos.job)
+        dialog.listener = object : JobApplyDialogFragment.Listener {
 
-        override fun onApplyClick(position: Int, job: JobResponse) {
-            positionApplyClicked = position
-            showJobApplyDialog(job.id)
+            override fun onSuccessJobApply() {
+                adapter.notifyItemChanged(jobPos.position)
+            }
         }
-
-        override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
-        }
-    }
-
-    private fun showJobApplyDialog(jobId: String?) {
-        val dialog = JobApplyDialogFragment.newInstance(jobId!!)
         dialog.show(childFragmentManager, null)
     }
 
     override fun search(searchQuery: String?) {
         viewModel.fetchData(viewLifecycleOwner, searchQuery)
-    }
-
-    override fun onSuccessJobApply() {
-        search(null)
     }
 
     fun onOpenFilterMenu() {
@@ -171,5 +157,12 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch,
     private fun showJobSearchFilterDialog() {
         val dialog = JobSearchFilterDialogFragment.newInstance()
         dialog.show(childFragmentManager, null)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == REQUEST_CODE_JOB) {
+            adapter.notifyItemChanged(lastJobPositionTap)
+        }
     }
 }

@@ -2,16 +2,16 @@ package com.divercity.android.features.dialogs.jobapplication
 
 import android.app.Activity
 import android.app.Dialog
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import android.content.Context
 import android.content.Intent
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import androidx.appcompat.app.AlertDialog
 import android.view.View
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseDialogFragment
@@ -19,6 +19,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
+import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.data.entity.jobapplication.JobApplicationResponse
 import com.divercity.android.features.dialogs.CustomTwoBtnDialogFragment
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
@@ -54,6 +55,29 @@ class JobApplicationDialogFragment : BaseDialogFragment(), RecentDocsDialogFragm
             arguments.putString(JOB_ID, jobId)
             fragment.arguments = arguments
             return fragment
+        }
+    }
+
+    enum class DataHolder {
+        INSTANCE;
+
+        private var job: JobResponse? = null
+
+        companion object {
+
+            fun hasData(): Boolean {
+                return INSTANCE.job != null
+            }
+
+            var data: JobResponse?
+                get() {
+                    val jobResponse = INSTANCE.job
+                    INSTANCE.job = null
+                    return jobResponse
+                }
+                set(objectList) {
+                    INSTANCE.job = objectList
+                }
         }
     }
 

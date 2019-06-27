@@ -120,7 +120,7 @@ class ChatsFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
 //            if (isSearching) {
 //                adapter.submitList(it)
 //                isSearching = false

@@ -4,11 +4,17 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.apollographql.android'
+apply plugin: "kotlin-allopen"
 
 def keystorePropertiesFile = rootProject.file("../DivercityAppCredentials/keystore.properties")
 def keystoreProperties = new Properties()
 if (keystorePropertiesFile.exists())
     keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
+allOpen {
+    // allows mocking for classes w/o directly opening them for release builds
+    annotation 'com.divercity.android.testing.OpenClass'
+}
 
 android {
 
@@ -218,9 +224,26 @@ dependencies {
 
     implementation 'io.branch.sdk.android:library:3.1.0'
 
-    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    def mockito_version = "2.25.0"
+    def mockito_all_version = "1.10.19"
+    def mockito_android_version = "2.25.0"
+    def junit_version = "4.12"
+    def arch_core_version = "2.0.1"
+
+    // Testing
+
+
+    // Unit Testing
+    testImplementation "junit:junit:$junit_version"
+    testImplementation "org.mockito:mockito-core:$mockito_version"
+    testImplementation "androidx.arch.core:core-runtime:$arch_core_version"
+    testImplementation "androidx.arch.core:core-testing:$arch_core_version"
+
+    //    testImplementation "org.mockito:mockito-all:$mockito_all_version"
+//    testImplementation "org.mockito:mockito-android:$mockito_android_version"
 }
 
 repositories {

@@ -150,10 +150,10 @@ constructor(
     }
 
     fun updatePositionOnJobApplied(position: Int) {
-        (getItem(position - 1) as JobResponse).attributes?.apply {
-            isAppliedByCurrent = true
-            notifyItemChanged(position)
-        }
+//        (getItem(position - 1) as JobResponse).attributes?.apply {
+//            isAppliedByCurrent = true
+//            notifyItemChanged(position)
+//        }
     }
 
     override fun registerAdapterDataObserver(observer: RecyclerView.AdapterDataObserver) {

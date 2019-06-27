@@ -18,6 +18,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.document.DocumentResponse
+import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.jobapplysuccess.JobApplySuccessDialogFragment
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogFragment
 import com.divercity.android.repository.session.SessionRepository
@@ -42,6 +43,8 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
     private var docId: String? = null
     private var jobId: String? = null
 
+    private var job: JobResponse? = null
+
     companion object {
         private const val JOB_ID = "jobId"
         const val REQUEST_CODE_DOC = 150
@@ -54,16 +57,49 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
             fragment.arguments = arguments
             return fragment
         }
+
+        fun newInstance(job: JobResponse): JobApplyDialogFragment {
+            DataHolder.data = job
+            return JobApplyDialogFragment()
+        }
+    }
+
+    enum class DataHolder {
+        INSTANCE;
+
+        private var job: JobResponse? = null
+
+        companion object {
+
+            fun hasData(): Boolean {
+                return INSTANCE.job != null
+            }
+
+            var data: JobResponse?
+                get() {
+                    val jobResponse = INSTANCE.job
+                    INSTANCE.job = null
+                    return jobResponse
+                }
+                set(objectList) {
+                    INSTANCE.job = objectList
+                }
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        jobId = arguments?.getString(JOB_ID)
+        job = DataHolder.data
+        if (job != null)
+            jobId = job!!.id
+        else
+            jobId = arguments?.getString(JOB_ID)
         savedInstanceState?.also {
             docId = it.getString(DOC_ID)
             jobId = it.getString(JOB_ID)
         }
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[JobApplyDialogViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[JobApplyDialogViewModel::class.java]
         subscribeToLiveData()
     }
 
@@ -155,6 +191,7 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
                 }
                 Status.SUCCESS -> {
                     hideProgress()
+                    job?.attributes?.isAppliedByCurrent = true
                     listener?.onSuccessJobApply()
                     showJobApplySuccessDialog()
                     dismiss()
@@ -163,7 +200,7 @@ class JobApplyDialogFragment : BaseDialogFragment(), RecentDocsDialogFragment.Li
         })
     }
 
-    private fun showJobApplySuccessDialog(){
+    private fun showJobApplySuccessDialog() {
         val fragment = JobApplySuccessDialogFragment.newInstance(jobId!!)
         fragment.show(requireActivity().supportFragmentManager, null)
     }

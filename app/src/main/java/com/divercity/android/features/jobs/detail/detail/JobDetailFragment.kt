@@ -28,15 +28,13 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener,
-    JobApplyDialogFragment.Listener, JobApplicationDialogFragment.Listener {
+class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listener
+    ,JobApplicationDialogFragment.Listener {
 
     lateinit var viewModel: JobDetailViewModel
 
     @Inject
     lateinit var adapter: JobDetailViewPagerAdapter
-
-    var job: JobResponse? = null
 
     companion object {
         private const val PARAM_JOB_ID = "paramJobId"
@@ -77,44 +75,22 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(JobDetailViewModel::class.java)
-        } ?: throw Exception("Invalid Fragment")
-    }
-
-    private fun fetchJobData() {
-        val job = arguments?.getString(PARAM_JOB_ID)
-        if (job != null)
-            viewModel.fetchJobById(job)
-        else {
-            showToast(R.string.error)
-            requireActivity().finish()
-        }
+        viewModel =
+            ViewModelProviders.of(requireActivity(), viewModelFactory)
+                .get(JobDetailViewModel::class.java)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        if (DataHolder.hasData()) {
-            job = DataHolder.data
-            showJob(job)
-        } else {
-            fetchJobData()
-        }
         subscribeToLiveData()
         setupToolbar()
-    }
 
-    private fun setupTabs(job: JobResponse?) {
-        job?.also {
-            adapter.job = it
-            viewpager.adapter = adapter
-            tab_layout.setupWithViewPager(viewpager)
+        if (DataHolder.hasData()) {
+            viewModel.setJob(DataHolder.data!!)
+        } else if (viewModel.jobLiveData.value == null) {
+            viewModel.jobId = arguments?.getString(PARAM_JOB_ID)!!
+            viewModel.fetchJob()
         }
-    }
-
-    private fun showDialogMoreActions() {
-        val dialog = JobSeekerActionsDialogFragment.newInstance()
-        dialog.show(childFragmentManager, null)
     }
 
     private fun setupToolbar() {
@@ -131,9 +107,20 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         }
     }
 
+    private fun showDialogMoreActions() {
+        val dialog = JobSeekerActionsDialogFragment.newInstance()
+        dialog.show(childFragmentManager, null)
+    }
+
     private fun showJob(job: JobResponse?) {
         job?.also {
-            setupTabs(job)
+
+            adapter.job = it
+            if (viewpager.adapter == null) {
+                viewpager.adapter = adapter
+                tab_layout.setupWithViewPager(viewpager)
+            }
+
             root_layout.visibility = View.VISIBLE
 
             GlideApp.with(this)
@@ -166,47 +153,67 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
     }
 
     private fun showJobApplyDialog() {
-        val dialog = JobApplyDialogFragment.newInstance(job?.id!!)
+        val dialog = JobApplyDialogFragment.newInstance(viewModel.getJob())
+        dialog.listener = object : JobApplyDialogFragment.Listener {
+
+            override fun onSuccessJobApply() {
+                viewModel.onJobApplied()
+            }
+        }
         dialog.show(childFragmentManager, null)
     }
 
     private fun subscribeToLiveData() {
-        viewModel.jobSaveUnsaveResponse.observe(viewLifecycleOwner, Observer { job ->
-            if (job?.status == Status.LOADING)
-                showProgress()
-            else if (job?.status == Status.ERROR) {
-                hideProgress()
-                Toast.makeText(activity, job.message, Toast.LENGTH_SHORT).show()
+        viewModel.jobSaveUnsaveResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                }
+
+                Status.SUCCESS -> {
+                    hideProgress()
+                }
             }
         })
 
-        viewModel.fetchJobByIdResponse.observe(viewLifecycleOwner, Observer { job ->
-            if (job?.status == Status.LOADING)
-                showProgress()
-            else if (job?.status == Status.ERROR) {
-                hideProgress()
-                showDialogConnectionError(job.data?.id!!)
+        viewModel.fetchJobResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    showDialogConnectionError()
+                }
+
+                Status.SUCCESS -> {
+                    hideProgress()
+                }
             }
         })
 
-        viewModel.showJobData.observe(viewLifecycleOwner, Observer { job ->
-            if (job?.status == Status.SUCCESS) {
-                hideProgress()
-                this.job = job.data
-                showJob(job.data)
-            }
+        viewModel.jobLiveData.observe(viewLifecycleOwner, Observer { job ->
+            showJob(job)
         })
     }
 
     private fun setupSaveButton(job: JobResponse?) {
         job?.attributes?.isBookmarkedByCurrent?.let {
             if (it) {
-                btn_save.background = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_round_blue3)
+                btn_save.background =
+                    ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_round_blue3)
                 btn_save.setTextColor(ContextCompat.getColor(context!!, R.color.white))
                 btn_save.setText(R.string.saved)
                 btn_save.setOnClickListener { viewModel.removeSavedJob(job) }
             } else {
-                btn_save.background = ContextCompat.getDrawable(context!!, R.drawable.bk_white_stroke_blue_rounded)
+                btn_save.background =
+                    ContextCompat.getDrawable(context!!, R.drawable.bk_white_stroke_blue_rounded)
                 btn_save.setTextColor(ContextCompat.getColor(context!!, R.color.appBlue))
                 btn_save.setText(R.string.save)
                 btn_save.setOnClickListener { viewModel.saveJob(job) }
@@ -217,21 +224,23 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
     private fun setupApplyButton(job: JobResponse?) {
         job?.attributes?.isAppliedByCurrent?.let {
             if (!it) {
-                btn_apply.background = ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_round_blue3)
+                btn_apply.background =
+                    ContextCompat.getDrawable(context!!, R.drawable.shape_backgrd_round_blue3)
                 btn_apply.setTextColor(ContextCompat.getColor(context!!, R.color.white))
                 btn_apply.setText(R.string.apply)
                 btn_apply.setOnClickListener {
                     showJobApplyDialog()
                 }
             } else {
-                btn_apply.background = ContextCompat.getDrawable(context!!, R.drawable.bk_white_stroke_blue_rounded)
+                btn_apply.background =
+                    ContextCompat.getDrawable(context!!, R.drawable.bk_white_stroke_blue_rounded)
                 btn_apply.setTextColor(ContextCompat.getColor(context!!, R.color.appBlue))
                 btn_apply.setText(R.string.applied)
             }
         }
     }
 
-    private fun showDialogConnectionError(jobId: String) {
+    private fun showDialogConnectionError() {
         val dialog = CustomTwoBtnDialogFragment.newInstance(
             getString(R.string.ups),
             getString(R.string.error_connection),
@@ -242,7 +251,7 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         dialog.setListener(object : CustomTwoBtnDialogFragment.OnBtnListener {
 
             override fun onNegativeBtnClick() {
-                viewModel.fetchJobById(jobId)
+                viewModel.fetchJob()
             }
 
             override fun onPositiveBtnClick() {
@@ -253,8 +262,8 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         dialog.show(childFragmentManager, null)
     }
 
-    private fun showHideButtonsIfApplied(isAppliedByCurrent : Boolean){
-        if(isAppliedByCurrent){
+    private fun showHideButtonsIfApplied(isAppliedByCurrent: Boolean) {
+        if (isAppliedByCurrent) {
             btn_apply.visibility = View.GONE
             btn_save.visibility = View.GONE
             btn_view_application.visibility = View.VISIBLE
@@ -268,33 +277,27 @@ class JobDetailFragment : BaseFragment(), JobSeekerActionsDialogFragment.Listene
         }
     }
 
-    private fun showJobApplicationDialog(){
-        val fragment = JobApplicationDialogFragment.newInstance(job?.id!!)
+    private fun showJobApplicationDialog() {
+        val fragment = JobApplicationDialogFragment.newInstance(viewModel.jobId)
         fragment.show(childFragmentManager, null)
     }
 
     private fun showToast(resId: Int) {
-        Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext().applicationContext, resId, Toast.LENGTH_SHORT).show()
     }
 
     override fun onShareJobViaMessage() {
-        navigator.navigateToShareJobViaMessage(this, job?.id!!)
+        navigator.navigateToShareJobViaMessage(this, viewModel.jobId)
     }
 
     override fun onShareJobToGroups() {
-        navigator.navigateToShareJobGroupActivity(this, job?.id)
+        navigator.navigateToShareJobGroupActivity(this, viewModel.jobId)
     }
 
     override fun onReportJobPosting() {
     }
 
-    override fun onSuccessJobApply() {
-        fetchJobData()
-    }
-
     override fun onCancelJobApplication() {
-        job?.attributes?.isAppliedByCurrent = false
-        setupApplyButton(job)
-        showHideButtonsIfApplied(false)
+        viewModel.onCancelJobApplication()
     }
 }

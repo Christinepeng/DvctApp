@@ -99,7 +99,7 @@ class CompaniesMyCompaniesFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             // To hide my companies section when searching
             viewModel.showMyCompaniesSection.value =
                 viewModel.lastSearch.isNullOrEmpty() && myCompaniesAdapter.list.isNotEmpty()

@@ -139,7 +139,7 @@ class ChatFragment : BaseFragment(), JobApplyDialogFragment.Listener {
             }
 
             override fun onJobClick(jobId: String) {
-                navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), jobId, null)
+                navigator.navigateToJobDetail(requireActivity(), jobId, null)
             }
 
             override fun onImageTap(imageUrl: String) {

@@ -173,7 +173,7 @@ class CompanyAddAdminFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(this, Observer {
+        viewModel.pagedList().observe(this, Observer {
             adapterUsers.submitList(it)
         })
 

@@ -10,10 +10,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
 import com.divercity.android.features.jobs.jobs.adapter.JobsAdapter
 import com.divercity.android.features.jobs.jobs.adapter.JobsViewHolder
+import com.divercity.android.model.position.JobPosition
 import kotlinx.android.synthetic.main.fragment_list_refresh.*
 import javax.inject.Inject
 
@@ -68,7 +68,17 @@ class SimilarJobListFragment : BaseFragment(), RetryCallback, JobApplyDialogFrag
 
     private fun initAdapter() {
         adapter.setRetryCallback(this)
-        adapter.setListener(listener)
+        adapter.listener = object : JobsViewHolder.Listener {
+
+            override fun onApplyClick(jobPos : JobPosition) {
+                positionApplyClicked = jobPos.position
+                showJobApplyDialog(jobPos.job.id)
+            }
+
+            override fun onJobClick(jobPos : JobPosition) {
+                navigator.navigateToJobDetail(requireActivity(), jobPos.job.id, jobPos.job)
+            }
+        }
         list.adapter = adapter
     }
 
@@ -85,8 +95,9 @@ class SimilarJobListFragment : BaseFragment(), RetryCallback, JobApplyDialogFrag
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    adapter.currentList?.get(positionApplyClicked)?.attributes?.isBookmarkedByCurrent =
-                            job.data?.attributes?.isBookmarkedByCurrent
+                    adapter.currentList?.get(positionApplyClicked)
+                        ?.attributes?.isBookmarkedByCurrent =
+                        job.data?.attributes?.isBookmarkedByCurrent
                     adapter.notifyItemChanged(positionApplyClicked)
                 }
             }
@@ -131,27 +142,15 @@ class SimilarJobListFragment : BaseFragment(), RetryCallback, JobApplyDialogFrag
             }
             isEnabled = false
             setColorSchemeColors(
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                    ContextCompat.getColor(context, R.color.colorPrimary),
-                    ContextCompat.getColor(context, R.color.colorPrimaryDark)
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
     }
 
     override fun retry() {
         viewModel.retry()
-    }
-
-    private val listener: JobsViewHolder.Listener = object : JobsViewHolder.Listener {
-
-        override fun onApplyClick(position: Int, job: JobResponse) {
-            positionApplyClicked = position
-            showJobApplyDialog(job.id)
-        }
-
-        override fun onJobClick(job: JobResponse) {
-            navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
-        }
     }
 
     private fun showJobApplyDialog(jobId: String?) {

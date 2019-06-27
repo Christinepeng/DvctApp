@@ -115,15 +115,15 @@ class InviteUsersFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(this, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
                     txt_no_results.visibility = View.VISIBLE

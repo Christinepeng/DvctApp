@@ -294,11 +294,11 @@ constructor(
     }
 
     fun disposeGroupMemberUseCase(){
-        fetchGroupMembersUseCase.dispose()
+        fetchGroupMembersUseCase.compositeDisposable.clear()
     }
 
     fun onDestroy() {
-        disposeGroupMemberUseCase()
+        fetchGroupMembersUseCase.dispose()
         answersWebSocket.close()
     }
 

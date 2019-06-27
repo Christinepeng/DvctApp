@@ -15,5 +15,9 @@ class RecommendedJobsGroupsPaginatedRepository @Inject
 internal constructor(private val fetchFeedRecommendedJobsGroupsUseCase: FetchFeedRecommendedJobsGroupsUseCase) :
     BaseDataSourceRepository<RecommendedItem>() {
 
+    init {
+        pageSize = 10
+    }
+
     override fun getUseCase(): UseCase<List<RecommendedItem>, Params> = fetchFeedRecommendedJobsGroupsUseCase
 }

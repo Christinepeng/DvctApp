@@ -75,7 +75,7 @@ constructor(
 //                joinPublicGroupResponse.postValue(Resource.error(error, null))
 //            }
 //
-//            override fun onHttpException(error: JsonElement) {
+//            override fun onHttpException(code: Int, error: JsonElement) {
 //                joinGroupResponse.postValue(Resource.error(error.toString(), null))
 //            }
 //
@@ -94,7 +94,7 @@ constructor(
 //                requestToJoinResponse.postValue(Resource.error(error, null))
 //            }
 //
-//            override fun onHttpException(error: JsonElement) {
+//            override fun onHttpException(code: Int, error: JsonElement) {
 //                requestToJoinResponse.postValue(Resource.error(error.toString(), null))
 //            }
 //

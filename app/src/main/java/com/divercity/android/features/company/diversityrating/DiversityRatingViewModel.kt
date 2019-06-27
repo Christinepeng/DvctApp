@@ -37,7 +37,7 @@ constructor(
 //                fetchCompanyResponse.postValue(Resource.error(error, null))
 //            }
 //
-//            override fun onHttpException(error: JsonElement) {
+//            override fun onHttpException(code: Int, error: JsonElement) {
 //                fetchCompanyResponse.postValue(Resource.error(error.toString(), null))
 //            }
 //

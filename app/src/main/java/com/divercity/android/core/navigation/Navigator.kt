@@ -128,12 +128,22 @@ class Navigator @Inject constructor() {
         activity.startActivity(intent)
     }
 
-    fun navigateToJobDescriptionSeekerActivity(
+    fun navigateToJobDetail(
         activity: FragmentActivity,
         jobId: String?,
         job: JobResponse?
     ) {
         activity.startActivity(JobDetailActivity.getCallingIntent(activity, jobId, job))
+    }
+
+    fun navigateToJobDetailForResult(fragment: Fragment, job: JobResponse, code: Int) {
+        fragment.startActivityForResult(
+            JobDetailActivity.getCallingIntent(
+                fragment.requireContext(),
+                job.id,
+                job
+            ), code
+        )
     }
 
     fun navigateToSignUpActivity(activity: FragmentActivity, email: String) {
@@ -334,16 +344,6 @@ class Navigator @Inject constructor() {
         activity.startActivity(
             GroupDetailActivity.getCallingIntent(
                 activity,
-                groupId,
-                null
-            )
-        )
-    }
-
-    fun navigateToGroupDetail(fragment: Fragment, groupId: String) {
-        fragment.startActivity(
-            GroupDetailActivity.getCallingIntent(
-                fragment.context,
                 groupId,
                 null
             )

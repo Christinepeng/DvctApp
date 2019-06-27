@@ -39,9 +39,15 @@ constructor(
     var joinGroupResponse = MutableLiveData<Event<Resource<Any>>>()
     var fetchGroupByIdResponse = MutableLiveData<Resource<GroupResponse>>()
 
-    var groupLiveData = MutableLiveData<GroupResponse?>()
+    lateinit var groupId: String
+    var groupLiveData = MutableLiveData<GroupResponse>()
 
-    fun fetchGroupMembers(groupId: String, page: Int, size: Int, query: String?) {
+    fun setGroup(group: GroupResponse) {
+        groupId = group.id
+        groupLiveData.postValue(group)
+    }
+
+    fun fetchGroupMembers(page: Int, size: Int, query: String?) {
         fetchGroupMembersResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<List<User>>() {
@@ -64,7 +70,7 @@ constructor(
         )
     }
 
-    fun fetchGroupById(groupId: String) {
+    fun fetchGroup() {
         fetchGroupByIdResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<GroupResponse>() {
@@ -77,6 +83,8 @@ constructor(
             }
 
             override fun onSuccess(o: GroupResponse) {
+                fetchGroupByIdResponse.postValue(Resource.success(o))
+                copyGroup(o)
                 groupLiveData.postValue(o)
             }
         }
@@ -209,5 +217,15 @@ constructor(
 
     fun getGroup(): GroupResponse? {
         return groupLiveData.value
+    }
+
+    private fun copyGroup(o: GroupResponse) {
+        val group = groupLiveData.value
+        if (group != null) {
+            group.copy(o)
+            groupLiveData.value = group
+        } else {
+            groupLiveData.value = o
+        }
     }
 }

@@ -1,227 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/txt_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:fontFamily="@font/avenir_heavy"
-                android:gravity="center_horizontal"
-                android:text="@string/about_this_group"
-                android:textColor="#333241"
-                android:textSize="17sp" />
+            android:layout_height="match_parent">
 
             <LinearLayout
-                android:id="@+id/lay_description"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/txt_description"
-                    style="@style/AppText2"
-                    android:layout_width="match_parent"
+                    android:id="@+id/txt_name"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="Some description"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/avenir_heavy"
+                    android:gravity="center_horizontal"
+                    android:text="@string/about_this_group"
+                    android:textColor="#333241"
                     android:textSize="17sp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/lay_description"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:id="@+id/img_lock_unlock"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/img_lock" />
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
                     <TextView
-                        android:id="@+id/txt_subtitle1"
+                        android:id="@+id/txt_description"
                         style="@style/AppText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:hint="Some description"
+                        android:textSize="17sp" />
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/private_group" />
+                        android:layout_marginTop="12dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/img_lock_unlock"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@drawable/img_lock" />
+
+                        <TextView
+                            android:id="@+id/txt_subtitle1"
+                            style="@style/AppText2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_marginStart="16dp"
+                            tools:text="@string/private_group" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txt_type_description"
+                        style="@style/AppText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:background="@android:color/transparent"
+                        android:hint="@string/private_group_desc" />
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txt_type_description"
-                    style="@style/AppText2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@android:color/transparent"
-                    android:hint="@string/private_group_desc" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/txt_namfes"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:fontFamily="@font/avenir_heavy"
-                android:gravity="center_horizontal"
-                android:text="@string/members"
-                android:textColor="#333241"
-                android:textSize="17sp" />
-
-            <LinearLayout
-                android:id="@+id/lay_ethnicifdty"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:padding="16dp">
-
-                <LinearLayout
-                    android:id="@+id/lay_pictures"
+                    android:id="@+id/txt_namfes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
-
-                    <include
-                        android:id="@+id/lay_img1"
-                        layout="@layout/view_image_with_foreground" />
-
-                    <include
-                        android:id="@+id/lay_img2"
-                        layout="@layout/view_image_with_foreground" />
-
-                    <include
-                        android:id="@+id/lay_img3"
-                        layout="@layout/view_image_with_foreground" />
-
-                    <include
-                        android:id="@+id/lay_img4"
-                        layout="@layout/view_image_with_foreground" />
-
-                    <include
-                        android:id="@+id/lay_img5"
-                        layout="@layout/view_image_with_foreground" />
-
-                    <include
-                        android:id="@+id/lay_img6"
-                        layout="@layout/view_image_with_foreground" />
-
-                    <include
-                        android:id="@+id/lay_img7"
-                        layout="@layout/view_image_with_foreground" />
-
-                    <include
-                        android:id="@+id/lay_img8"
-                        layout="@layout/view_image_with_foreground" />
-
-                </LinearLayout>
-
-                <TextView
-                    android:id="@+id/txt_members"
-                    style="@style/AppText2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    android:hint="230 Members" />
-
-            </LinearLayout>
-
-            <TextView
-                android:id="@+id/lbl_admins"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="16dp"
-                android:fontFamily="@font/avenir_heavy"
-                android:gravity="center_horizontal"
-                android:text="@string/admins"
-                android:visibility="gone"
-                android:textColor="#333241"
-                android:textSize="17sp" />
-
-            <LinearLayout
-                android:id="@+id/lay_admin"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:visibility="gone"
-                android:background="@android:color/white"
-                android:orientation="vertical"
-                android:padding="16dp">
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/avenir_heavy"
+                    android:gravity="center_horizontal"
+                    android:text="@string/members"
+                    android:textColor="#333241"
+                    android:textSize="17sp" />
 
                 <LinearLayout
-                    android:id="@+id/lay_admin_img"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/lay_ethnicifdty"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="12dp"
-                    android:orientation="horizontal"
-                    android:visibility="gone">
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="16dp">
 
-                    <include
-                        android:id="@+id/lay_adm_img1"
-                        layout="@layout/view_image_with_foreground" />
+                    <LinearLayout
+                        android:id="@+id/lay_pictures"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
 
-                    <include
-                        android:id="@+id/lay_adm_img2"
-                        layout="@layout/view_image_with_foreground" />
+                        <include
+                            android:id="@+id/lay_img1"
+                            layout="@layout/view_image_with_foreground" />
 
-                    <include
-                        android:id="@+id/lay_adm_img3"
-                        layout="@layout/view_image_with_foreground" />
+                        <include
+                            android:id="@+id/lay_img2"
+                            layout="@layout/view_image_with_foreground" />
 
-                    <include
-                        android:id="@+id/lay_adm_img4"
-                        layout="@layout/view_image_with_foreground" />
+                        <include
+                            android:id="@+id/lay_img3"
+                            layout="@layout/view_image_with_foreground" />
 
-                    <include
-                        android:id="@+id/lay_adm_img5"
-                        layout="@layout/view_image_with_foreground" />
+                        <include
+                            android:id="@+id/lay_img4"
+                            layout="@layout/view_image_with_foreground" />
 
-                    <include
-                        android:id="@+id/lay_adm_img6"
-                        layout="@layout/view_image_with_foreground" />
+                        <include
+                            android:id="@+id/lay_img5"
+                            layout="@layout/view_image_with_foreground" />
 
-                    <include
-                        android:id="@+id/lay_adm_img7"
-                        layout="@layout/view_image_with_foreground" />
+                        <include
+                            android:id="@+id/lay_img6"
+                            layout="@layout/view_image_with_foreground" />
 
-                    <include
-                        android:id="@+id/lay_adm_img8"
-                        layout="@layout/view_image_with_foreground" />
+                        <include
+                            android:id="@+id/lay_img7"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_img8"
+                            layout="@layout/view_image_with_foreground" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txt_members"
+                        style="@style/AppText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        tools:hint="230 Members" />
 
                 </LinearLayout>
 
                 <TextView
-                    android:id="@+id/txt_admins"
-                    style="@style/AppText2"
+                    android:id="@+id/lbl_admins"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:fontFamily="@font/avenir_heavy"
+                    android:gravity="center_horizontal"
+                    android:text="@string/admins"
+                    android:textColor="#333241"
+                    android:textSize="17sp"
+                    android:visibility="gone" />
+
+                <LinearLayout
+                    android:id="@+id/lay_admin"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@android:color/transparent"
-                    tools:hint="Lucas Griotto, Jose Pue" />
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="16dp"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:id="@+id/lay_admin_img"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="12dp"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <include
+                            android:id="@+id/lay_adm_img1"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_adm_img2"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_adm_img3"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_adm_img4"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_adm_img5"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_adm_img6"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_adm_img7"
+                            layout="@layout/view_image_with_foreground" />
+
+                        <include
+                            android:id="@+id/lay_adm_img8"
+                            layout="@layout/view_image_with_foreground" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/txt_admins"
+                        style="@style/AppText2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        tools:hint="Lucas Griotto, Jose Pue" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
 
-    </androidx.core.widget.NestedScrollView>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

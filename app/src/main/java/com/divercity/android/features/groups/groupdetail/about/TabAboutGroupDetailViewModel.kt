@@ -26,6 +26,7 @@ constructor(
     var fetchGroupAdminsResponse = SingleLiveEvent<Resource<List<User>>>()
 
     fun fetchGroupMembers(group: GroupResponse, page: Int, size: Int, query: String?) {
+        fetchGroupMembersUseCase.compositeDisposable.clear()
         fetchGroupMembersResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<List<User>>() {
@@ -49,6 +50,7 @@ constructor(
     }
 
     fun fetchGroupAdmins(group: GroupResponse, page: Int, size: Int, query: String?) {
+        fetchGroupAdminsUseCase.compositeDisposable.clear()
         fetchGroupAdminsResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<List<User>>() {

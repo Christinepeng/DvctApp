@@ -15,5 +15,9 @@ class QuestionsJobPaginatedRepository @Inject
 internal constructor(private val fetchQuestionsJobsUseCase: FetchQuestionsJobsUseCase) :
     BaseDataSourceRepository<HomeItem>() {
 
+    init {
+        pageSize = 10
+    }
+
     override fun getUseCase(): UseCase<List<HomeItem>, Params> = fetchQuestionsJobsUseCase
 }

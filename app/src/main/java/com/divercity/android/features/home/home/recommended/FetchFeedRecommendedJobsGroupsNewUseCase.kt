@@ -26,8 +26,8 @@ constructor(
     override fun createObservableUseCase(params: Params): Observable<List<RecommendedItem>> {
 
         return dataRepository.fetchRecommendedJobsGOIS(params.page, params.size).map {
-            val jobs = it.jobs!!
-            val groups = it.goi!!
+            val jobs = it.jobs!!.data!!
+            val groups = it.goi!!.data!!
             val shuffledRecommendedJobsGroups = ArrayList<RecommendedItem>()
             var startLimitJobs = 0
             var startLimitGroups = 0

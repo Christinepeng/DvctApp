@@ -96,7 +96,7 @@ class RateCompanyFragment : BaseFragment() {
     }
 
     private fun initView() {
-        rating_bar.rating = 1.0f
+//        rating_bar.rating = 1.0f
 
         btn_submit.setOnClickListener {
             viewModel.rateCompany(rating_bar.rating.toInt(), et_review.text.toString())
@@ -154,6 +154,10 @@ class RateCompanyFragment : BaseFragment() {
                 txt_size.visibility = View.GONE
             else
                 txt_size.text = it.attributes?.companySize
+
+            txt_subtitle1.visibility = View.GONE
+            txt_size.visibility = View.GONE
+            lay_rating.visibility = View.GONE
         }
     }
 

@@ -99,7 +99,7 @@ private constructor(
                     .into(img_job_poster)
 
                 setOnClickListener {
-                    listener?.onJobClick(data)
+                    listener?.onJobClick(JobPosition(position, data))
                 }
             }
         }
@@ -109,7 +109,7 @@ private constructor(
 
         fun onApplyClick(jobPos: JobPosition)
 
-        fun onJobClick(job: JobResponse)
+        fun onJobClick(jobPos: JobPosition)
 
         fun onSaveUnsaveClick(save: Boolean, jobPos: JobPosition)
     }

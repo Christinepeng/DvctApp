@@ -42,8 +42,8 @@ class GroupDetailViewPagerAdapter
 
     private fun getFragments(position: Int): Fragment {
         return when (position) {
-            0 -> TabAboutGroupDetailFragment.newInstance(group)
-            else -> GroupConversationFragment.newInstance(group.id)
+            0 -> TabAboutGroupDetailFragment.newInstance()
+            else -> GroupConversationFragment.newInstance()
         }
     }
 

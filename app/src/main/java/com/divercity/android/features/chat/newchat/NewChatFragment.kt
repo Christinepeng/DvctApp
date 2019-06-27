@@ -103,16 +103,16 @@ class NewChatFragment : BaseFragment(), RetryCallback {
     }
 
     private fun subscribeToPaginatedLiveData() {
-        viewModel.pagedList.observe(this, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             adapter.submitList(it)
         })
 
-        viewModel.networkState().observe(this, Observer {
+        viewModel.networkState().observe(viewLifecycleOwner, Observer {
             if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
                 adapter.setNetworkState(it)
         })
 
-        viewModel.refreshState().observe(this, Observer { networkState ->
+        viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
 
             adapter.currentList?.let { pagedList ->
                 if (networkState?.status != Status.LOADING)

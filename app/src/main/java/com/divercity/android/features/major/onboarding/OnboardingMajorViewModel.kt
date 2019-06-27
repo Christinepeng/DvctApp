@@ -28,7 +28,7 @@ constructor(
 //                updateUserProfileResponse.postValue(Resource.error<User>(error, null))
 //            }
 //
-//            override fun onHttpException(error: JsonElement) {
+//            override fun onHttpException(code: Int, error: JsonElement) {
 //                updateUserProfileResponse.postValue(Resource.error<User>(error.toString(), null))
 //            }
 //

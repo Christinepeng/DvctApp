@@ -17,14 +17,10 @@ constructor(val sessionRepository: SessionRepository) : PagedListAdapter<JobResp
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
-    private var listener: JobsViewHolder.Listener? = null
+    var listener: JobsViewHolder.Listener? = null
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
-    }
-
-    fun setListener(listener: JobsViewHolder.Listener) {
-        this.listener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {

@@ -16,7 +16,6 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.data.entity.job.response.JobResponse
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.divercity.android.features.dialogs.HomeTabActionDialogFragment
 import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
@@ -59,8 +58,13 @@ class HomeFragment : BaseFragment() {
     lateinit var recommendedConnectionsAdapter: RecommendedConnectionsAdapter
 
     private var mIsRefreshing = false
+
     private var positionApplyClicked: Int = 0
     private var lastRecommendedUserPositionTap: Int = 0
+    private var lastGroupPositionTap: Int = 0
+    private var lastJobRecommendedPositionTap: Int = 0
+    private var lastJobPositionTap: Int = 0
+
 
     private var searchView: SearchView? = null
     private var searchItem: MenuItem? = null
@@ -70,6 +74,9 @@ class HomeFragment : BaseFragment() {
     companion object {
 
         const val REQUEST_CODE_USER = 200
+        const val REQUEST_CODE_GROUP = 350
+        const val REQUEST_CODE_JOB_RECOMMENDED = 400
+        const val REQUEST_CODE_JOB_FEED = 450
 
         fun newInstance(): HomeFragment {
             return HomeFragment()
@@ -135,8 +142,13 @@ class HomeFragment : BaseFragment() {
                 viewModel.saveUnsaveJob(save, jobPos)
             }
 
-            override fun onJobClick(job: JobResponse) {
-                navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
+            override fun onJobClick(jobPos: JobPosition) {
+                lastJobPositionTap = jobPos.position
+                navigator.navigateToJobDetailForResult(
+                    this@HomeFragment,
+                    jobPos.job,
+                    REQUEST_CODE_JOB_FEED
+                )
             }
         }
 
@@ -155,7 +167,12 @@ class HomeFragment : BaseFragment() {
             }
 
             override fun onGroupClick(groupPos: GroupPosition) {
-                navigator.navigateToGroupDetail(this@HomeFragment, groupPos.group)
+                lastGroupPositionTap = groupPos.position
+                navigator.navigateToGroupDetailForResult(
+                    this@HomeFragment,
+                    groupPos.group,
+                    REQUEST_CODE_GROUP
+                )
             }
 
             override fun onGroupDiscarded(groupPos: GroupPosition) {
@@ -165,17 +182,21 @@ class HomeFragment : BaseFragment() {
 
         recommendedAdapter.jobListener = object : RecommendedJobViewHolder.Listener {
 
-            override fun onJobDiscarded(position: Int, job: JobResponse) {
-                viewModel.discardRecommendedJobs(JobPosition(position, job))
+            override fun onJobDiscarded(jobPos: JobPosition) {
+                viewModel.discardRecommendedJobs(jobPos)
             }
 
-            override fun onJobClick(job: JobResponse) {
-                navigator.navigateToJobDescriptionSeekerActivity(requireActivity(), job.id, job)
+            override fun onJobClick(jobPos: JobPosition) {
+                lastJobRecommendedPositionTap = jobPos.position
+                navigator.navigateToJobDetailForResult(
+                    this@HomeFragment,
+                    jobPos.job,
+                    REQUEST_CODE_JOB_RECOMMENDED
+                )
             }
 
-            override fun onApplyClick(position: Int, job: JobResponse) {
-                positionApplyClicked = position
-                showJobApplyDialog(JobPosition(position, job), true)
+            override fun onApplyClick(jobPos: JobPosition) {
+                showJobApplyDialog(jobPos, true)
             }
         }
 
@@ -218,14 +239,14 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun showJobApplyDialog(jobPos: JobPosition, isRecommended: Boolean) {
-        val dialog = JobApplyDialogFragment.newInstance(jobPos.job.id!!)
+        val dialog = JobApplyDialogFragment.newInstance(jobPos.job)
         dialog.listener = object : JobApplyDialogFragment.Listener {
 
             override fun onSuccessJobApply() {
                 if (isRecommended)
-                    recommendedAdapter.updatePositionOnJobApplied(jobPos.position)
+                    recommendedAdapter.notifyItemChanged(jobPos.position)
                 else
-                    homeAdapter.updatePositionOnJobApplied(jobPos.position)
+                    homeAdapter.notifyItemChanged(jobPos.position - 1)
             }
         }
         dialog.show(childFragmentManager, null)
@@ -233,7 +254,7 @@ class HomeFragment : BaseFragment() {
 
     private fun subscribeToLiveData() {
 
-        viewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        viewModel.pagedList().observe(viewLifecycleOwner, Observer {
             homeAdapter.submitList(it)
         })
 
@@ -262,7 +283,7 @@ class HomeFragment : BaseFragment() {
                 swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
 
-        recommendedViewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        recommendedViewModel.pagedList().observe(viewLifecycleOwner, Observer {
             recommendedAdapter.submitList(it)
         })
 
@@ -298,7 +319,7 @@ class HomeFragment : BaseFragment() {
 //                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
 
-        recommendedConnectionsViewModel.pagedList.observe(viewLifecycleOwner, Observer {
+        recommendedConnectionsViewModel.pagedList().observe(viewLifecycleOwner, Observer {
             recommendedConnectionsAdapter.submitList(it)
         })
 
@@ -581,8 +602,15 @@ class HomeFragment : BaseFragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == REQUEST_CODE_USER) {
-            recommendedConnectionsAdapter.notifyItemChanged(lastRecommendedUserPositionTap)
+        when (requestCode) {
+            REQUEST_CODE_USER ->
+                recommendedConnectionsAdapter.notifyItemChanged(lastRecommendedUserPositionTap)
+            REQUEST_CODE_GROUP -> recommendedAdapter.notifyItemChanged(lastGroupPositionTap)
+            REQUEST_CODE_JOB_RECOMMENDED -> recommendedAdapter.notifyItemChanged(
+                lastGroupPositionTap
+            )
+            REQUEST_CODE_JOB_FEED -> homeAdapter.notifyItemChanged(lastJobPositionTap - 1)
+
         }
     }
 

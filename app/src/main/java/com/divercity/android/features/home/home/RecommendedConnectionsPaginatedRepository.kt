@@ -15,5 +15,9 @@ class RecommendedConnectionsPaginatedRepository @Inject
 internal constructor(private val fetchConnectionsUseCase: FetchConnectionsUseCase) :
     BaseDataSourceRepository<User>() {
 
+    init {
+        pageSize = 10
+    }
+
     override fun getUseCase(): UseCase<List<User>, Params> = fetchConnectionsUseCase
 }

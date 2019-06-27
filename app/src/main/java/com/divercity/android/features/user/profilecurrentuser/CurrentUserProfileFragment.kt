@@ -16,6 +16,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
+import com.divercity.android.features.dialogs.picture.PictureDialogFragment
 import com.divercity.android.features.home.HomeActivityViewModel
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.activity_home.*
@@ -90,6 +91,12 @@ class CurrentUserProfileFragment : BaseFragment() {
             .apply(RequestOptions().circleCrop())
             .into(img_profile)
 
+        img_profile.setOnClickListener {
+            user.avatarMedium?.let {
+                showPictureDialog(it)
+            }
+        }
+
         txt_name.text = user.name
         txt_user_type.text =
             Util.getUserTypeMap(requireContext())[user.accountType]
@@ -137,5 +144,10 @@ class CurrentUserProfileFragment : BaseFragment() {
             }
             else -> super.onOptionsItemSelected(item)
         }
+    }
+
+    private fun showPictureDialog(url : String) {
+        val dialog = PictureDialogFragment.newInstance(url)
+        dialog.show(childFragmentManager, null)
     }
 }

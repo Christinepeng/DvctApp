@@ -31,7 +31,7 @@
             android:layout_marginStart="8dp"
             android:fontFamily="@font/avenir_heavy"
             android:gravity="center_horizontal"
-            android:textColor="@color/yellow"
+            android:textColor="@color/appBlue"
             android:textSize="12sp"
             app:layout_constraintBottom_toBottomOf="@+id/rating_bar_header"
             app:layout_constraintStart_toEndOf="@+id/rating_bar_header"

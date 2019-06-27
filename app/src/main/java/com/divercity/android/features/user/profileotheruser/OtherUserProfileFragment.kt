@@ -14,6 +14,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomTwoBtnDialogFragment
+import com.divercity.android.features.dialogs.picture.PictureDialogFragment
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_other_user_profile.*
 import kotlinx.android.synthetic.main.fragment_profile.*
@@ -100,7 +101,7 @@ class OtherUserProfileFragment : BaseFragment() {
                 }
 
                 Status.ERROR -> {
-                    if(lay_root.visibility == View.GONE)
+                    if (lay_root.visibility == View.GONE)
                         showDialogConnectionError()
                     incl_profile.swipe_refresh_profile.isRefreshing = false
                     Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
@@ -165,6 +166,12 @@ class OtherUserProfileFragment : BaseFragment() {
                 .load(it.avatarMedium)
                 .apply(RequestOptions().circleCrop())
                 .into(incl_profile.img_profile)
+
+            incl_profile.img_profile.setOnClickListener {
+                user.avatarMedium?.let { url ->
+                    showPictureDialog(url)
+                }
+            }
 
             incl_profile.txt_name.text = user.name
             incl_profile.txt_user_type.text =
@@ -298,5 +305,10 @@ class OtherUserProfileFragment : BaseFragment() {
                 it.setDisplayHomeAsUpEnabled(true)
             }
         }
+    }
+
+    private fun showPictureDialog(url: String) {
+        val dialog = PictureDialogFragment.newInstance(url)
+        dialog.show(childFragmentManager, null)
     }
 }

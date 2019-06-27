@@ -6,39 +6,39 @@ import androidx.lifecycle.ViewModel
 import androidx.paging.PagedList
 import com.divercity.android.core.base.datasource.BaseDataSourceRepository
 import com.divercity.android.core.ui.NetworkState
-import com.divercity.android.core.utils.Listing
 import com.divercity.android.core.utils.SingleLiveEvent
+import com.divercity.android.testing.OpenForTesting
 
 /**
  * Created by lucas on 24/10/2018.
  */
 
+@OpenForTesting
 abstract class BaseViewModelPagination<T>
     (val repository: BaseDataSourceRepository<T>) : ViewModel() {
 
     var lastSearch: String? = null
-    private lateinit var listing: Listing<T>
-    lateinit var pagedList: LiveData<PagedList<T>>
 
     var subscribeToPaginatedLiveData = SingleLiveEvent<Unit>()
 
-    fun networkState(): LiveData<NetworkState> = listing.networkState
+    fun pagedList(): LiveData<PagedList<T>> = repository.pagedList
 
-    fun refreshState(): LiveData<NetworkState> = listing.refreshState
+    fun networkState(): LiveData<NetworkState> = repository.listing.networkState
+
+    fun refreshState(): LiveData<NetworkState> = repository.listing.refreshState
 
     fun retry() = repository.retry()
 
     fun refresh() = repository.refresh()
 
-    fun fetchData(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
+    final fun fetchData(lifecycleOwner: LifecycleOwner?, searchQuery: String?) {
         searchQuery?.let {
             if (it != lastSearch) {
 
                 lastSearch = searchQuery
                 repository.clear()
 
-                listing = repository.fetchData(it)
-                pagedList = listing.pagedList
+                repository.fetchData(it)
 
                 lifecycleOwner?.let { lo ->
                     removeObservers(lo)
@@ -49,14 +49,13 @@ abstract class BaseViewModelPagination<T>
     }
 
     fun fetchData() {
-        listing = repository.fetchData(null)
-        pagedList = listing.pagedList
+        repository.fetchData(null)
     }
 
     private fun removeObservers(lifecycleOwner: LifecycleOwner) {
         networkState().removeObservers(lifecycleOwner)
         refreshState().removeObservers(lifecycleOwner)
-        pagedList.removeObservers(lifecycleOwner)
+        repository.pagedList.removeObservers(lifecycleOwner)
     }
 
     override fun onCleared() {

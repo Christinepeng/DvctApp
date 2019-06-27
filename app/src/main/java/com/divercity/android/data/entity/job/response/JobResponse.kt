@@ -9,7 +9,7 @@ import com.google.gson.annotations.SerializedName
 data class JobResponse(
 
 	@field:SerializedName("attributes")
-	val attributes: Attributes? = null,
+	var attributes: Attributes? = null,
 
 	@field:SerializedName("id")
 	val id: String? = null,
@@ -40,5 +40,9 @@ data class JobResponse(
 		override fun newArray(size: Int): Array<JobResponse?> {
 			return arrayOfNulls(size)
 		}
+	}
+
+	fun copy(jobResponse: JobResponse){
+		attributes = jobResponse.attributes
 	}
 }

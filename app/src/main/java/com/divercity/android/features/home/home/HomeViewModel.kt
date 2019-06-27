@@ -47,7 +47,7 @@ constructor(
     val listState = MutableLiveData<Parcelable>()
 
     val showRecommendedSection = MutableLiveData<Boolean>()
-    private var newMessageDisposable: Disposable
+    lateinit var newMessageDisposable: Disposable
 
     init {
         showRecommendedSection.value = false
@@ -63,7 +63,7 @@ constructor(
         joinGroupResponse.postValue(Resource.loading(null))
 
         val callback = object : DisposableObserverWrapper<Unit>() {
-            override fun onHttpException(error: JsonElement?) {
+            override fun onHttpException(error: JsonElement) {
                 joinGroupResponse.postValue(Resource.error(error.toString(), null))
             }
 

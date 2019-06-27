@@ -43,11 +43,19 @@ data class GroupResponse(
         return attributes.groupType?.toLowerCase() == "public"
     }
 
+    fun iAmAMemberOrAdmin() : Boolean{
+        return attributes.isCurrentUserAdmin || attributes.isFollowedByCurrent
+    }
+
     fun isJoinRequestPending(): Boolean {
         return attributes.requestToJoinStatus == "pending"
     }
 
     fun isJoinRequestNotSend(): Boolean {
         return attributes.requestToJoinStatus == "none"
+    }
+
+    fun copy(group: GroupResponse) {
+        attributes = group.attributes
     }
 }

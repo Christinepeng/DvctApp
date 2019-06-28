@@ -199,6 +199,23 @@
 
                 </LinearLayout>
 
+                <EditText
+                    android:id="@+id/et_topic_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/bk_outline_grey_round_corner"
+                    android:fontFamily="@font/avenir_roman"
+                    android:gravity="top"
+                    android:hint="Leave an anonymous review..."
+                    android:includeFontPadding="false"
+                    android:inputType="textMultiLine|textCapSentences"
+                    android:lineSpacingExtra="2dp"
+                    android:minLines="4"
+                    android:padding="16dp"
+                    android:textColor="#333241"
+                    android:textSize="15sp" />
+
             </LinearLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>

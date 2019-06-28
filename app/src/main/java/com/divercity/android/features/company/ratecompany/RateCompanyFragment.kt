@@ -3,7 +3,6 @@ package com.divercity.android.features.company.ratecompany
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
-import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -13,7 +12,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import kotlinx.android.synthetic.main.fragment_rate_company.*
+import kotlinx.android.synthetic.main.fragment_rate_company_new.*
 import kotlinx.android.synthetic.main.view_company_header.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 
@@ -62,7 +61,7 @@ class RateCompanyFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_rate_company
+    override fun layoutId(): Int = R.layout.fragment_rate_company_new
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -98,16 +97,16 @@ class RateCompanyFragment : BaseFragment() {
     private fun initView() {
 //        rating_bar.rating = 1.0f
 
-        btn_submit.setOnClickListener {
-            viewModel.rateCompany(rating_bar.rating.toInt(), et_review.text.toString())
-        }
-
-        rating_bar.onRatingBarChangeListener = object : RatingBar.OnRatingBarChangeListener {
-            override fun onRatingChanged(p0: RatingBar?, p1: Float, p2: Boolean) {
-                if (p1 < 1.0f)
-                    rating_bar.rating = 1.0f
-            }
-        }
+//        btn_submit.setOnClickListener {
+//            viewModel.rateCompany(rating_bar.rating.toInt(), et_review.text.toString())
+//        }
+//
+//        rating_bar.onRatingBarChangeListener = object : RatingBar.OnRatingBarChangeListener {
+//            override fun onRatingChanged(p0: RatingBar?, p1: Float, p2: Boolean) {
+//                if (p1 < 1.0f)
+//                    rating_bar.rating = 1.0f
+//            }
+//        }
     }
 
     private fun showData(company: CompanyResponse?) {

@@ -39,8 +39,8 @@ android {
         applicationId "com.divercity.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 15
-        versionName "B-1.13"
+        versionCode 16
+        versionName "D-1.23"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 

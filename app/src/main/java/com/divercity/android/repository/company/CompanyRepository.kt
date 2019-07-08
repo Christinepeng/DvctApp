@@ -4,7 +4,8 @@ import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompa
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
+import com.divercity.android.model.CompanyDiversityReview
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
 
@@ -49,10 +50,10 @@ interface CompanyRepository {
         companyId: String,
         page: Int,
         size: Int
-    ): Observable<List<CompanyDiversityReviewResponse>>
+    ): Observable<List<CompanyDiversityReview>>
 
     fun rateCompany(
         companyId: String,
         rating: Rating
-    ): Observable<CompanyDiversityReviewResponse>
+    ): Observable<CompanyDiversityReviewEntityResponse>
 }

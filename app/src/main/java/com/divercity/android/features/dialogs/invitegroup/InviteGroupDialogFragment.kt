@@ -35,7 +35,7 @@ class InviteGroupDialogFragment : DialogFragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             // To know if the dialog is being called from an activity or fragment

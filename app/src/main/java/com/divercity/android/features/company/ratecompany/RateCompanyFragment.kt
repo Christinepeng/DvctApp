@@ -3,6 +3,7 @@ package com.divercity.android.features.company.ratecompany
 import android.app.Activity
 import android.os.Bundle
 import android.view.View
+import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -12,8 +13,8 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import kotlinx.android.synthetic.main.fragment_rate_company_new.*
-import kotlinx.android.synthetic.main.view_company_header.*
+import kotlinx.android.synthetic.main.fragment_rate_company.*
+import kotlinx.android.synthetic.main.view_rate_company.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 
 /**
@@ -61,7 +62,7 @@ class RateCompanyFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_rate_company_new
+    override fun layoutId(): Int = R.layout.fragment_rate_company
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -95,24 +96,21 @@ class RateCompanyFragment : BaseFragment() {
     }
 
     private fun initView() {
-//        rating_bar.rating = 1.0f
-
-//        btn_submit.setOnClickListener {
-//            viewModel.rateCompany(rating_bar.rating.toInt(), et_review.text.toString())
-//        }
-//
-//        rating_bar.onRatingBarChangeListener = object : RatingBar.OnRatingBarChangeListener {
-//            override fun onRatingChanged(p0: RatingBar?, p1: Float, p2: Boolean) {
-//                if (p1 < 1.0f)
-//                    rating_bar.rating = 1.0f
-//            }
-//        }
+        btn_submit.setOnClickListener {
+            viewModel.rateCompany(
+                getRatingValue(rating_bar_gender),
+                getRatingValue(rating_bar_race),
+                getRatingValue(rating_bar_age),
+                getRatingValue(rating_bar_sex_orien),
+                getRatingValue(rating_bar_abel_bodiedness),
+                et_review.text.toString())
+        }
     }
+
+    private fun getRatingValue(ratingBar: RatingBar) : Int = ratingBar.rating.toInt()
 
     private fun showData(company: CompanyResponse?) {
         company?.also {
-
-            lbl_explanation1.text = getString(R.string.rate_company_label, company.attributes?.name)
 
             root_layout.visibility = View.VISIBLE
 
@@ -120,43 +118,7 @@ class RateCompanyFragment : BaseFragment() {
                 .load(it.attributes?.photos?.medium)
                 .into(img)
 
-            txt_name.text = it.attributes?.name
-
-            val rating = it.attributes?.divercityRating
-            if (rating != null) {
-                lay_rating.visibility = View.VISIBLE
-                rating_bar_header.rating = rating.toFloat()
-                txt_rating.text = rating.toString()
-            } else {
-                lay_rating.visibility = View.GONE
-            }
-
-            if (it.attributes?.industry == null && it.attributes?.headquarters == null) {
-                txt_subtitle1.visibility = View.GONE
-            } else {
-                txt_subtitle1.visibility = View.VISIBLE
-
-                var subtitle = ""
-                if (it.attributes?.industry != null)
-                    subtitle = subtitle.plus(it.attributes?.industry)
-
-                if (it.attributes?.industry != null && it.attributes?.headquarters != null)
-                    subtitle.plus(" · ")
-
-                if (it.attributes?.headquarters != null)
-                    subtitle.plus(it.attributes?.headquarters)
-
-                txt_subtitle1.text = subtitle
-            }
-
-            if (it.attributes?.companySize == null)
-                txt_size.visibility = View.GONE
-            else
-                txt_size.text = it.attributes?.companySize
-
-            txt_subtitle1.visibility = View.GONE
-            txt_size.visibility = View.GONE
-            lay_rating.visibility = View.GONE
+            txt_company_name.text = it.attributes?.name
         }
     }
 

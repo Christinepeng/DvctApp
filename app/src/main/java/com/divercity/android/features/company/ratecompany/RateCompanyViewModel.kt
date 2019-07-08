@@ -6,7 +6,7 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.company.ratecompany.usecase.RateCompanyUseCase
 import com.google.gson.JsonElement
@@ -21,11 +21,18 @@ constructor(private val rateCompanyUseCase: RateCompanyUseCase) : BaseViewModel(
 
     var companyLiveData = MutableLiveData<CompanyResponse?>()
 
-    var rateCompanyResponse = SingleLiveEvent<Resource<CompanyDiversityReviewResponse>>()
+    var rateCompanyResponse = SingleLiveEvent<Resource<CompanyDiversityReviewEntityResponse>>()
 
-    fun rateCompany(rate: Int, review: String) {
+    fun rateCompany(
+        genderRate: Int,
+        raceRate: Int,
+        ageRate: Int,
+        sexOrRate: Int,
+        bodRate: Int,
+        review: String
+    ) {
         rateCompanyResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<CompanyDiversityReviewResponse>() {
+        val callback = object : DisposableObserverWrapper<CompanyDiversityReviewEntityResponse>() {
             override fun onFail(error: String) {
                 rateCompanyResponse.postValue(Resource.error(error, null))
             }
@@ -34,13 +41,16 @@ constructor(private val rateCompanyUseCase: RateCompanyUseCase) : BaseViewModel(
                 rateCompanyResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: CompanyDiversityReviewResponse) {
+            override fun onSuccess(o: CompanyDiversityReviewEntityResponse) {
                 rateCompanyResponse.postValue(Resource.success(o))
             }
         }
         rateCompanyUseCase.execute(
             callback,
-            RateCompanyUseCase.Params(companyLiveData.value?.id!!, Rating(rate, review))
+            RateCompanyUseCase.Params(
+                companyLiveData.value?.id!!,
+                Rating(raceRate, sexOrRate, genderRate, bodRate, ageRate, review)
+            )
         )
     }
 

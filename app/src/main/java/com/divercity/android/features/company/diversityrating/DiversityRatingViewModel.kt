@@ -1,8 +1,7 @@
 package com.divercity.android.features.company.diversityrating
 
 import com.divercity.android.core.base.viewmodel.BaseViewModelPagination
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
-import com.divercity.android.features.company.companydetail.usecase.FetchCompanyUseCase
+import com.divercity.android.model.CompanyDiversityReview
 import javax.inject.Inject
 
 /**
@@ -11,9 +10,8 @@ import javax.inject.Inject
 
 class DiversityRatingViewModel @Inject
 constructor(
-    private val fetchCompanyUseCase: FetchCompanyUseCase,
     repository: DiversityReviewsPaginatedRepository
-) : BaseViewModelPagination<CompanyDiversityReviewResponse>(repository) {
+) : BaseViewModelPagination<CompanyDiversityReview>(repository) {
 
     private var companyId: String? = null
 
@@ -24,33 +22,4 @@ constructor(
             fetchData()
         }
     }
-
-
-//    var companyLiveData = MutableLiveData<CompanyResponse?>()
-//
-//    var fetchCompanyResponse = SingleLiveEvent<Resource<CompanyResponse>>()
-//
-//    fun fetchCompany(companyId: String) {
-//        fetchCompanyResponse.postValue(Resource.loading(null))
-//        val callback = object : DisposableObserverWrapper<CompanyResponse>() {
-//            override fun onFail(error: String) {
-//                fetchCompanyResponse.postValue(Resource.error(error, null))
-//            }
-//
-//            override fun onHttpException(code: Int, error: JsonElement) {
-//                fetchCompanyResponse.postValue(Resource.error(error.toString(), null))
-//            }
-//
-//            override fun onSuccess(o: CompanyResponse) {
-//                companyLiveData.postValue(o)
-//                fetchCompanyResponse.postValue(Resource.success(o))
-//            }
-//        }
-//        fetchCompanyUseCase.execute(callback, FetchCompanyUseCase.Params(companyId))
-//    }
-//
-//    override fun onCleared() {
-//        super.onCleared()
-//        fetchCompanyUseCase.dispose()
-//    }
 }

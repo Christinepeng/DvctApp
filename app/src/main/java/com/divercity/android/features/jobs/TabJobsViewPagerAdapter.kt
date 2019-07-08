@@ -23,7 +23,10 @@ class TabJobsViewPagerAdapter
     val context: Context,
     fm: TabJobsFragment,
     private val sessionRepository: SessionRepository
-) : FragmentStatePagerAdapter(fm.childFragmentManager) {
+) : FragmentStatePagerAdapter(
+    fm.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     companion object {
         private const val PAGE_COUNT = 4

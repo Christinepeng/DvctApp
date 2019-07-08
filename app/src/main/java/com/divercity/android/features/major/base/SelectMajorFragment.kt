@@ -66,7 +66,7 @@ class SelectMajorFragment : BaseFragment(), RetryCallback {
         list.adapter = adapter
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         fragListener = parentFragment as Listener
     }

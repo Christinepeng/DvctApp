@@ -258,7 +258,7 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindProfileSettingsActivity(): ProfileSettingsActivity
 
-    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class, FragmentDataBuilderModule::class])
     abstract fun bindPersonalSettingsActivity(): PersonalSettingsActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])

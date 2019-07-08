@@ -7,7 +7,7 @@ import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.De
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
 import com.divercity.android.data.entity.company.rating.RatingBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import io.reactivex.Observable
 import retrofit2.Response
@@ -61,11 +61,11 @@ interface CompanyService {
         @Path("companyId") companyId: String,
         @Query("page[number]") page: Int,
         @Query("page[size]") size: Int
-    ): Observable<Response<DataArray<CompanyDiversityReviewResponse>>>
+    ): Observable<Response<DataArray<CompanyDiversityReviewEntityResponse>>>
 
     @POST("job_employers/{companyId}/rate")
     fun rateCompany(
         @Path("companyId") companyId: String,
         @Body ratingBody: RatingBody
-    ): Observable<Response<DataObject<CompanyDiversityReviewResponse>>>
+    ): Observable<Response<DataObject<CompanyDiversityReviewEntityResponse>>>
 }

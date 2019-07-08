@@ -20,7 +20,10 @@ class CompanyDetailViewPagerAdapter
 @Inject constructor(
     val context: Context,
     fragment: CompanyDetailFragment
-) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
+) : FragmentStatePagerAdapter(
+    fragment.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     var registeredFragments = SparseArray<Fragment>()
     lateinit var companyId: String

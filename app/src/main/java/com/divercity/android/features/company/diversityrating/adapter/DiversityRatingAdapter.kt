@@ -8,15 +8,27 @@ import com.divercity.android.R
 import com.divercity.android.core.ui.NetworkState
 import com.divercity.android.core.ui.NetworkStateViewHolder
 import com.divercity.android.core.ui.RetryCallback
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
+import com.divercity.android.model.CompanyDiversityReview
 import javax.inject.Inject
 
 class DiversityRatingAdapter @Inject
 constructor() :
-    PagedListAdapter<CompanyDiversityReviewResponse, RecyclerView.ViewHolder>(userDiffCallback) {
+    PagedListAdapter<CompanyDiversityReview, RecyclerView.ViewHolder>(userDiffCallback) {
 
     private var networkState: NetworkState? = null
     private var retryCallback: RetryCallback? = null
+
+    private var backIsShownByPosition = HashSet<Int>()
+
+    private var listener = object : DiversityRatingViewHolder.Listener {
+
+        override fun onViewFlipped(state: Boolean, position: Int) {
+            if (state)
+                backIsShownByPosition.add(position)
+            else
+                backIsShownByPosition.remove(position)
+        }
+    }
 
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
@@ -24,7 +36,7 @@ constructor() :
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
-            R.layout.item_review -> DiversityRatingViewHolder.create(parent)
+            R.layout.item_review -> DiversityRatingViewHolder.create(parent, listener)
             R.layout.view_network_state -> NetworkStateViewHolder.create(parent, retryCallback)
             else -> throw IllegalArgumentException("unknown view type")
         }
@@ -32,7 +44,11 @@ constructor() :
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (getItemViewType(position)) {
-            R.layout.item_review -> (holder as DiversityRatingViewHolder).bindTo(getItem(position))
+            R.layout.item_review -> (holder as DiversityRatingViewHolder).bindTo(
+                position,
+                backIsShownByPosition.contains(position),
+                getItem(position)
+            )
             R.layout.view_network_state -> (holder as NetworkStateViewHolder).bindTo(networkState)
         }
     }
@@ -72,18 +88,18 @@ constructor() :
     companion object {
 
         private val userDiffCallback =
-            object : DiffUtil.ItemCallback<CompanyDiversityReviewResponse>() {
+            object : DiffUtil.ItemCallback<CompanyDiversityReview>() {
 
                 override fun areItemsTheSame(
-                    oldItem: CompanyDiversityReviewResponse,
-                    newItem: CompanyDiversityReviewResponse
+                    oldItem: CompanyDiversityReview,
+                    newItem: CompanyDiversityReview
                 ): Boolean {
                     return oldItem.id == newItem.id
                 }
 
                 override fun areContentsTheSame(
-                    oldItem: CompanyDiversityReviewResponse,
-                    newItem: CompanyDiversityReviewResponse
+                    oldItem: CompanyDiversityReview,
+                    newItem: CompanyDiversityReview
                 ): Boolean {
                     return oldItem == newItem
                 }

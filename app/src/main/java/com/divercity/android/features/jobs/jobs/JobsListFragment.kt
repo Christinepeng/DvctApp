@@ -151,7 +151,7 @@ class JobsListFragment : BaseFragment(), RetryCallback, ITabSearch {
     }
 
     fun onOpenFilterMenu() {
-//        showJobSearchFilterDialog()
+        showJobSearchFilterDialog()
     }
 
     private fun showJobSearchFilterDialog() {

@@ -18,7 +18,10 @@ class ProfileViewPagerAdapter
 @Inject constructor(
     val context: Context,
     fragment: CurrentUserProfileFragment
-) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
+) : FragmentStatePagerAdapter(
+    fragment.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     private var registeredFragments = SparseArray<Fragment>()
     lateinit var userId: String

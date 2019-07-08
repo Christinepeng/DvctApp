@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/lay_scroll"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/include_toolbar">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/lay_header">
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="16dp"
+            android:contentDescription="TODO"
+            android:scaleType="center"
+            tools:background="@color/appBlue" />
+
+        <TextView
+            android:id="@+id/txt_company_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/avenir_heavy"
+            android:textColor="#75c2f6"
+            android:textSize="17sp"
+            tools:text="Your Company" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="50dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="50dp"
+            android:fontFamily="@font/avenir_heavy"
+            android:gravity="center"
+            android:text="Please rate your company&apos;s diversity in these categories: "
+            android:textColor="#333241"
+            android:textSize="15sp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="9dp"
+            android:layout_marginEnd="35dp"
+            android:layout_marginBottom="9dp"
+            android:fontFamily="@font/avenir_bookoblique"
+            android:gravity="center"
+            android:text="Not rating a category will not affect your overall score."
+            android:textColor="#333241"
+            android:textSize="12sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="34dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="34dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/avenir_heavy"
+                android:text="Gender"
+                android:textColor="#333241" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_gender"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:progressDrawable="@drawable/ll_rating_bar"
+                android:stepSize="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="34dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="34dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/avenir_heavy"
+                android:text="Race/Ethnicity"
+                android:textColor="#333241" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_race"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:progressDrawable="@drawable/ll_rating_bar"
+                android:stepSize="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="34dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="34dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/avenir_heavy"
+                android:text="Age"
+                android:textColor="#333241" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_age"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:progressDrawable="@drawable/ll_rating_bar"
+                android:stepSize="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="34dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="34dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/avenir_heavy"
+                android:text="Sexual Orientation"
+                android:textColor="#333241" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_sex_orien"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:progressDrawable="@drawable/ll_rating_bar"
+                android:stepSize="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:paddingStart="34dp"
+            android:paddingTop="16dp"
+            android:paddingEnd="34dp"
+            android:paddingBottom="16dp">
+
+            <TextView
+                android:id="@+id/lbl_explanation1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:fontFamily="@font/avenir_heavy"
+                android:text="Able-bodiedness"
+                android:textColor="#333241" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_abel_bodiedness"
+                android:layout_width="wrap_content"
+                android:layout_height="22dp"
+                android:isIndicator="false"
+                android:numStars="5"
+                android:progressDrawable="@drawable/ll_rating_bar"
+                android:stepSize="1" />
+
+        </LinearLayout>
+
+        <EditText
+            android:id="@+id/et_review"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:background="@drawable/bk_outline_grey_round_corner"
+            android:fontFamily="@font/avenir_roman"
+            android:gravity="top"
+            android:hint="Leave an anonymous review..."
+            android:includeFontPadding="false"
+            android:inputType="textMultiLine|textCapSentences"
+            android:lineSpacingExtra="2dp"
+            android:minLines="3"
+            android:padding="16dp"
+            android:textColor="#333241"
+            android:textSize="15sp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btn_submit"
+            style="@style/AppText"
+            android:layout_width="210dp"
+            android:layout_height="31dp"
+            android:layout_gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/shape_backgrd_round_blue2"
+            android:fontFamily="@font/avenir_medium"
+            android:minHeight="30dip"
+            android:text="@string/submit"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="15sp" />
+
+    </LinearLayout>
+
+</ScrollView>

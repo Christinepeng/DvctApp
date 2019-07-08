@@ -6,7 +6,7 @@ import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.company.companydetail.usecase.FetchCompanyUseCase
 import com.divercity.android.features.company.ratecompany.usecase.RateCompanyUseCase
@@ -23,12 +23,20 @@ constructor(
     private val fetchCompanyUseCase: FetchCompanyUseCase
 ) : BaseViewModel() {
 
-    var rateCompanyResponse = SingleLiveEvent<Resource<CompanyDiversityReviewResponse>>()
+    var rateCompanyResponse = SingleLiveEvent<Resource<CompanyDiversityReviewEntityResponse>>()
     var fetchCompanyResponse = MutableLiveData<Resource<CompanyResponse>>()
 
-    fun rateCompany(companyId: String, rate: Int, review: String?) {
+    fun rateCompany(
+        companyId: String,
+        genderRate: Int,
+        raceRate: Int,
+        ageRate: Int,
+        sexOrRate: Int,
+        bodRate: Int,
+        review: String
+    ) {
         rateCompanyResponse.postValue(Resource.loading(null))
-        val callback = object : DisposableObserverWrapper<CompanyDiversityReviewResponse>() {
+        val callback = object : DisposableObserverWrapper<CompanyDiversityReviewEntityResponse>() {
             override fun onFail(error: String) {
                 rateCompanyResponse.postValue(Resource.error(error, null))
             }
@@ -37,13 +45,16 @@ constructor(
                 rateCompanyResponse.postValue(Resource.error(error.toString(), null))
             }
 
-            override fun onSuccess(o: CompanyDiversityReviewResponse) {
+            override fun onSuccess(o: CompanyDiversityReviewEntityResponse) {
                 rateCompanyResponse.postValue(Resource.success(o))
             }
         }
         rateCompanyUseCase.execute(
             callback,
-            RateCompanyUseCase.Params(companyId, Rating(rate, review))
+            RateCompanyUseCase.Params(
+                companyId,
+                Rating(raceRate, sexOrRate, genderRate, bodRate, ageRate, review)
+            )
         )
     }
 

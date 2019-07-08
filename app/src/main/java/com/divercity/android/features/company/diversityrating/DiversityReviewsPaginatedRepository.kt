@@ -3,8 +3,8 @@ package com.divercity.android.features.company.diversityrating
 import com.divercity.android.core.base.datasource.BaseDataSourceRepository
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
 import com.divercity.android.features.company.diversityrating.usecase.FetchCompanyDiversityReviewsUseCase
+import com.divercity.android.model.CompanyDiversityReview
 import javax.inject.Inject
 
 /**
@@ -13,9 +13,9 @@ import javax.inject.Inject
 
 class DiversityReviewsPaginatedRepository @Inject
 constructor(private val fetchCompanyDiversityReviewsUseCase: FetchCompanyDiversityReviewsUseCase) :
-    BaseDataSourceRepository<CompanyDiversityReviewResponse>() {
+    BaseDataSourceRepository<CompanyDiversityReview>() {
 
-    override fun getUseCase(): UseCase<List<CompanyDiversityReviewResponse>, Params> {
+    override fun getUseCase(): UseCase<List<CompanyDiversityReview>, Params> {
         return fetchCompanyDiversityReviewsUseCase
     }
 

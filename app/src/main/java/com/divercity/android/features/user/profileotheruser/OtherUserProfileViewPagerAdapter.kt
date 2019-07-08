@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
 import com.divercity.android.R
-import com.divercity.android.features.user.userconnections.ConnectionsFragment
 import com.divercity.android.features.user.profileotheruser.tabprofile.TabOtherUserProfileFragment
+import com.divercity.android.features.user.userconnections.ConnectionsFragment
 import javax.inject.Inject
 
 /**
@@ -18,7 +18,10 @@ class OtherUserProfileViewPagerAdapter
 @Inject constructor(
     val context: Context,
     fragment: OtherUserProfileFragment
-) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
+) : FragmentStatePagerAdapter(
+    fragment.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     private var registeredFragments = SparseArray<Fragment>()
     lateinit var userId: String

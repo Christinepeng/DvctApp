@@ -65,7 +65,7 @@ class SelectSkillFragment : BaseFragment(), RetryCallback {
         subscribeToLiveData()
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         fragmentListener = parentFragment as Listener
     }

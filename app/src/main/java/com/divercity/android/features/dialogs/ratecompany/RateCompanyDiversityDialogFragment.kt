@@ -16,6 +16,7 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import kotlinx.android.synthetic.main.dialog_rate_company.view.*
+import kotlinx.android.synthetic.main.view_rate_company.view.*
 
 /**
  * Created by lucas on 18/03/2018.
@@ -95,40 +96,38 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
         return builder.create()
     }
 
-    private fun showData(company: CompanyResponse?){
+    private fun showData(company: CompanyResponse?) {
         dialogView.apply {
+            company?.also {
 
-            GlideApp.with(this)
-                .load(company?.attributes?.photos?.medium)
-                .into(img)
+                GlideApp.with(this)
+                    .load(it.attributes?.photos?.medium)
+                    .into(img)
 
-            txt_name.text = company?.attributes?.name
+                txt_company_name.text = it.attributes?.name
 
-            rating_bar.onRatingBarChangeListener =
-                RatingBar.OnRatingBarChangeListener { _, p1, _ ->
-                    if (p1 < 1.0f)
-                        rating_bar.rating = 1.0f
-                    txt_title.visibility = View.GONE
-                    btn_submit.visibility = View.VISIBLE
-                    lay_review.visibility = View.VISIBLE
+                btn_submit.setOnClickListener {
+                    viewModel.rateCompany(
+                        company.id!!,
+                        getRatingValue(rating_bar_gender),
+                        getRatingValue(rating_bar_race),
+                        getRatingValue(rating_bar_age),
+                        getRatingValue(rating_bar_sex_orien),
+                        getRatingValue(rating_bar_abel_bodiedness),
+                        et_review.text.toString()
+                    )
                 }
-
-            txt_title.text = getString(R.string.rate_company_label, company?.attributes?.name)
+            }
 
             btn_close.setOnClickListener {
                 dismiss()
                 onClose?.invoke()
             }
 
-            btn_submit.setOnClickListener {
-                viewModel.rateCompany(
-                    company?.id!!,
-                    rating_bar.rating.toInt(),
-                    et_review.text.toString()
-                )
-            }
         }
     }
+
+    private fun getRatingValue(ratingBar: RatingBar): Int = ratingBar.rating.toInt()
 
     fun subscribeToLiveData() {
         viewModel.rateCompanyResponse.observe(this, Observer { response ->
@@ -147,7 +146,7 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
             }
         })
 
-        viewModel.fetchCompanyResponse.observe(this, Observer {response ->
+        viewModel.fetchCompanyResponse.observe(this, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> showProgress()
 

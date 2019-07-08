@@ -14,7 +14,7 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
-import com.divercity.android.features.industry.onboarding.adapter.IndustryMultipleAdapter
+import com.divercity.android.features.dialogs.jobsearchfilter.search.searchfiltercompanyindustry.adapter.IndustryMultipleAdapter
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.view.*
 import kotlinx.android.synthetic.main.view_search.view.*
@@ -70,7 +70,7 @@ class SelectIndustryOnboardingFragment : BaseFragment(), RetryCallback {
 
         btn_continue.visibility = View.GONE
         btn_continue.setOnClickListener {
-            viewModel.followIndustries(adapter.idList)
+            viewModel.followIndustries(adapter.getSelectedIndustriesIds())
         }
     }
 

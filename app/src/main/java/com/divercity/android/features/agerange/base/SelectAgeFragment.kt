@@ -24,7 +24,7 @@ class SelectAgeFragment : BaseFragment() {
 
     override fun layoutId(): Int = R.layout.fragment_list_search
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         fragListener = parentFragment as Listener
     }

@@ -1,6 +1,7 @@
 package com.divercity.android.repository.company
 
 import com.divercity.android.core.base.BaseRepository
+import com.divercity.android.core.extension.toCompanyDiverseReview
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.Admin
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
@@ -8,8 +9,9 @@ import com.divercity.android.data.entity.company.companyadmin.response.CompanyAd
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.rating.RatingBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
 import com.divercity.android.data.networking.services.CompanyService
+import com.divercity.android.model.CompanyDiversityReview
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
 import javax.inject.Inject
@@ -86,17 +88,19 @@ constructor(
         companyId: String,
         page: Int,
         size: Int
-    ): Observable<List<CompanyDiversityReviewResponse>> {
-        return service.fetchCompanyDiversityReviews(companyId, page, size).map {
-            checkResponse(it)
-            it.body()?.data
+    ): Observable<List<CompanyDiversityReview>> {
+        return service.fetchCompanyDiversityReviews(companyId, page, size).map {response ->
+            checkResponse(response)
+            response.body()?.data?.map {
+                it.toCompanyDiverseReview()
+            }
         }
     }
 
     override fun rateCompany(
         companyId: String,
         rating: Rating
-    ): Observable<CompanyDiversityReviewResponse> {
+    ): Observable<CompanyDiversityReviewEntityResponse> {
         return service.rateCompany(companyId, RatingBody(rating)).map {
             checkResponse(it)
             it.body()?.data

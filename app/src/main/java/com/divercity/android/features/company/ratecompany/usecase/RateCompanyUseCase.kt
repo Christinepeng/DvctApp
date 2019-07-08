@@ -2,7 +2,7 @@ package com.divercity.android.features.company.ratecompany.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.company.rating.Rating
-import com.divercity.android.data.entity.company.review.CompanyDiversityReviewResponse
+import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
 import com.divercity.android.repository.company.CompanyRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -18,9 +18,9 @@ constructor(
     @Named("executor_thread") executorThread: Scheduler,
     @Named("ui_thread") uiThread: Scheduler,
     private val repository: CompanyRepository
-) : UseCase<CompanyDiversityReviewResponse, RateCompanyUseCase.Params>(executorThread, uiThread) {
+) : UseCase<CompanyDiversityReviewEntityResponse, RateCompanyUseCase.Params>(executorThread, uiThread) {
 
-    override fun createObservableUseCase(params: Params): Observable<CompanyDiversityReviewResponse> {
+    override fun createObservableUseCase(params: Params): Observable<CompanyDiversityReviewEntityResponse> {
         return repository.rateCompany(params.companyId, params.rating)
     }
 

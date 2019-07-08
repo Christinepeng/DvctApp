@@ -80,7 +80,7 @@ class SelectCompanyFragment : BaseFragment(), RetryCallback {
         img_action2.setImageResource(R.drawable.icon_briefcase)
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         fragListener = parentFragment as Listener
     }

@@ -1,142 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/shape_backgrd_round1"
-    android:orientation="vertical">
+    android:background="@drawable/shape_backgrd_round1">
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_close"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="right"
+        android:layout_alignParentEnd="true"
         android:background="@null"
-        android:paddingStart="24dp"
-        android:paddingTop="24dp"
-        android:paddingEnd="24dp"
-        android:paddingBottom="8dp"
+        android:padding="24dp"
         android:src="@drawable/icon_x" />
 
-    <TextView
-        android:id="@+id/txt_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:fontFamily="@font/avenir_medium"
-        android:gravity="center_horizontal"
-        android:lineSpacingExtra="6dp"
-        android:textColor="@color/appBlue"
-        android:textSize="17sp"
-        tools:text="Rate Dropbox based on your opinion of how seriously they take diversity &amp; inclusion." />
-
-    <ImageView
-        android:id="@+id/img"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_gravity="center"
-        android:contentDescription="TODO"
-        android:scaleType="center"
-        tools:background="@color/appBlue" />
-
-    <TextView
-        android:id="@+id/txt_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginTop="7dp"
-        android:fontFamily="@font/avenir_medium"
-        android:textColor="#333241"
-        android:textSize="17sp"
-        tools:text="Dropbox" />
-
-    <TextView
-        android:id="@+id/textView9"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:fontFamily="@font/avenir_book"
-        android:gravity="center"
-        android:text="This anonymous rating will help us suggest companies that care about diversity and inclusion to other candidates."
-        android:textColor="#333241"
-        android:textSize="15sp" />
-
-    <RatingBar
-        android:id="@+id/rating_bar"
-        android:layout_width="wrap_content"
-        android:layout_height="29dp"
-        android:layout_gravity="center"
-        android:layout_marginStart="8dp"
-        android:layout_marginBottom="16dp"
-        android:layout_marginEnd="8dp"
-        android:isIndicator="false"
-        android:numStars="5"
-        android:progressDrawable="@drawable/ll_rating_bar"
-        android:stepSize="1"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lbl_explanation1" />
-
-    <LinearLayout
-        android:id="@+id/lay_review"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="horizontal"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView9"
-        app:layout_constraintVertical_bias="0.0"
-        tools:visibility="visible">
-
-        <EditText
-            android:id="@+id/et_review"
-            style="@style/AppText2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:gravity="top"
-            android:hint="Review (Optional)"
-            android:inputType="textMultiLine"
-            android:lines="6"
-            android:padding="16dp" />
-
-    </LinearLayout>
-
-    <Button
-        android:id="@+id/btn_submit"
-        style="@style/AppText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="24dp"
-        android:background="@drawable/shape_backgrd_round_blue2"
-        android:fontFamily="@font/avenir_medium"
-        android:padding="18dp"
-        android:text="@string/submit_diversity_rating"
-        android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:visibility="gone"
-        tools:visibility="visible" />
+    <include layout="@layout/view_rate_company" />
 
     <include
         android:id="@+id/include_loading"
         layout="@layout/view_loading"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="match_parent"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-</LinearLayout>
+</RelativeLayout>

@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="220dp"
+    android:layout_height="195dp"
+    android:background="@drawable/bk_outline_grey_round_corner"
+    android:orientation="vertical"
+    android:padding="10dp">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/btn_flip_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        android:src="@drawable/flip_two"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/avenir_book"
+        android:letterSpacing="-0.01"
+        android:textColor="#a4a4b3"
+        android:textSize="12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="May 18" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_flip_back">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="13sp"
+                android:fontFamily="@font/avenir_heavy"
+                android:text="Gender"
+                android:textColor="#333241" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_gender"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:theme="@style/RatingBar" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="0.5"
+                android:textSize="13sp"
+                android:fontFamily="@font/avenir_heavy"
+                android:text="Race/Ethnicity"
+                android:textColor="#333241" />
+
+            <RatingBar
+                android:id="@+id/rating_bar_race"
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="true"
+                android:theme="@style/RatingBar" />
+
+        </LinearLayout>
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingStart="34dp"-->
+        <!--android:paddingTop="16dp"-->
+        <!--android:paddingEnd="34dp"-->
+        <!--android:paddingBottom="16dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.5"-->
+        <!--android:fontFamily="@font/avenir_heavy"-->
+        <!--android:text="Age"-->
+        <!--android:textColor="#333241" />-->
+
+        <!--<RatingBar-->
+        <!--android:id="@+id/rating_bar_age"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="22dp"-->
+        <!--android:isIndicator="false"-->
+        <!--android:numStars="5"-->
+        <!--android:progressDrawable="@drawable/ll_rating_bar"-->
+        <!--android:stepSize="1" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingStart="34dp"-->
+        <!--android:paddingTop="16dp"-->
+        <!--android:paddingEnd="34dp"-->
+        <!--android:paddingBottom="16dp">-->
+
+        <!--<TextView-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.5"-->
+        <!--android:fontFamily="@font/avenir_heavy"-->
+        <!--android:text="Sexual Orientation"-->
+        <!--android:textColor="#333241" />-->
+
+        <!--<RatingBar-->
+        <!--android:id="@+id/rating_bar_sex_orien"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="22dp"-->
+        <!--android:isIndicator="false"-->
+        <!--android:numStars="5"-->
+        <!--android:progressDrawable="@drawable/ll_rating_bar"-->
+        <!--android:stepSize="1" />-->
+
+        <!--</LinearLayout>-->
+
+        <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="horizontal"-->
+        <!--android:paddingStart="34dp"-->
+        <!--android:paddingTop="16dp"-->
+        <!--android:paddingEnd="34dp"-->
+        <!--android:paddingBottom="16dp">-->
+
+        <!--<TextView-->
+        <!--android:id="@+id/lbl_explanation1"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_weight="0.5"-->
+        <!--android:fontFamily="@font/avenir_heavy"-->
+        <!--android:text="Able-bodiedness"-->
+        <!--android:textColor="#333241" />-->
+
+        <!--<RatingBar-->
+        <!--android:id="@+id/rating_bar_abel_bodiedness"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="22dp"-->
+        <!--android:isIndicator="false"-->
+        <!--android:numStars="5"-->
+        <!--android:progressDrawable="@drawable/ll_rating_bar"-->
+        <!--android:stepSize="1" />-->
+
+        <!--</LinearLayout>-->
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

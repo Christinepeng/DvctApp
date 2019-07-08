@@ -7,6 +7,7 @@ import com.divercity.android.features.company.createcompany.CreateCompanyFragmen
 import com.divercity.android.features.company.selectcompany.base.SelectCompanyFragment
 import com.divercity.android.features.company.selectcompany.onboarding.OnboardingCompanyFragment
 import com.divercity.android.features.company.selectcompany.withtoolbar.ToolbarCompanyFragment
+import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDialogFragment
 import com.divercity.android.features.education.degree.SelectDegreeFragment
 import com.divercity.android.features.ethnicity.base.SelectEthnicityFragment
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityFragment
@@ -52,6 +53,9 @@ abstract class FragmentDataBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindCreateCompanyFragment(): CreateCompanyFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindRateCompanyDiversityDialogFragment(): RateCompanyDiversityDialogFragment
 
     //SCHOOL
 

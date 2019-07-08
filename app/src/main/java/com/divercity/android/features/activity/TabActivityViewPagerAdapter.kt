@@ -18,7 +18,9 @@ class TabActivityViewPagerAdapter
 @Inject constructor(
     val context: Context,
     fragment: TabActivityFragment
-) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
+) : FragmentStatePagerAdapter(
+    fragment.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT) {
 
     private var registeredFragments = SparseArray<Fragment>()
 

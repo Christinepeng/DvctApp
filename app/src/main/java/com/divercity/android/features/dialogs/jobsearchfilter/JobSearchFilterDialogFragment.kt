@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseDialogFragment
-import com.divercity.android.features.jobs.jobs.search.searchfilter.JobSearchFilterFragment
+import com.divercity.android.features.dialogs.jobsearchfilter.search.searchfilter.JobSearchFilterFragment
 
 /**
  * Created by lucas on 18/03/2018.

@@ -100,8 +100,8 @@ class TabJobsFragment : BaseFragment() {
             }
 
             override fun onPageSelected(p0: Int) {
-//                filterItem?.isVisible =
-//                    adapterTab.getRegisteredFragment(viewpager.currentItem) is JobsListFragment
+                filterItem?.isVisible =
+                    adapterTab.getRegisteredFragment(viewpager.currentItem) is JobsListFragment
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                     ?.search(lastSearchQuery)
             }
@@ -138,21 +138,16 @@ class TabJobsFragment : BaseFragment() {
             }
         })
 
-//        if (viewModel.adapterPosition == 0 && viewModel.isLoggedUserJobSeeker() ||
-//            viewModel.adapterPosition == 1 && !viewModel.isLoggedUserJobSeeker()
-//        )
-//            filterItem?.isVisible = true
-
         if (viewModel.adapterPosition == 0 && viewModel.isLoggedUserJobSeeker() ||
             viewModel.adapterPosition == 1 && !viewModel.isLoggedUserJobSeeker()
         )
-            filterItem?.isVisible = false
+            filterItem?.isVisible = true
 
         super.onCreateOptionsMenu(menu, inflater)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        return when (item?.itemId) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
             R.id.action_filter -> {
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? JobsListFragment)?.onOpenFilterMenu()
                 true

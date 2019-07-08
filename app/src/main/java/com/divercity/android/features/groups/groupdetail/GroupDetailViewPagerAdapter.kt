@@ -17,13 +17,16 @@ import javax.inject.Inject
 
 class GroupDetailViewPagerAdapter
 @Inject constructor(
-        val context: Context,
-        fm: GroupDetailFragment
-) : FragmentStatePagerAdapter(fm.childFragmentManager) {
+    val context: Context,
+    fm: GroupDetailFragment
+) : FragmentStatePagerAdapter(
+    fm.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     private var registeredFragments = SparseArray<Fragment>()
 
-    lateinit var group : GroupResponse
+    lateinit var group: GroupResponse
 
     companion object {
 
@@ -32,8 +35,8 @@ class GroupDetailViewPagerAdapter
 
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
-            context.getString(R.string.about),
-            context.getString(R.string.conversation)
+        context.getString(R.string.about),
+        context.getString(R.string.conversation)
     )
 
     override fun getItem(position: Int): Fragment {

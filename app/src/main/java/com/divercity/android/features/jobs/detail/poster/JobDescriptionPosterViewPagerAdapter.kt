@@ -22,10 +22,13 @@ class JobDescriptionPosterViewPagerAdapter
     val context: Context,
     fragment: JobDescriptionPosterFragment,
     val userRepository: UserRepository
-) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
+) : FragmentStatePagerAdapter(
+    fragment.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     var registeredFragments = SparseArray<Fragment>()
-    lateinit var job : JobResponse
+    lateinit var job: JobResponse
 
     companion object {
 
@@ -34,9 +37,9 @@ class JobDescriptionPosterViewPagerAdapter
 
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
-            context.getString(R.string.description),
-            context.getString(R.string.about_company),
-            context.getString(R.string.recommended_applicants)
+        context.getString(R.string.description),
+        context.getString(R.string.about_company),
+        context.getString(R.string.recommended_applicants)
     )
 
     override fun getItem(position: Int): Fragment {

@@ -16,9 +16,12 @@ import javax.inject.Inject
 
 class TabGroupsViewPagerAdapter
 @Inject constructor(
-        val context: Context,
-        fragment: TabGroupsFragment
-) : FragmentStatePagerAdapter(fragment.childFragmentManager) {
+    val context: Context,
+    fragment: TabGroupsFragment
+) : FragmentStatePagerAdapter(
+    fragment.childFragmentManager,
+    BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+) {
 
     private var registeredFragments = SparseArray<Fragment>()
 
@@ -29,8 +32,8 @@ class TabGroupsViewPagerAdapter
 
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
-            context.getString(R.string.your_groups),
-            context.getString(R.string.discover)
+        context.getString(R.string.your_groups),
+        context.getString(R.string.discover)
     )
 
     override fun getItem(position: Int): Fragment {

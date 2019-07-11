@@ -3,12 +3,12 @@ package com.divercity.android.features.ethnicity.withtoolbar
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.features.ethnicity.base.Ethnicity
 import com.divercity.android.features.ethnicity.base.SelectEthnicityFragment
+import com.divercity.android.model.Ethnicity
 import kotlinx.android.synthetic.main.fragment_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 
@@ -44,7 +44,7 @@ class ToolbarEthnicityFragment : BaseFragment(), SelectEthnicityFragment.Listene
 
     override fun onEthnicityChosen(ethnicity: Ethnicity) {
         val intent = Intent()
-        intent.putExtra(ETHNICITY_PICKED, getString(ethnicity.textId))
+        intent.putExtra(ETHNICITY_PICKED, ethnicity.id)
         activity?.apply {
             setResult(Activity.RESULT_OK, intent)
             finish()

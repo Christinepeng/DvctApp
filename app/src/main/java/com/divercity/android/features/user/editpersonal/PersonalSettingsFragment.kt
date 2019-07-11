@@ -165,13 +165,29 @@ class PersonalSettingsFragment : BaseFragment() {
             }
         })
 
-        viewModel.showDiversityRateDialog.observe(viewLifecycleOwner, Observer {
-            showRateCompanyDialog(it)
+        viewModel.fetchCompanyResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+//                    showProgress()
+                }
+
+                Status.ERROR -> {
+//                    hideProgress()
+                    showToast(response.message ?: "Error")
+                }
+                Status.SUCCESS -> {
+//                    hideProgress()
+                    response.data?.let {
+                        showRateCompanyDialog(it)
+                    }
+                }
+            }
         })
     }
 
-    private fun showRateCompanyDialog(companyId: String) {
-        val dialog = RateCompanyDiversityDialogFragment.newInstance(companyId)
+    private fun showRateCompanyDialog(company: CompanyResponse) {
+        val dialog = RateCompanyDiversityDialogFragment.newInstance(company)
+
         dialog.listener = object : RateCompanyDiversityDialogFragment.Listener {
 
             override fun onCompanyRated() {
@@ -225,9 +241,9 @@ class PersonalSettingsFragment : BaseFragment() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 REQUEST_CODE_ETHNICITY -> {
-                    val ethnicity =
+                    val ethnicityId =
                         data?.extras?.getString(ToolbarEthnicityFragment.ETHNICITY_PICKED)
-                    viewModel.updateEthnicity(ethnicity)
+                    viewModel.updateEthnicity(ethnicityId)
                 }
                 REQUEST_CODE_GENDER -> {
                     val gender = data?.extras?.getString(ToolbarGenderFragment.GENDER_PICKED)

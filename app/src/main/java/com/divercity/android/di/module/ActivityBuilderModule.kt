@@ -66,6 +66,7 @@ import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeAc
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
 import com.divercity.android.features.password.changepassword.ChangePasswordActivity
 import com.divercity.android.features.password.resetpassword.ResetPasswordActivity
+import com.divercity.android.features.picturessearch.PictureSearchActivity
 import com.divercity.android.features.school.onboarding.OnboardingSchoolActivity
 import com.divercity.android.features.school.withtoolbar.SelectSingleSchoolActivity
 import com.divercity.android.features.search.SearchActivity
@@ -176,6 +177,10 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
     abstract fun bindSelectDegreeActivity(): SelectDegreeActivity
 
+    //PICTURES
+
+    @ContributesAndroidInjector(modules = [FragmentDataBuilderModule::class])
+    abstract fun bindPictureSearchActivity(): PictureSearchActivity
 
     //SESSION
 

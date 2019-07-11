@@ -3,7 +3,7 @@ package com.divercity.android.features.company.createcompany.usecase
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.data.entity.company.createcompanybody.Company
 import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
-import com.divercity.android.repository.data.DataRepository
+import com.divercity.android.repository.company.CompanyRepository
 import com.divercity.android.repository.user.UserRepository
 import io.reactivex.Observable
 import io.reactivex.Scheduler
@@ -18,7 +18,7 @@ class CreateCompanyUseCase @Inject
 constructor(
         @Named("executor_thread") executorThread: Scheduler,
         @Named("ui_thread") uiThread: Scheduler,
-        private val repository: DataRepository,
+        private val repository: CompanyRepository,
         private val userRepository: UserRepository
 ) : UseCase<Boolean, CreateCompanyUseCase.Params>(executorThread, uiThread) {
 

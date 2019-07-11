@@ -65,6 +65,7 @@ class BaseDataSource<T>(
 
             override fun onError(e: Throwable) {
                 setRetry(Action { loadInitial(params, callback) })
+                Timber.e(e)
                 val error = NetworkState.error("Error")
                 networkState.postValue(error)
                 initialLoad.postValue(error)

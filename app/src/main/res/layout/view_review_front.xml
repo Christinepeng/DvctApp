@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txt_date"
+        android:id="@+id/txt_date_front"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="@font/avenir_book"
@@ -38,20 +38,35 @@
         android:isIndicator="true"
         android:theme="@style/RatingBar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/txt_date" />
+        app:layout_constraintTop_toBottomOf="@+id/txt_date_front" />
 
-    <TextView
-        android:id="@+id/txt_review"
+    <ScrollView
+        android:id="@+id/scroll_text"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
+        android:fadeScrollbars="false"
+        android:scrollbarAlwaysDrawVerticalTrack="true"
         android:scrollbars="vertical"
-        android:textColor="#333241"
-        android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rating_bar_overall"
-        tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id sem eget mi porttitor auctor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean tristique felis at ligula tempor condimentum.malesuada fames ac ante ipsum primis in faucibus. Aenean tristique felis at ligula tempor condimentum.malesuada fames ac ante ipsum primis in faucibus. Aenean tristique felis at ligula tempor condimentum." />
+        app:layout_constraintTop_toBottomOf="@+id/rating_bar_overall">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_review"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#333241"
+                android:textSize="12sp"
+                tools:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris id sem eget mi porttitor auctor. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aenean tristique felis at ligula tempor condimentum.malesuada fames ac ante ipsum primis in faucibus. Aenean tristique felis at ligula tempor condimentum.malesuada fames ac ante ipsum primis in faucibus. Aenean tristique felis at ligula tempor condimentum." />
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

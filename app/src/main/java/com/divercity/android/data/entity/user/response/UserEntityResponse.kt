@@ -50,7 +50,7 @@ data class UserEntityResponse(
         birthdate = userAttributes?.birthdate,
         role = userAttributes?.role,
         gender = userAttributes?.gender,
-        ethnicity = userAttributes?.ethnicity,
+        ethnicity = userAttributes?.ethnicity?.name,
         city = userAttributes?.city,
         timezone = userAttributes?.timezone,
         answersCount = userAttributes?.answersCount,

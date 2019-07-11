@@ -33,6 +33,7 @@ import com.divercity.android.features.dialogs.ratecompany.RateCompanyDiversityDi
 import com.divercity.android.features.dialogs.recentdocuments.RecentDocsDialogViewModel
 import com.divercity.android.features.education.addediteducation.AddEditEducationViewModel
 import com.divercity.android.features.education.degree.SelectDegreeViewModel
+import com.divercity.android.features.ethnicity.base.SelectEthnicityViewModel
 import com.divercity.android.features.ethnicity.onboarding.OnboardingEthnicityViewModel
 import com.divercity.android.features.gender.onboarding.OnboardingGenderViewModel
 import com.divercity.android.features.groups.TabGroupsViewModel
@@ -91,6 +92,7 @@ import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeVi
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeViewModel
 import com.divercity.android.features.password.changepassword.ChangePasswordViewModel
 import com.divercity.android.features.password.resetpassword.ResetPasswordViewModel
+import com.divercity.android.features.picturessearch.PictureSearchViewModel
 import com.divercity.android.features.school.base.SelectSchoolViewModel
 import com.divercity.android.features.school.onboarding.OnboardingSchoolViewModel
 import com.divercity.android.features.search.SearchViewModel
@@ -678,4 +680,14 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectDegreeViewModel::class)
     abstract fun bindsSelectDegreeViewModel(viewModel: SelectDegreeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectEthnicityViewModel::class)
+    abstract fun bindsSelectEthnicityViewModel(viewModel: SelectEthnicityViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(PictureSearchViewModel::class)
+    abstract fun bindsPictureSearchViewModel(viewModel: PictureSearchViewModel): ViewModel
 }

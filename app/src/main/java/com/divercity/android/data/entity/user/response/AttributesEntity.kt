@@ -1,5 +1,6 @@
 package com.divercity.android.data.entity.user.response
 
+import androidx.room.Embedded
 import com.divercity.android.core.extension.empty
 import com.google.gson.annotations.SerializedName
 import java.util.*
@@ -27,8 +28,9 @@ data class AttributesEntity(
     @field:SerializedName("gender")
     var gender: String? = String.empty(),
 
-    @field:SerializedName("ethnicity")
-    var ethnicity: String? = String.empty(),
+    @field:SerializedName("ethnicity_info")
+    @Embedded(prefix = "ethn_")
+    var ethnicity: EthnicityInfoEntity? = null,
 
     @field:SerializedName("city")
     var city: String? = String.empty(),

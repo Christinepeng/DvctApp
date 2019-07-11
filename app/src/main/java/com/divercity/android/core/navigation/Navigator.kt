@@ -74,6 +74,7 @@ import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeAc
 import com.divercity.android.features.onboarding.uploadresume.UploadResumeActivity
 import com.divercity.android.features.password.changepassword.ChangePasswordActivity
 import com.divercity.android.features.password.resetpassword.ResetPasswordActivity
+import com.divercity.android.features.picturessearch.PictureSearchActivity
 import com.divercity.android.features.school.onboarding.OnboardingSchoolActivity
 import com.divercity.android.features.school.withtoolbar.SelectSingleSchoolActivity
 import com.divercity.android.features.search.SearchActivity
@@ -437,6 +438,13 @@ class Navigator @Inject constructor() {
     fun navigateToToolbarCompanyActivityForResult(fragment: Fragment, code: Int) {
         fragment.startActivityForResult(
             ToolbarCompanyActivity.getCallingIntent(fragment.context),
+            code
+        )
+    }
+
+    fun navigateToPictureSearchActivityForResult(fragment: Fragment, code: Int) {
+        fragment.startActivityForResult(
+            PictureSearchActivity.getCallingIntent(fragment.context),
             code
         )
     }

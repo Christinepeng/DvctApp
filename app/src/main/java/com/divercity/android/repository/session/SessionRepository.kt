@@ -60,8 +60,6 @@ interface SessionRepository {
 
     fun getAccountType(): String
 
-    fun getEthnicity(): String?
-
     fun getGender(): String?
 
     fun getIndustries(): String?

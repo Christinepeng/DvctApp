@@ -2,7 +2,7 @@ package com.divercity.android.repository.data
 
 import com.divercity.android.core.base.BaseRepository
 import com.divercity.android.core.extension.toDegree
-import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
+import com.divercity.android.core.extension.toEthnicity
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.android.data.entity.industry.IndustryResponse
@@ -14,6 +14,7 @@ import com.divercity.android.data.entity.recommendedjobsgoi.RecommendedJobsGOIRe
 import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.data.networking.services.DataService
 import com.divercity.android.model.Degree
+import com.divercity.android.model.Ethnicity
 import com.divercity.android.model.Major
 import com.divercity.android.model.School
 import io.reactivex.Observable
@@ -26,7 +27,7 @@ import javax.inject.Inject
 class DataRepositoryImpl @Inject
 constructor(private val service: DataService) : BaseRepository(), DataRepository {
 
-    override fun searchPhotos(query: String): Observable<List<PhotoEntityResponse>> {
+    override fun searchPhotos(query: String?): Observable<List<PhotoEntityResponse>> {
         return service.searchPhotos(query).map { response ->
             checkResponse(response)
             response.body()!!.data
@@ -103,13 +104,6 @@ constructor(private val service: DataService) : BaseRepository(), DataRepository
         }
     }
 
-    override fun createCompany(body: CreateCompanyBody): Observable<Boolean> {
-        return service.createCompany(body).map { response ->
-            checkResponse(response)
-            true
-        }
-    }
-
     override fun fetchCompanySizes(): Observable<List<CompanySizeResponse>> {
         return service.fetchCompanySizes().map { response ->
             checkResponse(response)
@@ -149,5 +143,14 @@ constructor(private val service: DataService) : BaseRepository(), DataRepository
         size: Int
     ): Observable<RecommendedJobsGOIResponse> {
         return service.fetchRecommendedJobsGOIs(pageNumber, size)
+    }
+
+    override fun fetchEthnicites(): Observable<List<Ethnicity>> {
+        return service.fetchEthnicities().map { response ->
+            checkResponse(response)
+            response.body()!!.data.map {
+                it.toEthnicity()
+            }
+        }
     }
 }

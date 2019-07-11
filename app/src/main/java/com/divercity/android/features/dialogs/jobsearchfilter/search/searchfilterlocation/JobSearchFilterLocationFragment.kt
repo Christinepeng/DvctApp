@@ -84,6 +84,9 @@ class JobSearchFilterLocationFragment : BaseFragment(), RetryCallback {
     private fun initView() {
         btn_select_all.isSelected = viewModel.isAllLocationSelected
         btn_back.setOnClickListener {
+            if(adapter.getSelectedLocationsString().isEmpty())
+                btn_select_all.isSelected = true
+
             if (btn_select_all.isSelected)
                 viewModel.locationFilter.value = "All"
             else

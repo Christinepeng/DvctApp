@@ -19,6 +19,7 @@ constructor(val userRepository: UserRepositoryImpl,
 
     val showBtnAddJob = MutableLiveData<Int>()
     var adapterPosition: Int = 0
+    var lastSearchQuery: String = ""
 
     init {
 
@@ -29,8 +30,4 @@ constructor(val userRepository: UserRepositoryImpl,
     }
 
     fun isLoggedUserJobSeeker() = sessionRepository.isLoggedUserJobSeeker()
-
-//    fun getAccountType(): String? {
-//        return sessionRepository.getAccountType()
-//    }
 }

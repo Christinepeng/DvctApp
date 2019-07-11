@@ -25,8 +25,11 @@ constructor(
     private val userDao: UserDao
 ) : SessionRepository {
 
-    private val USER_PREF_NAME = "USER_PREF_NAME"
     private var currentLoggedUser: UserEntityResponse? = null
+
+    companion object{
+        const val USER_PREF_NAME = "USER_PREF_NAME"
+    }
 
     enum class Key {
         ACCESS_TOKEN,
@@ -102,6 +105,10 @@ constructor(
         return sharedPreferencesManager.getString(Key.USER_ID)!!
     }
 
+    override fun setUserId(id: String) {
+        sharedPreferencesManager.put(Key.USER_ID, id)
+    }
+
     override fun getCurrentChatId(): String? {
         return sharedPreferencesManager.getString(Key.CURRENT_CHAT_ID)
     }
@@ -141,10 +148,6 @@ constructor(
 
     override fun getUserAvatarUrl(): String? {
         return currentLoggedUser?.userAttributes?.avatarMedium
-    }
-
-    override fun getEthnicity(): String? {
-        return currentLoggedUser?.userAttributes?.ethnicity
     }
 
     override fun getGender(): String? {
@@ -197,9 +200,6 @@ constructor(
         }
     }
 
-    override fun setUserId(id: String) {
-        sharedPreferencesManager.put(Key.USER_ID, id)
-    }
 
     override fun isLoggedUserJobSeeker(): Boolean {
         return currentLoggedUser?.isUserJobSeeker(context) ?: true

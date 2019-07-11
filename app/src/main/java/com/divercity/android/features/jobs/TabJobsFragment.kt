@@ -37,7 +37,6 @@ class TabJobsFragment : BaseFragment() {
     private var filterItem: MenuItem? = null
 
     private var handlerSearch = Handler()
-    private var lastSearchQuery: String? = ""
 
     companion object {
 
@@ -103,7 +102,7 @@ class TabJobsFragment : BaseFragment() {
                 filterItem?.isVisible =
                     adapterTab.getRegisteredFragment(viewpager.currentItem) is JobsListFragment
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
-                    ?.search(lastSearchQuery)
+                    ?.search(viewModel.lastSearchQuery)
             }
         }
         viewpager.addOnPageChangeListener(onPageListener)
@@ -115,7 +114,14 @@ class TabJobsFragment : BaseFragment() {
         searchItem = menu.findItem(R.id.action_search)
         filterItem = menu.findItem(R.id.action_filter)
         searchView = searchItem?.actionView as SearchView
-        searchView?.queryHint = getString(R.string.search)
+
+        if (viewModel.lastSearchQuery == "")
+            searchView?.queryHint = getString(R.string.search)
+        else {
+            searchItem?.expandActionView()
+            searchView?.setQuery(viewModel.lastSearchQuery, true)
+            searchView?.clearFocus()
+        }
 
         searchView?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
@@ -123,7 +129,7 @@ class TabJobsFragment : BaseFragment() {
                 handlerSearch.removeCallbacksAndMessages(null)
                 (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                     ?.search(query)
-                lastSearchQuery = query
+                viewModel.lastSearchQuery = query ?: ""
                 return false
             }
 
@@ -132,7 +138,7 @@ class TabJobsFragment : BaseFragment() {
                 handlerSearch.postDelayed({
                     (adapterTab.getRegisteredFragment(viewpager.currentItem) as? ITabSearch)
                         ?.search(newText)
-                    lastSearchQuery = newText
+                    viewModel.lastSearchQuery = newText ?: ""
                 }, AppConstants.SEARCH_DELAY)
                 return true
             }
@@ -165,7 +171,6 @@ class TabJobsFragment : BaseFragment() {
 
         viewModel.adapterPosition = viewpager.currentItem
 
-        lastSearchQuery = ""
         super.onDestroyView()
     }
 }

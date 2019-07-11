@@ -1,9 +1,7 @@
 package com.divercity.android.data.entity.photo
 
-import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-@Generated("com.robohorse.robopojogenerator")
 data class PhotoEntityResponse(
 
 	@field:SerializedName("image_urls_by_size")

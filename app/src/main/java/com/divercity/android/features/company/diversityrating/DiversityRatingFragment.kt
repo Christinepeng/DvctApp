@@ -92,10 +92,10 @@ class DiversityRatingFragment : BaseFragment(), RetryCallback {
 
     private fun showData(company: CompanyResponse?) {
         company?.attributes?.also {
-            rating_bar_header.rating = it.divercityRating?.toFloat() ?: 0f
+            rating_bar_header.rating = it.divercityRating?.totalDivercityRating?.toFloat() ?: 0f
 
-            txt_rating.text = it.divercityRating?.toString() ?: "0"
-            if (it.divercityRating != null && it.divercityRating != 0)
+            txt_rating.text = it.divercityRating?.totalDivercityRating.toString()
+            if (it.divercityRating != null && it.divercityRating.totalDivercityRating != 0)
                 txt_rating.visibility = View.VISIBLE
             else
                 txt_rating.visibility = View.GONE
@@ -108,7 +108,7 @@ class DiversityRatingFragment : BaseFragment(), RetryCallback {
             } else
                 btn_rate.visibility = View.GONE
 
-            txt_ratings.text = (it.totalDivercityRating?.toString() ?: "0").plus(" Ratings")
+            txt_ratings.text = (it.divercityRating?.totalDivercityRating.toString()).plus(" Ratings")
         }
     }
 

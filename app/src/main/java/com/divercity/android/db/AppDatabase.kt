@@ -27,7 +27,7 @@ import com.divercity.android.db.dao.UserDao
 abstract class AppDatabase : RoomDatabase() {
 
     companion object {
-        const val VERSION = 3
+        const val VERSION = 4
         const val DATABASE_NAME = "divercity-db"
     }
 

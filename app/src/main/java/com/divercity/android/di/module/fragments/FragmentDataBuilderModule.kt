@@ -23,6 +23,7 @@ import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragme
 import com.divercity.android.features.major.base.SelectMajorFragment
 import com.divercity.android.features.major.onboarding.OnboardingMajorFragment
 import com.divercity.android.features.major.withtoolbar.SelectSingleMajorFragment
+import com.divercity.android.features.picturessearch.PictureSearchFragment
 import com.divercity.android.features.school.base.SelectSchoolFragment
 import com.divercity.android.features.school.onboarding.OnboardingSchoolFragment
 import com.divercity.android.features.school.withtoolbar.SelectSingleSchoolFragment
@@ -148,5 +149,9 @@ abstract class FragmentDataBuilderModule {
     //DEGREE
     @ContributesAndroidInjector
     abstract fun bindSelectDegreeFragment(): SelectDegreeFragment
+
+    //PICTURES
+    @ContributesAndroidInjector
+    abstract fun bindPictureSearchFragment(): PictureSearchFragment
 
 }

@@ -24,8 +24,8 @@ public class UserProfileEntity {
     @SerializedName("gender")
     private String gender;
 
-    @SerializedName("ethnicity")
-    private String ethnicity;
+    @SerializedName("ethnicity_id")
+    private String ethnicityId;
 
     @SerializedName("school_id")
     private String schoolId;
@@ -79,12 +79,12 @@ public class UserProfileEntity {
         return gender;
     }
 
-    public void setEthnicity(String ethnicity) {
-        this.ethnicity = ethnicity;
+    public String getEthnicityId() {
+        return ethnicityId;
     }
 
-    public String getEthnicity() {
-        return ethnicity;
+    public void setEthnicityId(String ethnicityId) {
+        this.ethnicityId = ethnicityId;
     }
 
     public String getSchoolId() {
@@ -136,7 +136,7 @@ public class UserProfileEntity {
                         ",birthdate = '" + birthdate + '\'' +
                         ",occupation = '" + occupation + '\'' +
                         ",gender = '" + gender + '\'' +
-                        ",ethnicity = '" + ethnicity + '\'' +
+                        ",ethnicity_id = '" + ethnicityId + '\'' +
                         ",school_id = '" + schoolId + '\'' +
                         ",age_range = '" + ageRange + '\'' +
                         ",job_employer_id = '" + jobEmployerId + '\'' +

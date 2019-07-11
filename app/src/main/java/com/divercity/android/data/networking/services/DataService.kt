@@ -1,10 +1,10 @@
 package com.divercity.android.data.networking.services
 
 import com.divercity.android.data.entity.base.DataArray
-import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.android.data.entity.degree.DegreeEntityResponse
+import com.divercity.android.data.entity.ethnicity.EthnicityEntityResponse
 import com.divercity.android.data.entity.industry.IndustryResponse
 import com.divercity.android.data.entity.interests.InterestsResponse
 import com.divercity.android.data.entity.location.LocationResponse
@@ -14,12 +14,9 @@ import com.divercity.android.data.entity.photo.PhotoEntityResponse
 import com.divercity.android.data.entity.recommendedjobsgoi.RecommendedJobsGOIResponse
 import com.divercity.android.data.entity.school.SchoolEntityResponse
 import com.divercity.android.data.entity.skills.SkillResponse
-
 import io.reactivex.Observable
 import retrofit2.Response
-import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.POST
 import retrofit2.http.Query
 
 /**
@@ -91,12 +88,12 @@ interface DataService {
 
     @GET("group_of_interests/suggest_group_photo")
     fun searchPhotos(
-        @Query("query") query: String
+        @Query("query") query: String?
     ): Observable<Response<DataArray<PhotoEntityResponse>>>
-
-    @POST("job_employers")
-    fun createCompany(@Body body: CreateCompanyBody): Observable<Response<Void>>
 
     @GET("data/degrees")
     fun fetchDegrees(): Observable<Response<DataArray<DegreeEntityResponse>>>
+
+    @GET("data/ethnicities")
+    fun fetchEthnicities(): Observable<Response<DataArray<EthnicityEntityResponse>>>
 }

@@ -2,6 +2,7 @@ package com.divercity.android.repository.company
 
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
+import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
@@ -56,4 +57,7 @@ interface CompanyRepository {
         companyId: String,
         rating: Rating
     ): Observable<CompanyDiversityReviewEntityResponse>
+
+    fun createCompany(body: CreateCompanyBody): Observable<Boolean>
+
 }

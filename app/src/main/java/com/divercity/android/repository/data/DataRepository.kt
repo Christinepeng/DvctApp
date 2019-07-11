@@ -1,6 +1,5 @@
 package com.divercity.android.repository.data
 
-import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.sizes.CompanySizeResponse
 import com.divercity.android.data.entity.industry.IndustryResponse
@@ -11,6 +10,7 @@ import com.divercity.android.data.entity.photo.PhotoEntityResponse
 import com.divercity.android.data.entity.recommendedjobsgoi.RecommendedJobsGOIResponse
 import com.divercity.android.data.entity.skills.SkillResponse
 import com.divercity.android.model.Degree
+import com.divercity.android.model.Ethnicity
 import com.divercity.android.model.Major
 import com.divercity.android.model.School
 import io.reactivex.Observable
@@ -33,13 +33,13 @@ interface DataRepository {
 
     fun fetchSkills(page: Int, size: Int, query: String?): Observable<List<SkillResponse>>
 
-    fun createCompany(body: CreateCompanyBody): Observable<Boolean>
-
     fun fetchCompanySizes(): Observable<List<CompanySizeResponse>>
 
     fun fetchInterests(): Observable<List<InterestsResponse>>
 
-    fun searchPhotos(query: String): Observable<List<PhotoEntityResponse>>
+    fun searchPhotos(
+        query: String?
+    ): Observable<List<PhotoEntityResponse>>
 
     fun fetchOccupationOfInterests(
         pageNumber: Int,
@@ -48,6 +48,8 @@ interface DataRepository {
     ): Observable<List<OOIResponse>>
 
     fun fetchDegrees(): Observable<List<Degree>>
+
+    fun fetchEthnicites(): Observable<List<Ethnicity>>
 
     fun fetchRecommendedJobsGOIS(
         pageNumber: Int,

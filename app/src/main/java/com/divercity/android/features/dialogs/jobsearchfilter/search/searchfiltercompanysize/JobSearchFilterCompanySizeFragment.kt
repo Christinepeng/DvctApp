@@ -81,6 +81,9 @@ class JobSearchFilterCompanySizeFragment : BaseFragment() {
 
         btn_select_all.isSelected = viewModel.isAllSizesSelected
         btn_back.setOnClickListener {
+            if(adapter.getSelectedSizesString().isEmpty())
+                btn_select_all.isSelected = true
+
             if (btn_select_all.isSelected)
                 viewModel.companySize.value = "All Sizes"
             else

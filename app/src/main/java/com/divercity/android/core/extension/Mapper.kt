@@ -3,9 +3,11 @@ package com.divercity.android.core.extension
 import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
 import com.divercity.android.data.entity.degree.DegreeEntityResponse
 import com.divercity.android.data.entity.education.response.EducationEntityResponse
+import com.divercity.android.data.entity.ethnicity.EthnicityEntityResponse
 import com.divercity.android.model.CompanyDiversityReview
 import com.divercity.android.model.Degree
 import com.divercity.android.model.Education
+import com.divercity.android.model.Ethnicity
 
 /**
  * Created by lucas on 2019-06-12.
@@ -34,4 +36,9 @@ fun CompanyDiversityReviewEntityResponse.toCompanyDiverseReview() = CompanyDiver
     attributes?.review,
     attributes?.ageRate,
     attributes?.createdAt
+)
+
+fun EthnicityEntityResponse.toEthnicity() = Ethnicity(
+    id,
+    attributes?.name
 )

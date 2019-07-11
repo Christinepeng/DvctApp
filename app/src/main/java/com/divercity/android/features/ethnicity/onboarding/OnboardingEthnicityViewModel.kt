@@ -6,9 +6,9 @@ import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
+import com.divercity.android.model.Ethnicity
 import com.divercity.android.model.user.User
 import com.divercity.android.repository.session.SessionRepository
-import com.divercity.android.repository.user.UserRepository
 import com.google.gson.JsonElement
 import javax.inject.Inject
 
@@ -18,12 +18,11 @@ import javax.inject.Inject
 
 class OnboardingEthnicityViewModel @Inject
 constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
-            private val userRepository: UserRepository,
             private val sessionRepository: SessionRepository) : BaseViewModel() {
 
     val updateUserProfileResponse = MutableLiveData<Resource<User>>()
 
-    fun updateUserProfile(ethnicity: String) {
+    fun updateUserProfile(ethnicity: Ethnicity) {
         updateUserProfileResponse.postValue(Resource.loading<User>(null))
 
         val callback = object : DisposableObserverWrapper<User>() {
@@ -40,7 +39,7 @@ constructor(private val updateUserProfileUseCase: UpdateUserProfileUseCase,
             }
         }
         val user = UserProfileEntity()
-        user.ethnicity = ethnicity
+        user.ethnicityId = ethnicity.id
         updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 

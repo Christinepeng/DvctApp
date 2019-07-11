@@ -129,7 +129,7 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
 
             txt_name.text = it.attributes?.name
 
-            val rating = it.attributes?.divercityRating
+            val rating = it.attributes?.divercityRating?.totalDivercityRating
             if(rating != null){
                 lay_rating.visibility = View.VISIBLE
                 rating_bar_header.rating = rating.toFloat()

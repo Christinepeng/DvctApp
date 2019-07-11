@@ -6,6 +6,7 @@ import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompa
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.Admin
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
+import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.data.entity.company.rating.Rating
 import com.divercity.android.data.entity.company.rating.RatingBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
@@ -104,6 +105,13 @@ constructor(
         return service.rateCompany(companyId, RatingBody(rating)).map {
             checkResponse(it)
             it.body()?.data
+        }
+    }
+
+    override fun createCompany(body: CreateCompanyBody): Observable<Boolean> {
+        return service.createCompany(body).map { response ->
+            checkResponse(response)
+            true
         }
     }
 }

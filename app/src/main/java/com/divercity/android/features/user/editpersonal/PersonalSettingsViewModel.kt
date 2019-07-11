@@ -8,10 +8,12 @@ import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.FileUtils
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
+import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.document.DocumentResponse
 import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.company.companydetail.usecase.FetchCompanyUseCase
 import com.divercity.android.features.dialogs.jobapply.usecase.UploadDocumentUseCase
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase
 import com.divercity.android.model.user.User
@@ -29,20 +31,21 @@ constructor(
     private val context: Application,
     private val sessionRepository: SessionRepository,
     private val uploadDocumentUseCase: UploadDocumentUseCase,
-    private val updateUserProfileUseCase: UpdateUserProfileUseCase
+    private val updateUserProfileUseCase: UpdateUserProfileUseCase,
+    private val fetchCompanyUseCase: FetchCompanyUseCase
 ) : BaseViewModel() {
 
     val updateUserProfileResponse = SingleLiveEvent<Resource<User>>()
     val uploadDocumentResponse = SingleLiveEvent<Resource<DocumentResponse>>()
-    val showDiversityRateDialog = SingleLiveEvent<String>()
+    var fetchCompanyResponse = SingleLiveEvent<Resource<CompanyResponse>>()
 
     fun getCurrentUser() : LiveData<User> {
         return sessionRepository.getUserDB()
     }
 
-    fun updateEthnicity(ethnicity: String?) {
+    fun updateEthnicity(ethnicityId: String?) {
         val user = UserProfileEntity()
-        user.ethnicity = ethnicity
+        user.ethnicityId = ethnicityId
         updateUserProfile(user)
     }
 
@@ -90,7 +93,7 @@ constructor(
 
             override fun onSuccess(o: User) {
                 if(user.jobEmployerId != null)
-                    showDiversityRateDialog.value = o.companyId.toString()
+                    fetchCompany(o.companyId!!)
                 updateUserProfileResponse.postValue(Resource.success(o))
             }
         }
@@ -150,5 +153,26 @@ constructor(
             }
         }
         uploadDocumentUseCase.execute(callback, UploadDocumentUseCase.Params.forDoc(file))
+    }
+
+    fun fetchCompany(companyId: Int) {
+        fetchCompanyResponse.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<CompanyResponse>() {
+            override fun onFail(error: String) {
+                fetchCompanyResponse.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                fetchCompanyResponse.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: CompanyResponse) {
+                if(o.attributes?.canRateCompany == true)
+                    fetchCompanyResponse.postValue(Resource.success(o))
+                else
+                    fetchCompanyResponse.postValue(Resource.success(null))
+            }
+        }
+        fetchCompanyUseCase.execute(callback, FetchCompanyUseCase.Params(companyId.toString()))
     }
 }

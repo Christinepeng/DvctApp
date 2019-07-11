@@ -5,6 +5,7 @@ import com.divercity.android.data.entity.base.DataObject
 import com.divercity.android.data.entity.company.companyadmin.body.AddAdminCompanyBody
 import com.divercity.android.data.entity.company.companyadmin.deleteadminbody.DeleteCompanyAdminBody
 import com.divercity.android.data.entity.company.companyadmin.response.CompanyAdminEntityResponse
+import com.divercity.android.data.entity.company.createcompanybody.CreateCompanyBody
 import com.divercity.android.data.entity.company.rating.RatingBody
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
@@ -68,4 +69,7 @@ interface CompanyService {
         @Path("companyId") companyId: String,
         @Body ratingBody: RatingBody
     ): Observable<Response<DataObject<CompanyDiversityReviewEntityResponse>>>
+
+    @POST("job_employers")
+    fun createCompany(@Body body: CreateCompanyBody): Observable<Response<Void>>
 }

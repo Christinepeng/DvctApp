@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class CreateCompanyBody(
 
-	@field:SerializedName("companyName")
+	@field:SerializedName("company")
 	val company: Company? = null
 )

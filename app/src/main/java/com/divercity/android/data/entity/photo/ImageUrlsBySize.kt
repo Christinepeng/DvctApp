@@ -3,7 +3,6 @@ package com.divercity.android.data.entity.photo
 import javax.annotation.Generated
 import com.google.gson.annotations.SerializedName
 
-@Generated("com.robohorse.robopojogenerator")
 data class ImageUrlsBySize(
 
 	@field:SerializedName("thumb")

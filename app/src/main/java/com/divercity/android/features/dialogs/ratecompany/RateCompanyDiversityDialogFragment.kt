@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseDialogFragment
 import com.divercity.android.core.utils.GlideApp
@@ -102,6 +103,7 @@ class RateCompanyDiversityDialogFragment : BaseDialogFragment() {
 
                 GlideApp.with(this)
                     .load(it.attributes?.photos?.medium)
+                    .apply(RequestOptions().circleCrop())
                     .into(img)
 
                 txt_company_name.text = it.attributes?.name

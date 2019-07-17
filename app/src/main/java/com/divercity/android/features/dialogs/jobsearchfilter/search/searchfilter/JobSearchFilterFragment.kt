@@ -9,10 +9,12 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.IJobSearchFilter
 import com.divercity.android.features.dialogs.jobsearchfilter.JobSearchFilterDialogViewModel
-import com.divercity.android.features.dialogs.jobsearchfilter.search.searchfiltercompany.JobSearchFilterCompanyFragment
+import com.divercity.android.features.dialogs.jobsearchfilter.search.searchfiltercompanyindustry.JobSearchFilterCompanyIndustryFragment
+import com.divercity.android.features.dialogs.jobsearchfilter.search.searchfiltercompanysize.JobSearchFilterCompanySizeFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.search.searchfilterlocation.JobSearchFilterLocationFragment
 import com.divercity.android.features.dialogs.jobsearchfilter.search.searchfilterview.JobSearchFilterViewFragment
 import kotlinx.android.synthetic.main.fragment_job_search_filter.*
+import kotlinx.android.synthetic.main.view_job_filter.view.*
 
 /**
  * Created by lucas on 24/10/2018.
@@ -57,7 +59,14 @@ class JobSearchFilterFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        lay_view_type.setOnClickListener {
+        lay_view.txt_title.setText(R.string.view)
+        lay_location.txt_title.setText(R.string.location)
+        lay_job_type.txt_title.setText(R.string.job_type)
+        lay_required_exp.txt_title.setText(R.string.required_exp)
+        lay_company_size.txt_title.setText(R.string.company_size)
+        lay_industry.txt_title.setText(R.string.industry)
+
+        lay_view.setOnClickListener {
             listener?.replaceFragment(JobSearchFilterViewFragment.newInstance(), null)
         }
 
@@ -65,27 +74,31 @@ class JobSearchFilterFragment : BaseFragment() {
             listener?.replaceFragment(JobSearchFilterLocationFragment.newInstance(), null)
         }
 
-        lay_company.setOnClickListener {
-            listener?.replaceFragment(JobSearchFilterCompanyFragment.newInstance(), null)
+        lay_company_size.setOnClickListener {
+            listener?.replaceFragment(JobSearchFilterCompanySizeFragment.newInstance(), null)
+        }
+
+        lay_industry.setOnClickListener {
+            listener?.replaceFragment(JobSearchFilterCompanyIndustryFragment.newInstance(), null)
         }
 
         btn_close.setOnClickListener {
             listener?.replaceFragment(null, null)
         }
 
-        txt_company.text =
-            viewModel.companySize.value.plus(", ").plus(viewModel.companyIndustry.value)
+//        txt_company.text =
+//            viewModel.companySize.value.plus(", ").plus(viewModel.companyIndustry.value)
 
         subscribeToLiveData()
     }
 
     private fun subscribeToLiveData() {
         viewModel.viewTypeFilter.observe(viewLifecycleOwner, Observer {
-            txt_view.text = it
+            lay_view.txt_subtitle.text = it
         })
 
         viewModel.locationFilter.observe(viewLifecycleOwner, Observer {
-            txt_location.text = it
+            lay_location.txt_subtitle.text = it
         })
     }
 }

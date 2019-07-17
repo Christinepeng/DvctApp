@@ -19,6 +19,6 @@ data class Company(
 	@field:SerializedName("description")
 	val description: String? = null,
 
-	@field:SerializedName("logo")
-	val logo: String? = null
+	@field:SerializedName("photo")
+	val photo: String? = null
 )

@@ -29,7 +29,7 @@ constructor(
                 description = params.desc,
                 headquarters = params.headquarters,
                 industryId = params.industryId,
-                logo = params.logo
+                photo = params.logo
         )
         return repository.createCompany(CreateCompanyBody(company))
     }

@@ -95,7 +95,7 @@ android {
 
 dependencies {
 
-    def supportLibrary_version = '1.0.0-beta01'
+    def supportLibrary_version = '1.0.0'
 
     def appcompat_version = '1.0.2'
 
@@ -167,10 +167,10 @@ dependencies {
 
     // Retrofit & OkHttp
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-scalars:$retrofit_version"
-    implementation "com.squareup.okhttp3:logging-interceptor:$okhttp3_version"
 
     // RxJava
     implementation "io.reactivex.rxjava2:rxandroid:$rxandroid_version"

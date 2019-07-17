@@ -47,6 +47,12 @@
     <string name="reset">Reset</string>
     <string name="search_picture_online">Search Pictures Online</string>
 
+    <!-- Diversity rating-->
+    <string name="race_ethnicity">Race/Ethnicity</string>
+    <string name="age">Age</string>
+    <string name="sexual_orientation">Sexual Orientation</string>
+    <string name="able_bodiedness">Able-bodiedness</string>
+
     <!-- Profile-->
     <string name="personal">Personal</string>
     <string name="interests">Interests</string>
@@ -260,7 +266,9 @@
     <string name="employees">Employees</string>
     <string name="diversity_rating">Diversity Rating</string>
     <string name="location">Location</string>
+    <string name="view">View</string>
     <string name="job_type">Job Type</string>
+    <string name="required_exp">Required Experience</string>
     <string name="skills">Skills</string>
     <string name="job_description">Job Description</string>
     <string name="create">Create</string>

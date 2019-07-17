@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
@@ -112,7 +113,7 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
         }
     }
 
-    private fun initView(){
+    private fun initView() {
         adapter.companyId = viewModel.companyId
         viewpager.adapter = adapter
         tab_layout.setupWithViewPager(viewpager)
@@ -125,12 +126,13 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
 
             GlideApp.with(this)
                 .load(it.attributes?.photos?.medium)
+                .apply(RequestOptions().circleCrop())
                 .into(img)
 
             txt_name.text = it.attributes?.name
 
             val rating = it.attributes?.divercityRating?.totalDivercityRating
-            if(rating != null){
+            if (rating != null) {
                 lay_rating.visibility = View.VISIBLE
                 rating_bar_header.rating = rating.toFloat()
                 txt_rating.text = rating.toString()

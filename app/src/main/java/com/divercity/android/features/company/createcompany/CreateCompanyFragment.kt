@@ -23,6 +23,7 @@ import com.divercity.android.data.entity.location.LocationResponse
 import com.divercity.android.features.company.companysize.CompanySizesFragment
 import com.divercity.android.features.industry.selectsingleindustry.SelectSingleIndustryFragment
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationFragment
+import com.divercity.android.features.picturessearch.PictureSearchFragment
 import kotlinx.android.synthetic.main.fragment_create_company.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import pl.aprilapps.easyphotopicker.DefaultCallback
@@ -38,12 +39,14 @@ class CreateCompanyFragment : BaseFragment() {
     lateinit var viewModel: CreateCompanyViewModel
 
     private var photoFile: File? = null
+    private var pictureUrl: String? = null
 
     companion object {
 
         private const val REQUEST_CODE_LOCATION = 150
         private const val REQUEST_CODE_INDUSTRY = 200
         private const val REQUEST_CODE_SIZE = 220
+        private const val REQUEST_CODE_PICTURE_URL = 250
 
         private const val SAVE_PARAM_FILE = "saveParamFile"
 
@@ -54,7 +57,8 @@ class CreateCompanyFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[CreateCompanyViewModel::class.java]
+        viewModel =
+            ViewModelProviders.of(this, viewModelFactory)[CreateCompanyViewModel::class.java]
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -129,6 +133,10 @@ class CreateCompanyFragment : BaseFragment() {
             navigator.navigateToCompanySizesActivity(this, REQUEST_CODE_SIZE)
         }
 
+//        btn_search_logo.setOnClickListener {
+//            navigator.navigateToPictureSearchActivityForResult(this, REQUEST_CODE_PICTURE_URL)
+//        }
+
         et_company_desc.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(p0: Editable?) {
             }
@@ -160,37 +168,61 @@ class CreateCompanyFragment : BaseFragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == REQUEST_CODE_LOCATION) {
-                val location = data?.extras?.getParcelable<LocationResponse>(ToolbarLocationFragment.LOCATION_PICKED)
-                setLocation(location)
-            } else if (requestCode == REQUEST_CODE_INDUSTRY) {
-                val industry = data?.extras?.getParcelable<IndustryResponse>(SelectSingleIndustryFragment.INDUSTRY_PICKED)
-                setIndustry(industry)
-            } else if (requestCode == REQUEST_CODE_SIZE) {
-                val size = data?.extras?.getParcelable<CompanySizeResponse>(CompanySizesFragment.COMPANY_SIZE_PICKED)
-                setCompanySize(size)
+            when (requestCode) {
+                REQUEST_CODE_LOCATION -> {
+                    val location =
+                        data?.extras?.getParcelable<LocationResponse>(ToolbarLocationFragment.LOCATION_PICKED)
+                    setLocation(location)
+                }
+                REQUEST_CODE_INDUSTRY -> {
+                    val industry =
+                        data?.extras?.getParcelable<IndustryResponse>(SelectSingleIndustryFragment.INDUSTRY_PICKED)
+                    setIndustry(industry)
+                }
+                REQUEST_CODE_SIZE -> {
+                    val size =
+                        data?.extras?.getParcelable<CompanySizeResponse>(CompanySizesFragment.COMPANY_SIZE_PICKED)
+                    setCompanySize(size)
+                }
+                REQUEST_CODE_PICTURE_URL -> {
+                    val pictureUrl = data?.extras?.getString(PictureSearchFragment.PICTURE_PICKED)
+                    showPictureUrl(pictureUrl)
+                }
             }
         }
 
-        EasyImage.handleActivityResult(requestCode, resultCode, data, activity, object : DefaultCallback() {
-            override fun onImagePickerError(e: Exception?, source: EasyImage.ImageSource?, type: Int) {
-                //Some error handling
-                e!!.printStackTrace()
-                showToast(e.message)
-            }
-
-            override fun onImagesPicked(imageFiles: List<File>, source: EasyImage.ImageSource, type: Int) {
-                onPhotosReturned(imageFiles[0])
-            }
-
-            override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
-                //Cancel handling, you might wanna remove taken photoFile if it was canceled
-                if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
-                    val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
-                    photoFile?.delete()
+        EasyImage.handleActivityResult(
+            requestCode,
+            resultCode,
+            data,
+            activity,
+            object : DefaultCallback() {
+                override fun onImagePickerError(
+                    e: Exception?,
+                    source: EasyImage.ImageSource?,
+                    type: Int
+                ) {
+                    //Some error handling
+                    e!!.printStackTrace()
+                    showToast(e.message)
                 }
-            }
-        })
+
+                override fun onImagesPicked(
+                    imageFiles: List<File>,
+                    source: EasyImage.ImageSource,
+                    type: Int
+                ) {
+                    onPhotosReturned(imageFiles[0])
+                }
+
+                override fun onCanceled(source: EasyImage.ImageSource?, type: Int) {
+                    //Cancel handling, you might wanna remove taken photoFile if it was canceled
+                    if (source == EasyImage.ImageSource.CAMERA_IMAGE) {
+                        val photoFile = EasyImage.lastlyTakenButCanceledPhoto(requireActivity())
+                        photoFile?.delete()
+                    }
+                }
+            })
 
         checkFormIsCompleted()
     }
@@ -198,9 +230,17 @@ class CreateCompanyFragment : BaseFragment() {
     private fun onPhotosReturned(file: File?) {
         photoFile = file
         GlideApp.with(this)
-                .load(file)
-                .apply(RequestOptions().circleCrop())
-                .into(img_photo)
+            .load(file)
+            .apply(RequestOptions().circleCrop())
+            .into(img_photo)
+    }
+
+    private fun showPictureUrl(url: String?) {
+        pictureUrl = url
+        GlideApp.with(this)
+            .load(url)
+            .apply(RequestOptions().circleCrop())
+            .into(img_photo)
     }
 
     private fun setLocation(location: LocationResponse?) {
@@ -226,17 +266,29 @@ class CreateCompanyFragment : BaseFragment() {
     private fun enableCreateButton(boolean: Boolean) {
         btn_create_company.isEnabled = boolean
         if (boolean) {
-            btn_create_company.setTextColor(ContextCompat.getColor(requireActivity(), R.color.white))
+            btn_create_company.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.white
+                )
+            )
             btn_create_company.setOnClickListener {
-                viewModel.createCompany(et_company_name.text.toString(),
-                        viewModel.companySize?.id!!,
-                        et_company_desc.text.toString(),
-                        txt_company_location.text.toString(),
-                        viewModel.industry?.id!!,
-                        if (photoFile != null) ImageUtils.getStringBase64(photoFile, 400, 400)!! else "")
+                viewModel.createCompany(
+                    et_company_name.text.toString(),
+                    viewModel.companySize?.id!!,
+                    et_company_desc.text.toString(),
+                    txt_company_location.text.toString(),
+                    viewModel.industry?.id!!,
+                    if (photoFile != null) ImageUtils.getStringBase64(photoFile, 400, 400)!! else ""
+                )
             }
         } else
-            btn_create_company.setTextColor(ContextCompat.getColor(requireActivity(), R.color.whiteDisable))
+            btn_create_company.setTextColor(
+                ContextCompat.getColor(
+                    requireActivity(),
+                    R.color.whiteDisable
+                )
+            )
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -246,10 +298,11 @@ class CreateCompanyFragment : BaseFragment() {
 
     private fun checkFormIsCompleted() {
         if (et_company_name.text.toString() != "" &&
-                txt_company_industry.text != "" &&
-                txt_company_location.text != "" &&
-                et_company_desc.text.toString() != "" &&
-                txt_company_size.text != "")
+            txt_company_industry.text != "" &&
+            txt_company_location.text != "" &&
+            et_company_desc.text.toString() != "" &&
+            txt_company_size.text != ""
+        )
             enableCreateButton(true)
         else
             enableCreateButton(false)

@@ -115,8 +115,8 @@
         <item name="colorSwitchThumbNormal">#f1f1f1</item>
         <item name="android:colorForeground">#42221f1f</item>
     </style>
-<!--android:Theme-->
-    <style name="DialogFullScreen" parent="AppTheme" >
+    <!--android:Theme-->
+    <style name="DialogFullScreen" parent="AppTheme">
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowAnimationStyle">@style/MyAnimation.Window</item>

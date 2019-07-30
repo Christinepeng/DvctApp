@@ -5,11 +5,12 @@ import androidx.paging.PageKeyedDataSource
 import com.divercity.android.core.base.usecase.Params
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.core.ui.NetworkState
+import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.google.gson.JsonElement
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.functions.Action
-import io.reactivex.observers.DisposableObserver
 import io.reactivex.schedulers.Schedulers
 import timber.log.Timber
 
@@ -32,52 +33,59 @@ class BaseDataSource<T>(
     private var retryDisposable: Disposable? = null
 
     fun retry() {
-        if (retryCompletable != null) {
-            retryDisposable = retryCompletable!!
+        retryCompletable?.let {
+            retryDisposable = it
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe({ }, { throwable -> Timber.e(throwable) })
         }
     }
 
+    private fun onInitialError(
+        params: LoadInitialParams<Long>,
+        callback: LoadInitialCallback<Long, T>,
+        message: String
+
+    ) {
+        setRetry(Action { loadInitial(params, callback) })
+        val error = NetworkState.error(message)
+        networkState.postValue(error)
+        initialLoad.postValue(error)
+    }
+
     override fun loadInitial(
         params: LoadInitialParams<Long>,
         callback: LoadInitialCallback<Long, T>
     ) {
-        // update network states.
-        // we also provide an initial load state to the listeners so that the UI can know when the
+        // Update network states.
+        // We also provide an initial load state to the listeners so that the UI can know when the
         // very first list is loaded.
         networkState.postValue(NetworkState.LOADING)
         initialLoad.postValue(NetworkState.LOADING)
 
-        val disposableObserver = object : DisposableObserver<List<T>>() {
+        val callbackUseCase = object : DisposableObserverWrapper<List<T>>() {
 
-            override fun onNext(data: List<T>) {
-                setRetry(Action { loadInitial(params, callback) })
+            override fun onFail(error: String) {
+                onInitialError(params, callback, error)
+            }
 
+            override fun onHttpException(error: JsonElement) {
+                onInitialError(params, callback, error.toString())
+            }
+
+            override fun onSuccess(o: List<T>) {
+                setRetry(null)
                 networkState.postValue(NetworkState.LOADED)
-                if (data.size < params.requestedLoadSize)
-                    callback.onResult(data, null, null)
+                if (o.size < params.requestedLoadSize)
+                    callback.onResult(o, null, null)
                 else
-                    callback.onResult(data, null, 2L)
+                    callback.onResult(o, null, 2L)
                 initialLoad.postValue(NetworkState.LOADED)
-            }
-
-            override fun onError(e: Throwable) {
-                setRetry(Action { loadInitial(params, callback) })
-                Timber.e(e)
-                val error = NetworkState.error("Error")
-                networkState.postValue(error)
-                initialLoad.postValue(error)
-            }
-
-            override fun onComplete() {
-
             }
         }
 
         useCase.execute(
-            disposableObserver,
+            callbackUseCase,
             Params(0, params.requestedLoadSize, search)
         )
     }
@@ -86,7 +94,7 @@ class BaseDataSource<T>(
         params: LoadParams<Long>,
         callback: LoadCallback<Long, T>
     ) {
-
+        // ignored, since we only ever append to our initial load
     }
 
     override fun loadAfter(
@@ -95,44 +103,40 @@ class BaseDataSource<T>(
     ) {
         networkState.postValue(NetworkState.LOADING)
 
-        val disposableObserver = object : DisposableObserver<List<T>>() {
+        val callbackUseCase = object : DisposableObserverWrapper<List<T>>() {
 
-            override fun onNext(data: List<T>) {
-                setRetry(null)
-                if (data.size < params.requestedLoadSize)
-                    callback.onResult(data, null)
-                else
-                    callback.onResult(data, params.key + 1)
-                networkState.postValue(NetworkState.LOADED)
-            }
-
-            override fun onError(e: Throwable) {
+            override fun onFail(error: String) {
                 setRetry(Action { loadAfter(params, callback) })
-                networkState.postValue(NetworkState.error(e.message))
+                networkState.postValue(NetworkState.error(error))
             }
 
-            override fun onComplete() {
+            override fun onHttpException(error: JsonElement) {
+                setRetry(Action { loadAfter(params, callback) })
+                networkState.postValue(NetworkState.error(error.toString()))
+            }
 
+            override fun onSuccess(o: List<T>) {
+                setRetry(null)
+                if (o.size < params.requestedLoadSize)
+                    callback.onResult(o, null)
+                else
+                    callback.onResult(o, params.key + 1)
+                networkState.postValue(NetworkState.LOADED)
             }
         }
 
         useCase.execute(
-            disposableObserver,
+            callbackUseCase,
             Params(params.key.toInt(), params.requestedLoadSize, search)
         )
     }
 
     private fun setRetry(action: Action?) {
-        if (action == null) {
-            this.retryCompletable = null
-        } else {
-            this.retryCompletable = Completable.fromAction(action)
-        }
+        retryCompletable = if (action == null) null else Completable.fromAction(action)
     }
 
     fun dispose() {
         useCase.compositeDisposable.clear()
-        if (retryDisposable != null)
-            retryDisposable!!.dispose()
+        retryDisposable?.dispose()
     }
 }

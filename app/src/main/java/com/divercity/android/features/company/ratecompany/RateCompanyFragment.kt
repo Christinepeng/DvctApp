@@ -13,6 +13,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
+import com.divercity.android.features.dialogs.WriteReviewCompanyDialogFragment
 import kotlinx.android.synthetic.main.fragment_rate_company.*
 import kotlinx.android.synthetic.main.view_rate_company.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
@@ -97,17 +98,25 @@ class RateCompanyFragment : BaseFragment() {
 
     private fun initView() {
         btn_submit.setOnClickListener {
-            viewModel.rateCompany(
-                getRatingValue(rating_bar_gender),
-                getRatingValue(rating_bar_race),
-                getRatingValue(rating_bar_age),
-                getRatingValue(rating_bar_sex_orien),
-                getRatingValue(rating_bar_abel_bodiedness),
-                et_review.text.toString())
+            if (et_review.text.toString().isEmpty())
+                showWriteReviewCompanyDialogFragment()
+            else
+                rateCompany()
         }
     }
 
-    private fun getRatingValue(ratingBar: RatingBar) : Int = ratingBar.rating.toInt()
+    private fun rateCompany() {
+        viewModel.rateCompany(
+            getRatingValue(rating_bar_gender),
+            getRatingValue(rating_bar_race),
+            getRatingValue(rating_bar_age),
+            getRatingValue(rating_bar_sex_orien),
+            getRatingValue(rating_bar_abel_bodiedness),
+            et_review.text.toString()
+        )
+    }
+
+    private fun getRatingValue(ratingBar: RatingBar): Int = ratingBar.rating.toInt()
 
     private fun showData(company: CompanyResponse?) {
         company?.also {
@@ -147,6 +156,16 @@ class RateCompanyFragment : BaseFragment() {
                 }
             }
         })
+    }
+
+    private fun showWriteReviewCompanyDialogFragment() {
+        val dialog = WriteReviewCompanyDialogFragment.newInstance()
+        dialog.listener = object : WriteReviewCompanyDialogFragment.Listener {
+            override fun onSubmit() {
+                rateCompany()
+            }
+        }
+        dialog.show(childFragmentManager, null)
     }
 
     private fun showToast(resId: Int) {

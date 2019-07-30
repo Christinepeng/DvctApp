@@ -2,8 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="220dp"
-    android:layout_height="195dp"
+    android:layout_width="match_parent"
+    android:layout_height="205dp"
     android:background="@drawable/bk_outline_grey_round_corner"
     android:orientation="vertical"
     android:padding="10dp">

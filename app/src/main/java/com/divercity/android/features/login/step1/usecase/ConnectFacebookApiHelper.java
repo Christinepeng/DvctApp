@@ -12,7 +12,6 @@ import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.Profile;
-import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 
@@ -98,7 +97,7 @@ public class ConnectFacebookApiHelper {
 
     public void connectToFacebook() {
         logOut();
-        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
+//        LoginManager.getInstance().setLoginBehavior(LoginBehavior.WEB_ONLY);
         LoginManager.getInstance().logInWithReadPermissions(fragment, Arrays.asList("public_profile", "email"));
     }
 

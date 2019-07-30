@@ -128,6 +128,7 @@
     <string name="employee_diversity_reviews">Employee Diversity Reviews</string>
     <string name="ratings">Ratings</string>
     <string name="review">Review</string>
+    <string name="leave_review_warning">Writing a review helps other users learn more. Are you sure you want to submit?</string>
     <string name="rate_company_diversity">Rate Company\'s Diversity</string>
     <string name="rate_company_label">How Diverse-minded and Inclusive is %1$s in your humble opinion?</string>
     <string name="submit_diversity_rating">Submit Diversity Rating</string>
@@ -298,6 +299,8 @@
     <string name="upload_new">Upload New</string>
     <string name="cover_letter_hint">Write a message explaining why you would be an ideal candidate for this job</string>
     <string name="submit_application">Submit Application</string>
+    <string name="continue_review">Continue Review</string>
+    <string name="review_warning">Writing a review helps other users learn more. Are you sure you want to submit?</string>
     <string name="view_applicants">View Applicants</string>
     <string name="recommended_applicants">Recommended applicants</string>
     <string name="applicants">Applicants</string>

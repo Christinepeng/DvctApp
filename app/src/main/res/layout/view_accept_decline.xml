@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_close"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="Aiden Doe mentioned you in a comment sddf sdfsdf sdf sdf sdf sdfsdfsdfsdf sdfsdf sdf sdff" />
+        tools:text="Aceept - Decline new connection request" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_accept"

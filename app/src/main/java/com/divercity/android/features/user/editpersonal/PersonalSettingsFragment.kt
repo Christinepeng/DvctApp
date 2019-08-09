@@ -268,9 +268,7 @@ class PersonalSettingsFragment : BaseFragment() {
                 REQUEST_CODE_COMPANY -> {
                     val company =
                         data?.extras?.getParcelable<CompanyResponse>(ToolbarCompanyFragment.COMPANY_PICKED)
-                    company?.id.apply {
-                        viewModel.updateCompany(this)
-                    }
+                    viewModel.updateCompany(company?.id)
                 }
             }
         }

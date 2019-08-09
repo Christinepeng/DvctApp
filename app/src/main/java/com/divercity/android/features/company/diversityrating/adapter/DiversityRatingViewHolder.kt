@@ -3,79 +3,51 @@ package com.divercity.android.features.company.diversityrating.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RatingBar
 import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
-import com.divercity.android.core.utils.Util
-import com.divercity.android.model.CompanyDiversityReview
-import kotlinx.android.synthetic.main.view_review.view.*
-import kotlinx.android.synthetic.main.view_review_back.view.*
-import kotlinx.android.synthetic.main.view_review_front.view.*
+import com.divercity.android.data.entity.company.response.CompanyResponse
+import kotlinx.android.synthetic.main.view_all_ratings.view.*
+import kotlinx.android.synthetic.main.view_rating.view.*
 
 class DiversityRatingViewHolder
-private constructor(itemView: View, val listener: Listener) :
+private constructor(itemView: View) :
     RecyclerView.ViewHolder(itemView) {
 
-    fun bindTo(position: Int, isFlipped: Boolean, data: CompanyDiversityReview?) {
-        data?.let {
-            itemView.apply {
+    fun bindTo(company: CompanyResponse?) {
+        itemView.apply {
+            company?.attributes?.also {
+                val diversityRating = it.divercityRating
 
-                if (isFlipped && flip_view.isFrontSide || !isFlipped && flip_view.isBackSide) {
-                    flip_view.flipDuration = 0
-                    flip_view.flipTheView()
-                }
+                lay_gender.lbl_rating.setText(R.string.gender)
+                lay_age.lbl_rating.setText(R.string.age)
+                lay_bodness.lbl_rating.setText(R.string.able_bodiedness)
+                lay_race.lbl_rating.setText(R.string.race_ethnicity)
+                lay_sex_orien.lbl_rating.setText(R.string.sexual_orientation)
 
-                txt_review.text =
-                    if (it.review.isNullOrEmpty()) "No written review given" else it.review
-                txt_date_front.text = Util.getStringDateWithServerDate(it.createdAt)
-                rating_bar_overall.rating = it.rate?.toFloat() ?: 0.0f
+                lay_gender.txt_rating.text = diversityRating?.genderRate.toString()
+                lay_age.txt_rating.text = diversityRating?.ageRate.toString()
+                lay_race.txt_rating.text = diversityRating?.raceEthnicityRate.toString()
+                lay_bodness.txt_rating.text = diversityRating?.ableBodiednessRate.toString()
+                lay_sex_orien.txt_rating.text = diversityRating?.sexualOrientationRate.toString()
 
-                txt_date_back.text = Util.getStringDateWithServerDate(it.createdAt)
-
-                setRatingValue(rating_bar_gender, data.genderRate)
-                setRatingValue(rating_bar_race, data.raceEthnicityRate)
-                setRatingValue(rating_bar_age, data.ageRate)
-                setRatingValue(rating_bar_sex_orien, data.sexualOrientationRate)
-                setRatingValue(rating_bar_abel_bodiedness, data.ableBodiednessRate)
-
-                btn_flip_front.setOnClickListener {
-                    listener.onViewFlipped(true, position)
-                    flip_view.flipDuration = 400
-                    flip_view.flipTheView()
-                }
-
-                btn_flip_back.setOnClickListener {
-                    listener.onViewFlipped(false, position)
-                    flip_view.flipDuration = 400
-                    flip_view.flipTheView()
-                }
-
-                scroll_text.setOnTouchListener { p0, _ ->
-                    p0?.parent?.requestDisallowInterceptTouchEvent(true)
-                    false
-                }
+                lay_gender.rating_bar.rating = diversityRating?.genderRate?.toFloat() ?: 0f
+                lay_age.rating_bar.rating = diversityRating?.ageRate?.toFloat() ?: 0f
+                lay_race.rating_bar.rating = diversityRating?.raceEthnicityRate?.toFloat() ?: 0f
+                lay_bodness.rating_bar.rating = diversityRating?.ableBodiednessRate?.toFloat() ?: 0f
+                lay_sex_orien.rating_bar.rating =
+                    diversityRating?.sexualOrientationRate?.toFloat() ?: 0f
             }
         }
-    }
-
-    private fun setRatingValue(ratingBar: RatingBar, value: Int?) {
-        ratingBar.rating = value?.toFloat() ?: 0f
-    }
-
-    interface Listener {
-
-        fun onViewFlipped(state: Boolean, position: Int)
     }
 
     companion object {
 
         fun create(
-            parent: ViewGroup,
-            listener: Listener
+            parent: ViewGroup
         ): DiversityRatingViewHolder {
             val layoutInflater = LayoutInflater.from(parent.context)
-            val view = layoutInflater.inflate(R.layout.view_review, parent, false)
-            return DiversityRatingViewHolder(view, listener)
+            val view = layoutInflater.inflate(R.layout.view_all_ratings, parent, false)
+            return DiversityRatingViewHolder(view)
         }
     }
 }

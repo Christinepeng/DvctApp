@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.bumptech.glide.request.RequestOptions
@@ -17,8 +16,6 @@ import com.divercity.android.features.dialogs.CustomTwoBtnDialogFragment
 import com.divercity.android.features.dialogs.picture.PictureDialogFragment
 import com.divercity.android.model.user.User
 import kotlinx.android.synthetic.main.fragment_other_user_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.*
-import kotlinx.android.synthetic.main.fragment_profile.view.*
 import kotlinx.android.synthetic.main.view_accept_decline.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
@@ -103,12 +100,10 @@ class OtherUserProfileFragment : BaseFragment() {
                 Status.ERROR -> {
                     if (lay_root.visibility == View.GONE)
                         showDialogConnectionError()
-                    incl_profile.swipe_refresh_profile.isRefreshing = false
                     Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
 
                 Status.SUCCESS -> {
-                    incl_profile.swipe_refresh_profile.isRefreshing = false
                     showData(response.data!!)
                 }
             }
@@ -165,42 +160,66 @@ class OtherUserProfileFragment : BaseFragment() {
             GlideApp.with(this)
                 .load(it.avatarMedium)
                 .apply(RequestOptions().circleCrop())
-                .into(incl_profile.img_profile)
+                .into(img_profile)
 
-            incl_profile.img_profile.setOnClickListener {
+            img_profile.setOnClickListener {
                 user.avatarMedium?.let { url ->
                     showPictureDialog(url)
                 }
             }
 
-            incl_profile.txt_name.text = user.name
-            incl_profile.txt_user_type.text =
+            txt_name.text = user.name
+            txt_user_type.text =
                 Util.getUserTypeMap(requireContext())[it.accountType]
+
+            if (!it.ethnicity.isNullOrBlank()) {
+                img_ethnicity.visibility = View.VISIBLE
+                txt_ethnicity.visibility = View.VISIBLE
+                txt_ethnicity.text = it.ethnicity
+            } else {
+                img_ethnicity.visibility = View.GONE
+                txt_ethnicity.visibility = View.GONE
+            }
+
+            if (!it.gender.isNullOrBlank()) {
+                img_gender.visibility = View.VISIBLE
+                txt_gender.visibility = View.VISIBLE
+                txt_gender.text = it.gender
+            } else {
+                img_gender.visibility = View.GONE
+                txt_gender.visibility = View.GONE
+            }
+
+            if (!it.ageRange.isNullOrBlank()) {
+                img_age_range.visibility = View.VISIBLE
+                txt_age_range.visibility = View.VISIBLE
+                txt_age_range.text = it.ageRange
+            } else {
+                img_age_range.visibility = View.GONE
+                txt_age_range.visibility = View.GONE
+            }
+
+            if (!it.fullLocation().isNullOrBlank()) {
+                img_location.visibility = View.VISIBLE
+                txt_location.visibility = View.VISIBLE
+                txt_location.text = it.fullLocation()
+            } else {
+                img_location.visibility = View.GONE
+                txt_location.visibility = View.GONE
+            }
 
             when (user.connected) {
                 "connected" -> {
                     include_accept_decline.visibility = View.GONE
+
+                    btn_connect.setImageResource(R.drawable.icon_connected)
                     btn_connect.setOnClickListener(null)
-                    btn_connect.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                    btn_connect.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.appBlue
-                        )
-                    )
-                    btn_connect.setText(R.string.connection)
                 }
                 "requested" -> {
                     include_accept_decline.visibility = View.GONE
+
+                    btn_connect.setImageResource(R.drawable.icon_followed)
                     btn_connect.setOnClickListener(null)
-                    btn_connect.setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
-                    btn_connect.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            R.color.appBlue
-                        )
-                    )
-                    btn_connect.setText(R.string.requested)
                 }
                 "pending_approval" -> {
                     include_accept_decline.visibility = View.VISIBLE
@@ -219,29 +238,17 @@ class OtherUserProfileFragment : BaseFragment() {
                     btn_connect.setOnClickListener {
                         viewModel.acceptConnectionRequest(user.id)
                     }
-                    btn_connect.setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-                    btn_connect.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            android.R.color.white
-                        )
-                    )
-                    btn_connect.setText(R.string.accept)
+                    btn_connect.setImageResource(R.drawable.icon_pending_approval)
+                    btn_connect.setOnClickListener(null)
                 }
                 "not_connected" -> {
+                    btn_connect.setImageResource(R.drawable.icon_request_connection)
+                    btn_connect.isEnabled = true
                     include_accept_decline.visibility = View.GONE
 
                     btn_connect.setOnClickListener {
                         viewModel.connectToUser()
                     }
-                    btn_connect.setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
-                    btn_connect.setTextColor(
-                        ContextCompat.getColor(
-                            requireContext(),
-                            android.R.color.white
-                        )
-                    )
-                    btn_connect.setText(R.string.connect)
                 }
             }
         }
@@ -260,19 +267,8 @@ class OtherUserProfileFragment : BaseFragment() {
         }
 
         adapter.userId = viewModel.userId!!
-        incl_profile.viewPager.adapter = adapter
-        incl_profile.tab_layout.setupWithViewPager(incl_profile.viewPager)
-
-        incl_profile.swipe_refresh_profile.apply {
-            setOnRefreshListener {
-                viewModel.fetchUserData()
-            }
-            setColorSchemeColors(
-                ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                ContextCompat.getColor(context, R.color.colorPrimary),
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
-        }
+        viewPager.adapter = adapter
+        tab_layout.setupWithViewPager(viewPager)
     }
 
     private fun showDialogConnectionError() {

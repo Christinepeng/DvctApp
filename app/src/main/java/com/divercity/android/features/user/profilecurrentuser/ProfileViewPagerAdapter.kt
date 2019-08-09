@@ -28,14 +28,14 @@ class ProfileViewPagerAdapter
 
     companion object {
 
-        private const val PAGE_COUNT = 3
+        private const val PAGE_COUNT = 2
     }
 
     // Tab titles
     private val tabTitles: Array<String> = arrayOf(
         context.getString(R.string.profile),
-        context.getString(R.string.connections),
-        context.getString(R.string.activity)
+        context.getString(R.string.connections)
+//        context.getString(R.string.activity)
     )
 
     override fun getItem(position: Int): Fragment {
@@ -45,8 +45,8 @@ class ProfileViewPagerAdapter
     private fun getFragments(position: Int): Fragment {
         return when (position) {
             0 -> TabProfileFragment.newInstance()
-            1 -> ConnectionsFragment.newInstance(userId)
-            else -> TabProfileFragment.newInstance()
+            else -> ConnectionsFragment.newInstance(userId)
+//            else -> TabProfileFragment.newInstance()
         }
     }
 

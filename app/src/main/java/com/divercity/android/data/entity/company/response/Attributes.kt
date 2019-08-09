@@ -35,6 +35,9 @@ data class Attributes(
 	@field:SerializedName("can_rate_company")
 	val canRateCompany: Boolean? = null,
 
+	@field:SerializedName("has_rated_before")
+	val hasRatedBefore: Boolean? = null,
+
 	@field:SerializedName("name")
 	val name: String? = null,
 

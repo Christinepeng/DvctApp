@@ -90,7 +90,7 @@ constructor(
         page: Int,
         size: Int
     ): Observable<List<CompanyDiversityReview>> {
-        return service.fetchCompanyDiversityReviews(companyId, page, size).map {response ->
+        return service.fetchCompanyDiversityReviews(companyId, page, size).map { response ->
             checkResponse(response)
             response.body()?.data?.map {
                 it.toCompanyDiverseReview()
@@ -112,6 +112,26 @@ constructor(
         return service.createCompany(body).map { response ->
             checkResponse(response)
             true
+        }
+    }
+
+    override fun fetchReview(
+        companyId: String,
+        userId: String
+    ): Observable<CompanyDiversityReviewEntityResponse> {
+        return service.fetchReview(companyId, userId).map {
+            checkResponse(it)
+            it.body()?.data
+        }
+    }
+
+    override fun updateReview(
+        companyId: String,
+        rating: Rating
+    ): Observable<CompanyDiversityReviewEntityResponse> {
+        return service.updateReview(companyId, RatingBody(rating)).map {
+            checkResponse(it)
+            it.body()?.data
         }
     }
 }

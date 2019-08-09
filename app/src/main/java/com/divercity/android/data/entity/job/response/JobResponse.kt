@@ -12,7 +12,7 @@ data class JobResponse(
 	var attributes: Attributes? = null,
 
 	@field:SerializedName("id")
-	val id: String? = null,
+	val id: String,
 
 	@field:SerializedName("type")
 	val type: String? = null

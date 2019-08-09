@@ -16,7 +16,7 @@ import retrofit2.Response;
 
 public abstract class DisposableObserverWrapper<T> extends DisposableObserver<T> {
 
-    protected abstract void onFail(@NotNull String error);
+    protected abstract void onFail(String error);
 
     protected abstract void onHttpException(JsonElement error);
 

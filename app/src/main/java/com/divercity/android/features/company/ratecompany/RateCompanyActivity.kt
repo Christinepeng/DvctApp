@@ -9,20 +9,20 @@ import com.divercity.android.data.entity.company.response.CompanyResponse
 class RateCompanyActivity : BaseActivity() {
 
     companion object {
-        private const val INTENT_EXTRA_PARAM_COMPANY_ID = "intentExtraParamJob"
+        private const val PARAM_IS_EDITION = "paramIsEdition"
 
         fun getCallingIntent(
             context: Context,
-            companyId: String?,
-            company: CompanyResponse?
+            isEdition: Boolean,
+            company: CompanyResponse
         ): Intent {
             RateCompanyFragment.DataHolder.data = company
             val intent = Intent(context, RateCompanyActivity::class.java)
-            intent.putExtra(INTENT_EXTRA_PARAM_COMPANY_ID, companyId)
+            intent.putExtra(PARAM_IS_EDITION, isEdition)
             return intent
         }
     }
 
     override fun fragment(): BaseFragment = RateCompanyFragment
-        .newInstance(intent.getStringExtra(INTENT_EXTRA_PARAM_COMPANY_ID))
+        .newInstance(intent.getBooleanExtra(PARAM_IS_EDITION, false))
 }

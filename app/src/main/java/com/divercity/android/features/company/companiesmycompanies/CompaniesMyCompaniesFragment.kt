@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
@@ -30,6 +31,8 @@ class CompaniesMyCompaniesFragment : BaseFragment(), RetryCallback, ITabSearch {
     lateinit var myCompaniesAdapter: CompanyAdapter
 
     private var handlerSearch = Handler()
+
+    private var isListRefreshing = false
 
     companion object {
 
@@ -107,33 +110,43 @@ class CompaniesMyCompaniesFragment : BaseFragment(), RetryCallback, ITabSearch {
         })
 
         viewModel.networkState().observe(viewLifecycleOwner, Observer {
-            adapter.setNetworkState(it)
+            if (!isListRefreshing || it?.status == Status.ERROR || it?.status == Status.SUCCESS)
+                adapter.setNetworkState(it)
         })
 
         viewModel.refreshState().observe(viewLifecycleOwner, Observer { networkState ->
             adapter.currentList?.let { pagedList ->
+                if (networkState?.status != Status.LOADING)
+                    isListRefreshing = false
+
                 if (networkState?.status == Status.SUCCESS && pagedList.size == 0)
                     txt_no_results.visibility = View.VISIBLE
-                else
+                else {
                     txt_no_results.visibility = View.GONE
+                }
+
+                swipe_list_main.isRefreshing = isListRefreshing
             }
+
+            if (!isListRefreshing)
+                swipe_list_main.isEnabled = networkState?.status == Status.SUCCESS
         })
     }
 
     private fun initSwipeToRefresh() {
-//
-//        swipe_list_main.apply {
-//            setOnRefreshListener {
-//                isListRefreshing = true
-//                viewModel.refresh()
-//            }
-//            isEnabled = false
-//            setColorSchemeColors(
-//                ContextCompat.getColor(context, R.color.colorPrimaryDark),
-//                ContextCompat.getColor(context, R.color.colorPrimary),
-//                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-//            )
-//        }
+
+        swipe_list_main.apply {
+            setOnRefreshListener {
+                isListRefreshing = true
+                viewModel.refresh()
+            }
+            isEnabled = false
+            setColorSchemeColors(
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
+        }
     }
 
     private fun showToast(message: String?) {

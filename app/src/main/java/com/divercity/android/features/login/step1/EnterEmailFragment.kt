@@ -14,8 +14,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.divercity.android.data.Status
-import com.divercity.android.features.login.step1.usecase.ConnectFacebookApiHelper
-import com.facebook.internal.CallbackManagerImpl
+import com.facebook.CallbackManager
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginResult
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
@@ -26,7 +28,6 @@ import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
-
 /**
  * Created by lucas on 24/10/2018.
  */
@@ -36,10 +37,10 @@ class EnterEmailFragment : BaseFragment() {
     @Inject
     lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 
-    private lateinit var connectFacebookApiHelper: ConnectFacebookApiHelper
-
     lateinit var viewModel: EnterEmailViewModel
     private lateinit var handlerViewPager: Handler
+
+    private val callbackManager = CallbackManager.Factory.create()
 
     companion object {
 
@@ -51,8 +52,6 @@ class EnterEmailFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
-        connectFacebookApiHelper = ConnectFacebookApiHelper(this)
-        connectFacebookApiHelper.setListener(facebookListener)
 
         CoroutineScope(Dispatchers.IO).launch {
             Timber.e("Called Launch")
@@ -130,9 +129,26 @@ class EnterEmailFragment : BaseFragment() {
     }
 
     private fun setupEvents() {
-        btnFacebook.setOnClickListener {
-            connectFacebookApiHelper.connectToFacebook()
+        btn_facebook.setOnClickListener {
+            btn_facebook_sdk.performClick()
         }
+
+        // Callback registration
+        btn_facebook_sdk.fragment = this
+        btn_facebook_sdk.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
+            override fun onSuccess(loginResult: LoginResult) {
+                viewModel.loginFacebook(loginResult.accessToken.token)
+            }
+
+            override fun onCancel() {
+                // App code
+            }
+
+            override fun onError(exception: FacebookException) {
+                showToast(exception.message)
+            }
+        })
+
 
         btn_linkedin.setOnClickListener {
             navigator.navigateToLinkedinActivity(requireActivity())
@@ -198,21 +214,10 @@ class EnterEmailFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         handlerViewPager.removeCallbacksAndMessages(null)
-        connectFacebookApiHelper.cancel()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode())
-            connectFacebookApiHelper.facebookCallbackManager
-                .onActivityResult(
-                    requestCode,
-                    resultCode,
-                    data
-                )
+        callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    private var facebookListener = ConnectFacebookApiHelper.OnFacebookDataListener {
-        viewModel.loginFacebook(it.accessToken)
     }
 }

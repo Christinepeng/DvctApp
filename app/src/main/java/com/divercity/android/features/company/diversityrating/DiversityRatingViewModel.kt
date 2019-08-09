@@ -13,11 +13,11 @@ constructor(
     repository: DiversityReviewsPaginatedRepository
 ) : BaseViewModelPagination<CompanyDiversityReview>(repository) {
 
-    private var companyId: String? = null
+    private var cId: String? = null
 
-    fun fetchCompanyDiversityReviews(companyId: String) {
-        if (this.companyId == null) {
-            this.companyId = companyId
+    fun start(companyId: String){
+        if(cId.isNullOrBlank()){
+            cId = companyId
             (repository as DiversityReviewsPaginatedRepository).setCompanyId(companyId)
             fetchData()
         }

@@ -72,4 +72,16 @@ interface CompanyService {
 
     @POST("job_employers")
     fun createCompany(@Body body: CreateCompanyBody): Observable<Response<Void>>
+
+    @GET("job_employers/{companyId}/review/{userId}")
+    fun fetchReview(
+        @Path("companyId") companyId: String,
+        @Path("userId") userId: String
+    ): Observable<Response<DataObject<CompanyDiversityReviewEntityResponse>>>
+
+    @PUT("job_employers/{companyId}/update_rating")
+    fun updateReview(
+        @Path("companyId") companyId: String,
+        @Body ratingBody: RatingBody
+    ): Observable<Response<DataObject<CompanyDiversityReviewEntityResponse>>>
 }

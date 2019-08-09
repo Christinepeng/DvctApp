@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 data class CompanyDiversityReviewEntityResponse(
 
 	@field:SerializedName("attributes")
-	val attributes: Attributes? = null,
+	val attributes: Attributes,
 
 	@field:SerializedName("id")
 	val id: String,

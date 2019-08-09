@@ -1,5 +1,7 @@
 package com.divercity.android.features.company.companydetail
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
@@ -12,6 +14,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
+import com.divercity.android.features.company.diversityrating.DiversityRatingFragment.Companion.REQUEST_CODE_RATE_COMPANY
 import com.divercity.android.features.dialogs.CompanyActionsDialogFragment
 import kotlinx.android.synthetic.main.fragment_company_detail.*
 import kotlinx.android.synthetic.main.view_company_header.*
@@ -42,41 +45,18 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
         }
     }
 
-    enum class DataHolder {
-        INSTANCE;
-
-        private var company: CompanyResponse? = null
-
-        companion object {
-
-            fun hasData(): Boolean {
-                return INSTANCE.company != null
-            }
-
-            var data: CompanyResponse?
-                get() {
-                    val company = INSTANCE.company
-                    INSTANCE.company = null
-                    return company
-                }
-                set(objectList) {
-                    INSTANCE.company = objectList
-                }
-        }
-    }
-
     override fun layoutId(): Int = R.layout.fragment_company_detail
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
+
         viewModel.companyId = arguments?.getString(PARAM_COMPANY_ID)!!
         if (DataHolder.hasData()) {
-//            viewModel.companyLiveData.postValue(DataHolder.data)
             viewModel.companyResponse = DataHolder.data
-        } else {
-            viewModel.fetchCompany()
         }
+        viewModel.fetchCompany()
+
         initView()
         subscribeToLiveData()
         setupToolbar()
@@ -162,6 +142,34 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
                 txt_size.visibility = View.GONE
             else
                 txt_size.text = it.attributes?.companySize
+
+            when {
+                it.attributes?.canRateCompany == true && it.attributes?.hasRatedBefore == false -> {
+                    btn_rate.setText(R.string.rate_company)
+                    btn_rate.visibility = View.VISIBLE
+                    btn_rate.setOnClickListener {
+                        navigator.navigateToRateCompany(
+                            this,
+                            company,
+                            false,
+                            REQUEST_CODE_RATE_COMPANY
+                        )
+                    }
+                }
+                it.attributes?.canRateCompany == true && it.attributes?.hasRatedBefore == true -> {
+                    btn_rate.setText(R.string.edit_rate)
+                    btn_rate.visibility = View.VISIBLE
+                    btn_rate.setOnClickListener {
+                        navigator.navigateToRateCompany(
+                            this,
+                            company,
+                            true,
+                            REQUEST_CODE_RATE_COMPANY
+                        )
+                    }
+                }
+                else -> btn_rate.visibility = View.GONE
+            }
         }
     }
 
@@ -173,23 +181,14 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
         viewModel.fetchCompanyResponse.observe(this, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
-//                    showProgress()
                 }
-
                 Status.ERROR -> {
-//                    hideProgress()
                     showToast(response.message)
                 }
-
                 Status.SUCCESS -> {
-//                    hideProgress()
                 }
             }
         })
-    }
-
-    private fun showToast(resId: Int) {
-        Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
     }
 
     private fun showToast(message: String?) {
@@ -216,7 +215,39 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
         )
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == REQUEST_CODE_RATE_COMPANY) {
+                viewModel.fetchCompany()
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data)
+    }
+
     override fun onAddAdmins() {
         navigator.navigateToCompanyAdmins(this@CompanyDetailFragment, viewModel.companyId)
+    }
+
+    enum class DataHolder {
+        INSTANCE;
+
+        private var company: CompanyResponse? = null
+
+        companion object {
+
+            fun hasData(): Boolean {
+                return INSTANCE.company != null
+            }
+
+            var data: CompanyResponse?
+                get() {
+                    val company = INSTANCE.company
+                    INSTANCE.company = null
+                    return company
+                }
+                set(objectList) {
+                    INSTANCE.company = objectList
+                }
+        }
     }
 }

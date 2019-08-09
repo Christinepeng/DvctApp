@@ -216,8 +216,7 @@ dependencies {
 
     implementation 'io.branch.sdk.android:library:3.1.0'
 
-    implementation 'com.wajahatkarim3.EasyFlipView:EasyFlipView:2.1.2'
-
+//    implementation 'com.wajahatkarim3.EasyFlipView:EasyFlipView:2.1.2'
 
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'

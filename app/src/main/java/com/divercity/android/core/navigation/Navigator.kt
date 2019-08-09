@@ -634,11 +634,16 @@ class Navigator @Inject constructor() {
         )
     }
 
-    fun navigateToRateCompany(fragment: Fragment, company: CompanyResponse, code: Int) {
+    fun navigateToRateCompany(
+        fragment: Fragment,
+        company: CompanyResponse,
+        isEdition: Boolean,
+        code: Int
+    ) {
         fragment.startActivityForResult(
             RateCompanyActivity.getCallingIntent(
                 fragment.requireContext(),
-                company.id,
+                isEdition,
                 company
             ), code
         )

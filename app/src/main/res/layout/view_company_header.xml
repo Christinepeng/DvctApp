@@ -1,37 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/img"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:layout_marginEnd="8dp"
         android:contentDescription="TODO"
         android:scaleType="center"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/linearLayout8"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:background="@color/appBlue" />
 
     <LinearLayout
-        android:id="@+id/linearLayout3"
-        android:layout_width="0dp"
+        android:id="@+id/linearLayout8"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="8dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/img"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/img">
+        app:layout_constraintStart_toEndOf="@+id/img"
+        app:layout_constraintTop_toTopOf="@+id/img">
 
         <TextView
             android:id="@+id/txt_name"
@@ -46,54 +45,79 @@
             android:id="@+id/txt_subtitle1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/avenir_book"
             android:lineSpacingExtra="-2sp"
             android:textColor="#80333241"
             android:textSize="14sp"
-            tools:text="Information Technology - San Francisco, CA, US" />
+            tools:text="San Francisco, CA, US" />
 
         <TextView
             android:id="@+id/txt_size"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
+            android:layout_marginTop="6dp"
             android:fontFamily="@font/avenir_book"
             android:lineSpacingExtra="-2sp"
             android:textColor="#80333241"
             android:textSize="14sp"
             tools:text="100 to 500 employes" />
 
-        <LinearLayout
-            android:id="@+id/lay_rating"
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lay_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="12dp"
+        android:orientation="horizontal"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/img"
+        tools:visibility="visible">
+
+        <RatingBar
+            android:id="@+id/rating_bar_header"
+            style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:orientation="horizontal"
-            android:visibility="gone"
-            tools:visibility="visible">
+            android:isIndicator="true"
+            android:theme="@style/RatingBar" />
 
-            <RatingBar
-                android:id="@+id/rating_bar_header"
-                style="?android:attr/ratingBarStyleSmall"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:isIndicator="true"
-                android:theme="@style/RatingBar" />
-
-            <TextView
-                android:id="@+id/txt_rating"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:fontFamily="@font/avenir_book"
-                android:lineSpacingExtra="-2sp"
-                android:textColor="@color/appBlue"
-                android:textSize="14sp"
-                tools:text="5" />
-
-        </LinearLayout>
+        <TextView
+            android:id="@+id/txt_rating"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="@font/avenir_book"
+            android:lineSpacingExtra="-2sp"
+            android:textColor="@color/appBlue"
+            android:textSize="14sp"
+            tools:text="5" />
 
     </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_rate"
+        style="@style/AppText"
+        android:layout_width="131dp"
+        android:layout_height="31dp"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/bk_white_stroke_blue_rounded_5dp"
+        android:fontFamily="@font/avenir_medium"
+        android:minHeight="32dip"
+        android:text="@string/rate_company"
+        android:textAllCaps="false"
+        android:textColor="@color/appBlue"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lay_rating"
+        tools:visibility="visible" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

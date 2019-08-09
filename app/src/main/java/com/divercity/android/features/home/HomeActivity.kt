@@ -78,10 +78,6 @@ class HomeActivity : DaggerAppCompatActivity() {
         savedInstanceState ?: selectItem(0)
         setSupportActionBar(include_toolbar.toolbar)
 
-        logoutDisposable = RxBus.listen(RxEvent.EventUnauthorizedUser::class.java).subscribe {
-            showUnauthorizedUser()
-        }
-
         viewModel.checkFCMDevice()
 
         viewModel.navigateToGroupDetail.observe(this, Observer {
@@ -93,6 +89,13 @@ class HomeActivity : DaggerAppCompatActivity() {
         viewModel.updateUserProfilePic.observe(this, Observer {
             setUserProfilePicture()
         })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        logoutDisposable = RxBus.listen(RxEvent.EventUnauthorizedUser::class.java).subscribe {
+            showUnauthorizedUser()
+        }
     }
 
     /**
@@ -176,9 +179,13 @@ class HomeActivity : DaggerAppCompatActivity() {
             })
     }
 
+    override fun onPause() {
+        super.onPause()
+        if (!logoutDisposable.isDisposed) logoutDisposable.dispose()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
-        if (!logoutDisposable.isDisposed) logoutDisposable.dispose()
         logoutUseCase.cancel()
     }
 

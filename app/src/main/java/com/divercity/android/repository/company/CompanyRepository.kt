@@ -60,4 +60,14 @@ interface CompanyRepository {
 
     fun createCompany(body: CreateCompanyBody): Observable<Boolean>
 
+    fun fetchReview(
+        companyId: String,
+        userId: String
+    ): Observable<CompanyDiversityReviewEntityResponse>
+
+    fun updateReview(
+        companyId: String,
+        rating: Rating
+    ): Observable<CompanyDiversityReviewEntityResponse>
+
 }

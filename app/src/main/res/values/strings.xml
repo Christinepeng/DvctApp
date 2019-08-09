@@ -125,6 +125,7 @@
     <string name="company_no_jobs">This company hasn\'t had any job posting</string>
     <string name="company">Company</string>
     <string name="rate_company">Rate Company</string>
+    <string name="edit_rate">Edit Rate</string>
     <string name="employee_diversity_reviews">Employee Diversity Reviews</string>
     <string name="ratings">Ratings</string>
     <string name="review">Review</string>
@@ -328,6 +329,11 @@
     <string name="cancel_application">Cancel Application</string>
     <string name="cancel_application_warning">Are you sure you want to cancel your application? (Note that they may have already viewed your application)</string>
 
+    <string name="tap_for_less">Tap for Less</string>
+    <string name="tap_for_more">Tap for More</string>
+    <string name="see_less">See Less</string>
+    <string name="see_more">See More</string>
+    
     <!-- Groups-->
     <string name="all">All</string>
     <string name="trending">Trending</string>

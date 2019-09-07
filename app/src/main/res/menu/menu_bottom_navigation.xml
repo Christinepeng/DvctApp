@@ -6,17 +6,17 @@
         android:icon="@drawable/selector_tab_home"
         android:title="@string/home" />
     <item
-        android:id="@+id/menu_item_groups"
-        android:icon="@drawable/selector_tab_communities"
-        android:title="@string/groups" />
+        android:id="@+id/menu_item_search"
+        android:icon="@drawable/selector_tab_search"
+        android:title="@string/search" />
     <item
         android:id="@+id/menu_item_jobs"
         android:icon="@drawable/selector_tab_jobs"
         android:title="@string/job_board" />
     <item
-        android:id="@+id/menu_item_activity"
-        android:icon="@drawable/selector_tab_activity"
-        android:title="@string/activity" />
+        android:id="@+id/menu_item_inbox"
+        android:icon="@drawable/selector_tab_inbox"
+        android:title="@string/inbox" />
     <item
         android:id="@+id/menu_item_profile"
         android:icon="@drawable/selector_tab_profile"

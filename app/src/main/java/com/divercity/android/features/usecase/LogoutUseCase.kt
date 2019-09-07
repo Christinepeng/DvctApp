@@ -3,6 +3,7 @@ package com.divercity.android.features.usecase
 import com.divercity.android.db.AppDatabase
 import com.divercity.android.helpers.NotificationHelper
 import com.divercity.android.repository.session.SessionRepository
+import com.facebook.login.LoginManager
 import com.google.firebase.messaging.FirebaseMessaging
 import io.reactivex.observers.DisposableObserver
 import kotlinx.coroutines.*
@@ -26,6 +27,7 @@ constructor(
     fun execute(onFinish: () -> Unit) {
         Timber.e("En logout 1")
         FirebaseMessaging.getInstance().isAutoInitEnabled = false
+        LoginManager.getInstance().logOut()
 
         ioScope.launch {
             Timber.e("En logout 2")

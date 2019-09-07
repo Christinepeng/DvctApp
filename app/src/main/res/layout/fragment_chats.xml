@@ -4,15 +4,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <include
-        android:id="@+id/include_toolbar"
-        layout="@layout/view_toolbar" />
+    <!--<include-->
+        <!--android:id="@+id/include_toolbar"-->
+        <!--layout="@layout/view_toolbar" />-->
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_list_main"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/include_toolbar">
+        android:layout_height="match_parent">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list"

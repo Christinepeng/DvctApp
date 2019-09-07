@@ -22,7 +22,6 @@ import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatList
 import com.divercity.android.features.chat.recentchats.newrecentchats.RecentChatViewHolder
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_chats.*
-import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
 /**
@@ -58,7 +57,7 @@ class ChatsFragment : BaseFragment(), RetryCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory).get(ChatsViewModel::class.java)
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory).get(ChatsViewModel::class.java)
 //        setHasOptionsMenu(true)
     }
 
@@ -71,12 +70,12 @@ class ChatsFragment : BaseFragment(), RetryCallback {
         }
 
         (activity as AppCompatActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
             supportActionBar?.let {
                 it.setTitle(R.string.direct_messages)
-                it.setDisplayHomeAsUpEnabled(true)
+                it.setDisplayHomeAsUpEnabled(false)
             }
         }
+
         setupView()
         subscribeToLiveData()
         subscribeToPaginatedLiveData()

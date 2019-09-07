@@ -135,6 +135,7 @@ class EnterEmailFragment : BaseFragment() {
 
         // Callback registration
         btn_facebook_sdk.fragment = this
+        btn_facebook_sdk.setPermissions(listOf("email"))
         btn_facebook_sdk.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 viewModel.loginFacebook(loginResult.accessToken.token)

@@ -238,6 +238,7 @@
     <string name="groups">Groups</string>
     <string name="home">Home</string>
     <string name="activity">Activity</string>
+    <string name="inbox">Inbox</string>
     <string name="profile">Profile</string>
     <string name="job_board">Job Board</string>
     <string name="people">People</string>

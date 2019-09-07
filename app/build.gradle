@@ -39,8 +39,8 @@ android {
         applicationId "com.divercity.android"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 16
-        versionName "D-1.23"
+        versionCode 17
+        versionName "B-1.15"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
 
@@ -54,7 +54,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
-            debuggable false
+            debuggable true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "String", "BASE_URL", '"api.divercity.io"'
             manifestPlaceholders = [enableCrashReporting: "true", enableAnalytics: "true"]
@@ -221,9 +221,9 @@ dependencies {
     androidTestImplementation 'androidx.test:runner:1.2.0'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
 
-    def mockito_version = "2.25.0"
     def mockito_all_version = "1.10.19"
     def mockito_android_version = "2.25.0"
+    def mockito_version = "2.25.0"
     def junit_version = "4.12"
     def arch_core_version = "2.0.1"
 

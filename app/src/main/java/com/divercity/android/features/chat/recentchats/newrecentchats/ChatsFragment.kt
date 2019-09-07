@@ -1,19 +1,17 @@
 package com.divercity.android.features.chat.recentchats.newrecentchats
 
+import android.os.Bundle
+import android.view.View
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import android.os.Bundle
-import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import android.view.View
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.chat.currentchats.ExistingUsersChatListItem
 import kotlinx.android.synthetic.main.fragment_chats.*
-import kotlinx.android.synthetic.main.view_toolbar.view.*
 import javax.inject.Inject
 
 /**
@@ -47,13 +45,13 @@ class ChatsFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        (activity as AppCompatActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
-            supportActionBar?.let {
-                it.setTitle(R.string.direct_messages)
-                it.setDisplayHomeAsUpEnabled(true)
-            }
-        }
+//        (activity as AppCompatActivity).apply {
+//            setSupportActionBar(include_toolbar.toolbar)
+//            supportActionBar?.let {
+//                it.setTitle(R.string.direct_messages)
+//                it.setDisplayHomeAsUpEnabled(true)
+//            }
+//        }
         setupView()
         subscribeToLiveData()
     }

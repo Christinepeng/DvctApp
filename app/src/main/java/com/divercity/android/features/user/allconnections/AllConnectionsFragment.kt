@@ -48,32 +48,32 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     override fun layoutId(): Int = R.layout.fragment_connections
 
-    fun initViewModel() {
-        viewModel = activity?.run {
-            ViewModelProviders.of(this, viewModelFactory).get(AllConnectionsViewModel::class.java)
-        } ?: throw Exception("Invalid Activity")
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initViewModel()
-        setupView()
-        initSwipeToRefresh()
-        subscribeToLiveData()
-        subscribeToPaginatedLiveData()
-    }
 
-    private fun setupView() {
+        // Init ViewModel
+        viewModel = ViewModelProviders.of(requireActivity(), viewModelFactory)
+            .get(AllConnectionsViewModel::class.java)
+
+        // Init view
         adapter.setRetryCallback(this)
         adapter.setListener(listener)
         list.adapter = adapter
-    }
 
-    private fun showToast(msg: String?) {
-        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
-    }
+        swipe_list_main.apply {
+            setOnRefreshListener {
+                isListRefreshing = true
+                viewModel.refresh()
+            }
+            isEnabled = false
+            setColorSchemeColors(
+                ContextCompat.getColor(context, R.color.colorPrimaryDark),
+                ContextCompat.getColor(context, R.color.colorPrimary),
+                ContextCompat.getColor(context, R.color.colorPrimaryDark)
+            )
+        }
 
-    private fun subscribeToLiveData() {
+        // LiveData
         viewModel.connectUserResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
@@ -93,6 +93,13 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
         viewModel.subscribeToPaginatedLiveData.observe(viewLifecycleOwner, Observer {
             subscribeToPaginatedLiveData()
         })
+
+        // Paginated LiveData
+        subscribeToPaginatedLiveData()
+    }
+
+    private fun showToast(msg: String?) {
+        Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
     }
 
     override fun search(searchQuery: String?) {
@@ -127,22 +134,6 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
         })
     }
 
-    private fun initSwipeToRefresh() {
-
-        swipe_list_main.apply {
-            setOnRefreshListener {
-                isListRefreshing = true
-                viewModel.refresh()
-            }
-            isEnabled = false
-            setColorSchemeColors(
-                ContextCompat.getColor(context, R.color.colorPrimaryDark),
-                ContextCompat.getColor(context, R.color.colorPrimary),
-                ContextCompat.getColor(context, R.color.colorPrimaryDark)
-            )
-        }
-    }
-
     private fun fetchConnections(searchQuery: String?) {
         viewModel.fetchData(viewLifecycleOwner, searchQuery)
     }
@@ -174,7 +165,12 @@ class AllConnectionsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
         override fun onUserClick(user: User, position: Int) {
             lastUserPositionTap = position
-            navigator.navigateToOtherUserProfileForResult(this@AllConnectionsFragment, null, user, REQUEST_CODE_USER)
+            navigator.navigateToOtherUserProfileForResult(
+                this@AllConnectionsFragment,
+                null,
+                user,
+                REQUEST_CODE_USER
+            )
         }
     }
 

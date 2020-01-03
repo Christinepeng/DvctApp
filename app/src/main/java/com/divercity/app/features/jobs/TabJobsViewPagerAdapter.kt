@@ -27,7 +27,7 @@ class TabJobsViewPagerAdapter
         val userRepository: UserRepository
 ) : FragmentStatePagerAdapter(fm) {
 
-    private val PAGE_COUNT = 3
+    private val PAGE_COUNT = 4
 
     private var registeredFragments = SparseArray<Fragment>()
 
@@ -35,6 +35,7 @@ class TabJobsViewPagerAdapter
     private val tabTitlesRecruiter: Array<String> = arrayOf(
             context.getString(R.string.my_postings),
             context.getString(R.string.jobs),
+            context.getString(R.string.company),
             context.getString(R.string.saved)
     )
 
@@ -43,6 +44,7 @@ class TabJobsViewPagerAdapter
     private val tabTitlesJobSeeker: Array<String> = arrayOf(
             context.getString(R.string.jobs),
             context.getString(R.string.applications),
+            context.getString(R.string.company),
             context.getString(R.string.saved)
     )
 
@@ -77,9 +79,9 @@ class TabJobsViewPagerAdapter
 
     override fun getPageTitle(position: Int): CharSequence? {
         return if (userRepository.getAccountType() != null &&
-                (userRepository.getAccountType().equals(context.getString(R.string.job_seeker_id)) ||
-                        userRepository.getAccountType().equals(context.getString(R.string.student_id))) ||
-                userRepository.getAccountType().equals(context.getString(R.string.professional_id))
+            (userRepository.getAccountType().equals(context.getString(R.string.job_seeker_id)) ||
+            userRepository.getAccountType().equals(context.getString(R.string.student_id))) ||
+            userRepository.getAccountType().equals(context.getString(R.string.professional_id))
         )
             tabTitlesJobSeeker[position]
         else

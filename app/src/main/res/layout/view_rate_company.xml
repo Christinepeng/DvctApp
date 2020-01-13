@@ -20,8 +20,8 @@
 
         <ImageView
             android:id="@+id/img"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:contentDescription="TODO"
@@ -43,9 +43,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginStart="50dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="50dp"
+            android:layout_marginStart="61dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="59dp"
             android:fontFamily="@font/avenir_heavy"
             android:gravity="center"
             android:text="Please rate your company&apos;s diversity in these categories: "
@@ -67,20 +67,21 @@
             android:textSize="12sp" />
 
         <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:paddingStart="34dp"
-            android:paddingTop="16dp"
-            android:paddingEnd="34dp"
-            android:paddingBottom="16dp">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingStart="36dp"
+        android:paddingTop="12dp"
+        android:paddingEnd="35.2dp"
+        android:paddingBottom="0dp">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/avenir_heavy"
                 android:text="Gender"
+                android:textSize="15sp"
                 android:textColor="#333241" />
 
             <RatingBar
@@ -98,17 +99,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="34dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="34dp"
-            android:paddingBottom="16dp">
+            android:paddingStart="36dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="35.2dp"
+            android:paddingBottom="0dp">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/avenir_heavy"
                 android:text="Race/Ethnicity"
+                android:textSize="15sp"
                 android:textColor="#333241" />
 
             <RatingBar
@@ -126,17 +128,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="34dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="34dp"
-            android:paddingBottom="16dp">
+            android:paddingStart="36dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="35.2dp"
+            android:paddingBottom="0dp">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/avenir_heavy"
                 android:text="Age"
+                android:textSize="15sp"
                 android:textColor="#333241" />
 
             <RatingBar
@@ -154,17 +157,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="34dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="34dp"
-            android:paddingBottom="16dp">
+            android:paddingStart="36dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="35.2dp"
+            android:paddingBottom="0dp">
 
             <TextView
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/avenir_heavy"
                 android:text="Sexual Orientation"
+                android:textSize="15sp"
                 android:textColor="#333241" />
 
             <RatingBar
@@ -182,18 +186,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingStart="34dp"
-            android:paddingTop="12dp"
-            android:paddingEnd="34dp"
-            android:paddingBottom="16dp">
+            android:paddingStart="36dp"
+            android:paddingTop="9dp"
+            android:paddingEnd="35.2dp"
+            android:paddingBottom="0dp">
 
             <TextView
                 android:id="@+id/lbl_explanation1"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="25dp"
                 android:layout_weight="0.5"
                 android:fontFamily="@font/avenir_heavy"
                 android:text="Able-bodiedness"
+                android:textSize="15sp"
                 android:textColor="#333241" />
 
             <RatingBar
@@ -210,8 +215,11 @@
         <EditText
             android:id="@+id/et_review"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_height="147dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginEnd="17dp"
+            android:layout_marginBottom="9dp"
             android:background="@drawable/bk_outline_grey_round_corner"
             android:fontFamily="@font/avenir_roman"
             android:gravity="top"
@@ -220,7 +228,7 @@
             android:inputType="textMultiLine|textCapSentences"
             android:lineSpacingExtra="2dp"
             android:minLines="3"
-            android:padding="16dp"
+            android:padding="17dp"
             android:textColor="#333241"
             android:textSize="15sp" />
 
@@ -228,8 +236,9 @@
             android:id="@+id/btn_submit"
             style="@style/AppText"
             android:layout_width="210dp"
-            android:layout_height="31dp"
+            android:layout_height="35dp"
             android:layout_gravity="center"
+            android:layout_marginTop="6dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
             android:layout_marginBottom="20dp"
@@ -239,7 +248,7 @@
             android:text="@string/submit"
             android:textAllCaps="false"
             android:textColor="@android:color/white"
-            android:textSize="15sp" />
+            android:textSize="17sp" />
 
     </LinearLayout>
 

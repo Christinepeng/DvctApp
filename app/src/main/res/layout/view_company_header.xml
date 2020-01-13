@@ -38,7 +38,8 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_medium"
             android:textColor="#333241"
-            android:textSize="17sp"
+            android:lineSpacingExtra="2sp"
+            android:textSize="20sp"
             tools:text="Dropbox" />
 
         <TextView
@@ -59,8 +60,9 @@
             android:layout_marginTop="6dp"
             android:fontFamily="@font/avenir_book"
             android:lineSpacingExtra="-2sp"
-            android:textColor="#80333241"
-            android:textSize="14sp"
+            android:textColor="#a4a4b3"
+            android:letterSpacing="-0.01"
+            android:textSize="12sp"
             tools:text="100 to 500 employes" />
 
     </LinearLayout>
@@ -83,7 +85,7 @@
             style="?android:attr/ratingBarStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:isIndicator="true"
+            android:isIndicator="false"
             android:theme="@style/RatingBar" />
 
         <TextView
@@ -93,8 +95,8 @@
             android:layout_marginStart="8dp"
             android:fontFamily="@font/avenir_book"
             android:lineSpacingExtra="-2sp"
-            android:textColor="@color/appBlue"
-            android:textSize="14sp"
+            android:textColor="#3198e5"
+            android:textSize="20sp"
             tools:text="5" />
 
     </LinearLayout>
@@ -102,7 +104,7 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_rate"
         style="@style/AppText"
-        android:layout_width="131dp"
+        android:layout_width="143dp"
         android:layout_height="31dp"
         android:layout_gravity="center"
         android:layout_marginStart="8dp"

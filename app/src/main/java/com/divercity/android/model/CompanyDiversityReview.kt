@@ -6,7 +6,7 @@ import java.util.*
  * Created by lucas on 2019-07-08.
  */
 
-data class CompanyDiversityReview(
+    data class CompanyDiversityReview(
     val id: String,
     val raceEthnicityRate: Int? = null,
     val sexualOrientationRate: Int? = null,

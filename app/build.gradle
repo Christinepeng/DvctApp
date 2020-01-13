@@ -190,9 +190,9 @@ dependencies {
     debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leakCanary_version"
 
     // Apollo
-    implementation 'com.apollographql.apollo:apollo-runtime:1.0.0'
-//    compileOnly 'org.jetbrains:annotations:16.0.1'
-//    testCompileOnly 'org.jetbrains:annotations:16.0.1'
+    implementation 'com.apollographql.apollo:apollo-runtime:1.2.2'
+    compileOnly 'org.jetbrains:annotations:13.0'
+    testCompileOnly 'org.jetbrains:annotations:13.0'
 
     // Kotlin Coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinCoroutines_version"

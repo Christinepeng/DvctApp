@@ -2,7 +2,9 @@ package com.divercity.android.features.company.ratecompany
 
 import android.app.Activity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.EditText
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -14,9 +16,11 @@ import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.data.entity.company.review.CompanyDiversityReviewEntityResponse
+import com.divercity.android.features.dialogs.ConfirmReviewSubmitDialogFragment
 import com.divercity.android.features.dialogs.WriteReviewCompanyDialogFragment
 import kotlinx.android.synthetic.main.fragment_rate_company.*
 import kotlinx.android.synthetic.main.view_rate_company.*
+import kotlinx.android.synthetic.main.view_rate_company.btn_submit
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 
 /**
@@ -67,23 +71,113 @@ class RateCompanyFragment : BaseFragment() {
             }
         }
 
+        // default the button to be disabled
+        btn_submit.isEnabled = false
+        btn_submit.isClickable = false
+        btn_submit.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+
+        // add listeners to rating bars and review text
+        addListenerOnRatingBarAndReviewText()
+
         if (arguments?.getBoolean(PARAM_IS_EDITION) == true) {
             viewModel.fetchReview()
             btn_submit.setText(R.string.edit)
             btn_submit.setOnClickListener {
-                if (et_review.text.toString().isEmpty())
-                    showWriteReviewCompanyDialogFragment()
-                else
-                    editReview()
+                submissionReactToReviewStatus(::editReview)
             }
         } else {
             btn_submit.setText(R.string.submit)
             btn_submit.setOnClickListener {
-                if (et_review.text.toString().isEmpty())
-                    showWriteReviewCompanyDialogFragment()
-                else
-                    rateCompany()
+                submissionReactToReviewStatus(::rateCompany)
             }
+        }
+    }
+
+    private fun addListenerOnRatingBarAndReviewText() {
+        rating_bar_gender.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
+                _, _, fromUser ->
+            if (fromUser) {
+                submitButtonReactToReviewStatus()
+            }
+        }
+        rating_bar_race.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
+                _, _, fromUser ->
+            if (fromUser) {
+                submitButtonReactToReviewStatus()
+            }
+        }
+        rating_bar_age.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
+                _, _, fromUser ->
+            if (fromUser) {
+                submitButtonReactToReviewStatus()
+            }
+        }
+        rating_bar_sex_orien.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
+                _, _, fromUser ->
+            if (fromUser) {
+                submitButtonReactToReviewStatus()
+            }
+        }
+        rating_bar_abel_bodiedness.onRatingBarChangeListener = RatingBar.OnRatingBarChangeListener {
+                _, _, fromUser ->
+            if (fromUser) {
+                submitButtonReactToReviewStatus()
+            }
+        }
+        et_review.onFocusChangeListener = View.OnFocusChangeListener {
+                _, _ ->
+            submitButtonReactToReviewStatus()
+        }
+    }
+
+    private val isZero: (Int) -> Boolean = { it == 0 }
+
+    private fun checkAnyRatingEmpty(): Boolean {
+        return listOf(
+            getRatingValue(rating_bar_gender),
+            getRatingValue(rating_bar_race),
+            getRatingValue(rating_bar_age),
+            getRatingValue(rating_bar_sex_orien),
+            getRatingValue(rating_bar_abel_bodiedness)
+        ).any(isZero)
+    }
+
+    private fun checkAllRatingEmpty(): Boolean {
+        return listOf(
+            getRatingValue(rating_bar_gender),
+            getRatingValue(rating_bar_race),
+            getRatingValue(rating_bar_age),
+            getRatingValue(rating_bar_sex_orien),
+            getRatingValue(rating_bar_abel_bodiedness)
+        ).all(isZero)
+    }
+
+    private fun checkReviewEmpty(): Boolean {
+        return et_review.text.toString().isEmpty()
+    }
+
+    private fun submitButtonReactToReviewStatus() {
+        if (checkAllRatingEmpty() && checkReviewEmpty())       {
+            Log.d("ReviewStatus", "all ratings are empty")
+            println("all ratings are empty")
+            btn_submit.isEnabled = false
+            btn_submit.isClickable = false
+            btn_submit.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+        } else {
+            Log.d("ReviewStatus", "some ratings are nonempty")
+            btn_submit.isEnabled = true
+            btn_submit.isClickable = true
+            btn_submit.setBackgroundResource(R.drawable.shape_backgrd_round_blue2)
+        }
+    }
+
+    private fun submissionReactToReviewStatus(reaction: () -> (Unit)) {
+        if (checkAnyRatingEmpty()) {
+            showConfirmReviewSubmitDialogFragment()
+        } else if (checkReviewEmpty()) {
+            showWriteReviewCompanyDialogFragment()
+        } else {
+            reaction()
         }
     }
 
@@ -129,8 +223,7 @@ class RateCompanyFragment : BaseFragment() {
         rating_bar_age.rating = review.attributes.ageRate?.toFloat() ?: 0f
         rating_bar_race.rating = review.attributes.raceEthnicityRate?.toFloat() ?: 0f
         rating_bar_abel_bodiedness.rating = review.attributes.ableBodiednessRate?.toFloat() ?: 0f
-        rating_bar_sex_orien.rating =
-            review.attributes.sexualOrientationRate?.toFloat() ?: 0f
+        rating_bar_sex_orien.rating = review.attributes.sexualOrientationRate?.toFloat() ?: 0f
         et_review.setText(review.attributes.review)
     }
 
@@ -183,7 +276,25 @@ class RateCompanyFragment : BaseFragment() {
         val dialog = WriteReviewCompanyDialogFragment.newInstance()
         dialog.listener = object : WriteReviewCompanyDialogFragment.Listener {
             override fun onSubmit() {
-                rateCompany()
+                if (arguments?.getBoolean(PARAM_IS_EDITION) == true) {
+                    editReview()
+                } else {
+                    rateCompany()
+                }
+            }
+        }
+        dialog.show(childFragmentManager, null)
+    }
+
+    private fun showConfirmReviewSubmitDialogFragment() {
+        val dialog = ConfirmReviewSubmitDialogFragment.newInstance()
+        dialog.listener = object : ConfirmReviewSubmitDialogFragment.Listener {
+            override fun onSubmit() {
+                if (arguments?.getBoolean(PARAM_IS_EDITION) == true) {
+                    editReview()
+                } else {
+                    rateCompany()
+                }
             }
         }
         dialog.show(childFragmentManager, null)

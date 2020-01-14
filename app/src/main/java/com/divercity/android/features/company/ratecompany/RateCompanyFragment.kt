@@ -2,9 +2,10 @@ package com.divercity.android.features.company.ratecompany
 
 import android.app.Activity
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.widget.EditText
 import android.widget.RatingBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -124,10 +125,13 @@ class RateCompanyFragment : BaseFragment() {
                 submitButtonReactToReviewStatus()
             }
         }
-        et_review.onFocusChangeListener = View.OnFocusChangeListener {
-                _, _ ->
-            submitButtonReactToReviewStatus()
-        }
+        et_review.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                submitButtonReactToReviewStatus()
+            }
+        })
     }
 
     private val isZero: (Int) -> Boolean = { it == 0 }
@@ -158,13 +162,13 @@ class RateCompanyFragment : BaseFragment() {
 
     private fun submitButtonReactToReviewStatus() {
         if (checkAllRatingEmpty() && checkReviewEmpty())       {
-            Log.d("ReviewStatus", "all ratings are empty")
+            Log.d("ReviewStatus", "all ratings and review text are empty")
             println("all ratings are empty")
             btn_submit.isEnabled = false
             btn_submit.isClickable = false
             btn_submit.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
         } else {
-            Log.d("ReviewStatus", "some ratings are nonempty")
+            Log.d("ReviewStatus", "some ratings or review text are nonempty")
             btn_submit.isEnabled = true
             btn_submit.isClickable = true
             btn_submit.setBackgroundResource(R.drawable.shape_backgrd_round_blue2)

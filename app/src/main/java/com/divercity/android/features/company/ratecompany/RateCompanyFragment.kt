@@ -21,7 +21,6 @@ import com.divercity.android.features.dialogs.ConfirmReviewSubmitDialogFragment
 import com.divercity.android.features.dialogs.WriteReviewCompanyDialogFragment
 import kotlinx.android.synthetic.main.fragment_rate_company.*
 import kotlinx.android.synthetic.main.view_rate_company.*
-import kotlinx.android.synthetic.main.view_rate_company.btn_submit
 import kotlinx.android.synthetic.main.view_toolbar.view.*
 
 /**

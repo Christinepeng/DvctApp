@@ -40,7 +40,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView50" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_submit"
+        android:id="@+id/btn_maybe_later"
         android:layout_width="210dp"
         android:layout_height="35dp"
         android:layout_marginStart="10dp"

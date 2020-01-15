@@ -9,8 +9,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.RetryCallback
 import com.divercity.android.data.Status
+import com.divercity.android.data.entity.company.response.CompanyResponse
 import com.divercity.android.features.company.companydetail.CompanyDetailViewModel
 import com.divercity.android.features.company.diversityrating.adapter.DiversityRatingAdapter
+import com.divercity.android.features.dialogs.InviteToCreateCompanyReviewDialogFragment
 import kotlinx.android.synthetic.main.fragment_diversity_rating.*
 import javax.inject.Inject
 
@@ -18,7 +20,7 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class DiversityRatingFragment : BaseFragment(), RetryCallback {
+class DiversityRatingFragment(companyResponse: CompanyResponse?) : BaseFragment(), RetryCallback {
 
     lateinit var viewModel: DiversityRatingViewModel
     lateinit var sharedViewModel: CompanyDetailViewModel
@@ -27,13 +29,14 @@ class DiversityRatingFragment : BaseFragment(), RetryCallback {
     lateinit var adapter: DiversityRatingAdapter
 
     private var isListRefreshing = false
+    private val companyResponse = companyResponse
 
     companion object {
 
         const val REQUEST_CODE_RATE_COMPANY = 200
 
-        fun newInstance(): DiversityRatingFragment {
-            return DiversityRatingFragment()
+        fun newInstance(companyResponse: CompanyResponse?): DiversityRatingFragment {
+            return DiversityRatingFragment(companyResponse)
         }
     }
 
@@ -43,8 +46,9 @@ class DiversityRatingFragment : BaseFragment(), RetryCallback {
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         viewModel.start(sharedViewModel.companyLiveData.value?.id!!)
-        subscribeToLiveData()
+
         initView()
+        subscribeToLiveData()
         subscribeToPaginatedLiveData()
     }
 
@@ -78,11 +82,34 @@ class DiversityRatingFragment : BaseFragment(), RetryCallback {
                 ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
+
+        showInviteToCreateCompanyReviewDialogFragmentOrNot(companyResponse, this)
     }
 
     private fun refresh() {
         viewModel.refresh()
         sharedViewModel.fetchCompany()
+    }
+
+    private fun showInviteToCreateCompanyReviewDialogFragmentOrNot(
+        companyResponse: CompanyResponse?,
+        fragment: DiversityRatingFragment
+    ) {
+        if (companyResponse?.attributes?.canRateCompany == true
+            && companyResponse?.attributes?.hasRatedBefore == false) {
+            val dialog = InviteToCreateCompanyReviewDialogFragment.newInstance()
+            dialog.listener = object : InviteToCreateCompanyReviewDialogFragment.Listener {
+                override fun onSubmit() {
+                    navigator.navigateToRateCompany(
+                        fragment,
+                        companyResponse,
+                        false,
+                        REQUEST_CODE_RATE_COMPANY
+                    )
+                }
+            }
+            dialog.show(childFragmentManager, null)
+        }
     }
 
     private fun subscribeToPaginatedLiveData() {

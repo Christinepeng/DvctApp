@@ -19,7 +19,7 @@ import javax.inject.Inject
 class CompanyDetailViewPagerAdapter
 @Inject constructor(
     val context: Context,
-    fragment: CompanyDetailFragment
+    val fragment: CompanyDetailFragment
 ) : FragmentStatePagerAdapter(
     fragment.childFragmentManager,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
@@ -50,7 +50,8 @@ class CompanyDetailViewPagerAdapter
             0 -> CompanyDetailAboutFragment.newInstance()
             1 -> JobPostingsByCompanyFragment.newInstance(companyId)
             2 -> EmployeesFragment.newInstance(companyId)
-            else -> DiversityRatingFragment.newInstance()
+            3 -> DiversityRatingFragment.newInstance(fragment.companyResponse)
+            else -> EmployeesFragment.newInstance(companyId)
         }
     }
 

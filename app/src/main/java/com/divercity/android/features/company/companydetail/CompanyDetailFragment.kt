@@ -32,6 +32,8 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     @Inject
     lateinit var adapter: CompanyDetailViewPagerAdapter
 
+    var companyResponse: CompanyResponse? = null
+
     companion object {
 
         private const val PARAM_COMPANY_ID = "paramCompanyId"
@@ -176,6 +178,7 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     private fun subscribeToLiveData() {
         viewModel.companyLiveData.observe(viewLifecycleOwner, Observer { group ->
             showData(group)
+            companyResponse = group
         })
 
         viewModel.fetchCompanyResponse.observe(this, Observer { response ->

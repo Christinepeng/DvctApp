@@ -59,8 +59,6 @@ class JobPostingsByCompanyFragment : BaseFragment(), RetryCallback {
         viewModel.fetchData(arguments!!.getString(PARAM_COMPANY_ID)!!)
         initSwipeToRefresh()
         initAdapter()
-        subscribeToPaginatedLiveData()
-        subscribeToLiveData()
     }
 
     private fun initAdapter() {
@@ -77,6 +75,11 @@ class JobPostingsByCompanyFragment : BaseFragment(), RetryCallback {
             }
         }
         list.adapter = adapter
+    }
+
+    fun fetchLiveData() {
+        subscribeToPaginatedLiveData()
+        subscribeToLiveData()
     }
 
     private fun subscribeToLiveData() {
@@ -135,7 +138,6 @@ class JobPostingsByCompanyFragment : BaseFragment(), RetryCallback {
     }
 
     private fun initSwipeToRefresh() {
-
         swipe_list_main.apply {
             setOnRefreshListener {
                 isListRefreshing = true

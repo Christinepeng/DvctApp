@@ -33,7 +33,9 @@ class CompanyDetailAboutFragment : BaseFragment() {
         sharedViewModel = activity?.run {
             ViewModelProviders.of(this, viewModelFactory).get(CompanyDetailViewModel::class.java)
         } ?: throw Exception("Invalid Activity")
+    }
 
+    fun fetchLiveData() {
         subscribeToLiveData()
     }
 

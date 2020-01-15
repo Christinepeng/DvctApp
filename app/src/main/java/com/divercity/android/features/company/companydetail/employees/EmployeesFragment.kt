@@ -54,8 +54,6 @@ class EmployeesFragment : BaseFragment(), RetryCallback {
         initViewModel()
         viewModel.fetchEmployees(arguments!!.getString(PARAM_COMPANY_ID)!!)
         initView()
-        subscribeToLiveData()
-        subscribeToPaginatedLiveData()
     }
 
     fun initViewModel() {
@@ -82,6 +80,11 @@ class EmployeesFragment : BaseFragment(), RetryCallback {
                 ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
+    }
+
+    fun fetchLiveData() {
+        subscribeToLiveData()
+        subscribeToPaginatedLiveData()
     }
 
     private fun subscribeToPaginatedLiveData() {

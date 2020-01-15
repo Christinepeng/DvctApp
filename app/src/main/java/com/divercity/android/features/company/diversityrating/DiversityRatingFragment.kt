@@ -46,10 +46,7 @@ class DiversityRatingFragment(companyResponse: CompanyResponse?) : BaseFragment(
         super.onViewCreated(view, savedInstanceState)
         initViewModel()
         viewModel.start(sharedViewModel.companyLiveData.value?.id!!)
-
         initView()
-        subscribeToLiveData()
-        subscribeToPaginatedLiveData()
     }
 
     private fun initViewModel() {
@@ -82,13 +79,17 @@ class DiversityRatingFragment(companyResponse: CompanyResponse?) : BaseFragment(
                 ContextCompat.getColor(context, R.color.colorPrimaryDark)
             )
         }
-
-        showInviteToCreateCompanyReviewDialogFragmentOrNot(companyResponse, this)
     }
 
     private fun refresh() {
         viewModel.refresh()
         sharedViewModel.fetchCompany()
+    }
+
+    fun fetchLiveData() {
+        subscribeToLiveData()
+        subscribeToPaginatedLiveData()
+        showInviteToCreateCompanyReviewDialogFragmentOrNot(companyResponse, this)
     }
 
     private fun showInviteToCreateCompanyReviewDialogFragmentOrNot(

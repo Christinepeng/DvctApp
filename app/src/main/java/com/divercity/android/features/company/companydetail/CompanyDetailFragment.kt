@@ -8,12 +8,17 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.request.RequestOptions
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.utils.GlideApp
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.company.response.CompanyResponse
+import com.divercity.android.features.company.companydetail.about.CompanyDetailAboutFragment
+import com.divercity.android.features.company.companydetail.employees.EmployeesFragment
+import com.divercity.android.features.company.companydetail.jobpostings.JobPostingsByCompanyFragment
+import com.divercity.android.features.company.diversityrating.DiversityRatingFragment
 import com.divercity.android.features.company.diversityrating.DiversityRatingFragment.Companion.REQUEST_CODE_RATE_COMPANY
 import com.divercity.android.features.dialogs.CompanyActionsDialogFragment
 import kotlinx.android.synthetic.main.fragment_company_detail.*
@@ -32,7 +37,12 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     @Inject
     lateinit var adapter: CompanyDetailViewPagerAdapter
 
-    var companyResponse: CompanyResponse? = null
+    private var companyResponse: CompanyResponse? = null
+
+    lateinit var companyDetailAboutFragment: CompanyDetailAboutFragment
+    lateinit var jobPostingsByCompanyFragment: JobPostingsByCompanyFragment
+    lateinit var employeesFragment: EmployeesFragment
+    lateinit var diversityRatingFragment: DiversityRatingFragment
 
     companion object {
 
@@ -58,6 +68,11 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
             viewModel.companyResponse = DataHolder.data
         }
         viewModel.fetchCompany()
+
+        companyDetailAboutFragment = CompanyDetailAboutFragment.newInstance()
+        jobPostingsByCompanyFragment = JobPostingsByCompanyFragment.newInstance(viewModel.companyId)
+        employeesFragment = EmployeesFragment.newInstance(viewModel.companyId)
+        diversityRatingFragment = DiversityRatingFragment.newInstance(companyResponse)
 
         initView()
         subscribeToLiveData()
@@ -96,9 +111,38 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     }
 
     private fun initView() {
+        var onPageChangeListener = (object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                when (position) {
+                    0 -> companyDetailAboutFragment.fetchLiveData()
+                    1 -> jobPostingsByCompanyFragment.fetchLiveData()
+                    2 -> employeesFragment.fetchLiveData()
+                    else -> diversityRatingFragment.fetchLiveData()
+                }
+            }
+
+            override fun onPageScrollStateChanged(state: Int) { }
+
+        })
+        viewpager.addOnPageChangeListener(onPageChangeListener)
+
         adapter.companyId = viewModel.companyId
+        adapter.companyDetailAboutFragment = companyDetailAboutFragment
+        adapter.jobPostingsByCompanyFragment = jobPostingsByCompanyFragment
+        adapter.employeesFragment = employeesFragment
+        adapter.diversityRatingFragment = diversityRatingFragment
         viewpager.adapter = adapter
+        viewpager.offscreenPageLimit = 4
         tab_layout.setupWithViewPager(viewpager)
+
+        // initialize the first tab, so that its value is not empty
+        viewpager.post { onPageChangeListener.onPageSelected(viewpager.getCurrentItem()) }
     }
 
     private fun showData(company: CompanyResponse?) {

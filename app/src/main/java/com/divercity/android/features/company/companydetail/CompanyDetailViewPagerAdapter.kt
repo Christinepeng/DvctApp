@@ -19,14 +19,18 @@ import javax.inject.Inject
 class CompanyDetailViewPagerAdapter
 @Inject constructor(
     val context: Context,
-    val fragment: CompanyDetailFragment
+    companyDetailfragment: CompanyDetailFragment
 ) : FragmentStatePagerAdapter(
-    fragment.childFragmentManager,
+    companyDetailfragment.childFragmentManager,
     BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
 ) {
 
     var registeredFragments = SparseArray<Fragment>()
     lateinit var companyId: String
+    lateinit var companyDetailAboutFragment: CompanyDetailAboutFragment
+    lateinit var jobPostingsByCompanyFragment: JobPostingsByCompanyFragment
+    lateinit var employeesFragment: EmployeesFragment
+    lateinit var diversityRatingFragment: DiversityRatingFragment
 
     companion object {
 
@@ -47,11 +51,10 @@ class CompanyDetailViewPagerAdapter
 
     private fun getFragments(position: Int): Fragment {
         return when (position) {
-            0 -> CompanyDetailAboutFragment.newInstance()
-            1 -> JobPostingsByCompanyFragment.newInstance(companyId)
-            2 -> EmployeesFragment.newInstance(companyId)
-            3 -> DiversityRatingFragment.newInstance(fragment.companyResponse)
-            else -> EmployeesFragment.newInstance(companyId)
+            0 -> companyDetailAboutFragment
+            1 -> jobPostingsByCompanyFragment
+            2 -> employeesFragment
+            else -> diversityRatingFragment
         }
     }
 

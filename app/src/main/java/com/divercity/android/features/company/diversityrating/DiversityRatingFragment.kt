@@ -20,7 +20,7 @@ import javax.inject.Inject
  * Created by lucas on 16/11/2018.
  */
 
-class DiversityRatingFragment(companyResponse: CompanyResponse?) : BaseFragment(), RetryCallback {
+class DiversityRatingFragment : BaseFragment(), RetryCallback {
 
     lateinit var viewModel: DiversityRatingViewModel
     lateinit var sharedViewModel: CompanyDetailViewModel
@@ -29,14 +29,13 @@ class DiversityRatingFragment(companyResponse: CompanyResponse?) : BaseFragment(
     lateinit var adapter: DiversityRatingAdapter
 
     private var isListRefreshing = false
-    private val companyResponse = companyResponse
 
     companion object {
 
         const val REQUEST_CODE_RATE_COMPANY = 200
 
-        fun newInstance(companyResponse: CompanyResponse?): DiversityRatingFragment {
-            return DiversityRatingFragment(companyResponse)
+        fun newInstance(): DiversityRatingFragment {
+            return DiversityRatingFragment()
         }
     }
 
@@ -58,8 +57,9 @@ class DiversityRatingFragment(companyResponse: CompanyResponse?) : BaseFragment(
     }
 
     private fun subscribeToLiveData() {
-        sharedViewModel.companyLiveData.observe(viewLifecycleOwner, Observer { company ->
-            adapter.setCompany(company)
+        sharedViewModel.companyLiveData.observe(viewLifecycleOwner, Observer { companyResponse ->
+            adapter.setCompany(companyResponse)
+            showInviteToCreateCompanyReviewDialogFragmentOrNot(companyResponse, this)
         })
     }
 
@@ -89,7 +89,6 @@ class DiversityRatingFragment(companyResponse: CompanyResponse?) : BaseFragment(
     fun fetchLiveData() {
         subscribeToLiveData()
         subscribeToPaginatedLiveData()
-        showInviteToCreateCompanyReviewDialogFragmentOrNot(companyResponse, this)
     }
 
     private fun showInviteToCreateCompanyReviewDialogFragmentOrNot(

@@ -37,8 +37,6 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     @Inject
     lateinit var adapter: CompanyDetailViewPagerAdapter
 
-    private var companyResponse: CompanyResponse? = null
-
     lateinit var companyDetailAboutFragment: CompanyDetailAboutFragment
     lateinit var jobPostingsByCompanyFragment: JobPostingsByCompanyFragment
     lateinit var employeesFragment: EmployeesFragment
@@ -72,7 +70,7 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
         companyDetailAboutFragment = CompanyDetailAboutFragment.newInstance()
         jobPostingsByCompanyFragment = JobPostingsByCompanyFragment.newInstance(viewModel.companyId)
         employeesFragment = EmployeesFragment.newInstance(viewModel.companyId)
-        diversityRatingFragment = DiversityRatingFragment.newInstance(companyResponse)
+        diversityRatingFragment = DiversityRatingFragment.newInstance()
 
         initView()
         subscribeToLiveData()
@@ -222,7 +220,6 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     private fun subscribeToLiveData() {
         viewModel.companyLiveData.observe(viewLifecycleOwner, Observer { group ->
             showData(group)
-            companyResponse = group
         })
 
         viewModel.fetchCompanyResponse.observe(this, Observer { response ->
@@ -278,22 +275,22 @@ class CompanyDetailFragment : BaseFragment(), CompanyActionsDialogFragment.Liste
     enum class DataHolder {
         INSTANCE;
 
-        private var company: CompanyResponse? = null
+        private var companyResponse: CompanyResponse? = null
 
         companion object {
 
             fun hasData(): Boolean {
-                return INSTANCE.company != null
+                return INSTANCE.companyResponse != null
             }
 
             var data: CompanyResponse?
                 get() {
-                    val company = INSTANCE.company
-                    INSTANCE.company = null
+                    val company = INSTANCE.companyResponse
+                    INSTANCE.companyResponse = null
                     return company
                 }
                 set(objectList) {
-                    INSTANCE.company = objectList
+                    INSTANCE.companyResponse = objectList
                 }
         }
     }

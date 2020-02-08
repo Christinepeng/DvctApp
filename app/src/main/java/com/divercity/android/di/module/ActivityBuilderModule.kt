@@ -54,6 +54,7 @@ import com.divercity.android.features.loadurl.LoadUrlActivity
 import com.divercity.android.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.android.features.login.step1.EnterEmailActivity
+import com.divercity.android.features.login.step1.GetStartedActivity
 import com.divercity.android.features.login.step2.LoginActivity
 import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
 import com.divercity.android.features.major.withtoolbar.SelectSingleMajorActivity
@@ -183,6 +184,9 @@ abstract class ActivityBuilderModule {
     abstract fun bindPictureSearchActivity(): PictureSearchActivity
 
     //SESSION
+
+    @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
+    abstract fun bindGetStartedActivity(): GetStartedActivity
 
     @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
     abstract fun bindEnterEmailActivity(): EnterEmailActivity

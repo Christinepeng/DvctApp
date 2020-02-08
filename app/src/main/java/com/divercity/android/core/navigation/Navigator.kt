@@ -62,6 +62,8 @@ import com.divercity.android.features.loadurl.LoadUrlActivity
 import com.divercity.android.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
 import com.divercity.android.features.login.step1.EnterEmailActivity
+import com.divercity.android.features.login.step1.GetStartedActivity
+import com.divercity.android.features.login.step1.EnterEmailFragment
 import com.divercity.android.features.login.step2.LoginActivity
 import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
 import com.divercity.android.features.major.withtoolbar.SelectSingleMajorActivity
@@ -124,7 +126,7 @@ class Navigator @Inject constructor() {
     }
 
     fun navigateToEnterEmailActivity(activity: FragmentActivity) {
-        val intent = EnterEmailActivity.getCallingIntent(activity)
+        val intent = GetStartedActivity.getCallingIntent(activity)
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         activity.startActivity(intent)
     }
@@ -255,6 +257,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToLinkedinActivity(activity: FragmentActivity) {
         activity.startActivity(LinkedinActivity.getCallingIntent(activity))
+    }
+
+    fun navigateToEnterEmailFragment(activity: FragmentActivity) {
+        activity.startActivity(EnterEmailActivity.getCallingIntent(activity))
     }
 
     fun navigateToChatsActivity(activity: FragmentActivity) {

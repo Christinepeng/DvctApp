@@ -19,29 +19,50 @@
         android:gravity="center_horizontal"
         android:orientation="horizontal" />
 
-    <TextView
+    <ImageView
         android:layout_width="match_parent"
-        android:layout_height="19dp"
-        android:background="#87caff"/>
+        android:layout_height="36dp"
+        android:src="@drawable/round_corner_bottom_left"
+        android:background="@color/white"/>
 
-    <TextView
+    <RelativeLayout
+        android:id="@+id/imagePreview"
         android:layout_width="match_parent"
-        android:layout_height="19dp" />
+        android:layout_height="76dp"
+        android:orientation="vertical"
+        android:padding="0dp" >
 
-    <Button
-        android:id="@+id/btn_get_start_login"
-        android:layout_width="301dp"
-        android:layout_height="51dp"
-        android:layout_gravity="center"
-        android:background="@drawable/shape_backgrd_round_blue2"
-        android:fontFamily="@font/avenir_medium"
-        android:text="@string/get_started"
-        android:textAllCaps="true"
-        android:textColor="@android:color/white"
-        android:textSize="25sp" />
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:src="@drawable/round_corner_top_right"
+            android:layout_centerInParent="true"
+            android:background="#87caff"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="19dp" />
+        <Button
+            android:id="@+id/btn_get_start_login"
+            android:layout_width="301dp"
+            android:layout_height="51dp"
+            android:layout_gravity="center"
+            android:background="@drawable/shape_backgrd_round_blue2"
+            android:fontFamily="@font/avenir_medium"
+            android:text="@string/get_started"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:layout_marginStart="60dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginEnd="22dp"
+            android:layout_marginBottom="19dp"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_alignParentBottom="true"
+            android:src="@color/white"
+            android:layout_centerInParent="true"
+            android:background="#87caff"/>
+
+    </RelativeLayout>
 
 </LinearLayout>

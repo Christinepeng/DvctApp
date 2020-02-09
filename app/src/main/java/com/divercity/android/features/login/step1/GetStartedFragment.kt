@@ -4,24 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.ViewPagerDotsPanel
-import com.divercity.android.data.Status
 import com.facebook.CallbackManager
-//import com.facebook.FacebookCallback
-//import com.facebook.FacebookException
-//import com.facebook.login.LoginResult
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
-import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
-import kotlinx.android.synthetic.main.fragment_enter_email_linear.viewPager
 import kotlinx.android.synthetic.main.fragment_onboarding_getstarted.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -36,13 +27,10 @@ import javax.inject.Inject
 
 class GetStartedFragment : BaseFragment() {
 
-//    @Inject
-//    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
+    @Inject
+    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 
-//    lateinit var viewModel: EnterEmailViewModel
     private lateinit var handlerViewPager: Handler
-
-    var listener: Listener? = null
 
     private val callbackManager = CallbackManager.Factory.create()
 
@@ -55,7 +43,6 @@ class GetStartedFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
 
         CoroutineScope(Dispatchers.IO).launch {
             Timber.e("Called Launch")
@@ -71,56 +58,9 @@ class GetStartedFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handlerViewPager = Handler()
-//        setupViewPager()
-//        subscribeToLiveData()
+        setupViewPager()
         setupEvents()
     }
-
-//    fun subscribeToLiveData() {
-//        viewModel.isEmailRegistered.observe(this, Observer { response ->
-//            when (response?.status) {
-//                Status.LOADING -> {
-//                    showProgress()
-//                }
-//                Status.ERROR -> {
-//                    hideProgress()
-////                    showSnackbar(response.message)
-//                    showToast(response.message)
-//                }
-//                Status.SUCCESS -> {
-//                    hideProgress()
-//                }
-//            }
-//        })
-
-//        viewModel.loginFacebookResponse.observe(this, Observer { response ->
-//            when (response?.status) {
-//                Status.LOADING -> {
-//                    showProgress()
-//                }
-//                Status.ERROR -> {
-//                    hideProgress()
-//                    showToast(response.message)
-//                }
-//                Status.SUCCESS -> {
-//                    hideProgress()
-//                    if (response.data?.accountType == null)
-//                        navigator.navigateToSelectUserTypeActivity(requireActivity())
-//                    else
-//                        navigator.navigateToHomeActivity(requireActivity())
-//                    requireActivity().finish()
-//                }
-//            }
-//        })
-//
-//        viewModel.navigateToLogin.observe(this, Observer {
-//            navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
-//        })
-//
-//        viewModel.navigateToSignUp.observe(this, Observer {
-//            navigator.navigateToSignUpActivity(requireActivity(), getEdTxtEmail())
-//        })
-//    }
 
     fun showSnackbar(message: String?) {
         activity?.run {
@@ -133,105 +73,56 @@ class GetStartedFragment : BaseFragment() {
     }
 
     private fun setupEvents() {
-//        btn_facebook.setOnClickListener {
-//            btn_facebook_sdk.performClick()
-//        }
-
-//        btn_get_start_login.setOnClickListener { listener?.onSubmit() }
         btn_get_start_login.setOnClickListener {
             navigator.navigateToEnterEmailFragment(requireActivity()) }
-
-//        // Callback registration
-//        btn_facebook_sdk.fragment = this
-//        btn_facebook_sdk.setPermissions(listOf("email"))
-//        btn_facebook_sdk.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
-//            override fun onSuccess(loginResult: LoginResult) {
-//                viewModel.loginFacebook(loginResult.accessToken.token)
-//            }
-//
-//            override fun onCancel() {
-//                // App code
-//            }
-//
-//            override fun onError(exception: FacebookException) {
-//                showToast(exception.message)
-//            }
-//        })
-
-
-//        btn_linkedin.setOnClickListener {
-//            navigator.navigateToLinkedinActivity(requireActivity())
-//        }
-//
-//        btn_send.setOnClickListener {
-//            viewModel.checkIfEmailRegistered(getEdTxtEmail())
-//        }
-//
-//        user_email.setOnEditorActionListener { _, i, _ ->
-//            var handled = false
-//            if (i == EditorInfo.IME_ACTION_DONE) {
-//                viewModel.checkIfEmailRegistered(getEdTxtEmail())
-//                handled = true
-//            }
-//            handled
-//        }
     }
-
-//    fun getEdTxtEmail(): String {
-//        return user_email.text.toString().trim()
-//    }
 
     private fun showToast(msg: String?) {
         Toast.makeText(requireActivity().applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
 
-//    fun setupViewPager() {
-//        viewPager.adapter = viewPagerEnterEmailAdapter
-//        val viewPagerDotsPanel = ViewPagerDotsPanel(
-//            context,
-//            viewPagerEnterEmailAdapter.count,
-//            sliderDots
-//        )
-//
-//        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-//            override fun onPageScrolled(
-//                position: Int,
-//                positionOffset: Float,
-//                positionOffsetPixels: Int
-//            ) {
-//            }
-//
-//            override fun onPageSelected(position: Int) {
-//                viewPagerDotsPanel.onPageSelected(position)
-//                handlerViewPager.removeCallbacksAndMessages(null)
-//                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-//            }
-//
-//            override fun onPageScrollStateChanged(state: Int) {}
-//        })
-//        handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-//    }
+    fun setupViewPager() {
+        viewPager.adapter = viewPagerEnterEmailAdapter
+        val viewPagerDotsPanel = ViewPagerDotsPanel(
+            context,
+            viewPagerEnterEmailAdapter.count,
+            sliderDots
+        )
 
-//    private val runnable = Runnable {
-//        viewPager.currentItem =
-//            if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
-//                0
-//            else
-//                viewPager.currentItem + 1
-//    }
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrolled(
+                position: Int,
+                positionOffset: Float,
+                positionOffsetPixels: Int
+            ) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                viewPagerDotsPanel.onPageSelected(position)
+                handlerViewPager.removeCallbacksAndMessages(null)
+                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
+            }
+
+            override fun onPageScrollStateChanged(state: Int) {}
+        })
+        handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
+    }
+
+    private val runnable = Runnable {
+        viewPager.currentItem =
+            if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
+                0
+            else
+                viewPager.currentItem + 1
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
-//        handlerViewPager.removeCallbacksAndMessages(null)
+        handlerViewPager.removeCallbacksAndMessages(null)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
-    }
-
-    interface Listener {
-
-        fun onSubmit()
     }
 }

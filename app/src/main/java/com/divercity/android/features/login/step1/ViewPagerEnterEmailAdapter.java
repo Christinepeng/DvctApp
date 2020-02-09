@@ -21,8 +21,9 @@ public class ViewPagerEnterEmailAdapter extends PagerAdapter {
     private Context context;
     private LayoutInflater layoutInflater;
     private int[] imgs = {
-            R.drawable.onboarding1,
-            R.drawable.onboarding2,
+            R.drawable.onboarding5,
+            R.drawable.onboarding6,
+            R.drawable.onboarding7,
     };
 
     @Inject

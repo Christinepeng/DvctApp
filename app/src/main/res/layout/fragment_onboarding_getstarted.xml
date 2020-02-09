@@ -1,39 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-
-<!--    <androidx.viewpager.widget.ViewPager-->
-<!--        android:id="@+id/viewPager"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="573dp"-->
-<!--        android:layout_marginTop="8dp" />-->
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewPager"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="8dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:background="#87caff"/>
 
     <LinearLayout
         android:id="@+id/sliderDots"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="#87caff"
         android:gravity="center_horizontal"
         android:orientation="horizontal" />
 
-<!--    <androidx.appcompat.widget.AppCompatButton-->
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="19dp"
+        android:background="#87caff"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="19dp" />
+
     <Button
         android:id="@+id/btn_get_start_login"
         android:layout_width="301dp"
         android:layout_height="51dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginEnd="8dp"
         android:layout_gravity="center"
         android:background="@drawable/shape_backgrd_round_blue2"
         android:fontFamily="@font/avenir_medium"
@@ -41,5 +39,9 @@
         android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="25sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="19dp" />
 
 </LinearLayout>

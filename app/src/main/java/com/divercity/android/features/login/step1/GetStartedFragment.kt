@@ -63,16 +63,6 @@ class GetStartedFragment : BaseFragment() {
         setupEvents()
     }
 
-    fun showSnackbar(message: String?) {
-        activity?.run {
-            Snackbar.make(
-                findViewById(android.R.id.content),
-                message ?: "Error",
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
-    }
-
     private fun setupEvents() {
         btn_get_start_login.setOnClickListener {
             navigator.navigateToEnterEmailFragment(requireActivity()) }

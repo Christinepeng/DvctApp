@@ -8,34 +8,29 @@ import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import androidx.viewpager.widget.ViewPager
-import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.divercity.android.data.Status
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
+import kotlinx.android.synthetic.main.fragment_enter_email.*
 import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
+import kotlinx.android.synthetic.main.fragment_enter_email_linear.btn_linkedin
+import kotlinx.android.synthetic.main.fragment_enter_email_linear.user_email
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.io.IOException
-import javax.inject.Inject
 
 /**
  * Created by lucas on 24/10/2018.
  */
 
 class EnterEmailFragment : BaseFragment() {
-
-    @Inject
-    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
 
     lateinit var viewModel: EnterEmailViewModel
     private lateinit var handlerViewPager: Handler
@@ -118,16 +113,6 @@ class EnterEmailFragment : BaseFragment() {
         })
     }
 
-    fun showSnackbar(message: String?) {
-        activity?.run {
-            Snackbar.make(
-                findViewById(android.R.id.content),
-                message ?: "Error",
-                Snackbar.LENGTH_LONG
-            ).show()
-        }
-    }
-
     private fun setupEvents() {
         btn_facebook.setOnClickListener {
             btn_facebook_sdk.performClick()
@@ -155,9 +140,9 @@ class EnterEmailFragment : BaseFragment() {
             navigator.navigateToLinkedinActivity(requireActivity())
         }
 
-        btn_send.setOnClickListener {
-            viewModel.checkIfEmailRegistered(getEdTxtEmail())
-        }
+//        btn_send.setOnClickListener {
+//            viewModel.checkIfEmailRegistered(getEdTxtEmail())
+//        }
 
         user_email.setOnEditorActionListener { _, i, _ ->
             var handled = false
@@ -176,41 +161,6 @@ class EnterEmailFragment : BaseFragment() {
     private fun showToast(msg: String?) {
         Toast.makeText(requireActivity().applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
-
-//    fun setupViewPager() {
-//        viewPager.adapter = viewPagerEnterEmailAdapter
-//        val viewPagerDotsPanel = ViewPagerDotsPanel(
-//            context,
-//            viewPagerEnterEmailAdapter.count,
-//            sliderDots
-//        )
-//
-//        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-//            override fun onPageScrolled(
-//                position: Int,
-//                positionOffset: Float,
-//                positionOffsetPixels: Int
-//            ) {
-//            }
-//
-//            override fun onPageSelected(position: Int) {
-//                viewPagerDotsPanel.onPageSelected(position)
-//                handlerViewPager.removeCallbacksAndMessages(null)
-//                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-//            }
-//
-//            override fun onPageScrollStateChanged(state: Int) {}
-//        })
-//        handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-//    }
-//
-//    private val runnable = Runnable {
-//        viewPager.currentItem =
-//            if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
-//                0
-//            else
-//                viewPager.currentItem + 1
-//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

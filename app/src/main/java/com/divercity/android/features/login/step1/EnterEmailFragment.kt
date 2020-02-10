@@ -67,7 +67,7 @@ class EnterEmailFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handlerViewPager = Handler()
-        setupViewPager()
+//        setupViewPager()
         subscribeToLiveData()
         setupEvents()
     }
@@ -177,40 +177,40 @@ class EnterEmailFragment : BaseFragment() {
         Toast.makeText(requireActivity().applicationContext, msg, Toast.LENGTH_SHORT).show()
     }
 
-    fun setupViewPager() {
-        viewPager.adapter = viewPagerEnterEmailAdapter
-        val viewPagerDotsPanel = ViewPagerDotsPanel(
-            context,
-            viewPagerEnterEmailAdapter.count,
-            sliderDots
-        )
-
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrolled(
-                position: Int,
-                positionOffset: Float,
-                positionOffsetPixels: Int
-            ) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                viewPagerDotsPanel.onPageSelected(position)
-                handlerViewPager.removeCallbacksAndMessages(null)
-                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-            }
-
-            override fun onPageScrollStateChanged(state: Int) {}
-        })
-        handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
-    }
-
-    private val runnable = Runnable {
-        viewPager.currentItem =
-            if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
-                0
-            else
-                viewPager.currentItem + 1
-    }
+//    fun setupViewPager() {
+//        viewPager.adapter = viewPagerEnterEmailAdapter
+//        val viewPagerDotsPanel = ViewPagerDotsPanel(
+//            context,
+//            viewPagerEnterEmailAdapter.count,
+//            sliderDots
+//        )
+//
+//        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+//            override fun onPageScrolled(
+//                position: Int,
+//                positionOffset: Float,
+//                positionOffsetPixels: Int
+//            ) {
+//            }
+//
+//            override fun onPageSelected(position: Int) {
+//                viewPagerDotsPanel.onPageSelected(position)
+//                handlerViewPager.removeCallbacksAndMessages(null)
+//                handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
+//            }
+//
+//            override fun onPageScrollStateChanged(state: Int) {}
+//        })
+//        handlerViewPager.postDelayed(runnable, AppConstants.CAROUSEL_PAGES_DELAY)
+//    }
+//
+//    private val runnable = Runnable {
+//        viewPager.currentItem =
+//            if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
+//                0
+//            else
+//                viewPager.currentItem + 1
+//    }
 
     override fun onDestroyView() {
         super.onDestroyView()

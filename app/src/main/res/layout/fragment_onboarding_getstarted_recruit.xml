@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/onboarding_recruit"
+        android:layout_marginTop="61.6dp"
+        android:layout_marginStart="34dp"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="26sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="9sp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:text="@string/recruit"
+        android:layout_marginTop="53.9dp"
+        android:textStyle="bold"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="21sp"
+        android:textColor="#ffffff"
+        android:lineSpacingExtra="7sp"
+        android:gravity="center_horizontal"
+        android:layout_gravity="center"
+        android:text="Find suitable candidates to fill roles at \n your company or relax and let us do \n the work for you!"
+        android:layout_marginTop="22dp"
+        />
+
+</LinearLayout>

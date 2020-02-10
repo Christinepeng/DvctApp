@@ -1,7 +1,6 @@
 package com.divercity.android.di.module.fragments
 
-import com.divercity.android.features.login.step1.EnterEmailFragment
-import com.divercity.android.features.login.step1.GetStartedFragment
+import com.divercity.android.features.login.step1.*
 import com.divercity.android.features.login.step2.LoginFragment
 import com.divercity.android.features.signup.SignUpFragment
 import dagger.Module
@@ -25,5 +24,14 @@ abstract class FragmentSessionBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindGetStartedFragment(): GetStartedFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindGetStartedJoinCommunitiesFragment(): GetStartedJoinCommunitiesFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindGetStartedFindJobsFragment(): GetStartedFindJobsFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindGetStartedRecruitFragment(): GetStartedRecruitFragment
 
 }

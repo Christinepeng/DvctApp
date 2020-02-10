@@ -447,5 +447,8 @@
     <string name="not_all_fields_have_been_filled_are_you_sure_you_want_to_submit">Not all fields have been filled. Are you sure you want to submit?</string>
     <string name="create_review_invitation_text">Looks like you’ve worked here! Leave an anonymous review to help thousands of others across Divercity.</string>
     <string name="get_started">Get Started</string>
+    <string name="recruit">Recruit</string>
+    <string name="find_jobs">Find Jobs</string>
+    <string name="join_communities">Join Communities</string>
 
 </resources>

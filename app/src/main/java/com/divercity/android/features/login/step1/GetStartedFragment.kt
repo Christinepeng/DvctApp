@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
@@ -28,7 +29,7 @@ import javax.inject.Inject
 class GetStartedFragment : BaseFragment() {
 
     @Inject
-    lateinit var viewPagerEnterEmailAdapter: ViewPagerEnterEmailAdapter
+    lateinit var getStartedViewPagerAdapter: GetStartedViewPagerAdapter
 
     private lateinit var handlerViewPager: Handler
 
@@ -82,10 +83,10 @@ class GetStartedFragment : BaseFragment() {
     }
 
     fun setupViewPager() {
-        viewPager.adapter = viewPagerEnterEmailAdapter
+        viewPager.adapter = getStartedViewPagerAdapter
         val viewPagerDotsPanel = ViewPagerDotsPanel(
             context,
-            viewPagerEnterEmailAdapter.count,
+            getStartedViewPagerAdapter.count,
             sliderDots
         )
 
@@ -110,7 +111,7 @@ class GetStartedFragment : BaseFragment() {
 
     private val runnable = Runnable {
         viewPager.currentItem =
-            if (viewPager.currentItem == viewPagerEnterEmailAdapter.count - 1)
+            if (viewPager.currentItem == getStartedViewPagerAdapter.count - 1)
                 0
             else
                 viewPager.currentItem + 1

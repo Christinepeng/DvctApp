@@ -1,4 +1,4 @@
-package com.divercity.android.features.login.step1
+package com.divercity.android.features.signup
 
 import android.content.Intent
 import android.os.Bundle
@@ -16,10 +16,12 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.google.firebase.iid.FirebaseInstanceId
-import kotlinx.android.synthetic.main.fragment_enter_email.*
-import kotlinx.android.synthetic.main.fragment_enter_email_linear.*
-import kotlinx.android.synthetic.main.fragment_enter_email_linear.btn_linkedin
-import kotlinx.android.synthetic.main.fragment_enter_email_linear.user_email
+import kotlinx.android.synthetic.main.fragment_log_in_page.*
+import kotlinx.android.synthetic.main.fragment_sign_up_page.*
+import kotlinx.android.synthetic.main.fragment_sign_up_page.btn_facebook
+import kotlinx.android.synthetic.main.fragment_sign_up_page.btn_facebook_sdk
+import kotlinx.android.synthetic.main.fragment_sign_up_page.btn_linkedin
+import kotlinx.android.synthetic.main.fragment_sign_up_page.user_email
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -30,23 +32,23 @@ import java.io.IOException
  * Created by lucas on 24/10/2018.
  */
 
-class EnterEmailFragment : BaseFragment() {
+class SignUpPageFragment : BaseFragment() {
 
-    lateinit var viewModel: EnterEmailViewModel
+    lateinit var viewModel: SignUpPageViewModel
     private lateinit var handlerViewPager: Handler
 
     private val callbackManager = CallbackManager.Factory.create()
 
     companion object {
 
-        fun newInstance() = EnterEmailFragment()
+        fun newInstance() = SignUpPageFragment()
     }
 
-    override fun layoutId(): Int = R.layout.fragment_enter_email_linear
+    override fun layoutId(): Int = R.layout.fragment_sign_up_page
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProviders.of(this, viewModelFactory)[EnterEmailViewModel::class.java]
+        viewModel = ViewModelProviders.of(this, viewModelFactory)[SignUpPageViewModel::class.java]
 
         CoroutineScope(Dispatchers.IO).launch {
             Timber.e("Called Launch")
@@ -143,6 +145,10 @@ class EnterEmailFragment : BaseFragment() {
 //        btn_send.setOnClickListener {
 //            viewModel.checkIfEmailRegistered(getEdTxtEmail())
 //        }
+
+        btn_go_to_log_in.setOnClickListener {
+            navigator.navigateToLogInPageFragment(requireActivity())
+        }
 
         user_email.setOnEditorActionListener { _, i, _ ->
             var handled = false

@@ -3,6 +3,7 @@ package com.divercity.android.di.module.fragments
 import com.divercity.android.features.login.step1.*
 import com.divercity.android.features.login.step2.LoginFragment
 import com.divercity.android.features.signup.SignUpFragment
+import com.divercity.android.features.signup.SignUpPageFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -20,7 +21,10 @@ abstract class FragmentSessionBuilderModule {
     abstract fun bindSignUpFragment(): SignUpFragment
 
     @ContributesAndroidInjector
-    abstract fun bindEnterEmailFragment(): EnterEmailFragment
+    abstract fun bindLogInPageFragment(): LogInPageFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindSignUpPageFragment(): SignUpPageFragment
 
     @ContributesAndroidInjector
     abstract fun bindGetStartedFragment(): GetStartedFragment

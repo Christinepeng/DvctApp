@@ -1,18 +1,18 @@
-package com.divercity.android.features.login.step1
+package com.divercity.android.features.signup
 
 import android.content.Context
 import android.content.Intent
 import com.divercity.android.core.base.BaseActivity
 import com.divercity.android.core.base.BaseFragment
 
-class EnterEmailActivity : BaseActivity() {
+class SignUpPageActivity : BaseActivity() {
 
     companion object {
 
         fun getCallingIntent(context: Context) : Intent {
-            return Intent(context, EnterEmailActivity::class.java)
+            return Intent(context, SignUpPageActivity::class.java)
         }
     }
 
-    override fun fragment(): BaseFragment = EnterEmailFragment.newInstance()
+    override fun fragment(): BaseFragment = SignUpPageFragment.newInstance()
 }

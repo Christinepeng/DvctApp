@@ -53,7 +53,7 @@ import com.divercity.android.features.linkedin.LinkedinActivity
 import com.divercity.android.features.loadurl.LoadUrlActivity
 import com.divercity.android.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
-import com.divercity.android.features.login.step1.EnterEmailActivity
+import com.divercity.android.features.login.step1.LogInPageActivity
 import com.divercity.android.features.login.step1.GetStartedActivity
 import com.divercity.android.features.login.step2.LoginActivity
 import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
@@ -74,6 +74,7 @@ import com.divercity.android.features.search.SearchActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
+import com.divercity.android.features.signup.SignUpPageActivity
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
@@ -189,7 +190,10 @@ abstract class ActivityBuilderModule {
     abstract fun bindGetStartedActivity(): GetStartedActivity
 
     @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
-    abstract fun bindEnterEmailActivity(): EnterEmailActivity
+    abstract fun bindLogInPageActivity(): LogInPageActivity
+
+    @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
+    abstract fun bindSignUpPageActivity(): SignUpPageActivity
 
     @ContributesAndroidInjector(modules = [FragmentSessionBuilderModule::class])
     abstract fun bindLoginActivity(): LoginActivity

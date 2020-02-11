@@ -129,7 +129,13 @@
             android:windowSoftInputMode="stateHidden" />
 
         <activity
-            android:name=".features.login.step1.EnterEmailActivity"
+            android:name=".features.login.step1.LogInPageActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden" />
+
+        <activity
+            android:name=".features.signup.SignUpPageActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden" />

@@ -4,26 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center">
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/onboarding_join_communities1"
-            android:layout_marginTop="61.6dp"
-            android:layout_marginStart="28dp"/>
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/onboarding_join_communities2"
-            android:layout_marginTop="136dp"
-            android:layout_marginStart="20dp"/>
-
-    </RelativeLayout>
+        android:src="@drawable/onboarding_join_communities_group"
+        android:layout_marginTop="61.6dp"
+        android:layout_marginStart="34dp"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -35,8 +21,7 @@
         android:layout_gravity="center"
         android:text="@string/join_communities"
         android:layout_marginTop="53.9dp"
-        android:textStyle="bold"
-        />
+        android:textStyle="bold" />
 
     <TextView
         android:layout_width="wrap_content"

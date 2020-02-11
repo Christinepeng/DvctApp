@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.os.Handler
 import android.view.View
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.core.ui.ViewPagerDotsPanel
 import com.facebook.CallbackManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.fragment_onboarding_getstarted.*
 import kotlinx.coroutines.CoroutineScope
@@ -65,7 +63,7 @@ class GetStartedFragment : BaseFragment() {
 
     private fun setupEvents() {
         btn_get_start_login.setOnClickListener {
-            navigator.navigateToEnterEmailFragment(requireActivity()) }
+            navigator.navigateToLogInPageFragment(requireActivity()) }
     }
 
     private fun showToast(msg: String?) {

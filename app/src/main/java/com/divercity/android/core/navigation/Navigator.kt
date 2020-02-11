@@ -61,9 +61,8 @@ import com.divercity.android.features.linkedin.LinkedinActivity
 import com.divercity.android.features.loadurl.LoadUrlActivity
 import com.divercity.android.features.location.onboarding.OnboardingLocationActivity
 import com.divercity.android.features.location.withtoolbar.ToolbarLocationActivity
-import com.divercity.android.features.login.step1.EnterEmailActivity
+import com.divercity.android.features.login.step1.LogInPageActivity
 import com.divercity.android.features.login.step1.GetStartedActivity
-import com.divercity.android.features.login.step1.EnterEmailFragment
 import com.divercity.android.features.login.step2.LoginActivity
 import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
 import com.divercity.android.features.major.withtoolbar.SelectSingleMajorActivity
@@ -83,6 +82,7 @@ import com.divercity.android.features.search.SearchActivity
 import com.divercity.android.features.settings.ProfileSettingsActivity
 import com.divercity.android.features.settings.accountsettings.AccountSettingsActivity
 import com.divercity.android.features.signup.SignUpActivity
+import com.divercity.android.features.signup.SignUpPageActivity
 import com.divercity.android.features.singleuseraction.SingleUserActionActivity
 import com.divercity.android.features.skill.editskills.EditUserSkillActivity
 import com.divercity.android.features.skill.jobskills.JobSkillsActivity
@@ -259,8 +259,12 @@ class Navigator @Inject constructor() {
         activity.startActivity(LinkedinActivity.getCallingIntent(activity))
     }
 
-    fun navigateToEnterEmailFragment(activity: FragmentActivity) {
-        activity.startActivity(EnterEmailActivity.getCallingIntent(activity))
+    fun navigateToLogInPageFragment(activity: FragmentActivity) {
+        activity.startActivity(LogInPageActivity.getCallingIntent(activity))
+    }
+
+    fun navigateToSignUpPageFragment(activity: FragmentActivity) {
+        activity.startActivity(SignUpPageActivity.getCallingIntent(activity))
     }
 
     fun navigateToChatsActivity(activity: FragmentActivity) {

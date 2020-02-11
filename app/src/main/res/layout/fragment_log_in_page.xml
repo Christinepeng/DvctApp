@@ -21,23 +21,23 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
-        android:textColor="#333241"
         android:lineSpacingExtra="7sp"
         android:gravity="center_horizontal"
         android:layout_gravity="center"
-        android:paddingTop="22dp"
-        tools:text="Join the Largest Underrepresented \n Professional Minority Network" />
+        android:textColor="#333241"
+        android:text="Join the Largest Underrepresented \n Professional Minority Network"
+        android:layout_marginTop="22dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:textColor="#a4a4b3"
         android:lineSpacingExtra="5sp"
         android:gravity="center_horizontal"
         android:layout_gravity="center"
-        android:paddingTop="28dp"
-        tools:text="Sign up via Social Networks" />
+        android:textColor="#a4a4b3"
+        android:text="Sign up via Social Networks"
+        android:layout_marginTop="28dp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -90,44 +90,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:textColor="#a4a4b3"
         android:lineSpacingExtra="5sp"
         android:gravity="center_horizontal"
         android:layout_gravity="center"
-        tools:text="Or Sign up with Email"
-        android:paddingTop="28dp"
-        />
+        android:textColor="#a4a4b3"
+        android:text="Or Log in with Email"
+        android:layout_marginTop="28dp" />
 
-    <RelativeLayout
-        android:id="@+id/frameLayout_name"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:visibility="visible">
+<!--    <RelativeLayout-->
+<!--        android:id="@+id/frameLayout_name"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:background="@android:color/white"-->
+<!--        android:visibility="visible">-->
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/icon_login_name"/>
+<!--        <ImageView-->
+<!--            android:layout_width="30dp"-->
+<!--            android:layout_height="30dp"-->
+<!--            android:layout_marginTop="15dp"-->
+<!--            android:layout_marginStart="15dp"-->
+<!--            android:src="@drawable/icon_login_name"/>-->
 
-        <EditText
-            android:id="@+id/user_name"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/avenir_roman"
-            android:hint="Name"
-            android:imeOptions="actionDone"
-            android:inputType="textEmailAddress"
-            android:padding="24dp"
-            android:layout_marginStart="35dp"
-            android:textColor="#333241"
-            android:textSize="15sp"/>
-<!--            android:backgroundTint="@android:color/holo_gray_light"/> -->
+<!--        <EditText-->
+<!--            android:id="@+id/user_name"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/avenir_roman"-->
+<!--            android:hint="Name"-->
+<!--            android:imeOptions="actionDone"-->
+<!--            android:inputType="textEmailAddress"-->
+<!--            android:padding="24dp"-->
+<!--            android:layout_marginStart="35dp"-->
+<!--            android:textColor="#333241"-->
+<!--            android:textSize="15sp"/>-->
+<!--&lt;!&ndash;            android:backgroundTint="@android:color/holo_gray_light"/> &ndash;&gt;-->
 
 
-    </RelativeLayout>
+<!--    </RelativeLayout>-->
 
     <RelativeLayout
         android:id="@+id/frameLayout_email"
@@ -200,19 +199,34 @@
             android:layout_height="30dp"
             android:layout_marginTop="15dp"
             android:layout_marginStart="15dp"
-            android:buttonTint="@color/grey"
-            />
+            android:buttonTint="@color/grey" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
-            android:padding="24dp"
-            tools:text="Remember Password"
-            android:layout_marginStart="35dp"
             android:textSize="13sp"
+            android:lineSpacingExtra="5sp"
+            android:layout_gravity="center"
             android:textColor="#a4a4b3"
-            android:lineSpacingExtra="5sp" />
+            android:text="Remember Password"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="60dp"/>
+
+        <TextView
+            android:id="@+id/btn_forget_password"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_roman"
+            android:textSize="13sp"
+            android:lineSpacingExtra="5sp"
+            android:layout_gravity="center"
+            android:textColor="#3198e5"
+            android:text="Forgot Password?"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="280dp"
+            android:clickable="true"
+            android:focusable="true"/>
 
     </RelativeLayout>
 
@@ -237,8 +251,8 @@
         android:background="@drawable/shape_backgrd_round_blue2"
         android:fontFamily="@font/avenir_medium"
         android:padding="10dp"
-        android:layout_marginTop="20dp"
-        android:text="sign up"
+        android:layout_marginTop="10dp"
+        android:text="@string/log_in"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
         android:textSize="18sp" />
@@ -253,18 +267,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
-            android:textColor="#a7a7a7"
             android:lineSpacingExtra="5sp"
             android:gravity="center_horizontal"
-            tools:text="Already have an account? "
-            />
+            android:layout_gravity="center"
+            android:textColor="#a7a7a7"
+            android:text="Don’t have an account? " />
 
         <TextView
+            android:id="@+id/btn_go_to_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="15sp"
             android:textColor="#3197e4"
-            android:text="Log In"/>
+            android:text="Sign Up"
+            android:clickable="true"
+            android:focusable="true"/>
 
     </LinearLayout>
 

@@ -1,6 +1,8 @@
-package com.divercity.android.features.login.step1;
+package com.divercity.android.features.signup;
 
 import android.app.Application;
+
+import androidx.lifecycle.MutableLiveData;
 
 import com.divercity.android.R;
 import com.divercity.android.core.base.viewmodel.BaseViewModel;
@@ -18,14 +20,13 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.inject.Inject;
 
-import androidx.lifecycle.MutableLiveData;
 import io.reactivex.observers.DisposableObserver;
 
 /**
  * Created by lucas on 26/09/2018.
  */
 
-public class EnterEmailViewModel extends BaseViewModel {
+public class SignUpPageViewModel extends BaseViewModel {
 
     private ChecIskEmailRegisteredUseCase checIskEmailRegisteredUseCase;
     private LoginFacebookUseCase loginFacebookUseCase;
@@ -39,7 +40,7 @@ public class EnterEmailViewModel extends BaseViewModel {
     private SingleLiveEvent<Object> navigateToLogin = new SingleLiveEvent<>();
 
     @Inject
-    public EnterEmailViewModel(Application application,
+    public SignUpPageViewModel(Application application,
                                ChecIskEmailRegisteredUseCase checIskEmailRegisteredUseCase,
                                ConnectLinkedInApiHelper linkedInApiHelper,
                                LoginFacebookUseCase loginFacebookUseCase) {

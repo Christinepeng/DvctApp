@@ -79,7 +79,7 @@ import com.divercity.android.features.jobs.similarjobs.SimilarJobListViewModel
 import com.divercity.android.features.linkedin.LinkedinViewModel
 import com.divercity.android.features.location.base.SelectLocationViewModel
 import com.divercity.android.features.location.onboarding.OnboardingLocationViewModel
-import com.divercity.android.features.login.step1.EnterEmailViewModel
+import com.divercity.android.features.login.step1.LogInPageViewModel
 import com.divercity.android.features.login.step2.LoginViewModel
 import com.divercity.android.features.major.base.SelectMajorViewModel
 import com.divercity.android.features.major.onboarding.OnboardingMajorViewModel
@@ -98,6 +98,7 @@ import com.divercity.android.features.school.onboarding.OnboardingSchoolViewMode
 import com.divercity.android.features.search.SearchViewModel
 import com.divercity.android.features.settings.ProfileSettingsViewModel
 import com.divercity.android.features.settings.accountsettings.AccountSettingsViewModel
+import com.divercity.android.features.signup.SignUpPageViewModel
 import com.divercity.android.features.signup.SignUpViewModel
 import com.divercity.android.features.singleuseraction.SingleUserActionViewModel
 import com.divercity.android.features.skill.base.SelectSkillViewModel
@@ -132,8 +133,13 @@ abstract class ViewModelModule {
 
     @Binds
     @IntoMap
-    @ViewModelKey(EnterEmailViewModel::class)
-    abstract fun bindsEnterEmailViewModel(viewModel: EnterEmailViewModel): ViewModel
+    @ViewModelKey(LogInPageViewModel::class)
+    abstract fun bindsLogInPageViewModel(viewModel: LogInPageViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SignUpPageViewModel::class)
+    abstract fun bindsSignUpPageViewModel(viewModel: SignUpPageViewModel): ViewModel
 
     @Binds
     @IntoMap

@@ -86,16 +86,40 @@
 
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:lineSpacingExtra="5sp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center"
-        android:textColor="#a4a4b3"
-        android:text="Or Log in with Email"
-        android:layout_marginTop="15dp" />
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <View
+            android:layout_marginStart="10dp"
+            android:layout_width="80dp"
+            android:layout_height="0.5dp"
+            android:background="#c0c0c0"
+            android:layout_marginTop="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:lineSpacingExtra="5sp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:textColor="#a4a4b3"
+            android:text="Or Sign up with Email"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="25dp"
+            />
+
+        <View
+            android:layout_marginStart="25dp"
+            android:layout_width="80dp"
+            android:layout_height="0.5dp"
+            android:background="#c0c0c0"
+            android:layout_marginTop="18sp"/>
+
+    </LinearLayout>
 
     <RelativeLayout
         android:id="@+id/frameLayout_name"

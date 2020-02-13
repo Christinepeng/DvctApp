@@ -5,11 +5,11 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/onboarding_join_communities_group"
+        android:layout_width="331dp"
+        android:layout_height="271dp"
+        android:layout_marginStart="34dp"
         android:layout_marginTop="61.6dp"
-        android:layout_marginStart="34dp"/>
+        android:src="@drawable/onboarding_join_communities_group" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,7 +20,7 @@
         android:gravity="center_horizontal"
         android:layout_gravity="center"
         android:text="@string/join_communities"
-        android:layout_marginTop="53.9dp"
+        android:layout_marginTop="45dp"
         android:textStyle="bold" />
 
     <TextView

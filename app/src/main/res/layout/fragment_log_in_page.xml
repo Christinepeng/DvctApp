@@ -66,6 +66,12 @@
             android:background="@null"
             android:src="@drawable/facebook" />
 
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/sign_in_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
         <ImageButton
             android:id="@+id/btn_google"
             android:layout_width="127dp"
@@ -86,16 +92,42 @@
 
     </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:lineSpacingExtra="5sp"
-        android:gravity="center_horizontal"
-        android:layout_gravity="center"
-        android:textColor="#a4a4b3"
-        android:text="Or Log in with Email"
-        android:layout_marginTop="28dp" />
+        android:orientation="horizontal"
+        android:layout_gravity="center_horizontal">
+
+        <View
+            android:layout_marginStart="10dp"
+            android:layout_width="80dp"
+            android:layout_height="0.5dp"
+            android:background="#c0c0c0"
+            android:layout_marginTop="18sp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="15sp"
+            android:lineSpacingExtra="5sp"
+            android:gravity="center_horizontal"
+            android:layout_gravity="center"
+            android:textColor="#a4a4b3"
+            android:text="Or Log in with Email"
+            android:layout_marginTop="5dp"
+            android:layout_marginStart="25dp"
+            />
+
+        <View
+            android:layout_marginStart="25dp"
+            android:layout_width="80dp"
+            android:layout_height="0.5dp"
+            android:background="#c0c0c0"
+            android:layout_marginTop="18sp"/>
+
+    </LinearLayout>
+
+
 
 <!--    <RelativeLayout-->
 <!--        android:id="@+id/frameLayout_name"-->
@@ -243,7 +275,7 @@
     <!--            android:src="@drawable/send" />-->
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_sign_up"
+        android:id="@+id/btn_log_in"
         style="@style/AppText"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
@@ -251,7 +283,7 @@
         android:background="@drawable/shape_backgrd_round_blue2"
         android:fontFamily="@font/avenir_medium"
         android:padding="10dp"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="30dp"
         android:text="@string/log_in"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
@@ -260,7 +292,7 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="20dp"
         android:layout_gravity="center">
 
         <TextView

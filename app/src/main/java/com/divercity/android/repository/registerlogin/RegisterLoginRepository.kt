@@ -31,6 +31,8 @@ interface RegisterLoginRepository {
 
     fun loginFacebook(token: String): Observable<User>
 
+    fun loginGoogle(token: String): Observable<User>
+
     fun requestResetPassword(email: String): Observable<Unit>
 
     fun resetPassword(

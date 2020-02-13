@@ -77,7 +77,7 @@ public class LogInPageViewModel extends BaseViewModel {
             isEmailRegistered.setValue(Resource.Companion.error(application.getResources().getString(R.string.insert_valid_email), null));
     }
 
-    public void loginFacebook(String token){
+    public void loginFacebook(String token) {
         loginFacebookResponse.setValue(Resource.Companion.loading(null));
 
         DisposableObserverWrapper<User> disposable = new DisposableObserverWrapper<User>() {
@@ -98,6 +98,10 @@ public class LogInPageViewModel extends BaseViewModel {
         };
 
         loginFacebookUseCase.execute(disposable, LoginFacebookUseCase.Params.forFacebook(token));
+    }
+
+    public void loginGoogle(String token) {
+        // TODO
     }
 
     public MutableLiveData<Resource<Boolean>> getIsEmailRegistered() {

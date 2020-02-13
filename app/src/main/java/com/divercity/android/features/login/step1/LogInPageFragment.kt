@@ -3,6 +3,7 @@ package com.divercity.android.features.login.step1
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
@@ -16,16 +17,10 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.fragment_log_in_page.*
-import kotlinx.android.synthetic.main.fragment_sign_up_page.*
-import kotlinx.android.synthetic.main.fragment_sign_up_page.btn_facebook
-import kotlinx.android.synthetic.main.fragment_sign_up_page.btn_facebook_sdk
-import kotlinx.android.synthetic.main.fragment_sign_up_page.btn_linkedin
-import kotlinx.android.synthetic.main.fragment_sign_up_page.user_email
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -84,7 +79,7 @@ class LogInPageFragment : BaseFragment() {
 //            val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
 //            startActivityForResult(signInIntent, RC_SIGN_IN)
 //        }
-//
+
 //        // Google log in
 //        val acct = GoogleSignIn.getLastSignedInAccount(activity)
 //        if (acct != null) {
@@ -182,6 +177,30 @@ class LogInPageFragment : BaseFragment() {
             }
         })
 
+//        btn_google.setOnClickListener {
+//            btn_google_login.performClick()
+//            Log.d("TAG", "CLICK1")
+//        }
+
+        // Google log in
+        // Configure sign-in to request the user's ID, email address, and basic
+        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken("451214312845-f7of8g813n0o5m44o52g7p5b17sup578.apps.googleusercontent.com")
+            .requestEmail()
+            .build()
+
+        // Google log in
+        // Build a GoogleSignInClient with the options specified by gso.
+        val mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+
+        // Google log in
+        btn_google_login.setOnClickListener {
+            val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
+            startActivityForResult(signInIntent, RC_SIGN_IN)
+            Log.d("TAG", "CLICK2")
+        }
+
         btn_linkedin.setOnClickListener {
             navigator.navigateToLinkedinActivity(requireActivity())
         }
@@ -197,8 +216,6 @@ class LogInPageFragment : BaseFragment() {
             }
             handled
         }
-
-
     }
 
     fun getEdTxtEmail(): String {
@@ -215,8 +232,23 @@ class LogInPageFragment : BaseFragment() {
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        callbackManager.onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+        callbackManager.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                // Google Sign In was successful, authenticate with Firebase
+                val account = task.getResult(ApiException::class.java)
+                val idToken = account.getIdToken()
+                Log.d("TAG", "Google Token" + idToken)
+                viewModel.loginGoogle(idToken)
+            } catch (e: ApiException) {
+                // Google Sign In failed, update UI appropriately
+                Log.w("lol", "signInResult:failed code=" + e.getStatusCode());
+                // ...
+            }
+        }
+
 
 //        // Google log in
 //        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);

@@ -67,19 +67,19 @@
             android:src="@drawable/facebook" />
 
         <com.google.android.gms.common.SignInButton
-            android:id="@+id/sign_in_button"
+            android:id="@+id/btn_google_login"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="gone"/>
+            android:layout_height="wrap_content" />
+<!--            android:visibility="gone"/>-->
 
-        <ImageButton
-            android:id="@+id/btn_google"
-            android:layout_width="127dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:src="@drawable/google" />
+<!--        <ImageButton-->
+<!--            android:id="@+id/btn_google"-->
+<!--            android:layout_width="127dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_marginEnd="20dp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:background="@null"-->
+<!--            android:src="@drawable/google" />-->
 
         <ImageButton
             android:id="@+id/btn_linkedin"

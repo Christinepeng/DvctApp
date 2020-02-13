@@ -40,6 +40,12 @@ interface RegisterLoginService {
     @POST("auth/sso/facebook")
     fun loginFacebook(@Part("token") token: RequestBody): Observable<Response<DataObject<UserEntityResponse>>>
 
+    // TODO: Figure out Google endpoint
+    @POST("auth/sso/google")
+    fun loginGoogle(
+        @Query("state") state: String
+    ): Observable<Response<DataObject<UserEntityResponse>>>
+
     @Multipart
     @POST("passwords/forgot")
     fun requestResetPassword(@Part("email") email: RequestBody): Observable<Response<Unit>>

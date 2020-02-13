@@ -43,32 +43,32 @@ class ResetPasswordFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
+//        setupToolbar()
         setupView()
         subscribeToLiveData()
     }
 
-    private fun setupToolbar() {
-        (activity as AppCompatActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
-            supportActionBar?.let {
-                it.setTitle(R.string.reset_password)
-                if (!isTaskRoot)
-                    it.setDisplayHomeAsUpEnabled(true)
-            }
-        }
-    }
+//    private fun setupToolbar() {
+//        (activity as AppCompatActivity).apply {
+////            setSupportActionBar(include_toolbar.toolbar)
+//            supportActionBar?.let {
+//                it.setTitle(R.string.reset_password)
+//                if (!isTaskRoot)
+//                    it.setDisplayHomeAsUpEnabled(true)
+//            }
+//        }
+//    }
 
     fun setupView() {
-        btn_continue.setOnClickListener {
-            val newPassword = et_new_password.text.toString()
-            val confirmedPassword = et_confirm_new_pass.text.toString()
-
-            if (newPassword.isEmpty() || confirmedPassword.isEmpty() || newPassword != confirmedPassword)
-                showToast("Check Passwords")
-            else
-                viewModel.resetPassword(newPassword, arguments?.getString(PARAM_TOKEN)!!)
-        }
+//        btn_continue.setOnClickListener {
+//            val newPassword = et_new_password.text.toString()
+//            val confirmedPassword = et_confirm_new_pass.text.toString()
+//
+//            if (newPassword.isEmpty() || confirmedPassword.isEmpty() || newPassword != confirmedPassword)
+//                showToast("Check Passwords")
+//            else
+//                viewModel.resetPassword(newPassword, arguments?.getString(PARAM_TOKEN)!!)
+//        }
     }
 
     fun subscribeToLiveData() {

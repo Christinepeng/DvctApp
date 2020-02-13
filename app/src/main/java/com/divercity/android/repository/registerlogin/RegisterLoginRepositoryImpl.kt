@@ -74,6 +74,14 @@ constructor(
         }
     }
 
+    override fun loginGoogle(token: String): Observable<User> {
+        return registerLoginService.loginGoogle(token).map { response ->
+            checkResponse(response)
+            sessionRepository.saveUserHeaderData(response)
+            response.body()!!.data.toUser()
+        }
+    }
+
     override fun isEmailRegistered(email: String): Observable<CheckUsernameEmailResponse> {
         return registerLoginService.checkEmail(CheckEmailBody(email))
     }

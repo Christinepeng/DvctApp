@@ -253,7 +253,7 @@
     <!--            android:src="@drawable/send" />-->
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_sign_up"
+        android:id="@+id/btn_s"
         style="@style/AppText"
         android:layout_width="240dp"
         android:layout_height="wrap_content"

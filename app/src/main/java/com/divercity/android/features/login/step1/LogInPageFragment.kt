@@ -230,7 +230,7 @@ class LogInPageFragment : BaseFragment() {
                 val account = task.getResult(ApiException::class.java)
                 val idToken = account?.getIdToken()
                 Log.d("TAG", "Google Token: " + idToken)
-                viewModel.loginGoogle(idToken)
+//                viewModel.loginGoogle(idToken)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
                 Log.w("lol", "signInResult:failed code=" + e.getStatusCode());

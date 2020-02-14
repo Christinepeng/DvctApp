@@ -6,8 +6,6 @@ import com.divercity.android.core.base.BaseActivity
 import com.divercity.android.core.base.BaseFragment
 
 
-
-
 class LinkedinActivity : BaseActivity() {
 
     companion object {

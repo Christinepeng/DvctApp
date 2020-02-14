@@ -17,6 +17,7 @@ import com.facebook.FacebookCallback
 import com.facebook.FacebookException
 import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.iid.FirebaseInstanceId
@@ -62,25 +63,6 @@ class LogInPageFragment : BaseFragment() {
         }
 
 //        // Google log in
-//        // Configure sign-in to request the user's ID, email address, and basic
-//        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-//        // Configure sign-in to request the user's ID, email address, and basic
-//        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
-//        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestEmail()
-//                .build()
-//
-//        // Google log in
-//        // Build a GoogleSignInClient with the options specified by gso.
-//        val mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//
-//        // Google log in
-//        sign_in_button.setOnClickListener {
-//            val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
-//            startActivityForResult(signInIntent, RC_SIGN_IN)
-//        }
-
-//        // Google log in
 //        val acct = GoogleSignIn.getLastSignedInAccount(activity)
 //        if (acct != null) {
 //            val personName = acct.displayName
@@ -91,15 +73,6 @@ class LogInPageFragment : BaseFragment() {
 //            val personPhoto: Uri? = acct.photoUrl
 //        }
     }
-
-//    // Google log in
-//    override fun onStart() {
-//        super.onStart()
-//        // Check for existing Google Sign In account, if the user is already signed in
-//        // the GoogleSignInAccount will be non-null.
-//        val account = GoogleSignIn.getLastSignedInAccount(this)
-//        updateUI(account)
-//    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -192,13 +165,22 @@ class LogInPageFragment : BaseFragment() {
 
         // Google log in
         // Build a GoogleSignInClient with the options specified by gso.
-        val mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso);
+        val mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
+
+        mGoogleSignInClient.signOut()
 
         // Google log in
         btn_google_login.setOnClickListener {
-            val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
-            startActivityForResult(signInIntent, RC_SIGN_IN)
-            Log.d("TAG", "CLICK2")
+            val account = GoogleSignIn.getLastSignedInAccount(requireActivity())
+            if (account != null) {
+                mGoogleSignInClient.signOut().addOnCompleteListener { task ->
+                    if (task.isComplete) {
+                        startGoogleSignInActivity(mGoogleSignInClient)
+                    }
+                }
+            } else { // User is not yet signed in: Start the Google sign-in flow.
+                startGoogleSignInActivity(mGoogleSignInClient)
+            }
         }
 
         btn_linkedin.setOnClickListener {
@@ -206,7 +188,8 @@ class LogInPageFragment : BaseFragment() {
         }
 
         btn_go_to_sign_up.setOnClickListener {
-            navigator.navigateToSignUpPageFragment(requireActivity()) }
+            navigator.navigateToSignUpPageFragment(requireActivity())
+        }
 
         user_email.setOnEditorActionListener { _, i, _ ->
             var handled = false
@@ -231,6 +214,12 @@ class LogInPageFragment : BaseFragment() {
         handlerViewPager.removeCallbacksAndMessages(null)
     }
 
+    private fun startGoogleSignInActivity(mGoogleSignInClient: GoogleSignInClient) {
+        val signInIntent: Intent = mGoogleSignInClient.getSignInIntent()
+        startActivityForResult(signInIntent, RC_SIGN_IN)
+        Log.d("TAG", "CLICK2")
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
@@ -239,8 +228,8 @@ class LogInPageFragment : BaseFragment() {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                val idToken = account.getIdToken()
-                Log.d("TAG", "Google Token" + idToken)
+                val idToken = account?.getIdToken()
+                Log.d("TAG", "Google Token: " + idToken)
                 viewModel.loginGoogle(idToken)
             } catch (e: ApiException) {
                 // Google Sign In failed, update UI appropriately
@@ -248,28 +237,5 @@ class LogInPageFragment : BaseFragment() {
                 // ...
             }
         }
-
-
-//        // Google log in
-//        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
-//        if (requestCode === RC_SIGN_IN) {
-//            // The Task returned from this call is always completed, no need to attach
-//            // a listener.
-//            val task: Task<GoogleSignInAccount> =
-//                GoogleSignIn.getSignedInAccountFromIntent(android.R.attr.data)
-//            handleSignInResult(task)
-//        }
     }
-
-//    // Google log in
-//    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>): Unit {
-//        try {
-//            val account: GoogleSignInAccount = completedTask.getResult(ApiException::class.java)
-//            // Signed in successfully, show authenticated UI.
-//        } catch (e: ApiException) {
-//            // The ApiException status code indicates the detailed failure reason.
-//            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-//
-//        }
-//    }
 }

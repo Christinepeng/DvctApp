@@ -1,4 +1,4 @@
-package com.divercity.android.features.login.step2.usecase
+package com.divercity.android.features.login.step1.usecase
 
 import com.divercity.android.core.base.usecase.UseCase
 import com.divercity.android.repository.registerlogin.RegisterLoginRepository
@@ -26,7 +26,9 @@ constructor(@Named("executor_thread") executorThread: Scheduler,
         companion object {
 
             fun to(email : String): Params {
-                return Params(email)
+                return Params(
+                    email
+                )
             }
         }
     }

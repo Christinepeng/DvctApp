@@ -13,12 +13,12 @@ import io.reactivex.Scheduler;
  * Created by lucas on 26/09/2018.
  */
 
-public class ChecIskEmailRegisteredUseCase extends UseCase<Boolean, ChecIskEmailRegisteredUseCase.Params> {
+public class CheckIskEmailRegisteredUseCase extends UseCase<Boolean, CheckIskEmailRegisteredUseCase.Params> {
 
     private RegisterLoginRepository mRegisterLoginRepository;
 
     @Inject
-    public ChecIskEmailRegisteredUseCase(@Named("executor_thread") Scheduler executorThread,
+    public CheckIskEmailRegisteredUseCase(@Named("executor_thread") Scheduler executorThread,
                                          @Named("ui_thread") Scheduler uiThread,
                                          RegisterLoginRepository registerLoginRepository) {
         super(executorThread, uiThread);

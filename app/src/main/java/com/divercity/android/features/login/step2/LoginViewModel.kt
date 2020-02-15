@@ -6,8 +6,8 @@ import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.login.step2.usecase.LoginUseCase
-import com.divercity.android.features.login.step2.usecase.RequestResetPasswordUseCase
+import com.divercity.android.features.login.step1.usecase.LoginEmailUseCase
+import com.divercity.android.features.login.step1.usecase.RequestResetPasswordUseCase
 import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -19,7 +19,7 @@ import javax.inject.Inject
 class LoginViewModel @Inject
 internal constructor(
     private val application: Application,
-    private val loginUseCase: LoginUseCase,
+    private val loginEmailUseCase: LoginEmailUseCase,
     private val requestResetPasswordUseCase: RequestResetPasswordUseCase
 ) : BaseViewModel() {
 
@@ -31,7 +31,7 @@ internal constructor(
     fun login(password: String?) {
         if (password != null && password != "") {
             login.value = Resource.loading<User>(null)
-            val callback = object : LoginUseCase.Callback() {
+            val callback = object : LoginEmailUseCase.Callback() {
                 override fun onFail(error: String) {
                     login.value = Resource.error<User>(error, null)
                 }
@@ -40,7 +40,7 @@ internal constructor(
                     login.value = Resource.success(response)
                 }
             }
-            loginUseCase.execute(callback, LoginUseCase.Params.forLogin(userEmail, password))
+            loginEmailUseCase.execute(callback, LoginEmailUseCase.Params.forLogin(userEmail, password))
         } else {
             login.setValue(
                 Resource.error<User>(
@@ -76,6 +76,6 @@ internal constructor(
 
     override fun onCleared() {
         super.onCleared()
-        loginUseCase.dispose()
+        loginEmailUseCase.dispose()
     }
 }

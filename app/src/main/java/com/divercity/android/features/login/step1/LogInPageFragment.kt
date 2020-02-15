@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
+import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.facebook.CallbackManager
 import com.facebook.FacebookCallback
 import com.facebook.FacebookException
@@ -20,6 +21,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
 import kotlinx.android.synthetic.main.fragment_log_in_page.*
 import kotlinx.coroutines.CoroutineScope
@@ -42,7 +44,7 @@ class LogInPageFragment : BaseFragment() {
     private val callbackManager = CallbackManager.Factory.create()
 
     companion object {
-
+        private const val PARAM_EMAIL = "paramEmail"
         fun newInstance() = LogInPageFragment()
     }
 
@@ -61,29 +63,20 @@ class LogInPageFragment : BaseFragment() {
                 showToast("Error deleting notification token")
             }
         }
-
-//        // Google log in
-//        val acct = GoogleSignIn.getLastSignedInAccount(activity)
-//        if (acct != null) {
-//            val personName = acct.displayName
-//            val personGivenName = acct.givenName
-//            val personFamilyName = acct.familyName
-//            val personEmail = acct.email
-//            val personId = acct.id
-//            val personPhoto: Uri? = acct.photoUrl
-//        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handlerViewPager = Handler()
+        hideKeyboard()
 //        setupViewPager()
-        subscribeToLiveData()
+//        setupToolbar()
         setupEvents()
+        subscribeToLiveData()
     }
 
     fun subscribeToLiveData() {
-        viewModel.isEmailRegistered.observe(this, Observer { response ->
+        viewModel.checkEmailRegisteredResponse.observe(this, Observer { response ->
             when (response?.status) {
                 Status.LOADING -> {
                     showProgress()
@@ -95,6 +88,41 @@ class LogInPageFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
+                }
+            }
+        })
+
+        viewModel.loginEmailResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+                Status.ERROR -> {
+                    hideProgress()
+                    showSnackbar(response.message)
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    if (response.data?.accountType == null)
+                        navigator.navigateToSelectUserTypeActivity(requireActivity())
+                    else
+                        navigator.navigateToHomeActivity(requireActivity())
+                }
+            }
+        })
+
+        viewModel.requestResetPasswordResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+                Status.ERROR -> {
+                    hideProgress()
+                    showSnackbar(response.message)
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    showConfirmEmailSentDialog()
                 }
             }
         })
@@ -150,26 +178,15 @@ class LogInPageFragment : BaseFragment() {
             }
         })
 
-//        btn_google.setOnClickListener {
-//            btn_google_login.performClick()
-//            Log.d("TAG", "CLICK1")
-//        }
-
-        // Google log in
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
             .requestIdToken("451214312845-f7of8g813n0o5m44o52g7p5b17sup578.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
-        // Google log in
-        // Build a GoogleSignInClient with the options specified by gso.
         val mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-        mGoogleSignInClient.signOut()
+//        mGoogleSignInClient.signOut()
 
-        // Google log in
         btn_google_login.setOnClickListener {
             val account = GoogleSignIn.getLastSignedInAccount(requireActivity())
             if (account != null) {
@@ -199,10 +216,48 @@ class LogInPageFragment : BaseFragment() {
             }
             handled
         }
+
+        btn_forget_password.setOnClickListener {
+            viewModel.requestResetPassword(user_email.text.toString())
+        }
+
+        btn_log_in.setOnClickListener {
+            viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
+        }
+
+        user_password.setOnEditorActionListener { _, i, _ ->
+            var handled = false
+            if (i == EditorInfo.IME_ACTION_DONE) {
+                viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
+                handled = true
+            }
+            handled
+        }
     }
 
     fun getEdTxtEmail(): String {
         return user_email.text.toString().trim()
+    }
+
+    fun showSnackbar(message: String?) {
+        activity?.run {
+            Snackbar.make(
+                findViewById(android.R.id.content),
+                message ?: "Error",
+                Snackbar.LENGTH_LONG
+            ).show()
+        }
+    }
+
+    private fun showConfirmEmailSentDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.confirm_email),
+            getString(R.string.email_been_sent),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { }
+        customOneBtnDialogFragment.isCancelable = false
+        customOneBtnDialogFragment.show(childFragmentManager, null)
     }
 
     private fun showToast(msg: String?) {

@@ -1,4 +1,4 @@
-package com.divercity.android.features.login.step2.usecase;
+package com.divercity.android.features.login.step1.usecase;
 
 import com.divercity.android.core.base.usecase.UseCase;
 import com.divercity.android.data.networking.config.DisposableUnauthObserverWrapper;
@@ -12,14 +12,14 @@ import javax.inject.Named;
 import io.reactivex.Observable;
 import io.reactivex.Scheduler;
 
-public class LoginUseCase extends UseCase<User, LoginUseCase.Params> {
+public class LoginEmailUseCase extends UseCase<User, LoginEmailUseCase.Params> {
 
     private RegisterLoginRepository registerLoginRepository;
 
     @Inject
-    public LoginUseCase(@Named("executor_thread") Scheduler executorThread,
-                        @Named("ui_thread") Scheduler uiThread,
-                        RegisterLoginRepository registerLoginRepository) {
+    public LoginEmailUseCase(@Named("executor_thread") Scheduler executorThread,
+                             @Named("ui_thread") Scheduler uiThread,
+                             RegisterLoginRepository registerLoginRepository) {
         super(executorThread, uiThread);
         this.registerLoginRepository = registerLoginRepository;
     }

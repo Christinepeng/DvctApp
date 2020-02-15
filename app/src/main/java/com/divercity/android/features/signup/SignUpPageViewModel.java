@@ -10,7 +10,7 @@ import com.divercity.android.core.utils.SingleLiveEvent;
 import com.divercity.android.core.utils.Util;
 import com.divercity.android.data.Resource;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
-import com.divercity.android.features.login.step1.usecase.ChecIskEmailRegisteredUseCase;
+import com.divercity.android.features.login.step1.usecase.CheckIskEmailRegisteredUseCase;
 import com.divercity.android.features.login.step1.usecase.ConnectLinkedInApiHelper;
 import com.divercity.android.features.login.step1.usecase.LoginFacebookUseCase;
 import com.divercity.android.model.user.User;
@@ -28,7 +28,7 @@ import io.reactivex.observers.DisposableObserver;
 
 public class SignUpPageViewModel extends BaseViewModel {
 
-    private ChecIskEmailRegisteredUseCase checIskEmailRegisteredUseCase;
+    private CheckIskEmailRegisteredUseCase checkIskEmailRegisteredUseCase;
     private LoginFacebookUseCase loginFacebookUseCase;
     private Application application;
     private ConnectLinkedInApiHelper linkedInApiHelper;
@@ -41,12 +41,12 @@ public class SignUpPageViewModel extends BaseViewModel {
 
     @Inject
     public SignUpPageViewModel(Application application,
-                               ChecIskEmailRegisteredUseCase checIskEmailRegisteredUseCase,
+                               CheckIskEmailRegisteredUseCase CheckIskEmailRegisteredUseCase,
                                ConnectLinkedInApiHelper linkedInApiHelper,
                                LoginFacebookUseCase loginFacebookUseCase) {
         this.application = application;
         this.loginFacebookUseCase = loginFacebookUseCase;
-        this.checIskEmailRegisteredUseCase = checIskEmailRegisteredUseCase;
+        this.checkIskEmailRegisteredUseCase = CheckIskEmailRegisteredUseCase;
         this.linkedInApiHelper = linkedInApiHelper;
     }
 
@@ -73,7 +73,7 @@ public class SignUpPageViewModel extends BaseViewModel {
 
                 }
             };
-            checIskEmailRegisteredUseCase.execute(disposable, ChecIskEmailRegisteredUseCase.Params.forCheckEmail(email));
+            checkIskEmailRegisteredUseCase.execute(disposable, CheckIskEmailRegisteredUseCase.Params.forCheckEmail(email));
         } else
             isEmailRegistered.setValue(Resource.Companion.error(application.getResources().getString(R.string.insert_valid_email), null));
     }
@@ -121,6 +121,6 @@ public class SignUpPageViewModel extends BaseViewModel {
     protected void onCleared() {
         super.onCleared();
         loginFacebookUseCase.dispose();
-        checIskEmailRegisteredUseCase.dispose();
+        checkIskEmailRegisteredUseCase.dispose();
     }
 }

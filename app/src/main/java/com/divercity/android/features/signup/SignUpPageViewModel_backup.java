@@ -26,7 +26,7 @@ import io.reactivex.observers.DisposableObserver;
  * Created by lucas on 26/09/2018.
  */
 
-public class SignUpPageViewModel extends BaseViewModel {
+public class SignUpPageViewModel_backup extends BaseViewModel {
 
     private CheckIskEmailRegisteredUseCase checkIskEmailRegisteredUseCase;
     private LoginFacebookUseCase loginFacebookUseCase;
@@ -40,7 +40,7 @@ public class SignUpPageViewModel extends BaseViewModel {
     private SingleLiveEvent<Object> navigateToLogin = new SingleLiveEvent<>();
 
     @Inject
-    public SignUpPageViewModel(Application application,
+    public SignUpPageViewModel_backup(Application application,
                                CheckIskEmailRegisteredUseCase CheckIskEmailRegisteredUseCase,
                                ConnectLinkedInApiHelper linkedInApiHelper,
                                LoginFacebookUseCase loginFacebookUseCase) {

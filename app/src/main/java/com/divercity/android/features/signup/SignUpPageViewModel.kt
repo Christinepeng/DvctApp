@@ -1,4 +1,4 @@
-package com.divercity.android.features.login.step1
+package com.divercity.android.features.signup
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
@@ -23,7 +23,7 @@ import javax.inject.Inject
 /**
  * Created by lucas on 26/09/2018.
  */
-class LogInPageViewModel @Inject constructor(
+class SignUpPageViewModel @Inject constructor(
     private val application: Application,
     private val loginEmailUseCase: LoginEmailUseCase,
     private val requestResetPasswordUseCase: RequestResetPasswordUseCase,
@@ -127,32 +127,32 @@ class LogInPageViewModel @Inject constructor(
             )
         )
         val disposable: DisposableObserverWrapper<User> = object : DisposableObserverWrapper<User>() {
-                override fun onFail(error: String) {
-                    loginFacebookResponse.setValue(
-                        error<User>(
-                            error,
-                            null
-                        )
+            override fun onFail(error: String) {
+                loginFacebookResponse.setValue(
+                    error<User>(
+                        error,
+                        null
                     )
-                }
-
-                override fun onHttpException(error: JsonElement) {
-                    loginFacebookResponse.setValue(
-                        error<User>(
-                            error.toString(),
-                            null
-                        )
-                    )
-                }
-
-                override fun onSuccess(loginResponse: User) {
-                    loginFacebookResponse.setValue(
-                        success(
-                            loginResponse
-                        )
-                    )
-                }
+                )
             }
+
+            override fun onHttpException(error: JsonElement) {
+                loginFacebookResponse.setValue(
+                    error<User>(
+                        error.toString(),
+                        null
+                    )
+                )
+            }
+
+            override fun onSuccess(loginResponse: User) {
+                loginFacebookResponse.setValue(
+                    success(
+                        loginResponse
+                    )
+                )
+            }
+        }
         loginFacebookUseCase.execute(disposable, LoginFacebookUseCase.Params.forFacebook(token))
     }
 

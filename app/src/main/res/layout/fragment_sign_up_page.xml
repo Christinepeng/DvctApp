@@ -66,14 +66,20 @@
             android:background="@null"
             android:src="@drawable/facebook" />
 
-        <ImageButton
-            android:id="@+id/btn_google"
-            android:layout_width="127dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="20dp"
-            android:layout_weight="1"
-            android:background="@null"
-            android:src="@drawable/google" />
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/btn_google_login_sign_up_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        <!--            android:visibility="gone"/>-->
+
+        <!--        <ImageButton-->
+        <!--            android:id="@+id/btn_google"-->
+        <!--            android:layout_width="127dp"-->
+        <!--            android:layout_height="match_parent"-->
+        <!--            android:layout_marginEnd="20dp"-->
+        <!--            android:layout_weight="1"-->
+        <!--            android:background="@null"-->
+        <!--            android:src="@drawable/google" />-->
 
         <ImageButton
             android:id="@+id/btn_linkedin"
@@ -136,7 +142,7 @@
             android:src="@drawable/icon_login_name"/>
 
         <EditText
-            android:id="@+id/user_name"
+            android:id="@+id/sign_up_user_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
@@ -167,7 +173,7 @@
             android:src="@drawable/icon_login_email"/>
 
         <EditText
-            android:id="@+id/user_email"
+            android:id="@+id/sign_up_user_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
@@ -197,7 +203,7 @@
             android:src="@drawable/icon_login_password"/>
 
         <EditText
-            android:id="@+id/user_password"
+            android:id="@+id/sign_up_user_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
@@ -253,7 +259,7 @@
     <!--            android:src="@drawable/send" />-->
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btn_s"
+        android:id="@+id/btn_sign_up"
         style="@style/AppText"
         android:layout_width="240dp"
         android:layout_height="wrap_content"

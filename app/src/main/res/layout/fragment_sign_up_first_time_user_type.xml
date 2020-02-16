@@ -57,7 +57,7 @@ Please select up to two options"
                     android:layout_height="125dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/user_type_job_seeker"
-                    android:paddingTop="7dp"/>
+                    android:paddingTop="8dp"/>
 
                 <ImageView
                     android:src="@drawable/user_type_rounded_corner"
@@ -96,7 +96,7 @@ Please select up to two options"
                     android:layout_height="125dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/user_type_student"
-                    android:paddingTop="7dp"/>
+                    android:paddingTop="8dp"/>
 
                 <ImageView
                     android:src="@drawable/user_type_rounded_corner"
@@ -141,7 +141,7 @@ Please select up to two options"
                     android:layout_height="125dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/user_type_recruiter"
-                    android:paddingTop="7dp"/>
+                    android:paddingTop="8dp"/>
 
                 <ImageView
                     android:src="@drawable/user_type_rounded_corner"
@@ -180,7 +180,7 @@ Please select up to two options"
                     android:layout_height="125dp"
                     android:layout_gravity="center_horizontal"
                     android:src="@drawable/user_type_entrepreneur"
-                    android:paddingTop="7dp"/>
+                    android:paddingTop="8dp"/>
 
                 <ImageView
                     android:src="@drawable/user_type_rounded_corner"

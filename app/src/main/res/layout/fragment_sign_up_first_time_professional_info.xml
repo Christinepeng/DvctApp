@@ -49,8 +49,8 @@ Upload your resume, set a headline and \n
 fill in your bio." />
 
     <ImageView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="90dp"
+        android:layout_height="90dp"
         android:layout_gravity="center"
         android:layout_marginTop="15dp"
         android:src="@drawable/sign_up_first_time_resume"/>

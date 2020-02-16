@@ -186,7 +186,6 @@
             android:layout_marginStart="35dp"
             android:textColor="#333241"
             android:textSize="15sp" />
-<!--            android:backgroundTint="@android:color/holo_gray_light" />-->
 
     </RelativeLayout>
 

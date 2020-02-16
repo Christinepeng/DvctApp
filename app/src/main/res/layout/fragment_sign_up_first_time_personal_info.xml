@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal" >
+
+        <ImageView
+            android:id="@+id/btn_previous_page"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13sp"
+            android:src="@drawable/btn_arrow"
+            android:focusable="true"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:textSize="17sp"
+            android:lineSpacingExtra="5sp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:background="@color/white"
+            android:textColor="#3197e4"
+            android:text="@string/next" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="17sp"
+        android:textColor="#333241"
+        android:lineSpacingExtra="5sp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center"
+        android:layout_marginTop="7dp"
+        android:text="Please provide some personal information \n
+to help us suggest the best communities for you" />
+
+    <ImageView
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="40dp"
+        android:src="@drawable/sign_up_first_time_profile_picture"/>
+
+    <Button
+        android:id="@+id/btn_upload_profile_picture"
+        android:layout_width="180dp"
+        android:layout_height="35dp"
+        android:layout_gravity="center"
+        android:background="@drawable/shape_backgrd_round_blue3"
+        android:fontFamily="@font/avenir_medium"
+        android:text="Upload Profile Picture"
+        android:textAllCaps="false"
+        android:textColor="@android:color/white"
+        android:lineSpacingExtra="4sp"
+        android:textSize="14dp"
+        android:gravity="center"
+        android:layout_marginTop="3dp"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_marginBottom="35dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:visibility="visible"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/icon_login_name"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_roman"
+            android:text="Gender"
+            android:padding="24dp"
+            android:layout_marginStart="35dp"
+            android:textColor="#a4a4b3"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/btn_choose_gender"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="13sp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/btn_arrow_down"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#c0c0c0"
+            android:layout_marginTop="63dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:visibility="visible"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/icon_ethnicity"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_roman"
+            android:text="Ethnicity"
+            android:padding="24dp"
+            android:layout_marginStart="35dp"
+            android:textColor="#a4a4b3"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/btn_choose_ethnicity"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="13sp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/btn_arrow_down"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#c0c0c0"
+            android:layout_marginTop="63dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:visibility="visible"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/icon_age"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_roman"
+            android:text="Age"
+            android:padding="24dp"
+            android:layout_marginStart="35dp"
+            android:textColor="#a4a4b3"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/btn_choose_age"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="13sp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/btn_arrow_down"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="#c0c0c0"
+            android:layout_marginTop="63dp"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:visibility="visible"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <ImageView
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginStart="15dp"
+            android:src="@drawable/icon_location1"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/avenir_roman"
+            android:text="Location"
+            android:padding="24dp"
+            android:layout_marginStart="35dp"
+            android:textColor="#a4a4b3"
+            android:textSize="15sp" />
+
+        <ImageView
+            android:id="@+id/btn_choose_location"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginTop="13sp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/btn_arrow_down"
+            android:focusable="true"
+            android:layout_alignParentEnd="true"
+            android:clickable="true"/>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:textSize="17sp"
+            android:lineSpacingExtra="5sp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:background="@color/white"
+            android:textColor="#87caff"
+            android:text="@string/skip" />
+
+    </RelativeLayout>
+
+</LinearLayout>

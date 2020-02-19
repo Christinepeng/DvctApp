@@ -3,6 +3,8 @@ package com.divercity.android.features.login.step1
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -65,6 +67,73 @@ class LogInPageFragment : BaseFragment() {
         }
     }
 
+    private fun initView() {
+        // log in btn
+        // default the button to be disabled
+        btn_log_in.isEnabled = false
+        btn_log_in.isClickable = false
+        btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+
+        // add listeners to rating bars and review text
+        addListenerOnEmailAndPassword()
+
+        btn_log_in.setOnClickListener {
+            viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
+        }
+//        if (arguments?.getBoolean(PARAM_EMAIL) == true) {
+////            viewModel.fetchReview()
+//            btn_log_in.setOnClickListener {
+//                //                submissionReactToLoginStatus(::editReview)
+//            }
+//        } else {
+//            btn_log_in.setOnClickListener {
+//                //                submissionReactToLoginStatus(::rateCompany)
+//            }
+//        }
+    }
+
+    private fun addListenerOnEmailAndPassword() {
+        user_email.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                loginButtonReactToLoginStatus()
+            }
+        })
+        user_password.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                loginButtonReactToLoginStatus()
+            }
+        })
+    }
+
+    private fun loginButtonReactToLoginStatus() {
+        if (checkEmailEmpty() || checkPasswordEmpty())       {
+            Log.d("LoginStatus", "email or password is empty")
+            println("email or password is empty")
+            btn_log_in.isEnabled = false
+            btn_log_in.isClickable = false
+            btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+        } else {
+            Log.d("LoginStatus", "email and password are filled")
+            btn_log_in.isEnabled = true
+            btn_log_in.isClickable = true
+            btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue2)
+        }
+    }
+
+//    private fun submissionReactToLoginStatus(reaction: () -> (Unit)) {
+//        if (checkEmailEmpty()) {
+//            showConfirmReviewSubmitDialogFragment()
+//        } else if (checkPasswordEmpty()) {
+//            showWriteReviewCompanyDialogFragment()
+//        } else {
+//            reaction()
+//        }
+//    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         handlerViewPager = Handler()
@@ -72,6 +141,7 @@ class LogInPageFragment : BaseFragment() {
 //        setupViewPager()
 //        setupToolbar()
         setupEvents()
+        initView()
         subscribeToLiveData()
     }
 
@@ -88,6 +158,7 @@ class LogInPageFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
+//                    icon_green_check_mark.visibility = View.GONE
                 }
             }
         })
@@ -237,6 +308,14 @@ class LogInPageFragment : BaseFragment() {
 
     fun getEdTxtEmail(): String {
         return user_email.text.toString().trim()
+    }
+
+    fun checkEmailEmpty(): Boolean {
+        return user_email.text.toString().isEmpty()
+    }
+
+    fun checkPasswordEmpty(): Boolean {
+        return user_password.text.toString().isEmpty()
     }
 
     fun showSnackbar(message: String?) {

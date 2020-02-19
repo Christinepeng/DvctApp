@@ -533,8 +533,6 @@ Beauty"
                 android:layout_marginStart="10dp"
                 style="?android:attr/borderlessButtonStyle" />
 
-
-
         </LinearLayout>
 
     </LinearLayout>

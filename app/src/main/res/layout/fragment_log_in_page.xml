@@ -85,7 +85,6 @@
             android:id="@+id/btn_linkedin"
             android:layout_width="158dp"
             android:layout_height="match_parent"
-            android:layout_marginEnd="0dp"
             android:layout_weight="1"
             android:background="@null"
             android:src="@drawable/linkedin" />
@@ -96,7 +95,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_gravity="center_horizontal">
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="20dp">
 
         <View
             android:layout_marginStart="10dp"
@@ -127,45 +127,14 @@
 
     </LinearLayout>
 
-
-
-<!--    <RelativeLayout-->
-<!--        android:id="@+id/frameLayout_name"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:background="@android:color/white"-->
-<!--        android:visibility="visible">-->
-
-<!--        <ImageView-->
-<!--            android:layout_width="30dp"-->
-<!--            android:layout_height="30dp"-->
-<!--            android:layout_marginTop="15dp"-->
-<!--            android:layout_marginStart="15dp"-->
-<!--            android:src="@drawable/icon_login_name"/>-->
-
-<!--        <EditText-->
-<!--            android:id="@+id/user_name"-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:fontFamily="@font/avenir_roman"-->
-<!--            android:hint="Name"-->
-<!--            android:imeOptions="actionDone"-->
-<!--            android:inputType="textEmailAddress"-->
-<!--            android:padding="24dp"-->
-<!--            android:layout_marginStart="35dp"-->
-<!--            android:textColor="#333241"-->
-<!--            android:textSize="15sp"/>-->
-<!--&lt;!&ndash;            android:backgroundTint="@android:color/holo_gray_light"/> &ndash;&gt;-->
-
-
-<!--    </RelativeLayout>-->
-
     <RelativeLayout
         android:id="@+id/frameLayout_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_marginTop="15dp"
+        android:layout_marginStart="28dp">
 
         <ImageView
             android:layout_width="30dp"
@@ -187,14 +156,30 @@
             android:textColor="#333241"
             android:textSize="15sp" />
 
+        <ImageView
+            android:id="@+id/icon_green_check_mark"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginTop="21sp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/icon_green_check_mark"
+            android:layout_alignParentEnd="true"
+            android:visibility="visible"/>
+
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#c0c0c0" />
 
     <RelativeLayout
         android:id="@+id/frameLayout_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_marginStart="28dp">
 
         <ImageView
             android:layout_width="30dp"
@@ -214,21 +199,26 @@
             android:layout_marginStart="35dp"
             android:textColor="#333241"
             android:textSize="15sp"/>
-<!--            android:backgroundTint="@android:color/holo_gray_light" />-->
 
     </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#c0c0c0" />
 
     <RelativeLayout
         android:id="@+id/frameLayout_remember_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/white"
-        android:visibility="visible">
+        android:visibility="visible"
+        android:layout_marginStart="25dp">
 
         <CheckBox
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="11dp"
             android:layout_marginStart="15dp"
             android:buttonTint="@color/grey" />
 
@@ -255,7 +245,8 @@
             android:textColor="#3198e5"
             android:text="Forgot Password?"
             android:layout_marginTop="24dp"
-            android:layout_marginStart="280dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="15dp"
             android:clickable="true"
             android:focusable="true"/>
 
@@ -276,13 +267,13 @@
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_log_in"
         style="@style/AppText"
-        android:layout_width="240dp"
+        android:layout_width="225dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:background="@drawable/shape_backgrd_round_blue2"
         android:fontFamily="@font/avenir_medium"
         android:padding="10dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="20sp"
         android:text="@string/log_in"
         android:textAllCaps="true"
         android:textColor="@android:color/white"
@@ -291,13 +282,13 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="10dp"
         android:layout_gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:lineSpacingExtra="5sp"
             android:gravity="center_horizontal"
             android:layout_gravity="center"
@@ -308,7 +299,7 @@
             android:id="@+id/btn_go_to_sign_up"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textColor="#3197e4"
             android:text="Sign Up"
             android:clickable="true"

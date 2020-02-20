@@ -164,7 +164,7 @@
             android:layout_marginEnd="16dp"
             android:src="@drawable/icon_green_check_mark"
             android:layout_alignParentEnd="true"
-            android:visibility="visible"/>
+            android:visibility="gone"/>
 
     </RelativeLayout>
 
@@ -194,6 +194,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
             android:hint="Password"
+            android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:padding="24dp"
             android:layout_marginStart="35dp"

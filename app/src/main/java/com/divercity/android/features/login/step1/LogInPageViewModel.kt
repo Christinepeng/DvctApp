@@ -52,7 +52,7 @@ class LogInPageViewModel @Inject constructor(
                             r
                         )
                     )
-                    if (r) navigateToLogin.call() else navigateToSignUp.call()
+//                    if (r) navigateToLogin.call() else navigateToSignUp.call()
                 }
 
                 override fun onError(e: Throwable) {

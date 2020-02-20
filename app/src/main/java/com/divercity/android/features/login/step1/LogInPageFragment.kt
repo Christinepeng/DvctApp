@@ -13,6 +13,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.facebook.CallbackManager
@@ -67,14 +68,24 @@ class LogInPageFragment : BaseFragment() {
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        handlerViewPager = Handler()
+        hideKeyboard()
+//        setupViewPager()
+//        setupToolbar()
+        setupEvents()
+        initView()
+        subscribeToLiveData()
+    }
+
     private fun initView() {
-        // log in btn
-        // default the button to be disabled
+        // default the login button to be disabled
         btn_log_in.isEnabled = false
         btn_log_in.isClickable = false
         btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
 
-        // add listeners to rating bars and review text
+        // add listeners to email and password
         addListenerOnEmailAndPassword()
 
         btn_log_in.setOnClickListener {
@@ -92,59 +103,6 @@ class LogInPageFragment : BaseFragment() {
 //        }
     }
 
-    private fun addListenerOnEmailAndPassword() {
-        user_email.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                loginButtonReactToLoginStatus()
-            }
-        })
-        user_password.addTextChangedListener(object : TextWatcher {
-            override fun afterTextChanged(s: Editable) {}
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                loginButtonReactToLoginStatus()
-            }
-        })
-    }
-
-    private fun loginButtonReactToLoginStatus() {
-        if (checkEmailEmpty() || checkPasswordEmpty())       {
-            Log.d("LoginStatus", "email or password is empty")
-            println("email or password is empty")
-            btn_log_in.isEnabled = false
-            btn_log_in.isClickable = false
-            btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
-        } else {
-            Log.d("LoginStatus", "email and password are filled")
-            btn_log_in.isEnabled = true
-            btn_log_in.isClickable = true
-            btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue2)
-        }
-    }
-
-//    private fun submissionReactToLoginStatus(reaction: () -> (Unit)) {
-//        if (checkEmailEmpty()) {
-//            showConfirmReviewSubmitDialogFragment()
-//        } else if (checkPasswordEmpty()) {
-//            showWriteReviewCompanyDialogFragment()
-//        } else {
-//            reaction()
-//        }
-//    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        handlerViewPager = Handler()
-        hideKeyboard()
-//        setupViewPager()
-//        setupToolbar()
-        setupEvents()
-        initView()
-        subscribeToLiveData()
-    }
-
     fun subscribeToLiveData() {
         viewModel.checkEmailRegisteredResponse.observe(this, Observer { response ->
             when (response?.status) {
@@ -158,7 +116,6 @@ class LogInPageFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-//                    icon_green_check_mark.visibility = View.GONE
                 }
             }
         })
@@ -250,7 +207,7 @@ class LogInPageFragment : BaseFragment() {
         })
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("451214312845-f7of8g813n0o5m44o52g7p5b17sup578.apps.googleusercontent.com")
+            .requestIdToken("100096053983-genuiq9nlgrj9669t3v02b076s4jeev7.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
@@ -306,6 +263,14 @@ class LogInPageFragment : BaseFragment() {
         }
     }
 
+    fun checkEmailValid() : Boolean {
+        return Util.isValidEmail(user_email.text.toString().trim() { it <= ' ' })
+    }
+
+//    fun checkIfEmailRegistered() : Boolean {
+//        return
+//    }
+
     fun getEdTxtEmail(): String {
         return user_email.text.toString().trim()
     }
@@ -332,6 +297,61 @@ class LogInPageFragment : BaseFragment() {
         val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
             getString(R.string.confirm_email),
             getString(R.string.email_been_sent),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { }
+        customOneBtnDialogFragment.isCancelable = false
+        customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    private fun showRequireValidEmailDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.divercity),
+            getString(R.string.input_valid_email),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { }
+        customOneBtnDialogFragment.isCancelable = false
+        customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    private fun showPasswordTooShortDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.divercity),
+            getString(R.string.password_too_short),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { }
+        customOneBtnDialogFragment.isCancelable = false
+        customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    private fun showEmailIsNotUsedYetDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.divercity),
+            getString(R.string.email_is_not_used_yet),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { }
+        customOneBtnDialogFragment.isCancelable = false
+        customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    private fun showEmailIsAlreadyUsedDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.divercity),
+            getString(R.string.email_is_already_used),
+            getString(R.string.ok)
+        )
+        customOneBtnDialogFragment.setListener { }
+        customOneBtnDialogFragment.isCancelable = false
+        customOneBtnDialogFragment.show(childFragmentManager, null)
+    }
+
+    private fun showInvalidLoginCredentialsDialog() {
+        val customOneBtnDialogFragment = CustomOneBtnDialogFragment.newInstance(
+            getString(R.string.divercity),
+            getString(R.string.invalid_login_credentials),
             getString(R.string.ok)
         )
         customOneBtnDialogFragment.setListener { }
@@ -370,6 +390,50 @@ class LogInPageFragment : BaseFragment() {
                 Log.w("lol", "signInResult:failed code=" + e.getStatusCode());
                 // ...
             }
+        }
+    }
+
+    private fun addListenerOnEmailAndPassword() {
+        user_email.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                loginButtonReactToLoginStatus()
+            }
+        })
+        user_password.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                loginButtonReactToLoginStatus()
+            }
+        })
+    }
+
+    private fun loginButtonReactToLoginStatus() {
+        if (checkEmailEmpty() || checkPasswordEmpty())       {
+            Log.d("LoginStatus", "email or password is empty")
+            println("email or password is empty")
+            btn_log_in.isEnabled = false
+            btn_log_in.isClickable = false
+            btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+        } else {
+            Log.d("LoginStatus", "email and password are filled")
+            btn_log_in.isEnabled = true
+            btn_log_in.isClickable = true
+            btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue2)
+        }
+    }
+
+    private fun checkInputEmail() {
+        if (!checkEmailEmpty() && !checkEmailValid()) {
+            showRequireValidEmailDialog()
+        } else {
+//            if (!checkIfEmailRegistered()) {
+//                showEmailIsNotUsedYetDialog()
+//            } else {
+//                icon_green_check_mark.visibility = View.VISIBLE
+//            }
         }
     }
 }

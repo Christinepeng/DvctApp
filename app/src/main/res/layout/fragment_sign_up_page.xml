@@ -208,6 +208,7 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
             android:hint="Password"
+            android:inputType="textPassword"
             android:imeOptions="actionDone"
             android:padding="24dp"
             android:layout_marginStart="35dp"

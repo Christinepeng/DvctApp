@@ -207,7 +207,7 @@ class LogInPageFragment : BaseFragment() {
         })
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("100096053983-genuiq9nlgrj9669t3v02b076s4jeev7.apps.googleusercontent.com")
+            .requestIdToken("100096053983-f5nhf4j46i9bd5vh8u6c54juh2rn3gbc.apps.googleusercontent.com")
             .requestEmail()
             .build()
 

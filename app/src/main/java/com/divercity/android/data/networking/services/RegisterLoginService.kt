@@ -43,7 +43,7 @@ interface RegisterLoginService {
     // TODO: Figure out Google endpoint
     @POST("auth/sso/google")
     fun loginGoogle(
-        @Query("state") state: String
+        @Query("token") token: String
     ): Observable<Response<DataObject<UserEntityResponse>>>
 
     @Multipart

@@ -175,6 +175,26 @@ class LogInPageFragment : BaseFragment() {
             }
         })
 
+        viewModel.loginGoogleResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(response.message)
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    if (response.data?.accountType == null)
+                        navigator.navigateToSelectUserTypeActivity(requireActivity())
+                    else
+                        navigator.navigateToHomeActivity(requireActivity())
+                    requireActivity().finish()
+                }
+            }
+        })
+
         viewModel.navigateToLogin.observe(this, Observer {
             navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
         })
@@ -380,15 +400,12 @@ class LogInPageFragment : BaseFragment() {
         if (requestCode == RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                val idToken = account?.getIdToken()
-                Log.d("TAG", "Google Token: " + idToken)
-//                viewModel.loginGoogle(idToken)
+                val token = account?.getIdToken()
+                viewModel.loginGoogle(token)
+                Log.d("TAG", "Google Token: " + token)
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("lol", "signInResult:failed code=" + e.getStatusCode());
-                // ...
+                Log.d("TAG", "signInResult:failed code=" + e.getStatusCode());
             }
         }
     }

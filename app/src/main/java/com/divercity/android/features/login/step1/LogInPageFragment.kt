@@ -1,6 +1,7 @@
 package com.divercity.android.features.login.step1
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -8,6 +9,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -23,6 +25,7 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
@@ -72,6 +75,7 @@ class LogInPageFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         handlerViewPager = Handler()
         hideKeyboard()
+        reDesignGoogleButton(btn_google_login, "\u0020     Gmail")
 //        setupViewPager()
 //        setupToolbar()
         setupEvents()
@@ -451,6 +455,19 @@ class LogInPageFragment : BaseFragment() {
 //            } else {
 //                icon_green_check_mark.visibility = View.VISIBLE
 //            }
+        }
+    }
+
+    fun reDesignGoogleButton(signInButton: SignInButton, buttonText: String) {
+        for (i in 0 until signInButton.childCount) {
+            val v = signInButton.getChildAt(i)
+            if (v is TextView) {
+                v.text = buttonText //setup your text here
+                v.setBackgroundResource(android.R.color.transparent) //setting transparent color that will hide google image and white background
+                v.setTextColor(resources.getColor(R.color.grey)) // text color here
+                v.typeface = Typeface.DEFAULT_BOLD // even typeface
+                return
+            }
         }
     }
 }

@@ -11,10 +11,7 @@ import com.divercity.android.data.Resource.Companion.error
 import com.divercity.android.data.Resource.Companion.loading
 import com.divercity.android.data.Resource.Companion.success
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
-import com.divercity.android.features.login.step1.usecase.CheckIskEmailRegisteredUseCase
-import com.divercity.android.features.login.step1.usecase.LoginFacebookUseCase
-import com.divercity.android.features.login.step1.usecase.LoginEmailUseCase
-import com.divercity.android.features.login.step1.usecase.RequestResetPasswordUseCase
+import com.divercity.android.features.login.step1.usecase.*
 import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import io.reactivex.observers.DisposableObserver
@@ -28,13 +25,15 @@ class SignUpPageViewModel @Inject constructor(
     private val loginEmailUseCase: LoginEmailUseCase,
     private val requestResetPasswordUseCase: RequestResetPasswordUseCase,
     private val checkIskEmailRegisteredUseCase: CheckIskEmailRegisteredUseCase,
-    private val loginFacebookUseCase: LoginFacebookUseCase
+    private val loginFacebookUseCase: LoginFacebookUseCase,
+    private val loginGoogleUseCase: LoginGoogleUseCase
 ) :
     BaseViewModel() {
     val checkEmailRegisteredResponse = SingleLiveEvent<Resource<Boolean>>()
     val loginEmailResponse = SingleLiveEvent<Resource<User>>()
     val requestResetPasswordResponse = SingleLiveEvent<Resource<Unit>>()
     val loginFacebookResponse = SingleLiveEvent<Resource<User>>()
+    val loginGoogleResponse = SingleLiveEvent<Resource<User>>()
     val navigateToSignUp = SingleLiveEvent<Any>()
     val navigateToLogin = SingleLiveEvent<Any>()
 
@@ -156,8 +155,41 @@ class SignUpPageViewModel @Inject constructor(
         loginFacebookUseCase.execute(disposable, LoginFacebookUseCase.Params.forFacebook(token))
     }
 
-//    fun loginGoogle(token: String?) { // TODO
-//    }
+    fun loginGoogle(token: String?) {
+        loginGoogleResponse.setValue(
+            loading<User>(
+                null
+            )
+        )
+        val disposable: DisposableObserverWrapper<User> = object : DisposableObserverWrapper<User>() {
+            override fun onFail(error: String) {
+                loginGoogleResponse.setValue(
+                    error<User>(
+                        error,
+                        null
+                    )
+                )
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                loginGoogleResponse.setValue(
+                    error<User>(
+                        error.toString(),
+                        null
+                    )
+                )
+            }
+
+            override fun onSuccess(loginResponse: User) {
+                loginGoogleResponse.setValue(
+                    success(
+                        loginResponse
+                    )
+                )
+            }
+        }
+        loginGoogleUseCase.execute(disposable, LoginGoogleUseCase.Params.forGoogle(token))
+    }
 
     fun getcheckEmailRegisteredResponse(): MutableLiveData<Resource<Boolean>> {
         return checkEmailRegisteredResponse

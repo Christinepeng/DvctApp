@@ -1,11 +1,13 @@
 package com.divercity.android.features.signup
 
 import android.content.Intent
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
+import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -21,6 +23,7 @@ import com.facebook.login.LoginResult
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.SignInButton
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.iid.FirebaseInstanceId
@@ -74,6 +77,7 @@ class SignUpPageFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
         handlerViewPager = Handler()
         hideKeyboard()
+        reDesignGoogleButton(btn_google_login_sign_up_page, "\u0020     Gmail")
 //        setupViewPager()
 //        setupToolbar()
         setupEvents()
@@ -152,6 +156,26 @@ class SignUpPageFragment : BaseFragment() {
             }
         })
 
+        viewModel.loginGoogleResponse.observe(this, Observer { response ->
+            when (response?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(response.message)
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    if (response.data?.accountType == null)
+                        navigator.navigateToSelectUserTypeActivity(requireActivity())
+                    else
+                        navigator.navigateToHomeActivity(requireActivity())
+                    requireActivity().finish()
+                }
+            }
+        })
+
         viewModel.navigateToLogin.observe(this, Observer {
             navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
         })
@@ -184,7 +208,7 @@ class SignUpPageFragment : BaseFragment() {
         })
 
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken("451214312845-f7of8g813n0o5m44o52g7p5b17sup578.apps.googleusercontent.com")
+            .requestIdToken("100096053983-f5nhf4j46i9bd5vh8u6c54juh2rn3gbc.apps.googleusercontent.com")
             .requestEmail()
             .build()
 
@@ -283,18 +307,28 @@ class SignUpPageFragment : BaseFragment() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == com.divercity.android.features.login.step1.RC_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Google Sign In was successful, authenticate with Firebase
                 val account = task.getResult(ApiException::class.java)
-                val idToken = account?.getIdToken()
-                Log.d("TAG", "Google Token: " + idToken)
-//                viewModel.loginGoogle(idToken)
+                val token = account?.getIdToken()
+                viewModel.loginGoogle(token)
+                Log.d("TAG", "Google Token: " + token)
             } catch (e: ApiException) {
-                // Google Sign In failed, update UI appropriately
-                Log.w("lol", "signInResult:failed code=" + e.getStatusCode());
-                // ...
+                Log.d("TAG", "signInResult:failed code=" + e.getStatusCode());
+            }
+        }
+    }
+
+    fun reDesignGoogleButton(signInButton: SignInButton, buttonText: String) {
+        for (i in 0 until signInButton.childCount) {
+            val v = signInButton.getChildAt(i)
+            if (v is TextView) {
+                v.text = buttonText //setup your text here
+                v.setBackgroundResource(android.R.color.transparent) //setting transparent color that will hide google image and white background
+                v.setTextColor(resources.getColor(R.color.grey)) // text color here
+                v.typeface = Typeface.DEFAULT_BOLD // even typeface
+                return
             }
         }
     }

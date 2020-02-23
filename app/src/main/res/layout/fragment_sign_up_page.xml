@@ -39,9 +39,9 @@
         android:text="Sign up via Social Networks"
         android:layout_marginTop="15dp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
         android:layout_gravity="center"
         android:layout_marginTop="12dp"
         android:orientation="horizontal"
@@ -51,46 +51,50 @@
             android:id="@+id/btn_facebook_sdk"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
             android:layout_marginTop="30dp"
             android:layout_marginBottom="30dp"
-            android:layout_weight="1"
+            android:layout_marginStart="25dp"
             android:visibility="gone" />
 
         <ImageButton
             android:id="@+id/btn_facebook"
-            android:layout_width="150dp"
-            android:layout_height="match_parent"
-            android:layout_marginStart="20dp"
-            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="25dp"
             android:background="@null"
             android:src="@drawable/facebook" />
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/btn_google_login_sign_up_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-        <!--            android:visibility="gone"/>-->
+            android:layout_width="110dp"
+            android:layout_height="40dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginStart="152dp"
+            >
 
-        <!--        <ImageButton-->
-        <!--            android:id="@+id/btn_google"-->
-        <!--            android:layout_width="127dp"-->
-        <!--            android:layout_height="match_parent"-->
-        <!--            android:layout_marginEnd="20dp"-->
-        <!--            android:layout_weight="1"-->
-        <!--            android:background="@null"-->
-        <!--            android:src="@drawable/google" />-->
+            // google image logo
+            <ImageView android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="13dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/icon_google"/>
+
+            <ImageView
+                android:layout_width="110dp"
+                android:layout_height="40dp"
+                android:background="@drawable/bk_outline_grey_background_white_round_corner"/>
+
+        </com.google.android.gms.common.SignInButton>
 
         <ImageButton
             android:id="@+id/btn_linkedin"
-            android:layout_width="158dp"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="0dp"
-            android:layout_weight="1"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
             android:background="@null"
+            android:layout_alignParentEnd="true"
             android:src="@drawable/linkedin" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"

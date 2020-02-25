@@ -1,6 +1,8 @@
 package com.divercity.android.features.login.step1
 
+import android.content.Context.MODE_PRIVATE
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
@@ -9,8 +11,7 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
@@ -41,13 +42,18 @@ import java.io.IOException
  */
 
 const val RC_SIGN_IN = 123
+const val DIVERCITY_USERNAME_PASSWORD_PREF = "divercity_username_password_pref"
+const val REMEMBER_USERNAME_PASSWORD = "remember_username_password"
+const val USERNAME = "username"
+const val PASSWORD = "password"
 
 class LogInPageFragment : BaseFragment() {
 
     lateinit var viewModel: LogInPageViewModel
     private lateinit var handlerViewPager: Handler
-
+    private lateinit var loginPreferences: SharedPreferences
     private val callbackManager = CallbackManager.Factory.create()
+    private var rememberLoginPreferences: Boolean = false
 
     companion object {
         private const val PARAM_EMAIL = "paramEmail"
@@ -85,16 +91,7 @@ class LogInPageFragment : BaseFragment() {
 
     private fun initView() {
         // default the login button to be disabled
-        btn_log_in.isEnabled = false
-        btn_log_in.isClickable = false
-        btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
 
-        // add listeners to email and password
-        addListenerOnEmailAndPassword()
-
-        btn_log_in.setOnClickListener {
-            viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
-        }
 //        if (arguments?.getBoolean(PARAM_EMAIL) == true) {
 ////            viewModel.fetchReview()
 //            btn_log_in.setOnClickListener {
@@ -237,8 +234,6 @@ class LogInPageFragment : BaseFragment() {
 
         val mGoogleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
 
-//        mGoogleSignInClient.signOut()
-
         btn_google_login.setOnClickListener {
             val account = GoogleSignIn.getLastSignedInAccount(requireActivity())
             if (account != null) {
@@ -285,6 +280,41 @@ class LogInPageFragment : BaseFragment() {
             }
             handled
         }
+
+        // Remember password
+        checkbox_remember_password.setOnClickListener {
+            rememberLoginPreferences = checkbox_remember_password.isChecked()
+        }
+
+        loginPreferences = requireActivity().getSharedPreferences(DIVERCITY_USERNAME_PASSWORD_PREF, MODE_PRIVATE)
+        rememberLoginPreferences = loginPreferences.getBoolean(REMEMBER_USERNAME_PASSWORD, false)
+        if (rememberLoginPreferences) {
+            user_email.setText(loginPreferences.getString(USERNAME, null))
+            user_password.setText(loginPreferences.getString(PASSWORD, null))
+        }
+        checkbox_remember_password.setChecked(rememberLoginPreferences)
+
+        // Login button
+        btn_log_in.isEnabled = false
+        btn_log_in.isClickable = false
+        btn_log_in.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+
+        // add listeners to email and password
+        addListenerOnEmailAndPassword()
+
+        btn_log_in.setOnClickListener {
+            var loginPreferencesEditor = loginPreferences.edit()
+            loginPreferencesEditor.putBoolean(REMEMBER_USERNAME_PASSWORD, rememberLoginPreferences)
+            if (rememberLoginPreferences) {
+                loginPreferencesEditor.putString(USERNAME, user_email.getText().toString())
+                loginPreferencesEditor.putString(PASSWORD, user_password.getText().toString())
+            }
+            loginPreferencesEditor.clear().commit()
+            viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
+        }
+
+        // Additionally check the email/password fields in case that they are remembered
+        loginButtonReactToLoginStatus()
     }
 
     fun checkEmailValid() : Boolean {

@@ -12,6 +12,8 @@ import com.divercity.android.data.Resource.Companion.loading
 import com.divercity.android.data.Resource.Companion.success
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.login.step1.usecase.*
+import com.divercity.android.features.signup.usecase.SignUpPageUseCase
+//import com.divercity.android.features.signup.usecase.SignUpUseCase
 import com.divercity.android.model.user.User
 import com.google.gson.JsonElement
 import io.reactivex.observers.DisposableObserver
@@ -21,6 +23,7 @@ import javax.inject.Inject
  * Created by lucas on 26/09/2018.
  */
 class SignUpPageViewModel @Inject constructor(
+    private val signUpUseCase: SignUpPageUseCase,
     private val application: Application,
     private val loginEmailUseCase: LoginEmailUseCase,
     private val requestResetPasswordUseCase: RequestResetPasswordUseCase,
@@ -29,6 +32,7 @@ class SignUpPageViewModel @Inject constructor(
     private val loginGoogleUseCase: LoginGoogleUseCase
 ) :
     BaseViewModel() {
+    val signUpResponse = SingleLiveEvent<Resource<Any>>()
     val checkEmailRegisteredResponse = SingleLiveEvent<Resource<Boolean>>()
     val loginEmailResponse = SingleLiveEvent<Resource<User>>()
     val requestResetPasswordResponse = SingleLiveEvent<Resource<Unit>>()
@@ -36,6 +40,25 @@ class SignUpPageViewModel @Inject constructor(
     val loginGoogleResponse = SingleLiveEvent<Resource<User>>()
     val navigateToSignUp = SingleLiveEvent<Any>()
     val navigateToLogin = SingleLiveEvent<Any>()
+    val navigateToSelectUserType = SingleLiveEvent<Boolean>()
+
+    fun signUp(name: String, email: String, password: String) {
+
+        signUpResponse.value = Resource.loading(null)
+        val callback = object : SignUpPageUseCase.Callback() {
+            override fun onFail(msg: String) {
+                signUpResponse.value = Resource.error(msg, null)
+            }
+
+            override fun onSuccess(response: User) {
+                signUpResponse.value = Resource.success(response)
+            }
+        }
+        signUpUseCase.execute(callback, SignUpPageUseCase.Params.forSignUp(
+            name,
+            email,
+            password))
+    }
 
     fun checkIfEmailRegistered(email: String) {
         if (Util.isValidEmail(email.trim { it <= ' ' })) {

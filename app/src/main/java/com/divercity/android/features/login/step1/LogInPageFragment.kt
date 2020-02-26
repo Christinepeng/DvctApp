@@ -85,23 +85,7 @@ class LogInPageFragment : BaseFragment() {
 //        setupViewPager()
 //        setupToolbar()
         setupEvents()
-        initView()
         subscribeToLiveData()
-    }
-
-    private fun initView() {
-        // default the login button to be disabled
-
-//        if (arguments?.getBoolean(PARAM_EMAIL) == true) {
-////            viewModel.fetchReview()
-//            btn_log_in.setOnClickListener {
-//                //                submissionReactToLoginStatus(::editReview)
-//            }
-//        } else {
-//            btn_log_in.setOnClickListener {
-//                //                submissionReactToLoginStatus(::rateCompany)
-//            }
-//        }
     }
 
     fun subscribeToLiveData() {

@@ -5,6 +5,7 @@ import com.divercity.android.data.entity.emailusernamecheck.CheckUsernameEmailRe
 import com.divercity.android.data.entity.emailusernamecheck.emailbody.CheckEmailBody
 import com.divercity.android.data.entity.emailusernamecheck.usernamebody.CheckUsernameBody
 import com.divercity.android.data.entity.signup.SignUpBody
+import com.divercity.android.data.entity.signup.SignUpNewBody
 import com.divercity.android.data.entity.user.body.LoginBody
 import com.divercity.android.data.networking.services.RegisterLoginService
 import com.divercity.android.model.user.User
@@ -43,6 +44,24 @@ constructor(
             SignUpBody(
                 password,
                 confirmPassword,
+                name,
+                email
+            )
+        ).map { response ->
+            checkResponse(response)
+            sessionRepository.saveUserHeaderData(response)
+            response.body()!!.data.toUser()
+        }
+    }
+
+    override fun signUpNew(
+        name: String,
+        email: String,
+        password: String
+    ): Observable<User> {
+        return registerLoginService.signUpNew(
+            SignUpNewBody(
+                password,
                 name,
                 email
             )

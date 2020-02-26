@@ -24,6 +24,12 @@ interface RegisterLoginRepository {
         confirmPassword: String
     ): Observable<User>
 
+    fun signUpNew(
+        name: String,
+        email: String,
+        password: String
+    ): Observable<User>
+
     fun loginLinkedin(
         code: String,
         state: String

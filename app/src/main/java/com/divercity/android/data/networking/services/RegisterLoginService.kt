@@ -5,6 +5,7 @@ import com.divercity.android.data.entity.emailusernamecheck.CheckUsernameEmailRe
 import com.divercity.android.data.entity.emailusernamecheck.emailbody.CheckEmailBody
 import com.divercity.android.data.entity.emailusernamecheck.usernamebody.CheckUsernameBody
 import com.divercity.android.data.entity.signup.SignUpBody
+import com.divercity.android.data.entity.signup.SignUpNewBody
 import com.divercity.android.data.entity.user.body.LoginBody
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import io.reactivex.Observable
@@ -29,6 +30,9 @@ interface RegisterLoginService {
 
     @POST("auth")
     fun signUp(@Body loginBody: SignUpBody): Observable<Response<DataObject<UserEntityResponse>>>
+
+    @POST("auth")
+    fun signUpNew(@Body loginBody: SignUpNewBody): Observable<Response<DataObject<UserEntityResponse>>>
 
     @POST("auth/sso/linkedin")
     fun loginLinkedin(

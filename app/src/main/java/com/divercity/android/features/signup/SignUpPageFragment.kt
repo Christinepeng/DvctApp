@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Handler
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -316,13 +318,13 @@ class SignUpPageFragment : BaseFragment() {
 //        }
 //        checkbox_remember_password.setChecked(rememberLoginPreferences)
 //
-//        // Sign up button
-//        btn_sign_up.isEnabled = false
-//        btn_sign_up.isClickable = false
-//        btn_sign_up.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+        // Sign up button
+        btn_sign_up.isEnabled = false
+        btn_sign_up.isClickable = false
+        btn_sign_up.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
 
-//        // add listeners to email and password
-//        addListenerOnNameEmailAndPassword()
+        // add listeners to email and password
+        addListenerOnNameEmailAndPassword()
 //
 //        btn_sign_up.setOnClickListener {
 //            var loginPreferencesEditor = loginPreferences.edit()
@@ -365,6 +367,18 @@ class SignUpPageFragment : BaseFragment() {
 
     fun getEdTxtEmail(): String {
         return user_email.text.toString().trim()
+    }
+
+    fun checkNameEmpty(): Boolean {
+        return sign_up_user_name.text.toString().isEmpty()
+    }
+
+    fun checkEmailEmpty(): Boolean {
+        return sign_up_user_email.text.toString().isEmpty()
+    }
+
+    fun checkPasswordEmpty(): Boolean {
+        return sign_up_user_password.text.toString().isEmpty()
     }
 
     fun showSnackbar(message: String?) {
@@ -419,13 +433,52 @@ class SignUpPageFragment : BaseFragment() {
         }
     }
 
+    private fun addListenerOnNameEmailAndPassword() {
+        sign_up_user_name.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                signupButtonReactToSignupStatus()
+            }
+        })
+        sign_up_user_email.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                signupButtonReactToSignupStatus()
+            }
+        })
+        sign_up_user_password.addTextChangedListener(object : TextWatcher {
+            override fun afterTextChanged(s: Editable) {}
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                signupButtonReactToSignupStatus()
+            }
+        })
+    }
+
+    private fun signupButtonReactToSignupStatus() {
+        if (checkNameEmpty() || checkEmailEmpty() || checkPasswordEmpty())       {
+            Log.d("LoginStatus", "email or password is empty")
+            println("email or password is empty")
+            btn_sign_up.isEnabled = false
+            btn_sign_up.isClickable = false
+            btn_sign_up.setBackgroundResource(R.drawable.shape_backgrd_round_blue1)
+        } else {
+            Log.d("LoginStatus", "email and password are filled")
+            btn_sign_up.isEnabled = true
+            btn_sign_up.isClickable = true
+            btn_sign_up.setBackgroundResource(R.drawable.shape_backgrd_round_blue2)
+        }
+    }
+
     fun reDesignGoogleButton(signInButton: SignInButton, buttonText: String) {
         for (i in 0 until signInButton.childCount) {
             val v = signInButton.getChildAt(i)
             if (v is TextView) {
                 v.text = buttonText //setup your text here
                 v.setBackgroundResource(android.R.color.transparent) //setting transparent color that will hide google image and white background
-//                v.setTextColor(resources.getColor(R.color.grey)) // text color here
+                v.setTextColor(resources.getColor(R.color.grey)) // text color here
                 v.typeface = Typeface.DEFAULT_BOLD // even typeface
                 return
             }

@@ -56,7 +56,6 @@ class LogInPageFragment : BaseFragment() {
     private var rememberLoginPreferences: Boolean = false
 
     companion object {
-        private const val PARAM_EMAIL = "paramEmail"
         fun newInstance() = LogInPageFragment()
     }
 
@@ -239,30 +238,12 @@ class LogInPageFragment : BaseFragment() {
             navigator.navigateToSignUpPageFragment(requireActivity())
         }
 
-        user_email.setOnEditorActionListener { _, i, _ ->
-            var handled = false
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                viewModel.checkIfEmailRegistered(getEdTxtEmail())
-                handled = true
-            }
-            handled
-        }
-
-        btn_forget_password.setOnClickListener {
-            viewModel.requestResetPassword(user_email.text.toString())
-        }
+//        btn_forget_password.setOnClickListener {
+//            viewModel.requestResetPassword(user_email.text.toString())
+//        }
 
         btn_log_in.setOnClickListener {
             viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
-        }
-
-        user_password.setOnEditorActionListener { _, i, _ ->
-            var handled = false
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
-                handled = true
-            }
-            handled
         }
 
         // Remember password

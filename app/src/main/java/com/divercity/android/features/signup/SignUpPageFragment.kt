@@ -64,13 +64,8 @@ class SignUpPageFragment : BaseFragment() {
     private lateinit var loginPreferences: SharedPreferences
     private var rememberLoginPreferences: Boolean = false
     private val callbackManager = CallbackManager.Factory.create()
-//    val SAVE_PARAM_FILEPATH = "saveParamFilepath"
-    val SAVE_PARAM_ISUSERREGISTERED = "isUserRegistered"
-    private var username: String? = ""
-    private var isUserRegistered: Int = 2
 
     companion object {
-        private const val PARAM_EMAIL = "paramEmail"
         fun newInstance() = SignUpPageFragment()
     }
 
@@ -96,7 +91,6 @@ class SignUpPageFragment : BaseFragment() {
         handlerViewPager = Handler()
         hideKeyboard()
         reDesignGoogleButton(btn_google_login_sign_up_page, "\u0020     Gmail")
-
 //        setupViewPager()
 //        setupToolbar()
         setupEvents()
@@ -276,48 +270,26 @@ class SignUpPageFragment : BaseFragment() {
             navigator.navigateToLogInPageFragment(requireActivity())
         }
 
-        sign_up_user_email.setOnEditorActionListener { _, i, _ ->
-            var handled = false
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                viewModel.checkIfEmailRegistered(getEdTxtEmail())
-                handled = true
-            }
-            handled
-        }
-
 //        btn_forget_password.setOnClickListener {
 //            viewModel.requestResetPassword(user_email.text.toString())
 //        }
 
-//        btn_sign_up.setOnClickListener {
-//            viewModel.loginEmail(sign_up_user_email.text.toString(), sign_up_user_password.text.toString())
-//        }
-
-        sign_up_user_password.setOnEditorActionListener { _, i, _ ->
-            var handled = false
-            if (i == EditorInfo.IME_ACTION_DONE) {
-                viewModel.loginEmail(sign_up_user_email.text.toString(), sign_up_user_password.text.toString())
-                handled = true
-            }
-            handled
+        // Remember password
+        checkbox_remember_password_sign_up_page.setOnClickListener {
+            rememberLoginPreferences = checkbox_remember_password_sign_up_page.isChecked()
         }
 
-//        // Remember password
-//        checkbox_remember_password.setOnClickListener {
-//            rememberLoginPreferences = checkbox_remember_password.isChecked()
-//        }
-//
-//        loginPreferences = requireActivity().getSharedPreferences(
-//            DIVERCITY_USERNAME_PASSWORD_PREF,
-//            Context.MODE_PRIVATE
-//        )
+        loginPreferences = requireActivity().getSharedPreferences(
+            DIVERCITY_USERNAME_PASSWORD_PREF,
+            Context.MODE_PRIVATE
+        )
 //        rememberLoginPreferences = loginPreferences.getBoolean(REMEMBER_USERNAME_PASSWORD, false)
-//        if (rememberLoginPreferences) {
-//            user_email.setText(loginPreferences.getString(USERNAME, null))
-//            user_password.setText(loginPreferences.getString(PASSWORD, null))
-//        }
-//        checkbox_remember_password.setChecked(rememberLoginPreferences)
-//
+        if (rememberLoginPreferences) {
+            user_email.setText(loginPreferences.getString(USERNAME, null))
+            user_password.setText(loginPreferences.getString(PASSWORD, null))
+        }
+        checkbox_remember_password_sign_up_page.setChecked(rememberLoginPreferences)
+
         // Sign up button
         btn_sign_up.isEnabled = false
         btn_sign_up.isClickable = false
@@ -325,19 +297,15 @@ class SignUpPageFragment : BaseFragment() {
 
         // add listeners to email and password
         addListenerOnNameEmailAndPassword()
-//
-//        btn_sign_up.setOnClickListener {
-//            var loginPreferencesEditor = loginPreferences.edit()
-//            loginPreferencesEditor.putBoolean(REMEMBER_USERNAME_PASSWORD, rememberLoginPreferences)
-//            if (rememberLoginPreferences) {
-//                loginPreferencesEditor.putString(USERNAME, sign_up_user_email.getText().toString())
-//                loginPreferencesEditor.putString(PASSWORD, sign_up_user_password.getText().toString())
-//            }
-//            loginPreferencesEditor.clear().commit()
-//            viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())
-//        }
 
         btn_sign_up.setOnClickListener {
+            var loginPreferencesEditor = loginPreferences.edit()
+            loginPreferencesEditor.putBoolean(REMEMBER_USERNAME_PASSWORD, rememberLoginPreferences)
+            if (rememberLoginPreferences) {
+                loginPreferencesEditor.putString(USERNAME, sign_up_user_email.getText().toString())
+                loginPreferencesEditor.putString(PASSWORD, sign_up_user_password.getText().toString())
+            }
+            loginPreferencesEditor.clear().commit()
             if (checkFormIsCompleted())
                 signUp()
             else

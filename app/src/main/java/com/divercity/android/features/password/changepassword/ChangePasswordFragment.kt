@@ -37,35 +37,35 @@ class ChangePasswordFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupToolbar()
+//        setupToolbar()
         setupView()
         subscribeToLiveData()
     }
 
-    private fun setupToolbar() {
-        (activity as AppCompatActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
-            supportActionBar?.let {
-                it.setTitle(R.string.change_password)
-                it.setDisplayHomeAsUpEnabled(true)
-            }
-        }
-    }
+//    private fun setupToolbar() {
+//        (activity as AppCompatActivity).apply {
+//            setSupportActionBar(include_toolbar.toolbar)
+//            supportActionBar?.let {
+//                it.setTitle(R.string.change_password)
+//                it.setDisplayHomeAsUpEnabled(true)
+//            }
+//        }
+//    }
 
     fun setupView() {
-        btn_continue.setOnClickListener {
-            val oldPassword = et_old_password.text.toString()
+        btn_create_password.setOnClickListener {
+//            val oldPassword = et_old_password.text.toString()
             val newPassword = et_new_password.text.toString()
             val confirmedPassword = et_confirm_new_pass.text.toString()
 
             if (newPassword.isEmpty() ||
                 confirmedPassword.isEmpty() ||
-                newPassword != confirmedPassword ||
-                oldPassword.isEmpty()
+                newPassword != confirmedPassword
+//                oldPassword.isEmpty()
             )
                 showToast(getString(R.string.check_fields))
             else
-                viewModel.changePassword(oldPassword, newPassword, confirmedPassword)
+                viewModel.changePassword(newPassword, confirmedPassword)
         }
     }
 

@@ -239,14 +239,14 @@ constructor(
     }
 
     override fun changePassword(
-        oldPassword: String,
+//        oldPassword: String,
         newPassword: String,
         confirmation: String
     ): Observable<Unit> {
         return userService.changePassword(
             sessionRepository.getUserId(),
             ChangePasswordEntityBody(
-                PasswordEntity(confirmation, newPassword, oldPassword)
+                PasswordEntity(confirmation, newPassword)
             )
         ).map {
             checkResponse(it)

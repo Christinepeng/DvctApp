@@ -4,6 +4,7 @@ import com.divercity.android.core.base.viewmodel.BaseViewModel
 import com.divercity.android.core.utils.SingleLiveEvent
 import com.divercity.android.data.Resource
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
+import com.divercity.android.features.login.step1.usecase.RequestResetPasswordUseCase
 import com.divercity.android.features.password.resetpassword.usecase.ResetPasswordUseCase
 import com.google.gson.JsonElement
 import javax.inject.Inject
@@ -14,9 +15,10 @@ import javax.inject.Inject
 
 class ResetPasswordViewModel @Inject
 constructor(
-    private val resetPasswordUseCase: ResetPasswordUseCase
+    private val resetPasswordUseCase: ResetPasswordUseCase,
+    private val requestResetPasswordUseCase: RequestResetPasswordUseCase
 ) : BaseViewModel() {
-
+    val requestResetPasswordResponse = SingleLiveEvent<Resource<Unit>>()
     val resetPasswordResponse = SingleLiveEvent<Resource<Unit>>()
 
     fun resetPassword(password: String, token: String) {
@@ -39,6 +41,25 @@ constructor(
             callback,
             ResetPasswordUseCase.Params.to(password, token)
         )
+    }
+
+    fun requestResetPassword(email: String) {
+        requestResetPasswordResponse.value = Resource.loading(null)
+        val callback = object : DisposableObserverWrapper<Unit>() {
+
+            override fun onFail(error: String) {
+                requestResetPasswordResponse.value = Resource.error(error, null)
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                requestResetPasswordResponse.value = Resource.error(error.toString(), null)
+            }
+
+            override fun onSuccess(t: Unit) {
+                requestResetPasswordResponse.value = Resource.success(t)
+            }
+        }
+        requestResetPasswordUseCase.execute(callback, RequestResetPasswordUseCase.Params.to(email))
     }
 
 }

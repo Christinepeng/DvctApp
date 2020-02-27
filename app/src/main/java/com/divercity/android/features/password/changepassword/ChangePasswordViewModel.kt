@@ -19,7 +19,7 @@ constructor(
 
     val changePasswordResponse = SingleLiveEvent<Resource<Unit>>()
 
-    fun changePassword(oldPassword : String, newPassword : String, confirmation: String) {
+    fun changePassword(newPassword : String, confirmation: String) {
         changePasswordResponse.value = Resource.loading(null)
         val callback = object : DisposableObserverWrapper<Unit>() {
 
@@ -37,7 +37,7 @@ constructor(
         }
         changePasswordUseCase.execute(
             callback,
-            ChangePasswordUseCase.Params.to(oldPassword, newPassword, confirmation)
+            ChangePasswordUseCase.Params.to(newPassword, confirmation)
         )
     }
 

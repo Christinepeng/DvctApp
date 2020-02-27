@@ -20,14 +20,14 @@ constructor(
 
     override fun createObservableUseCase(params: Params): Observable<Unit> {
         return repository.changePassword(
-            params.oldPassword,
+//            params.oldPassword,
             params.newPassword,
             params.confirmation
         )
     }
 
     class Params private constructor(
-        val oldPassword: String,
+//        val oldPassword: String,
         val newPassword: String,
         val confirmation: String
     ) {
@@ -35,12 +35,12 @@ constructor(
         companion object {
 
             fun to(
-                oldPassword: String,
+//                oldPassword: String,
                 newPassword: String,
                 confirmation: String
             ): Params {
                 return Params(
-                    oldPassword,
+//                    oldPassword,
                     newPassword,
                     confirmation
                 )

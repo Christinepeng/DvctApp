@@ -238,9 +238,10 @@ class LogInPageFragment : BaseFragment() {
             navigator.navigateToSignUpPageFragment(requireActivity())
         }
 
-//        btn_forget_password.setOnClickListener {
+        btn_forget_password.setOnClickListener {
+            navigator.navigateToResetPassword(requireActivity(), user_password.text.toString())
 //            viewModel.requestResetPassword(user_email.text.toString())
-//        }
+        }
 
         btn_log_in.setOnClickListener {
             viewModel.loginEmail(user_email.text.toString(), user_password.text.toString())

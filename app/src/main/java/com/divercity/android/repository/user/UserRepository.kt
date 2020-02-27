@@ -88,7 +88,7 @@ interface UserRepository {
     ): Observable<List<User>>
 
     fun changePassword(
-        oldPassword: String,
+//        oldPassword: String,
         newPassword: String,
         confirmation: String
     ): Observable<Unit>

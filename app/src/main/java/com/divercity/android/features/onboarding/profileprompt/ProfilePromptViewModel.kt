@@ -24,7 +24,7 @@ constructor(
     init {
         showRecruiterText.value =
             accountType == application.getString(R.string.recruiter_id) ||
-                    accountType == application.getString(R.string.hiring_manager_id)
+                    accountType == application.getString(R.string.hiring_manager_recruiter_id)
     }
 
     val accountType

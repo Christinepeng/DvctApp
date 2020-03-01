@@ -23,7 +23,7 @@ object OnboardingProgression {
             activity.getString(R.string.recruiter_id) -> {
                 progress + COUNT_RECRUITER
             }
-            activity.getString(R.string.hiring_manager_id) -> {
+            activity.getString(R.string.hiring_manager_recruiter_id) -> {
                 progress + COUNT_HR
             }
             activity.getString(R.string.student_id) -> {

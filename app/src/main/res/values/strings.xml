@@ -162,18 +162,18 @@
     <string name="profile_prompt_subtitle_nonrecruiter">%1$s, for the best experience, please tell us a little about yourself and your interests so we can customize your group, connection, or job suggestions.</string>
 
     <!-- What describes you best?-->
-    <string name="job_seeker">Job Seeker</string>
+    <string name="professional_job_seeker">Professional/Job Seeker</string>
     <string name="student">Student</string>
     <string name="entrepreneur">Entrepreneur</string>
     <string name="professional">Professional</string>
-    <string name="hiring_manager">Hiring Manager</string>
+    <string name="hiring_manager_recruiter">Hiring Manager/Recruiter</string>
     <string name="recruiter">Recruiter</string>
 
-    <string name="job_seeker_id">job_seeker</string>
+    <string name="professional_job_seeker_id">job_seeker</string>
     <string name="student_id">student</string>
     <string name="entrepreneur_id">entrepreneur</string>
     <string name="professional_id">professional</string>
-    <string name="hiring_manager_id">hiring_manager</string>
+    <string name="hiring_manager_recruiter_id">hiring_manager</string>
     <string name="recruiter_id">recruiter</string>
 
     <!-- Gender-->

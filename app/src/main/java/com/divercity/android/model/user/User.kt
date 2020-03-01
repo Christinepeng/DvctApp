@@ -50,7 +50,7 @@ data class User(
 
     fun isJobSeeker(context: Context): Boolean {
         return accountType != null &&
-                (accountType == context.getString(R.string.job_seeker_id) ||
+                (accountType == context.getString(R.string.professional_job_seeker_id) ||
                         accountType == context.getString(R.string.student_id) ||
                         accountType == context.getString(R.string.professional_id))
     }

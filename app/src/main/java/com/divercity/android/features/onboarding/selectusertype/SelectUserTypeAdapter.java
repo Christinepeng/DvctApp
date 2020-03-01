@@ -26,30 +26,30 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
 
     private void fillList(Context context) {
         int drawables[] = {
-                R.drawable.img_jobseeker,
+                R.drawable.img_professional_jobseeker,
+//                R.drawable.img_jobseeker,
                 R.drawable.img_student,
-                R.drawable.img_entrepreneur,
-                R.drawable.img_professional,
-                R.drawable.img_hiring_manager,
-                R.drawable.img_recruiter
+                R.drawable.img_hiring_manager_recruiter,
+                R.drawable.img_entrepreneur
+//                R.drawable.img_recruiter
         };
 
         int strings[] = {
-                R.string.job_seeker,
+                R.string.professional_job_seeker,
                 R.string.student,
-                R.string.entrepreneur,
-                R.string.professional,
-                R.string.hiring_manager,
-                R.string.recruiter
+                R.string.hiring_manager_recruiter,
+                R.string.entrepreneur
+//                R.string.professional,
+//                R.string.recruiter
         };
 
         String ids[] = {
-                context.getString(R.string.job_seeker_id),
+                context.getString(R.string.professional_job_seeker_id),
                 context.getString(R.string.student_id),
-                context.getString(R.string.entrepreneur_id),
-                context.getString(R.string.professional_id),
-                context.getString(R.string.hiring_manager_id),
-                context.getString(R.string.recruiter_id)
+                context.getString(R.string.hiring_manager_recruiter_id),
+                context.getString(R.string.entrepreneur_id)
+//                context.getString(R.string.professional_id),
+//                context.getString(R.string.recruiter_id)
         };
 
         for (int i = 0; i < drawables.length; i++)

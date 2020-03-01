@@ -783,7 +783,7 @@ class Navigator @Inject constructor() {
                         navigateToSelectGroupActivity(activity, progress)
                 }
             }
-            activity.getString(R.string.hiring_manager_id) -> {
+            activity.getString(R.string.hiring_manager_recruiter_id) -> {
                 when (activity) {
                     is ProfilePromptActivity ->
                         navigateToSelectCompanyActivity(activity, progress)
@@ -803,7 +803,7 @@ class Navigator @Inject constructor() {
             }
             activity.getString(R.string.professional_id),
             activity.getString(R.string.entrepreneur_id),
-            activity.getString(R.string.job_seeker_id) -> {
+            activity.getString(R.string.professional_job_seeker_id) -> {
                 when (activity) {
                     is ProfilePromptActivity ->
                         navigateToSelectCompanyActivity(activity, progress)

@@ -21,14 +21,14 @@ object ProfileUtils {
         setupPersonalLayout(userType,context,personalView)
         when (userType) {
             context.getString(R.string.professional_id),
-            context.getString(R.string.job_seeker_id) -> {
+            context.getString(R.string.professional_job_seeker_id) -> {
                 skillsView.visibility = View.VISIBLE
                 experienceView.visibility = View.VISIBLE
                 educationView.visibility = View.VISIBLE
                 interestsView.visibility = View.VISIBLE
             }
             context.getString(R.string.recruiter_id),
-            context.getString(R.string.hiring_manager_id) -> {
+            context.getString(R.string.hiring_manager_recruiter_id) -> {
                 skillsView.visibility = View.GONE
                 experienceView.visibility = View.GONE
                 educationView.visibility = View.GONE
@@ -53,11 +53,11 @@ object ProfileUtils {
         personalView.visibility = View.VISIBLE
         when (userType) {
             context.getString(R.string.professional_id),
-            context.getString(R.string.job_seeker_id) -> {
+            context.getString(R.string.professional_job_seeker_id) -> {
                 personalView.lay_school.visibility = View.GONE
             }
             context.getString(R.string.recruiter_id),
-            context.getString(R.string.hiring_manager_id) -> {
+            context.getString(R.string.hiring_manager_recruiter_id) -> {
                 personalView.lay_resume.visibility = View.GONE
                 personalView.lay_school.visibility = View.GONE
                 personalView.lay_age_range.visibility = View.GONE

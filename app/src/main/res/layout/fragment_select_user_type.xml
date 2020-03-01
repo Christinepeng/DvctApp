@@ -7,16 +7,41 @@
     android:background="@android:color/white">
 
     <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="23sp"
+        android:textColor="#87caff"
+        android:lineSpacingExtra="35sp"
+        android:text="Welcome to Divercity"
+        android:layout_marginTop="40dp"
+        android:layout_gravity="center_horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/select_user_type_user_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="65dp"
+        android:text="Alexander!"
+        android:textColor="#87caff"
+        android:lineSpacingExtra="5sp"
+        android:textSize="43sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:fontFamily="@font/avenir_roman"
-        android:text="@string/describes_best"
+        android:layout_marginTop="135dp"
+        android:text="Which of these describe you best? \n
+Please select up to two options"
         android:textColor="#333241"
-        android:textSize="18sp"
+        android:lineSpacingExtra="5sp"
+        android:textSize="17sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

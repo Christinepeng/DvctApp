@@ -32,14 +32,14 @@ class SignUpPageViewModel @Inject constructor(
     private val loginGoogleUseCase: LoginGoogleUseCase
 ) :
     BaseViewModel() {
-    val signUpResponse = SingleLiveEvent<Resource<Any>>()
+    val signUpResponse = SingleLiveEvent<Resource<User>>()
     val checkEmailRegisteredResponse = SingleLiveEvent<Resource<Boolean>>()
     val loginEmailResponse = SingleLiveEvent<Resource<User>>()
     val requestResetPasswordResponse = SingleLiveEvent<Resource<Unit>>()
     val loginFacebookResponse = SingleLiveEvent<Resource<User>>()
     val loginGoogleResponse = SingleLiveEvent<Resource<User>>()
-    val navigateToSignUp = SingleLiveEvent<Any>()
-    val navigateToLogin = SingleLiveEvent<Any>()
+//    val navigateToSignUp = SingleLiveEvent<Any>()
+//    val navigateToLogin = SingleLiveEvent<Any>()
     val navigateToSelectUserType = SingleLiveEvent<Boolean>()
 
     fun signUp(name: String, email: String, password: String) {
@@ -74,7 +74,7 @@ class SignUpPageViewModel @Inject constructor(
                             r
                         )
                     )
-                    if (r) navigateToLogin.call() else navigateToSignUp.call()
+//                    if (r) navigateToLogin.call() else navigateToSignUp.call()
                 }
 
                 override fun onError(e: Throwable) {
@@ -100,28 +100,28 @@ class SignUpPageViewModel @Inject constructor(
         )
     }
 
-    fun loginEmail(email: String?, password: String?) {
-        if (password != null && password != "") {
-            loginEmailResponse.value = loading<User>(null)
-            val callback = object : LoginEmailUseCase.Callback() {
-                override fun onFail(error: String) {
-                    loginEmailResponse.value = error<User>(error, null)
-                }
-
-                override fun onSuccess(response: User) {
-                    loginEmailResponse.value = success(response)
-                }
-            }
-            loginEmailUseCase.execute(callback, LoginEmailUseCase.Params.forLogin(email, password))
-        } else {
-            loginEmailResponse.setValue(
-                error<User>(
-                    application.resources.getString(R.string.insert_valid_password),
-                    null
-                )
-            )
-        }
-    }
+//    fun loginEmail(email: String?, password: String?) {
+//        if (password != null && password != "") {
+//            loginEmailResponse.value = loading<User>(null)
+//            val callback = object : LoginEmailUseCase.Callback() {
+//                override fun onFail(error: String) {
+//                    loginEmailResponse.value = error<User>(error, null)
+//                }
+//
+//                override fun onSuccess(response: User) {
+//                    loginEmailResponse.value = success(response)
+//                }
+//            }
+//            loginEmailUseCase.execute(callback, LoginEmailUseCase.Params.forLogin(email, password))
+//        } else {
+//            loginEmailResponse.setValue(
+//                error<User>(
+//                    application.resources.getString(R.string.insert_valid_password),
+//                    null
+//                )
+//            )
+//        }
+//    }
 
     fun requestResetPassword(email: String) {
         requestResetPasswordResponse.value = loading(null)

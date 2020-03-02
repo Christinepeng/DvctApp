@@ -8,16 +8,22 @@ import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.divercity.android.R;
 import com.divercity.android.core.base.BaseFragment;
+import com.divercity.android.data.entity.user.response.AttributesEntity;
 
 public class SelectUserTypeFragment extends BaseFragment {
 
     SelectUserTypeViewModel viewModel;
 
     RecyclerView listUserType;
+    TextView userName;
+    String signUpUserName;
+
 
     public static SelectUserTypeFragment newInstance() {
         return new SelectUserTypeFragment();
@@ -41,6 +47,9 @@ public class SelectUserTypeFragment extends BaseFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+//        signUpUserName = AttributesEntity;
+        userName = view.findViewById(R.id.select_user_type_user_name);
+        userName.setText(signUpUserName + "!");
         listUserType = view.findViewById(R.id.list_user_types);
         listUserType.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
         listUserType.setAdapter(new SelectUserTypeAdapter(getContext(), listener));

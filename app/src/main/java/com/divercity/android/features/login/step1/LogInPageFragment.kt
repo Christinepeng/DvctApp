@@ -54,6 +54,7 @@ class LogInPageFragment : BaseFragment() {
     private lateinit var loginPreferences: SharedPreferences
     private val callbackManager = CallbackManager.Factory.create()
     private var rememberLoginPreferences: Boolean = false
+    private var emailFocused: Boolean = false
 
     companion object {
         fun newInstance() = LogInPageFragment()
@@ -95,11 +96,14 @@ class LogInPageFragment : BaseFragment() {
                 }
                 Status.ERROR -> {
                     hideProgress()
-//                    showSnackbar(response.message)
-                    showToast(response.message)
                 }
                 Status.SUCCESS -> {
                     hideProgress()
+                    if (response.data == true) {
+                        icon_green_check_mark.visibility = View.VISIBLE
+                    } else {
+                        icon_green_check_mark.visibility = View.INVISIBLE
+                    }
                 }
             }
         })
@@ -179,13 +183,13 @@ class LogInPageFragment : BaseFragment() {
             }
         })
 
-        viewModel.navigateToLogin.observe(this, Observer {
-            navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
-        })
-
-        viewModel.navigateToSignUp.observe(this, Observer {
-            navigator.navigateToSignUpActivity(requireActivity(), getEdTxtEmail())
-        })
+//        viewModel.navigateToLogin.observe(this, Observer {
+//            navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
+//        })
+//
+//        viewModel.navigateToSignUp.observe(this, Observer {
+//            navigator.navigateToSignUpActivity(requireActivity(), getEdTxtEmail())
+//        })
     }
 
     private fun setupEvents() {
@@ -283,13 +287,13 @@ class LogInPageFragment : BaseFragment() {
         loginButtonReactToLoginStatus()
     }
 
-    fun checkEmailValid() : Boolean {
-        return Util.isValidEmail(user_email.text.toString().trim() { it <= ' ' })
-    }
-
-//    fun checkIfEmailRegistered() : Boolean {
-//        return
+//    fun checkEmailValid() : Boolean {
+//        return Util.isValidEmail(user_email.text.toString().trim() { it <= ' ' })
 //    }
+//
+////    fun checkIfEmailRegistered() : Boolean {
+////        return
+////    }
 
     fun getEdTxtEmail(): String {
         return user_email.text.toString().trim()
@@ -418,6 +422,16 @@ class LogInPageFragment : BaseFragment() {
                 loginButtonReactToLoginStatus()
             }
         })
+        user_email.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                emailFocused = true
+            } else {
+                if (emailFocused) {
+                    viewModel.checkIfEmailRegistered(user_email.text.toString())
+                }
+                emailFocused = false
+            }
+        }
         user_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
@@ -442,17 +456,17 @@ class LogInPageFragment : BaseFragment() {
         }
     }
 
-    private fun checkInputEmail() {
-        if (!checkEmailEmpty() && !checkEmailValid()) {
-            showRequireValidEmailDialog()
-        } else {
-//            if (!checkIfEmailRegistered()) {
-//                showEmailIsNotUsedYetDialog()
-//            } else {
-//                icon_green_check_mark.visibility = View.VISIBLE
-//            }
-        }
-    }
+//    private fun checkInputEmail() {
+//        if (!checkEmailEmpty() && !checkEmailValid()) {
+//            showRequireValidEmailDialog()
+//        } else {
+////            if (!checkIfEmailRegistered()) {
+////                showEmailIsNotUsedYetDialog()
+////            } else {
+////                icon_green_check_mark.visibility = View.VISIBLE
+////            }
+//        }
+//    }
 
     fun reDesignGoogleButton(signInButton: SignInButton, buttonText: String) {
         for (i in 0 until signInButton.childCount) {

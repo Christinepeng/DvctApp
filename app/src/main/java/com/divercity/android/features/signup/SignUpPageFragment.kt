@@ -62,8 +62,9 @@ class SignUpPageFragment : BaseFragment() {
     lateinit var viewModel: SignUpPageViewModel
     private lateinit var handlerViewPager: Handler
     private lateinit var loginPreferences: SharedPreferences
-    private var rememberLoginPreferences: Boolean = false
     private val callbackManager = CallbackManager.Factory.create()
+    private var rememberLoginPreferences: Boolean = false
+    private var emailFocused: Boolean = false
 
     companion object {
         fun newInstance() = SignUpPageFragment()
@@ -98,27 +99,32 @@ class SignUpPageFragment : BaseFragment() {
     }
 
     fun subscribeToLiveData() {
-        viewModel.signUpResponse.observe(viewLifecycleOwner, Observer { voidResource ->
-            when (voidResource?.status) {
+        viewModel.signUpResponse.observe(viewLifecycleOwner, Observer { response ->
+            when (response?.status) {
                 Status.LOADING -> {
                     showProgress()
                 }
                 Status.ERROR -> {
                     hideProgress()
-                    showSnackbar(voidResource.message)
+                    showSnackbar(response.message)
                 }
                 Status.SUCCESS -> {
-                    viewModel.navigateToSelectUserType.call()
+                    hideProgress()
+                    if (response.data?.accountType == null)
+                        navigator.navigateToSelectUserTypeActivity(requireActivity())
+                    else
+                        navigator.navigateToHomeActivity(requireActivity())
+                    requireActivity().finish()
                 }
             }
         })
 
-        viewModel.navigateToSelectUserType.observe(viewLifecycleOwner, Observer {
-            activity?.run {
-                navigator.navigateToSelectUserTypeActivity(this)
-                this.finish()
-            }
-        })
+//        viewModel.navigateToSelectUserType.observe(viewLifecycleOwner, Observer {
+//            activity?.run {
+//                navigator.navigateToSelectUserTypeActivity(this)
+//                this.finish()
+//            }
+//        })
 
         viewModel.checkEmailRegisteredResponse.observe(this, Observer { response ->
             when (response?.status) {
@@ -136,24 +142,24 @@ class SignUpPageFragment : BaseFragment() {
             }
         })
 
-        viewModel.loginEmailResponse.observe(viewLifecycleOwner, Observer { response ->
-            when (response?.status) {
-                Status.LOADING -> {
-                    showProgress()
-                }
-                Status.ERROR -> {
-                    hideProgress()
-                    showSnackbar(response.message)
-                }
-                Status.SUCCESS -> {
-                    hideProgress()
-                    if (response.data?.accountType == null)
-                        navigator.navigateToSelectUserTypeActivity(requireActivity())
-                    else
-                        navigator.navigateToHomeActivity(requireActivity())
-                }
-            }
-        })
+//        viewModel.loginEmailResponse.observe(viewLifecycleOwner, Observer { response ->
+//            when (response?.status) {
+//                Status.LOADING -> {
+//                    showProgress()
+//                }
+//                Status.ERROR -> {
+//                    hideProgress()
+//                    showSnackbar(response.message)
+//                }
+//                Status.SUCCESS -> {
+//                    hideProgress()
+//                    if (response.data?.accountType == null)
+//                        navigator.navigateToSelectUserTypeActivity(requireActivity())
+//                    else
+//                        navigator.navigateToHomeActivity(requireActivity())
+//                }
+//            }
+//        })
 
         viewModel.requestResetPasswordResponse.observe(viewLifecycleOwner, Observer { response ->
             when (response?.status) {
@@ -211,13 +217,13 @@ class SignUpPageFragment : BaseFragment() {
             }
         })
 
-        viewModel.navigateToLogin.observe(this, Observer {
-            navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
-        })
-
-        viewModel.navigateToSignUp.observe(this, Observer {
-            navigator.navigateToSignUpActivity(requireActivity(), getEdTxtEmail())
-        })
+//        viewModel.navigateToLogin.observe(this, Observer {
+//            navigator.navigateToLoginActivity(requireActivity(), getEdTxtEmail())
+//        })
+//
+//        viewModel.navigateToSignUp.observe(this, Observer {
+//            navigator.navigateToSignUpActivity(requireActivity(), getEdTxtEmail())
+//        })
     }
 
     private fun setupEvents() {
@@ -333,9 +339,9 @@ class SignUpPageFragment : BaseFragment() {
     }
 
 
-    fun getEdTxtEmail(): String {
-        return user_email.text.toString().trim()
-    }
+//    fun getEdTxtEmail(): String {
+//        return user_email.text.toString().trim()
+//    }
 
     fun checkNameEmpty(): Boolean {
         return sign_up_user_name.text.toString().isEmpty()
@@ -416,6 +422,16 @@ class SignUpPageFragment : BaseFragment() {
                 signupButtonReactToSignupStatus()
             }
         })
+        sign_up_user_email.setOnFocusChangeListener { _, hasFocus ->
+            if (hasFocus) {
+                emailFocused = true
+            } else {
+                if (emailFocused) {
+                    viewModel.checkIfEmailRegistered(user_email.toString());
+                }
+                emailFocused = false
+            }
+        }
         sign_up_user_password.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable) {}
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}

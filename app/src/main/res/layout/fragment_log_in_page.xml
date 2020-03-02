@@ -163,7 +163,7 @@
             android:background="@null"/>
 
         <ImageView
-            android:id="@+id/icon_green_check_mark"
+            android:id="@+id/icon_green_check_mark_login_page"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="21sp"

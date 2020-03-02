@@ -10,13 +10,11 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import com.facebook.CallbackManager
@@ -100,9 +98,9 @@ class LogInPageFragment : BaseFragment() {
                 Status.SUCCESS -> {
                     hideProgress()
                     if (response.data == true) {
-                        icon_green_check_mark.visibility = View.VISIBLE
+                        icon_green_check_mark_login_page.visibility = View.VISIBLE
                     } else {
-                        icon_green_check_mark.visibility = View.INVISIBLE
+                        icon_green_check_mark_login_page.visibility = View.INVISIBLE
                     }
                 }
             }

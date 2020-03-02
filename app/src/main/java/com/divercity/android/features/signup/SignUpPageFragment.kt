@@ -10,7 +10,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
 import android.view.View
-import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
@@ -18,7 +17,6 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
-import com.divercity.android.core.utils.ImageUtils
 import com.divercity.android.core.utils.Util
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
@@ -42,13 +40,11 @@ import kotlinx.android.synthetic.main.fragment_log_in_page.*
 import kotlinx.android.synthetic.main.fragment_log_in_page.btn_facebook
 import kotlinx.android.synthetic.main.fragment_log_in_page.btn_facebook_sdk
 import kotlinx.android.synthetic.main.fragment_log_in_page.btn_linkedin
-import kotlinx.android.synthetic.main.fragment_sign_up.*
 import kotlinx.android.synthetic.main.fragment_sign_up_page.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import java.io.File
 import java.io.IOException
 
 /**
@@ -138,6 +134,11 @@ class SignUpPageFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
+                    if (response.data == true) {
+                        icon_green_check_mark_signup_page.visibility = View.INVISIBLE
+                    } else {
+                        icon_green_check_mark_signup_page.visibility = View.VISIBLE
+                    }
                 }
             }
         })
@@ -427,7 +428,7 @@ class SignUpPageFragment : BaseFragment() {
                 emailFocused = true
             } else {
                 if (emailFocused) {
-                    viewModel.checkIfEmailRegistered(user_email.toString());
+                    viewModel.checkIfEmailRegistered(sign_up_user_email.text.toString())
                 }
                 emailFocused = false
             }

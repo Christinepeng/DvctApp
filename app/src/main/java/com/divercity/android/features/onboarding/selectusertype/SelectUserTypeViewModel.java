@@ -6,6 +6,7 @@ import com.divercity.android.data.entity.profile.profile.UserProfileEntity;
 import com.divercity.android.data.networking.config.DisposableObserverWrapper;
 import com.divercity.android.features.onboarding.usecase.UpdateUserProfileUseCase;
 import com.divercity.android.model.user.User;
+import com.divercity.android.repository.session.SessionRepository;
 import com.google.gson.JsonElement;
 
 import javax.inject.Inject;
@@ -20,10 +21,15 @@ public class SelectUserTypeViewModel extends BaseViewModel {
 
     MutableLiveData<Resource<User>> dataUpdateUser = new MutableLiveData<>();
     UpdateUserProfileUseCase updateUserProfileUseCase;
+    SessionRepository sessionRepository;
 
     @Inject
-    public SelectUserTypeViewModel(UpdateUserProfileUseCase updateUserProfileUseCase) {
+    public SelectUserTypeViewModel(
+            UpdateUserProfileUseCase updateUserProfileUseCase,
+            SessionRepository sessionRepository
+    ) {
         this.updateUserProfileUseCase = updateUserProfileUseCase;
+        this.sessionRepository = sessionRepository;
     }
 
     public void updateUserProfile(String typeId){

@@ -59,6 +59,7 @@ import com.divercity.android.features.login.step2.LoginActivity
 import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
 import com.divercity.android.features.major.withtoolbar.SelectSingleMajorActivity
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity
+import com.divercity.android.features.onboarding.personalinfo.PersonalInfoActivity
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
@@ -210,6 +211,9 @@ abstract class ActivityBuilderModule {
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindSelectUserTypeActivity(): SelectUserTypeActivity
+
+    @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
+    abstract fun bindPersonalInfoActivity(): PersonalInfoActivity
 
     @ContributesAndroidInjector(modules = [FragmentBuilderModule::class])
     abstract fun bindProfilePromptActivity(): ProfilePromptActivity

@@ -157,9 +157,14 @@
             android:screenOrientation="portrait" />
 
         <activity
-            android:name=".features.onboarding.profileprompt.ProfilePromptActivity"
+            android:name=".features.onboarding.personalinfo.PersonalInfoActivity"
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
+
+<!--        <activity-->
+<!--            android:name=".features.onboarding.profileprompt.ProfilePromptActivity"-->
+<!--            android:configChanges="orientation"-->
+<!--            android:screenOrientation="portrait" />-->
 
         <activity
             android:name=".features.school.onboarding.OnboardingSchoolActivity"

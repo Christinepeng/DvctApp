@@ -67,6 +67,7 @@ import com.divercity.android.features.login.step2.LoginActivity
 import com.divercity.android.features.major.onboarding.OnboardingMajorActivity
 import com.divercity.android.features.major.withtoolbar.SelectSingleMajorActivity
 import com.divercity.android.features.multipleuseraction.MultipleUserActionActivity
+import com.divercity.android.features.onboarding.personalinfo.PersonalInfoActivity
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptActivity
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsActivity
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationActivity
@@ -170,6 +171,10 @@ class Navigator @Inject constructor() {
 
     fun navigateToSelectUserTypeActivity(activity: FragmentActivity) {
         activity.startActivity(SelectUserTypeActivity.getCallingIntent(activity))
+    }
+
+    fun navigateToPersonalInfoActivity(activity: FragmentActivity) {
+        activity.startActivity(PersonalInfoActivity.getCallingIntent(activity))
     }
 
     fun navigateToOnboardingSchool(activity: FragmentActivity, progress: Int) {
@@ -767,24 +772,28 @@ class Navigator @Inject constructor() {
         }
 
         when (userTypeId) {
-            activity.getString(R.string.recruiter_id) -> {
-                when (activity) {
-                    is ProfilePromptActivity ->
-                        navigateToSelectCompanyActivity(activity, progress)
-                    is OnboardingCompanyActivity ->
-                        navigateToOnboardingIndustryActivity(activity, progress)
-                    is SelectIndustryOnboardingActivity ->
-                        navigateToOnboardingLocationActivity(activity, progress)
-                    is OnboardingLocationActivity ->
-                        navigateToOnboardingGenderActivity(activity, progress)
-                    is OnboardingGenderActivity ->
-                        navigateToOnboardingEthnicityActivity(activity, progress)
-                    is OnboardingEthnicityActivity ->
-                        navigateToSelectGroupActivity(activity, progress)
-                }
-            }
+//            activity.getString(R.string.recruiter_id) -> {
+//                when (activity) {
+//                    is ProfilePromptActivity ->
+//                        navigateToSelectCompanyActivity(activity, progress)
+//                    is OnboardingCompanyActivity ->
+//                        navigateToOnboardingIndustryActivity(activity, progress)
+//                    is SelectIndustryOnboardingActivity ->
+//                        navigateToOnboardingLocationActivity(activity, progress)
+//                    is OnboardingLocationActivity ->
+//                        navigateToOnboardingGenderActivity(activity, progress)
+//                    is OnboardingGenderActivity ->
+//                        navigateToOnboardingEthnicityActivity(activity, progress)
+//                    is OnboardingEthnicityActivity ->
+//                        navigateToSelectGroupActivity(activity, progress)
+//                }
+//            }
             activity.getString(R.string.hiring_manager_recruiter_id) -> {
                 when (activity) {
+                    //new
+                    is SelectUserTypeActivity ->
+                        navigateToSelectCompanyActivity(activity, progress)
+                    //old
                     is ProfilePromptActivity ->
                         navigateToSelectCompanyActivity(activity, progress)
                     is OnboardingCompanyActivity ->
@@ -805,6 +814,10 @@ class Navigator @Inject constructor() {
             activity.getString(R.string.entrepreneur_id),
             activity.getString(R.string.professional_job_seeker_id) -> {
                 when (activity) {
+                    //new
+                    is SelectUserTypeActivity ->
+                        navigateToSelectCompanyActivity(activity, progress)
+                    //old
                     is ProfilePromptActivity ->
                         navigateToSelectCompanyActivity(activity, progress)
                     is OnboardingCompanyActivity ->
@@ -829,6 +842,10 @@ class Navigator @Inject constructor() {
             }
             activity.getString(R.string.student_id) -> {
                 when (activity) {
+                    //new
+                    is SelectUserTypeActivity ->
+                        navigateToSelectCompanyActivity(activity, progress)
+                    //old
                     is ProfilePromptActivity ->
                         navigateToOnboardingSchool(activity, progress)
                     is OnboardingSchoolActivity ->

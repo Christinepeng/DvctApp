@@ -67,7 +67,8 @@ public class SelectUserTypeFragment extends BaseFragment {
                     break;
                 case SUCCESS:
                     hideProgress();
-                    navigator.navigateToProfilePromptActivity(getActivity());
+                    navigator.navigateToPersonalInfoActivity(requireActivity());
+//                    navigator.navigateToProfilePromptActivity(getActivity());
 //                    navigator.navigateToHomeActivity(getActivity());
                     break;
             }

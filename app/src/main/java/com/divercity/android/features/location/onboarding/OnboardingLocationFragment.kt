@@ -22,18 +22,8 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
     @Inject
     lateinit var adapter: CompanyAdapter
 
-    var currentProgress: Int = 0
-
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): OnboardingLocationFragment {
-            val fragment = OnboardingLocationFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = OnboardingLocationFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
@@ -41,7 +31,6 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingLocationViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -55,25 +44,10 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
     private fun setupHeader() {
         include_header.apply {
 
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
             txt_title.setText(R.string.select_your_location)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
-            }
-
-            btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(requireActivity(),
-                        viewModel.getAccountType(),
-                        currentProgress,
-                        false
-                )
+                navigator.navigateToPersonalInfoActivity(requireActivity())
             }
         }
     }
@@ -89,11 +63,7 @@ class OnboardingLocationFragment : BaseFragment(), SelectLocationFragment.Listen
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(requireActivity(),
-                            viewModel.getAccountType(),
-                            currentProgress,
-                            true
-                    )
+                    navigator.navigateToPersonalInfoActivity(requireActivity())
                 }
             }
         })

@@ -63,7 +63,7 @@ class PersonalInfoFragment : BaseFragment() {
         }
 
         btn_choose_location.setOnClickListener{
-            navigator.navigateToHomeActivity(requireActivity())
+            navigator.navigateToOnboardingLocationActivity(requireActivity())
         }
     }
 

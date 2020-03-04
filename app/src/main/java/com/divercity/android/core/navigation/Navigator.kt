@@ -200,8 +200,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(OnboardingCompanyActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToOnboardingLocationActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingLocationActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingLocationActivity(activity: FragmentActivity) {
+        activity.startActivity(OnboardingLocationActivity.getCallingIntent(activity))
     }
 
     fun navigateToSelectOccupationActivity(activity: FragmentActivity, progress: Int) {
@@ -800,8 +800,8 @@ class Navigator @Inject constructor() {
                         navigateToOnboardingIndustryActivity(activity, progress)
                     is SelectIndustryOnboardingActivity ->
                         navigateToSelectOccupationActivity(activity, progress)
-                    is SelectOccupationActivity ->
-                        navigateToOnboardingLocationActivity(activity, progress)
+//                    is SelectOccupationActivity ->
+//                        navigateToOnboardingLocationActivity(activity, progress)
 //                    is OnboardingLocationActivity ->
 //                        navigateToOnboardingGenderActivity(activity, progress)
 //                    is OnboardingGenderActivity ->
@@ -824,8 +824,8 @@ class Navigator @Inject constructor() {
                         navigateToOnboardingIndustryActivity(activity, progress)
                     is SelectIndustryOnboardingActivity ->
                         navigateToSelectOccupationActivity(activity, progress)
-                    is SelectOccupationActivity ->
-                        navigateToOnboardingLocationActivity(activity, progress)
+//                    is SelectOccupationActivity ->
+//                        navigateToOnboardingLocationActivity(activity, progress)
                     is OnboardingLocationActivity ->
                         navigateToUploadResumeActivity(activity, progress)
                     is UploadResumeActivity ->
@@ -850,8 +850,8 @@ class Navigator @Inject constructor() {
                         navigateToOnboardingSchool(activity, progress)
                     is OnboardingSchoolActivity ->
                         navigateToOnboardingMajor(activity, progress)
-                    is OnboardingMajorActivity ->
-                        navigateToOnboardingLocationActivity(activity, progress)
+//                    is OnboardingMajorActivity ->
+//                        navigateToOnboardingLocationActivity(activity, progress)
                     is OnboardingLocationActivity ->
                         navigateToSelectOOIActivity(activity, progress)
                     is SelectOOIActivity ->

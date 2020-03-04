@@ -36,19 +36,19 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
         childFragmentManager.beginTransaction().add(
                 R.id.fragment_fragment_container, SelectAgeFragment.newInstance()).commit()
         setupHeader()
-//        setupView()
+        setupView()
         subscribeToLiveData()
     }
 
-//    private fun setupView() {
-//        btn_continue.visibility = View.VISIBLE
-//        btn_continue.setOnClickListener {
-//            if (viewModel.ageRangeSelected != null) {
-//                viewModel.updateUserProfileWithSelectedAgeRange()
-//            } else
-//                navigateToNext(false)
-//        }
-//    }
+    private fun setupView() {
+        btn_continue.visibility = View.VISIBLE
+        btn_continue.setOnClickListener {
+            if (viewModel.ageRangeSelected != null) {
+                viewModel.updateUserProfileWithSelectedAgeRange()
+            } else
+                navigateToNext(false)
+        }
+    }
 
     private fun setupHeader() {
         include_header.apply {
@@ -61,13 +61,9 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
         }
     }
 
-//    private fun navigateToNext(shouldIncrement: Boolean) {
-//        navigator.navigateToNextOnboarding(requireActivity(),
-//                viewModel.getAccountType(),
-//                currentProgress,
-//                shouldIncrement
-//        )
-//    }
+    private fun navigateToNext(shouldIncrement: Boolean) {
+        navigator.navigateToPersonalInfoActivity(requireActivity())
+    }
 
     private fun showToast(msg: String) {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()

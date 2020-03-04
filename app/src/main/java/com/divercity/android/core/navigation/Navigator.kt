@@ -217,8 +217,8 @@ class Navigator @Inject constructor() {
         )
     }
 
-    fun navigateToOnboardingGenderActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingGenderActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingGenderActivity(activity: FragmentActivity) {
+        activity.startActivity(OnboardingGenderActivity.getCallingIntent(activity))
     }
 
     fun navigateToSelectInterestsActivity(activity: FragmentActivity, progress: Int) {
@@ -802,8 +802,8 @@ class Navigator @Inject constructor() {
                         navigateToSelectOccupationActivity(activity, progress)
                     is SelectOccupationActivity ->
                         navigateToOnboardingLocationActivity(activity, progress)
-                    is OnboardingLocationActivity ->
-                        navigateToOnboardingGenderActivity(activity, progress)
+//                    is OnboardingLocationActivity ->
+//                        navigateToOnboardingGenderActivity(activity, progress)
                     is OnboardingGenderActivity ->
                         navigateToOnboardingEthnicityActivity(activity, progress)
                     is OnboardingEthnicityActivity ->
@@ -830,8 +830,8 @@ class Navigator @Inject constructor() {
                         navigateToUploadResumeActivity(activity, progress)
                     is UploadResumeActivity ->
                         navigateToOnboardingSkillActivity(activity, progress)
-                    is OnboardingSkillActivity ->
-                        navigateToOnboardingGenderActivity(activity, progress)
+//                    is OnboardingSkillActivity ->
+//                        navigateToOnboardingGenderActivity(activity, progress)
                     is OnboardingGenderActivity ->
                         navigateToOnboardingEthnicityActivity(activity, progress)
                     is OnboardingEthnicityActivity ->
@@ -856,8 +856,8 @@ class Navigator @Inject constructor() {
                         navigateToSelectOOIActivity(activity, progress)
                     is SelectOOIActivity ->
                         navigateToOnboardingSkillActivity(activity, progress)
-                    is OnboardingSkillActivity ->
-                        navigateToOnboardingGenderActivity(activity, progress)
+//                    is OnboardingSkillActivity ->
+//                        navigateToOnboardingGenderActivity(activity, progress)
                     is OnboardingGenderActivity ->
                         navigateToOnboardingEthnicityActivity(activity, progress)
                     is OnboardingEthnicityActivity ->

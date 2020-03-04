@@ -49,6 +49,22 @@ class PersonalInfoFragment : BaseFragment() {
         btn_skip.setOnClickListener{
             navigator.navigateToHomeActivity(requireActivity())
         }
+
+        btn_choose_gender.setOnClickListener{
+            navigator.navigateToOnboardingGenderActivity(requireActivity())
+        }
+
+        btn_choose_ethnicity.setOnClickListener{
+            navigator.navigateToHomeActivity(requireActivity())
+        }
+
+        btn_choose_age.setOnClickListener{
+            navigator.navigateToHomeActivity(requireActivity())
+        }
+
+        btn_choose_location.setOnClickListener{
+            navigator.navigateToHomeActivity(requireActivity())
+        }
     }
 
     private fun subscribeToLiveData() { //        viewModel.dataUpdateUser.observe(this, response -> {

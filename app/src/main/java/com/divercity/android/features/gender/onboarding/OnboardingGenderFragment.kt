@@ -22,18 +22,9 @@ class OnboardingGenderFragment : BaseFragment(), SelectGenderFragment.Listener {
     @Inject
     lateinit var adapter: CompanyAdapter
 
-    var currentProgress: Int = 0
 
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): OnboardingGenderFragment {
-            val fragment = OnboardingGenderFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = OnboardingGenderFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
@@ -41,7 +32,6 @@ class OnboardingGenderFragment : BaseFragment(), SelectGenderFragment.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingGenderViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -54,27 +44,10 @@ class OnboardingGenderFragment : BaseFragment(), SelectGenderFragment.Listener {
 
     private fun setupHeader() {
         include_header.apply {
-
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
-
             txt_title.setText(R.string.select_your_gender)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
-            }
-
-            btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(requireActivity(),
-                        viewModel.accountType,
-                        currentProgress,
-                        false
-                )
+                navigator.navigateToPersonalInfoActivity(requireActivity())
             }
         }
     }
@@ -90,11 +63,7 @@ class OnboardingGenderFragment : BaseFragment(), SelectGenderFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(requireActivity(),
-                            viewModel.accountType,
-                            currentProgress,
-                            true
-                    )
+                    navigator.navigateToPersonalInfoActivity(requireActivity())
                 }
             }
         })

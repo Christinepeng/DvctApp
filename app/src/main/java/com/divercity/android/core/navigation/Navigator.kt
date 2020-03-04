@@ -225,12 +225,12 @@ class Navigator @Inject constructor() {
         activity.startActivity(SelectInterestsActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectBirthdayActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingAgeActivity.getCallingIntent(activity, progress))
+    fun navigateToSelectBirthdayActivity(activity: FragmentActivity) {
+        activity.startActivity(OnboardingAgeActivity.getCallingIntent(activity))
     }
 
-    fun navigateToOnboardingEthnicityActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingEthnicityActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingEthnicityActivity(activity: FragmentActivity) {
+        activity.startActivity(OnboardingEthnicityActivity.getCallingIntent(activity))
     }
 
     fun navigateToOnboardingMajor(activity: FragmentActivity, progress: Int) {
@@ -804,8 +804,8 @@ class Navigator @Inject constructor() {
                         navigateToOnboardingLocationActivity(activity, progress)
 //                    is OnboardingLocationActivity ->
 //                        navigateToOnboardingGenderActivity(activity, progress)
-                    is OnboardingGenderActivity ->
-                        navigateToOnboardingEthnicityActivity(activity, progress)
+//                    is OnboardingGenderActivity ->
+//                        navigateToOnboardingEthnicityActivity(activity, progress)
                     is OnboardingEthnicityActivity ->
                         navigateToSelectGroupActivity(activity, progress)
                 }
@@ -832,10 +832,10 @@ class Navigator @Inject constructor() {
                         navigateToOnboardingSkillActivity(activity, progress)
 //                    is OnboardingSkillActivity ->
 //                        navigateToOnboardingGenderActivity(activity, progress)
-                    is OnboardingGenderActivity ->
-                        navigateToOnboardingEthnicityActivity(activity, progress)
-                    is OnboardingEthnicityActivity ->
-                        navigateToSelectBirthdayActivity(activity, progress)
+//                    is OnboardingGenderActivity ->
+//                        navigateToOnboardingEthnicityActivity(activity, progress)
+//                    is OnboardingEthnicityActivity ->
+//                        navigateToSelectBirthdayActivity(activity, progress)
                     is OnboardingAgeActivity ->
                         navigateToSelectGroupActivity(activity, progress)
                 }
@@ -858,10 +858,10 @@ class Navigator @Inject constructor() {
                         navigateToOnboardingSkillActivity(activity, progress)
 //                    is OnboardingSkillActivity ->
 //                        navigateToOnboardingGenderActivity(activity, progress)
-                    is OnboardingGenderActivity ->
-                        navigateToOnboardingEthnicityActivity(activity, progress)
-                    is OnboardingEthnicityActivity ->
-                        navigateToSelectBirthdayActivity(activity, progress)
+//                    is OnboardingGenderActivity ->
+//                        navigateToOnboardingEthnicityActivity(activity, progress)
+//                    is OnboardingEthnicityActivity ->
+//                        navigateToSelectBirthdayActivity(activity, progress)
                     is OnboardingAgeActivity ->
                         navigateToSelectGroupActivity(activity, progress)
                 }

@@ -20,18 +20,8 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
     @Inject
     lateinit var adapter: OnboardingAgeViewModel
 
-    var currentProgress: Int = 0
-
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): OnboardingAgeFragment {
-            val fragment = OnboardingAgeFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = OnboardingAgeFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
@@ -39,7 +29,6 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[OnboardingAgeViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,50 +36,38 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
         childFragmentManager.beginTransaction().add(
                 R.id.fragment_fragment_container, SelectAgeFragment.newInstance()).commit()
         setupHeader()
-        setupView()
+//        setupView()
         subscribeToLiveData()
     }
 
-    private fun setupView() {
-        btn_continue.visibility = View.VISIBLE
-        btn_continue.setOnClickListener {
-            if (viewModel.ageRangeSelected != null) {
-                viewModel.updateUserProfileWithSelectedAgeRange()
-            } else
-                navigateToNext(false)
-        }
-    }
+//    private fun setupView() {
+//        btn_continue.visibility = View.VISIBLE
+//        btn_continue.setOnClickListener {
+//            if (viewModel.ageRangeSelected != null) {
+//                viewModel.updateUserProfileWithSelectedAgeRange()
+//            } else
+//                navigateToNext(false)
+//        }
+//    }
 
     private fun setupHeader() {
         include_header.apply {
-            currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
 
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
             txt_title.setText(R.string.select_your_agerange)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
-            }
-
-            btn_skip.setOnClickListener {
-                navigateToNext(false)
+                navigator.navigateToPersonalInfoActivity(requireActivity())
             }
         }
     }
 
-    private fun navigateToNext(shouldIncrement: Boolean) {
-        navigator.navigateToNextOnboarding(requireActivity(),
-                viewModel.getAccountType(),
-                currentProgress,
-                shouldIncrement
-        )
-    }
+//    private fun navigateToNext(shouldIncrement: Boolean) {
+//        navigator.navigateToNextOnboarding(requireActivity(),
+//                viewModel.getAccountType(),
+//                currentProgress,
+//                shouldIncrement
+//        )
+//    }
 
     private fun showToast(msg: String) {
         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
@@ -107,7 +84,8 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigateToNext(true)
+                    navigator.navigateToPersonalInfoActivity(requireActivity())
+//                    navigateToNext(true)
                 }
             }
         })

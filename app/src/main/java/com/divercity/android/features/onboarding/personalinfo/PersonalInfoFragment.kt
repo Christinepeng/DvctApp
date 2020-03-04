@@ -55,11 +55,11 @@ class PersonalInfoFragment : BaseFragment() {
         }
 
         btn_choose_ethnicity.setOnClickListener{
-            navigator.navigateToHomeActivity(requireActivity())
+            navigator.navigateToOnboardingEthnicityActivity(requireActivity())
         }
 
         btn_choose_age.setOnClickListener{
-            navigator.navigateToHomeActivity(requireActivity())
+            navigator.navigateToSelectBirthdayActivity(requireActivity())
         }
 
         btn_choose_location.setOnClickListener{

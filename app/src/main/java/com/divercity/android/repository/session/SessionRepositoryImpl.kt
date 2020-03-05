@@ -7,6 +7,8 @@ import com.crashlytics.android.Crashlytics
 import com.divercity.android.BuildConfig
 import com.divercity.android.core.sharedpref.SharedPreferencesManager
 import com.divercity.android.data.entity.base.DataObject
+import com.divercity.android.data.entity.user.response.CompanyEntity
+import com.divercity.android.data.entity.user.response.EthnicityInfoEntity
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.db.dao.UserDao
 import com.divercity.android.model.user.User
@@ -152,6 +154,18 @@ constructor(
 
     override fun getGender(): String? {
         return currentLoggedUser?.userAttributes?.gender
+    }
+
+    override fun getEthnicityName(): String? {
+        return currentLoggedUser?.userAttributes?.ethnicity?.name
+    }
+
+    override fun getOccupation(): String? {
+        return currentLoggedUser?.userAttributes?.occupation
+    }
+
+    override fun getCompanyName(): String? {
+        return currentLoggedUser?.userAttributes?.company?.name
     }
 
     override fun getIndustries(): String? {

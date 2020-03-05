@@ -1,5 +1,6 @@
 package com.divercity.android.features.onboarding.professionalInfo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.ViewModelProviders
@@ -30,17 +31,17 @@ class ProfessionalInfoFragment : BaseFragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-//        val userTitle = UserProfileEntity.getOccupation()
-//        val userCompany = companyToString(_tmpUserAttributes.company)
+        val userOccupation = viewModel?.sessionRepository?.getOccupation()
+        val userCompanyName = viewModel?.sessionRepository?.getCompanyName()
 
-//        if (userTitle != null) {
-//            select_job_title.setText(userTitle)
-//            select_job_title.setTextColor(Color.parseColor("#333241"))
-//        }
-//        if (userCompany != null) {
-//            select_company_name.setText(userCompany)
-//            select_company_name.setTextColor(Color.parseColor("#333241"))
-//        }
+        if (userOccupation != null) {
+            select_job_title.setText("  " + userOccupation)
+            select_job_title.setTextColor(Color.parseColor("#333241"))
+        }
+        if (userCompanyName != null) {
+            select_company_name.setText("  " + userCompanyName)
+            select_company_name.setTextColor(Color.parseColor("#333241"))
+        }
 
         setupEvents()
         subscribeToLiveData()

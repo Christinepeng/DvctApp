@@ -2,6 +2,8 @@ package com.divercity.android.repository.session
 
 import androidx.lifecycle.LiveData
 import com.divercity.android.data.entity.base.DataObject
+import com.divercity.android.data.entity.user.response.CompanyEntity
+import com.divercity.android.data.entity.user.response.EthnicityInfoEntity
 import com.divercity.android.data.entity.user.response.UserEntityResponse
 import com.divercity.android.model.user.User
 import retrofit2.Response
@@ -61,6 +63,12 @@ interface SessionRepository {
     fun getAccountType(): String
 
     fun getGender(): String?
+
+    fun getEthnicityName(): String?
+
+    fun getOccupation(): String?
+
+    fun getCompanyName(): String?
 
     fun getIndustries(): String?
 

@@ -33,10 +33,7 @@ class PersonalInfoFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val userGender = viewModel?.sessionRepository?.getGender()
-
-//        val user = UserProfileEntity()
-//        user.ageRange = ageRangeSelected
-//        val userEthnicity = UserProfileEntity.getEthnicityId()
+        val userEthnicityName = viewModel?.sessionRepository?.getEthnicityName()
         val userAge = viewModel?.sessionRepository?.getAgeRange()
         val userLocation = viewModel?.sessionRepository?.getLocation()
 
@@ -44,10 +41,10 @@ class PersonalInfoFragment : BaseFragment() {
             txt_user_gender.setText(userGender)
             txt_user_gender.setTextColor(Color.parseColor("#333241"))
         }
-//        if (userEthnicity != null) {
-//            txt_user_ethnicity.setText(userEthnicity)
-//            txt_user_ethnicity.setTextColor(Color.parseColor("#333241"))
-//        }
+        if (userEthnicityName != null) {
+            txt_user_ethnicity.setText(userEthnicityName)
+            txt_user_ethnicity.setTextColor(Color.parseColor("#333241"))
+        }
         if (userAge != null) {
             txt_user_age.setText(userAge)
             txt_user_age.setTextColor(Color.parseColor("#333241"))

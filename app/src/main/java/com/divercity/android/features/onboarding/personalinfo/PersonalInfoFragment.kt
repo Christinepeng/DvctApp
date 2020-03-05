@@ -2,6 +2,7 @@ package com.divercity.android.features.onboarding.personalinfo
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProviders
@@ -32,6 +33,9 @@ class PersonalInfoFragment : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val userGender = viewModel?.sessionRepository?.getGender()
+
+//        val user = UserProfileEntity()
+//        user.ageRange = ageRangeSelected
 //        val userEthnicity = UserProfileEntity.getEthnicityId()
         val userAge = viewModel?.sessionRepository?.getAgeRange()
         val userLocation = viewModel?.sessionRepository?.getLocation()
@@ -48,7 +52,7 @@ class PersonalInfoFragment : BaseFragment() {
             txt_user_age.setText(userAge)
             txt_user_age.setTextColor(Color.parseColor("#333241"))
         }
-        if (userLocation != null) {
+        if (userLocation != "null, null") {
             txt_user_location.setText(userLocation)
             txt_user_location.setTextColor(Color.parseColor("#333241"))
         }

@@ -24,18 +24,8 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
     @Inject
     lateinit var adapter: CompanyAdapter
 
-    var currentProgress: Int = 0
-
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): OnboardingCompanyFragment {
-            val fragment = OnboardingCompanyFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = OnboardingCompanyFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
@@ -44,7 +34,6 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this, viewModelFactory)[OnboardingCompanyViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,32 +48,16 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
     private fun setupHeader() {
         include_header.apply {
 
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
             txt_title.setText(R.string.select_your_company)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
-            }
-
-            btn_skip.setOnClickListener {
-                onSkip()
+                navigator.navigateToProfessionalInfoActivity(requireActivity())
             }
         }
     }
 
     private fun onSkip() {
-        navigator.navigateToNextOnboarding(
-            requireActivity(),
-            viewModel.getAccountType(),
-            currentProgress,
-            false
-        )
+        navigator.navigateToProfessionalInfoActivity(requireActivity())
     }
 
     private fun subscribeToLiveData() {
@@ -108,24 +81,14 @@ class OnboardingCompanyFragment : BaseFragment(), SelectCompanyFragment.Listener
         val dialog = RateCompanyDiversityDialogFragment.newInstance(company)
 
         dialog.onClose = {
-            navigator.navigateToNextOnboarding(
-                requireActivity(),
-                viewModel.getAccountType(),
-                currentProgress,
-                true
-            )
+            navigator.navigateToProfessionalInfoActivity(requireActivity())
         }
 
         dialog.listener = object : RateCompanyDiversityDialogFragment.Listener {
 
             override fun onCompanyRated() {
                 showToast("Company Rated Successfully")
-                navigator.navigateToNextOnboarding(
-                    requireActivity(),
-                    viewModel.getAccountType(),
-                    currentProgress,
-                    true
-                )
+                navigator.navigateToProfessionalInfoActivity(requireActivity())
             }
         }
         dialog.show(childFragmentManager, null)

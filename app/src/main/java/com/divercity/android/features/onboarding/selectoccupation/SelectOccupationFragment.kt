@@ -19,18 +19,8 @@ class SelectOccupationFragment : BaseFragment() {
     @Inject
     lateinit var adapter: SelectOccupationAdapter
 
-    var currentProgress: Int = 0
-
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): SelectOccupationFragment {
-            val fragment = SelectOccupationFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = SelectOccupationFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_onboarding_header_search_list
@@ -38,7 +28,6 @@ class SelectOccupationFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectOccupationViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -65,25 +54,10 @@ class SelectOccupationFragment : BaseFragment() {
 
         include_header.apply {
 
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
             txt_title.setText(R.string.select_your_occupation)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
-            }
-
-            btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(requireActivity(),
-                        viewModel.accountType,
-                        currentProgress,
-                        false
-                )
+                navigator.navigateToProfessionalInfoActivity(requireActivity())
             }
         }
     }
@@ -99,11 +73,7 @@ class SelectOccupationFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(requireActivity(),
-                            viewModel.accountType,
-                            currentProgress,
-                            true
-                    )
+                    navigator.navigateToProfessionalInfoActivity(requireActivity())
                 }
             }
         })

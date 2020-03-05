@@ -201,16 +201,16 @@ class Navigator @Inject constructor() {
         activity.startActivity(UploadResumeActivity.getCallingIntent(activity, progress))
     }
 
-    fun navigateToSelectCompanyActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingCompanyActivity.getCallingIntent(activity, progress))
+    fun navigateToSelectCompanyActivity(activity: FragmentActivity) {
+        activity.startActivity(OnboardingCompanyActivity.getCallingIntent(activity))
     }
 
     fun navigateToOnboardingLocationActivity(activity: FragmentActivity) {
         activity.startActivity(OnboardingLocationActivity.getCallingIntent(activity))
     }
 
-    fun navigateToSelectOccupationActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectOccupationActivity.getCallingIntent(activity, progress))
+    fun navigateToSelectOccupationActivity(activity: FragmentActivity) {
+        activity.startActivity(SelectOccupationActivity.getCallingIntent(activity))
     }
 
     fun navigateToOnboardingIndustryActivity(activity: FragmentActivity, progress: Int) {
@@ -796,15 +796,15 @@ class Navigator @Inject constructor() {
             activity.getString(R.string.hiring_manager_recruiter_id) -> {
                 when (activity) {
                     //new
-                    is SelectUserTypeActivity ->
-                        navigateToSelectCompanyActivity(activity, progress)
+//                    is SelectUserTypeActivity ->
+//                        navigateToSelectCompanyActivity(activity, progress)
                     //old
-                    is ProfilePromptActivity ->
-                        navigateToSelectCompanyActivity(activity, progress)
+//                    is ProfilePromptActivity ->
+//                        navigateToSelectCompanyActivity(activity, progress)
                     is OnboardingCompanyActivity ->
                         navigateToOnboardingIndustryActivity(activity, progress)
-                    is SelectIndustryOnboardingActivity ->
-                        navigateToSelectOccupationActivity(activity, progress)
+//                    is SelectIndustryOnboardingActivity ->
+//                        navigateToSelectOccupationActivity(activity, progress)
 //                    is SelectOccupationActivity ->
 //                        navigateToOnboardingLocationActivity(activity, progress)
 //                    is OnboardingLocationActivity ->
@@ -820,15 +820,15 @@ class Navigator @Inject constructor() {
             activity.getString(R.string.professional_job_seeker_id) -> {
                 when (activity) {
                     //new
-                    is SelectUserTypeActivity ->
-                        navigateToSelectCompanyActivity(activity, progress)
+//                    is SelectUserTypeActivity ->
+//                        navigateToSelectCompanyActivity(activity, progress)
                     //old
-                    is ProfilePromptActivity ->
-                        navigateToSelectCompanyActivity(activity, progress)
+//                    is ProfilePromptActivity ->
+//                        navigateToSelectCompanyActivity(activity, progress)
                     is OnboardingCompanyActivity ->
                         navigateToOnboardingIndustryActivity(activity, progress)
-                    is SelectIndustryOnboardingActivity ->
-                        navigateToSelectOccupationActivity(activity, progress)
+//                    is SelectIndustryOnboardingActivity ->
+//                        navigateToSelectOccupationActivity(activity, progress)
 //                    is SelectOccupationActivity ->
 //                        navigateToOnboardingLocationActivity(activity, progress)
                     is OnboardingLocationActivity ->
@@ -848,8 +848,8 @@ class Navigator @Inject constructor() {
             activity.getString(R.string.student_id) -> {
                 when (activity) {
                     //new
-                    is SelectUserTypeActivity ->
-                        navigateToSelectCompanyActivity(activity, progress)
+//                    is SelectUserTypeActivity ->
+//                        navigateToSelectCompanyActivity(activity, progress)
                     //old
                     is ProfilePromptActivity ->
                         navigateToOnboardingSchool(activity, progress)

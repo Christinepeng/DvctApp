@@ -9,6 +9,10 @@ import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.*
+import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.btn_next
+import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.btn_previous_page
+import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.btn_skip
+import kotlinx.android.synthetic.main.fragment_sign_up_professional_info.*
 
 class ProfessionalInfoFragment : BaseFragment() {
     private var viewModel: SelectUserTypeViewModel? = null
@@ -47,17 +51,21 @@ class ProfessionalInfoFragment : BaseFragment() {
             navigator.navigateToHomeActivity(requireActivity())
         }
 
-//        btn_upload_resume.setOnClickListener{
-//        }
-//
-//        et_job_title.setOnClickListener{
-//        }
-//
-//        et_company_name.setOnClickListener{
-//        }
-//
-//        et_bio.setOnClickListener{
-//        }
+        btn_upload_resume.setOnClickListener{
+//            navigator.navigateToHomeActivity(requireActivity())
+        }
+
+        select_job_title.setOnClickListener{
+            navigator.navigateToSelectOccupationActivity(requireActivity())
+        }
+
+        select_company_name.setOnClickListener{
+            navigator.navigateToSelectCompanyActivity(requireActivity())
+        }
+
+        et_bio.setOnClickListener{
+//            navigator.navigateToHomeActivity(requireActivity())
+        }
 
         btn_skip.setOnClickListener{
             navigator.navigateToHomeActivity(requireActivity())

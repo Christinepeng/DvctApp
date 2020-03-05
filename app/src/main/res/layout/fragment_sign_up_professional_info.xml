@@ -95,16 +95,17 @@ fill in your bio." />
             android:textColor="#a4a4b3"
             android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/et_job_title"
+        <TextView
+            android:id="@+id/select_job_title"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="7dp"
-            android:textColorHint="#dcdcdf"
-            android:textColor="#333241"
-            android:hint="   Eg.Designer"
+            android:paddingTop="6dp"
+            android:text="   Eg.Designer"
+            android:textSize="17sp"
+            android:textColor="#dcdcdf"
             android:background="@drawable/rounded_edit_box"/>
 
     </RelativeLayout>
@@ -134,17 +135,20 @@ fill in your bio." />
             android:textColor="#a4a4b3"
             android:textSize="15sp" />
 
-        <EditText
-            android:id="@+id/et_company_name"
+        <TextView
+            android:id="@+id/select_company_name"
             android:layout_width="match_parent"
             android:layout_height="40dp"
             android:layout_marginStart="15dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="7dp"
-            android:hint="   Eg.Google"
-            android:textColorHint="#dcdcdf"
-            android:textColor="#333241"
+            android:paddingTop="6dp"
+            android:text="   Eg.Google"
+            android:textSize="17sp"
+            android:textColor="#dcdcdf"
             android:background="@drawable/rounded_edit_box"/>
+<!--        android:hint="   Eg.Google"-->
+<!--        android:textColorHint="#dcdcdf"-->
 
     </RelativeLayout>
 

@@ -86,6 +86,7 @@ to help us suggest the best communities for you" />
             android:src="@drawable/icon_login_name"/>
 
         <TextView
+            android:id="@+id/txt_user_gender"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
@@ -130,6 +131,7 @@ to help us suggest the best communities for you" />
             android:src="@drawable/icon_ethnicity"/>
 
         <TextView
+            android:id="@+id/txt_user_ethnicity"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
@@ -174,6 +176,7 @@ to help us suggest the best communities for you" />
             android:src="@drawable/icon_age"/>
 
         <TextView
+            android:id="@+id/txt_user_age"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"
@@ -218,6 +221,7 @@ to help us suggest the best communities for you" />
             android:src="@drawable/icon_location1"/>
 
         <TextView
+            android:id="@+id/txt_user_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fontFamily="@font/avenir_roman"

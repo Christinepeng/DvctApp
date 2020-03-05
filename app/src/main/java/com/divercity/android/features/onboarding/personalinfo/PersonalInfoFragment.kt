@@ -1,5 +1,6 @@
 package com.divercity.android.features.onboarding.personalinfo
 
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -7,11 +8,12 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.RecyclerView
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import com.divercity.android.data.entity.profile.profile.UserProfileEntity
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.*
 
 class PersonalInfoFragment : BaseFragment() {
-    private var viewModel: SelectUserTypeViewModel? = null
+    private var viewModel: PersonalInfoViewModel? = null
     override fun layoutId(): Int {
         return R.layout.fragment_sign_up_personal_info
     }
@@ -19,7 +21,7 @@ class PersonalInfoFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory).get(
-            SelectUserTypeViewModel::class.java
+            PersonalInfoViewModel::class.java
         )
     }
 
@@ -28,12 +30,29 @@ class PersonalInfoFragment : BaseFragment() {
         savedInstanceState: Bundle?
     ) {
         super.onViewCreated(view, savedInstanceState)
-        //        signUpUserName = viewModel.sessionRepository.getUserName();
-//        userName = view.findViewById(R.id.select_user_type_user_name);
-//        userName.setText(signUpUserName + "!");
-//        listUserType = view.findViewById(R.id.list_user_types);
-//        listUserType.setLayoutManager(new GridLayoutManager(view.getContext(), 2));
-//        listUserType.setAdapter(new SelectUserTypeAdapter(getContext(), listener));
+
+        val userGender = viewModel?.sessionRepository?.getGender()
+//        val userEthnicity = UserProfileEntity.getEthnicityId()
+        val userAge = viewModel?.sessionRepository?.getAgeRange()
+        val userLocation = viewModel?.sessionRepository?.getLocation()
+
+        if (userGender != null) {
+            txt_user_gender.setText(userGender)
+            txt_user_gender.setTextColor(Color.parseColor("#333241"))
+        }
+//        if (userEthnicity != null) {
+//            txt_user_ethnicity.setText(userEthnicity)
+//            txt_user_ethnicity.setTextColor(Color.parseColor("#333241"))
+//        }
+        if (userAge != null) {
+            txt_user_age.setText(userAge)
+            txt_user_age.setTextColor(Color.parseColor("#333241"))
+        }
+        if (userLocation != null) {
+            txt_user_location.setText(userLocation)
+            txt_user_location.setTextColor(Color.parseColor("#333241"))
+        }
+
         setupEvents()
         subscribeToLiveData()
     }

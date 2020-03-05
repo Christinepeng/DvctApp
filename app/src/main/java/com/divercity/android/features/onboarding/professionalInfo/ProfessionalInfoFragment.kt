@@ -1,4 +1,4 @@
-package com.divercity.android.features.onboarding.personalinfo
+package com.divercity.android.features.onboarding.professionalInfo
 
 import android.os.Bundle
 import android.view.View
@@ -10,10 +10,10 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.features.onboarding.selectusertype.SelectUserTypeViewModel
 import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.*
 
-class PersonalInfoFragment : BaseFragment() {
+class ProfessionalInfoFragment : BaseFragment() {
     private var viewModel: SelectUserTypeViewModel? = null
     override fun layoutId(): Int {
-        return R.layout.fragment_sign_up_personal_info
+        return R.layout.fragment_sign_up_professional_info
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,33 +39,33 @@ class PersonalInfoFragment : BaseFragment() {
     }
 
     private fun setupEvents() {
-        btn_previous_page.setOnClickListener{
-            navigator.navigateToSelectUserTypeActivity(requireActivity())
-        }
-
-        btn_next.setOnClickListener{
-            navigator.navigateToProfessionalInfoActivity(requireActivity())
-        }
-
-        btn_skip.setOnClickListener{
-            navigator.navigateToProfessionalInfoActivity(requireActivity())
-        }
-
-        btn_choose_gender.setOnClickListener{
-            navigator.navigateToOnboardingGenderActivity(requireActivity())
-        }
-
-        btn_choose_ethnicity.setOnClickListener{
-            navigator.navigateToOnboardingEthnicityActivity(requireActivity())
-        }
-
-        btn_choose_age.setOnClickListener{
-            navigator.navigateToSelectBirthdayActivity(requireActivity())
-        }
-
-        btn_choose_location.setOnClickListener{
-            navigator.navigateToOnboardingLocationActivity(requireActivity())
-        }
+//        btn_previous_page.setOnClickListener{
+//            navigator.navigateToSelectUserTypeActivity(requireActivity())
+//        }
+//
+//        btn_next.setOnClickListener{
+//            navigator.navigateToHomeActivity(requireActivity())
+//        }
+//
+//        btn_skip.setOnClickListener{
+//            navigator.navigateToHomeActivity(requireActivity())
+//        }
+//
+//        btn_choose_gender.setOnClickListener{
+//            navigator.navigateToOnboardingGenderActivity(requireActivity())
+//        }
+//
+//        btn_choose_ethnicity.setOnClickListener{
+//            navigator.navigateToOnboardingEthnicityActivity(requireActivity())
+//        }
+//
+//        btn_choose_age.setOnClickListener{
+//            navigator.navigateToSelectBirthdayActivity(requireActivity())
+//        }
+//
+//        btn_choose_location.setOnClickListener{
+//            navigator.navigateToOnboardingLocationActivity(requireActivity())
+//        }
     }
 
     private fun subscribeToLiveData() { //        viewModel.dataUpdateUser.observe(this, response -> {
@@ -89,8 +89,8 @@ class PersonalInfoFragment : BaseFragment() {
     ////        viewModel.updateUserProfile(userType.id);
 //    };
     companion object {
-        fun newInstance(): PersonalInfoFragment {
-            return PersonalInfoFragment()
+        fun newInstance(): ProfessionalInfoFragment {
+            return ProfessionalInfoFragment()
         }
     }
 }

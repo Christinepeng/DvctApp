@@ -161,6 +161,11 @@
             android:configChanges="orientation"
             android:screenOrientation="portrait" />
 
+        <activity
+            android:name=".features.onboarding.professionalInfo.ProfessionalInfoActivity"
+            android:configChanges="orientation"
+            android:screenOrientation="portrait" />
+
 <!--        <activity-->
 <!--            android:name=".features.onboarding.profileprompt.ProfilePromptActivity"-->
 <!--            android:configChanges="orientation"-->

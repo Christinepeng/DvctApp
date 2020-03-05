@@ -74,6 +74,7 @@ import com.divercity.android.features.linkedin.LinkedinFragment
 import com.divercity.android.features.loadurl.LoadUrlFragment
 import com.divercity.android.features.multipleuseraction.MultipleUserActionFragment
 import com.divercity.android.features.onboarding.personalinfo.PersonalInfoFragment
+import com.divercity.android.features.onboarding.professionalInfo.ProfessionalInfoFragment
 import com.divercity.android.features.onboarding.profileprompt.ProfilePromptFragment
 import com.divercity.android.features.onboarding.selectinterests.SelectInterestsFragment
 import com.divercity.android.features.onboarding.selectoccupation.SelectOccupationFragment
@@ -136,6 +137,9 @@ abstract class FragmentBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun bindPersonalInfoFragment(): PersonalInfoFragment
+
+    @ContributesAndroidInjector
+    abstract fun bindProfessionalInfoFragment(): ProfessionalInfoFragment
 
     @ContributesAndroidInjector
     abstract fun bindSelectGroupFragment(): SelectGroupFragment

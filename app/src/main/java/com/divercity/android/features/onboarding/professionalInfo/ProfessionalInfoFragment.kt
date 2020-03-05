@@ -39,33 +39,29 @@ class ProfessionalInfoFragment : BaseFragment() {
     }
 
     private fun setupEvents() {
-//        btn_previous_page.setOnClickListener{
-//            navigator.navigateToSelectUserTypeActivity(requireActivity())
+        btn_previous_page.setOnClickListener{
+            navigator.navigateToPersonalInfoActivity(requireActivity())
+        }
+
+        btn_next.setOnClickListener{
+            navigator.navigateToHomeActivity(requireActivity())
+        }
+
+//        btn_upload_resume.setOnClickListener{
 //        }
 //
-//        btn_next.setOnClickListener{
-//            navigator.navigateToHomeActivity(requireActivity())
+//        et_job_title.setOnClickListener{
 //        }
 //
-//        btn_skip.setOnClickListener{
-//            navigator.navigateToHomeActivity(requireActivity())
+//        et_company_name.setOnClickListener{
 //        }
 //
-//        btn_choose_gender.setOnClickListener{
-//            navigator.navigateToOnboardingGenderActivity(requireActivity())
+//        et_bio.setOnClickListener{
 //        }
-//
-//        btn_choose_ethnicity.setOnClickListener{
-//            navigator.navigateToOnboardingEthnicityActivity(requireActivity())
-//        }
-//
-//        btn_choose_age.setOnClickListener{
-//            navigator.navigateToSelectBirthdayActivity(requireActivity())
-//        }
-//
-//        btn_choose_location.setOnClickListener{
-//            navigator.navigateToOnboardingLocationActivity(requireActivity())
-//        }
+
+        btn_skip.setOnClickListener{
+            navigator.navigateToHomeActivity(requireActivity())
+        }
     }
 
     private fun subscribeToLiveData() { //        viewModel.dataUpdateUser.observe(this, response -> {

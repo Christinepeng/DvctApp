@@ -47,9 +47,9 @@ class PersonalInfoFragment : BaseFragment() {
             navigator.navigateToProfessionalInfoActivity(requireActivity())
         }
 
-        btn_skip.setOnClickListener{
-            navigator.navigateToProfessionalInfoActivity(requireActivity())
-        }
+//        btn_upload_profile_picture.setOnClickListener{
+//            navigator.navigateToProfessionalInfoActivity(requireActivity())
+//        }
 
         btn_choose_gender.setOnClickListener{
             navigator.navigateToOnboardingGenderActivity(requireActivity())
@@ -65,6 +65,10 @@ class PersonalInfoFragment : BaseFragment() {
 
         btn_choose_location.setOnClickListener{
             navigator.navigateToOnboardingLocationActivity(requireActivity())
+        }
+
+        btn_skip.setOnClickListener{
+            navigator.navigateToProfessionalInfoActivity(requireActivity())
         }
     }
 

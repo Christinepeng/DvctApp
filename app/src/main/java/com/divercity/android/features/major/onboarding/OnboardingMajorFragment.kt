@@ -54,6 +54,10 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
             btn_close.setOnClickListener {
                 navigator.navigateToProfessionalInfoActivity(requireActivity())
             }
+
+//            btn_skip.setOnClickListener {
+//                navigator.navigateToProfessionalInfoActivity(requireActivity())
+//            }
         }
     }
 
@@ -68,7 +72,12 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToProfessionalInfoActivity(requireActivity())
+//                    navigator.navigateToProfessionalInfoActivity(requireActivity())
+                    navigator.navigateToNextOnboarding(requireActivity(),
+                        viewModel.getAccountType(),
+                        0,
+                        true
+                    )
                 }
             }
         })
@@ -76,6 +85,12 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
 
     override fun onMajorChosen(major: Major) {
 //        viewModel.updateUserProfile(major)
-        navigator.navigateToProfessionalInfoActivity(requireActivity())
+//        navigator.navigateToProfessionalInfoActivity(requireActivity())
+        navigator.navigateToNextOnboarding(
+            requireActivity(),
+            viewModel.getAccountType(),
+            0,
+            true
+        )
     }
 }

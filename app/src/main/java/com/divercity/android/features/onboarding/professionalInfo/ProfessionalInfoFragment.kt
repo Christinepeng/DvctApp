@@ -84,7 +84,7 @@ class ProfessionalInfoFragment : BaseFragment() {
 
         select_job_title.setOnClickListener{
             if (viewModel?.sessionRepository?.getAccountType() == "student") {
-                navigator.navigateToOnboardingMajor(requireActivity())
+                navigator.navigateToSelectMajor(this, 0)
             } else {
                 navigator.navigateToSelectOccupationActivity(requireActivity())
             }

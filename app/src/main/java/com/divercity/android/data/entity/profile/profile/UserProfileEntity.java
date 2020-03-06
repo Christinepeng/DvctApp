@@ -21,6 +21,9 @@ public class UserProfileEntity {
     @SerializedName("occupation")
     private String occupation;
 
+    @SerializedName("major")
+    private String major;
+
     @SerializedName("gender")
     private String gender;
 
@@ -69,6 +72,14 @@ public class UserProfileEntity {
 
     public String getOccupation() {
         return occupation;
+    }
+
+    public void setMajor(String major) {
+        this.major = major;
+    }
+
+    public String getMajor() {
+        return major;
     }
 
     public void setGender(String gender) {

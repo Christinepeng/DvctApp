@@ -83,6 +83,7 @@ import com.divercity.android.features.login.step1.LogInPageViewModel
 import com.divercity.android.features.login.step2.LoginViewModel
 import com.divercity.android.features.major.base.SelectMajorViewModel
 import com.divercity.android.features.major.onboarding.OnboardingMajorViewModel
+import com.divercity.android.features.major.withtoolbar.SelectSingleMajorViewModel
 import com.divercity.android.features.multipleuseraction.MultipleUserActionViewModel
 import com.divercity.android.features.onboarding.personalinfo.PersonalInfoViewModel
 import com.divercity.android.features.onboarding.professionalInfo.ProfessionalInfoViewModel
@@ -363,6 +364,11 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(SelectOccupationViewModel::class)
     abstract fun bindsSelectOccupationViewModel(viewModel: SelectOccupationViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SelectSingleMajorViewModel::class)
+    abstract fun bindsSelectSingleMajorViewModel(viewModel: SelectSingleMajorViewModel): ViewModel
 
     @Binds
     @IntoMap

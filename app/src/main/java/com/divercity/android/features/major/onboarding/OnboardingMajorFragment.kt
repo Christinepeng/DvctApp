@@ -24,18 +24,8 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
     @Inject
     lateinit var adapter: CompanyAdapter
 
-    var currentProgress: Int = 0
-
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): OnboardingMajorFragment {
-            val fragment = OnboardingMajorFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = OnboardingMajorFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
@@ -44,7 +34,6 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this, viewModelFactory)[OnboardingMajorViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -59,25 +48,11 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
     private fun setupHeader() {
 
         include_header.apply {
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
+
             txt_title.setText(R.string.select_your_school)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
-            }
-
-            btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(requireActivity(),
-                    viewModel.getAccountType(),
-                    currentProgress,
-                    false
-                )
+                navigator.navigateToProfessionalInfoActivity(requireActivity())
             }
         }
     }
@@ -93,11 +68,7 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(requireActivity(),
-                        viewModel.getAccountType(),
-                        currentProgress,
-                        true
-                    )
+                    navigator.navigateToProfessionalInfoActivity(requireActivity())
                 }
             }
         })
@@ -105,11 +76,6 @@ class OnboardingMajorFragment : BaseFragment(), SelectMajorFragment.Listener {
 
     override fun onMajorChosen(major: Major) {
 //        viewModel.updateUserProfile(major)
-        navigator.navigateToNextOnboarding(
-            requireActivity(),
-            viewModel.getAccountType(),
-            currentProgress,
-            true
-        )
+        navigator.navigateToProfessionalInfoActivity(requireActivity())
     }
 }

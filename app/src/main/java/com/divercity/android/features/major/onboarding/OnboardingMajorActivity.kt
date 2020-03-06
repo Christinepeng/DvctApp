@@ -12,20 +12,10 @@ import com.divercity.android.core.base.BaseFragment
 class OnboardingMajorActivity : BaseActivity() {
 
     companion object {
-        private const val INTENT_EXTRA_PARAM_PROGRESS = "progress"
-
-        fun getCallingIntent(context: Context, progress : Int) : Intent {
-            val intent = Intent(context, OnboardingMajorActivity::class.java)
-            intent.putExtra(INTENT_EXTRA_PARAM_PROGRESS,progress)
-            return intent
+        fun getCallingIntent(context: Context) : Intent {
+            return Intent(context, OnboardingMajorActivity::class.java)
         }
     }
 
-    override fun fragment(): BaseFragment =
-        OnboardingMajorFragment.newInstance(
-            intent.getIntExtra(
-                    INTENT_EXTRA_PARAM_PROGRESS,
-                0
-            )
-        )
+    override fun fragment(): BaseFragment = OnboardingMajorFragment.newInstance()
 }

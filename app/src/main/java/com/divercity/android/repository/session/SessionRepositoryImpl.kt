@@ -168,6 +168,14 @@ constructor(
         return currentLoggedUser?.userAttributes?.company?.name
     }
 
+    override fun getStudentMajor(): List<String>? {
+        return currentLoggedUser?.userAttributes?.studentMajors
+    }
+
+    override fun getSchoolName(): String? {
+        return currentLoggedUser?.userAttributes?.schoolName
+    }
+
     override fun getIndustries(): String? {
 //        TODO
         return ""

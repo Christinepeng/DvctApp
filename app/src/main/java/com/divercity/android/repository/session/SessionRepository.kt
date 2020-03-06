@@ -70,6 +70,10 @@ interface SessionRepository {
 
     fun getCompanyName(): String?
 
+    fun getStudentMajor(): List<String>?
+
+    fun getSchoolName(): String?
+
     fun getIndustries(): String?
 
     fun getAgeRange(): String?

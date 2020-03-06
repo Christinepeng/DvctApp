@@ -51,7 +51,8 @@ to help us suggest the best communities for you" />
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:layout_marginTop="40dp"
-        android:src="@drawable/sign_up_first_time_profile_picture"/>
+        android:src="@drawable/icon_user_prompt"/>
+<!--    android:src="@drawable/sign_up_first_time_profile_picture"-->
 
     <Button
         android:id="@+id/btn_upload_profile_picture"
@@ -79,11 +80,11 @@ to help us suggest the best communities for you" />
         android:layout_marginEnd="10dp">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/icon_login_name"/>
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginStart="19dp"
+            android:src="@drawable/icon_user"/>
 
         <TextView
             android:id="@+id/txt_user_gender"
@@ -124,11 +125,11 @@ to help us suggest the best communities for you" />
         android:layout_marginEnd="10dp">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/icon_ethnicity"/>
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginStart="19dp"
+            android:src="@drawable/icon_globe"/>
 
         <TextView
             android:id="@+id/txt_user_ethnicity"
@@ -169,11 +170,11 @@ to help us suggest the best communities for you" />
         android:layout_marginEnd="10dp">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/icon_age"/>
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginStart="19dp"
+            android:src="@drawable/icon_gift"/>
 
         <TextView
             android:id="@+id/txt_user_age"
@@ -214,11 +215,11 @@ to help us suggest the best communities for you" />
         android:layout_marginEnd="10dp">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="15dp"
-            android:layout_marginStart="15dp"
-            android:src="@drawable/icon_location1"/>
+            android:layout_width="26dp"
+            android:layout_height="26dp"
+            android:layout_marginTop="19dp"
+            android:layout_marginStart="19dp"
+            android:src="@drawable/icon_map_pin"/>
 
         <TextView
             android:id="@+id/txt_user_location"

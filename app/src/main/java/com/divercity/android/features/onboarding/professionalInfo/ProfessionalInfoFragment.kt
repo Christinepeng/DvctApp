@@ -31,16 +31,38 @@ class ProfessionalInfoFragment : BaseFragment() {
     ) {
         super.onViewCreated(view, savedInstanceState)
 
-        val userOccupation = viewModel?.sessionRepository?.getOccupation()
-        val userCompanyName = viewModel?.sessionRepository?.getCompanyName()
+        if (viewModel?.sessionRepository?.getAccountType() == "student") {
+//            img_job_title
+            txt_job_title.setText("Major")
+            select_job_title.setText("  Eg.Computer Science")
+//            img_company
+            txt_company.setText("School")
+            select_company_name.setText("  Eg.Yale University")
 
-        if (userOccupation != null) {
-            select_job_title.setText("  " + userOccupation)
-            select_job_title.setTextColor(Color.parseColor("#333241"))
-        }
-        if (userCompanyName != null) {
-            select_company_name.setText("  " + userCompanyName)
-            select_company_name.setTextColor(Color.parseColor("#333241"))
+            val userMajor = viewModel?.sessionRepository?.getStudentMajor()
+            val userSchool = viewModel?.sessionRepository?.getSchoolName()
+            if (userMajor != null) {
+                if (!userMajor.isEmpty()) {
+                    select_job_title.setText("  " + userMajor)
+                    select_job_title.setTextColor(Color.parseColor("#333241"))
+                }
+            }
+            if (userSchool != null) {
+                select_company_name.setText("  " + userSchool)
+                select_company_name.setTextColor(Color.parseColor("#333241"))
+            }
+
+        } else {
+            val userOccupation = viewModel?.sessionRepository?.getOccupation()
+            val userCompanyName = viewModel?.sessionRepository?.getCompanyName()
+            if (userOccupation != null) {
+                select_job_title.setText("  " + userOccupation)
+                select_job_title.setTextColor(Color.parseColor("#333241"))
+            }
+            if (userCompanyName != null) {
+                select_company_name.setText("  " + userCompanyName)
+                select_company_name.setTextColor(Color.parseColor("#333241"))
+            }
         }
 
         setupEvents()
@@ -61,11 +83,19 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         select_job_title.setOnClickListener{
-            navigator.navigateToSelectOccupationActivity(requireActivity())
+            if (viewModel?.sessionRepository?.getAccountType() == "student") {
+                navigator.navigateToOnboardingMajor(requireActivity())
+            } else {
+                navigator.navigateToSelectOccupationActivity(requireActivity())
+            }
         }
 
         select_company_name.setOnClickListener{
-            navigator.navigateToSelectCompanyActivity(requireActivity())
+            if (viewModel?.sessionRepository?.getAccountType() == "student") {
+                navigator.navigateToOnboardingSchool(requireActivity())
+            } else {
+                navigator.navigateToSelectCompanyActivity(requireActivity())
+            }
         }
 
         et_bio.setOnClickListener{

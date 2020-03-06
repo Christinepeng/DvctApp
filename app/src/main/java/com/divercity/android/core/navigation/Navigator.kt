@@ -182,8 +182,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(ProfessionalInfoActivity.getCallingIntent(activity))
     }
 
-    fun navigateToOnboardingSchool(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingSchoolActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingSchool(activity: FragmentActivity) {
+        activity.startActivity(OnboardingSchoolActivity.getCallingIntent(activity))
     }
 
     fun navigateToSelectSchool(fragment: Fragment, code: Int) {
@@ -238,8 +238,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(OnboardingEthnicityActivity.getCallingIntent(activity))
     }
 
-    fun navigateToOnboardingMajor(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(OnboardingMajorActivity.getCallingIntent(activity, progress))
+    fun navigateToOnboardingMajor(activity: FragmentActivity) {
+        activity.startActivity(OnboardingMajorActivity.getCallingIntent(activity))
     }
 
     fun navigateToSelectMajor(fragment: Fragment, code: Int) {
@@ -851,10 +851,10 @@ class Navigator @Inject constructor() {
 //                    is SelectUserTypeActivity ->
 //                        navigateToSelectCompanyActivity(activity, progress)
                     //old
-                    is ProfilePromptActivity ->
-                        navigateToOnboardingSchool(activity, progress)
-                    is OnboardingSchoolActivity ->
-                        navigateToOnboardingMajor(activity, progress)
+//                    is ProfilePromptActivity ->
+//                        navigateToOnboardingSchool(activity, progress)
+//                    is OnboardingSchoolActivity ->
+//                        navigateToOnboardingMajor(activity, progress)
 //                    is OnboardingMajorActivity ->
 //                        navigateToOnboardingLocationActivity(activity, progress)
                     is OnboardingLocationActivity ->

@@ -23,18 +23,8 @@ class OnboardingSchoolFragment : BaseFragment(), SelectSchoolFragment.Listener {
     @Inject
     lateinit var adapter: CompanyAdapter
 
-    var currentProgress: Int = 0
-
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): OnboardingSchoolFragment {
-            val fragment = OnboardingSchoolFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = OnboardingSchoolFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_toolbar_onboarding
@@ -43,7 +33,6 @@ class OnboardingSchoolFragment : BaseFragment(), SelectSchoolFragment.Listener {
         super.onCreate(savedInstanceState)
         viewModel =
             ViewModelProviders.of(this, viewModelFactory)[OnboardingSchoolViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,26 +47,20 @@ class OnboardingSchoolFragment : BaseFragment(), SelectSchoolFragment.Listener {
     private fun setupHeader() {
 
         include_header.apply {
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
+
             txt_title.setText(R.string.select_your_school)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
+                navigator.navigateToProfessionalInfoActivity(requireActivity())
             }
 
-            btn_skip.setOnClickListener {
-                navigator.navigateToNextOnboarding(requireActivity(),
-                    viewModel.getAccountType(),
-                    currentProgress,
-                    false
-                )
-            }
+//            btn_skip.setOnClickListener {
+//                navigator.navigateToNextOnboarding(requireActivity(),
+//                    viewModel.getAccountType(),
+//                    currentProgress,
+//                    false
+//                )
+//            }
         }
     }
 
@@ -92,11 +75,7 @@ class OnboardingSchoolFragment : BaseFragment(), SelectSchoolFragment.Listener {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(requireActivity(),
-                        viewModel.getAccountType(),
-                        currentProgress,
-                        true
-                    )
+                    navigator.navigateToProfessionalInfoActivity(requireActivity())
                 }
             }
         })

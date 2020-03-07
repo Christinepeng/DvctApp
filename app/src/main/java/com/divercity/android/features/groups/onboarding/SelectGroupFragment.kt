@@ -52,15 +52,8 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     companion object {
 
         const val REQUEST_CODE_GROUP = 200
-        private const val PARAM_PROGRESS = "paramProgress"
 
-        fun newInstance(progress: Int): SelectGroupFragment {
-            val fragment = SelectGroupFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = SelectGroupFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_onboarding_header_search_list
@@ -69,8 +62,6 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
         super.onCreate(savedInstanceState)
         viewModel = ViewModelProviders.of(this, viewModelFactory)[SelectGroupViewModel::class.java]
         groupViewModel = ViewModelProviders.of(this, viewModelFactory)[GroupViewModel::class.java]
-
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -111,14 +102,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
         include_header.apply {
 
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
             txt_title.setText(R.string.select_group)
-
-            txt_progress.text = currentProgress.toString().plus("%")
 
             btn_close.setOnClickListener {
                 navigator.navigateToHomeActivity(requireActivity())

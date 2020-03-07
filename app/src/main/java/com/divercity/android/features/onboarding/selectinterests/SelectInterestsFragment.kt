@@ -21,20 +21,10 @@ class SelectInterestsFragment : BaseFragment() {
     @Inject
     lateinit var adapter: SelectInterestsAdapter
 
-    var currentProgress: Int = 0
-
     private var selectedIds: List<String>? = null
 
     companion object {
-        private const val PARAM_PROGRESS = "paramProgress"
-
-        fun newInstance(progress: Int): SelectInterestsFragment {
-            val fragment = SelectInterestsFragment()
-            val arguments = Bundle()
-            arguments.putInt(PARAM_PROGRESS, progress)
-            fragment.arguments = arguments
-            return fragment
-        }
+        fun newInstance() = SelectInterestsFragment()
     }
 
     override fun layoutId(): Int = R.layout.fragment_onboarding_header_search_list
@@ -43,7 +33,6 @@ class SelectInterestsFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
         viewModel =
                 ViewModelProviders.of(this, viewModelFactory)[SelectInterestsViewModel::class.java]
-        currentProgress = arguments?.getInt(PARAM_PROGRESS) ?: 0
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -57,7 +46,7 @@ class SelectInterestsFragment : BaseFragment() {
         btn_continue.visibility = View.GONE
         include_search.visibility = View.GONE
 
-        list.layoutManager = StaggeredGridLayoutManager(2, 1)
+        list.layoutManager = StaggeredGridLayoutManager(3, 1)
         adapter.setListener(listener)
         list.adapter = adapter
     }
@@ -65,26 +54,19 @@ class SelectInterestsFragment : BaseFragment() {
     private fun setupHeader() {
         include_header.apply {
 
-            progress_bar.apply {
-                max = 100
-                progress = 0
-                setProgressWithAnim(currentProgress)
-            }
             txt_title.setText(R.string.select_your_interests)
 
-            txt_progress.text = currentProgress.toString().plus("%")
-
             btn_close.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
+                navigator.navigateToSelectGroupActivity(requireActivity())
             }
 
             btn_skip.setOnClickListener {
                 if (btn_skip.text == getString(R.string.skip)) {
-                    navigator.navigateToNextOnboarding(
-                            requireActivity(),
-                            viewModel.getAccountType(),
-                            currentProgress,
-                            false)
+//                    navigator.navigateToNextOnboarding(
+//                            requireActivity(),
+//                            viewModel.getAccountType(),
+//                            currentProgress,
+//                            false)
                 } else {
                     viewModel.followInterests(selectedIds!!)
                 }
@@ -118,11 +100,7 @@ class SelectInterestsFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToNextOnboarding(
-                            requireActivity(),
-                            viewModel.getAccountType(),
-                            currentProgress,
-                            true)
+                    navigator.navigateToHomeActivity(requireActivity())
                 }
             }
         })

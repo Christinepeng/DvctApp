@@ -193,8 +193,8 @@ class Navigator @Inject constructor() {
         )
     }
 
-    fun navigateToSelectGroupActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectGroupActivity.getCallingIntent(activity, progress))
+    fun navigateToSelectGroupActivity(activity: FragmentActivity) {
+        activity.startActivity(SelectGroupActivity.getCallingIntent(activity))
     }
 
     fun navigateToUploadResumeActivity(activity: FragmentActivity, progress: Int) {
@@ -226,8 +226,8 @@ class Navigator @Inject constructor() {
         activity.startActivity(OnboardingGenderActivity.getCallingIntent(activity))
     }
 
-    fun navigateToSelectInterestsActivity(activity: FragmentActivity, progress: Int) {
-        activity.startActivity(SelectInterestsActivity.getCallingIntent(activity, progress))
+    fun navigateToSelectInterestsActivity(activity: FragmentActivity) {
+        activity.startActivity(SelectInterestsActivity.getCallingIntent(activity))
     }
 
     fun navigateToSelectBirthdayActivity(activity: FragmentActivity) {
@@ -811,8 +811,8 @@ class Navigator @Inject constructor() {
 //                        navigateToOnboardingGenderActivity(activity, progress)
 //                    is OnboardingGenderActivity ->
 //                        navigateToOnboardingEthnicityActivity(activity, progress)
-                    is OnboardingEthnicityActivity ->
-                        navigateToSelectGroupActivity(activity, progress)
+//                    is OnboardingEthnicityActivity ->
+//                        navigateToSelectGroupActivity(activity, progress)
                 }
             }
             activity.getString(R.string.professional_id),
@@ -841,8 +841,8 @@ class Navigator @Inject constructor() {
 //                        navigateToOnboardingEthnicityActivity(activity, progress)
 //                    is OnboardingEthnicityActivity ->
 //                        navigateToSelectBirthdayActivity(activity, progress)
-                    is OnboardingAgeActivity ->
-                        navigateToSelectGroupActivity(activity, progress)
+//                    is OnboardingAgeActivity ->
+//                        navigateToSelectGroupActivity(activity, progress)
                 }
             }
             activity.getString(R.string.student_id) -> {
@@ -867,8 +867,8 @@ class Navigator @Inject constructor() {
 //                        navigateToOnboardingEthnicityActivity(activity, progress)
 //                    is OnboardingEthnicityActivity ->
 //                        navigateToSelectBirthdayActivity(activity, progress)
-                    is OnboardingAgeActivity ->
-                        navigateToSelectGroupActivity(activity, progress)
+//                    is OnboardingAgeActivity ->
+//                        navigateToSelectGroupActivity(activity, progress)
                 }
             }
         }

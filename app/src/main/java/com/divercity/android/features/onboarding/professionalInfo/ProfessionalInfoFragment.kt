@@ -1,12 +1,19 @@
 package com.divercity.android.features.onboarding.professionalInfo
 
+import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import com.divercity.android.data.Status
 import com.divercity.android.db.converter.CompanyTypeConverter.companyToString
+import com.divercity.android.features.dialogs.jobapply.JobApplyDialogFragment
+import com.divercity.android.features.onboarding.uploadresume.UploadResumeFragment
 import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.btn_next
 import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.btn_previous_page
 import kotlinx.android.synthetic.main.fragment_sign_up_personal_info.btn_skip
@@ -75,11 +82,12 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         btn_next.setOnClickListener{
-            navigator.navigateToHomeActivity(requireActivity())
+            navigator.navigateToSelectInterestsActivity(requireActivity())
         }
 
         btn_upload_resume.setOnClickListener{
 //            navigator.navigateToHomeActivity(requireActivity())
+            openDocSelector()
         }
 
         select_job_title.setOnClickListener{
@@ -103,11 +111,30 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         btn_skip.setOnClickListener{
-            navigator.navigateToHomeActivity(requireActivity())
+            navigator.navigateToSelectInterestsActivity(requireActivity())
         }
     }
 
-    private fun subscribeToLiveData() { //        viewModel.dataUpdateUser.observe(this, response -> {
+    private fun subscribeToLiveData() {
+        viewModel?.uploadDocumentResponse?.observe(this, Observer { document ->
+            when (document?.status) {
+                Status.LOADING -> {
+                    showProgress()
+                }
+
+                Status.ERROR -> {
+                    hideProgress()
+                    showToast(document.message ?: "Error")
+                }
+                Status.SUCCESS -> {
+                    hideProgress()
+                    showToast(R.string.file_upload_success)
+                    navigator.navigateToPersonalInfoActivity(requireActivity())
+                }
+            }
+        })
+
+//        viewModel.dataUpdateUser.observe(this, response -> {
 //            switch (response.getStatus()) {
 //                case LOADING:
 //                    showProgress();
@@ -131,5 +158,39 @@ class ProfessionalInfoFragment : BaseFragment() {
         fun newInstance(): ProfessionalInfoFragment {
             return ProfessionalInfoFragment()
         }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == UploadResumeFragment.REQUEST_CODE_DOC && resultCode == Activity.RESULT_OK) {
+            handleDocSelectorActivityResult(data)
+        }
+    }
+
+    private fun openDocSelector() {
+        val mimeTypes = arrayOf(
+            "application/pdf"
+        )
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.type = "*/*"
+        intent.putExtra(Intent.EXTRA_LOCAL_ONLY, true)
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, mimeTypes)
+        startActivityForResult(intent, JobApplyDialogFragment.REQUEST_CODE_DOC)
+    }
+
+    private fun handleDocSelectorActivityResult(data: Intent?) {
+        val fileUri = data?.data
+        if (fileUri != null) {
+            viewModel?.checkDocumentAndUploadIt(fileUri)
+        } else
+            showToast(R.string.select_valid_file)
+    }
+
+    private fun showToast(resId: Int) {
+        Toast.makeText(context!!, resId, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(context!!, msg, Toast.LENGTH_SHORT).show()
     }
 }

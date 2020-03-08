@@ -47,6 +47,7 @@
 to help us suggest the best communities for you" />
 
     <ImageView
+        android:id="@+id/img_uploaded_profile_picture"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:layout_gravity="center"

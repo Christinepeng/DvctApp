@@ -18,7 +18,8 @@ import javax.inject.Inject
 class SignUpViewModel @Inject
 constructor(private val signUpUseCase: SignUpUseCase,
             private val usernameRegisteredUseCase: CheckIsUsernameRegisteredUseCase,
-            private val uploadProfilePictureUseCase: UploadProfilePictureUseCase) : BaseViewModel() {
+            private val uploadProfilePictureUseCase: UploadProfilePictureUseCase)
+    : BaseViewModel() {
 
     val signUpResponse = SingleLiveEvent<Resource<Any>>()
     val usernameRegisteredResponse = SingleLiveEvent<Resource<Boolean>>()

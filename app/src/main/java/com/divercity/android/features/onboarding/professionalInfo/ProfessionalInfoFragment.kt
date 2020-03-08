@@ -86,7 +86,6 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         btn_upload_resume.setOnClickListener{
-//            navigator.navigateToHomeActivity(requireActivity())
             openDocSelector()
         }
 

@@ -24,6 +24,10 @@ import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.features.groups.viewmodel.GroupViewModel
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
 import kotlinx.android.synthetic.main.view_header_profile.*
+import kotlinx.android.synthetic.main.view_header_profile.btn_next
+import kotlinx.android.synthetic.main.view_header_profile.btn_previous_page
+import kotlinx.android.synthetic.main.view_header_profile.txt_title
+import kotlinx.android.synthetic.main.view_header_profile.view.*
 import kotlinx.android.synthetic.main.view_search.view.*
 import javax.inject.Inject
 
@@ -76,6 +80,13 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
     private fun setupHeader() {
 
+        top_btn.visibility = View.VISIBLE
+        btn_next.setText("DONE")
+        include_search.visibility = View.GONE
+        btn_close.visibility = View.GONE
+        btn_continue.visibility = View.GONE
+        btn_skip.visibility = View.GONE
+
         include_search.edtxt_search.setOnKeyListener { _, keyCode, keyEvent ->
             if (keyEvent.action == KeyEvent.ACTION_DOWN && keyCode == KeyEvent.KEYCODE_ENTER) {
 
@@ -102,15 +113,31 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
         include_header.apply {
 
-            txt_title.setText(R.string.select_group)
+            txt_title.setText(
+                "Join some Communities!\n" +
+                    "\n" +
+                    "These communities are suggested based on\n" +
+                    "the information you provided"
+            )
+            txt_title.setTextSize(17F)
+            txt_title.setLineSpacing(5F,1.4F)
 
-            btn_close.setOnClickListener {
+            btn_previous_page.setOnClickListener {
+                navigator.navigateToSelectInterestsActivity(requireActivity())
+            }
+
+            btn_next.setOnClickListener {
+                //show dialog
                 navigator.navigateToHomeActivity(requireActivity())
             }
 
-            btn_skip.setOnClickListener {
-                navigator.navigateToHomeActivity(requireActivity())
-            }
+//            btn_close.setOnClickListener {
+//                navigator.navigateToHomeActivity(requireActivity())
+//            }
+//
+//            btn_skip.setOnClickListener {
+//                navigator.navigateToHomeActivity(requireActivity())
+//            }
         }
     }
 

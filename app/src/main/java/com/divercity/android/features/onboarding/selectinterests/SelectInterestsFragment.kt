@@ -60,8 +60,8 @@ class SelectInterestsFragment : BaseFragment() {
 
             txt_title.setText("Select your interests to help us suggest\n" +
                     "suitable communities and personalize your feed")
-
             txt_title.setTextSize(17F)
+            txt_title.setLineSpacing(5F,1.4F)
 
             btn_previous_page.setOnClickListener {
                 navigator.navigateToProfessionalInfoActivity(requireActivity())

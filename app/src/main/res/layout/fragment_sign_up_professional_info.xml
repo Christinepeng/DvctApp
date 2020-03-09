@@ -151,8 +151,6 @@ fill in your bio." />
             android:textSize="17sp"
             android:textColor="#dcdcdf"
             android:background="@drawable/rounded_edit_box"/>
-<!--        android:hint="   Eg.Google"-->
-<!--        android:textColorHint="#dcdcdf"-->
 
     </RelativeLayout>
 
@@ -184,15 +182,24 @@ fill in your bio." />
         <EditText
             android:id="@+id/et_bio"
             android:layout_width="match_parent"
-            android:layout_height="60dp"
-            android:layout_marginStart="15dp"
+            android:layout_height="70dp"
+            android:layout_marginStart="25dp"
             android:layout_marginTop="50dp"
             android:layout_marginEnd="7dp"
-            android:hint="   Eg.Hi my name is Lindsay Kolowich. I am \n
+            android:hint="Eg.Hi my name is Lindsay Kolowich. I am \n
   Senior Marketing Manager at HubSpot."
             android:lineSpacingExtra="5dp"
             android:textColorHint="#dcdcdf"
             android:textColor="#333241"
+            android:textSize="17sp"
+            android:background="@null"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginStart="15dp"
+            android:layout_marginTop="50dp"
+            android:layout_marginEnd="7dp"
             android:background="@drawable/rounded_edit_box"/>
 
     </RelativeLayout>

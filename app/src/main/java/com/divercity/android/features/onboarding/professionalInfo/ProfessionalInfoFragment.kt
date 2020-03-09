@@ -45,6 +45,8 @@ class ProfessionalInfoFragment : BaseFragment() {
 //            img_company
             txt_company.setText("School")
             select_company_name.setText("  Eg.Yale University")
+            et_bio.setHint("Eg.Hi my name is Lindsay Kolowich I am a \n" +
+                    "current Student at Yale  University.")
 
             val userMajor = viewModel?.sessionRepository?.getStudentMajor()
             val userSchool = viewModel?.sessionRepository?.getSchoolName()
@@ -70,11 +72,11 @@ class ProfessionalInfoFragment : BaseFragment() {
                 select_company_name.setText("  " + userCompanyName)
                 select_company_name.setTextColor(Color.parseColor("#333241"))
             }
-            val userBio = viewModel?.sessionRepository?.getBio()
-            if (userBio != null) {
-                et_bio.setText("  " + userBio)
-                et_bio.setTextColor(Color.parseColor("#333241"))
-            }
+        }
+        val userBio = viewModel?.sessionRepository?.getBio()
+        if (userBio != null) {
+            et_bio.setText(userBio)
+            et_bio.setTextColor(Color.parseColor("#333241"))
         }
 
         setupEvents()
@@ -92,10 +94,12 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         btn_upload_resume.setOnClickListener{
+            updateBio()
             openDocSelector()
         }
 
         select_job_title.setOnClickListener{
+            updateBio()
             if (viewModel?.sessionRepository?.getAccountType() == "student") {
                 navigator.navigateToSelectMajor(this, 0)
             } else {
@@ -104,6 +108,7 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         select_company_name.setOnClickListener{
+            updateBio()
             if (viewModel?.sessionRepository?.getAccountType() == "student") {
                 navigator.navigateToOnboardingSchool(requireActivity())
             } else {

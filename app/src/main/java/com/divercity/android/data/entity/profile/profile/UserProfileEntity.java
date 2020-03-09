@@ -12,6 +12,9 @@ public class UserProfileEntity {
     @SerializedName("city")
     private String city;
 
+    @SerializedName("bio")
+    private String bio;
+
     @SerializedName("account_type")
     private String accountType;
 
@@ -128,6 +131,14 @@ public class UserProfileEntity {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getBio() {
+        return bio;
+    }
+
+    public void setBio(String bio) {
+        this.bio = bio;
     }
 
     public List<String> getSkillList() {

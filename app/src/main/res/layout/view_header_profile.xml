@@ -4,7 +4,42 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:paddingBottom="15dp">
+
+    <RelativeLayout
+        android:id="@+id/top_btn"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:visibility="gone">
+
+        <ImageView
+            android:id="@+id/btn_previous_page"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="13sp"
+            android:src="@drawable/btn_arrow"
+            android:focusable="true"
+            android:clickable="true"/>
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:textSize="17sp"
+            android:lineSpacingExtra="5sp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="10dp"
+            android:background="@color/white"
+            android:textColor="#3197e4"
+            android:text="@string/next" />
+
+    </RelativeLayout>
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:id="@+id/btn_close"
@@ -68,7 +103,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/txt_title"
         app:layout_constraintVertical_bias="0.0"
-        android:visibility="invisible">
+        android:visibility="gone">
 
         <com.divercity.android.core.ui.AnimateHorizontalProgressBar
             android:id="@+id/progress_bar"

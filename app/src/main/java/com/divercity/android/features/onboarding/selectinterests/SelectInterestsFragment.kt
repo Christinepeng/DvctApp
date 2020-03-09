@@ -11,6 +11,7 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.features.dialogs.CustomOneBtnDialogFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
+import kotlinx.android.synthetic.main.view_header_profile.*
 import kotlinx.android.synthetic.main.view_header_profile.view.*
 import javax.inject.Inject
 
@@ -45,6 +46,9 @@ class SelectInterestsFragment : BaseFragment() {
     private fun setupView() {
         btn_continue.visibility = View.GONE
         include_search.visibility = View.GONE
+        top_btn.visibility = View.VISIBLE
+        btn_close.visibility = View.GONE
+        btn_skip.visibility = View.GONE
 
         list.layoutManager = StaggeredGridLayoutManager(3, 1)
         adapter.setListener(listener)
@@ -54,11 +58,22 @@ class SelectInterestsFragment : BaseFragment() {
     private fun setupHeader() {
         include_header.apply {
 
-            txt_title.setText(R.string.select_your_interests)
+            txt_title.setText("Select your interests to help us suggest\n" +
+                    "suitable communities and personalize your feed")
 
-            btn_close.setOnClickListener {
+            txt_title.setTextSize(17F)
+
+            btn_previous_page.setOnClickListener {
+                navigator.navigateToProfessionalInfoActivity(requireActivity())
+            }
+
+            btn_next.setOnClickListener {
                 navigator.navigateToSelectGroupActivity(requireActivity())
             }
+
+//            btn_close.setOnClickListener {
+//                navigator.navigateToSelectGroupActivity(requireActivity())
+//            }
 
             btn_skip.setOnClickListener {
                 if (btn_skip.text == getString(R.string.skip)) {

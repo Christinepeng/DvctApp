@@ -28,6 +28,9 @@ data class AttributesEntity(
     @field:SerializedName("gender")
     var gender: String? = String.empty(),
 
+    @field:SerializedName("bio")
+    var bio: String? = String.empty(),
+
     @field:SerializedName("ethnicity_info")
     @Embedded(prefix = "ethn_")
     var ethnicity: EthnicityInfoEntity? = null,

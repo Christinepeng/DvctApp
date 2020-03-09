@@ -70,6 +70,11 @@ class ProfessionalInfoFragment : BaseFragment() {
                 select_company_name.setText("  " + userCompanyName)
                 select_company_name.setTextColor(Color.parseColor("#333241"))
             }
+            val userBio = viewModel?.sessionRepository?.getBio()
+            if (userBio != null) {
+                et_bio.setText("  " + userBio)
+                et_bio.setTextColor(Color.parseColor("#333241"))
+            }
         }
 
         setupEvents()
@@ -82,6 +87,7 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         btn_next.setOnClickListener{
+            updateBio()
             navigator.navigateToSelectInterestsActivity(requireActivity())
         }
 
@@ -110,6 +116,7 @@ class ProfessionalInfoFragment : BaseFragment() {
         }
 
         btn_skip.setOnClickListener{
+            updateBio()
             navigator.navigateToSelectInterestsActivity(requireActivity())
         }
     }
@@ -132,27 +139,8 @@ class ProfessionalInfoFragment : BaseFragment() {
                 }
             }
         })
+    }
 
-//        viewModel.dataUpdateUser.observe(this, response -> {
-//            switch (response.getStatus()) {
-//                case LOADING:
-//                    showProgress();
-//                    break;
-//                case ERROR:
-//                    hideProgress();
-//                    Toast.makeText(getActivity(), response.getMessage(), Toast.LENGTH_SHORT).show();
-//                    break;
-//                case SUCCESS:
-//                    hideProgress();
-//                    navigator.navigateToProfilePromptActivity(getActivity());
-////                    navigator.navigateToHomeActivity(getActivity());
-//                    break;
-//            }
-//        });
-    } //    SelectUserTypeAdapter.UserTypeAdapterListener listener = userType -> {
-
-    ////        viewModel.updateUserProfile(userType.id);
-//    };
     companion object {
         fun newInstance(): ProfessionalInfoFragment {
             return ProfessionalInfoFragment()
@@ -191,5 +179,9 @@ class ProfessionalInfoFragment : BaseFragment() {
 
     private fun showToast(msg: String) {
         Toast.makeText(context!!, msg, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun updateBio() {
+        viewModel?.updateBio(et_bio.text.toString())
     }
 }

@@ -70,10 +70,7 @@ constructor(
         }
         val user = UserProfileEntity()
         user.accountType = typeId
-        updateUserProfileUseCase.execute(
-            callback,
-            UpdateUserProfileUseCase.Params(user)
-        )
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
     }
 
     fun checkDocumentAndUploadIt(uri: Uri) {
@@ -129,6 +126,35 @@ constructor(
             }
         }
         uploadDocumentUseCase.execute(callback, UploadDocumentUseCase.Params.forDoc(file))
+    }
+
+    fun updateBio(bio: String) {
+        dataUpdateUser.postValue(Resource.loading(null))
+        val callback = object : DisposableObserverWrapper<User>() {
+            override fun onFail(error: String) {
+                dataUpdateUser.postValue(Resource.error(error, null))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                dataUpdateUser.postValue(Resource.error(error.toString(), null))
+            }
+
+            override fun onSuccess(o: User) {
+                dataUpdateUser.postValue(Resource.success(o))
+            }
+        }
+
+        val user = UserProfileEntity()
+        user.bio = bio
+        updateUserProfileUseCase.execute(callback, UpdateUserProfileUseCase.Params(user))
+
+
+//        updateUserProfileUseCase.execute(callback,
+//            RateCompanyUseCase.Params(
+//                companyLiveData.value?.id!!,
+//                Rating(raceRate, sexOrRate, genderRate, bodRate, ageRate, review)
+//            )
+//        )
     }
 
     override fun onCleared() {

@@ -152,16 +152,20 @@ constructor(
         return currentLoggedUser?.userAttributes?.avatarMedium
     }
 
+    override fun getOccupation(): String? {
+        return currentLoggedUser?.userAttributes?.occupation
+    }
+
     override fun getGender(): String? {
         return currentLoggedUser?.userAttributes?.gender
     }
 
-    override fun getEthnicityName(): String? {
-        return currentLoggedUser?.userAttributes?.ethnicity?.name
+    override fun getBio(): String? {
+        return currentLoggedUser?.userAttributes?.bio
     }
 
-    override fun getOccupation(): String? {
-        return currentLoggedUser?.userAttributes?.occupation
+    override fun getEthnicityName(): String? {
+        return currentLoggedUser?.userAttributes?.ethnicity?.name
     }
 
     override fun getCompanyName(): String? {

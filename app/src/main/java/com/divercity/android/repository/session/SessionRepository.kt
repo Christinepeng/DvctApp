@@ -68,6 +68,8 @@ interface SessionRepository {
 
     fun getOccupation(): String?
 
+    fun getBio(): String?
+
     fun getCompanyName(): String?
 
     fun getStudentMajor(): List<String>?

@@ -58,7 +58,8 @@ class SelectInterestsFragment : BaseFragment() {
     private fun setupHeader() {
         include_header.apply {
 
-            txt_title.setText("Select your interests to help us suggest\n" +
+            txt_title.setText("\n" +
+                "Select your interests to help us suggest\n" +
                     "suitable communities and personalize your feed")
             txt_title.setTextSize(17F)
             txt_title.setLineSpacing(5F,1.4F)

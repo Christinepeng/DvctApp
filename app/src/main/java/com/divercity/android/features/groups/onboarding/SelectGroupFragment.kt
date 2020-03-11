@@ -113,12 +113,11 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
         include_header.apply {
 
-            txt_title.setText(
+            txt_title.setText("\n" +
                 "Join some Communities!\n" +
                     "\n" +
                     "These communities are suggested based on\n" +
-                    "the information you provided"
-            )
+                    "the information you provided")
             txt_title.setTextSize(17F)
             txt_title.setLineSpacing(5F,1.4F)
 

@@ -69,23 +69,8 @@ class SelectInterestsFragment : BaseFragment() {
             }
 
             btn_next.setOnClickListener {
+                viewModel.followInterests(selectedIds!!)
                 navigator.navigateToSelectGroupActivity(requireActivity())
-            }
-
-//            btn_close.setOnClickListener {
-//                navigator.navigateToSelectGroupActivity(requireActivity())
-//            }
-
-            btn_skip.setOnClickListener {
-                if (btn_skip.text == getString(R.string.skip)) {
-//                    navigator.navigateToNextOnboarding(
-//                            requireActivity(),
-//                            viewModel.getAccountType(),
-//                            currentProgress,
-//                            false)
-                } else {
-                    viewModel.followInterests(selectedIds!!)
-                }
             }
         }
     }
@@ -116,7 +101,7 @@ class SelectInterestsFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    navigator.navigateToHomeActivity(requireActivity())
+//                    navigator.navigateToHomeActivity(requireActivity())
                 }
             }
         })

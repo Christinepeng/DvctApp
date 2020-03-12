@@ -126,17 +126,8 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
             }
 
             btn_next.setOnClickListener {
-                //show dialog
                 navigator.navigateToHomeActivity(requireActivity())
             }
-
-//            btn_close.setOnClickListener {
-//                navigator.navigateToHomeActivity(requireActivity())
-//            }
-//
-//            btn_skip.setOnClickListener {
-//                navigator.navigateToHomeActivity(requireActivity())
-//            }
         }
     }
 

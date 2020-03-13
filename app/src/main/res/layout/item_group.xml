@@ -60,7 +60,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/item_group_txt_title"
         app:layout_constraintTop_toBottomOf="@+id/item_group_txt_title"
-        tools:text="293 Members" />
+        tools:text="293 Members"
+        android:visibility="gone"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/item_group_btn_join_member"

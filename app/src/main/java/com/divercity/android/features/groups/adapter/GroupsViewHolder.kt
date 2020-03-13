@@ -26,8 +26,8 @@ private constructor(itemView: View, private val listener: Listener?) :
                     .into(itemView.item_group_img)
 
                 item_group_txt_title.text = data.attributes.title
-                item_group_txt_members.text =
-                    data.attributes.followersCount.toString().plus(" Members")
+//                item_group_txt_members.text =
+//                    data.attributes.followersCount.toString().plus(" Members")
 
                 item_group_btn_join_member.apply {
                     isEnabled = true

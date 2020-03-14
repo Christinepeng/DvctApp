@@ -1,9 +1,13 @@
 package com.divercity.android.features.groups.adapter
 
+import android.content.res.ColorStateList
 import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
+import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources.getColorStateList
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -31,6 +35,7 @@ private constructor(itemView: View, private val listener: Listener?) :
 
                 checkbox_group_btn_join_member.setOnClickListener {
                     if (checkbox_group_btn_join_member.isChecked) {
+                        checkboxSelectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
                         listener?.onGroupJoinClick(
                             GroupPosition(
                                 position,
@@ -38,6 +43,7 @@ private constructor(itemView: View, private val listener: Listener?) :
                             )
                         )
                     } else {
+                        checkboxUnselectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
                         listener?.onGroupLeaveClick(
                             GroupPosition(
                                 position,
@@ -51,15 +57,9 @@ private constructor(itemView: View, private val listener: Listener?) :
                     || data.attributes.isFollowedByCurrent
                     || data.isJoinRequestPending()
                 ) {
-                    item_group_btn_join_member.setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-                    item_group_btn_join_member.text = "Join"
-                    checkbox_group_btn_join_member.setChecked(true)
+                    checkboxSelectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
                 } else {
-                    item_group_btn_join_member.setTextColor(
-                        Color.parseColor("#a4a4b3")
-                    )
-                    item_group_btn_join_member.text = "Join4"
-                    checkbox_group_btn_join_member.setChecked(false)
+                    checkboxUnselectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
                 }
 
 //                item_group_btn_join_member.apply {
@@ -124,6 +124,18 @@ private constructor(itemView: View, private val listener: Listener?) :
 //                }
             }
         }
+    }
+
+    fun checkboxSelectedAction(item_group_btn_join_member: TextView, checkbox_group_btn_join_member: CheckBox) {
+        item_group_btn_join_member.setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+        checkbox_group_btn_join_member.setChecked(true)
+        checkbox_group_btn_join_member.setButtonTintList(getColorStateList(itemView.context, R.color.appBlue))
+    }
+
+    fun checkboxUnselectedAction(item_group_btn_join_member: TextView, checkbox_group_btn_join_member: CheckBox) {
+        item_group_btn_join_member.setTextColor(ContextCompat.getColor(itemView.context, R.color.grey3))
+        checkbox_group_btn_join_member.setChecked(false)
+        checkbox_group_btn_join_member.setButtonTintList(getColorStateList(itemView.context, R.color.grey3))
     }
 
     interface Listener {

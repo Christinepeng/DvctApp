@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/white">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardview"
@@ -41,7 +42,7 @@
         android:ellipsize="end"
         android:textSize="15sp"
         app:layout_constraintBottom_toTopOf="@+id/item_group_txt_members"
-        app:layout_constraintEnd_toStartOf="@+id/item_group_btn_join_member"
+        app:layout_constraintEnd_toStartOf="@+id/checkbox_group_btn_join_member"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/cardview"
         app:layout_constraintTop_toTopOf="parent"
@@ -63,20 +64,36 @@
         tools:text="293 Members"
         android:visibility="gone"/>
 
+    <CheckBox
+        android:id="@+id/checkbox_group_btn_join_member"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginEnd="60dp"
+        android:fontFamily="@font/avenir_medium"
+        android:minHeight="30dip"
+        android:buttonTint="#a4a4b3"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/item_group_btn_join_member"
         style="@style/AppText"
-        android:layout_width="82dp"
+        android:layout_width="60dp"
         android:layout_height="31dp"
         android:layout_gravity="center"
-        android:background="@drawable/shape_backgrd_round_blue3"
         android:layout_marginEnd="8dp"
+        android:background="#FFFFFF"
         android:fontFamily="@font/avenir_medium"
         android:minHeight="30dip"
         android:text="Join"
         android:textAllCaps="false"
-        android:textColor="@android:color/white"
-        android:textSize="14sp"
+        android:textColor="#a4a4b3"
+        android:textSize="17sp"
+        android:stateListAnimator="@null"
+        app:layout_constraintStart_toEndOf="@+id/checkbox_group_btn_join_member"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

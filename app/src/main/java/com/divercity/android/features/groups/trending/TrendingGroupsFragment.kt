@@ -91,7 +91,7 @@ class TrendingGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-                    adapter.updatePositionOnJoinRequest(response.data!!)
+                    adapter.updatePositionOnJoinPrivateGroupRequest(response.data!!)
                 }
             }
         })

@@ -78,7 +78,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <TextView
         android:id="@+id/item_group_btn_join_member"
         style="@style/AppText"
         android:layout_width="60dp"

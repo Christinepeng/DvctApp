@@ -82,7 +82,7 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         }
     }
 
-    fun updatePositionOnJoinRequest(position: Int){
+    fun updatePositionOnJoinPrivateGroupRequest(position: Int){
         // TODO: update with response group data
         currentList?.get(position)?.attributes?.apply {
             requestToJoinStatus = "pending"

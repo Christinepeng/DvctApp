@@ -53,6 +53,17 @@ constructor(
         }
     }
 
+    override fun requestToJoinGroup(groupId: String): Observable<MessageResponse> {
+        return service.requestToJoinGroup(groupId)
+    }
+
+    override fun leaveGroup(groupId: String): Observable<Boolean> {
+        return service.leaveGroup(groupId).map {
+            checkResponse(it)
+            true
+        }
+    }
+
     override fun fetchAllGroups(
         page: Int,
         size: Int,
@@ -62,10 +73,6 @@ constructor(
             checkResponse(it)
             it.body()?.data
         }
-    }
-
-    override fun requestToJoinGroup(groupId: String): Observable<MessageResponse> {
-        return service.requestToJoinGroup(groupId)
     }
 
     override fun createGroup(group: GroupOfInterest): Observable<GroupResponse> {
@@ -215,7 +222,6 @@ constructor(
             it.body()?.data?.toQuestion()
         }
     }
-
 
     override fun fetchAnswers(
         questionId: String,

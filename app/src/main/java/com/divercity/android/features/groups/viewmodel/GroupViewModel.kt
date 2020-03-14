@@ -6,6 +6,7 @@ import com.divercity.android.data.Resource
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
+import com.divercity.android.features.groups.usecase.LeaveGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.divercity.android.model.position.GroupPosition
 import com.google.gson.JsonElement
@@ -18,11 +19,13 @@ import javax.inject.Inject
 class GroupViewModel @Inject
 constructor(
     private val joinGroupUseCase: JoinGroupUseCase,
-    private val requestToJoinUseCase: RequestJoinGroupUseCase
+    private val requestToJoinUseCase: RequestJoinGroupUseCase,
+    private val leaveGroupUseCase: LeaveGroupUseCase
 ) : BaseViewModel() {
 
-    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
     var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
+    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
+    var leaveGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
 
     fun joinGroup(group: GroupPosition) {
         joinPublicGroupResponse.postValue(Resource.loading(null))
@@ -65,9 +68,32 @@ constructor(
         )
     }
 
+    fun leaveGroup(group: GroupPosition) {
+        leaveGroupResponse.postValue(Resource.loading(null))
+
+        val callback = object : DisposableObserverWrapper<Boolean>() {
+            override fun onFail(error: String) {
+                leaveGroupResponse.postValue(Resource.error(error, group))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                leaveGroupResponse.postValue(Resource.error(error.toString(), group))
+            }
+
+            override fun onSuccess(o: Boolean) {
+                leaveGroupResponse.postValue(Resource.success(group))
+            }
+        }
+        leaveGroupUseCase.execute(
+            callback,
+            LeaveGroupUseCase.Params.leave(group.group.id)
+        )
+    }
+
     override fun onCleared() {
         super.onCleared()
-        requestToJoinUseCase.dispose()
         joinGroupUseCase.dispose()
+        requestToJoinUseCase.dispose()
+        leaveGroupUseCase.dispose()
     }
 }

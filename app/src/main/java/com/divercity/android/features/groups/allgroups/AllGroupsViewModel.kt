@@ -7,6 +7,7 @@ import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.data.entity.message.MessageResponse
 import com.divercity.android.data.networking.config.DisposableObserverWrapper
 import com.divercity.android.features.groups.usecase.JoinGroupUseCase
+import com.divercity.android.features.groups.usecase.LeaveGroupUseCase
 import com.divercity.android.features.groups.usecase.RequestJoinGroupUseCase
 import com.divercity.android.model.position.GroupPosition
 import com.google.gson.JsonElement
@@ -20,11 +21,13 @@ class AllGroupsViewModel @Inject
 constructor(
     repository: AllGroupsPaginatedRepository,
     private val joinGroupUseCase: JoinGroupUseCase,
-    private val requestToJoinUseCase: RequestJoinGroupUseCase
+    private val requestToJoinUseCase: RequestJoinGroupUseCase,
+    private val leaveGroupUseCase: LeaveGroupUseCase
 ) : BaseViewModelPagination<GroupResponse>(repository) {
 
-    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
     var joinPublicGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
+    var requestToJoinPrivateGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
+    var leaveGroupResponse = SingleLiveEvent<Resource<GroupPosition>>()
 
     init {
         fetchData(null, "")
@@ -68,6 +71,28 @@ constructor(
         requestToJoinUseCase.execute(
             callback,
             RequestJoinGroupUseCase.Params.toJoin(group.group.id)
+        )
+    }
+
+    fun leaveGroup(group: GroupPosition) {
+        leaveGroupResponse.postValue(Resource.loading(null))
+
+        val callback = object : DisposableObserverWrapper<Boolean>() {
+            override fun onFail(error: String) {
+                leaveGroupResponse.postValue(Resource.error(error, group))
+            }
+
+            override fun onHttpException(error: JsonElement) {
+                leaveGroupResponse.postValue(Resource.error(error.toString(), group))
+            }
+
+            override fun onSuccess(o: Boolean) {
+                leaveGroupResponse.postValue(Resource.success(group))
+            }
+        }
+        leaveGroupUseCase.execute(
+            callback,
+            LeaveGroupUseCase.Params.leave(group.group.id)
         )
     }
 

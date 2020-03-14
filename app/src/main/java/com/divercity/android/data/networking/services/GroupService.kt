@@ -81,6 +81,9 @@ interface GroupService {
     @POST("group_of_interests/{groupId}/join")
     fun requestToJoinGroup(@Path("groupId") groupId: String): Observable<MessageResponse>
 
+    @DELETE("group_of_interests/{groupId}/leave_group")
+    fun leaveGroup(@Path("groupId") groupId: String): Observable<Response<Void>>
+
     @POST("group_of_interests")
     fun createGroup(@Body body: CreateGroupBody): Observable<Response<DataObject<GroupResponse>>>
 

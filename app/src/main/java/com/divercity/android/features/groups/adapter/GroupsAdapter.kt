@@ -96,12 +96,28 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         notifyItemChanged(position)
     }
 
-    fun updatePositionOnJoinRequest(groupPosition: GroupPosition){
+    fun updatePositionOnJoinPrivateGroupRequest(groupPosition: GroupPosition){
 //      We are not receiving the whole group when I get the response, so I have to do this.
 //      I think it is not a good idea, but the backend engineer refused to return the group
 
        currentList?.get(groupPosition.position)?.attributes?.apply {
             requestToJoinStatus = "pending"
+            notifyItemChanged(groupPosition.position)
+        }
+    }
+
+    fun updatePositionOnLeaveGroup(groupPosition: GroupPosition){
+//      We are not receiving the whole group when I get the response, so I have to do this.
+//      I think it is not a good idea, but the backend engineer refused to return the group
+
+        currentList?.get(groupPosition.position)?.attributes?.apply {
+            if (groupType?.toLowerCase() == "public") {
+                followersCount -= 1
+                isFollowedByCurrent = false
+            }
+            else {
+                requestToJoinStatus = "none"
+            }
             notifyItemChanged(groupPosition.position)
         }
     }

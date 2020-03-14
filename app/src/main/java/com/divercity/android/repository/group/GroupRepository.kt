@@ -17,6 +17,7 @@ import com.divercity.android.data.entity.message.MessagesResponse
 import com.divercity.android.model.Question
 import com.divercity.android.model.user.User
 import io.reactivex.Observable
+import retrofit2.Response
 
 /**
  * Created by lucas on 29/10/2018.
@@ -79,6 +80,8 @@ interface GroupRepository {
     ): Observable<GroupResponse>
 
     fun requestToJoinGroup(groupId: String): Observable<MessageResponse>
+
+    fun leaveGroup(groupId: String): Observable<Boolean>
 
     fun fetchRecommendedGroups(
         pageNumber: Int,

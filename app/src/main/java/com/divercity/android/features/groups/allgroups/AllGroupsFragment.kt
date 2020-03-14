@@ -89,7 +89,7 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
                         Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                     }
                     Status.SUCCESS -> {
-                        adapter.updatePositionOnJoinRequest(response.data!!)
+                        adapter.updatePositionOnJoinPrivateGroupRequest(response.data!!)
                     }
                 }
             })
@@ -150,12 +150,16 @@ class AllGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     private val listener = object : GroupsViewHolder.Listener {
 
+        override fun onGroupJoinClick(groupPosition: GroupPosition) {
+            viewModel.joinGroup(groupPosition)
+        }
+
         override fun onGroupRequestJoinClick(groupPosition: GroupPosition) {
             viewModel.requestToJoinGroup(groupPosition)
         }
 
-        override fun onGroupJoinClick(groupPosition: GroupPosition) {
-            viewModel.joinGroup(groupPosition)
+        override fun onGroupLeaveClick(groupPosition: GroupPosition) {
+            viewModel.leaveGroup(groupPosition)
         }
 
         override fun onGroupClick(position: Int, group: GroupResponse) {

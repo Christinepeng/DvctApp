@@ -150,7 +150,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                 }
 
                 Status.ERROR -> {
-                    adapter.reloadPosition(response.data!!.position)
+//                    adapter.reloadPosition(response.data!!.position)
                     Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                 }
                 Status.SUCCESS -> {
@@ -185,8 +185,27 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                         Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
                     }
                     Status.SUCCESS -> {
-                        adapter.updatePositionOnJoinRequest(response.data!!)
+                        adapter.updatePositionOnJoinPrivateGroupRequest(response.data!!)
                         countJoin++
+                        checkContinueBtnState()
+                    }
+                }
+            })
+
+        groupViewModel.leaveGroupResponse.observe(
+            viewLifecycleOwner,
+            Observer { response ->
+                when (response?.status) {
+                    Status.LOADING -> {
+                    }
+
+                    Status.ERROR -> {
+                        adapter.reloadPosition(response.data!!.position)
+                        Toast.makeText(activity, response.message, Toast.LENGTH_SHORT).show()
+                    }
+                    Status.SUCCESS -> {
+                        adapter.updatePositionOnLeaveGroup(response.data!!)
+                        countJoin--
                         checkContinueBtnState()
                     }
                 }
@@ -233,12 +252,16 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
     private val listener = object : GroupsViewHolder.Listener {
 
+        override fun onGroupJoinClick(groupPosition: GroupPosition) {
+            groupViewModel.joinGroup(groupPosition)
+        }
+
         override fun onGroupRequestJoinClick(groupPosition: GroupPosition) {
             groupViewModel.requestToJoinGroup(groupPosition)
         }
 
-        override fun onGroupJoinClick(groupPosition: GroupPosition) {
-            groupViewModel.joinGroup(groupPosition)
+        override fun onGroupLeaveClick(groupPosition: GroupPosition) {
+            groupViewModel.leaveGroup(groupPosition)
         }
 
         override fun onGroupClick(position: Int, group: GroupResponse) {

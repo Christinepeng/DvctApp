@@ -1,7 +1,6 @@
 package com.divercity.android.features.groups.adapter
 
 import android.graphics.Color
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,78 +26,113 @@ private constructor(itemView: View, private val listener: Listener?) :
                     .into(itemView.item_group_img)
 
                 item_group_txt_title.text = data.attributes.title
-//                item_group_txt_members.text =
-//                    data.attributes.followersCount.toString().plus(" Members")
+                item_group_txt_members.text =
+                    data.attributes.followersCount.toString().plus(" Members")
 
-                item_group_btn_join_member.apply {
-                    isEnabled = true
-                    text = if (data.attributes.isCurrentUserAdmin) {
-                        setOnClickListener(null)
-//                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-//                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
-//                        "Admin"
-                        "Join1"
-                    } else if (data.attributes.isFollowedByCurrent) {
-                        setOnClickListener(null)
-//                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-//                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
-                        "Join2"
-//                        "Member"
-                    } else if (data.isJoinRequestPending()) {
-                        setOnClickListener(null)
-//                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-//                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
-                        "Join3"
-//                        "Pending"
-                    } else {
-                        if (data.isPublic())
-                            setOnClickListener {
-                                isEnabled = false
-                                listener?.onGroupJoinClick(
-                                    GroupPosition(
-                                        position,
-                                        data
-                                    )
-                                )
-                            }
-                        else
-                            setOnClickListener {
-                                isEnabled = false
-                                listener?.onGroupRequestJoinClick(
-                                    GroupPosition(
-                                        position,
-                                        data
-                                    )
-                                )
-                            }
-//                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-                        setTextColor(
-                            Color.parseColor("#a4a4b3")
-//                            ContextCompat.getColor(
-//                                itemView.context,
-//                                android.R.color.white
-//                            )
+                checkbox_group_btn_join_member.setOnClickListener {
+                    if (checkbox_group_btn_join_member.isChecked) {
+                        listener?.onGroupJoinClick(
+                            GroupPosition(
+                                position,
+                                data
+                            )
                         )
-                        "Join4"
+                    } else {
+                        listener?.onGroupLeaveClick(
+                            GroupPosition(
+                                position,
+                                data
+                            )
+                        )
                     }
-                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
                 }
 
-                setOnClickListener {
-                    listener?.onGroupClick(position, data)
+                if (data.attributes.isCurrentUserAdmin
+                    || data.attributes.isFollowedByCurrent
+                    || data.isJoinRequestPending()
+                ) {
+                    item_group_btn_join_member.setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+                    item_group_btn_join_member.text = "Join"
+                    checkbox_group_btn_join_member.setChecked(true)
+                } else {
+                    item_group_btn_join_member.setTextColor(
+                        Color.parseColor("#a4a4b3")
+                    )
+                    item_group_btn_join_member.text = "Join4"
+                    checkbox_group_btn_join_member.setChecked(false)
                 }
+
+//                item_group_btn_join_member.apply {
+//                    isEnabled = true
+//                    text = if (data.attributes.isCurrentUserAdmin) {
+//                        setOnClickListener(null)
+////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
+//                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
+////                        "Admin"
+//                        "Join1"
+//                    } else if (data.attributes.isFollowedByCurrent) {
+//                        setOnClickListener(null)
+////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
+//                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
+//                        "Join2"
+////                        "Member"
+//                    } else if (data.isJoinRequestPending()) {
+//                        setOnClickListener(null)
+////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
+//                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
+////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
+//                        "Join3"
+////                        "Pending"
+//                    } else {
+//                        if (data.isPublic())
+//                            setOnClickListener {
+//                                isEnabled = false
+//                                listener?.onGroupJoinClick(
+//                                    GroupPosition(
+//                                        position,
+//                                        data
+//                                    )
+//                                )
+//                            }
+//                        else
+//                            setOnClickListener {
+//                                isEnabled = false
+//                                listener?.onGroupRequestJoinClick(
+//                                    GroupPosition(
+//                                        position,
+//                                        data
+//                                    )
+//                                )
+//                            }
+////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
+//                        setTextColor(
+//                            Color.parseColor("#a4a4b3")
+////                            ContextCompat.getColor(
+////                                itemView.context,
+////                                android.R.color.white
+////                            )
+//                        )
+//                        "Join4"
+//                    }
+//                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+//                }
+//
+//                setOnClickListener {
+//                    listener?.onGroupClick(position, data)
+//                }
             }
         }
     }
 
     interface Listener {
 
+        fun onGroupJoinClick(groupPosition: GroupPosition)
+
         fun onGroupRequestJoinClick(groupPosition: GroupPosition)
 
-        fun onGroupJoinClick(groupPosition: GroupPosition)
+        fun onGroupLeaveClick(groupPosition: GroupPosition)
 
         fun onGroupClick(position: Int, group: GroupResponse)
     }

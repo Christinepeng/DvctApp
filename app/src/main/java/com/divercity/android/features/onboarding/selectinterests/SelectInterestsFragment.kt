@@ -1,5 +1,6 @@
 package com.divercity.android.features.onboarding.selectinterests
 
+import android.graphics.Color
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
@@ -64,6 +65,10 @@ class SelectInterestsFragment : BaseFragment() {
             txt_title.setTextSize(17F)
             txt_title.setLineSpacing(5F,1.4F)
 
+            btn_next.setTextColor(Color.parseColor("#763198e5"))
+            btn_next.isClickable = false
+            btn_next.isEnabled = false
+
             btn_previous_page.setOnClickListener {
                 navigator.navigateToProfessionalInfoActivity(requireActivity())
             }
@@ -101,7 +106,6 @@ class SelectInterestsFragment : BaseFragment() {
                 }
                 Status.SUCCESS -> {
                     hideProgress()
-//                    navigator.navigateToHomeActivity(requireActivity())
                 }
             }
         })
@@ -121,9 +125,9 @@ class SelectInterestsFragment : BaseFragment() {
     private val listener = SelectInterestsAdapter.Listener {
         selectedIds = it
         if (it.size >= 3) {
-            include_header.btn_skip.setText(R.string.done)
-        } else {
-            include_header.btn_skip.setText(R.string.skip)
+            btn_next.setTextColor(Color.parseColor("#3197e4"))
+            btn_next.isClickable = true
+            btn_next.isEnabled = true
         }
     }
 }

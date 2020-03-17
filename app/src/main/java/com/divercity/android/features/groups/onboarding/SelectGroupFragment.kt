@@ -1,6 +1,7 @@
 package com.divercity.android.features.groups.onboarding
 
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.text.Editable
@@ -81,7 +82,6 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     private fun setupHeader() {
 
         top_btn.visibility = View.VISIBLE
-        btn_next.setText("DONE")
         include_search.visibility = View.GONE
         btn_close.visibility = View.GONE
         btn_continue.visibility = View.GONE
@@ -121,6 +121,9 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
             txt_title.setTextSize(17F)
             txt_title.setLineSpacing(5F,1.4F)
 
+            btn_next.setText("DONE")
+//            checkContinueBtnState()
+
             btn_previous_page.setOnClickListener {
                 navigator.navigateToSelectInterestsActivity(requireActivity())
             }
@@ -155,20 +158,20 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                 }
                 Status.SUCCESS -> {
                     adapter.updatePositionOnJoinPublicGroup(response.data!!)
-                    if (++countJoin == 3) {
-                        btn_continue.background =
-                            ContextCompat.getDrawable(
-                                requireActivity(),
-                                R.drawable.shape_backgrd_round_blue2
-                            )
-                        btn_continue.setOnClickListener {
-                            val nextProgress =
-                                OnboardingProgression.getNextNavigationProgressOnboarding(
-                                    requireActivity(), viewModel.accountType, currentProgress
-                                )
-                            navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
-                        }
-                    }
+//                    if (++countJoin == 3) {
+//                        btn_next.setTextColor(Color.parseColor("#3197e4"))
+//                        btn_next.isClickable = true
+//                        btn_next.isEnabled = true
+////                        btn_continue.background = ContextCompat.getDrawable(requireActivity(), R.drawable.shape_backgrd_round_blue2)
+////                        btn_continue.setOnClickListener {
+////                            val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(requireActivity(), viewModel.accountType, currentProgress)
+////                            navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
+////                        }
+//                    } else {
+//                        btn_next.setTextColor(Color.parseColor("#763198e5"))
+//                        btn_next.isClickable = false
+//                        btn_next.isEnabled = false
+//                    }
                 }
             }
         })
@@ -187,7 +190,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                     Status.SUCCESS -> {
                         adapter.updatePositionOnJoinPrivateGroupRequest(response.data!!)
                         countJoin++
-                        checkContinueBtnState()
+//                        checkContinueBtnState()
                     }
                 }
             })
@@ -206,7 +209,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
                     Status.SUCCESS -> {
                         adapter.updatePositionOnLeaveGroup(response.data!!)
                         countJoin--
-                        checkContinueBtnState()
+//                        checkContinueBtnState()
                     }
                 }
             })
@@ -214,14 +217,18 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
 
     private fun checkContinueBtnState() {
         if (countJoin >= 3) {
-            btn_continue.background =
-                ContextCompat.getDrawable(requireActivity(), R.drawable.shape_backgrd_round_blue2)
-            btn_continue.setOnClickListener {
-                val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
-                    requireActivity(), viewModel.accountType, currentProgress
-                )
-                navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
-            }
+            btn_next.setTextColor(Color.parseColor("#3197e4"))
+            btn_next.isClickable = true
+            btn_next.isEnabled = true
+//            btn_continue.background = ContextCompat.getDrawable(requireActivity(), R.drawable.shape_backgrd_round_blue2)
+//            btn_continue.setOnClickListener {
+//                val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(requireActivity(), viewModel.accountType, currentProgress)
+//                navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
+//            }
+        } else {
+            btn_next.setTextColor(Color.parseColor("#763198e5"))
+            btn_next.isClickable = false
+            btn_next.isEnabled = false
         }
     }
 

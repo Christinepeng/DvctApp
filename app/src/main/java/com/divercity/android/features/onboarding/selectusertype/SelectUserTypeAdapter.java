@@ -21,7 +21,6 @@ import java.util.List;
 public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAdapter.Holder> {
 
     private List<UserType> list = new ArrayList<>();
-    private LayoutInflater layoutInflater;
     private UserTypeAdapterListener listener;
 
     private void fillList(Context context) {
@@ -85,6 +84,7 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
         UserType item = list.get(position);
         holder.imageView.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.drawable));
         holder.textView.setText(item.textId);
+
         holder.itemView.setOnClickListener(view -> {
             listener.onUserTypeClick(item);
         });

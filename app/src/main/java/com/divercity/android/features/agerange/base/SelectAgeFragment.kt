@@ -22,7 +22,7 @@ class SelectAgeFragment : BaseFragment() {
         }
     }
 
-    override fun layoutId(): Int = R.layout.fragment_list_search
+    override fun layoutId(): Int = R.layout.fragment_select_ethnicity
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -32,8 +32,8 @@ class SelectAgeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        include_search.visibility = View.GONE
-        lay_action.visibility = View.GONE
+//        include_search.visibility = View.GONE
+//        lay_action.visibility = View.GONE
 
         adapter.setListener(listener)
         list.adapter = adapter

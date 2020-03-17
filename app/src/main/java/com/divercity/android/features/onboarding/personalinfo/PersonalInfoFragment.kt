@@ -91,7 +91,6 @@ class PersonalInfoFragment : BaseFragment() {
 
         btn_next.setOnClickListener{
             navigator.navigateToProfessionalInfoActivity(requireActivity())
-//            navigator.navigateToSignUpActivity(requireActivity(), "a@gmail.com")
         }
 
         btn_upload_profile_picture.setOnClickListener{
@@ -116,7 +115,6 @@ class PersonalInfoFragment : BaseFragment() {
 
         btn_skip.setOnClickListener{
             navigator.navigateToProfessionalInfoActivity(requireActivity())
-//            navigator.navigateToHomeActivity(requireActivity())
         }
     }
 
@@ -202,25 +200,6 @@ class PersonalInfoFragment : BaseFragment() {
             }
         })
     }
-
-//    private fun showAddProfilePictureDialog() {
-//        val dialog = AddProfilePictureDialogFragment.newInstance()
-//        dialog.listener = object : AddProfilePictureDialogFragment.Listener {
-//
-//            override fun onAddPicture() {
-//                EasyImage.openChooserWithGallery(
-//                    this@SignUpFragment,
-//                    getString(R.string.pick_source),
-//                    0
-//                )
-//            }
-//
-//            override fun onMaybeLater() {
-////                signUp()
-//            }
-//        }
-//        dialog.show(childFragmentManager, null)
-//    }
 
     private fun onPhotosReturned(file: File?) {
         photoFile = file

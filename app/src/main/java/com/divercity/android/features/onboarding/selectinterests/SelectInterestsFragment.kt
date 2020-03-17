@@ -128,6 +128,10 @@ class SelectInterestsFragment : BaseFragment() {
             btn_next.setTextColor(Color.parseColor("#3197e4"))
             btn_next.isClickable = true
             btn_next.isEnabled = true
+        } else {
+            btn_next.setTextColor(Color.parseColor("#763198e5"))
+            btn_next.isClickable = false
+            btn_next.isEnabled = false
         }
     }
 }

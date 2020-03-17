@@ -27,18 +27,18 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
     private Listener listener;
 
     private List<AgeViewEntity> list;
-    private int prevPositionSelected = -1;
+//    private int prevPositionSelected = -1;
     private String ageRangeSelected;
 
     static class Holder extends RecyclerView.ViewHolder {
 
         TextView txtTitle;
-        AppCompatImageButton imgBtn;
+//        AppCompatImageButton imgBtn;
 
         Holder(View itemView) {
             super(itemView);
-            txtTitle = itemView.findViewById(R.id.txt_title);
-            imgBtn = itemView.findViewById(R.id.btn_select_unselect);
+            txtTitle = itemView.findViewById(R.id.item_text);
+//            imgBtn = itemView.findViewById(R.id.btn_select_unselect);
         }
     }
 
@@ -62,7 +62,7 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
             layoutInflater = LayoutInflater.from(parent.getContext());
         }
         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-        View view = layoutInflater.inflate(R.layout.item_btn_text, parent, false);
+        View view = layoutInflater.inflate(R.layout.item_text, parent, false);
         return new Holder(view);
     }
 
@@ -71,24 +71,27 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
         AgeViewEntity item = list.get(position);
         holder.txtTitle.setText(item.title);
 
-        holder.imgBtn.setSelected(item.isSelected);
+//        holder.txtTitle.setSelected(item.isSelected);
+//        holder.imgBtn.setSelected(item.isSelected);
 
-        holder.imgBtn.setOnClickListener(view -> {
+        holder.txtTitle.setOnClickListener(view -> {
+////        holder.imgBtn.setOnClickListener(view -> {
+//            if(prevPositionSelected != -1) {
+//                list.get(prevPositionSelected).isSelected = false;
+//                notifyItemChanged(prevPositionSelected);
+//            }
+//
+//            holder.txtTitle.setSelected(!item.isSelected);
+////            holder.imgBtn.setSelected(!item.isSelected);
+//            item.isSelected = holder.txtTitle.isSelected();
+////            item.isSelected = holder.imgBtn.isSelected();
+//
+//            if(item.isSelected)
+//                ageRangeSelected = item.title;
 
-            if(prevPositionSelected != -1) {
-                list.get(prevPositionSelected).isSelected = false;
-                notifyItemChanged(prevPositionSelected);
-            }
+//            prevPositionSelected = position;
 
-            holder.imgBtn.setSelected(!item.isSelected);
-            item.isSelected = holder.imgBtn.isSelected();
-
-            if(item.isSelected)
-                ageRangeSelected = item.title;
-
-            prevPositionSelected = position;
-
-            listener.onAgeClick(ageRangeSelected);
+            listener.onAgeClick(item.title);
         });
     }
 

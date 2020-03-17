@@ -10,7 +10,9 @@ import com.divercity.android.core.base.BaseFragment
 import com.divercity.android.data.Status
 import com.divercity.android.features.agerange.base.SelectAgeFragment
 import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
+import kotlinx.android.synthetic.main.item_btn_text.*
 import kotlinx.android.synthetic.main.view_header_profile.*
+import kotlinx.android.synthetic.main.view_header_profile.txt_title
 import javax.inject.Inject
 
 class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
@@ -41,13 +43,13 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
     }
 
     private fun setupView() {
-        btn_continue.visibility = View.VISIBLE
-        btn_continue.setOnClickListener {
-            if (viewModel.ageRangeSelected != null) {
-                viewModel.updateUserProfileWithSelectedAgeRange()
-            } else
-                navigateToNext(false)
-        }
+//        btn_continue.visibility = View.VISIBLE
+//        btn_continue.setOnClickListener {
+//            if (viewModel.ageRangeSelected != null) {
+//                viewModel.updateUserProfileWithSelectedAgeRange()
+//            } else
+//                navigateToNext(false)
+//        }
     }
 
     private fun setupHeader() {
@@ -59,10 +61,6 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
                 navigator.navigateToPersonalInfoActivity(requireActivity())
             }
         }
-    }
-
-    private fun navigateToNext(shouldIncrement: Boolean) {
-        navigator.navigateToPersonalInfoActivity(requireActivity())
     }
 
     private fun showToast(msg: String) {
@@ -81,7 +79,6 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
                 Status.SUCCESS -> {
                     hideProgress()
                     navigator.navigateToPersonalInfoActivity(requireActivity())
-//                    navigateToNext(true)
                 }
             }
         })
@@ -89,5 +86,6 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
 
     override fun onAgeRangeChosen(ageRange: String) {
         viewModel.ageRangeSelected = ageRange
+        viewModel.updateUserProfileWithSelectedAgeRange()
     }
 }

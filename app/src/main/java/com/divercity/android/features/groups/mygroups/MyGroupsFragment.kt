@@ -140,10 +140,13 @@ class MyGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
 
     private val listener = object : GroupsViewHolder.Listener {
 
+        override fun onGroupJoinClick(groupPosition: GroupPosition) {
+        }
+
         override fun onGroupRequestJoinClick(groupPosition: GroupPosition) {
         }
 
-        override fun onGroupJoinClick(groupPosition: GroupPosition) {
+        override fun onGroupLeaveClick(groupPosition: GroupPosition) {
         }
 
         override fun onGroupClick(position: Int, group: GroupResponse) {

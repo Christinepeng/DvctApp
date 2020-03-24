@@ -77,6 +77,7 @@ class SelectInterestsFragment : BaseFragment() {
                 viewModel.followInterests(selectedIds!!)
                 navigator.navigateToSelectGroupActivity(requireActivity())
             }
+
         }
     }
 

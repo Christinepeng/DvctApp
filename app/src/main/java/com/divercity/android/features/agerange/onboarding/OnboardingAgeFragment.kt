@@ -38,18 +38,7 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
         childFragmentManager.beginTransaction().add(
                 R.id.fragment_fragment_container, SelectAgeFragment.newInstance()).commit()
         setupHeader()
-        setupView()
         subscribeToLiveData()
-    }
-
-    private fun setupView() {
-//        btn_continue.visibility = View.VISIBLE
-//        btn_continue.setOnClickListener {
-//            if (viewModel.ageRangeSelected != null) {
-//                viewModel.updateUserProfileWithSelectedAgeRange()
-//            } else
-//                navigateToNext(false)
-//        }
     }
 
     private fun setupHeader() {

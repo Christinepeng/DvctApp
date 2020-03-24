@@ -1,19 +1,26 @@
 package com.divercity.android.features.search
 
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.Menu
 import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.SearchView
+import androidx.core.app.NavUtils
 import androidx.lifecycle.ViewModelProviders
 import androidx.viewpager.widget.ViewPager
 import com.divercity.android.AppConstants
 import com.divercity.android.R
 import com.divercity.android.core.base.BaseFragment
+import kotlinx.android.synthetic.main.fragment_job_search_filter_view.view.*
 import kotlinx.android.synthetic.main.fragment_search.*
+import kotlinx.android.synthetic.main.view_toolbar.*
 import kotlinx.android.synthetic.main.view_toolbar.view.*
+import kotlinx.android.synthetic.main.view_toolbar_for_search.view.*
 import javax.inject.Inject
 
 /**
@@ -64,16 +71,30 @@ class SearchFragment : BaseFragment() {
         subscribeToLiveData()
     }
 
+//    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+//        return when (item.getItemId()) {
+//            android.R.id.home -> {
+////                navigator.navigateToHomeActivity(requireActivity())
+//                NavUtils.navigateUpFromSameTask(requireActivity())
+//                true
+//            }
+//            else -> super.onOptionsItemSelected(item)
+//        }
+//    }
+
     private fun subscribeToLiveData() {
 
     }
 
     private fun setupToolbar() {
         (activity as AppCompatActivity).apply {
-            setSupportActionBar(include_toolbar.toolbar)
+            setSupportActionBar(include_toolbar.toolbar_for_search)
             supportActionBar?.let {
                 it.setTitle(R.string.search)
+                //show arrow
                 it.setDisplayHomeAsUpEnabled(true)
+//                it.setBackgroundDrawable(ColorDrawable(getResources().getColor(R.color.grey_background)))
+//                it.setHomeAsUpIndicator(R.drawable.icon_back)
             }
         }
     }

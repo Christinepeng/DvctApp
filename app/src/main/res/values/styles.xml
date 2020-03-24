@@ -127,4 +127,12 @@
         <item name="android:windowExitAnimation">@anim/slide_right</item>
     </style>
 
+    <!-- ToolBar -->
+    <style name="ToolBarStyle" parent="AppTheme">
+<!--        <item name="android:textColorPrimary">@android:color/black</item>-->
+<!--        <item name="actionMenuTextColor">@android:color/holo_purple</item>-->
+        <item name="colorPrimary">@color/grey_background</item>
+        <item name="colorControlNormal">#3198e5</item>
+    </style>
+
 </resources>

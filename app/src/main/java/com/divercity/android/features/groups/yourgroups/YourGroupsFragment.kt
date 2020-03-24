@@ -94,9 +94,11 @@ class YourGroupsFragment : BaseFragment(), RetryCallback, ITabSearch {
         adapter.questionListener = listener
 
         groupAdapter.listener = object : GroupsViewHolder.Listener {
+            override fun onGroupJoinClick(groupPosition: GroupPosition) {}
+
             override fun onGroupRequestJoinClick(groupPosition: GroupPosition) {}
 
-            override fun onGroupJoinClick(groupPosition: GroupPosition) {}
+            override fun onGroupLeaveClick(groupPosition: GroupPosition) {}
 
             override fun onGroupClick(position: Int, group: GroupResponse) {
                 lastGroupPositionTap = position

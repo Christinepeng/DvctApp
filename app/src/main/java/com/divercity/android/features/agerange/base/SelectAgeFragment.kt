@@ -32,9 +32,6 @@ class SelectAgeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        include_search.visibility = View.GONE
-//        lay_action.visibility = View.GONE
-
         adapter.setListener(listener)
         list.adapter = adapter
     }

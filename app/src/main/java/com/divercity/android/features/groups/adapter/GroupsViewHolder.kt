@@ -68,21 +68,21 @@ private constructor(itemView: View, private val listener: Listener?) :
 //                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
 ////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
 ////                        "Admin"
-//                        "Join1"
+//                        "Join1" "Joined"
 //                    } else if (data.attributes.isFollowedByCurrent) {
 //                        setOnClickListener(null)
 ////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
 //                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
 ////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
 //                        "Join2"
-////                        "Member"
+////                        "Member" "Joined"
 //                    } else if (data.isJoinRequestPending()) {
 //                        setOnClickListener(null)
 ////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
 //                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
 ////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
 //                        "Join3"
-////                        "Pending"
+////                        "Pending" "Request Sent"
 //                    } else {
 //                        if (data.isPublic())
 //                            setOnClickListener {
@@ -112,7 +112,7 @@ private constructor(itemView: View, private val listener: Listener?) :
 ////                                android.R.color.white
 ////                            )
 //                        )
-//                        "Join4"
+//                        "Join4" "Join"
 //                    }
 //                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
 //                }

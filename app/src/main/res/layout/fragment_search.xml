@@ -7,7 +7,7 @@
 
     <include
         android:id="@+id/include_toolbar"
-        layout="@layout/view_toolbar"
+        layout="@layout/view_toolbar_for_search"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -21,10 +21,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/include_toolbar"
         app:tabIndicatorColor="@color/colorPrimary"
-        app:tabMode="scrollable"
+        app:tabMode="fixed"
         app:tabSelectedTextColor="@color/colorPrimary"
         app:tabTextAppearance="@style/MyCustomTextAppearance"
-        app:tabTextColor="@color/grey3" />
+        app:tabTextColor="@color/grey3"
+        app:tabGravity="fill" />
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/viewpager"

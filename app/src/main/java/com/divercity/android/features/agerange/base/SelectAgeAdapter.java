@@ -25,20 +25,15 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
 
     private LayoutInflater layoutInflater;
     private Listener listener;
-
     private List<AgeViewEntity> list;
-//    private int prevPositionSelected = -1;
-    private String ageRangeSelected;
 
     static class Holder extends RecyclerView.ViewHolder {
 
         TextView txtTitle;
-//        AppCompatImageButton imgBtn;
 
         Holder(View itemView) {
             super(itemView);
             txtTitle = itemView.findViewById(R.id.item_text);
-//            imgBtn = itemView.findViewById(R.id.btn_select_unselect);
         }
     }
 
@@ -71,26 +66,7 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
         AgeViewEntity item = list.get(position);
         holder.txtTitle.setText(item.title);
 
-//        holder.txtTitle.setSelected(item.isSelected);
-//        holder.imgBtn.setSelected(item.isSelected);
-
         holder.txtTitle.setOnClickListener(view -> {
-////        holder.imgBtn.setOnClickListener(view -> {
-//            if(prevPositionSelected != -1) {
-//                list.get(prevPositionSelected).isSelected = false;
-//                notifyItemChanged(prevPositionSelected);
-//            }
-//
-//            holder.txtTitle.setSelected(!item.isSelected);
-////            holder.imgBtn.setSelected(!item.isSelected);
-//            item.isSelected = holder.txtTitle.isSelected();
-////            item.isSelected = holder.imgBtn.isSelected();
-//
-//            if(item.isSelected)
-//                ageRangeSelected = item.title;
-
-//            prevPositionSelected = position;
-
             listener.onAgeClick(item.title);
         });
     }

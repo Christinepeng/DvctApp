@@ -20,6 +20,8 @@ import com.divercity.android.core.utils.OnboardingProgression
 import com.divercity.android.data.Status
 import com.divercity.android.data.entity.group.group.GroupResponse
 import com.divercity.android.features.groups.adapter.GroupsAdapter
+import com.divercity.android.features.groups.adapter.GroupsForOnboardingAdapter
+import com.divercity.android.features.groups.adapter.GroupsForOnboardingViewHolder
 import com.divercity.android.features.groups.adapter.GroupsViewHolder
 import com.divercity.android.model.position.GroupPosition
 import com.divercity.android.features.groups.viewmodel.GroupViewModel
@@ -44,7 +46,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
     lateinit var groupViewModel: GroupViewModel
 
     @Inject
-    lateinit var adapter: GroupsAdapter
+    lateinit var adapter: GroupsForOnboardingAdapter
 
     private var countJoin = 0
     private var currentProgress: Int = 0
@@ -257,7 +259,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
         viewModel.retry()
     }
 
-    private val listener = object : GroupsViewHolder.Listener {
+    private val listener = object : GroupsForOnboardingViewHolder.Listener {
 
         override fun onGroupJoinClick(groupPosition: GroupPosition) {
             groupViewModel.joinGroup(groupPosition)

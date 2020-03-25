@@ -19,8 +19,6 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
     private var retryCallback: RetryCallback? = null
     private var listener: GroupsForOnboardingViewHolder.Listener? = null
 
-    private var removedGroups = ArrayList<Int>()
-
     fun setRetryCallback(retryCallback: RetryCallback) {
         this.retryCallback = retryCallback
     }
@@ -53,9 +51,7 @@ constructor() : PagedListAdapter<GroupResponse, RecyclerView.ViewHolder>(userDif
         return if (hasExtraRow() && position == itemCount - 1) {
             R.layout.view_network_state
         } else
-//            if(removedGroups.contains(position)) {
-//            R.layout.view_empty
-//        } else
+
         {
             R.layout.item_group_onboarding
         }

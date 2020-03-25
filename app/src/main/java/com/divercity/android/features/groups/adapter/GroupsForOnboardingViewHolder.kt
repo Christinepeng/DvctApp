@@ -64,67 +64,6 @@ private constructor(itemView: View, private val listener: Listener?) :
                 } else {
                     checkboxUnselectedAction(item_group_btn_join_member_onboarding, checkbox_group_btn_join_member_onboarding)
                 }
-
-//                item_group_btn_join_member.apply {
-//                    isEnabled = true
-//                    text = if (data.attributes.isCurrentUserAdmin) {
-//                        setOnClickListener(null)
-////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-//                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
-////                        "Admin"
-//                        "Join1" "Joined"
-//                    } else if (data.attributes.isFollowedByCurrent) {
-//                        setOnClickListener(null)
-////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-//                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
-//                        "Join2"
-////                        "Member" "Joined"
-//                    } else if (data.isJoinRequestPending()) {
-//                        setOnClickListener(null)
-////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-//                        setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-////                        checkbox_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
-//                        "Join3"
-////                        "Pending" "Request Sent"
-//                    } else {
-//                        if (data.isPublic())
-//                            setOnClickListener {
-//                                isEnabled = false
-//                                listener?.onGroupJoinClick(
-//                                    GroupPosition(
-//                                        position,
-//                                        data
-//                                    )
-//                                )
-//                            }
-//                        else
-//                            setOnClickListener {
-//                                isEnabled = false
-//                                listener?.onGroupRequestJoinClick(
-//                                    GroupPosition(
-//                                        position,
-//                                        data
-//                                    )
-//                                )
-//                            }
-////                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-//                        setTextColor(
-//                            Color.parseColor("#a4a4b3")
-////                            ContextCompat.getColor(
-////                                itemView.context,
-////                                android.R.color.white
-////                            )
-//                        )
-//                        "Join4" "Join"
-//                    }
-//                    setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
-//                }
-//
-//                setOnClickListener {
-//                    listener?.onGroupClick(position, data)
-//                }
             }
         }
     }

@@ -33,66 +33,26 @@ private constructor(itemView: View, private val listener: Listener?) :
                 item_group_txt_members.text =
                     data.attributes.followersCount.toString().plus(" Members")
 
-
-
-
-//                checkbox_group_btn_join_member.setOnClickListener {
-//                    if (checkbox_group_btn_join_member.isChecked) {
-//                        checkboxSelectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
-//                        listener?.onGroupJoinClick(
-//                            GroupPosition(
-//                                position,
-//                                data
-//                            )
-//                        )
-//                    } else {
-//                        checkboxUnselectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
-//                        listener?.onGroupLeaveClick(
-//                            GroupPosition(
-//                                position,
-//                                data
-//                            )
-//                        )
-//                    }
-//                }
-//
-//                if (data.attributes.isCurrentUserAdmin
-//                    || data.attributes.isFollowedByCurrent
-//                    || data.isJoinRequestPending()
-//                ) {
-//                    checkboxSelectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
-//                } else {
-//                    checkboxUnselectedAction(item_group_btn_join_member, checkbox_group_btn_join_member)
-//                }
-
-
-
-
-
                 item_group_btn_join_member.apply {
                     isEnabled = true
                     text = if (data.attributes.isCurrentUserAdmin) {
                         setOnClickListener(null)
                         setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                         setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-//                        item_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
-//                        "Admin" "Joined"
+//                        "Admin"
                         "Joined"
                     } else if (data.attributes.isFollowedByCurrent) {
                         setOnClickListener(null)
                         setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                         setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-//                        item_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
                         "Joined"
-//                        "Member" "Joined"
+//                        "Member"
                     } else if (data.isJoinRequestPending()) {
                         setOnClickListener(null)
                         setBackgroundResource(R.drawable.bk_white_stroke_blue_rounded)
                         setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-//                        item_group_btn_join_member.setBackgroundColor(Color.rgb(64, 131, 207))
                         "Request Sent"
-//                        "Pending" "Request Sent"
-
+//                        "Pending"
                     } else {
                         if (data.isPublic())
                             setOnClickListener {
@@ -114,14 +74,8 @@ private constructor(itemView: View, private val listener: Listener?) :
                                     )
                                 )
                             }
-//                        setBackgroundResource(R.drawable.bk_white_stroke_white_rounded)
-                        setTextColor(
-//                            Color.parseColor("#a4a4b3")
-                            ContextCompat.getColor(
-                                itemView.context,
-                                android.R.color.white
-                            )
-                        )
+                        setBackgroundResource(R.drawable.shape_backgrd_round_blue3)
+                        setTextColor(ContextCompat.getColor(itemView.context, android.R.color.white))
                         "Join"
                     }
                     setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
@@ -133,18 +87,6 @@ private constructor(itemView: View, private val listener: Listener?) :
             }
         }
     }
-
-//    fun checkboxSelectedAction(item_group_btn_join_member: TextView, checkbox_group_btn_join_member: CheckBox) {
-//        item_group_btn_join_member.setTextColor(ContextCompat.getColor(itemView.context, R.color.appBlue))
-//        checkbox_group_btn_join_member.setChecked(true)
-//        checkbox_group_btn_join_member.setButtonTintList(getColorStateList(itemView.context, R.color.appBlue))
-//    }
-//
-//    fun checkboxUnselectedAction(item_group_btn_join_member: TextView, checkbox_group_btn_join_member: CheckBox) {
-//        item_group_btn_join_member.setTextColor(ContextCompat.getColor(itemView.context, R.color.grey3))
-//        checkbox_group_btn_join_member.setChecked(false)
-//        checkbox_group_btn_join_member.setButtonTintList(getColorStateList(itemView.context, R.color.grey3))
-//    }
 
     interface Listener {
 

@@ -1,5 +1,6 @@
 package com.divercity.android.features.user.useradapter.pagination
 
+import android.view.View
 import android.view.ViewGroup
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil

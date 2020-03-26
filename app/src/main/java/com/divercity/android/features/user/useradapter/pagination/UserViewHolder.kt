@@ -59,7 +59,12 @@ private constructor(itemView: View, private val listener: Listener?) :
                 }
 
                 include_img_desc.txt_name.text = it.name
-                include_img_desc.txt_subtitle1.text = it.occupation
+
+                if (it.occupation != null) {
+                    include_img_desc.txt_subtitle1.text = it.occupation
+                } else if (it.accountType != null) {
+                    include_img_desc.txt_subtitle1.text = it.accountType?.capitalize()
+                }
 
                 setOnClickListener {
                     listener?.onUserClick(data, position)

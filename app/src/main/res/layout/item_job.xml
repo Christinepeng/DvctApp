@@ -69,17 +69,17 @@
 
     </LinearLayout>
 
-    <!--<LinearLayout-->
-    <!--android:layout_width="0dp"-->
-    <!--android:layout_height="0dp"-->
-    <!--android:layout_marginTop="8dp"-->
-    <!--android:layout_marginBottom="12dp"-->
-    <!--android:orientation="horizontal"-->
-    <!--android:visibility="visible"-->
-    <!--app:layout_constraintBottom_toBottomOf="parent"-->
-    <!--app:layout_constraintEnd_toEndOf="parent"-->
-    <!--app:layout_constraintStart_toStartOf="@+id/linearLayout3"-->
-    <!--app:layout_constraintTop_toBottomOf="@+id/linearLayout3">-->
+<!--    <LinearLayout-->
+<!--    android:layout_width="0dp"-->
+<!--    android:layout_height="0dp"-->
+<!--    android:layout_marginTop="8dp"-->
+<!--    android:layout_marginBottom="12dp"-->
+<!--    android:orientation="horizontal"-->
+<!--    android:visibility="visible"-->
+<!--    app:layout_constraintBottom_toBottomOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintStart_toStartOf="@+id/linearLayout3"-->
+<!--    app:layout_constraintTop_toBottomOf="@+id/linearLayout3">-->
 
     <ImageView
         android:id="@+id/img_recruiter"
@@ -109,6 +109,15 @@
         app:layout_constraintStart_toEndOf="@+id/img_recruiter"
         app:layout_constraintTop_toTopOf="@+id/img_recruiter"
         tools:text="Kyle Webber Campo dssfsdfsdfdfgdfgdfgdfgdfgdfgdfgdfgdfgsdfsdfsdfsdfsdf dsfsdfsdfsdfsdfsdfsd" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_recruiter_name"
+        app:layout_constraintEnd_toStartOf="@+id/txt_recruiter_occup"
+        app:layout_constraintStart_toEndOf="@+id/txt_recruiter_name"
+        android:text="."
+        android:textSize="15sp" />
 
     <TextView
         android:id="@+id/txt_recruiter_occup"

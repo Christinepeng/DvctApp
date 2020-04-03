@@ -1,0 +1,372 @@
+diff --git a/app/src/main/java/com/divercity/android/features/agerange/base/SelectAgeAdapter.java b/app/src/main/java/com/divercity/android/features/agerange/base/SelectAgeAdapter.java
+index 917b96a..cb77f95 100644
+--- a/app/src/main/java/com/divercity/android/features/agerange/base/SelectAgeAdapter.java
++++ b/app/src/main/java/com/divercity/android/features/agerange/base/SelectAgeAdapter.java
+@@ -27,18 +27,18 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
+     private Listener listener;
+ 
+     private List<AgeViewEntity> list;
+-    private int prevPositionSelected = -1;
++//    private int prevPositionSelected = -1;
+     private String ageRangeSelected;
+ 
+     static class Holder extends RecyclerView.ViewHolder {
+ 
+         TextView txtTitle;
+-        AppCompatImageButton imgBtn;
++//        AppCompatImageButton imgBtn;
+ 
+         Holder(View itemView) {
+             super(itemView);
+-            txtTitle = itemView.findViewById(R.id.txt_title);
+-            imgBtn = itemView.findViewById(R.id.btn_select_unselect);
++            txtTitle = itemView.findViewById(R.id.item_text);
++//            imgBtn = itemView.findViewById(R.id.btn_select_unselect);
+         }
+     }
+ 
+@@ -62,7 +62,7 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
+             layoutInflater = LayoutInflater.from(parent.getContext());
+         }
+         LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+-        View view = layoutInflater.inflate(R.layout.item_btn_text, parent, false);
++        View view = layoutInflater.inflate(R.layout.item_text, parent, false);
+         return new Holder(view);
+     }
+ 
+@@ -71,24 +71,27 @@ public class SelectAgeAdapter extends RecyclerView.Adapter<SelectAgeAdapter.Hold
+         AgeViewEntity item = list.get(position);
+         holder.txtTitle.setText(item.title);
+ 
+-        holder.imgBtn.setSelected(item.isSelected);
+-
+-        holder.imgBtn.setOnClickListener(view -> {
+-
+-            if(prevPositionSelected != -1) {
+-                list.get(prevPositionSelected).isSelected = false;
+-                notifyItemChanged(prevPositionSelected);
+-            }
+-
+-            holder.imgBtn.setSelected(!item.isSelected);
+-            item.isSelected = holder.imgBtn.isSelected();
+-
+-            if(item.isSelected)
+-                ageRangeSelected = item.title;
+-
+-            prevPositionSelected = position;
+-
+-            listener.onAgeClick(ageRangeSelected);
++//        holder.txtTitle.setSelected(item.isSelected);
++//        holder.imgBtn.setSelected(item.isSelected);
++
++        holder.txtTitle.setOnClickListener(view -> {
++////        holder.imgBtn.setOnClickListener(view -> {
++//            if(prevPositionSelected != -1) {
++//                list.get(prevPositionSelected).isSelected = false;
++//                notifyItemChanged(prevPositionSelected);
++//            }
++//
++//            holder.txtTitle.setSelected(!item.isSelected);
++////            holder.imgBtn.setSelected(!item.isSelected);
++//            item.isSelected = holder.txtTitle.isSelected();
++////            item.isSelected = holder.imgBtn.isSelected();
++//
++//            if(item.isSelected)
++//                ageRangeSelected = item.title;
++
++//            prevPositionSelected = position;
++
++            listener.onAgeClick(item.title);
+         });
+     }
+ 
+diff --git a/app/src/main/java/com/divercity/android/features/agerange/onboarding/OnboardingAgeFragment.kt b/app/src/main/java/com/divercity/android/features/agerange/onboarding/OnboardingAgeFragment.kt
+index 3b16145..a3e2a21 100644
+--- a/app/src/main/java/com/divercity/android/features/agerange/onboarding/OnboardingAgeFragment.kt
++++ b/app/src/main/java/com/divercity/android/features/agerange/onboarding/OnboardingAgeFragment.kt
+@@ -10,7 +10,9 @@ import com.divercity.android.core.base.BaseFragment
+ import com.divercity.android.data.Status
+ import com.divercity.android.features.agerange.base.SelectAgeFragment
+ import kotlinx.android.synthetic.main.fragment_onboarding_header_search_list.*
++import kotlinx.android.synthetic.main.item_btn_text.*
+ import kotlinx.android.synthetic.main.view_header_profile.*
++import kotlinx.android.synthetic.main.view_header_profile.txt_title
+ import javax.inject.Inject
+ 
+ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
+@@ -41,13 +43,13 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
+     }
+ 
+     private fun setupView() {
+-        btn_continue.visibility = View.VISIBLE
+-        btn_continue.setOnClickListener {
+-            if (viewModel.ageRangeSelected != null) {
+-                viewModel.updateUserProfileWithSelectedAgeRange()
+-            } else
+-                navigateToNext(false)
+-        }
++//        btn_continue.visibility = View.VISIBLE
++//        btn_continue.setOnClickListener {
++//            if (viewModel.ageRangeSelected != null) {
++//                viewModel.updateUserProfileWithSelectedAgeRange()
++//            } else
++//                navigateToNext(false)
++//        }
+     }
+ 
+     private fun setupHeader() {
+@@ -61,10 +63,6 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
+         }
+     }
+ 
+-    private fun navigateToNext(shouldIncrement: Boolean) {
+-        navigator.navigateToPersonalInfoActivity(requireActivity())
+-    }
+-
+     private fun showToast(msg: String) {
+         Toast.makeText(activity, msg, Toast.LENGTH_SHORT).show()
+     }
+@@ -81,13 +79,13 @@ class OnboardingAgeFragment : BaseFragment(), SelectAgeFragment.Listener {
+                 Status.SUCCESS -> {
+                     hideProgress()
+                     navigator.navigateToPersonalInfoActivity(requireActivity())
+-//                    navigateToNext(true)
+                 }
+             }
+         })
+     }
+ 
+     override fun onAgeRangeChosen(ageRange: String) {
+-        viewModel.ageRangeSelected = ageRange
++//        viewModel.ageRangeSelected = ageRange
++        viewModel.updateUserProfileWithSelectedAgeRange()
+     }
+ }
+diff --git a/app/src/main/java/com/divercity/android/features/groups/onboarding/SelectGroupFragment.kt b/app/src/main/java/com/divercity/android/features/groups/onboarding/SelectGroupFragment.kt
+index 11859d2..3c6f85c 100644
+--- a/app/src/main/java/com/divercity/android/features/groups/onboarding/SelectGroupFragment.kt
++++ b/app/src/main/java/com/divercity/android/features/groups/onboarding/SelectGroupFragment.kt
+@@ -1,6 +1,7 @@
+ package com.divercity.android.features.groups.onboarding
+ 
+ import android.content.Intent
++import android.graphics.Color
+ import android.os.Bundle
+ import android.os.Handler
+ import android.text.Editable
+@@ -81,7 +82,6 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
+     private fun setupHeader() {
+ 
+         top_btn.visibility = View.VISIBLE
+-        btn_next.setText("DONE")
+         include_search.visibility = View.GONE
+         btn_close.visibility = View.GONE
+         btn_continue.visibility = View.GONE
+@@ -121,6 +121,9 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
+             txt_title.setTextSize(17F)
+             txt_title.setLineSpacing(5F,1.4F)
+ 
++            btn_next.setText("DONE")
++//            checkContinueBtnState()
++
+             btn_previous_page.setOnClickListener {
+                 navigator.navigateToSelectInterestsActivity(requireActivity())
+             }
+@@ -155,20 +158,20 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
+                 }
+                 Status.SUCCESS -> {
+                     adapter.updatePositionOnJoinPublicGroup(response.data!!)
+-                    if (++countJoin == 3) {
+-                        btn_continue.background =
+-                            ContextCompat.getDrawable(
+-                                requireActivity(),
+-                                R.drawable.shape_backgrd_round_blue2
+-                            )
+-                        btn_continue.setOnClickListener {
+-                            val nextProgress =
+-                                OnboardingProgression.getNextNavigationProgressOnboarding(
+-                                    requireActivity(), viewModel.accountType, currentProgress
+-                                )
+-                            navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
+-                        }
+-                    }
++//                    if (++countJoin == 3) {
++//                        btn_next.setTextColor(Color.parseColor("#3197e4"))
++//                        btn_next.isClickable = true
++//                        btn_next.isEnabled = true
++////                        btn_continue.background = ContextCompat.getDrawable(requireActivity(), R.drawable.shape_backgrd_round_blue2)
++////                        btn_continue.setOnClickListener {
++////                            val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(requireActivity(), viewModel.accountType, currentProgress)
++////                            navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
++////                        }
++//                    } else {
++//                        btn_next.setTextColor(Color.parseColor("#763198e5"))
++//                        btn_next.isClickable = false
++//                        btn_next.isEnabled = false
++//                    }
+                 }
+             }
+         })
+@@ -187,7 +190,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
+                     Status.SUCCESS -> {
+                         adapter.updatePositionOnJoinPrivateGroupRequest(response.data!!)
+                         countJoin++
+-                        checkContinueBtnState()
++//                        checkContinueBtnState()
+                     }
+                 }
+             })
+@@ -206,7 +209,7 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
+                     Status.SUCCESS -> {
+                         adapter.updatePositionOnLeaveGroup(response.data!!)
+                         countJoin--
+-                        checkContinueBtnState()
++//                        checkContinueBtnState()
+                     }
+                 }
+             })
+@@ -214,14 +217,18 @@ class SelectGroupFragment : BaseFragment(), RetryCallback {
+ 
+     private fun checkContinueBtnState() {
+         if (countJoin >= 3) {
+-            btn_continue.background =
+-                ContextCompat.getDrawable(requireActivity(), R.drawable.shape_backgrd_round_blue2)
+-            btn_continue.setOnClickListener {
+-                val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(
+-                    requireActivity(), viewModel.accountType, currentProgress
+-                )
+-                navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
+-            }
++            btn_next.setTextColor(Color.parseColor("#3197e4"))
++            btn_next.isClickable = true
++            btn_next.isEnabled = true
++//            btn_continue.background = ContextCompat.getDrawable(requireActivity(), R.drawable.shape_backgrd_round_blue2)
++//            btn_continue.setOnClickListener {
++//                val nextProgress = OnboardingProgression.getNextNavigationProgressOnboarding(requireActivity(), viewModel.accountType, currentProgress)
++//                navigator.navigateToHomeActivity(requireActivity(), nextProgress >= 100)
++//            }
++        } else {
++            btn_next.setTextColor(Color.parseColor("#763198e5"))
++            btn_next.isClickable = false
++            btn_next.isEnabled = false
+         }
+     }
+ 
+diff --git a/app/src/main/java/com/divercity/android/features/onboarding/personalinfo/PersonalInfoFragment.kt b/app/src/main/java/com/divercity/android/features/onboarding/personalinfo/PersonalInfoFragment.kt
+index 245cc17..1b9edd6 100644
+--- a/app/src/main/java/com/divercity/android/features/onboarding/personalinfo/PersonalInfoFragment.kt
++++ b/app/src/main/java/com/divercity/android/features/onboarding/personalinfo/PersonalInfoFragment.kt
+@@ -91,7 +91,6 @@ class PersonalInfoFragment : BaseFragment() {
+ 
+         btn_next.setOnClickListener{
+             navigator.navigateToProfessionalInfoActivity(requireActivity())
+-//            navigator.navigateToSignUpActivity(requireActivity(), "a@gmail.com")
+         }
+ 
+         btn_upload_profile_picture.setOnClickListener{
+@@ -116,7 +115,6 @@ class PersonalInfoFragment : BaseFragment() {
+ 
+         btn_skip.setOnClickListener{
+             navigator.navigateToProfessionalInfoActivity(requireActivity())
+-//            navigator.navigateToHomeActivity(requireActivity())
+         }
+     }
+ 
+@@ -203,25 +201,6 @@ class PersonalInfoFragment : BaseFragment() {
+         })
+     }
+ 
+-//    private fun showAddProfilePictureDialog() {
+-//        val dialog = AddProfilePictureDialogFragment.newInstance()
+-//        dialog.listener = object : AddProfilePictureDialogFragment.Listener {
+-//
+-//            override fun onAddPicture() {
+-//                EasyImage.openChooserWithGallery(
+-//                    this@SignUpFragment,
+-//                    getString(R.string.pick_source),
+-//                    0
+-//                )
+-//            }
+-//
+-//            override fun onMaybeLater() {
+-////                signUp()
+-//            }
+-//        }
+-//        dialog.show(childFragmentManager, null)
+-//    }
+-
+     private fun onPhotosReturned(file: File?) {
+         photoFile = file
+         GlideApp.with(this)
+diff --git a/app/src/main/java/com/divercity/android/features/onboarding/selectinterests/SelectInterestsFragment.kt b/app/src/main/java/com/divercity/android/features/onboarding/selectinterests/SelectInterestsFragment.kt
+index eee9d41..301a6f1 100644
+--- a/app/src/main/java/com/divercity/android/features/onboarding/selectinterests/SelectInterestsFragment.kt
++++ b/app/src/main/java/com/divercity/android/features/onboarding/selectinterests/SelectInterestsFragment.kt
+@@ -128,6 +128,10 @@ class SelectInterestsFragment : BaseFragment() {
+             btn_next.setTextColor(Color.parseColor("#3197e4"))
+             btn_next.isClickable = true
+             btn_next.isEnabled = true
++        } else {
++            btn_next.setTextColor(Color.parseColor("#763198e5"))
++            btn_next.isClickable = false
++            btn_next.isEnabled = false
+         }
+     }
+ }
+\ No newline at end of file
+diff --git a/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeAdapter.java b/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeAdapter.java
+index ee0d636..e3910d1 100644
+--- a/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeAdapter.java
++++ b/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeAdapter.java
+@@ -21,7 +21,6 @@ import java.util.List;
+ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAdapter.Holder> {
+ 
+     private List<UserType> list = new ArrayList<>();
+-    private LayoutInflater layoutInflater;
+     private UserTypeAdapterListener listener;
+ 
+     private void fillList(Context context) {
+@@ -85,6 +84,7 @@ public class SelectUserTypeAdapter extends RecyclerView.Adapter<SelectUserTypeAd
+         UserType item = list.get(position);
+         holder.imageView.setImageDrawable(holder.itemView.getContext().getResources().getDrawable(item.drawable));
+         holder.textView.setText(item.textId);
++
+         holder.itemView.setOnClickListener(view -> {
+             listener.onUserTypeClick(item);
+         });
+diff --git a/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeFragment.java b/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeFragment.java
+index 41bda6f..5e7fb9c 100644
+--- a/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeFragment.java
++++ b/app/src/main/java/com/divercity/android/features/onboarding/selectusertype/SelectUserTypeFragment.java
+@@ -68,8 +68,6 @@ public class SelectUserTypeFragment extends BaseFragment {
+                 case SUCCESS:
+                     hideProgress();
+                     navigator.navigateToPersonalInfoActivity(requireActivity());
+-//                    navigator.navigateToProfilePromptActivity(getActivity());
+-//                    navigator.navigateToHomeActivity(getActivity());
+                     break;
+             }
+         });
+diff --git a/app/src/main/res/layout/item_user_type.xml b/app/src/main/res/layout/item_user_type.xml
+index de8142d..9ece59e 100644
+--- a/app/src/main/res/layout/item_user_type.xml
++++ b/app/src/main/res/layout/item_user_type.xml
+@@ -30,6 +30,18 @@
+             android:layout_width="160dp"
+             android:layout_height="150dp" />
+ 
++        <ImageView
++            android:id="@+id/icon_green_check_mark_user_type"
++            android:layout_width="25dp"
++            android:layout_height="25dp"
++            android:layout_marginTop="100dp"
++            android:layout_marginStart="112dp"
++            android:src="@drawable/img_checkmark"
++            app:layout_constraintEnd_toEndOf="parent"
++            app:layout_constraintStart_toStartOf="parent"
++            app:layout_constraintTop_toTopOf="parent"
++            android:visibility="gone"/>
++
+     </RelativeLayout>
+ 
+ 
